@@ -214,7 +214,7 @@ export default function BestInventoryManagementSoftware() {
         title="Inventory Management Software Online 2025"
         description="Discover how inventory management software online to automate your processes. Find out how inventory management software online to choose the. Get started free."
         keywords="inventory management software online, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
-        url="https://www.stockflow.be/inventory-management-software-online"
+        url="https://www.stockflow.be/solutions/inventory-management-software-online"
       />
 
 
@@ -610,7 +610,7 @@ Growing businesses scaling their inventory and operations
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-management-software-online",
+          "@id": "https://www.stockflow.be/solutions/inventory-management-software-online",
           "name": "Inventory Management Software Online",
           "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
           "url": "https://www.stockflow.be/inventory-management-software-online",
@@ -703,7 +703,7 @@ Growing businesses scaling their inventory and operations
           "screenshot": "https://www.stockflow.be/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-management-software-online"
+            "@id": "https://www.stockflow.be/solutions/inventory-management-software-online"
           },
           "award": [
             "Best Inventory Software 2024",

@@ -22,6 +22,11 @@
       "source": "/it/best-inventory-management-software",
       "destination": "/best-inventory-management-software",
       "permanent": true
+    },
+    {
+      "source": "/inventory-software-management",
+      "destination": "/solutions/inventory-software-management",
+      "permanent": true
     }
   ],
   "rewrites": [

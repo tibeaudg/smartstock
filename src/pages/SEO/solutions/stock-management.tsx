@@ -53,7 +53,7 @@ export default function StockManagement() {
         title="Stock Management 2025 - Stock Management 2025"
         description="Learn how stock management to optimize your inventory management. Find out how stock management to automate your processes. Master. Try free now. StockFlow h..."
         keywords="stock management, inventory control, stock tracking, warehouse management, inventory software, stock control system, SMB inventory, small business stock, stockflow, stock management app"
-        url="https://www.stockflow.be/stock-management"
+        url="https://www.stockflow.be/solutions/stock-management"
       />
 
       {/* Introduction */}

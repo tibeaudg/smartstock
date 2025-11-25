@@ -201,7 +201,7 @@ export default function InventoryTracker() {
         title="Inventory Tracker 2025 - Inventory Tracker 2025"
         description="Learn how inventory tracker to automate your processes. Discover how inventory tracker to choose the best software. Track. Start free today. StockFlow helps ..."
         keywords="inventory tracker, stock tracker, inventory tracking, stock tracking, inventory monitoring, stock monitoring, inventory tracking software, stock tracking software, inventory tracking app, stock tracking app, real-time inventory tracking, inventory movement tracking, stock movement tracking, inventory tracking system, stock tracking system, inventory tracker app, stock tracker app, inventory tracking tool, stock tracking tool, inventory tracking solution, stock tracking solution"
-        url="https://www.stockflow.be/inventory-tracker"
+        url="https://www.stockflow.be/solutions/inventory-tracker"
         locale="en"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflow.be/inventory-tracker' },

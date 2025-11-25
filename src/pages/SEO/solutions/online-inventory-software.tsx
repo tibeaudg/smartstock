@@ -430,7 +430,7 @@ export default function OnlineInventorySoftware() {
         title="Best Online Inventory Software 2025: Compare Cloud Solutions | StockFlow"
         description="Compare top online inventory software 2025. Free plan available. Real-time tracking, barcode scanning, multi-channel sync. Start free trial. 500+ businesses trust StockFlow."
         keywords="online inventory software, cloud inventory management, inventory management system, online inventory management, ecommerce inventory tool, inventory automation, cloud-based inventory, web-based inventory software, StockFlow free trial, best online inventory software"
-        url="https://www.stockflow.be/online-inventory-software"
+        url="https://www.stockflow.be/solutions/online-inventory-software"
         publishedTime={pageMetadata.published}
         modifiedTime={pageMetadata.updated}
       />

@@ -194,202 +194,51 @@ const NotFound = () => {
             Page Not Found
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            The page you're looking for doesn't exist. But don't worry, we'll help you find what you need!
+            The page you're looking for doesn't exist.
           </p>
         </div>
 
-        {/* Search Section */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              Search for what you need
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex gap-4 mb-4">
-              <Input
-                type="text"
-                placeholder="Search pages..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1"
-              />
-              <Button onClick={() => navigate("/")} className="px-6">
-                <Home className="h-4 w-4 mr-2" />
+        {/* Search Section */}    
+            <div className="flex gap-4 mb-4 justify-center items-center">
+            
+              <Button onClick={() => navigate("/")} className="px-6 justify-center items-center ">
+                <Home className="h-4 w-4 mr-2 justify-center items-center" />
                 Go Home
               </Button>
             </div>
-            
-            {/* Category Filter */}
-            <div className="flex gap-2 mb-4">
-              <Button
-                variant={selectedCategory === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory("all")}
-              >
-                All
-              </Button>
-              <Button
-                variant={selectedCategory === "main" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory("main")}
-              >
-                Main Pages
-              </Button>
-              <Button
-                variant={selectedCategory === "seo" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory("seo")}
-              >
-                Guides
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+    
 
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Home className="h-5 w-5" />
-                Main Pages
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {mainSuggestions.map((suggestion, index) => {
-                  const IconComponent = suggestion.icon;
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => handleSuggestionClick(suggestion.path)}
-                      className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                      <IconComponent className="h-4 w-4 text-blue-600" />
-                      <span className="flex-1">{suggestion.label}</span>
-                      <ChevronRight className="h-4 w-4 text-gray-400" />
-                    </button>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5" />
-                Helpful Guides
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {seoSuggestions.slice(0, 5).map((suggestion, index) => {
-                  const IconComponent = suggestion.icon;
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => handleSuggestionClick(suggestion.path)}
-                      className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                      <IconComponent className="h-4 w-4 text-green-600" />
-                      <span className="flex-1">{suggestion.label}</span>
-                      <ChevronRight className="h-4 w-4 text-gray-400" />
-                    </button>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
-        {/* Search Results */}
-        {searchTerm && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>
-                Search Results ({filteredSuggestions.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {filteredSuggestions.length > 0 ? (
-                <div className="space-y-2">
-                  {filteredSuggestions.map((suggestion, index) => {
-                    const IconComponent = suggestion.icon;
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => handleSuggestionClick(suggestion.path)}
-                        className="w-full flex items-center gap-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
-                      >
-                        <IconComponent className="h-4 w-4 text-blue-600" />
-                        <span className="flex-1">{suggestion.label}</span>
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-4">
-                  No results found. Try a different search term.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        )}
 
         {/* Contact Section */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <HelpCircle className="h-5 w-5" />
+            <CardTitle className="flex items-center justify-center gap-2">
+              <HelpCircle className="h-5 w-5 justify-center items-center" />
               Still can't find what you're looking for?
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  Email Support
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">
+            <div className="flex flex-col gap-6 justify-center items-center">
+              <div className="flex flex-col gap-2 justify-center items-center">
+                <h3 className="font-semibold mb-3 flex items-center justify-center gap-2">
+                  <Mail className="h-4 w-4 justify-center items-center  " />
                   Get help from our support team
-                </p>
+                </h3>
+        
                 <a 
                   href="mailto:info@stockflow.be" 
-                  className="text-blue-600 hover:underline"
+                  className="text-blue-600 hover:underline justify-center items-center"
                 >
                   info@stockflow.be
                 </a>
               </div>
-              <div>
-                <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  Phone Support
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  Call us for immediate assistance
-                </p>
-                <a 
-                  href="tel:+32123456789" 
-                  className="text-blue-600 hover:underline"
-                >
-                  +32 123 45 67 89
-                </a>
-              </div>
+
             </div>
           </CardContent>
         </Card>
 
-        {/* Footer */}
-        <div className="text-center mt-8 text-sm text-gray-500">
-          <p>
-            Error: Page not found ({location.pathname})
-          </p>
-        </div>
       </div>
     </div>
   );

@@ -189,14 +189,14 @@ export default function InventorySoftwareManagement() {
     <SeoPageLayout 
       title="Inventory Software Management"
       heroTitle="Inventory Software Management"
-      updatedDate="20/11/2025"
+      updatedDate="25/11/2025"
       faqData={faqData}
     >
       <SEO
         title="Inventory Software Management 2025 - Complete Guide | StockFlow"
         description="Master inventory software management with our comprehensive guide. Learn about inventory system software, inventory control software, and stock system software. Discover best practices, implementation strategies, and ROI analysis for effective inventory management."
         keywords="inventory software management, inventory system software, inventory control software, stock system software, software for inventory management, inventory software system, software inventory management, inventory management software, inventory control system software, stock control software, inventory tracking software, inventory management systems software, inventory software management system, free inventory tracking system, inventory planning software, stock maintain software, system for inventory management, inventory programs, software for inventory control, inventory keeping software, inventory software management solution, inventory management software systems, best inventory software management, inventory management system software, inventory software solutions"
-        url="https://www.stockflow.be/inventory-software-management"
+        url="https://www.stockflow.be/solutions/inventory-software-management"
       />
 
       {/* Introduction */}
@@ -312,37 +312,6 @@ export default function InventorySoftwareManagement() {
         </div>
       </section>
 
-      {/* Management Types Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Types of <span className="text-blue-600">Software Management</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Choose the management approach that best fits your business needs and operations.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {managementTypes.map((type, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="text-4xl mb-4">{type.icon}</div>
-                <h3 className="text-xl font-semibold mb-3">{type.title}</h3>
-                <p className="text-gray-600 mb-4">{type.description}</p>
-                <ul className="space-y-2">
-                  {type.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-gray-600">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section className="py-16 px-4 bg-white">
@@ -542,34 +511,6 @@ export default function InventorySoftwareManagement() {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-8 rounded-lg">
-            <h3 className="text-2xl font-semibold mb-4">Calculating Your ROI</h3>
-            <p className="text-lg text-gray-700 mb-4">
-              To calculate the return on investment for inventory software management, consider both tangible and intangible benefits:
-            </p>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-semibold mb-2">Tangible Benefits</h4>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Reduced inventory carrying costs</li>
-                  <li>• Decreased stockout losses</li>
-                  <li>• Lower labor costs from automation</li>
-                  <li>• Reduced waste and obsolescence</li>
-                  <li>• Fewer emergency purchases</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold mb-2">Intangible Benefits</h4>
-                <ul className="space-y-2 text-gray-700">
-                  <li>• Improved customer satisfaction</li>
-                  <li>• Better decision-making with data</li>
-                  <li>• Enhanced team productivity</li>
-                  <li>• Reduced stress and errors</li>
-                  <li>• Competitive advantage</li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -627,111 +568,7 @@ export default function InventorySoftwareManagement() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Success Stories from <span className="text-blue-600">Management Teams</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how businesses have transformed their inventory management with StockFlow.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg shadow-lg">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Your Inventory Software Management Journey
-          </h2>
-          <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join hundreds of businesses using StockFlow for comprehensive inventory software management.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-            >
-              Start Free Trial
-            </Link>
-
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              No credit card required
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Instant access
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Free trial
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about inventory software management</p>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <img
-            src="/logo.png"
-            alt="StockFlow"
-            className="h-10 md:h-12 mx-auto mb-6"
-          />
-          <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Complete inventory software management solution. Simple, powerful, and designed for efficiency.
-          </p>
-
-          <div className="border-t border-gray-700 pt-6">
-            <p className="text-gray-500 text-xs md:text-sm">
-              &copy; {new Date().getFullYear()} StockFlow. All rights reserved.
-              Inventory software management solutions for modern businesses.
-            </p>
-          </div>
-        </div>
-      </footer>
 
             
 
@@ -784,7 +621,7 @@ export default function InventorySoftwareManagement() {
                 "image": "https://www.stockflow.be/Inventory-Management.png",
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/inventory-software-management"
+                  "@id": "https://www.stockflow.be/solutions/inventory-software-management"
                 },
                 "featureList": [
                   "Centralized management",

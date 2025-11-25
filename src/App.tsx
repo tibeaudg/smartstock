@@ -50,6 +50,7 @@ import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
 
+
 // (SEO pages are auto-imported via getSeoRoutes)
 
 // Import remaining synchronous pages
@@ -372,10 +373,24 @@ const AuthRoute = () => {
         <Route path="/seo" element={<SEOOverviewPage />} />
         <Route path="/demo" element={<GuestSandbox />} />
 
+        {/* Legacy route redirects */}
+        <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />
+
         {/* SEO routes (auto-generated from src/pages/SEO) */}
-        {getSeoRoutes().map(r => (
-          <Route key={r.path} path={r.path} element={r.element} />
-        ))}
+        {(() => {
+          const seoRoutes = getSeoRoutes();
+          // Debug: Check if inventory-software-management route exists
+          const targetRoute = seoRoutes.find(r => r.path === '/solutions/inventory-software-management');
+          if (targetRoute) {
+            console.log('[App] ✅ /solutions/inventory-software-management route is registered');
+          } else {
+            console.error('[App] ❌ /solutions/inventory-software-management route is MISSING!');
+            console.log('[App] Available SEO routes:', seoRoutes.map(r => r.path).slice(0, 20));
+          }
+          return seoRoutes.map(r => (
+            <Route key={r.path} path={r.path} element={r.element} />
+          ));
+        })()}
 
         {/* Beschermde dashboard routesfefe */}
         <Route

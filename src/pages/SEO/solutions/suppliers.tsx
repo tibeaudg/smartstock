@@ -141,7 +141,7 @@ export default function SuppliersSolutionPage() {
         title="Supplier Management Software 2025 | Vendor Management Platform"
         description="Centralize supplier data, automate purchasing workflows, and track vendor performance. Unified supplier directory, automated reordering, and real-time analytics. Start free."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance"
-        url="https://www.stockflow.be/suppliers"
+        url="https://www.stockflow.be/solutions/suppliers"
         structuredData={structuredData}
       />
 

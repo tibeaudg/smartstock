@@ -153,7 +153,7 @@ export default function InventoryTrackingPrograms() {
         title="Inventory Tracking Programs 2025 - Inventory Tracking Pro..."
         description="Learn how inventory tracking programs to save time and money. Read the guide inventory tracking programs to choose the best. Start free today. StockFlow help..."
         keywords="inventory tracking programs, inventory tracking software, inventory tracking program, inventory tracking system, inventory tracking app, inventory tracking solution, inventory tracking platform, inventory tracking tool, inventory tracking software free, inventory tracking program free, best inventory tracking program, inventory tracking software for small business, inventory tracking software online, cloud inventory tracking, inventory tracking software comparison, inventory tracking software reviews, inventory tracking software features, inventory tracking software cost, stockflow, stock flow"
-        url="https://www.stockflow.be/inventory-tracking-programs"
+        url="https://www.stockflow.be/solutions/inventory-tracking-programs"
       />
 
       {/* Features Section */}
@@ -330,7 +330,7 @@ export default function InventoryTrackingPrograms() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-tracking-programs",
+          "@id": "https://www.stockflow.be/solutions/inventory-tracking-programs",
           "name": "Inventory Tracking Programs 2025",
           "description": "Best inventory tracking programs for businesses of all sizes. Real-time inventory tracking, barcode scanning, automated alerts. Free plan available.",
           "url": "https://www.stockflow.be/inventory-tracking-programs",
@@ -406,7 +406,7 @@ export default function InventoryTrackingPrograms() {
           "image": "https://www.stockflow.be/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-tracking-programs"
+            "@id": "https://www.stockflow.be/solutions/inventory-tracking-programs"
           },
           "featureList": [
             "Real-time inventory tracking",

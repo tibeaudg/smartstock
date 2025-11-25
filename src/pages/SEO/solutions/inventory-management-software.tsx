@@ -199,7 +199,7 @@ export default function InventoryManagementSoftware() {
         title="Complete Guide Inventory Management Software"
         description="Learn how inventory management software to choose the best software. Discover how inventory management software to optimize your inventory management.. Get s..."
         keywords="inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, stock management software, inventory tracking, stock control, warehouse management, inventory system, inventory management software best, inventory management online, inventory tracking programs, inventory software, inventory management system, stockflow, stock flow, best inventory management software, inventory software for small business, cloud inventory management, inventory management solution"
-        url="https://www.stockflow.be/inventory-management-software"
+        url="https://www.stockflow.be/solutions/inventory-management-software"
         locale="en"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-software' },
@@ -710,7 +710,7 @@ export default function InventoryManagementSoftware() {
           "screenshot": "https://www.stockflow.be/optimized/desktop.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-management-software"
+            "@id": "https://www.stockflow.be/solutions/inventory-management-software"
           },
           "featureList": [
             "Real-time inventory tracking",

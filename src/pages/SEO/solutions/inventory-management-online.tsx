@@ -191,7 +191,7 @@ export default function BestInventoryManagementSoftware() {
         title="Inventory Management Online 2025 - Inventory Management O..."
         description="Discover how inventory management online to optimize your inventory management. Read the guide inventory management online to save time and. Try free now."
         keywords="best inventory management software, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, best inventory management software comparison, best inventory software reviews, best inventory management software features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
-        url="https://www.stockflow.be/inventory-management-online"
+        url="https://www.stockflow.be/solutions/inventory-management-online"
       />
 
 
@@ -577,7 +577,7 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/inventory-management-online", 
+          "@id": "https://www.stockflow.be/solutions/inventory-management-online", 
           "name": "Inventory Management Online",
           "description": "Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE now - no credit card required!",
           "url": "https://www.stockflow.be/inventory-management-online",
@@ -663,7 +663,7 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
           "screenshot": "https://www.stockflow.be/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-management-online"
+            "@id": "https://www.stockflow.be/solutions/inventory-management-online"
           },
           "featureList": [
             "Real-time inventory tracking online",

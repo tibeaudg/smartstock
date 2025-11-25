@@ -12,6 +12,11 @@ const modules = { ...upperCaseModules, ...lowerCaseModules };
 // which can cause Suspense to keep showing the fallback indefinitely.
 let cachedRoutes: SeoRoute[] | null = null;
 
+// Function to clear cache (useful for debugging or hot reloading)
+export function clearRouteCache() {
+  cachedRoutes = null;
+}
+
 function getSlugFromPath(path: string): string {
   const withoutPrefix = path
     // Remove leading ../segments
@@ -67,6 +72,7 @@ export function getSeoRoutes(): SeoRoute[] {
   // Files to exclude from routing (helper functions, not page components)
   const excludedFiles = new Set([
     'glossary/createGlossaryPage',
+    'resources/blog', // Exclude to avoid conflict with blog/index.tsx
   ]);
 
   cachedRoutes = Object.entries(modules)
@@ -86,6 +92,12 @@ export function getSeoRoutes(): SeoRoute[] {
         console.warn(`[seoRoutes] Skipping SEO page without slug for path: ${path}`);
         return null;
       }
+      
+      // Debug logging for inventory-software-management
+      if (slug === 'solutions/inventory-software-management' || path.includes('inventory-software-management')) {
+        console.log(`[seoRoutes] Found inventory-software-management: path=${path}, slug=${slug}, route=/${slug}`);
+      }
+      
       const Component = React.lazy(
         loader as () => Promise<{ default: React.ComponentType<any> }>
       );
@@ -104,6 +116,16 @@ export function getSeoRoutes(): SeoRoute[] {
       return acc;
     }, [])
     .sort((a, b) => a.path.localeCompare(b.path));
+
+  // Debug: Log all solutions routes
+  const solutionsRoutes = cachedRoutes.filter(r => r.path.startsWith('/solutions/'));
+  console.log(`[seoRoutes] Generated ${cachedRoutes.length} total routes, ${solutionsRoutes.length} solutions routes`);
+  if (solutionsRoutes.some(r => r.path === '/solutions/inventory-software-management')) {
+    console.log('[seoRoutes] ✅ /solutions/inventory-software-management route is registered');
+  } else {
+    console.error('[seoRoutes] ❌ /solutions/inventory-software-management route is MISSING!');
+    console.log('[seoRoutes] Available solutions routes:', solutionsRoutes.map(r => r.path));
+  }
 
   return cachedRoutes;
 }

@@ -1,15 +1,9 @@
 import SEO from '@/components/SEO';
-import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
+import { useLocation, Link } from 'react-router-dom';
 import { 
   CheckCircle,
-  Star,
-  Trophy,
-  Users,
   Camera,
   Scan,
   Zap,
@@ -82,36 +76,25 @@ export default function InventoryScanningSystem() {
     "Scale scanning operations efficiently"
   ];
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'what-is', title: 'What is Inventory Scanning System?', level: 1 },
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
+
 
   return (
     <SeoPageLayout 
       title="Inventory Scanning System"
+      heroTitle="Inventory Scanning System"
+      updatedDate="25/11/2025"
+      faqData={faqData}
+      
       
       
     >
       <SEO
-        title="Inventory Scanning System 2025 - Inventory Scanning System"
-        description="Read the guide inventory scanning system to optimize your inventory management. Learn how inventory scanning system to choose the best software.. Try free now."
-        keywords="inventory scanning system, inventory scanning, inventory scanning software, inventory scanning app, barcode scanning inventory, inventory barcode scanning, inventory scanning solution, inventory scanning technology, inventory scanning system software, inventory scanning system app, inventory scanning tools, stockflow, stock flow"
-        url="https://www.stockflow.be/inventory-scanning-system"
-      />      <SeoPageHero
-        title="Inventory Scanning System: Complete Guide to Barcode Scanning"
-        description="Master inventory scanning system and barcode scanning for inventory. Learn how scanning systems work, benefits, and how to implement them. Free inventory scanning tools included."
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "Complete Guide", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "Free Tools", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Users", variant: 'info' }
-        ]}
-        ctaText="Start Scanning Inventory Free"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
-      />
+        title="Inventory Scanning System 2025 - Barcode & QR Code Scanning | StockFlow"
+        description="Complete guide to inventory scanning systems. Use barcode and QR code scanners to track inventory with 99%+ accuracy. Mobile scanning with smartphone cameras - no special hardware needed. Real-time updates and offline support. Try free now."
+        keywords="inventory scanning system, inventory scanning, inventory scanning software, inventory scanning app, barcode scanning inventory, inventory barcode scanning, inventory scanning solution, inventory scanning technology, inventory scanning system software, inventory scanning system app, inventory scanning tools, mobile inventory scanning, QR code scanning, barcode scanner inventory, stockflow, stock flow"
+        url="https://www.stockflow.be/solutions/inventory-scanning-system"
+      />      
+
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -119,9 +102,86 @@ export default function InventoryScanningSystem() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               What is an <span className="text-blue-600">Inventory Scanning System</span>?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              An inventory scanning system uses barcode scanners or QR code readers to quickly and accurately track inventory. It automates data entry, reduces errors, and provides real-time inventory updates.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              An inventory scanning system uses barcode scanners or QR code readers to quickly and accurately track inventory. It automates data entry, reduces errors, and provides real-time inventory updates. Modern inventory scanning systems have revolutionized how businesses manage their stock, transforming manual counting processes into efficient, automated workflows that improve accuracy and save time.
             </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Core Functionality</h3>
+              <p className="text-gray-700 mb-4">
+                At its core, an inventory scanning system captures product information through optical scanning technology. When a barcode or QR code is scanned, the system instantly retrieves product details from the database, updates inventory counts, and records the transaction. This eliminates the need for manual data entry and significantly reduces human error.
+              </p>
+              <p className="text-gray-700">
+                The system integrates seamlessly with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link>, providing a complete solution for tracking stock levels, managing orders, and maintaining accurate inventory records across multiple locations.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Technology Types</h3>
+              <p className="text-gray-700 mb-4">
+                Inventory scanning systems support multiple scanning technologies. Barcode scanning is the most common, using one-dimensional codes like UPC and EAN. QR code scanning offers two-dimensional data storage, allowing for more information in a single scan. Advanced systems may also support RFID (Radio Frequency Identification) for contactless scanning.
+              </p>
+              <p className="text-gray-700">
+                Modern solutions like StockFlow leverage <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:text-blue-800 underline">mobile inventory management</Link> capabilities, allowing businesses to use smartphone cameras as scanners without requiring expensive dedicated hardware.
+              </p>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">How Inventory Scanning Systems Transform Operations</h3>
+            <p className="text-gray-700 mb-4">
+              Inventory scanning systems transform traditional inventory management by automating critical processes. Instead of manually counting items and entering data into spreadsheets, staff can scan products quickly and accurately. This automation extends to receiving goods, picking orders, conducting stock counts, and updating inventory levels in real-time.
+            </p>
+            <p className="text-gray-700 mb-4">
+              The real-time synchronization capability ensures that inventory data is immediately available across all devices and locations. When an item is scanned in one location, the update reflects instantly in the central system, providing accurate visibility for decision-making. This is particularly valuable for businesses with multiple warehouses or retail locations.
+            </p>
+            <p className="text-gray-700 mb-6">
+              Integration with <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:text-blue-800 underline">online inventory management</Link> platforms enables businesses to maintain accurate stock levels across e-commerce channels, preventing overselling and ensuring customer satisfaction. The scanning system becomes the foundation for comprehensive inventory control.
+            </p>
+
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Key Components of an Inventory Scanning System</h3>
+            <div className="space-y-4 mb-6">
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Scanning Devices</h4>
+                  <p className="text-gray-700">Modern systems support various scanning devices, from dedicated barcode scanners to smartphone cameras. This flexibility allows businesses to choose the solution that best fits their workflow and budget.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Software Integration</h4>
+                  <p className="text-gray-700">The scanning system integrates with <Link to="/solutions/inventory-software-management" className="text-blue-600 hover:text-blue-800 underline">inventory software management</Link> platforms to process scanned data, update records, and generate reports automatically.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Label Management</h4>
+                  <p className="text-gray-700">Systems include tools for generating and printing barcode labels, ensuring all products are properly tagged for scanning operations.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Offline Capability</h4>
+                  <p className="text-gray-700">Advanced systems support offline scanning, storing data locally when internet connectivity is unavailable and syncing automatically when connection is restored. This is essential for <Link to="/warehouse-management" className="text-blue-600 hover:text-blue-800 underline">warehouse management</Link> operations in remote locations.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Why Businesses Choose Inventory Scanning Systems</h3>
+              <p className="text-gray-700 mb-4">
+                Businesses implement inventory scanning systems to achieve accuracy rates of 99% or higher, compared to 85-90% with manual methods. The time savings are equally impressive, with scanning operations completing 10 times faster than manual counting. This efficiency translates directly to reduced labor costs and improved customer service through better inventory visibility.
+              </p>
+              <p className="text-gray-700">
+                Whether you're managing a small retail store or a large distribution center, an inventory scanning system provides the foundation for efficient <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:text-blue-800 underline">inventory management software solutions</Link>. The investment in scanning technology pays dividends through improved accuracy, reduced errors, and streamlined operations.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -167,40 +227,35 @@ export default function InventoryScanningSystem() {
         </div>
       </section>
 
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Using Inventory Scanning System Today
-          </h2>
-          <div className="flex justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-        </div>
-      </section>
 
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Inventory Scanning System - Complete Guide 2025",
+          "description": "Complete guide to inventory scanning systems. Learn how barcode and QR code scanning transforms inventory management, improves accuracy to 99%+, and streamlines operations. Discover mobile scanning solutions that require no special hardware.",
+          "image": "https://www.stockflow.be/inventory-scanning-system.png",
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "datePublished": "2025-11-25",
+          "dateModified": "2025-11-25",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/solutions/inventory-scanning-system"
+          },
+          "keywords": "inventory scanning system, barcode scanning, QR code scanning, inventory management, mobile inventory scanning"
+        },
         {
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -212,6 +267,29 @@ export default function InventoryScanningSystem() {
               "text": faq.answer
             }
           }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow Inventory Scanning System",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser, iOS, Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "Free tier available"
+          },
+          "description": "Mobile-first inventory scanning system that uses smartphone cameras for barcode and QR code scanning. No special hardware required. Real-time inventory updates and offline support.",
+          "url": "https://www.stockflow.be/solutions/inventory-scanning-system",
+          "featureList": [
+            "Mobile barcode scanning",
+            "QR code support",
+            "Real-time inventory updates",
+            "Offline scanning capability",
+            "Multiple barcode format support",
+            "No special hardware required"
+          ]
         }
       ]} />
     </SeoPageLayout>

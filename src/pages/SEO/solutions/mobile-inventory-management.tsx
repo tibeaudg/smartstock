@@ -158,7 +158,7 @@ export default function MobileInventoryManagement() {
         title="Mobile Inventory Management 2025 - Mobile Inventory Manag..."
         description="Find out how mobile inventory management to optimize your inventory management. Find out how mobile inventory management to optimize your inventory. Get star..."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app"
-        url="https://www.stockflow.be/mobile-inventory-management"
+        url="https://www.stockflow.be/solutions/mobile-inventory-management"
         locale="en"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflow.be/mobile-inventory-management' },

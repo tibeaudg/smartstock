@@ -75,7 +75,7 @@ export default function OnlineInventoryManagement() {
         title="Online Inventory Management 2025 - Online Inventory Manag..."
         description="Learn how online inventory management to save time and money. Read the guide online inventory management to choose the best. Start free today. StockFlow help..."
         keywords="inventory management online, online inventory management, inventory management software online, online inventory management software, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system, cloud inventory software, online inventory system, web inventory management"
-        url="https://www.stockflow.be/online-inventory-management"
+        url="https://www.stockflow.be/solutions/online-inventory-management"
         structuredData={structuredData}
       />
 

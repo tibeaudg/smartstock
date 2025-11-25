@@ -558,7 +558,7 @@ export const englishMainCluster: TopicCluster = {
       image: '/dashboard.png'
     },
     {
-      path: '/inventory-software-management',
+      path: '/solutions/inventory-software-management',
       title: 'Inventory Software Management',
       language: 'en',
       category: 'Inventory Management',

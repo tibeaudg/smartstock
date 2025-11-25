@@ -94,7 +94,7 @@ export default function InventorySystemForSmallBusiness() {
         title="Inventory System For Small Business 2025"
         description="Read the guide inventory system for small business to automate your processes. Read the guide inventory system for small business to save. Get started free."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
-        url="https://www.stockflow.be/inventory-system-for-small-business"
+        url="https://www.stockflow.be/solutions/inventory-system-for-small-business"
       />
 
       <section id="features" className="py-16 px-4 bg-white">

@@ -176,7 +176,7 @@ export default function SoftwareForInventoryManagement() {
         title="Software For Inventory Management 2025 - Software For Inv..."
         description="Learn how software for inventory management to automate your processes. Discover how software for inventory management to save time and. Get started free."
         keywords="software for inventory management, inventory management software, software inventory management, best software for inventory management, inventory management software tools, software for inventory tracking, inventory management software solution, software for stock management, inventory management software platform, software for inventory control, inventory management software system, software for inventory optimization, inventory management software tools, software for inventory planning, inventory management software solution, software for inventory analysis, inventory management software platform, software for inventory automation, softwares for inventory management, inventory tracking programs"
-        url="https://www.stockflow.be/software-for-inventory-management"
+        url="https://www.stockflow.be/solutions/software-for-inventory-management"
       />
 
       {/* Introduction */}
@@ -520,7 +520,7 @@ export default function SoftwareForInventoryManagement() {
                 "image": "https://www.stockflow.be/Inventory-Management.png",
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/software-for-inventory-management"
+                  "@id": "https://www.stockflow.be/solutions/software-for-inventory-management"
                 },
                 "featureList": [
                   "Comprehensive tools",
