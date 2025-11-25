@@ -310,6 +310,7 @@ const TestimonialsSection = memo(() => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -331,6 +332,12 @@ const TestimonialsSection = memo(() => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    setIsAnimating(true);
+    const timer = setTimeout(() => setIsAnimating(false), 500);
+    return () => clearTimeout(timer);
+  }, [currentIndex]);
+
   const currentTestimonial = testimonials[currentIndex];
 
   const goToPrevious = () => {
@@ -346,52 +353,135 @@ const TestimonialsSection = memo(() => {
       ref={sectionRef}
       className="py-24 bg-slate-50 relative overflow-hidden" 
       aria-labelledby="testimonials-heading"
-      style={{
-        backgroundImage: `linear-gradient(rgba(241, 245, 249, 0.5), rgba(241, 245, 249, 0.5)), 
-          repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(59, 130, 246, 0.05) 20px, rgba(59, 130, 246, 0.05) 21px)`
-      }}
     >
+      <style>{`
+        @keyframes starPop {
+          0% {
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+          }
+          50% {
+            transform: scale(1.2) rotate(180deg);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) rotate(360deg);
+          }
+        }
+      `}</style>
+
+
+
+      {/* Testimonials Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title */}
-        <h2 id="testimonials-heading" className="text-4xl md:text-5xl font-bold text-center mb-16 text-slate-900">
+        <h2 
+          id="testimonials-heading" 
+          className={`text-4xl md:text-5xl font-bold text-center mb-16 text-slate-900 transition-all duration-700 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}
+        >
           What Our Customers Say
         </h2>
 
         {/* Testimonial Carousel */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center min-h-[400px]">
           {/* Left Arrow */}
           <button
             onClick={goToPrevious}
-            className="absolute left-0 z-10 p-3 rounded-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
+            className="absolute left-0 z-10 p-3 rounded-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:scale-110 hover:shadow-xl active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
             aria-label="Previous testimonial"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6 transition-transform duration-300 group-hover:-translate-x-1" />
           </button>
 
           {/* Testimonial Card */}
           <article 
-            className={`flex flex-col items-center text-center px-8 md:px-16 py-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+            key={currentIndex}
+            className={`flex flex-col items-center text-center px-8 md:px-16 py-12 transition-all duration-500 ${
+              isVisible 
+                ? isAnimating 
+                  ? 'opacity-0 translate-x-4 scale-95' 
+                  : 'opacity-100 translate-x-0 scale-100'
+                : 'opacity-0 translate-y-4'
+            }`}
             role="article"
             aria-live="polite"
             aria-atomic="true"
           >
+            {/* Rating Stars */}
+            <div 
+              className="flex items-center justify-center gap-1 mb-6 -mt-12" 
+              aria-label="5 out of 5 stars"
+            >
+              {[...Array(5)].map((_, i) => (
+                <Star 
+                  key={i} 
+                  className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                  style={{
+                    animation: isVisible && !isAnimating ? 'starPop 0.6s ease-out forwards' : 'none',
+                    animationDelay: isVisible && !isAnimating ? `${i * 100}ms` : '0ms',
+                    opacity: isVisible && !isAnimating ? 1 : 0
+                  }}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
+
             {/* Quote */}
-            <blockquote className="text-xl md:text-2xl font-medium text-slate-900 mb-8 leading-relaxed max-w-2xl">
+            <blockquote 
+              className={`text-xl md:text-2xl font-medium text-slate-900 mb-8 leading-relaxed max-w-2xl transition-all duration-500 ${
+                isVisible && !isAnimating
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4'
+              }`}
+              style={{
+                transitionDelay: isVisible && !isAnimating ? '300ms' : '0ms'
+              }}
+            >
               "{currentTestimonial.content}"
             </blockquote>
 
             {/* Avatar */}
-            <div className={`w-20 h-20 rounded-full ${currentTestimonial.avatarColor} flex items-center justify-center font-bold text-white text-2xl mb-4 border-4 border-blue-600`} aria-hidden="true">
+            <div 
+              className={`w-20 h-20 rounded-full ${currentTestimonial.avatarColor} flex items-center justify-center font-bold text-white text-2xl mb-4 border-4 border-blue-600 transition-all duration-500 hover:scale-110 hover:rotate-6 ${
+                isVisible && !isAnimating
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-0'
+              }`}
+              style={{
+                transitionDelay: isVisible && !isAnimating ? '400ms' : '0ms'
+              }}
+              aria-hidden="true"
+            >
               {currentTestimonial.name.charAt(0)}
             </div>
 
             {/* Name */}
-            <p className="text-lg font-semibold text-slate-900 mb-1">
+            <p 
+              className={`text-lg font-semibold text-slate-900 mb-1 transition-all duration-500 ${
+                isVisible && !isAnimating
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-2'
+              }`}
+              style={{
+                transitionDelay: isVisible && !isAnimating ? '500ms' : '0ms'
+              }}
+            >
               {currentTestimonial.name}
             </p>
 
             {/* Role */}
-            <p className="text-sm text-slate-600">
+            <p 
+              className={`text-sm text-slate-600 transition-all duration-500 ${
+                isVisible && !isAnimating
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-2'
+              }`}
+              style={{
+                transitionDelay: isVisible && !isAnimating ? '600ms' : '0ms'
+              }}
+            >
               {currentTestimonial.role}
             </p>
           </article>
@@ -399,22 +489,31 @@ const TestimonialsSection = memo(() => {
           {/* Right Arrow */}
           <button
             onClick={goToNext}
-            className="absolute right-0 z-10 p-3 rounded-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
+            className="absolute right-0 z-10 p-3 rounded-full bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:scale-110 hover:shadow-xl active:scale-95 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg"
             aria-label="Next testimonial"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </div>
 
         {/* Dots Indicator */}
-        <div className="flex justify-center gap-2 mt-8" role="tablist" aria-label="Testimonial navigation">
+        <div 
+          className={`flex justify-center gap-2 mt-8 transition-all duration-500 ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}
+          style={{
+            transitionDelay: isVisible ? '700ms' : '0ms'
+          }}
+          role="tablist" 
+          aria-label="Testimonial navigation"
+        >
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
+              className={`w-2 h-2 rounded-full transition-all duration-300 hover:scale-125 ${
                 index === currentIndex 
-                  ? 'bg-blue-600 w-8' 
+                  ? 'bg-blue-600 w-8 scale-110' 
                   : 'bg-blue-300 hover:bg-blue-400'
               }`}
               aria-label={`Go to testimonial ${index + 1}`}
@@ -652,6 +751,10 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
             </div>
           </div>
         </article>
+
+
+
+        
 
         <FAQSection faqData={faqData} pageLanguage={pageLanguage} />
 
