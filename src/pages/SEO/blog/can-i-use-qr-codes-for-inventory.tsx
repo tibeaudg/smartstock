@@ -1,17 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Can I Use QR Codes For Inventory";
 const canonicalPath = "/blog/can-i-use-qr-codes-for-inventory";
 const metaDescription = "Yes, you can use QR codes for inventory management. Learn how QR codes work for inventory tracking, benefits, setup, and best practices for QR code inventory systems.";
 const keywords = "QR codes for inventory, QR code inventory tracking, QR code inventory system, inventory QR codes, QR code scanning inventory, QR code inventory management";
-const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Explore Can I Use QR Codes For Inventory through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
 const takeaways = [
   "Understand the core themes behind Can I Use QR Codes For Inventory and why they matter for modern operations teams.",
   "Follow a structured framework to translate Can I Use QR Codes For Inventory into day-to-day improvements.",
@@ -94,13 +91,7 @@ export default function SeoCanIUseQRCodesForInventoryPage() {
     dateModified: new Date().toISOString().split("T")[0],
   }));
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
+
 
   return (
     <SeoPageLayout 

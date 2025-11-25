@@ -9,28 +9,9 @@ export const PlatformPreviewSection = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
-  const handleFullscreen = () => {
-    if (videoRef.current) {
-      if (!document.fullscreenElement) {
-        videoRef.current.requestFullscreen();
-        setIsFullscreen(true);
-      } else {
-        document.exitFullscreen();
-        setIsFullscreen(false);
-      }
-    }
-  };
+
+
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -409,66 +390,6 @@ export const PlatformPreviewSection = () => {
           </motion.div>
         </div>
 
-        {/* Video Demo Section */}
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-6">
- 
-
-          </div>
-          
-          <Card className="overflow-hidden">
-            <CardContent className="p-0 relative">
-              <div className="relative aspect-video bg-gray-900 group">
-                <video
-                  ref={videoRef}
-                  src="/intro_vid.mp4"
-                  className="w-full h-full object-cover relative z-0"
-                  muted
-                  playsInline
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onLoadedMetadata={() => {
-                    // Auto-play when loaded (muted for browser compatibility)
-                    if (videoRef.current) {
-                      videoRef.current.play().catch(() => {
-                        // Autoplay may be blocked, that's okay
-                      });
-                    }
-                  }}
-                />
-                
-                {/* Video Controls Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors z-[100] pointer-events-none">
-                  <button
-                    onClick={handlePlayPause}
-                    className="rounded-full w-20 h-20 bg-white hover:bg-gray-100 text-gray-900 shadow-2xl pointer-events-auto z-[101] flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-                    aria-label={isPlaying ? "Pause video" : "Play video"}
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-10 h-10 text-gray-900" />
-                    ) : (
-                      <Play className="w-10 h-10 text-gray-900 ml-1" />
-                    )}
-                  </button>
-                </div>
-
-                {/* Fullscreen Button */}
-                <Button
-                  onClick={handleFullscreen}
-                  size="sm"
-                  variant="ghost"
-                  className="absolute bottom-4 right-4 bg-black/50 hover:bg-black/70 text-white"
-                >
-                  <Maximize2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Video duration: ~45 seconds
-          </p>
-        </div>
       </div>
     </section>
   );

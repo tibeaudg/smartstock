@@ -261,11 +261,16 @@ const Header: React.FC<HeaderProps> = ({
         label: 'Pricing',
         to: '/pricing'
       },
-            {
+      {
         id: 'blog',
         label: 'Blog',
         to: '/blog'
-      }
+      },
+    {
+        id: 'demo',
+        label: 'Demo',
+        to: '/demo'
+        }
     ],
     []
   );

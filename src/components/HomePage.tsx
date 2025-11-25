@@ -31,9 +31,7 @@ import {
   CarouselItem as UICarouselItem,
 } from "@/components/ui/carousel";
 
-import { Logos3 } from "./logos3";
 
-import { AuroraBackground } from "@/components/ui/aurora-background";
 
 import { HeroSection } from "@/components/ui/hero-section-1"
 import { PlatformPreviewSection } from "./PlatformPreviewSection";
@@ -619,36 +617,11 @@ export const HomePage = () => {
     };
   }, []);
   
-  // Pricing toggle state
-  const [isYearly, setIsYearly] = useState(false);
 
 
 
 
 
-
-
-  const handleLoginClick = async () => {
-    logger.info('CTA click', { id: 'start-now' });
-    
-    // If user is already logged in (has session), go directly to dashboard
-    // But first check if session is valid
-    if (user) {
-      console.log('[HomePage] User already logged in, checking session...');
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) {
-          console.log('[HomePage] Valid session found, navigating to dashboard');
-          navigate('/dashboard');
-          return;
-        }
-      } catch (error) {
-        console.error('[HomePage] Session check failed:', error);
-      }
-    }
-    
-    navigate('/pricing');
-  };
 
 
   // Retailer-focused FAQ section

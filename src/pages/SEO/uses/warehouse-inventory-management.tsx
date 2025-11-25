@@ -664,63 +664,7 @@ export default function WarehouseInventoryManagement() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about warehouse inventory management</p>
-          </div>
-          
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqData.map((faq, index) => (
-              <AccordionItem 
-                key={index} 
-                value={`item-${index}`} 
-                className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
-              >
-                <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-lg font-semibold hover:bg-gray-100 transition-colors w-full">
-                  <span className="pr-4">{faq.question}</span>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-5 text-gray-700 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
 
-      {/* Final CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-gray-50 to-slate-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-200">
-            <Warehouse className="w-16 h-16 text-slate-600 mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Optimize Your Warehouse?</h2>
-            <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-              Join hundreds of warehouses increasing accuracy, reducing labor costs, and shipping faster with StockFlow's warehouse inventory management software.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                to="/auth" 
-                className="inline-flex items-center bg-gradient-to-r from-slate-600 to-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:from-slate-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl text-lg"
-              >
-                <Warehouse className="w-5 h-5 mr-2" />
-                Start Free Trial
-              </Link>
-              <Link 
-                to="/contact" 
-                className="inline-flex items-center bg-white text-gray-800 font-semibold px-8 py-4 rounded-xl border-2 border-gray-300 hover:border-gray-400 transition-all text-lg"
-              >
-                Schedule Demo
-              </Link>
-            </div>
-            <p className="text-sm text-gray-600 mt-6">
-              Free plan • Scalable pricing • Warehouse-ready features
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[

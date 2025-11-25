@@ -1,8 +1,11 @@
 import React from 'react';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { CheckCircle } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
 import {
   Truck,
   Users,
@@ -108,27 +111,67 @@ const faqData = [
 ];
 
 export default function SuppliersSolutionPage() {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'StockFlow Supplier Management',
-    description:
-      'StockFlow centralizes supplier data, automates purchasing workflows, and tracks vendor performance for modern inventory teams.',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: ['iOS', 'Android', 'macOS', 'Windows'],
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'EUR',
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: 'Supplier Management Software - Complete Guide 2025',
+      description: 'Complete guide to supplier management software. Learn how to centralize vendor information, automate purchasing workflows, and track supplier performance. Discover unified supplier directories and procurement automation.',
+      image: 'https://www.stockflow.be/supplier-management.png',
+      author: {
+        '@type': 'Organization',
+        name: 'StockFlow'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'StockFlow',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://www.stockflow.be/logo.png'
+        }
+      },
+      datePublished: '2025-11-25',
+      dateModified: '2025-11-25',
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': 'https://www.stockflow.be/solutions/suppliers'
+      },
+      keywords: 'supplier management software, vendor management, procurement automation'
     },
-    featureList: heroHighlights.map(highlight => highlight.title),
-    url: 'https://www.stockflow.be/suppliers',
-    publisher: {
-      '@type': 'Organization',
-      name: 'StockFlow',
-      url: 'https://www.stockflow.be',
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqData.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer
+        }
+      }))
     },
-  };
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'StockFlow Supplier Management',
+      description:
+        'StockFlow centralizes supplier data, automates purchasing workflows, and tracks vendor performance for modern inventory teams.',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: ['iOS', 'Android', 'macOS', 'Windows'],
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR',
+      },
+      featureList: heroHighlights.map(highlight => highlight.title),
+      url: 'https://www.stockflow.be/suppliers',
+      publisher: {
+        '@type': 'Organization',
+        name: 'StockFlow',
+        url: 'https://www.stockflow.be',
+      },
+    }
+  ];
 
   return (
     <SeoPageLayout 
@@ -138,12 +181,103 @@ export default function SuppliersSolutionPage() {
       faqData={faqData}
     >
       <SEO
-        title="Supplier Management Software 2025 | Vendor Management Platform"
+        title="Supplier Management Software 2025 | Vendor Management Platform | StockFlow"
         description="Centralize supplier data, automate purchasing workflows, and track vendor performance. Unified supplier directory, automated reordering, and real-time analytics. Start free."
-        keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance"
+        keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/suppliers"
         structuredData={structuredData}
       />
+
+      {/* What is Supplier Management Software Section */}
+      <section id="what-is" className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              What is <span className="text-blue-600">Supplier Management Software</span>?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              Supplier management software helps businesses centralize vendor information, automate purchasing workflows, track supplier performance, and streamline procurement processes. It enables better supplier relationships and reduces procurement costs by providing a unified platform for managing all supplier-related operations. Modern supplier management software integrates seamlessly with inventory systems to create efficient supply chain operations.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Centralized Supplier Directory</h3>
+              <p className="text-gray-700 mb-4">
+                Supplier management software maintains a comprehensive directory of all vendors, including contact information, payment terms, delivery schedules, and product catalogs. This centralized approach eliminates the need to search through emails, spreadsheets, or paper files to find supplier information. All vendor data is organized, searchable, and accessible from a single platform.
+              </p>
+              <p className="text-gray-700">
+                The software integrates with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> solutions, ensuring that supplier data flows automatically into purchasing and inventory systems. This integration enables automated reordering based on stock levels and supplier performance metrics.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Automated Purchasing Workflows</h3>
+              <p className="text-gray-700 mb-4">
+                Modern supplier management software automates purchasing workflows, converting low-stock alerts into purchase orders automatically. The system pre-fills purchase orders with negotiated pricing, delivery terms, and lead times, reducing manual data entry and ensuring consistency. <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:text-blue-800 underline">Mobile inventory management</Link> capabilities allow purchasing teams to approve and manage orders from anywhere.
+              </p>
+              <p className="text-gray-700">
+                Integration with <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:text-blue-800 underline">online inventory management</Link> systems ensures that purchase orders are automatically synchronized with inventory levels, maintaining accurate stock records and preventing stockouts.
+              </p>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">How Supplier Management Software Transforms Procurement</h3>
+            <p className="text-gray-700 mb-4">
+              Supplier management software transforms procurement operations by providing real-time visibility into supplier performance, automating routine purchasing tasks, and enabling data-driven decision-making. Instead of managing supplier relationships through emails and spreadsheets, businesses can use a unified platform that tracks all supplier interactions and performance metrics.
+            </p>
+            <p className="text-gray-700 mb-4">
+              The software tracks key performance indicators like on-time delivery rates, fulfillment accuracy, and cost trends, enabling businesses to identify top-performing suppliers and opportunities for improvement. This performance tracking helps businesses negotiate better terms and build stronger supplier relationships.
+            </p>
+            <p className="text-gray-700 mb-6">
+              Integration with <Link to="/solutions/inventory-software-management" className="text-blue-600 hover:text-blue-800 underline">inventory software management</Link> platforms ensures that supplier data is synchronized with inventory operations, creating a seamless flow from supplier selection to inventory receipt. This integration eliminates data silos and ensures consistency across all procurement and inventory processes.
+            </p>
+
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Key Features of Supplier Management Software</h3>
+            <div className="space-y-4 mb-6">
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Supplier Directory</h4>
+                  <p className="text-gray-700">Centralized database of all suppliers with complete profiles, contact information, contracts, and performance history.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Purchase Order Automation</h4>
+                  <p className="text-gray-700">Automated generation of purchase orders based on inventory levels, with pre-filled supplier information and negotiated pricing.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Performance Tracking</h4>
+                  <p className="text-gray-700">Real-time monitoring of supplier performance metrics including on-time delivery, fulfillment accuracy, and cost trends.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Collaboration Tools</h4>
+                  <p className="text-gray-700">Secure portals and communication tools that enable collaboration with suppliers while maintaining data security. Integration with <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:text-blue-800 underline">inventory management software solutions</Link> enhances collaboration capabilities.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Why Businesses Choose Supplier Management Software</h3>
+              <p className="text-gray-700 mb-4">
+                Businesses implement supplier management software to streamline procurement operations, reduce costs, and improve supplier relationships. The centralized supplier directory eliminates time spent searching for vendor information, while automated workflows reduce manual data entry and errors. Performance tracking enables businesses to make informed decisions about supplier selection and negotiation.
+              </p>
+              <p className="text-gray-700">
+                The integration capabilities of supplier management software ensure that supplier data flows seamlessly into inventory and accounting systems, maintaining consistency and eliminating duplicate data entry. This integration creates a unified view of the entire supply chain, from supplier selection to customer delivery.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 py-20 text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 lg:flex-row lg:items-center">
@@ -279,6 +413,8 @@ export default function SuppliersSolutionPage() {
           </div>
         </div>
       </section>
+
+      <StructuredData data={structuredData} />
     </SeoPageLayout>
   );
 }

@@ -1,17 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "A Guide To Visual Inventory Control";
 const canonicalPath = "/blog/a-guide-to-visual-inventory-control";
 const metaDescription = "Complete guide to visual inventory control methods. Learn how to use visual systems, color coding, and organization techniques to improve inventory management and reduce errors.";
 const keywords = "visual inventory control, visual inventory management, visual stock control, inventory visual systems, visual inventory organization, color coding inventory";
-const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore A Guide To Visual Inventory Control through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
 const takeaways = [
   "Understand the core themes behind A Guide To Visual Inventory Control and why they matter for modern operations teams.",
   "Follow a structured framework to translate A Guide To Visual Inventory Control into day-to-day improvements.",
@@ -94,13 +91,7 @@ export default function SeoAGuideToVisualInventoryControlPage() {
     dateModified: new Date().toISOString().split("T")[0],
   }));
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
+
 
   return (
     <SeoPageLayout 

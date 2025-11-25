@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  Package, 
+  Zap, 
+  Shield, 
+  TrendingUp,
+  CheckCircle,
+  Star
+} from 'lucide-react';
 
 export default function InventorySystemForSmallBusiness() {
   usePageRefresh();
@@ -91,11 +99,102 @@ export default function InventorySystemForSmallBusiness() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory System For Small Business 2025"
-        description="Read the guide inventory system for small business to automate your processes. Read the guide inventory system for small business to save. Get started free."
+        title="Inventory System for Small Business 2025 - Free Plan Available | StockFlow"
+        description="Best inventory system for small business. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Easy setup, no training needed. Start free today."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-system-for-small-business"
       />
+
+      {/* What is Inventory System for Small Business Section */}
+      <section id="what-is" className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              What is an <span className="text-blue-600">Inventory System for Small Business</span>?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              An inventory system for small business is an affordable, easy-to-use solution designed specifically for small businesses to track, monitor, and manage their inventory. Unlike complex enterprise systems, small business inventory systems focus on essential features with intuitive interfaces, making inventory management accessible without extensive training or IT support.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Designed for Small Businesses</h3>
+              <p className="text-gray-700 mb-4">
+                Inventory systems for small businesses are specifically designed to meet the unique needs of smaller operations. They offer essential features like real-time tracking, barcode scanning, and automated alerts without the complexity and cost of enterprise solutions. These systems are affordable, easy to set up, and scale as your business grows.
+              </p>
+              <p className="text-gray-700">
+                The best inventory systems for small businesses integrate with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> solutions, providing a complete platform for inventory control. This integration ensures that small businesses have access to professional-grade tools at affordable prices.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">Affordable & Scalable</h3>
+              <p className="text-gray-700 mb-4">
+                Small business inventory systems typically offer free or low-cost plans that make professional inventory management accessible to startups and small operations. <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:text-blue-800 underline">Mobile inventory management</Link> capabilities allow small business owners to manage inventory from anywhere, while cloud-based architecture eliminates the need for expensive IT infrastructure.
+              </p>
+              <p className="text-gray-700">
+                As your business grows, these systems scale with you, adding features and capacity as needed. This scalability ensures that your initial investment in an inventory system continues to provide value as your business expands. Integration with <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:text-blue-800 underline">online inventory management</Link> systems enables small businesses to compete effectively with larger operations.
+              </p>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">How Inventory Systems Help Small Businesses Succeed</h3>
+            <p className="text-gray-700 mb-4">
+              Inventory systems for small businesses help level the playing field by providing access to tools that were previously only available to large enterprises. These systems enable small businesses to maintain accurate inventory records, prevent stockouts, reduce overstocking, and make data-driven purchasing decisions. The result is improved cash flow, reduced waste, and better customer service.
+            </p>
+            <p className="text-gray-700 mb-4">
+              The ease of use and quick setup of small business inventory systems means that business owners can start seeing benefits immediately. Most systems can be set up in minutes, with no complex installations or extensive training required. This accessibility makes professional inventory management achievable for businesses of all sizes.
+            </p>
+            <p className="text-gray-700 mb-6">
+              Integration with <Link to="/solutions/inventory-software-management" className="text-blue-600 hover:text-blue-800 underline">inventory software management</Link> platforms provides small businesses with comprehensive tools for inventory control. This integration ensures that small businesses have access to the same powerful features as larger operations, enabling them to compete effectively in their markets.
+            </p>
+
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Key Features of Small Business Inventory Systems</h3>
+            <div className="space-y-4 mb-6">
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Easy Setup</h4>
+                  <p className="text-gray-700">Quick setup process that doesn't require technical expertise, allowing small business owners to start managing inventory within minutes of signing up.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Affordable Pricing</h4>
+                  <p className="text-gray-700">Free plans and affordable pricing options that make professional inventory management accessible to small businesses with limited budgets.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Essential Features</h4>
+                  <p className="text-gray-700">Core features like real-time tracking, barcode scanning, automated alerts, and basic reporting that meet the needs of most small businesses without overwhelming complexity.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="w-6 h-6 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-1">Scalability</h4>
+                  <p className="text-gray-700">Systems that grow with your business, adding features and capacity as needed. This ensures that your initial investment continues to provide value as your business expands. Explore <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:text-blue-800 underline">inventory management software solutions</Link> to find the right system for your needs.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Why Small Businesses Choose Inventory Systems</h3>
+              <p className="text-gray-700 mb-4">
+                Small businesses implement inventory systems to compete more effectively, reduce costs, and improve operations. The affordable pricing and easy setup make professional inventory management accessible, while the essential features provide immediate value. Businesses typically see improved cash flow, reduced waste, and better customer service within the first month of implementation.
+              </p>
+              <p className="text-gray-700">
+                The scalability of small business inventory systems ensures that your investment continues to provide value as your business grows. Whether you're starting with 10 products or managing hundreds, these systems adapt to your needs, providing the right level of functionality at each stage of your business growth.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section id="features" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -141,67 +240,38 @@ export default function InventorySystemForSmallBusiness() {
         </div>
       </section>
 
-      <section id="testimonials" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              What <span className="text-blue-600">Small Businesses</span> Say
-            </h2>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg shadow-lg">
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Your Small Business Inventory System Today
-          </h2>
-          <div className="flex justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-        </div>
-      </section>
 
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       <StructuredData data={[
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Inventory System for Small Business - Complete Guide 2025",
+          "description": "Complete guide to inventory systems for small businesses. Learn about affordable solutions, free plans, essential features, and how to choose the right system for your small business.",
+          "image": "https://www.stockflow.be/inventory-system-small-business.png",
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "datePublished": "2025-11-25",
+          "dateModified": "2025-11-25",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/solutions/inventory-system-for-small-business"
+          },
+          "keywords": "inventory system for small business, small business inventory management, affordable inventory software"
+        },
         {
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -213,6 +283,30 @@ export default function InventorySystemForSmallBusiness() {
               "text": faq.answer
             }
           }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "StockFlow - Inventory System for Small Business",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser, iOS, Android",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "description": "Free plan available for up to 100 products"
+          },
+          "description": "Affordable inventory system designed specifically for small businesses. Free plan available, easy setup, essential features, and scalable pricing.",
+          "url": "https://www.stockflow.be/solutions/inventory-system-for-small-business",
+          "featureList": [
+            "Free plan for small businesses",
+            "Real-time inventory tracking",
+            "Barcode scanning",
+            "Automated alerts",
+            "Mobile access",
+            "Easy setup",
+            "Scalable pricing"
+          ]
         }
       ]} />
     </SeoPageLayout>

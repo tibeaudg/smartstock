@@ -241,49 +241,8 @@ export default function WarehouseManagement() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm">
-                <h3 className="text-xl font-bold mb-3 text-gray-900">{faq.question}</h3>
-                <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Transform Your Warehouse?
-          </h2>
-          <p className="text-xl mb-10 leading-relaxed">
-            Join hundreds of businesses that improved their warehouse operations with StockFlow. 
-            Start your free trial today - no credit card required.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/auth"
-              className="bg-white text-indigo-600 px-10 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition inline-flex items-center justify-center"
-            >
-              Start Free Trial
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Link>
-            <Link
-              to="/contact"
-              className="border-2 border-white text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-indigo-600 transition"
-            >
-              Contact Sales
-            </Link>
-          </div>
-          <p className="mt-6 text-indigo-200">No credit card required � Free 14-day trial � Cancel anytime</p>
-        </div>
-      </section>
+
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[

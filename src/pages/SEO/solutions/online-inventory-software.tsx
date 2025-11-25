@@ -403,19 +403,7 @@ export default function OnlineInventorySoftware() {
     }
   ];
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'awards', title: 'Why StockFlow Leads', level: 1 },
-    { id: 'quick-wins', title: 'Why Teams Switch', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'comparison', title: 'StockFlow vs Competitors', level: 1 },
-    { id: 'pricing', title: 'Choose Your Plan', level: 1 },
-    { id: 'testimonials', title: 'Customer Proof', level: 1 },
-    { id: 'roi', title: 'ROI Calculator', level: 1 },
-    { id: 'video-demo', title: 'Product Demo', level: 1 },
-    { id: 'buyers-guide', title: 'Free Buyer\'s Guide', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
+
 
   return (
     <SeoPageLayout 

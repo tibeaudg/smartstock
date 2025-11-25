@@ -2,7 +2,6 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
 import { useLocation } from 'react-router-dom';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import { 

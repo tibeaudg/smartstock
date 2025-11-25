@@ -12,7 +12,7 @@ import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
 import SEOOverviewPage from './pages/seo';
 import OnboardingPage from './pages/OnboardingPage';
-import GuestSandbox from './pages/GuestSandbox';
+import DemoPage from './pages/demo';
 import { Dashboard } from './components/Dashboard';
 import { StockMovements } from './components/StockMovements';
 import { Settings } from './components/Settings';
@@ -62,7 +62,6 @@ import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
-import DemoPage from './pages/demo';  
 import { AuthContext } from './hooks/useAuth';
 
 // Loading Screen Component
@@ -371,7 +370,7 @@ const AuthRoute = () => {
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/seo" element={<SEOOverviewPage />} />
-        <Route path="/demo" element={<GuestSandbox />} />
+        <Route path="/demo/*" element={<DemoPage />} />
 
         {/* Legacy route redirects */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />

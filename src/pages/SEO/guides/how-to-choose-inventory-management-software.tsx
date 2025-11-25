@@ -166,19 +166,6 @@ const HowToChooseInventoryManagementSoftware = () => {
             </Link>
           </section>
 
-          <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-4">
-              {faqData.map((faq, index) => (
-                <div key={index} className="border-b border-gray-200 pb-4">
-                  <h3 className="font-semibold text-lg mb-2">{faq.question}</h3>
-                  <p className="text-gray-600">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
-          </section>
         </article>
       </div>
     </SeoPageLayout>

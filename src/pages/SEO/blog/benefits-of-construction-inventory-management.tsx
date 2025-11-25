@@ -94,13 +94,7 @@ export default function SeoBenefitsOfConstructionInventoryManagementPage() {
     dateModified: new Date().toISOString().split("T")[0],
   }));
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: "overview", title: `${topicTitle} Overview`, level: 1 },
-    { id: "playbook", title: "Action Playbook", level: 1 },
-    { id: "metrics", title: "Metrics that Matter", level: 1 },
-    { id: "stockflow-advantage", title: "Why StockFlow", level: 1 },
-    { id: "faq", title: "FAQ", level: 1 },
-  ]);
+
 
   return (
     <SeoPageLayout 

@@ -244,46 +244,6 @@ export default function StockflowVsTradegecko() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Frequently Asked Questions: StockFlow vs TradeGecko</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Answers to common questions about migrating from TradeGecko to StockFlow.
-            </p>
-          </div>
-
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqData.map((faq, index) => (
-              <AccordionItem key={faq.question} value={`faq-${index}`} className="border-b border-gray-200">
-                <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
-                  <span>{faq.question}</span>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
-                  <p>{faq.answer}</p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Upgrade from TradeGecko Today</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Experience a modern inventory platform that scales with your business. Start StockFlow for free, explore automation and invite your team when ready.
-          </p>
-          <Link
-            to="/auth"
-            className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition"
-          >
-            Start Free Trial
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-        </div>
-      </section>
 
       {/* Structured Data */}
       <StructuredData data={[

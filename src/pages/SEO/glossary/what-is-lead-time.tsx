@@ -2,7 +2,6 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { SeoPageHero } from '@/components/seo/SeoPageHero';
 import { useLocation } from 'react-router-dom';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import { 
@@ -87,6 +86,9 @@ export default function WhatIsLeadTime() {
   return (
     <SeoPageLayout 
       title="What is Lead Time"
+      heroTitle="What is Lead Time"
+      updatedDate="25/11/2025"
+      faqData={faqData}
       
       
     >
@@ -95,19 +97,7 @@ export default function WhatIsLeadTime() {
         description="Discover how what is lead time to choose the best software. Find out how what is lead time to save time. Try free now. StockFlow helps businesses manage inve..."
         keywords="what is lead time, lead time, lead time definition, lead time meaning, lead time calculation, lead time formula, lead time inventory, lead time management, lead time planning, lead time optimization, supplier lead time, production lead time, order lead time, lead time tracking, stockflow, stock flow"
         url="https://www.stockflow.be/what-is-lead-time"
-      />      <SeoPageHero
-        title="What is Lead Time: Complete Guide to Lead Time Definition"
-        description="Learn what is lead time and how to use lead time for inventory planning. Complete guide to lead time definition, calculation, and optimization. Free tools included."
-        badges={[
-          { icon: <Trophy className="w-6 h-6" />, text: "Complete Guide", variant: 'warning' },
-          { icon: <Star className="w-6 h-6" />, text: "Free Tools", variant: 'success' },
-          { icon: <Users className="w-6 h-6" />, text: "10,000+ Users", variant: 'info' }
-        ]}
-        ctaText="Start Managing Lead Times Free"
-        ctaLink="/auth"
-        backgroundImage="/image.png"
-      />
-
+      />      
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -172,38 +162,8 @@ export default function WhatIsLeadTime() {
         </div>
       </section>
 
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Managing Lead Times Today
-          </h2>
-          <div className="flex justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              Start Free Trial
-            </Link>
-          </div>
-        </div>
-      </section>
 
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       <StructuredData data={[
         {

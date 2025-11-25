@@ -4,6 +4,7 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { StructuredData } from '@/components/StructuredData';
+import { Building, Camera, Wrench, BarChart3, Shield, Zap, CheckCircle, Star } from 'lucide-react';
 
 export default function ContractorInventoryManagement() {
   usePageRefresh();
@@ -294,24 +295,7 @@ export default function ContractorInventoryManagement() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about contractor inventory management</p>
-          </div>
-          
-          <div className="space-y-6">
-            {faqData.map((faq, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Schema.org Structured Data */}
       <StructuredData data={[

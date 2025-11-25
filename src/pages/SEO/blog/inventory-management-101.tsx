@@ -3,6 +3,7 @@ import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
+import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Management 101";
 const canonicalPath = "/blog/inventory-management-101";
@@ -248,52 +249,8 @@ export default function SeoInventoryManagement101Page() {
         </div>
       </section>
 
-      <section id="faq" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
-            <p className="mt-4 text-base text-gray-600">
-              Still exploring {topicTitle.toLowerCase()}? These answers help you take the next confident step.
-            </p>
-          </div>
-          <div className="mt-10 space-y-4">
-            {faqData.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-blue-200"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-gray-900">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: faq.answer }} />
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+   
 
-      <section className="bg-white px-4 pb-20 pt-10">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-gradient-to-r from-blue-50 via-white to-purple-50 p-10 shadow-xl text-center">
-          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Start Managing Inventory with StockFlow</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-            Put inventory management fundamentals into practice with StockFlow. Track inventory, set reorder points, and automate reordering—all from one easy-to-use platform. Start free with up to 100 products.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              to="/auth"
-              className="inline-flex items-center rounded-xl bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-purple-700"
-            >
-              Create Your Account
-            </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
-          </div>
-        </div>
-      </section>
 
     </SeoPageLayout>
   );

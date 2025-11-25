@@ -150,32 +150,6 @@ export default function InventoryManagementSoftwareSolutionsPage() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 mt-16 bg-blue-600 text-white rounded-3xl p-10 text-center">
-        <h2 className="text-3xl font-bold">Upgrade to a modern inventory management solution</h2>
-        <p className="mt-4 text-base sm:text-lg opacity-90">
-          Join thousands of SKUs already running on StockFlow. Launch with guided onboarding and support available in English, Dutch, and French.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Link to="/auth" className="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg shadow">
-            Create Free Account
-          </Link>
-          <Link to="/demo" className="border border-white text-white font-semibold px-6 py-3 rounded-lg">
-            Talk to Solutions Expert
-          </Link>
-        </div>
-      </section>
-
-      <section className="max-w-5xl mx-auto px-4 mt-16">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900">Frequently asked questions</h2>
-        <div className="mt-8 space-y-4">
-          {faqData.map((item, index) => (
-            <details key={index} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-              <summary className="font-semibold text-gray-900 cursor-pointer">{item.question}</summary>
-              <p className="mt-3 text-sm text-gray-700 leading-relaxed">{item.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
     </SeoPageLayout>
   );
 }

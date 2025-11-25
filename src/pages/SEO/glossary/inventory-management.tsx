@@ -927,32 +927,7 @@ export default function InventoryManagementGuide() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">Everything you need to know about inventory management</p>
-          </div>
-          
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqData.map((faq, index) => (
-              <AccordionItem 
-                key={index} 
-                value={`item-${index}`} 
-                className="bg-gray-50 rounded-lg border border-gray-200 overflow-hidden"
-              >
-                <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-lg font-semibold hover:bg-gray-100 transition-colors w-full">
-                  <span className="pr-4">{faq.question}</span>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-5 text-gray-700 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
+
 
       {/* Bottom Line Section */}
       <section className="py-16 px-4 bg-gradient-to-br from-gray-50 to-blue-50">

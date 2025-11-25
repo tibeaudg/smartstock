@@ -69,31 +69,40 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
               <Button variant="ghost" size="icon" className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-gray-800">
                 <div className="rounded-full bg-blue-600 w-8 h-8 flex items-center justify-center">
                   <span className="text-white text-xs font-semibold">
-                    {user?.email?.[0]?.toUpperCase() || 'U'}
+                    {userProfile?.first_name?.[0]?.toUpperCase() || userProfile?.email?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
                   </span>
                 </div>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200">
-              <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
-                <User className="mr-2 h-4 w-4 " />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={async () => {
-                try {
-                  await signOut();
-                  navigate('/auth');
-                } catch (error) {
-                  console.error('Error during sign out:', error);
-                }
-              }}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
-              </DropdownMenuItem>
+              {user ? (
+                <>
+                  <DropdownMenuItem onClick={() => navigate('/dashboard/settings/profile')}>
+                    <User className="mr-2 h-4 w-4 " />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/dashboard/settings')}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={async () => {
+                    try {
+                      await signOut();
+                      navigate('/auth');
+                    } catch (error) {
+                      console.error('Error during sign out:', error);
+                    }
+                  }}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <DropdownMenuItem onClick={() => navigate('/auth?mode=register')}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Create Account</span>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

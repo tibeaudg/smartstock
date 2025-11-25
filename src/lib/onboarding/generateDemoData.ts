@@ -26,9 +26,10 @@ export async function generateDemoData(
   };
 
   try {
-    // Get or create a demo user ID (we'll use the session token as a unique identifier)
-    // For guest sessions, we'll need to create a temporary user or use a special guest user
-    // For now, we'll create demo data that can be associated with the session
+    console.log('[generateDemoData] Starting demo data generation for token:', sessionToken);
+    // Use NULL user_id for demo data (allowed when session_token is present)
+    // This avoids foreign key constraint issues
+    const demoUserId = null;
     
     // Create demo branches/warehouses
     const branchNames = ['Main Warehouse', 'Distribution Center', 'Retail Store'];
@@ -36,22 +37,21 @@ export async function generateDemoData(
 
     for (const branchName of branchNames) {
       try {
-        // Note: For guest sessions, we might need a special user_id
-        // This is a simplified version - in production, you'd want to handle guest users differently
+        console.log('[generateDemoData] Creating branch:', branchName);
         const { data: branch, error: branchError } = await supabase
           .from('branches')
           .insert({
             name: branchName,
             is_main: branchIds.length === 0,
             is_active: true,
-            // For guest sessions, we'd need a guest user_id
-            // This is a placeholder - you'd need to implement guest user creation
-            user_id: '00000000-0000-0000-0000-000000000000' // Placeholder
+            user_id: demoUserId, // NULL for demo data
+            session_token: sessionToken // Associate with session
           })
           .select('id')
           .single();
 
         if (branchError) {
+          console.error('[generateDemoData] Branch creation error:', branchError);
           result.errors.push(`Failed to create branch ${branchName}: ${branchError.message}`);
           continue;
         }
@@ -90,8 +90,8 @@ export async function generateDemoData(
           .insert({
             name: category.name,
             description: category.description,
-            // Placeholder user_id for guest sessions
-            user_id: '00000000-0000-0000-0000-000000000000'
+            user_id: demoUserId, // NULL for demo data
+            session_token: sessionToken // Associate with session
           })
           .select('id')
           .single();
@@ -141,8 +141,8 @@ export async function generateDemoData(
             sale_price: product.salePrice,
             unit_price: product.salePrice,
             status: 'active',
-            // Placeholder user_id
-            user_id: '00000000-0000-0000-0000-000000000000'
+            user_id: demoUserId, // NULL for demo data
+            session_token: sessionToken // Associate with session
           })
           .select('id')
           .single();
@@ -159,16 +159,16 @@ export async function generateDemoData(
           await supabase.from('stock_transactions').insert({
             product_id: newProduct.id,
             product_name: product.name,
-            transaction_type: 'incoming',
+            transaction_type: 'in', // Use 'in' instead of 'incoming' to match schema
             quantity: product.stock,
             unit_price: product.price,
             total_value: product.price * product.stock,
             reference_number: 'DEMO_INITIAL',
             notes: 'Initial stock for demo account',
-            // Placeholder user_id and branch_id
-            user_id: '00000000-0000-0000-0000-000000000000',
-            created_by: '00000000-0000-0000-0000-000000000000',
-            branch_id: mainBranchId
+            user_id: demoUserId, // NULL for demo data
+            created_by: demoUserId, // NULL for demo data
+            branch_id: mainBranchId,
+            session_token: sessionToken // Associate with session
           });
 
           result.transactionsCreated++;
