@@ -421,8 +421,59 @@ export const glossaryEntries: Record<string, GlossaryPageConfig> = {
   'minimum-order-quantity': {
     path: '/glossary/minimum-order-quantity',
     title: 'Minimum Order Quantity',
+    shortDescription: 'The smallest quantity of a product that a supplier requires a business to purchase in a single order, often set to ensure profitability and efficiency.',
     definition:
-      'A minimum order quantity is the smallest amount of product a supplier will sell to a business placing an order.',
+      'A minimum order quantity (MOQ) is the smallest amount of product a supplier will sell to a business placing an order. Suppliers set MOQs to ensure orders are profitable, cover production and shipping costs, and maintain efficient operations. MOQs can be based on units, weight, volume, or dollar amount. Understanding and negotiating MOQs is crucial for inventory management, as they directly impact purchasing decisions, cash flow, and inventory levels. Businesses must balance meeting MOQ requirements with avoiding excess inventory that ties up capital and increases carrying costs.',
+    metaDescription: 'Learn what minimum order quantity (MOQ) is, how it affects inventory management, and strategies for negotiating and managing MOQs effectively.',
+    keywords: ['minimum order quantity', 'MOQ', 'order minimum', 'purchase minimum', 'supplier MOQ', 'inventory purchasing', 'order quantity'],
+    keyTakeaways: [
+      'MOQs are set by suppliers to ensure orders are profitable and cover costs.',
+      'MOQs can be based on units, weight, volume, or dollar amount.',
+      'High MOQs can tie up capital in excess inventory, while low MOQs may increase per-unit costs.',
+      'Negotiating MOQs and finding suppliers with flexible terms is important for cash flow management.',
+      'Inventory management software helps track MOQ requirements and optimize order quantities.',
+    ],
+    faqs: [
+      {
+        question: 'What is minimum order quantity (MOQ)?',
+        answer: 'Minimum order quantity (MOQ) is the smallest quantity of a product that a supplier requires a business to purchase in a single order. Suppliers set MOQs to ensure orders are profitable, cover production and shipping costs, and maintain efficient operations. MOQs help suppliers manage their inventory and production schedules while ensuring each order is worth processing.',
+      },
+      {
+        question: 'Why do suppliers set minimum order quantities?',
+        answer: 'Suppliers set MOQs for several reasons: to ensure orders are profitable after accounting for production, packaging, and shipping costs; to maintain efficient production runs and reduce setup costs; to manage inventory levels and reduce carrying costs; and to ensure orders are worth the administrative and operational effort required to process them.',
+      },
+      {
+        question: 'How does MOQ affect inventory management?',
+        answer: 'MOQs directly impact inventory management by influencing order quantities, cash flow, and inventory levels. High MOQs can force businesses to order more than needed, tying up capital in excess inventory and increasing carrying costs. Low MOQs provide flexibility but may result in higher per-unit costs. Effective inventory management requires balancing MOQ requirements with actual demand to optimize inventory levels and costs.',
+      },
+      {
+        question: 'Can you negotiate minimum order quantities?',
+        answer: 'Yes, MOQs are often negotiable, especially for established customers or larger orders. Businesses can negotiate lower MOQs by demonstrating consistent order history, committing to regular orders, agreeing to longer payment terms, or combining multiple products. Building strong supplier relationships and showing growth potential can also help secure better MOQ terms.',
+      },
+      {
+        question: 'What are the different types of MOQs?',
+        answer: 'MOQs can be based on different criteria: unit-based MOQs (minimum number of items), weight-based MOQs (minimum weight in pounds or kilograms), volume-based MOQs (minimum volume in cubic units), or dollar-based MOQs (minimum order value). Some suppliers may have MOQs for individual products, product categories, or entire orders.',
+      },
+      {
+        question: 'How do you manage inventory with high MOQs?',
+        answer: 'To manage inventory with high MOQs, businesses should: analyze demand patterns to ensure MOQ quantities align with actual needs; negotiate flexible payment terms to improve cash flow; consider splitting orders across multiple suppliers if possible; use inventory management software to track MOQ requirements and optimize order timing; and maintain safety stock to account for longer lead times that may result from larger orders.',
+      },
+      {
+        question: 'What happens if you order below the MOQ?',
+        answer: 'If you order below the MOQ, suppliers may reject the order, charge additional fees, increase per-unit prices, or require you to meet the MOQ. Some suppliers may allow smaller orders but at a premium price. It\'s important to clarify MOQ policies with suppliers before placing orders to avoid unexpected costs or order rejections.',
+      },
+      {
+        question: 'How can inventory software help with MOQ management?',
+        answer: 'Inventory management software like StockFlow helps with MOQ management by tracking supplier MOQ requirements, calculating optimal order quantities that meet MOQs while minimizing excess inventory, providing alerts when orders are needed, analyzing order history to negotiate better terms, and optimizing purchasing decisions based on demand forecasts and MOQ constraints.',
+      },
+    ],
+    relatedLinks: [
+      { label: 'Economic Order Quantity', href: '/glossary/economic-order-quantity' },
+      { label: 'Reorder Point', href: '/glossary/reorder-point' },
+      { label: 'Inventory Management', href: '/glossary/inventory-management' },
+      { label: 'Safety Stock', href: '/glossary/safety-stock' },
+      { label: 'Lead Time', href: '/glossary/lead-time' },
+    ],
   },
   'moving-average-cost': {
     path: '/glossary/moving-average-cost',

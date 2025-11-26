@@ -606,6 +606,54 @@ export const englishMainCluster: TopicCluster = {
       image: '/dashboard.png'
     },
     {
+      path: '/solutions/assets-inventory',
+      title: 'Assets Inventory Management',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Track equipment, vehicles, and IT assets with barcode scanning and maintenance scheduling',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/solutions/construction-inventory-management-system',
+      title: 'Construction Inventory Management System',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Track materials and equipment across multiple construction job sites with mobile scanning',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/solutions/shopify-plus-wms-integration',
+      title: 'Shopify Plus WMS Integration',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Automatically sync inventory and orders between Shopify Plus and warehouse management systems',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/solutions/warehouse-modeling-software',
+      title: 'Warehouse Modeling Software',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Design and optimize warehouse layouts, storage configurations, and material flow',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/solutions/construction-inventory-app',
+      title: 'Construction Inventory App',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Track materials and equipment from job sites with mobile scanning and offline capability',
+      image: '/mobile.png'
+    },
+    {
+      path: '/solutions/inventory-optimization-services',
+      title: 'Inventory Optimization Services',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Reduce carrying costs, prevent stockouts, and eliminate dead stock with expert optimization',
+      image: '/dashboard.png'
+    },
+    {
       path: '/inventory-tracker',
       title: 'Inventory Tracker',
       language: 'en',
@@ -939,6 +987,8 @@ export const industryVerticalCluster: TopicCluster = {
     { path: '/inventory-management-books', title: 'Bookstore Inventory Management', language: 'en', category: 'Industries', description: 'Book and media inventory control', image: '/dashboard.png' },
     { path: '/inventory-management-hardware', title: 'Hardware Store Inventory Management', language: 'en', category: 'Industries', description: 'Hardware and tools inventory tracking', image: '/dashboard.png' },
     { path: '/inventory-management-hvac', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'HVAC parts and equipment inventory', image: '/dashboard.png' },
+    { path: '/uses/hvac-inventory-management', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'Track HVAC parts, equipment, and service vehicles with mobile scanning and seasonal demand optimization', image: '/dashboard.png' },
+    { path: '/uses/medical-supply-inventory-control-system', title: 'Medical Supply Inventory Control System', language: 'en', category: 'Industries', description: 'Track medical supplies with expiration tracking, lot/serial numbers, and regulatory compliance', image: '/dashboard.png' },
     { path: '/inventory-management-furniture', title: 'Furniture Inventory Management', language: 'en', category: 'Industries', description: 'Furniture and home goods inventory', image: '/dashboard.png' },
     { path: '/inventory-management-toys', title: 'Toy Store Inventory Management', language: 'en', category: 'Industries', description: 'Toys and games inventory tracking', image: '/dashboard.png' },
     { path: '/inventory-management-office', title: 'Office Supply Inventory Management', language: 'en', category: 'Industries', description: 'Office supplies and stationery inventory', image: '/dashboard.png' },
@@ -975,7 +1025,8 @@ export const featureCluster: TopicCluster = {
     { path: '/inventory-kitting', title: 'Inventory Kitting & Assembly', language: 'en', category: 'Features', description: 'Bundle products and manage assembly', image: '/dashboard.png' },
     { path: '/inventory-scanning-system', title: 'Inventory Scanning System', language: 'en', category: 'Features', description: 'Barcode and QR code scanning system for inventory tracking', image: '/dashboard.png' },
     { path: '/inventory-turnover-ratio', title: 'Inventory Turnover Ratio', language: 'en', category: 'Features', description: 'Calculate and optimize inventory turnover ratio for better cash flow', image: '/dashboard.png' },
-    { path: '/purchase-order-form', title: 'Purchase Order Form', language: 'en', category: 'Features', description: 'Create and manage purchase orders with professional forms', image: '/dashboard.png' }
+    { path: '/purchase-order-form', title: 'Purchase Order Form', language: 'en', category: 'Features', description: 'Create and manage purchase orders with professional forms', image: '/dashboard.png' },
+    { path: '/features/purchase-requisition-software', title: 'Purchase Requisition Software', language: 'en', category: 'Features', description: 'Automate purchase requests, approvals, and PO generation with workflow automation', image: '/dashboard.png' }
   ]
 };
 

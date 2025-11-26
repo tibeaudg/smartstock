@@ -101,9 +101,9 @@ export default function WarehouseManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Warehouse Management 2025 - Warehouse Management 2025"
-        description="Learn how warehouse management to automate your processes. Read the guide warehouse management to optimize your inventory management.. Start free today."
-        keywords="warehouse management, warehouse management software, warehouse software, warehouse management system, warehouse optimization, WMS, stockflow warehouse management"
+        title="Warehouse Management Software 2025 | Best WMS | Free Plan | StockFlow"
+        description="Discover the best warehouse management software 2025. Real-time tracking, barcode scanning, multi-location support. Reduce costs 30% & save 20 hours/week. Start free today."
+        keywords="warehouse management software, warehouse management, warehouse software, warehouse management system, WMS software, warehouse optimization, warehouse tracking, stockflow warehouse management"
         url="https://www.stockflow.be/warehouse-management"
         hreflang={[
           { lang: "en", url: "https://www.stockflow.be/warehouse-management" },
@@ -117,7 +117,7 @@ export default function WarehouseManagement() {
           Transform your warehouse operations with professional warehouse management software. From receiving to shipping - optimize every process with modern inventory management software.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Warehouse management software helps businesses control and optimize warehouse operations, from receiving and storing goods to picking, packing, and shipping. It provides real-time visibility, intelligent task assignment, and seamless integrations with ERP, e-commerce, and supply chain systems.
+          Warehouse management software helps businesses control and optimize warehouse operations, from receiving and storing goods to picking, packing, and shipping. It provides real-time visibility, intelligent task assignment, and seamless integrations with ERP, e-commerce, and supply chain systems. For e-commerce businesses, <Link to="/solutions/shopify-plus-wms-integration" className="text-blue-600 hover:underline font-semibold">Shopify Plus WMS integration</Link> automates inventory sync. Use <Link to="/solutions/warehouse-modeling-software" className="text-blue-600 hover:underline font-semibold">warehouse modeling software</Link> to optimize layouts and increase capacity by 20-30%.
         </p>
       </div>
 

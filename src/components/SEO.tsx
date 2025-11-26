@@ -27,6 +27,26 @@ const defaultDescription = 'Manage your inventory easily, quickly and smartly wi
 const defaultImage = '/Inventory-Management.png';
 const defaultUrl = 'https://www.stockflow.be';
 
+// Normalize canonical URL (remove trailing slashes, query parameters, fragments)
+const normalizeCanonicalUrl = (url: string): string => {
+  try {
+    const urlObj = new URL(url);
+    // Remove trailing slashes from pathname (except for root)
+    let pathname = urlObj.pathname === '/' ? '/' : urlObj.pathname.replace(/\/+$/, '');
+    // Construct normalized URL without query params or hash
+    return `${urlObj.protocol}//${urlObj.host}${pathname}`;
+  } catch {
+    // If URL parsing fails, try simple string normalization
+    // Remove trailing slashes (except for root)
+    let normalized = url === 'https://www.stockflow.be/' || url === 'https://www.stockflow.be' 
+      ? 'https://www.stockflow.be' 
+      : url.replace(/\/+$/, '');
+    // Remove query parameters and fragments
+    normalized = normalized.split('?')[0].split('#')[0];
+    return normalized;
+  }
+};
+
 export const SEO: React.FC<SEOProps> = ({
   title = defaultTitle,
   description = defaultDescription,
@@ -88,6 +108,9 @@ export const SEO: React.FC<SEOProps> = ({
         ? 'nofollow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
+  // Normalize canonical URL to ensure consistency (no trailing slashes, no query params)
+  const normalizedUrl = normalizeCanonicalUrl(url);
+
   return (
     <Helmet>
       <title>{title}</title>
@@ -106,7 +129,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
-      <meta property="og:url" content={url} />
+      <meta property="og:url" content={normalizedUrl} />
       <meta property="og:type" content="website" />
       <meta property="og:locale" content={defaultOgLocale} />
       <meta property="og:site_name" content="StockFlow" />
@@ -167,25 +190,25 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="article:section" content="Business Software" />
       <meta property="article:tag" content="stockflow, stock flow, inventory management, stock control, warehouse management" />
       
-      {/* Canonical */}
-      <link rel="canonical" href={url} />
+      {/* Canonical - normalized to remove trailing slashes and query parameters */}
+      <link rel="canonical" href={normalizedUrl} />
       
       {/* Self-referencing hreflang */}
-      <link rel="alternate" hrefLang={defaultHrefLang} href={url} />
+      <link rel="alternate" hrefLang={defaultHrefLang} href={normalizedUrl} />
       
       {/* Hreflang for international SEO */}
       {hreflang.map((hreflangItem) => (
-        <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={hreflangItem.url} />
+        <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={normalizeCanonicalUrl(hreflangItem.url)} />
       ))}
       
       {/* Alternate languages */}
       {alternateLanguages.map((altLang) => (
-        <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={altLang.url} />
+        <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={normalizeCanonicalUrl(altLang.url)} />
       ))}
       
       {/* X-default for international targeting */}
       {alternateLanguages.length > 0 && (
-        <link rel="alternate" hrefLang="x-default" href={url} />
+        <link rel="alternate" hrefLang="x-default" href={normalizedUrl} />
       )}
       
       {/* Additional SEO meta tags */}

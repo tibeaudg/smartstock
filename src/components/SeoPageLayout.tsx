@@ -639,6 +639,18 @@ const CTASection = memo<{ pageLanguage: 'nl' | 'en' }>(({ pageLanguage }) => {
 });
 CTASection.displayName = 'CTASection';
 
+// --- Helper function to normalize canonical URL ---
+const normalizeCanonicalUrl = (pathname: string): string => {
+  // Remove trailing slashes (except for root)
+  let normalized = pathname === '/' ? '/' : pathname.replace(/\/+$/, '');
+  // Ensure it starts with /
+  if (!normalized.startsWith('/')) {
+    normalized = '/' + normalized;
+  }
+  // Construct absolute URL
+  return `https://www.stockflow.be${normalized}`;
+};
+
 // --- Main Component ---
 const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   title,
@@ -669,6 +681,9 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
     getStableRelatedArticles(allAvailableArticles, location.pathname, 30), 
   [allAvailableArticles, location.pathname]);
 
+  // Normalize canonical URL (remove trailing slashes, ensure consistency)
+  const canonicalUrl = useMemo(() => normalizeCanonicalUrl(location.pathname), [location.pathname]);
+
   // --- Memoized JSON-LD ---
   const jsonLd = useMemo(() => ({
     "@context": "https://schema.org",
@@ -690,12 +705,12 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         "dateModified": updatedDate || publishDate,
         "mainEntityOfPage": {
           "@type": "WebPage",
-          "@id": `https://www.stockflow.be${location.pathname}`
+          "@id": canonicalUrl
         }
       }
       // FAQPage is handled by individual pages via StructuredData component to avoid duplication
     ]
-  }), [breadcrumbItems, title, description, publishDate, updatedDate, location.pathname]);
+  }), [breadcrumbItems, title, description, publishDate, updatedDate, canonicalUrl]);
 
   const handleLoginClick = useMemo(() => () => navigate('/auth'), [navigate]);
 
@@ -712,7 +727,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
       <Helmet>
         <title>{title}</title>
         {description && <meta name="description" content={description} />}
-        <link rel="canonical" href={`https://www.stockflow.be${location.pathname}`} />
+        <link rel="canonical" href={canonicalUrl} />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 

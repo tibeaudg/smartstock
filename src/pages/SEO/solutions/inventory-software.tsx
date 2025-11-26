@@ -199,8 +199,8 @@ export default function InventorySoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Software 2025 - Best Inventory Management Software | StockFlow"
-        description="Discover the best inventory software for your business. Real-time tracking, barcode scanning, automated alerts, multi-location support, and advanced analytics. Compare inventory software features, pricing, and find the right solution for small business or enterprise needs."
+        title="Inventory System Software 2025 | Best Inventory Software | Free Plan | StockFlow"
+        description="Discover the best inventory system software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. Start free today - no credit card required."
         keywords="inventory software, stock management software, inventory tracking software, inventory management software, stock software, inventory control software, warehouse management software, inventory system software, stock tracking software, inventory software for small business, best inventory software, inventory software free, cloud inventory software, inventory software comparison, inventory software features, inventory software pricing, inventory software reviews, inventory software demo, inventory software trial, inventory management system, stock management system, inventory tracking system"
         url="https://www.stockflow.be/solutions/inventory-software"
       />

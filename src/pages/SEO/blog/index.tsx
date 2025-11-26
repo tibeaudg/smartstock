@@ -5,6 +5,9 @@ import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
 import { Search } from "lucide-react";
 import SeoPageLayout from "@/components/SeoPageLayout";
+import SEO from "@/components/SEO";
+import { StructuredData } from "@/components/StructuredData";
+import { StructuredData } from "@/components/StructuredData";
 
 // Get original file paths to determine folder structure
 // From src/pages/SEO/blog/, ../ goes to src/pages/SEO/
@@ -309,13 +312,39 @@ export default function SeoBlogIndexPage() {
   const totalPages = allPages.length;
   const filteredCount = filteredPages.length;
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Articles Overview - StockFlow",
+    "description": "Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.",
+    "url": "https://www.stockflow.be/blog",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "StockFlow Articles",
+      "numberOfItems": totalPages,
+      "itemListElement": allPages.slice(0, 10).map((page, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": page.title,
+        "url": `https://www.stockflow.be${page.path}`
+      }))
+    }
+  };
+
   return (
     <SeoPageLayout 
       title="Articles Overview"
       heroTitle="Articles Overview"
-       
-      
+      description="Explore our complete library of articles, guides, and resources about inventory management."
     >
+      <SEO
+        title="Articles Overview - StockFlow | Inventory Management Blog"
+        description="Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights."
+        keywords="inventory management articles, inventory blog, stock management guides, inventory software articles, warehouse management resources"
+        url="https://www.stockflow.be/blog"
+        structuredData={structuredData}
+      />
+      <StructuredData data={structuredData} />
       <section id="articles" className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-8">

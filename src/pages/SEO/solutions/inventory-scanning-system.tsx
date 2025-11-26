@@ -89,8 +89,8 @@ export default function InventoryScanningSystem() {
       
     >
       <SEO
-        title="Inventory Scanning System 2025 - Barcode & QR Code Scanning | StockFlow"
-        description="Complete guide to inventory scanning systems. Use barcode and QR code scanners to track inventory with 99%+ accuracy. Mobile scanning with smartphone cameras - no special hardware needed. Real-time updates and offline support. Try free now."
+        title="Inventory Scanning Software 2025 | Barcode & QR Code | Free Plan | StockFlow"
+        description="Discover the best inventory scanning software 2025. Barcode & QR code scanning with 99%+ accuracy. Mobile scanning, no special hardware needed. Save 20+ hours/week. Start free today."
         keywords="inventory scanning system, inventory scanning, inventory scanning software, inventory scanning app, barcode scanning inventory, inventory barcode scanning, inventory scanning solution, inventory scanning technology, inventory scanning system software, inventory scanning system app, inventory scanning tools, mobile inventory scanning, QR code scanning, barcode scanner inventory, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-scanning-system"
       />      
