@@ -194,6 +194,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                 (!hasSubItems || !item.subItems.some(sub => sub.path === item.path));
               const isAnySubItemActive = hasSubItems && item.subItems.some(sub => location.pathname === sub.path);
               const isActive = isParentActive || isAnySubItemActive;
+              
+              // Check if products button should be animated (when count is 0 and not loading)
+              const shouldAnimateProducts = item.id === 'products' && productCount === 0 && !isLoading;
 
               return (
                 <React.Fragment key={item.id}>
@@ -203,8 +206,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                         setActiveSubmenu(item.id);
                       }}
                       className={`
-                        flex flex-col items-center justify-center flex-1 h-full px-1 transition-colors min-w-0
+                        flex flex-col items-center justify-center flex-1 h-full px-1 transition-colors min-w-0 rounded-lg
                         ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'}
+                        ${shouldAnimateProducts ? 'animate-pulse-glow-scale ring-2 ring-blue-400/50 dark:ring-blue-500/50' : ''}
                       `}
                     >
                       <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
@@ -217,8 +221,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                       to={item.path}
                       end={item.end}
                       className={({ isActive: navIsActive }) => `
-                        flex flex-col items-center justify-center flex-1 h-full px-1 transition-colors min-w-0
+                        flex flex-col items-center justify-center flex-1 h-full px-1 transition-colors min-w-0 rounded-lg
                         ${navIsActive || isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'}
+                        ${shouldAnimateProducts ? 'animate-pulse-glow-scale ring-2 ring-blue-400/50 dark:ring-blue-500/50' : ''}
                       `}
                     >
                       <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
@@ -425,6 +430,9 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
               const isAnySubItemActive = hasSubItems && item.subItems.some(sub => location.pathname === sub.path);
               const isExpanded = isSubmenuOpen || isAnySubItemActive;
               const isActive = isParentActive;
+              
+              // Check if products button should be animated (when count is 0 and not loading)
+              const shouldAnimateProducts = item.id === 'products' && productCount === 0 && !isLoading;
 
               return (
                 <React.Fragment key={item.id}>
@@ -455,6 +463,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                           : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-blue-300' 
                       }
                       ${!isOpen ? 'justify-center' : ''}
+                      ${shouldAnimateProducts ? 'animate-pulse-glow-scale ring-2 ring-blue-400/50 dark:ring-blue-500/50' : ''}
                     `}
                   >
                     <div className="flex items-center w-full">

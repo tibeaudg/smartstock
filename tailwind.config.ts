@@ -90,11 +90,24 @@ export default {
     				to: {
     					height: '0'
     				}
+    			},
+    			'pulse-glow-scale': {
+    				'0%, 100%': {
+    					transform: 'scale(1)',
+    					opacity: '1',
+    					boxShadow: '0 0 0 0 rgba(59, 130, 246, 0.4)'
+    				},
+    				'50%': {
+    					transform: 'scale(1.02)',
+    					opacity: '0.95',
+    					boxShadow: '0 0 12px 4px rgba(59, 130, 246, 0.6)'
+    				}
     			}
     		},
     		animation: {
     			'accordion-down': 'accordion-down 0.2s ease-out',
-    			'accordion-up': 'accordion-up 0.2s ease-out'
+    			'accordion-up': 'accordion-up 0.2s ease-out',
+    			'pulse-glow-scale': 'pulse-glow-scale 6s linear infinite'
     		},
 		backgroundImage: {
 			'grid-pattern':
