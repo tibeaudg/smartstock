@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
+import {
+  Globe,
+  ShoppingBag,
+  Zap,
+  TrendingUp,
+  CheckCircle
+} from 'lucide-react';
 
 export default function EcommerceInventoryManagement() {
   usePageRefresh();

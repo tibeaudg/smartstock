@@ -65,7 +65,7 @@ export default function ConstructionInventoryApp() {
       description: "Scan materials and equipment on job sites with smartphone cameras for instant inventory updates."
     },
     {
-      icon: Offline,
+      icon: WifiOff,
       title: "Offline Capability",
       description: "Work completely offline on remote construction sites. Data syncs automatically when connectivity is restored."
     },

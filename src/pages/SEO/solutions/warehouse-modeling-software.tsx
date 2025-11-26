@@ -15,7 +15,8 @@ import {
   Layout,
   Boxes,
   ArrowRight,
-  Target
+  Target,
+  Clock
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 

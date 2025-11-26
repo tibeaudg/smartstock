@@ -15,6 +15,7 @@ import {
   Zap,
   BarChart3,
   Send,
+  CheckSquare,
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
@@ -64,7 +65,7 @@ export default function PurchaseRequisitionSoftware() {
       description: "Easy-to-use forms for employees to create purchase requisitions with items, quantities, suppliers, and justifications."
     },
     {
-      icon: Approval,
+      icon: CheckSquare,
       title: "Approval Workflows",
       description: "Configurable multi-level approval workflows based on amount, department, category, or custom rules."
     },

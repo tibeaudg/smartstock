@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Star
 } from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
 
 export default function SimpleStockManagement() {
   usePageRefresh();

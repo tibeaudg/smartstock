@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
+import {
+  ClipboardCheck,
+  Calculator,
+  Target,
+  TrendingUp,
+  CheckCircle
+} from 'lucide-react';
 
 export default function CycleCount() {
   usePageRefresh();
@@ -72,12 +79,6 @@ export default function CycleCount() {
     "Scale counting operations efficiently"
   ];
 
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'what-is', title: 'What is Cycle Count?', level: 1 },
-    { id: 'features', title: 'Features', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
 
   return (
     <SeoPageLayout 

@@ -7,13 +7,12 @@ import { Search } from "lucide-react";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import SEO from "@/components/SEO";
 import { StructuredData } from "@/components/StructuredData";
-import { StructuredData } from "@/components/StructuredData";
 
 // Get original file paths to determine folder structure
 // From src/pages/SEO/blog/, ../ goes to src/pages/SEO/
 // So ../**/*.tsx matches all .tsx files in src/pages/SEO/**/*
 const seoFileModules = {
-  ...import.meta.glob("../**/*.tsx", { eager: false }),
+  ...(import.meta as any).glob("../**/*.tsx", { eager: false }),
 };
 
 

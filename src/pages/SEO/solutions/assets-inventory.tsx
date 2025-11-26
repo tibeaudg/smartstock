@@ -17,7 +17,8 @@ import {
   Camera,
   FileText,
   Settings,
-  Zap
+  Zap,
+  Target
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 

@@ -3,6 +3,12 @@ import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
+import {
+  CheckCircle,
+  Target,
+  BarChart3,
+  Lightbulb
+} from 'lucide-react';
 
 const topicTitle = "What Is Inventory Shrinkage";
 const canonicalPath = "/blog/what-is-inventory-shrinkage";
