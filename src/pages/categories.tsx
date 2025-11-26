@@ -21,12 +21,13 @@ import { useCategoryDragDrop } from '@/hooks/useCategoryDragDrop';
 import { CategoryTreeView } from '@/components/categories/CategoryTreeView';
 import { CategoryCustomizationModal } from '@/components/categories/CategoryCustomizationModal';
 import { CategoryAnalytics } from '@/components/categories/CategoryAnalytics';
+import { CategoryHeader } from '@/components/categories/CategoryHeader';
 import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, List, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan } from 'lucide-react';
+import { Grid3x3, List, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -67,6 +68,7 @@ export default function CategorysPage() {
     return 'table';
   });
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
   
   // Sorting state - default to date_added descending (newest first)
   const [sortColumn, setSortColumn] = useState<string | null>('date_added');
@@ -113,32 +115,114 @@ export default function CategorysPage() {
   const queryClient = useQueryClient();
   useCategoryRealtime();
 
-  const handleAddCategory = async () => {
-    if (!formData.name.trim()) {
-      toast.error('Category name is required');
-      return;
-    }
+  // Helper function to filter category tree based on search term
+  const filterCategoryTree = React.useCallback((nodes: CategoryTree[], term: string): CategoryTree[] => {
+    if (!term.trim()) return nodes;
 
-    if (!user) {
-      toast.error('You must be logged in to add categories');
-      return;
-    }
+    const searchTerm = term.toLowerCase();
+    const filtered: CategoryTree[] = [];
 
-    try {
-      const categoryData: CategoryCreateData = {
-        name: formData.name.trim(),
-        description: formData.description.trim() || null,
-        parent_category_id: formData.parentCategoryId || null,
-      };
+    const matchesSearch = (category: CategoryTree): boolean => {
+      return (
+        category.name.toLowerCase().includes(searchTerm) ||
+        (category.description && category.description.toLowerCase().includes(searchTerm))
+      );
+    };
 
-      await createCategory.mutateAsync(categoryData);
-      toast.success('Category added successfully!');
-      setShowAddModal(false);
-      setFormData({ name: '', description: '', parentCategoryId: null });
-    } catch (error) {
-      console.error('Error adding category:', error);
-    }
-  };
+    const hasMatchingDescendant = (category: CategoryTree): boolean => {
+      if (matchesSearch(category)) return true;
+      return category.children?.some(child => hasMatchingDescendant(child)) || false;
+    };
+
+    nodes.forEach(node => {
+      if (hasMatchingDescendant(node)) {
+        const filteredNode: CategoryTree = {
+          ...node,
+          children: node.children ? filterCategoryTree(node.children, term) : [],
+        };
+        filtered.push(filteredNode);
+      }
+    });
+
+    return filtered;
+  }, []);
+
+  // Filter categories based on search
+  const filteredTree = React.useMemo(() => {
+    return filterCategoryTree(tree, searchTerm);
+  }, [tree, searchTerm, filterCategoryTree]);
+
+  // Filter products based on search
+  const filteredProducts = React.useMemo(() => {
+    if (!searchTerm.trim()) return categoryProducts;
+
+    const term = searchTerm.toLowerCase();
+    return categoryProducts.filter((product: any) => {
+      return (
+        product.name?.toLowerCase().includes(term) ||
+        product.description?.toLowerCase().includes(term) ||
+        product.sku?.toLowerCase().includes(term) ||
+        product.location?.toLowerCase().includes(term) ||
+        product.category_name?.toLowerCase().includes(term)
+      );
+    });
+  }, [categoryProducts, searchTerm]);
+
+  // Use filtered products for sorting
+  const sortedProducts = React.useMemo(() => {
+    const productsToSort = searchTerm.trim() ? filteredProducts : categoryProducts;
+    if (!sortColumn) return productsToSort;
+
+    return [...productsToSort].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      switch (sortColumn) {
+        case 'name':
+          aValue = a.name?.toLowerCase() || '';
+          bValue = b.name?.toLowerCase() || '';
+          break;
+        case 'location':
+          aValue = (a.location || '').toLowerCase();
+          bValue = (b.location || '').toLowerCase();
+          break;
+        case 'stock':
+          aValue = Number(a.quantity_in_stock) || 0;
+          bValue = Number(b.quantity_in_stock) || 0;
+          break;
+        case 'date_added':
+          aValue = a.created_at ? new Date(a.created_at).getTime() : 0;
+          bValue = b.created_at ? new Date(b.created_at).getTime() : 0;
+          break;
+        case 'purchase_price':
+          aValue = Number(a.purchase_price) || 0;
+          bValue = Number(b.purchase_price) || 0;
+          break;
+        case 'sale_price':
+          aValue = Number(a.sale_price) || 0;
+          bValue = Number(b.sale_price) || 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        if (sortDirection === 'asc') {
+          return aValue.localeCompare(bValue);
+        } else {
+          return bValue.localeCompare(aValue);
+        }
+      } else {
+        if (sortDirection === 'asc') {
+          return aValue - bValue;
+        } else {
+          return bValue - aValue;
+        }
+      }
+    });
+  }, [filteredProducts, categoryProducts, searchTerm, sortColumn, sortDirection]);
+
+
 
   const handleAddSubCategory = async () => {
     if (!subCategoryFormData.name.trim()) {
@@ -253,6 +337,62 @@ export default function CategorysPage() {
       }
       return next;
     });
+  };
+
+  const handleExpandAll = () => {
+    const allIds = new Set<string>();
+    const collectIds = (nodes: CategoryTree[]) => {
+      nodes.forEach(node => {
+        if (node.children && node.children.length > 0) {
+          allIds.add(node.id);
+          collectIds(node.children);
+        }
+      });
+    };
+    collectIds(tree);
+    setExpandedCategories(allIds);
+  };
+
+  const handleCollapseAll = () => {
+    setExpandedCategories(new Set());
+  };
+
+  const handleBreadcrumbClick = (categoryId: string | null) => {
+    if (categoryId === null) {
+      setSelectedCategory(null);
+      setSelectedCategoryId('all');
+    } else {
+      const category = tree.find(c => c.id === categoryId) || 
+        (() => {
+          const findInTree = (nodes: CategoryTree[]): CategoryTree | undefined => {
+            for (const node of nodes) {
+              if (node.id === categoryId) return node;
+              if (node.children?.length) {
+                const found = findInTree(node.children);
+                if (found) return found;
+              }
+            }
+            return undefined;
+          };
+          return findInTree(tree);
+        })();
+      
+      if (category) {
+        handleCategoryClick(category);
+      }
+    }
+  };
+
+  const handleAddCategory = () => {
+    setFormData({ name: '', description: '', parentCategoryId: null });
+    setShowAddModal(true);
+  };
+
+  const handleAddSubcategory = () => {
+    if (selectedCategoryId && selectedCategoryId !== 'all') {
+      setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
+      setShowAddModal(true);
+    }
   };
 
 
@@ -454,58 +594,6 @@ export default function CategorysPage() {
     }
   };
 
-  // Sort products
-  const sortedProducts = React.useMemo(() => {
-    if (!sortColumn) return categoryProducts;
-
-    return [...categoryProducts].sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
-
-      switch (sortColumn) {
-        case 'name':
-          aValue = a.name?.toLowerCase() || '';
-          bValue = b.name?.toLowerCase() || '';
-          break;
-        case 'location':
-          aValue = (a.location || '').toLowerCase();
-          bValue = (b.location || '').toLowerCase();
-          break;
-        case 'stock':
-          aValue = Number(a.quantity_in_stock) || 0;
-          bValue = Number(b.quantity_in_stock) || 0;
-          break;
-        case 'date_added':
-          aValue = a.created_at ? new Date(a.created_at).getTime() : 0;
-          bValue = b.created_at ? new Date(b.created_at).getTime() : 0;
-          break;
-        case 'purchase_price':
-          aValue = Number(a.purchase_price) || 0;
-          bValue = Number(b.purchase_price) || 0;
-          break;
-        case 'sale_price':
-          aValue = Number(a.sale_price) || 0;
-          bValue = Number(b.sale_price) || 0;
-          break;
-        default:
-          return 0;
-      }
-
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        if (sortDirection === 'asc') {
-          return aValue.localeCompare(bValue);
-        } else {
-          return bValue.localeCompare(aValue);
-        }
-      } else {
-        if (sortDirection === 'asc') {
-          return aValue - bValue;
-        } else {
-          return bValue - aValue;
-        }
-      }
-    });
-  }, [categoryProducts, sortColumn, sortDirection]);
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -611,7 +699,44 @@ export default function CategorysPage() {
   }, [isMobile, selectedCategoryId]);
 
   return (
-    <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-6'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y`} style={{ touchAction: 'pan-y' }}>
+    <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
+      {/* Unified Search Bar */}
+      <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 border-b bg-white">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Search categories and products…"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-10 h-10 text-sm"
+          />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm('')}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors"
+              aria-label="Clear search"
+            >
+              <X className="w-4 h-4 text-gray-400" />
+            </button>
+          )}
+        </div>
+        {searchTerm && (
+          <div className="mt-2 text-xs text-gray-500">
+            {filteredTree.length > 0 && (
+              <span>{filteredTree.length} {filteredTree.length === 1 ? 'category' : 'categories'}</span>
+            )}
+            {filteredTree.length > 0 && filteredProducts.length > 0 && <span className="mx-2">•</span>}
+            {filteredProducts.length > 0 && (
+              <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}</span>
+            )}
+            {filteredTree.length === 0 && filteredProducts.length === 0 && (
+              <span>No results found</span>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* Split-Pane Layout */}
       <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
         {/* Left Pane - Category Tree */}
@@ -620,24 +745,21 @@ export default function CategorysPage() {
           isMobile && !showCategoryPane && '-translate-x-full'
         )}>
           {/* Left Pane Header - Fixed */}
-          <div className="flex-shrink-0 px-4 py-3 border-b bg-gray-50">
+          <div className="flex-shrink-0 px-3 py-2.5 border-b bg-white">
             <Button
-              onClick={() => {
-                setFormData({ name: '', description: '', parentCategoryId: null });
-                setShowAddModal(true);
-              }}
+              onClick={handleAddCategory}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               size="sm"
             >
               <Plus className="w-4 h-4 mr-2" />
-              New Category
+              Add Category
             </Button>
           </div>
           
           {/* Category Tree - Scrollable */}
           <div className="flex-1 overflow-y-auto min-h-0">
             {/* Show All Products Button - Always at top */}
-            <div className="px-3 py-2 border-b">
+            <div className="px-2 py-2 border-b bg-gray-50/50">
               <button
                 type="button"
                 onClick={() => {
@@ -646,10 +768,10 @@ export default function CategorysPage() {
                   setSelectedCategoryId('all');
                 }}
                 className={cn(
-                  'w-full flex items-center gap-2 px-3 py-2 rounded transition-colors text-sm font-medium',
+                  'w-full flex items-center gap-2 px-2.5 py-2 rounded-md transition-colors text-sm font-medium',
                   selectedCategoryId === 'all'
-                    ? 'bg-blue-50 border-l-4 border-l-blue-600 text-blue-700'
-                    : 'hover:bg-gray-50 text-gray-900'
+                    ? 'bg-blue-50 border-l-2 border-l-blue-600 text-blue-700'
+                    : 'hover:bg-gray-100 text-gray-900'
                 )}
               >
                 <Package className="w-4 h-4" />
@@ -688,11 +810,13 @@ export default function CategorysPage() {
               </div>
             ) : (
               <CategoryTreeView
-                tree={tree}
+                tree={filteredTree}
                 selectedCategoryId={selectedCategoryId}
                 expanded={expandedCategories}
                 onCategoryClick={handleCategoryClick}
                 onToggleExpand={handleToggleExpand}
+                onExpandAll={handleExpandAll}
+                onCollapseAll={handleCollapseAll}
                 onEdit={openEditModal}
                 onDelete={openDeleteDialog}
                 onAddChild={(parent) => {
@@ -714,115 +838,88 @@ export default function CategorysPage() {
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
           {selectedCategoryId ? (
             <>
-              {/* Right Pane Header - Sticky on Mobile Only */}
-              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b sticky top-0 z-20 md:static md:z-auto">
-                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                  {isMobile && selectedCategoryId && (
-                    <button
-                      onClick={() => {
-                        // Reset to overview when going back on mobile - clear selection to show category list
-                        setSelectedCategory(null);
-                        setSelectedCategoryId(null);
-                        setShowCategoryPane(true);
-                      }}
-                      className="flex-shrink-0 p-1 rounded-md hover:bg-gray-100 transition-colors"
-                      aria-label="Show categories"
-                    >
-                      <ChevronRight className="w-5 h-5 text-gray-600 rotate-180" />
-                    </button>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 truncate">
-                      {(() => {
-                        // Always show 'All Products' when selectedCategoryId is 'all', regardless of selectedCategory state
-                        if (selectedCategoryId === 'all') {
-                          return 'All Products';
-                        }
-                        // For specific categories, show the category name
-                        return selectedCategory?.name || categories.find(c => c.id === selectedCategoryId)?.name || 'Category';
-                      })()}
-                    </h2>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    {selectedCategoryId === 'all' ? (
-                      <Button
-                        onClick={() => {
-                          setFormData({ name: '', description: '', parentCategoryId: null });
-                          setShowAddModal(true);
-                        }}
-                        variant="default"
-                        size="sm"
-                        className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white h-10 px-6"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        <span className="hidden md:inline">New Category</span>
-                        <span className="md:hidden">Category</span>
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() => {
-                          setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
-                          setShowAddModal(true);
-                        }}
-                        variant="default"
-                        size="sm"
-                        className="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white h-10 px-6"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        <span className="hidden md:inline">New Sub Category</span>
-                        <span className="md:hidden">Sub</span>
-                      </Button>
-                    )}
-                    <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
-                      <Button
-                        variant={productViewMode === 'grid' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setProductViewMode('grid')}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Grid3x3 className="w-4 h-4" />
-                      </Button>
-             
-                      <Button
-                        variant={productViewMode === 'table' ? 'default' : 'ghost'}
-                        size="sm"
-                        onClick={() => setProductViewMode('table')}
-                        className="h-8 w-8 p-0"
-                      >
-                        <List className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Right Pane Header */}
+              <CategoryHeader
+                selectedCategoryId={selectedCategoryId}
+                selectedCategory={selectedCategory}
+                categories={categories}
+                productViewMode={productViewMode}
+                onViewModeChange={setProductViewMode}
+                onAddCategory={handleAddCategory}
+                onAddSubcategory={handleAddSubcategory}
+                onAddProduct={() => setIsAddProductMethodModalOpen(true)}
+                onBreadcrumbClick={handleBreadcrumbClick}
+                isMobile={isMobile}
+              />
 
               {/* Products Section - Scrollable (includes stats) */}
-              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" style={{ WebkitOverflowScrolling: 'touch' }}>
                 {/* Stats Row - Scrolls with content */}
                 {selectedCategoryId === 'all' ? (
-                  <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b">
+                  <div className="px-3 md:px-4 lg:px-6 py-3 bg-white border-b">
                     <AllProductsAnalytics products={categoryProducts} />
                   </div>
                 ) : selectedCategoryId && (
-                  <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4 bg-white border-b">
+                  <div className="px-3 md:px-4 lg:px-6 py-3 bg-white border-b">
                     <CategoryAnalytics categoryId={selectedCategoryId} />
                   </div>
                 )}
                 
-                <div className="px-3 md:px-4 lg:px-6 py-3 md:py-4">
+                <div className="px-3 md:px-4 lg:px-6 py-4">
+                  {/* Products Section Header */}
                   <div className="mb-4 flex items-center justify-between gap-4">
-                    <h3 className="text-lg md:text-xl font-semibold text-gray-900">Products</h3>
-                    <Button
-                      onClick={() => {
-                        setIsAddProductMethodModalOpen(true);
-                      }}
-                      variant="default"
-                      size="default"
-                      className="bg-blue-600 hover:bg-blue-700 text-white h-10 px-6"
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      <span>Add Product</span>
-                    </Button>
+                    <div>
+                      <h3 className="text-lg md:text-xl font-bold text-gray-900">Products</h3>
+                      {(searchTerm.trim() ? filteredProducts : categoryProducts).length > 0 && (
+                        <p className="text-sm text-gray-500 mt-1">
+                          {searchTerm.trim() ? filteredProducts.length : categoryProducts.length} {(searchTerm.trim() ? filteredProducts.length : categoryProducts.length) === 1 ? 'product' : 'products'}
+                          {searchTerm.trim() && (
+                            <span className="ml-2 text-blue-600">(filtered)</span>
+                          )}
+                          {sortColumn && (
+                            <span className="ml-2">
+                              • Sorted by {sortColumn.replace('_', ' ')}
+                            </span>
+                          )}
+                        </p>
+                      )}
+                    </div>
+                    {(searchTerm.trim() ? filteredProducts : categoryProducts).length > 0 && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-9 px-3"
+                          >
+                            <Filter className="w-4 h-4 mr-2" />
+                            <span className="hidden sm:inline">Sort</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuItem onClick={() => handleSort('name')}>
+                            <ArrowUpDown className="w-4 h-4 mr-2" />
+                            Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSort('stock')}>
+                            <ArrowUpDown className="w-4 h-4 mr-2" />
+                            Stock {sortColumn === 'stock' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSort('location')}>
+                            <ArrowUpDown className="w-4 h-4 mr-2" />
+                            Location {sortColumn === 'location' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSort('date_added')}>
+                            <ArrowUpDown className="w-4 h-4 mr-2" />
+                            Date Added {sortColumn === 'date_added' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSort('purchase_price')}>
+                            <ArrowUpDown className="w-4 h-4 mr-2" />
+                            Price {sortColumn === 'purchase_price' && (sortDirection === 'asc' ? '↑' : '↓')}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </div>
                 {productsLoading ? (
                   <div className="flex items-center justify-center py-12">
@@ -831,16 +928,20 @@ export default function CategorysPage() {
                       <p className="text-gray-600">Loading products...</p>
                     </div>
                   </div>
-                ) : categoryProducts.length === 0 ? (
+                ) : (searchTerm.trim() ? filteredProducts : categoryProducts).length === 0 ? (
                   <Card>
                     <CardContent className="p-12 text-center">
                       <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-600">No products found in this category</p>
+                      <p className="text-gray-600">
+                        {searchTerm.trim() 
+                          ? 'No products match your search' 
+                          : 'No products found in this category'}
+                      </p>
                     </CardContent>
                   </Card>
                 ) : productViewMode === 'grid' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {categoryProducts.map((product: any) => (
+                    {sortedProducts.map((product: any) => (
                       <ProductCard
                         key={product.id}
                         product={product}
@@ -853,10 +954,10 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 ) : productViewMode === 'table' ? (
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-visible">
-                    <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 -mx-3 md:mx-0">
+                  <div className="bg-white rounded-lg border border-gray-200 overflow-visible shadow-sm">
+                    <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                       <table className={cn("w-full divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
-                        <thead className="bg-gray-50 sticky top-0 z-10">
+                        <thead className="bg-gray-50/80 backdrop-blur-sm sticky top-0 z-10">
                           <tr>
                             <th 
                               className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors"
@@ -924,7 +1025,7 @@ export default function CategorysPage() {
                                 )}
                               >
                                 {/* Product column */}
-                                <td className="px-2 sm:px-4 py-3 w-1/3">
+                                <td className="px-2 sm:px-4 py-4 w-1/3">
                                   <div className="flex items-center gap-2 sm:gap-3">
                                     <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                                       {product.image_url ? (
@@ -956,7 +1057,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Location column */}
-                                <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden md:table-cell">
+                                <td className="px-2 sm:px-4 py-4 text-center w-1/8 hidden md:table-cell">
                                   <div className="flex items-center justify-center gap-1">
                                     <MapPin className="w-3 h-3 text-gray-400" />
                                     <span className="text-sm text-gray-600">
@@ -966,7 +1067,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Stock column */}
-                                <td className="px-2 sm:px-4 py-3 text-center w-1/8" onClick={(e) => isMobile && e.stopPropagation()}>
+                                <td className="px-2 sm:px-4 py-4 text-center w-1/8" onClick={(e) => isMobile && e.stopPropagation()}>
                                   <TooltipProvider delayDuration={150}>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
@@ -1029,7 +1130,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Date Added column */}
-                                <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden lg:table-cell">
+                                <td className="px-2 sm:px-4 py-4 text-center w-1/8 hidden lg:table-cell">
                                   <span className="text-sm text-gray-600">
                                     {product.created_at 
                                       ? new Date(product.created_at).toLocaleDateString('en-US', {
@@ -1042,7 +1143,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Pricing column */}
-                                <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden sm:table-cell">
+                                <td className="px-2 sm:px-4 py-4 text-center w-1/8 hidden sm:table-cell">
                                   <div className="space-y-1">
                                     <div className="text-sm text-red-600 font-medium">
                                       ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
@@ -1054,7 +1155,7 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Actions column */}
-                                <td className="px-2 sm:px-4 py-3 text-center w-1/12 hidden md:table-cell" onClick={(e) => e.stopPropagation()}>
+                                <td className="px-2 sm:px-4 py-4 text-center w-1/12 hidden md:table-cell" onClick={(e) => e.stopPropagation()}>
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                       <Button variant="outline" size="sm" className="h-8 w-8 p-0">
@@ -1113,7 +1214,7 @@ export default function CategorysPage() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    {categoryProducts.map((product: any) => (
+                    {sortedProducts.map((product: any) => (
                       <Card key={product.id} className="hover:shadow-md transition-shadow">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -1176,27 +1277,13 @@ export default function CategorysPage() {
                 <p className="text-gray-600 mb-4">
                   Choose a category from the sidebar to view its details and products
                 </p>
-                <div className="flex items-center justify-center gap-2 flex-wrap">
+                  <div className="flex items-center justify-center gap-2 flex-wrap">
                   <Button
-                    onClick={() => {
-                      setFormData({ name: '', description: '', parentCategoryId: null });
-                      setShowAddModal(true);
-                    }}
+                    onClick={handleAddCategory}
                     className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    New Category
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setSubCategoryFormData({ name: '', description: '', parentCategoryId: null });
-                      setShowAddSubCategoryModal(true);
-                    }}
-                    variant="default"
-                    className="h-12 px-6"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    New Sub Category
+                    Add Category
                   </Button>
                 </div>
               </div>

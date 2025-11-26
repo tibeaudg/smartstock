@@ -173,11 +173,7 @@ export const HierarchicalCategorySelector: React.FC<HierarchicalCategorySelector
       </PopoverTrigger>
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
         <Command>
-          <CommandInput
-            placeholder="Search categories..."
-            value={searchTerm}
-            onValueChange={setSearchTerm}
-          />
+      
           <CommandList>
             <CommandEmpty>
               {allowCreate && searchTerm.trim() ? (

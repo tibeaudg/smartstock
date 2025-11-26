@@ -3,7 +3,7 @@
  * Displays categories in a hierarchical tree structure with drag-and-drop support
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { DndContext, closestCenter, DragOverlay, useSensor, useSensors, PointerSensor, useDraggable, useDroppable, rectIntersection } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,8 @@ interface CategoryTreeViewProps {
   expanded?: Set<string>;
   onCategoryClick?: (category: CategoryTree) => void;
   onToggleExpand?: (categoryId: string) => void;
+  onExpandAll?: () => void;
+  onCollapseAll?: () => void;
   onEdit?: (category: CategoryTree) => void;
   onDelete?: (category: CategoryTree) => void;
   onAddChild?: (parentCategory: CategoryTree) => void;
@@ -184,7 +186,7 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
                 onAddChild?.(category);
               }}>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Child
+                Add Subcategory
               </DropdownMenuItem>
               <DropdownMenuItem onClick={(e) => {
                 e.stopPropagation();
@@ -211,26 +213,45 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
 
       {/* Children */}
       {hasChildren && isExpanded && (
-        <div className="border-l-2 border-gray-200 ml-3">
-          {category.children.map((child, index) => (
-            <CategoryTreeNode
-              key={child.id}
-              category={child}
-              level={level + 1}
-              expanded={expanded}
-              selectedCategoryId={selectedCategoryId}
-              activeId={activeId}
-              onToggleExpand={onToggleExpand}
-              onCategoryClick={onCategoryClick}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onAddChild={onAddChild}
-            />
-          ))}
+        <div className="relative">
+          {/* Tree connector line */}
+          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-200" style={{ left: `${level * 24 + 16 + 12}px` }} />
+          <div className="pl-6">
+            {category.children.map((child, index) => (
+              <CategoryTreeNode
+                key={child.id}
+                category={child}
+                level={level + 1}
+                expanded={expanded}
+                selectedCategoryId={selectedCategoryId}
+                activeId={activeId}
+                onToggleExpand={onToggleExpand}
+                onCategoryClick={onCategoryClick}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onAddChild={onAddChild}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>
   );
+};
+
+// Helper function to get all category IDs in tree
+const getAllCategoryIds = (nodes: CategoryTree[]): Set<string> => {
+  const ids = new Set<string>();
+  const traverse = (nodes: CategoryTree[]) => {
+    nodes.forEach(node => {
+      ids.add(node.id);
+      if (node.children?.length) {
+        traverse(node.children);
+      }
+    });
+  };
+  traverse(nodes);
+  return ids;
 };
 
 export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
@@ -239,6 +260,8 @@ export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
   expanded = new Set(),
   onCategoryClick,
   onToggleExpand,
+  onExpandAll,
+  onCollapseAll,
   onEdit,
   onDelete,
   onAddChild,
@@ -257,6 +280,12 @@ export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
     })
   );
 
+  // Check if all categories are expanded
+  const allCategoryIds = useMemo(() => getAllCategoryIds(tree), [tree]);
+  const allExpanded = useMemo(() => {
+    return allCategoryIds.size > 0 && Array.from(allCategoryIds).every(id => expanded.has(id));
+  }, [allCategoryIds, expanded]);
+
   const activeCategory = tree.find(c => c.id === activeId) || 
     (() => {
       const findInTree = (nodes: CategoryTree[]): CategoryTree | undefined => {
@@ -272,62 +301,69 @@ export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
       return findInTree(tree);
     })();
 
-  if (tree.length === 0) {
-    return (
-      <div className="p-12 text-center">
-        <Tag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-600">No categories yet. Create your first category to get started.</p>
-      </div>
-    );
-  }
-
   // Root-level droppable for moving categories to root
   const { setNodeRef: setRootDropRef, isOver: isRootOver } = useDroppable({
     id: 'root-drop-zone',
   });
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={rectIntersection}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDragEnd={onDragEnd}
-      onDragCancel={onDragCancel}
-    >
-      <div 
-        ref={setRootDropRef}
-        className={cn(
-          "min-h-full transition-colors",
-          isRootOver && activeId && "bg-blue-50 border-2 border-blue-300 border-dashed rounded"
-        )}
-      >
-        <div>
-          {tree.map((category) => (
-            <CategoryTreeNode
-              key={category.id}
-              category={category}
-              level={0}
-              expanded={expanded}
-              selectedCategoryId={selectedCategoryId}
-              activeId={activeId}
-              onToggleExpand={onToggleExpand || (() => {})}
-              onCategoryClick={onCategoryClick}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onAddChild={onAddChild}
-            />
-          ))}
-        </div>
-      </div>
-      <DragOverlay>
-        {activeCategory ? (
-          <div className="px-4 py-2 bg-white border border-gray-200 rounded shadow-lg">
-            <span className="text-base font-medium text-gray-900">{activeCategory.name}</span>
+    <div className="flex flex-col h-full">
+   
+
+      {/* Tree View */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {tree.length === 0 ? (
+          <div className="p-12 text-center">
+            <Tag className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600">
+              No categories yet. Create your first category to get started.
+            </p>
           </div>
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+        ) : (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={rectIntersection}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDragEnd={onDragEnd}
+            onDragCancel={onDragCancel}
+          >
+            <div 
+              ref={setRootDropRef}
+              className={cn(
+                "min-h-full transition-colors",
+                isRootOver && activeId && "bg-blue-50 border-2 border-blue-300 border-dashed rounded"
+              )}
+            >
+              <div>
+                {tree.map((category) => (
+                  <CategoryTreeNode
+                    key={category.id}
+                    category={category}
+                    level={0}
+                    expanded={expanded}
+                    selectedCategoryId={selectedCategoryId}
+                    activeId={activeId}
+                    onToggleExpand={onToggleExpand || (() => {})}
+                    onCategoryClick={onCategoryClick}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    onAddChild={onAddChild}
+                  />
+                ))}
+              </div>
+            </div>
+            <DragOverlay>
+              {activeCategory ? (
+                <div className="px-4 py-2 bg-white border border-gray-200 rounded shadow-lg">
+                  <span className="text-base font-medium text-gray-900">{activeCategory.name}</span>
+                </div>
+              ) : null}
+            </DragOverlay>
+          </DndContext>
+        )}
+      </div>
+    </div>
   );
 };
 
