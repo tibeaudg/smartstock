@@ -11,7 +11,6 @@ import { useMobile } from '@/hooks/use-mobile';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';  
-import AdminOnboardingPage from './admin/onboarding';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -432,7 +431,7 @@ export default function AdminPage() {
   const { user, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'subscription-management' | 'onboarding'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'subscription-management'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -675,12 +674,11 @@ export default function AdminPage() {
     };
   }, [user?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'subscription-management' | 'onboarding'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'subscription-management'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
     { id: 'subscription-management', label: 'Subscription Management' },
-    { id: 'onboarding', label: 'Onboarding' },
   ];
   
   // Access control - only owners can view the admin page
@@ -1059,9 +1057,6 @@ export default function AdminPage() {
             )}
             {activeTab === 'subscription-management' && (
               <AdminSubscriptionManagement />
-            )}
-            {activeTab === 'onboarding' && (
-              <AdminOnboardingPage embedded={true} />
             )}
 
 

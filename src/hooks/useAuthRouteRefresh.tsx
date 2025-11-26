@@ -15,7 +15,7 @@ export const useAuthRouteRefresh = () => {
     // Check if current route is an authenticated route
     const isAuthenticatedRoute = (pathname: string): boolean => {
       // Routes that require authentication (after /auth)
-      const authRoutes = ['/dashboard', '/admin', '/onboarding'];
+      const authRoutes = ['/dashboard', '/admin'];
       
       // Exclude the auth page itself
       if (pathname === '/auth' || pathname.startsWith('/auth/')) {
