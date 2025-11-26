@@ -12,7 +12,6 @@ import {
   DollarSign,
   Shield,
   Clock,
-  Users,
   LineChart,
   Calculator,
   Package
@@ -123,9 +122,9 @@ export default function InventoryOptimizationServices() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Optimization Services 2025 | Professional Optimization | StockFlow"
-        description="Get inventory optimization services to reduce costs, improve cash flow, and optimize stock levels. Expert analysis, demand forecasting, and optimization recommendations. Free software available."
-        keywords="inventory optimization services, inventory optimization consulting, inventory optimization company, inventory optimization experts, professional inventory optimization, inventory optimization analysis, inventory optimization solutions, stockflow, stock flow"
+        title="Inventory Optimization Services 2025 | Expert Consulting | StockFlow"
+        description="Professional inventory optimization services reduce costs 20-30%, improve cash flow, and optimize stock levels. Expert analysis, demand forecasting, and strategic recommendations. Free software alternative available."
+        keywords="inventory optimization services, inventory optimization consulting, inventory optimization company, inventory optimization experts, professional inventory optimization, inventory optimization analysis, inventory optimization solutions, inventory management optimization, stock optimization services, stockflow, stock flow"
         url="https://www.stockflow.be/inventory-optimization-services"
       />
 
@@ -138,7 +137,7 @@ export default function InventoryOptimizationServices() {
             </h1>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              Professional <strong>inventory optimization services</strong> help businesses reduce costs, improve cash flow, and maintain optimal stock levels through expert analysis, demand forecasting, and strategic recommendations. Whether you need a one-time assessment or ongoing optimization support, professional services can help you achieve significant improvements in inventory efficiency.
+              Professional <strong>inventory optimization services</strong> help businesses reduce costs by 20-30%, improve cash flow, and maintain optimal stock levels through expert analysis, demand forecasting, and strategic recommendations. Whether you need a one-time assessment or ongoing optimization support, professional services can help you achieve significant improvements in inventory efficiency. Many businesses find that <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with built-in optimization features provides similar benefits at a fraction of the cost.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
@@ -174,11 +173,11 @@ export default function InventoryOptimizationServices() {
           </h2>
           
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            <strong>Inventory optimization services</strong> are professional consulting services that help businesses improve their inventory management through comprehensive analysis, strategic planning, and implementation of optimization techniques. These services are typically provided by inventory management experts, consultants, or specialized firms with deep expertise in inventory optimization methodologies.
+            <strong>Inventory optimization services</strong> are professional consulting services that help businesses improve their inventory management through comprehensive analysis, strategic planning, and implementation of optimization techniques. These services are typically provided by inventory management experts, consultants, or specialized firms with deep expertise in inventory optimization methodologies. They analyze your current inventory performance, identify inefficiencies, and develop customized strategies to reduce costs and improve efficiency.
           </p>
 
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            While professional <strong>inventory optimization services</strong> provide expert human analysis and customization, modern inventory management software like StockFlow includes built-in optimization features that provide continuous, automated optimization. Many businesses find that software-based optimization is more cost-effective and provides ongoing value, while services are valuable for initial setup, complex projects, or specialized industry requirements.
+            While professional <strong>inventory optimization services</strong> provide expert human analysis and customization, modern <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> like StockFlow includes built-in optimization features that provide continuous, automated optimization. Many businesses find that software-based optimization is more cost-effective and provides ongoing value, while services are valuable for initial setup, complex projects, or specialized industry requirements. Learn more about <Link to="/solutions/inventory-optimization-services" className="text-blue-600 hover:underline font-semibold">inventory optimization</Link> approaches and compare <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> solutions that include optimization features.
           </p>
 
           <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
@@ -312,6 +311,44 @@ export default function InventoryOptimizationServices() {
               "text": faq.answer
             }
           }))
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Inventory Optimization Services",
+          "description": "Professional inventory optimization services to reduce costs, improve cash flow, and optimize stock levels. Expert analysis, demand forecasting, and strategic recommendations.",
+          "provider": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "url": "https://www.stockflow.be"
+          },
+          "areaServed": "Worldwide",
+          "serviceType": "Business Consulting",
+          "url": "https://www.stockflow.be/inventory-optimization-services"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Inventory Optimization Services 2025: Expert Consulting Guide",
+          "description": "Complete guide to inventory optimization services. Learn how professional consulting can reduce costs 20-30%, improve cash flow, and optimize stock levels. Compare services vs. software-based optimization.",
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "datePublished": "2024-01-01",
+          "dateModified": new Date().toISOString().split('T')[0],
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/inventory-optimization-services"
+          }
         }
       ]} />
     </SeoPageLayout>

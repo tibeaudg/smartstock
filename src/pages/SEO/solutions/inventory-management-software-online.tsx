@@ -2,8 +2,9 @@
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
+
 import { 
   BarChart3, 
   Zap, 
@@ -13,42 +14,49 @@ import {
   CheckCircle,
   Star,
   Trophy,
-  Database
+  Database,
+  ChevronDown
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
-
-
-export default function BestInventoryManagementSoftware() {
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+export default function InventoryManagementSoftwareOnline() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
   
   const faqData = [
     {
-      question: "What is the best inventory management software?",
-      answer: "The best inventory management software depends on your business needs, but StockFlow consistently ranks as the top choice for small to medium businesses. It offers real-time tracking, barcode scanning, automated alerts, and excellent customer support at an affordable price."
+      question: "What is online inventory management software?",
+      answer: "Online inventory management software is cloud-based software that allows you to track, manage, and optimize inventory from anywhere, on any device. It provides real-time synchronization across multiple locations, automated workflows, and seamless integration with e-commerce platforms, POS systems, and accounting software. StockFlow offers comprehensive online inventory management with a free plan for up to 100 products."
     },
     {
-      question: "How do I choose the best inventory management software for my business?",
-      answer: "Consider factors like your business size, inventory complexity, budget, integration needs, and required features. Look for software with real-time tracking, mobile access, barcode scanning, reporting capabilities, and good customer support. StockFlow offers a free trial to test all features."
+      question: "How do I choose the best online inventory management software for my business?",
+      answer: "Consider factors like your business size, inventory complexity, budget, integration needs, and required features. Look for software with real-time tracking, mobile access, barcode scanning, reporting capabilities, and good customer support. StockFlow offers a free trial to test all features and provides 24/7 support."
     },
     {
       question: "How does StockFlow compare to Exact and Visma Net?",
       answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
     },
     {
-      question: "What features should the best inventory management software have?",
-      answer: "The best inventory management software should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support."
+      question: "What features should online inventory management software have?",
+      answer: "The best online inventory management software should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support. Cloud-based access from anywhere is also essential."
     },
     {
-      question: "Is there Cloud-based Inventory Management Platform?",
-      answer: "Yes, StockFlow offers a free plan for small businesses with up to 100 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features."
+      question: "Is there a free online inventory management software?",
+      answer: "Yes, StockFlow offers a free plan for small businesses with up to 100 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features. The free plan includes real-time tracking, barcode scanning, and mobile access."
     },
     {
-      question: "What makes StockFlow the best inventory management software?",
-      answer: "StockFlow stands out as the best inventory management software due to its user-friendly interface, comprehensive features, excellent customer support, affordable pricing, real-time tracking capabilities, and ability to scale with your business growth."
+      question: "What makes StockFlow the best online inventory management software?",
+      answer: "StockFlow stands out as the best online inventory management software due to its user-friendly interface, comprehensive features, excellent customer support, affordable pricing, real-time tracking capabilities, cloud-based access from anywhere, and ability to scale with your business growth."
+    },
+    {
+      question: "Can online inventory management software work offline?",
+      answer: "Yes, StockFlow's mobile app works completely offline. You can scan barcodes, update inventory, and check stock levels without internet connectivity. When connectivity is restored, all changes automatically sync to the cloud, ensuring your data is always up-to-date across all devices and locations."
+    },
+    {
+      question: "How does online inventory management software integrate with e-commerce platforms?",
+      answer: "Online inventory management software like StockFlow integrates seamlessly with e-commerce platforms including Shopify, WooCommerce, Amazon, eBay, and more. This integration automatically syncs inventory levels across all sales channels, preventing overselling and ensuring accurate stock information for customers."
     }
   ];
 
@@ -151,7 +159,7 @@ export default function BestInventoryManagementSoftware() {
     {
       name: "David Chen",
       role: "CEO, TechStart Solutions",
-      content: "StockFlow is hands down the best inventory management software we've used. It's intuitive, powerful, and has transformed our operations completely.",
+      content: "StockFlow is hands down the best online inventory management software we've used. It's intuitive, powerful, and has transformed our operations completely.",
       rating: 5
     },
     {
@@ -163,7 +171,7 @@ export default function BestInventoryManagementSoftware() {
     {
       name: "Mike Rodriguez",
       role: "Warehouse Manager, Global Supply",
-      content: "StockFlow's features and ease of use make it the best inventory management software for our business. Highly recommended!",
+      content: "StockFlow's features and ease of use make it the best online inventory management software for our business. Highly recommended!",
       rating: 5
     }
   ];
@@ -172,7 +180,7 @@ export default function BestInventoryManagementSoftware() {
     {
       title: "Best Inventory Software 2024",
       organization: "Business Software Review",
-      icon: "ðŸ†"
+      icon: "🏆"
     },
     {
       title: "Top Rated by Users",
@@ -182,172 +190,120 @@ export default function BestInventoryManagementSoftware() {
     {
       title: "Best Value for Money",
       organization: "Tech Business Awards",
-      icon: "ðŸ’°"
+      icon: "💰"
     },
     {
       title: "Easiest to Use",
       organization: "User Experience Awards",
-      icon: "ðŸŽ¯"
+      icon: "🎯"
     }
   ];
 
 
   // Generate sidebar content
   const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'awards', title: 'Why StockFlow is the Best', level: 1 },
+    { id: 'hero', title: 'Online Inventory Management Software', level: 1 },
     { id: 'quick-wins', title: 'Why Businesses Choose StockFlow', level: 1 },
     { id: 'features', title: 'Features', level: 1 },
     { id: 'benefits', title: 'Benefits', level: 1 },
     { id: 'comparison', title: 'StockFlow vs Competitors', level: 1 },
     { id: 'testimonials', title: 'What Our Customers Say', level: 1 },
-    { id: 'pricing', title: 'Choose Your Plan', level: 1 },
     { id: 'faq', title: 'FAQ', level: 1 }
   ]);
 
   return (
     <SeoPageLayout 
-      title="Inventory Management Software Online"
-      
-      
+      title="Online Inventory Management Software"
+      heroTitle="Online Inventory Management Software"
+      description="Get online inventory management software with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products."
+      updatedDate="20/11/2025"
+      faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software Online 2025 | Cloud-Based | StockFlow"
-        description="Get online inventory management software. Cloud-based, real-time tracking, access from anywhere. Free plan available. Start free trial - no credit card required. 24/7 support included."
-        keywords="inventory management software online, online inventory management software, cloud inventory software, web-based inventory software, online inventory system, inventory software online, stockflow, stock flow"
+        title="Online Inventory Management Software 2025 | Cloud Access | StockFlow"
+        description="Get online inventory management software with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products. Start free trial - no credit card required."
+        keywords="inventory management software online, online inventory management software, cloud inventory software, web-based inventory software, online inventory system, inventory software online, cloud inventory management, online inventory tracking, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software-online"
       />
 
 
-      {/* Awards Section */}
-      <section id="awards" className="py-16 px-4 bg-white">
+      {/* Hero Section */}
+      <section id="hero" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
-          Inventory Management Software Online
-            </h1>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            Online Inventory Management Software
+          </h1>
+          <p className="text-xl text-gray-700 leading-relaxed mb-8">
+            <strong>Online inventory management software</strong> provides cloud-based access to track, manage, and optimize inventory from anywhere, on any device. Unlike traditional desktop systems, online inventory software offers real-time synchronization across multiple locations, automated workflows, and seamless integration with e-commerce platforms, POS systems, and accounting software. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> combines the power of cloud computing with intuitive design, making it accessible for businesses of all sizes. Explore <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> solutions or learn about <Link to="/solutions/inventory-management-software-cloud-based" className="text-blue-600 hover:underline font-semibold">cloud-based inventory management software</Link> options.
+          </p>
+
+          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Online Inventory Management Software?</h2>
+            <ul className="space-y-3 text-gray-700">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <span><strong>Real-time stock visibility:</strong> Access current inventory levels from any device, anywhere</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <span><strong>Transparency across teams:</strong> Remote teams, warehouse staff, and management access the same live data</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <span><strong>Automation that saves time:</strong> Automated reorder points, alerts, and stock adjustments eliminate manual work</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <span><strong>Seamless integrations:</strong> Connect with Shopify, WooCommerce, POS systems, and accounting software</span>
+              </li>
+            </ul>
           </div>
 
-          <div className="text-center mb-8 border-b border-gray-200 pb-8">
-          <span className="text-center text-gray-600 text-sm">published: 11/11/2025</span>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Unified Inventory Dashboard</h3>
+              <p className="text-gray-700">Everything you need in one place: stock levels, alerts, supplier info, purchase orders, and product histories.</p>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Demand Forecasting</h3>
+              <p className="text-gray-700">Smart algorithms help identify trends and anticipate stock needs, reducing shortages and overstocks.</p>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Multi-channel Sync</h3>
+              <p className="text-gray-700">Whether selling online, offline, or hybrid, online inventory software ensures consistent stock information everywhere.</p>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-xl p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Cloud-Based Access</h3>
+              <p className="text-gray-700">Work from anywhere—no installations, no technical setup, no hassle. Access your inventory from any device with internet connectivity.</p>
+            </div>
           </div>
 
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-<b className="text-3xl font-bold ">Inventory Management Software Online: Why Stockflow.be Is the Smartest Choice for Modern Businesses</b>
-<br />
-<br />
-
-Managing inventory used to be a guessing game—manual counting, spreadsheets, slow updates, and too much room for error. Today’s digital-first environment demands inventory-management-software online that is fast, intuitive, real-time, and accessible from anywhere. Whether you run an e-commerce shop, retail store, wholesale operation, or a growing B2B service, choosing the right platform is no longer optional—it’s your competitive advantage.
-<br />
-<br />
-Among the many solutions available, Stockflow.be stands out as a modern, efficient, and user-centered platform built for businesses that want control, accuracy, and scalability.
-<br />
-<br />
-<b className="text-2xl font-bold ">Why Online Inventory Management Matters Today</b>
-<br />
-<br />
-âœ… <b>Real-time stock visibility</b>
-<br />
-Customers expect instant availability and fast delivery. Online inventory systems sync stock levels live across multiple channels, reducing overselling and frustration.
-<br />
-<br />
-âœ… <b>Transparency across teams</b>
-<br />
-Remote teams, warehouse staff, and management all access the same data—removing dependency on outdated spreadsheets or local files.
-<br />
-<br />
-âœ… <b>Automation that saves time</b>
-<br />
-Automated reorder points, alerts, and stock adjustments eliminate repetitive manual work and prevent costly mistakes.
-<br />
-<br />
-âœ… <b>Integrations with online stores & tools</b>
-<br />
-Modern inventory tools connect with Shopify, WooCommerce, POS systems, accounting software, and fulfillment networks—making your operations seamless.
-<br />
-<br />
-<b className="text-2xl font-bold ">What Makes Stockflow.be Different?</b>
-<br />
-Most inventory platforms are packed with unnecessary features, complex interfaces, and long onboarding processes. Stockflow.be takes the opposite approach: clarity, speed, and precision.
-<br />
-<br />
-ðŸ”¹ <b>Ultra-simple interface</b>
-<br />
-Designed for users who want to work efficiently, not waste time on training or configuration.
-<br />
-<br />
-ðŸ”¹ <b>Real-time updates across locations</b>
-
-Perfect for stores, warehouses, and businesses managing stock across multiple points.
-<br />
-<br />
-ðŸ”¹ <b>Smart automation</b>
-<br />
-Stockflow automatically tracks stock-in/stock-out, updates levels, and notifies you when products hit their reorder threshold.
-<br />
-<br />
-ðŸ”¹ <b>Built for European businesses</b>
-<br />
-No complicated US-centric settings, no unnecessary extras—local support, European compliance, and multilingual flexibility.
-<br />
-<br />
-ðŸ”¹ <b>Affordable & scalable</b>
-<br />
-Stockflow.be gives small and medium businesses the tools they need without enterprise-level pricing.
-<br />
-<br />
-<b className="text-2xl font-bold ">Key Features You Get With Stockflow.be</b>
-<br />
-<br />
-ðŸ“¦ <b>Unified Inventory Dashboard</b>
-<br />
-Everything you need in one place: stock levels, alerts, supplier info, purchase orders, and product histories.
-<br />
-<br />
-ðŸ“Š <b>Demand Forecasting</b>
-<br />
-Smart algorithms help you identify trends and anticipate stock needs—reducing shortages and overstocks.
-<br />
-<br />
-ðŸ”„ <b>Multi-channel Sync</b>
-<br />
-Whether selling online, offline, or hybrid, Stockflow ensures consistent stock information everywhere.
-<br />
-<br />
-ðŸ§¾ <b>Purchase Order Automation</b>
-<br />
-Generate and send supplier orders without manual paperwork.
-<br />
-<br />
-☁️ <b>Cloud-Based Access</b>
-<br />
-Work from anywhere—no installations, no technical setup, no hassle.
-<br />
-<br />
-<b className="text-2xl font-bold ">Who Is Stockflow.be Ideal For?</b>
-<br />
-<br />
-E-commerce stores wanting real-time stock syncing
-<br />
-<br />
-Retail shops looking for a simpler way to manage multiple locations
-<br />
-<br />
-Wholesalers managing large product catalogs
-<br />
-<br />
-Startups needing a lightweight but powerful system
-<br />
-<br />
-Growing businesses scaling their inventory and operations
-            </p>
-
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Who Is Online Inventory Management Software Ideal For?</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2">E-commerce Stores</h3>
+              <p className="text-gray-700 text-sm">Wanting real-time stock syncing across multiple sales channels. Explore <Link to="/uses/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">e-commerce inventory management</Link> solutions.</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2">Retail Shops</h3>
+              <p className="text-gray-700 text-sm">Looking for a simpler way to manage multiple locations. Learn about <Link to="/industries/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail inventory management</Link>.</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2">Wholesalers</h3>
+              <p className="text-gray-700 text-sm">Managing large product catalogs with complex inventory needs. See <Link to="/industries/wholesaler-inventory-management" className="text-blue-600 hover:underline font-semibold">wholesaler inventory management</Link> solutions.</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-semibold text-gray-900 mb-2">Growing Businesses</h3>
+              <p className="text-gray-700 text-sm">Scaling their inventory and operations efficiently. Compare <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link>.</p>
+            </div>
+          </div>
         </div>
       </section>
 
 
 
       
-      <Accordion type="single" collapsible className="space-y-4">
+      <Accordion type="single" collapsible className="space-y-4 max-w-6xl mx-auto px-4">
 
         <AccordionItem value="item-1" className="border-b border-gray-200">
         <AccordionTrigger className="flex items-center justify-between px-6 py-5 text-left text-xl font-semibold hover:text-primary transition-colors">
@@ -356,7 +312,7 @@ Growing businesses scaling their inventory and operations
           </AccordionTrigger>
 
           <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
-          <p>Online inventory management systems allow you to track stock levels throughout many sales channels without being left explaining how the product is out of stock. These systems also automate things such as pulling data from e-commerce platforms and shipping tools, meaning order fulfilment becomes quicker and simpler.</p>
+          <p><strong>Online inventory management systems</strong> allow you to track stock levels across many sales channels in real-time, preventing overselling and stockouts. These systems automate data synchronization from e-commerce platforms and shipping tools, making order fulfillment quicker and more accurate. StockFlow's <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> provides comprehensive tracking and automation capabilities. Learn more about <Link to="/solutions/inventory-management-online" className="text-blue-600 hover:underline font-semibold">inventory management online</Link> solutions.</p>
           </AccordionContent>
         </AccordionItem>
 
@@ -369,7 +325,7 @@ Growing businesses scaling their inventory and operations
           </AccordionTrigger>
 
           <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
-          <p>With the 80/20 inventory rule, you are supposing that: 80% of your sales come from 20% of your inventory; 80% of your customers only want 20% of your products; and. 80% of your storage is waste, and 20% of your storage contains items that sell.</p>
+          <p>With the 80/20 inventory rule, you are supposing that: 80% of your sales come from 20% of your inventory; 80% of your customers only want 20% of your products; and 80% of your storage is waste, and 20% of your storage contains items that sell. This principle helps businesses focus optimization efforts on high-value items. Learn more about <Link to="/glossary/inventory-optimization" className="text-blue-600 hover:underline font-semibold">inventory optimization</Link> strategies.</p>
           </AccordionContent>
         </AccordionItem>
 
@@ -381,7 +337,7 @@ Growing businesses scaling their inventory and operations
           </AccordionTrigger>
 
           <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
-          <p>Stockflow is a free inventory management software designed to help small and growing businesses effortlessly manage their inventory across multiple channels and devices.</p>
+          <p>StockFlow is a free <strong>online inventory management software</strong> designed to help small and growing businesses effortlessly manage their inventory across multiple channels and devices. The free plan includes up to 100 products, real-time tracking, and mobile access. For more options, see our <Link to="/best-of/best-online-inventory-software" className="text-blue-600 hover:underline font-semibold">best online inventory software</Link> guide or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.</p>
           </AccordionContent>
         </AccordionItem>
 
@@ -394,7 +350,7 @@ Growing businesses scaling their inventory and operations
           </AccordionTrigger>
 
           <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
-          <p>Four major inventory management methods include just-in-time management (JIT), materials requirement planning (MRP), economic order quantity (EOQ), and days sales of inventory (DSI).
+          <p>Four major inventory management methods include just-in-time management (JIT), materials requirement planning (MRP), economic order quantity (EOQ), and days sales of inventory (DSI). Each method has different applications depending on your business type and inventory needs. Learn more about <Link to="/glossary/just-in-time-inventory" className="text-blue-600 hover:underline font-semibold">just-in-time inventory</Link> and other <Link to="/glossary/inventory-management" className="text-blue-600 hover:underline font-semibold">inventory management</Link> techniques.
           </p>
           </AccordionContent>
         </AccordionItem>
@@ -407,7 +363,7 @@ Growing businesses scaling their inventory and operations
           </AccordionTrigger>
 
           <AccordionContent className="px-6 pb-5 text-gray-600 text-lg leading-relaxed">
-          <p>Inventory management is the process of overseeing and controlling supply levels to ensure the right products are available at the right time. Done well, it cuts costs, prevents stockouts, and boosts overall business efficiency. Published on August 28, 202413 minutes.
+          <p><strong>Inventory management</strong> is the process of overseeing and controlling supply levels to ensure the right products are available at the right time. Done well, it cuts costs, prevents stockouts, and boosts overall business efficiency. <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Online inventory management software</Link> automates this process with real-time tracking and automated workflows. Learn more about <Link to="/glossary/inventory-management" className="text-blue-600 hover:underline font-semibold">inventory management</Link> best practices and <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link>.
           </p>
           </AccordionContent>
         </AccordionItem>
@@ -415,7 +371,6 @@ Growing businesses scaling their inventory and operations
 
       </Accordion>
     
-
 
 
       {/* Quick Wins Section */}
@@ -426,7 +381,7 @@ Growing businesses scaling their inventory and operations
               Why Businesses Choose StockFlow Over Competitors
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Real results from real businesses using the best inventory management software.
+              Real results from real businesses using the best online inventory management software.
             </p>
           </div>
 
@@ -455,7 +410,7 @@ Growing businesses scaling their inventory and operations
 
           <div className="bg-blue-50 rounded-lg p-8 text-center">
             <h3 className="text-2xl font-bold mb-4">Join 500+ Companies Who Signed Up This Month</h3>
-            <p className="text-lg text-gray-600 mb-6">See why businesses are switching to StockFlow as their inventory management solution</p>
+            <p className="text-lg text-gray-600 mb-6">See why businesses are switching to StockFlow as their online inventory management solution</p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
                 <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -479,10 +434,10 @@ Growing businesses scaling their inventory and operations
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why StockFlow is the <span className="text-blue-600">Best Inventory Software</span>
+              Why StockFlow is the <span className="text-blue-600">Best Online Inventory Software</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Comprehensive features that make StockFlow the top choice for inventory management.
+              Comprehensive features that make StockFlow the top choice for online inventory management. Compare with <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> alternatives or explore <Link to="/solutions/inventory-management-software-cloud-based" className="text-blue-600 hover:underline font-semibold">cloud-based inventory management software</Link> options.
             </p>
           </div>
 
@@ -508,7 +463,7 @@ Growing businesses scaling their inventory and operations
               StockFlow vs <span className="text-blue-600">Competitors</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how StockFlow compares to other inventory management software solutions.
+              See how StockFlow compares to other online inventory management software solutions. Compare features, pricing, implementation time, and customer satisfaction across leading platforms. For more comparisons, see our <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide.
             </p>
           </div>
 
@@ -548,7 +503,7 @@ Growing businesses scaling their inventory and operations
               What Our <span className="text-blue-600">Customers Say</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Real feedback from businesses using the best inventory management software.
+              Real feedback from businesses using the best online inventory management software.
             </p>
           </div>
 
@@ -592,9 +547,9 @@ Growing businesses scaling their inventory and operations
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://www.stockflow.be/solutions/inventory-management-software-online",
-          "name": "Inventory Management Software Online",
-          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
-          "url": "https://www.stockflow.be/inventory-management-software-online",
+          "name": "Online Inventory Management Software 2025",
+          "description": "Get online inventory management software with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products.",
+          "url": "https://www.stockflow.be/solutions/inventory-management-software-online",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
@@ -619,8 +574,8 @@ Growing businesses scaling their inventory and operations
               {
                 "@type": "ListItem",
                 "position": 2,
-                "name": "Inventory Management Software Online",
-                "item": "https://www.stockflow.be/inventory-management-software-online"
+                "name": "Online Inventory Management Software",
+                "item": "https://www.stockflow.be/solutions/inventory-management-software-online"
               }
             ]
           }
@@ -628,8 +583,8 @@ Growing businesses scaling their inventory and operations
         {
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
-          "name": "Inventory Management Software Online",
-          "description": "The best inventory management software depends on your specific needs, with top options including NetSuite for comprehensive ERP, Cin7 for multichannel sales, inFlow Inventory for wholesale businesses, and Zoho Inventory for small businesses with a free plan available. Other popular and highly-rated choices include Odoo, Katana (especially for manufacturing), Sortly (for its intuitive interface), and Unleashed (for scaling businesses).",
+          "name": "StockFlow - Online Inventory Management Software",
+          "description": "Online inventory management software with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products.",
           "applicationCategory": "BusinessApplication",
           "applicationSubCategory": "Inventory Management Software",
           "operatingSystem": "Web Browser",
@@ -648,14 +603,6 @@ Growing businesses scaling their inventory and operations
               "price": "0.004",
               "priceCurrency": "EUR",
               "description": "Business plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)",
-              "availability": "https://schema.org/InStock",
-              "priceValidUntil": "2026-12-31"
-            },
-            {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "EUR",
-              "description": "Enterprise plan - Custom pricing for high-volume businesses (10,000+ products)",
               "availability": "https://schema.org/InStock",
               "priceValidUntil": "2026-12-31"
             }
@@ -698,7 +645,9 @@ Growing businesses scaling their inventory and operations
             "Automated reorder points",
             "Comprehensive analytics",
             "Multi-user collaboration",
-            "Enterprise security"
+            "Enterprise security",
+            "Cloud-based access",
+            "Mobile app support"
           ],
           "downloadUrl": "https://www.stockflow.be/auth",
           "softwareHelp": {
@@ -729,5 +678,3 @@ Growing businesses scaling their inventory and operations
     </SeoPageLayout>
   );
 }
-
-

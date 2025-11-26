@@ -207,20 +207,20 @@ export default function AlertsPage() {
       faqData={faqData}
     >
       <SEO
-        title="Alerts 2025 - Alerts 2025 -"
-        description="Learn how alerts to optimize your inventory management. Learn how alerts to save time and money. Discover StockFlow. Get started free. StockFlow helps busine..."
-        keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow scan, omnichannel inventory accuracy"
+        title="Inventory Alerts 2025 - Automated Stock Notifications | StockFlow"
+        description="Automated inventory alerts notify you of low stock, reorder points, stockouts, and expiration dates. Real-time notifications via email, SMS, or in-app. Prevent stockouts and optimize inventory levels. Start free trial."
+        keywords="inventory alerts, stock alerts, low stock alerts, reorder alerts, inventory notifications, stock level alerts, inventory management alerts, automated inventory alerts, stockout alerts, inventory alert system, stockflow"
         url="https://www.stockflow.be/alerts"
         structuredData={structuredData}
       />
 
       {/* Introduction */}
       <div className="mb-12">
-        <p className="text-lg black leading-relaxed mb-6">
-          Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
+        <p className="text-lg text-black leading-relaxed mb-6">
+          Inventory alerts are automated notifications that warn you when stock levels are low, when items need reordering, when there are discrepancies, or when important inventory events occur. These alerts help you maintain optimal stock levels and prevent stockouts.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Inventory alerts are automated notifications that warn you when stock levels are low, when items need reordering, when there are discrepancies, or when important inventory events occur.
+          StockFlow's alert system monitors your inventory in real-time and sends notifications via email, SMS, or in-app alerts when predefined conditions are met. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/features/barcode-scanning-inventory" className="text-blue-600 hover:underline font-semibold">barcode scanning</Link> features.
         </p>
       </div>
 
@@ -229,10 +229,10 @@ export default function AlertsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Barcode Scanning Built for High-Velocity Operations
+              Automated Inventory Alerts for Better Control
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow Scan powers inventory teams with rapid data capture, validation, and automation—without the friction of installing traditional scanning apps.
+              StockFlow's alert system provides real-time notifications for low stock, reorder points, stockouts, expiration dates, and custom conditions—helping you maintain optimal inventory levels and prevent costly stockouts.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -255,9 +255,9 @@ export default function AlertsPage() {
       <div id="how-it-works" className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">How StockFlow Scan Works</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">How Inventory Alerts Work</h2>
             <p className="text-lg text-gray-600">
-              A guided scanning workflow that keeps teams fast, compliant, and confident at every step.
+              Automated notifications that keep you informed about inventory status, helping you maintain optimal stock levels and prevent stockouts.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
@@ -284,9 +284,9 @@ export default function AlertsPage() {
       <div className="bg-gradient-to-r from-indigo-50 via-white to-blue-50 py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold mb-4">Support for the Codes Your Supply Chain Runs On</h2>
+            <h2 className="text-3xl font-bold mb-4">Types of Inventory Alerts</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              StockFlow reads common retail symbologies, GS1 identifiers, and 2D codes so you can consolidate scanning workflows into one platform.
+              StockFlow supports multiple alert types to keep you informed about inventory status, helping you maintain optimal stock levels and prevent costly stockouts.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">

@@ -11,52 +11,56 @@ const canonicalPath = "/blog/buffer-stock";
 const metaDescription = "What is buffer stock? Learn buffer stock definition, how to calculate buffer stock, and why buffer stock is important for preventing stockouts and ensuring supply continuity.";
 const keywords = "buffer stock, buffer stock definition, buffer stock calculation, safety stock buffer, buffer inventory, buffer stock formula, what is buffer stock";
 const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore Buffer Stock through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Buffer stock (also called safety stock) is extra inventory kept on hand to prevent stockouts due to demand variability, supplier delays, or unexpected issues. Purpose: prevent stockouts (ensure items available when needed), handle demand spikes (unexpected increases), account for supplier delays (late deliveries), and provide cushion for uncertainty. Calculation: Buffer Stock = (Maximum Daily Usage × Maximum Lead Time) - (Average Daily Usage × Average Lead Time). Factors affecting buffer stock: demand variability (higher variability needs more buffer), supplier reliability (unreliable suppliers need more buffer), item criticality (critical items need more buffer), and lead time variability. Buffer stock prevents stockouts but increases carrying costs, so balance is important.";
 const takeaways = [
-  "Understand the core themes behind Buffer Stock and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Buffer Stock into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make buffer stock sustainable at scale."
+  "Buffer stock (safety stock) is extra inventory kept to prevent stockouts due to demand variability, supplier delays, or unexpected issues. Purpose: prevent stockouts, handle demand spikes, account for supplier delays, and provide cushion.",
+  "Calculation: Buffer Stock = (Maximum Daily Usage × Maximum Lead Time) - (Average Daily Usage × Average Lead Time). Factors: demand variability, supplier reliability, item criticality, and lead time variability.",
+  "Buffer stock prevents stockouts but increases carrying costs. Balance is important: too little causes stockouts, too much ties up capital. Use inventory management software to calculate and manage buffer stock levels."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what buffer stock should deliver for customers, finance, and frontline teams."
+    "title": "Calculate buffer stock",
+    "description": "Calculate buffer stock for each item using formula: Buffer Stock = (Maximum Daily Usage × Maximum Lead Time) - (Average Daily Usage × Average Lead Time). Consider demand variability, supplier reliability, and item criticality when setting levels."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how buffer stock happens today, where gaps exist, and which systems hold the data."
+    "title": "Set reorder points",
+    "description": "Set reorder points that include buffer stock: Reorder Point = (Average Daily Usage × Average Lead Time) + Buffer Stock. This ensures reordering happens before stockouts occur."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of buffer stock inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Monitor and adjust",
+    "description": "Regularly review buffer stock levels based on actual demand patterns, supplier performance, and stockout frequency. Adjust levels to balance stockout prevention with carrying costs."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly buffer stock initiatives move from idea to rollout."
+    "label": "Stockout prevention",
+    "detail": "Measure reduction in stockouts from buffer stock. Effective buffer stock should minimize stockouts while keeping carrying costs reasonable. Target less than 2% stockout rate."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new buffer stock process across locations or departments."
+    "label": "Carrying costs",
+    "detail": "Monitor carrying costs from buffer stock. Balance buffer stock levels to prevent stockouts without excessive carrying costs. Review and adjust based on actual performance."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to buffer stock workflows."
+    "label": "Buffer stock optimization",
+    "detail": "Track how well buffer stock levels match actual needs. Regular review and adjustment ensure optimal levels that prevent stockouts without excessive costs."
   }
 ];
 const faqData = [
   {
-    "question": "What is Buffer Stock?",
-    "answer": "Buffer Stock refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is buffer stock?",
+    "answer": "Buffer stock (also called safety stock) is extra inventory kept on hand to prevent stockouts due to demand variability, supplier delays, or unexpected issues. Purpose: prevent stockouts, handle demand spikes, account for supplier delays, and provide cushion for uncertainty."
   },
   {
-    "question": "How can I get started with buffer stock?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot buffer stock within one team, then expand once you capture early wins."
+    "question": "How do you calculate buffer stock?",
+    "answer": "Calculate using formula: Buffer Stock = (Maximum Daily Usage × Maximum Lead Time) - (Average Daily Usage × Average Lead Time). Factors affecting buffer stock include: demand variability (higher variability needs more buffer), supplier reliability (unreliable suppliers need more buffer), item criticality (critical items need more buffer), and lead time variability."
   },
   {
-    "question": "Where does StockFlow add value for buffer stock?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of buffer stock with real-time dashboards."
+    "question": "Why is buffer stock important?",
+    "answer": "Important because it prevents stockouts (ensures items available when needed), handles demand spikes (unexpected increases), accounts for supplier delays (late deliveries), and provides cushion for uncertainty. Buffer stock improves service levels and customer satisfaction."
+  },
+  {
+    "question": "What's the difference between buffer stock and safety stock?",
+    "answer": "Buffer stock and safety stock are the same thing - extra inventory kept to prevent stockouts. Both terms refer to the same concept: additional inventory maintained as a cushion against demand variability, supplier delays, and unexpected issues."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoBufferStockPage() {
       
     >
       <SEO
-        title={`Buffer Stock 2025 - Buffer Stock 2025`}
+        title={`Buffer Stock 2025 - Definition, Calculation & Importance | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

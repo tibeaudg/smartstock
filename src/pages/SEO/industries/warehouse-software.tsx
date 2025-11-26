@@ -213,8 +213,8 @@ export default function WarehouseSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Warehouse Software 2025 - Warehouse Software 2025"
-        description="Find out how warehouse software to optimize your inventory management. Find out how warehouse software to save time and money.. Get started free. StockFlow h..."
+        title="Warehouse Software 2025 - Best WMS Solutions | StockFlow"
+        description="Best warehouse software for distribution centers. Inventory tracking, shipping integration, picking optimization, receiving management. Reduce costs by 25%, improve efficiency by 40%. Start free trial."
         keywords="warehouse software, warehouse management software, warehouse management system, WMS software, warehouse operations software, warehouse tracking software, warehouse inventory software, warehouse automation software, warehouse optimization software, warehouse management solution, warehouse software for small business, best warehouse software, warehouse software comparison, warehouse software features, warehouse software pricing, warehouse software demo, warehouse software trial, warehouse software reviews"
         url="https://www.stockflow.be/warehouse-software"
         structuredData={structuredData}

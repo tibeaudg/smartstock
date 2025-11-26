@@ -41,7 +41,7 @@ const glossarySections: GlossarySection[] = [
       {
         term: 'Asset Tracking',
         summary:
-          'Asset tracking is the process of continually managing the assets your business owns—such as equipment, tools, and technology—as they change hands, locations, and value.',
+          'Asset tracking is the process of continually managing the assets your business ownsï¿½such as equipment, tools, and technologyï¿½as they change hands, locations, and value.',
         href: '/asset-tracking',
       },
     ],
@@ -101,7 +101,7 @@ const glossarySections: GlossarySection[] = [
       {
         term: 'Inventory Asset',
         summary:
-          'Inventory assets are reusable items a company owns—such as equipment or machinery—that support the creation of products or services.',
+          'Inventory assets are reusable items a company ownsï¿½such as equipment or machineryï¿½that support the creation of products or services.',
         href: '/glossary/inventory-asset',
       },
       {
@@ -131,7 +131,7 @@ const glossarySections: GlossarySection[] = [
       {
         term: 'Inventory Optimization',
         summary:
-          'Inventory optimization keeps inventory levels “just right” so you can satisfy demand while avoiding stockouts, overstock, and obsolescence.',
+          'Inventory optimization keeps inventory levels ï¿½just rightï¿½ so you can satisfy demand while avoiding stockouts, overstock, and obsolescence.',
         href: '/glossary/inventory-optimization',
       },
       {
@@ -308,8 +308,8 @@ export default function GlossaryHomePage() {
       heroTitle="Your Guide to Inventory Management Terms"
     >
       <SEO
-        title="Index 2025 - Index 2025 -"
-        description="Find out how index to save time and money. Discover how index to choose the best software. Explore the. Try free now. StockFlow helps businesses manage inven..."
+        title="Inventory Management Glossary 2025 - Complete Terms & Definitions | StockFlow"
+        description="Complete inventory management glossary with definitions of key terms, concepts, and formulas. Learn inventory management terminology from ABC analysis to zero inventory. Free resource."
         keywords="inventory glossary, warehouse glossary, supply chain glossary, inventory definitions, stockflow glossary"
         url="https://www.stockflow.be/glossary"
       />

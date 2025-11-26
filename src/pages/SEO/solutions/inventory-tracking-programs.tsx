@@ -161,7 +161,7 @@ export default function InventoryTrackingPrograms() {
     >
       <SEO
         title="Inventory Tracking Programs 2025 - Real-Time Stock Tracking | StockFlow"
-        description="Best inventory tracking programs for businesses. Real-time tracking, barcode scanning, automated alerts, multi-location support. Free plan available. Start tracking inventory today."
+        description="Best inventory tracking programs for businesses. Real-time tracking, barcode scanning, automated alerts, multi-location support. Free plan for up to 100 products. Start free trial."
         keywords="inventory tracking programs, inventory tracking software, inventory tracking program, inventory tracking system, inventory tracking app, inventory tracking solution, inventory tracking platform, inventory tracking tool, inventory tracking software free, inventory tracking program free, best inventory tracking program, inventory tracking software for small business, inventory tracking software online, cloud inventory tracking, inventory tracking software comparison, inventory tracking software reviews, inventory tracking software features, inventory tracking software cost, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-tracking-programs"
       />

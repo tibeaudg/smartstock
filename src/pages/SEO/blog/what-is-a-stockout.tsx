@@ -11,52 +11,56 @@ const canonicalPath = "/blog/what-is-a-stockout";
 const metaDescription = "What is a stockout? Learn stockout definition, causes, costs, and how to prevent stockouts with proper inventory management, safety stock, and reorder points.";
 const keywords = "what is a stockout, stockout definition, stockout meaning, prevent stockouts, stockout costs, inventory stockout, out of stock";
 const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore What Is A Stockout through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "A stockout occurs when inventory for a product is completely depleted and unavailable for sale. Stockouts result in lost sales, customer dissatisfaction, and potential long-term damage to brand reputation. Common causes include inaccurate demand forecasting, delayed supplier deliveries, inadequate safety stock, and poor inventory management. Preventing stockouts requires accurate tracking, automated reorder points, safety stock buffers, and reliable supplier relationships.";
 const takeaways = [
-  "Understand the core themes behind What Is A Stockout and why they matter for modern operations teams.",
-  "Follow a structured framework to translate What Is A Stockout into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make what is a stockout sustainable at scale."
+  "Stockouts occur when inventory is completely depleted, resulting in lost sales, customer dissatisfaction, and potential long-term revenue loss.",
+  "Common causes include inaccurate forecasting, supplier delays, inadequate safety stock, poor inventory tracking, and unexpected demand spikes.",
+  "Prevention strategies include automated reorder points, safety stock buffers, accurate demand forecasting, reliable suppliers, and real-time inventory visibility."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what what is a stockout should deliver for customers, finance, and frontline teams."
+    "title": "Set up automated reorder points",
+    "description": "Calculate optimal reorder points based on lead times and average demand. Configure automated alerts that notify you when inventory reaches reorder levels, ensuring you order before stockouts occur."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how what is a stockout happens today, where gaps exist, and which systems hold the data."
+    "title": "Maintain safety stock",
+    "description": "Keep safety stock buffers to protect against demand variability and supplier delays. Calculate safety stock based on demand uncertainty and lead time variability to prevent stockouts."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of what is a stockout inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Improve demand forecasting",
+    "description": "Use historical sales data and trends to forecast demand more accurately. Adjust forecasts for seasonality, promotions, and market changes to better predict inventory needs."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly what is a stockout initiatives move from idea to rollout."
+    "label": "Stockout frequency",
+    "detail": "Track how often items go out of stock. Aim to reduce stockouts by 40-60% through better forecasting, automated reordering, and safety stock optimization."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new what is a stockout process across locations or departments."
+    "label": "Lost sales from stockouts",
+    "detail": "Estimate revenue lost due to stockouts. Calculate by multiplying out-of-stock days by average daily sales. This metric highlights the true cost of stockouts."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to what is a stockout workflows."
+    "label": "Stockout recovery time",
+    "detail": "Measure how quickly inventory is replenished after a stockout. Faster recovery minimizes customer impact and lost sales opportunities."
   }
 ];
 const faqData = [
   {
-    "question": "What is What Is A Stockout?",
-    "answer": "What Is A Stockout refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is a stockout?",
+    "answer": "A stockout occurs when inventory for a product is completely depleted and unavailable for sale. Stockouts result in lost sales, customer dissatisfaction, and potential long-term damage to brand reputation. They happen when demand exceeds available inventory and no safety stock is maintained."
   },
   {
-    "question": "How can I get started with what is a stockout?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot what is a stockout within one team, then expand once you capture early wins."
+    "question": "What causes stockouts?",
+    "answer": "Common causes include inaccurate demand forecasting, delayed supplier deliveries, inadequate safety stock, poor inventory tracking, unexpected demand spikes, production delays, and supply chain disruptions. Poor inventory management practices are the root cause of most stockouts."
   },
   {
-    "question": "Where does StockFlow add value for what is a stockout?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of what is a stockout with real-time dashboards."
+    "question": "How do you prevent stockouts?",
+    "answer": "Prevent stockouts by setting automated reorder points, maintaining safety stock buffers, improving demand forecasting, using inventory management software for real-time visibility, building reliable supplier relationships, and conducting regular inventory audits to maintain accuracy."
+  },
+  {
+    "question": "What is the cost of a stockout?",
+    "answer": "Stockout costs include lost sales revenue, customer dissatisfaction (potential long-term revenue loss), rush shipping costs to expedite replenishment, and damage to brand reputation. Studies show that stockouts can cost businesses 10-20% of potential revenue for affected items."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoWhatIsAStockoutPage() {
       
     >
       <SEO
-        title={`What Is A Stockout 2025 - What Is A`}
+        title={`What Is A Stockout 2025 - Definition, Causes & Prevention | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
@@ -119,18 +123,20 @@ export default function SeoWhatIsAStockoutPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Stockout?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              A <strong>stockout</strong> occurs when inventory for a product is completely depleted and unavailable for sale. Stockouts are a critical inventory problem that results in lost sales, customer dissatisfaction, and potential long-term damage to brand reputation. When customers can't find the products they want, they may take their business elsewhere, resulting in immediate revenue loss and potentially losing customers permanently.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Stockouts happen when demand exceeds available inventory and no safety stock is maintained to buffer against variability. Common causes include inaccurate demand forecasting, delayed supplier deliveries, inadequate safety stock levels, poor inventory tracking, unexpected demand spikes, and supply chain disruptions. The cost of stockouts extends beyond lost sales—it includes customer dissatisfaction, rush shipping costs, and damage to brand reputation.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Preventing stockouts requires accurate inventory tracking, automated reorder points, safety stock buffers, reliable supplier relationships, and real-time visibility. Learn more about <Link to="/blog/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
+              <h3 className="text-xl font-semibold">Why preventing stockouts matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                Stockouts cost businesses 10-20% of potential revenue for affected items. Beyond lost sales, they damage customer relationships and brand reputation. Studies show that 30-40% of customers will shop elsewhere if they experience a stockout, and many won't return. Preventing stockouts through proper inventory management is essential for maintaining profitability and customer satisfaction.
               </p>
             </div>
           </div>
@@ -224,21 +230,21 @@ export default function SeoWhatIsAStockoutPage() {
             </div>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
+                <h3 className="text-lg font-semibold">Automated reorder alerts</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so what is a stockout decisions never rely on outdated spreadsheets.
+                  Set automated reorder points and get instant alerts when inventory reaches critical levels. StockFlow automatically calculates optimal reorder points based on lead times and demand patterns, preventing stockouts before they happen.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
+                <h3 className="text-lg font-semibold">Safety stock management</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when what is a stockout KPIs drift from plan.
+                  Maintain safety stock buffers to protect against demand spikes and supplier delays. StockFlow helps you calculate optimal safety stock levels and automatically includes them in reorder calculations.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
+                <h3 className="text-lg font-semibold">Real-time visibility</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for what is a stockout progress.
+                  See inventory levels in real-time across all locations. Get instant notifications when stock is low or out, enabling quick action to prevent stockouts and minimize customer impact.
                 </p>
               </div>
             </div>

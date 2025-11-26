@@ -183,7 +183,7 @@ export default function StockManagementSoftware() {
     >
       <SEO
         title="Stock Management Software 2025 - Real-Time Inventory Control | StockFlow"
-        description="Professional stock management software for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free trial available."
+        description="Professional stock management software for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Start free trial."
         keywords="stock management software, inventory software, stock control, warehouse software, SMB stock, small business inventory, stock tracking software, inventory management for small business, stock management system, stock control software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/stock-management-software"
         locale="en"
@@ -213,7 +213,7 @@ export default function StockManagementSoftware() {
                 Stock management software maintains real-time visibility into inventory levels across all locations, tracking every movement including receipts, sales, transfers, and adjustments. The system automatically calculates current stock levels, provides alerts when stock reaches reorder points, and generates reports for analysis and decision-making.
               </p>
               <p className="text-gray-700">
-                The software integrates seamlessly with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> solutions, providing a complete platform for inventory control. This integration ensures that stock data flows automatically into management systems, enabling informed decision-making and automated workflows.
+                The software integrates seamlessly with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> solutions, providing a complete platform for inventory control. This integration ensures that stock data flows automatically into management systems, enabling informed decision-making and automated workflows. Explore <Link to="/solutions/stock-management" className="text-blue-600 hover:text-blue-800 underline">stock management</Link> solutions or learn about <Link to="/solutions/simple-stock-management" className="text-blue-600 hover:text-blue-800 underline">simple stock management</Link> options.
               </p>
             </div>
 

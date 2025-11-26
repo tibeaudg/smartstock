@@ -11,52 +11,56 @@ const canonicalPath = "/blog/what-is-the-best-way-to-count-inventory";
 const metaDescription = "What is the best way to count inventory? Compare physical counts, cycle counting, and automated methods. Learn best practices for accurate inventory counting.";
 const keywords = "best way to count inventory, how to count inventory, inventory counting methods, inventory count, cycle counting, physical inventory count, inventory counting best practices";
 const heroBadge = "Topic Guide • Updated July 2024";
-const summaryCopy = "Explore What Is The Best Way To Count Inventory through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "The best way to count inventory depends on your business size and needs. For most businesses, cycle counting (counting a subset of inventory regularly) is more efficient than full physical counts. Use barcode scanning for accuracy and speed, count high-value or fast-moving items more frequently, and use inventory management software to track counts and identify discrepancies. Cycle counting maintains accuracy without disrupting operations, while full physical counts are typically done annually.";
 const takeaways = [
-  "Understand the core themes behind What Is The Best Way To Count Inventory and why they matter for modern operations teams.",
-  "Follow a structured framework to translate What Is The Best Way To Count Inventory into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make what is the best way to count inventory sustainable at scale."
+  "Cycle counting (counting subsets regularly) is more efficient than full physical counts, maintaining accuracy without disrupting operations.",
+  "Barcode scanning improves counting accuracy to 99.9% and speeds up the process by 5-10x compared to manual counting methods.",
+  "Best practices include counting high-value items more frequently, using inventory management software, training staff, and investigating discrepancies immediately."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what what is the best way to count inventory should deliver for customers, finance, and frontline teams."
+    "title": "Implement cycle counting",
+    "description": "Replace annual physical counts with regular cycle counts. Count high-value or fast-moving items weekly or monthly, and slower items quarterly. This maintains accuracy without shutting down operations."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how what is the best way to count inventory happens today, where gaps exist, and which systems hold the data."
+    "title": "Use barcode scanning",
+    "description": "Scan barcodes instead of manually counting. Barcode scanning achieves 99.9% accuracy and speeds up counting by 5-10x. Use mobile apps or handheld scanners for efficient counting."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of what is the best way to count inventory inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Investigate discrepancies immediately",
+    "description": "When counts don't match records, investigate immediately. Check recent transactions, look for data entry errors, and verify if items were moved. Quick investigation helps identify and prevent future discrepancies."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly what is the best way to count inventory initiatives move from idea to rollout."
+    "label": "Counting accuracy rate",
+    "detail": "Measure the percentage of items counted correctly. Target 99%+ accuracy. Track improvements over time and identify areas where accuracy is lower to focus training efforts."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new what is the best way to count inventory process across locations or departments."
+    "label": "Counting efficiency",
+    "detail": "Track how long it takes to count inventory. Barcode scanning typically reduces counting time by 5-10x compared to manual methods. Measure items counted per hour to track efficiency."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to what is the best way to count inventory workflows."
+    "label": "Discrepancy rate",
+    "detail": "Monitor how often physical counts don't match system records. Lower discrepancy rates indicate better inventory control. Target less than 2% discrepancy rate for most businesses."
   }
 ];
 const faqData = [
   {
-    "question": "What is What Is The Best Way To Count Inventory?",
-    "answer": "What Is The Best Way To Count Inventory refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is the best way to count inventory?",
+    "answer": "The best way is cycle counting with barcode scanning. Cycle counting involves counting subsets of inventory regularly (weekly/monthly for high-value items) rather than doing full physical counts. Barcode scanning improves accuracy to 99.9% and speeds up counting by 5-10x. Use inventory management software to track counts and identify discrepancies."
   },
   {
-    "question": "How can I get started with what is the best way to count inventory?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot what is the best way to count inventory within one team, then expand once you capture early wins."
+    "question": "What is cycle counting vs physical inventory?",
+    "answer": "Cycle counting counts a subset of inventory regularly (e.g., 20% each month), maintaining accuracy without disrupting operations. Physical inventory counts everything at once, typically annually, requiring operations to shut down. Cycle counting is more efficient and maintains better ongoing accuracy."
   },
   {
-    "question": "Where does StockFlow add value for what is the best way to count inventory?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of what is the best way to count inventory with real-time dashboards."
+    "question": "How often should I count inventory?",
+    "answer": "Count high-value or fast-moving items weekly or monthly, medium-value items monthly or quarterly, and low-value items quarterly or annually. The frequency depends on item value, turnover rate, and accuracy requirements. More frequent counts maintain better accuracy."
+  },
+  {
+    "question": "What tools help with inventory counting?",
+    "answer": "Use barcode scanners or mobile apps for accuracy and speed, inventory management software to track counts and identify discrepancies, cycle counting schedules to organize regular counts, and trained staff following standardized procedures. Modern tools reduce counting time by 5-10x and improve accuracy to 99.9%."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoWhatIsTheBestWayToCountInventoryPage() {
       
     >
       <SEO
-        title={`What Is The Best Way To Count Inventory 2025`}
+        title={`What Is The Best Way To Count Inventory 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
@@ -119,18 +123,20 @@ export default function SeoWhatIsTheBestWayToCountInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is the Best Way to Count Inventory?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              The <strong>best way to count inventory</strong> depends on your business size, inventory value, and accuracy requirements. For most businesses, <strong>cycle counting</strong> (counting subsets of inventory regularly) is more efficient than full physical counts. Combined with <strong>barcode scanning</strong>, this approach maintains 99.9% accuracy while minimizing operational disruption.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Cycle counting involves counting different inventory items on a rotating schedule—high-value or fast-moving items weekly or monthly, and slower items quarterly. This maintains ongoing accuracy without shutting down operations. Barcode scanning improves counting accuracy to 99.9% and speeds up the process by 5-10x compared to manual counting. Full physical counts are typically done annually for financial reporting.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Best practices include using inventory management software to track counts, training staff on proper procedures, investigating discrepancies immediately, and counting high-value items more frequently. Learn more about <Link to="/blog/how-to-perform-an-inventory-cycle-count" className="text-blue-600 hover:underline font-semibold">cycle counting</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with counting features.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
+              <h3 className="text-xl font-semibold">Why efficient counting matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                Accurate inventory counts prevent stockouts, reduce overstocking, identify shrinkage, and ensure financial records are correct. Efficient counting methods (cycle counting with barcode scanning) maintain accuracy without disrupting operations, saving time and reducing costs. Poor counting leads to inaccurate records, stockouts, and financial discrepancies.
               </p>
             </div>
           </div>
@@ -224,21 +230,21 @@ export default function SeoWhatIsTheBestWayToCountInventoryPage() {
             </div>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
+                <h3 className="text-lg font-semibold">Mobile cycle counting</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so what is the best way to count inventory decisions never rely on outdated spreadsheets.
+                  Count inventory using mobile apps with barcode scanning. StockFlow's mobile app enables fast, accurate counting from anywhere. Scan barcodes, enter counts, and sync data instantly—no paper lists or manual data entry needed.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
+                <h3 className="text-lg font-semibold">Automated count scheduling</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when what is the best way to count inventory KPIs drift from plan.
+                  Schedule cycle counts automatically based on item value, turnover, or custom rules. StockFlow helps you organize regular counts, assign tasks to staff, and track completion without disrupting operations.
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
+                <h3 className="text-lg font-semibold">Discrepancy tracking</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for what is the best way to count inventory progress.
+                  Automatically identify and flag discrepancies when counts don't match records. StockFlow highlights differences, tracks investigation status, and helps you resolve issues quickly to maintain accuracy.
                 </p>
               </div>
             </div>

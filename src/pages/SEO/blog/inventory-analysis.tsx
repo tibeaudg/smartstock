@@ -11,52 +11,56 @@ const canonicalPath = "/blog/inventory-analysis";
 const metaDescription = "Complete guide to inventory analysis. Learn how to analyze inventory performance, identify slow-moving items, optimize stock levels, and make data-driven inventory decisions.";
 const keywords = "inventory analysis, inventory analytics, inventory reporting, inventory performance analysis, inventory metrics, inventory KPIs, inventory data analysis, stock analysis";
 const heroBadge = "Topic Guide • Updated November 2025";
-const summaryCopy = "Explore Inventory Analysis through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Inventory analysis is the process of examining inventory data to identify trends, optimize stock levels, identify slow-moving items, and make data-driven decisions. Key analyses include: inventory turnover analysis, ABC analysis (classifying items by value), days sales of inventory (DSI), slow-moving item identification, and stockout analysis. Effective analysis helps businesses optimize inventory levels, reduce costs by 20-30%, improve cash flow, and make better purchasing decisions.";
 const takeaways = [
-  "Understand the core themes behind Inventory Analysis and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Inventory Analysis into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make inventory analysis sustainable at scale."
+  "Inventory analysis examines data to identify trends, optimize stock levels, identify slow-moving items, and make data-driven decisions.",
+  "Key analyses include turnover rates, ABC analysis (classifying by value), days sales of inventory, slow-moving items, and stockout frequency.",
+  "Effective analysis helps optimize inventory levels, reduce costs by 20-30%, improve cash flow, and enable better purchasing decisions."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what inventory analysis should deliver for customers, finance, and frontline teams."
+    "title": "Collect inventory data",
+    "description": "Gather comprehensive inventory data including sales history, stock levels, turnover rates, and costs. Use inventory management software to automatically collect and organize this data for analysis."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how inventory analysis happens today, where gaps exist, and which systems hold the data."
+    "title": "Perform key analyses",
+    "description": "Conduct turnover analysis, ABC analysis (classify items by value), identify slow-moving items, calculate days sales of inventory, and analyze stockout patterns. These analyses reveal optimization opportunities."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of inventory analysis inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Take action on insights",
+    "description": "Use analysis results to optimize stock levels, discontinue slow-moving items, adjust reorder points, improve forecasting, and make data-driven purchasing decisions."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly inventory analysis initiatives move from idea to rollout."
+    "label": "Analysis-driven improvements",
+    "detail": "Track improvements from analysis insights: inventory turnover improvements, cost reductions, stockout reductions, and cash flow improvements. Effective analysis typically reduces costs by 20-30%."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new inventory analysis process across locations or departments."
+    "label": "Slow-moving item reduction",
+    "detail": "Measure reduction in slow-moving items through analysis-driven decisions. Identify and discontinue or discount slow-moving items to free up capital and warehouse space."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to inventory analysis workflows."
+    "label": "Turnover optimization",
+    "detail": "Monitor improvements in inventory turnover rates from analysis-driven optimization. Higher turnover indicates better inventory management and improved cash flow."
   }
 ];
 const faqData = [
   {
-    "question": "What is Inventory Analysis?",
-    "answer": "Inventory Analysis refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is inventory analysis?",
+    "answer": "Inventory analysis is the process of examining inventory data to identify trends, optimize stock levels, identify slow-moving items, and make data-driven decisions. Key analyses include turnover rates, ABC analysis, days sales of inventory, slow-moving items, and stockout patterns."
   },
   {
-    "question": "How can I get started with inventory analysis?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot inventory analysis within one team, then expand once you capture early wins."
+    "question": "What are the key inventory analysis metrics?",
+    "answer": "Key metrics include: inventory turnover ratio (how many times inventory is sold per year), days sales of inventory (DSI - how many days of inventory you hold), ABC analysis (classifying items by value), slow-moving item identification, and stockout frequency. These metrics help optimize inventory levels."
   },
   {
-    "question": "Where does StockFlow add value for inventory analysis?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of inventory analysis with real-time dashboards."
+    "question": "How do you analyze inventory performance?",
+    "answer": "Analyze performance by: calculating turnover rates, conducting ABC analysis to classify items by value, identifying slow-moving items, calculating days sales of inventory, analyzing stockout patterns, and reviewing carrying costs. Use inventory management software to automate these analyses."
+  },
+  {
+    "question": "What is ABC analysis in inventory?",
+    "answer": "ABC analysis classifies inventory items into three categories: A items (high value, low quantity - require tight control), B items (moderate value and quantity - standard control), and C items (low value, high quantity - simple control). This helps prioritize management efforts and optimize stock levels."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoInventoryAnalysisPage() {
       
     >
       <SEO
-        title={`Inventory Analysis 2025 - Inventory Analysis 2025`}
+        title={`Inventory Analysis 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

@@ -123,8 +123,8 @@ export default function MobielVoorraadbeheer() {
       faqData={faqData}
     >
       <SEO
-        title="Mobiel Voorraadbeheer 2025 - Mobiel Voorraadbeheer 2025"
-        description="Ontdek hoe mobiel voorraadbeheer de beste software te kiezen. Bekijk hoe mobiel voorraadbeheer uw processen te automatiseren. Mobiel voorraadbeheer:. Krijg d..."
+        title="Mobiel Voorraadbeheer 2025 - App & Barcode Scanning | StockFlow"
+        description="Mobiel voorraadbeheer met smartphone app. Barcode scanning, offline modus, real-time updates. Beheer voorraad onderweg. Start gratis vandaag."
         keywords="mobiel voorraadbeheer, voorraadbeheer app, voorraadbeheer smartphone, voorraadbeheer tablet, mobiele voorraadbeheer software, voorraadbeheer mobiel, voorraadbeheer app downloaden, voorraadbeheer iOS, voorraadbeheer Android, voorraadbeheer offline, voorraadbeheer barcode scanning, voorraadbeheer realtime, voorraadbeheer team, voorraadbeheer onderweg"
         url="https://www.stockflow.be/mobiel-voorraadbeheer"
       />

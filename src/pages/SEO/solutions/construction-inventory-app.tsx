@@ -191,9 +191,9 @@ export default function ConstructionInventoryApp() {
       faqData={faqData}
     >
       <SEO
-        title="Construction Inventory App 2025 | Free Plan | StockFlow"
-        description="Learn how construction inventory apps help track materials and equipment from job sites. Mobile scanning, offline capability, real-time updates. Start free today."
-        keywords="construction inventory app, construction inventory mobile app, construction materials app, job site inventory app, construction inventory tracking app, mobile construction inventory, construction inventory software mobile, construction app inventory, construction materials tracking app, construction inventory management app"
+        title="Construction Inventory App 2025 | Mobile Job Site Tracking | StockFlow"
+        description="Mobile construction inventory app for job sites. Offline capability, barcode scanning, multi-site tracking. Track materials and equipment from anywhere. Reduce theft, save 10+ hours weekly. Free plan for up to 100 products. Start free trial."
+        keywords="construction inventory app, construction inventory mobile app, construction materials app, job site inventory app, construction inventory tracking app, mobile construction inventory, construction inventory software mobile, construction app inventory, construction materials tracking app, construction inventory management app, mobile construction inventory management, construction site inventory app"
         url="https://www.stockflow.be/solutions/construction-inventory-app"
         structuredData={[structuredData, faqStructuredData]}
       />
@@ -203,15 +203,11 @@ export default function ConstructionInventoryApp() {
       <section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            A <strong>construction inventory app</strong> is mobile software that enables construction workers to track materials, tools, and equipment directly from job sites using smartphones or tablets. Unlike desktop inventory systems that require workers to return to the office, construction inventory apps enable field workers to scan materials, update stock levels, check availability, and request deliveries directly from job sites, even without internet connectivity.
+            A <strong>construction inventory app</strong> is mobile software that enables construction workers to track materials, tools, and equipment directly from job sites using smartphones or tablets. Unlike desktop inventory systems that require workers to return to the office, construction inventory apps enable field workers to scan materials, update stock levels, check availability, and request deliveries directly from job sites, even without internet connectivity. This real-time capability prevents delays, reduces errors, and improves overall project efficiency.
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Construction sites face unique challenges: remote locations with poor internet connectivity, materials stored across multiple job sites, and the need for real-time inventory updates. Mobile <Link to="/mobile-inventory-management" className="text-blue-600 hover:underline font-semibold">mobile inventory management</Link> apps like StockFlow solve these challenges with offline capability, multi-job site tracking, and real-time sync when connectivity is available.
-          </p>
-
-          <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Learn more about <Link to="/solutions/construction-inventory-management-system" className="text-blue-600 hover:underline font-semibold">construction inventory management systems</Link> for comprehensive construction inventory solutions, or explore <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for general inventory control.
+            Construction sites face unique challenges: remote locations with poor internet connectivity, materials stored across multiple job sites, and the need for real-time inventory updates. Mobile <Link to="/features/barcode-scanning-inventory" className="text-blue-600 hover:underline font-semibold">mobile inventory management</Link> apps like StockFlow solve these challenges with offline capability, multi-job site tracking, and real-time sync when connectivity is available. For comprehensive solutions, explore <Link to="/solutions/construction-inventory-management-system" className="text-blue-600 hover:underline font-semibold">construction inventory management systems</Link> or learn about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for general inventory control.
           </p>
         </div>
       </section>

@@ -182,7 +182,7 @@ export default function SuppliersSolutionPage() {
     >
       <SEO
         title="Supplier Management Software 2025 | Vendor Management Platform | StockFlow"
-        description="Centralize supplier data, automate purchasing workflows, and track vendor performance. Unified supplier directory, automated reordering, and real-time analytics. Start free."
+        description="Centralize supplier data, automate purchasing workflows, and track vendor performance. Unified supplier directory, automated reordering, and real-time analytics. Free plan for up to 100 products. Start free trial."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/suppliers"
         structuredData={structuredData}

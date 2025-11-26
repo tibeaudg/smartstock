@@ -11,52 +11,56 @@ const canonicalPath = "/blog/how-to-store-medical-supplies";
 const metaDescription = "Best practices for storing medical supplies inventory. Learn proper storage methods, organization systems, and inventory management for medical facilities. Compliance and safety guidelines.";
 const keywords = "how to store medical supplies, medical supplies storage, medical inventory storage, medical supplies organization, medical inventory management, healthcare inventory";
 const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore How To Store Medical Supplies through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Store medical supplies by: following temperature requirements (refrigerated items in proper storage), using FIFO (first in, first out) for expiration management, organizing by category and expiration date, maintaining clean and secure storage, tracking expiration dates, and using inventory management software. Key requirements: temperature monitoring for refrigerated items, expiration date tracking to prevent expired supplies, secure storage for controlled substances, and compliance with healthcare regulations. Proper storage ensures supplies remain safe and effective, prevents waste from expired items, and supports compliance.";
 const takeaways = [
-  "Understand the core themes behind How To Store Medical Supplies and why they matter for modern operations teams.",
-  "Follow a structured framework to translate How To Store Medical Supplies into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make how to store medical supplies sustainable at scale."
+  "Store by: following temperature requirements (refrigerated items in proper storage), using FIFO (first in, first out) for expiration management, organizing by category and expiration date, and maintaining clean, secure storage.",
+  "Key requirements: temperature monitoring for refrigerated items, expiration date tracking to prevent expired supplies, secure storage for controlled substances, and compliance with healthcare regulations.",
+  "Proper storage ensures supplies remain safe and effective, prevents waste from expired items, and supports compliance. Use inventory management software with expiration tracking and temperature monitoring."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what how to store medical supplies should deliver for customers, finance, and frontline teams."
+    "title": "Follow storage requirements",
+    "description": "Store items according to requirements: refrigerated items in proper temperature-controlled storage, controlled substances in secure storage, and all items in clean, organized areas. Monitor temperatures for refrigerated items."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how how to store medical supplies happens today, where gaps exist, and which systems hold the data."
+    "title": "Implement FIFO rotation",
+    "description": "Use FIFO (first in, first out) to prevent expired supplies. Organize by expiration date, use oldest items first, and set alerts for items nearing expiration. This prevents waste and ensures supplies remain effective."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of how to store medical supplies inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Track and monitor",
+    "description": "Use inventory management software to track expiration dates, monitor temperatures, maintain accurate records, and ensure compliance. Software helps manage medical supplies efficiently and supports regulatory compliance."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly how to store medical supplies initiatives move from idea to rollout."
+    "label": "Expiration management",
+    "detail": "Measure reduction in expired supplies. Effective FIFO rotation and expiration tracking should minimize expired inventory, reducing waste and ensuring supplies remain safe and effective."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new how to store medical supplies process across locations or departments."
+    "label": "Storage compliance",
+    "detail": "Track adherence to storage requirements and regulations. Proper storage (temperature control, secure storage, organization) ensures supplies remain safe and effective and supports compliance."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to how to store medical supplies workflows."
+    "label": "Waste reduction",
+    "detail": "Monitor reduction in waste from expired or improperly stored supplies. Effective storage practices and expiration tracking reduce waste, saving costs and ensuring supplies are available when needed."
   }
 ];
 const faqData = [
   {
-    "question": "What is How To Store Medical Supplies?",
-    "answer": "How To Store Medical Supplies refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "How do you store medical supplies?",
+    "answer": "Store by: following temperature requirements (refrigerated items in proper storage), using FIFO (first in, first out) for expiration management, organizing by category and expiration date, maintaining clean and secure storage, tracking expiration dates, and using inventory management software. Proper storage ensures supplies remain safe and effective."
   },
   {
-    "question": "How can I get started with how to store medical supplies?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot how to store medical supplies within one team, then expand once you capture early wins."
+    "question": "Why is FIFO important for medical supplies?",
+    "answer": "FIFO (first in, first out) prevents expired supplies from being used, ensuring patient safety and compliance. It uses oldest items first, minimizes waste, and ensures supplies remain effective. Expired medical supplies cannot be used and must be properly disposed of."
   },
   {
-    "question": "Where does StockFlow add value for how to store medical supplies?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of how to store medical supplies with real-time dashboards."
+    "question": "What are storage requirements for medical supplies?",
+    "answer": "Requirements include: temperature monitoring for refrigerated items, expiration date tracking, secure storage for controlled substances, clean and organized storage areas, and compliance with healthcare regulations. Proper storage ensures supplies remain safe and effective."
+  },
+  {
+    "question": "How does inventory software help with medical supplies storage?",
+    "answer": "Software helps by: tracking expiration dates with FIFO support, monitoring temperatures for refrigerated items, maintaining accurate records for compliance, organizing supplies by category and expiration, and providing alerts for items nearing expiration. This ensures proper storage and compliance."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoHowToStoreMedicalSuppliesPage() {
       
     >
       <SEO
-        title={`How To Store Medical Supplies 2025 - How To Store`}
+        title={`How To Store Medical Supplies 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

@@ -90,8 +90,8 @@ export default function CycleCount() {
       
     >
       <SEO
-        title="Cycle Count 2025 - Cycle Count 2025"
-        description="Discover how cycle count to save time and money. Find out how cycle count to optimize your inventory management.. Start free today. StockFlow helps businesse..."
+        title="Cycle Count Inventory 2025 | Cycle Counting Software | StockFlow"
+        description="Implement cycle count inventory for continuous accuracy. Automate cycle counting, track discrepancies, and optimize stock levels. Free plan available."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
         url="https://www.stockflow.be/cycle-count"
       />
@@ -103,7 +103,7 @@ export default function CycleCount() {
               What is <span className="text-blue-600">Cycle Count</span>?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Cycle count is an inventory auditing technique where inventory is counted on a rotating schedule throughout the year, rather than counting everything at once. This maintains inventory accuracy continuously without major disruptions.
+              Cycle count is an inventory auditing technique where inventory is counted on a rotating schedule throughout the year, rather than counting everything at once. This maintains inventory accuracy continuously without major disruptions. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/blog/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">perpetual inventory vs physical inventory</Link> comparison.
             </p>
           </div>
         </div>

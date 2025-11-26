@@ -11,52 +11,56 @@ const canonicalPath = "/blog/inventory-control-systems";
 const metaDescription = "Complete guide to inventory control systems. Learn about different types of inventory control systems, how they work, and how to choose the right system for your business.";
 const keywords = "inventory control systems, inventory control, inventory systems, stock control systems, inventory management systems, inventory tracking systems, inventory software";
 const heroBadge = "Topic Guide • Updated November 2025";
-const summaryCopy = "Explore Inventory Control Systems through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Inventory control systems track and manage inventory levels, movements, and operations. Types include: perpetual systems (real-time tracking with software), periodic systems (physical counts at intervals), manual systems (spreadsheets/paper - only for very small operations), and automated systems (barcode scanning, RFID). Modern systems use inventory management software with barcode scanning, real-time tracking, automated alerts, and mobile access. Key features: real-time visibility, automated reordering, multi-location support, reporting and analytics, and integration capabilities. Choose based on volume, accuracy needs, and budget.";
 const takeaways = [
-  "Understand the core themes behind Inventory Control Systems and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Inventory Control Systems into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make inventory control systems sustainable at scale."
+  "Types include: perpetual (real-time tracking), periodic (physical counts), manual (spreadsheets - only for very small operations), and automated (barcode scanning, RFID).",
+  "Modern systems use inventory management software with barcode scanning, real-time tracking, automated alerts, and mobile access for accuracy and efficiency.",
+  "Key features: real-time visibility, automated reordering, multi-location support, reporting and analytics, and integration capabilities. Choose based on volume, accuracy needs, and budget."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what inventory control systems should deliver for customers, finance, and frontline teams."
+    "title": "Assess your needs",
+    "description": "Evaluate your inventory volume, accuracy requirements, number of locations, and budget. For most businesses (50+ items), inventory management software with barcode scanning provides the best balance of accuracy, efficiency, and cost."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how inventory control systems happens today, where gaps exist, and which systems hold the data."
+    "title": "Choose appropriate system",
+    "description": "Select system type: perpetual (real-time) for most businesses, automated (barcode/RFID) for accuracy and efficiency, multi-location support if needed, and software that scales with your growth."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of inventory control systems inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Implement and train",
+    "description": "Deploy inventory control system, set up barcode scanning if applicable, train staff, and establish processes. Modern systems improve accuracy from 60-80% to 95-99% and reduce time spent by 50-70%."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly inventory control systems initiatives move from idea to rollout."
+    "label": "System accuracy",
+    "detail": "Measure improvement in inventory accuracy. Modern control systems typically improve accuracy from 60-80% to 95-99%, reducing errors and stockouts significantly."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new inventory control systems process across locations or departments."
+    "label": "Time efficiency",
+    "detail": "Track reduction in time spent on inventory tasks. Automated systems with barcode scanning reduce time by 50-70% compared to manual methods, improving efficiency."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to inventory control systems workflows."
+    "label": "Stockout reduction",
+    "detail": "Monitor reduction in stockouts from better control. Effective systems with automated reordering prevent stockouts by 40-60%, improving service levels and customer satisfaction."
   }
 ];
 const faqData = [
   {
-    "question": "What is Inventory Control Systems?",
-    "answer": "Inventory Control Systems refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What are inventory control systems?",
+    "answer": "Inventory control systems track and manage inventory levels, movements, and operations. Types include: perpetual (real-time tracking with software), periodic (physical counts at intervals), manual (spreadsheets - only for very small operations), and automated (barcode scanning, RFID). Modern systems use software with real-time tracking and automation."
   },
   {
-    "question": "How can I get started with inventory control systems?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot inventory control systems within one team, then expand once you capture early wins."
+    "question": "What's the difference between perpetual and periodic inventory systems?",
+    "answer": "Perpetual systems track inventory continuously in real-time using software, providing instant visibility and 95-99% accuracy. Periodic systems count inventory at intervals (monthly/annually), providing periodic verification but lacking real-time data. Most businesses use perpetual systems for daily operations."
   },
   {
-    "question": "Where does StockFlow add value for inventory control systems?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of inventory control systems with real-time dashboards."
+    "question": "What features should inventory control systems have?",
+    "answer": "Key features include: real-time visibility, automated reordering, barcode scanning support, multi-location tracking, mobile access, reporting and analytics, integration capabilities, and scalability. These features improve accuracy, efficiency, and decision-making."
+  },
+  {
+    "question": "How do I choose the right inventory control system?",
+    "answer": "Choose based on: inventory volume (50+ items need software), accuracy requirements (automated systems provide 95-99% accuracy), number of locations (multi-location support if needed), budget, and growth plans. For most businesses, inventory management software with barcode scanning provides the best balance."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoInventoryControlSystemsPage() {
       
     >
       <SEO
-        title={`Inventory Control Systems 2025 - Inventory Control Systems`}
+        title={`Inventory Control Systems 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

@@ -11,52 +11,56 @@ const canonicalPath = "/blog/calculating-beginning-inventory";
 const metaDescription = "Learn how to calculate beginning inventory. Step-by-step guide with formulas and examples. Calculate opening inventory for accounting and inventory management.";
 const keywords = "calculating beginning inventory, beginning inventory calculation, beginning inventory formula, opening inventory, calculate beginning inventory, starting inventory";
 const heroBadge = "Topic Guide • Updated December 2024";
-const summaryCopy = "Explore Calculating Beginning Inventory through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Calculate beginning inventory by: taking ending inventory from previous period (becomes beginning inventory for current period), conducting physical count at period start, using inventory management software records, or calculating from formula: Beginning Inventory = Ending Inventory (previous period). Formula: Beginning Inventory = Ending Inventory (previous period). For first period: Beginning Inventory = Initial purchases/stock. Beginning inventory is the starting point for inventory calculations and is essential for cost of goods sold (COGS) calculations: COGS = Beginning Inventory + Purchases - Ending Inventory. Accurate beginning inventory ensures accurate financial reporting and inventory valuation.";
 const takeaways = [
-  "Understand the core themes behind Calculating Beginning Inventory and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Calculating Beginning Inventory into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make calculating beginning inventory sustainable at scale."
+  "Calculate by: taking ending inventory from previous period (becomes beginning inventory for current period), conducting physical count at period start, using inventory management software records, or calculating from formula.",
+  "Formula: Beginning Inventory = Ending Inventory (previous period). For first period: Beginning Inventory = Initial purchases/stock.",
+  "Beginning inventory is essential for COGS calculations: COGS = Beginning Inventory + Purchases - Ending Inventory. Accurate beginning inventory ensures accurate financial reporting and inventory valuation."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what calculating beginning inventory should deliver for customers, finance, and frontline teams."
+    "title": "Determine previous period ending",
+    "description": "Use ending inventory from previous period as beginning inventory for current period. If using inventory management software, ending inventory is automatically tracked and becomes beginning inventory for next period."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how calculating beginning inventory happens today, where gaps exist, and which systems hold the data."
+    "title": "Conduct physical count",
+    "description": "For accuracy, conduct physical count at period start to verify beginning inventory. Physical counts ensure records match actual inventory, especially important for financial reporting."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of calculating beginning inventory inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Use inventory software",
+    "description": "Deploy inventory management software to automatically track beginning and ending inventory. Software maintains accurate records, calculates values, and supports financial reporting."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly calculating beginning inventory initiatives move from idea to rollout."
+    "label": "Calculation accuracy",
+    "detail": "Measure accuracy of beginning inventory calculations. Accurate beginning inventory is essential for correct COGS calculations and financial reporting. Use inventory software to ensure accuracy."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new calculating beginning inventory process across locations or departments."
+    "label": "Period tracking",
+    "detail": "Monitor how well beginning and ending inventory are tracked across periods. Inventory management software automatically tracks these values, ensuring continuity across accounting periods."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to calculating beginning inventory workflows."
+    "label": "Financial reporting accuracy",
+    "detail": "Track accuracy of financial reports that depend on beginning inventory. Accurate beginning inventory ensures correct COGS calculations and proper inventory valuation on balance sheets."
   }
 ];
 const faqData = [
   {
-    "question": "What is Calculating Beginning Inventory?",
-    "answer": "Calculating Beginning Inventory refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "How do you calculate beginning inventory?",
+    "answer": "Calculate by: taking ending inventory from previous period (becomes beginning inventory for current period), conducting physical count at period start, using inventory management software records, or using formula: Beginning Inventory = Ending Inventory (previous period). For first period: Beginning Inventory = Initial purchases/stock."
   },
   {
-    "question": "How can I get started with calculating beginning inventory?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot calculating beginning inventory within one team, then expand once you capture early wins."
+    "question": "What is the formula for beginning inventory?",
+    "answer": "Formula: Beginning Inventory = Ending Inventory (previous period). Beginning inventory is the ending inventory from the previous accounting period. For the first period, beginning inventory equals initial purchases or stock on hand."
   },
   {
-    "question": "Where does StockFlow add value for calculating beginning inventory?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of calculating beginning inventory with real-time dashboards."
+    "question": "Why is beginning inventory important?",
+    "answer": "Important because it's essential for cost of goods sold (COGS) calculations: COGS = Beginning Inventory + Purchases - Ending Inventory. Accurate beginning inventory ensures accurate financial reporting, proper inventory valuation, and correct profit calculations."
+  },
+  {
+    "question": "How does inventory software help with beginning inventory?",
+    "answer": "Software helps by: automatically tracking ending inventory (becomes beginning inventory for next period), maintaining accurate records across periods, calculating values using costing methods (FIFO, LIFO, weighted average), and supporting financial reporting. Software ensures continuity and accuracy."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoCalculatingBeginningInventoryPage() {
       
     >
       <SEO
-        title={`Calculating Beginning Inventory 2025 - Calculating Beginn...`}
+        title={`Calculating Beginning Inventory 2025 - Formulas & Examples | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

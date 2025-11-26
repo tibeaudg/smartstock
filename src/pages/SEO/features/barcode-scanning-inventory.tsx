@@ -97,8 +97,8 @@ const BarcodeScanningInventory = () => {
       faqData={faqData}
     >
       <SEO
-        title="Barcode Scanning Inventory 2025 - Barcode Scanning Inventory"
-        description="Find out how barcode scanning inventory to automate your processes. Find out how barcode scanning inventory to automate your processes.. Start free today."
+        title="Barcode Scanning Inventory 2025 - Mobile Scanner App | StockFlow"
+        description="Use barcode scanning for inventory management. Mobile barcode scanner app works with smartphone cameras. Scan products to update inventory in real-time. 99.9% accuracy, 10x faster than manual entry. Start free trial."
         keywords={expandedKeywords}
         url="https://www.stockflow.be/barcode-scanning-inventory"
         locale="en"
@@ -127,30 +127,30 @@ const BarcodeScanningInventory = () => {
             </h2>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">? Speed & Efficiency</h3>
+                <h3 className="text-xl font-semibold mb-2">Speed & Efficiency</h3>
                 <p className="text-gray-600">
-                  Scan products in seconds instead of manually entering data. Increase inventory counting speed by 10x.
+                  Scan products in seconds instead of manually entering data. Increase inventory counting speed by 10x compared to manual entry.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">? Accuracy</h3>
+                <h3 className="text-xl font-semibold mb-2">Accuracy</h3>
                 <p className="text-gray-600">
-                  Eliminate human error with automated barcode recognition. 99.9% accuracy compared to manual entry.
+                  Eliminate human error with automated barcode recognition. Achieve 99.9% accuracy compared to 60-80% with manual entry.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">📱 Mobile Convenience</h3>
+                <h3 className="text-xl font-semibold mb-2">Mobile Convenience</h3>
                 <p className="text-gray-600">
-                  Use any smartphone - no additional hardware required. Scan products anywhere in your warehouse or store.
+                  Use any smartphone - no additional hardware required. Scan products anywhere in your warehouse or store with mobile barcode scanning.
                 </p>
               </div>
               
               <div className="border border-gray-200 rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-2">🔄 Real-time Updates</h3>
+                <h3 className="text-xl font-semibold mb-2">Real-time Updates</h3>
                 <p className="text-gray-600">
-                  Inventory levels update instantly when you scan. See current stock levels immediately across all locations.
+                  Inventory levels update instantly when you scan. See current stock levels immediately across all locations with real-time synchronization.
                 </p>
               </div>
             </div>

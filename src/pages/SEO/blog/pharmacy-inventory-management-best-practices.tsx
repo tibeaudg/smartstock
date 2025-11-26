@@ -11,52 +11,56 @@ const canonicalPath = "/blog/pharmacy-inventory-management-best-practices";
 const metaDescription = "Essential pharmacy inventory management best practices. Learn compliance requirements, expiration tracking, controlled substances management, and specialized strategies for pharmacies.";
 const keywords = "pharmacy inventory management, pharmacy inventory best practices, pharmacy stock management, pharmacy inventory control, pharmacy inventory software, pharmaceutical inventory";
 const heroBadge = "Topic Guide • Updated July 2024";
-const summaryCopy = "Explore Pharmacy Inventory Management Best Practices through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Pharmacy inventory management best practices include: expiration date tracking (FIFO - first in, first out), controlled substances management (DEA compliance, secure storage, detailed records), temperature monitoring for refrigerated items, accurate counting and reconciliation, supplier management, and compliance with regulations. Key requirements: track expiration dates to prevent expired medications, maintain detailed records for controlled substances, ensure proper storage conditions, and conduct regular audits. Specialized pharmacy inventory software helps manage these requirements efficiently.";
 const takeaways = [
-  "Understand the core themes behind Pharmacy Inventory Management Best Practices and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Pharmacy Inventory Management Best Practices into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make pharmacy inventory management best practices sustainable at scale."
+  "Best practices include: expiration date tracking (FIFO), controlled substances management (DEA compliance), temperature monitoring, accurate counting, and regulatory compliance.",
+  "Key requirements: track expiration dates to prevent expired medications, maintain detailed records for controlled substances, ensure proper storage conditions, and conduct regular audits.",
+  "Specialized pharmacy inventory software helps manage expiration tracking, controlled substances, compliance, and regulatory requirements efficiently."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what pharmacy inventory management best practices should deliver for customers, finance, and frontline teams."
+    "title": "Implement expiration tracking",
+    "description": "Use FIFO (first in, first out) to prevent expired medications. Track expiration dates for all items, set alerts for items nearing expiration, and rotate stock to use oldest items first. This prevents waste and ensures patient safety."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how pharmacy inventory management best practices happens today, where gaps exist, and which systems hold the data."
+    "title": "Manage controlled substances",
+    "description": "Maintain detailed records for controlled substances per DEA requirements. Use secure storage, track all movements, conduct regular audits, and ensure compliance. Specialized software helps manage controlled substance inventory and reporting."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of pharmacy inventory management best practices inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Ensure compliance",
+    "description": "Comply with pharmacy regulations: maintain accurate records, conduct regular audits, ensure proper storage conditions (temperature monitoring), and track all inventory movements. Use pharmacy-specific inventory software to support compliance."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly pharmacy inventory management best practices initiatives move from idea to rollout."
+    "label": "Expiration management",
+    "detail": "Track reduction in expired medications. Effective expiration tracking and FIFO rotation should minimize expired inventory, reducing waste and ensuring patient safety."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new pharmacy inventory management best practices process across locations or departments."
+    "label": "Compliance adherence",
+    "detail": "Monitor adherence to pharmacy regulations and DEA requirements. Accurate records, regular audits, and proper controlled substance management ensure compliance and prevent violations."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to pharmacy inventory management best practices workflows."
+    "label": "Inventory accuracy",
+    "detail": "Measure inventory accuracy, especially for controlled substances. Target 99%+ accuracy for controlled substances and 95-99% for general inventory. Regular audits and accurate tracking maintain compliance."
   }
 ];
 const faqData = [
   {
-    "question": "What is Pharmacy Inventory Management Best Practices?",
-    "answer": "Pharmacy Inventory Management Best Practices refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What are pharmacy inventory management best practices?",
+    "answer": "Best practices include: expiration date tracking (FIFO - first in, first out), controlled substances management (DEA compliance, secure storage, detailed records), temperature monitoring for refrigerated items, accurate counting and reconciliation, supplier management, and compliance with regulations. Specialized pharmacy inventory software helps manage these requirements."
   },
   {
-    "question": "How can I get started with pharmacy inventory management best practices?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot pharmacy inventory management best practices within one team, then expand once you capture early wins."
+    "question": "Why is expiration tracking important in pharmacies?",
+    "answer": "Expiration tracking prevents expired medications from being dispensed, ensuring patient safety and compliance. FIFO (first in, first out) rotation uses oldest items first, minimizing waste. Expired medications must be properly disposed of and cannot be used."
   },
   {
-    "question": "Where does StockFlow add value for pharmacy inventory management best practices?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of pharmacy inventory management best practices with real-time dashboards."
+    "question": "How do you manage controlled substances in pharmacy inventory?",
+    "answer": "Manage by: maintaining detailed records per DEA requirements, using secure storage, tracking all movements, conducting regular audits, ensuring compliance, and using specialized software. Controlled substances require strict tracking and reporting to comply with regulations."
+  },
+  {
+    "question": "What software is best for pharmacy inventory management?",
+    "answer": "Best software for pharmacies: tracks expiration dates with FIFO support, manages controlled substances with DEA compliance features, monitors temperature for refrigerated items, provides detailed audit trails, and ensures regulatory compliance. Pharmacy-specific features are essential."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoPharmacyInventoryManagementBestPracticesPage() {
       
     >
       <SEO
-        title={`Pharmacy Inventory Management Best Practices 2025`}
+        title={`Pharmacy Inventory Management Best Practices 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

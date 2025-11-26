@@ -72,9 +72,9 @@ export default function SoftwareStockbeheer() {
       faqData={faqData}
     >
       <SEO
-        title="Software Stockbeheer 2025 - Software Stockbeheer 2025's | StockFlow"
-        description="Vind uit hoe software stockbeheer tijd en geld te besparen. Bekijk hoe software stockbeheer uw processen te automatiseren. Eenvoudig software. Begin nu met g..."
-        keywords="software stockbeheer, stockbeheer software, gratis stockbeheer, voorraadbeheer software, magazijnbeheer software, inventarisatie software, KMO software"
+        title="Software Stockbeheer 2025 - Gratis Voorraadbeheer Software | StockFlow"
+        description="Eenvoudig software stockbeheer voor kleine bedrijven. Real-time tracking, barcode scanning, automatische meldingen. Gratis plan voor tot 100 producten. Start gratis proefperiode."
+        keywords="software stockbeheer, stockbeheer software, gratis stockbeheer, voorraadbeheer software, magazijnbeheer software, inventarisatie software, KMO software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/software-stockbeheer"
         structuredData={structuredData}
       />

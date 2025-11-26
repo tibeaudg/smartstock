@@ -173,9 +173,9 @@ export default function AssetsInventory() {
       faqData={faqData}
     >
       <SEO
-        title="Assets Inventory Management Software 2025 | Free Plan | StockFlow"
-        description="Discover how assets inventory management software helps track equipment, vehicles, and IT assets. Barcode scanning, maintenance scheduling, location tracking. Start free today."
-        keywords="assets inventory, asset inventory management, asset tracking software, equipment inventory, IT asset management, asset management system, fixed asset tracking, asset tracking app, asset inventory software, equipment tracking software"
+        title="Assets Inventory Management Software 2025 | Equipment Tracking | StockFlow"
+        description="Assets inventory management software for tracking equipment, vehicles, and IT assets. Barcode scanning, maintenance scheduling, location tracking. Free plan for up to 100 assets. Start free today."
+        keywords="assets inventory, asset inventory management, asset tracking software, equipment inventory, IT asset management, asset management system, fixed asset tracking, asset tracking app, asset inventory software, equipment tracking software, asset management software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/assets-inventory"
         structuredData={[structuredData, faqStructuredData]}
       />
@@ -189,7 +189,7 @@ export default function AssetsInventory() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Modern <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> like StockFlow combines product and asset tracking in one platform, eliminating the need for separate systems. With barcode scanning, mobile access, and automated maintenance alerts, managing assets becomes as simple as tracking products.
+            Modern <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> like StockFlow combines product and asset tracking in one platform, eliminating the need for separate systems. With barcode scanning, mobile access, and automated maintenance alerts, managing assets becomes as simple as tracking products. Explore <Link to="/solutions/inventory-software" className="text-blue-600 hover:underline font-semibold">inventory software</Link> solutions or learn about <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link>.
           </p>
         </div>
       </section>
@@ -258,7 +258,7 @@ export default function AssetsInventory() {
               <li><strong>Assets Inventory:</strong> Tracks fixed assets you use (equipment that depreciates). Focuses on lifecycle, maintenance, and compliance.</li>
             </ul>
             <p>
-              Many businesses need both. StockFlow supports product and asset tracking in one unified platform, eliminating data silos and reducing software costs. Learn more about <Link to="/warehouse-management-software" className="text-blue-600 hover:underline font-semibold">warehouse management software</Link> for comprehensive inventory control.
+              Many businesses need both. StockFlow supports product and asset tracking in one unified platform, eliminating data silos and reducing software costs. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for comprehensive inventory control or explore <Link to="/solutions/inventory-software" className="text-blue-600 hover:underline font-semibold">inventory software</Link> options.
             </p>
           </div>
         </div>

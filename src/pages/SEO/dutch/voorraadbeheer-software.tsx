@@ -152,8 +152,8 @@ export default function VoorraadbeheerSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Voorraadbeheer Software 2025 - Voorraadbeheer Software 2025"
-        description="Lees de gids voorraadbeheer software uw processen te automatiseren. Lees de gids voorraadbeheer software uw processen te automatiseren. Zoek. Krijg direct to...'s. Gratis starten, professioneel & gebruiksvriendelijk. Beheer voorraad online, real-time tracking, barcode scanning. 500+ tevreden gebruikers. Start gratis nu!"
+        title="Voorraadbeheer Software 2025 - Gratis Plan | StockFlow"
+        description="Beste voorraadbeheer software voor KMO's. Gratis plan tot 30 producten, real-time tracking, barcode scanning, automatische meldingen. Start gratis vandaag."
         keywords="stockbeheer programma, voorraadbeheer programma, voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software, programma voor voorraadbeheer, stockbeheer programma gratis"
         url="https://www.stockflow.be/voorraadbeheer-software"
         locale="nl"

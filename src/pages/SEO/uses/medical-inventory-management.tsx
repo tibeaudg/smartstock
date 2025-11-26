@@ -348,8 +348,8 @@ export default function MedicalInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Medical Inventory Management 2025 - Medical Inventory Man..."
-        description="Discover how medical inventory management to save time and money. Read the guide medical inventory management to optimize your inventory. Get started free."
+        title="Medical Inventory Management 2025 - Healthcare Software | StockFlow"
+        description="Complete medical inventory management for healthcare facilities. Track supplies, pharmaceuticals, equipment with expiration dates, lot/serial numbers, FDA compliance. Reduce waste by 30%. Start free trial."
         keywords="medical inventory management, healthcare inventory software, hospital inventory system, pharmacy inventory management, medical supply tracking, expiration date tracking, lot number tracking, medical device traceability, FDA compliance, ISO 13485, healthcare supply chain"
         url="https://www.stockflow.be/medical-inventory-management"
       />

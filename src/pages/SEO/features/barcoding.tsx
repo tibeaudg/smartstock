@@ -207,8 +207,8 @@ export default function BarcodingPage() {
       faqData={faqData}
     >
       <SEO
-        title="Barcoding 2025 - Barcoding 2025 -"
-        description="Learn how barcoding to automate your processes. Read the guide barcoding to automate your processes. Discover StockFlow. Start free today. StockFlow helps bu..."
+        title="Barcoding for Inventory Management 2025 | StockFlow"
+        description="Implement barcoding for inventory management. Generate, print, and scan barcodes with your smartphone. Improve accuracy and efficiency. Free plan available."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
         url="https://www.stockflow.be/barcoding"
         structuredData={structuredData}

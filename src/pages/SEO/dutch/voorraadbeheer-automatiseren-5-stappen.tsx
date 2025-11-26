@@ -80,8 +80,8 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
       faqData={faqData}
     >
       <SEO
-        title="Voorraadbeheer Automatiseren 5 Stappen 2025"
-        description="Bekijk hoe voorraadbeheer automatiseren 5 stappen uw voorraadbeheer te optimaliseren. Ontdek hoe voorraadbeheer automatiseren 5 stappen uw voorraadbeheer te ..."
+        title="Voorraadbeheer Automatiseren in 5 Stappen 2025 | StockFlow"
+        description="Leer hoe je voorraadbeheer automatiseert in 5 eenvoudige stappen. Complete gids met praktische tips. Bespaar tijd en voorkom fouten. Start gratis vandaag."
         keywords="voorraadbeheer automatiseren, voorraad automatiseren stappen, voorraad software workflow, stockflow automatisering"
         url="https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
         locale="nl"

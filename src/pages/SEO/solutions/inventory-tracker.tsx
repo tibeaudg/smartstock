@@ -199,7 +199,7 @@ export default function InventoryTracker() {
     >
       <SEO
         title="Inventory Tracker 2025 - Real-Time Stock Tracking & Monitoring | StockFlow"
-        description="Best inventory tracker for real-time stock monitoring. Track inventory movements, locations, and levels with barcode scanning. Prevent stockouts and improve accuracy. Free trial available."
+        description="Best inventory tracker for real-time stock monitoring. Track inventory movements, locations, and levels with barcode scanning. Prevent stockouts and improve accuracy. Free plan for up to 100 products. Start free trial."
         keywords="inventory tracker, stock tracker, inventory tracking, stock tracking, inventory monitoring, stock monitoring, inventory tracking software, stock tracking software, inventory tracking app, stock tracking app, real-time inventory tracking, inventory movement tracking, stock movement tracking, inventory tracking system, stock tracking system, inventory tracker app, stock tracker app, inventory tracking tool, stock tracking tool, inventory tracking solution, stock tracking solution"
         url="https://www.stockflow.be/solutions/inventory-tracker"
         locale="en"
@@ -216,7 +216,7 @@ export default function InventoryTracker() {
           Never lose track of your inventory again. Monitor stock levels, track movements, and get instant alerts with the most powerful inventory tracker available.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          An inventory tracker is a tool or software that monitors and records the movement of inventory items in real-time. It helps businesses keep track of stock levels, locations, and movements to ensure accurate inventory management and prevent stockouts or overstock situations.
+          An <strong>inventory tracker</strong> is a tool or software that monitors and records the movement of inventory items in real-time. It helps businesses keep track of stock levels, locations, and movements to ensure accurate inventory management and prevent stockouts or overstock situations. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> includes comprehensive tracking capabilities. Learn more about <Link to="/solutions/inventory-tracking-programs" className="text-blue-600 hover:underline font-semibold">inventory tracking programs</Link> or explore <Link to="/solutions/inventory-platform" className="text-blue-600 hover:underline font-semibold">inventory platform</Link> solutions.
         </p>
       </div>
 

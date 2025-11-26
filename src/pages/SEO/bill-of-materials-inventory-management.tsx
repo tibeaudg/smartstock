@@ -97,9 +97,9 @@ export default function BillOfMaterialsInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Bill of Materials Inventory Management 2025 | StockFlow"
-        description="Get bill of materials inventory management system. Track components and finished goods, calculate material requirements automatically, and manage production planning. Free plan available."
-        keywords="bill of materials inventory management, bom inventory management, inventory management with bill of materials, bom and inventory management, bill of materials stock management, manufacturing inventory with bom, production inventory management, assembly inventory with bom, stockflow, stock flow"
+        title="BOM Inventory Management 2025 | Integrated System | StockFlow"
+        description="Integrated bill of materials inventory management tracks components and finished goods in one system. Calculate material requirements automatically, prevent production delays, and optimize purchasing. Free plan available."
+        keywords="bill of materials inventory management, bom inventory management, inventory management with bill of materials, bom and inventory management, bill of materials stock management, manufacturing inventory with bom, production inventory management, assembly inventory with bom, integrated bom inventory, stockflow, stock flow"
         url="https://www.stockflow.be/bill-of-materials-inventory-management"
       />
 
@@ -148,11 +148,11 @@ export default function BillOfMaterialsInventoryManagement() {
           </h2>
           
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            <strong>Bill of materials inventory management</strong> is an integrated approach that combines BOM management with inventory tracking. This system tracks both the components needed to build products (via BOMs) and the actual inventory levels of those components and finished goods. It automatically calculates material requirements, checks component availability, and manages production planning based on inventory levels.
+            <strong>Bill of materials inventory management</strong> is an integrated approach that combines BOM management with inventory tracking. This system tracks both the components needed to build products (via BOMs) and the actual inventory levels of those components and finished goods. It automatically calculates material requirements, checks component availability, and manages production planning based on inventory levels. This integration eliminates manual calculations and prevents production delays due to missing components.
           </p>
 
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            For manufacturing businesses, <strong>bill of materials inventory management</strong> is essential because it eliminates the disconnect between production planning and inventory availability. Instead of manually calculating material needs and checking inventory separately, the integrated system does both automatically, ensuring you always have the right materials available when needed. StockFlow combines comprehensive <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management</Link> with powerful BOM functionality for complete production control.
+            For manufacturing businesses, <strong>bill of materials inventory management</strong> is essential because it eliminates the disconnect between production planning and inventory availability. Instead of manually calculating material needs and checking inventory separately, the integrated system does both automatically, ensuring you always have the right materials available when needed. StockFlow combines comprehensive <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with powerful <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">BOM management software</Link> functionality for complete production control. Learn more about <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link> integration.
           </p>
         </div>
       </section>
@@ -229,18 +229,75 @@ export default function BillOfMaterialsInventoryManagement() {
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           "name": "StockFlow - BOM Inventory Management",
-          "description": "Bill of materials inventory management system. Track components and finished goods, calculate material requirements, and manage production.",
+          "description": "Integrated bill of materials inventory management system. Track components and finished goods, calculate material requirements automatically, and manage production planning in one platform.",
           "applicationCategory": "BusinessApplication",
           "operatingSystem": "Web Browser",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "softwareVersion": "2.0",
+          "datePublished": "2024-01-01",
+          "dateModified": new Date().toISOString().split('T')[0],
           "offers": [
             {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "EUR",
               "description": "Free plan - Up to 30 products with BOM and inventory management",
-              "availability": "https://schema.org/InStock"
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2024-01-01"
+            },
+            {
+              "@type": "Offer",
+              "price": "29",
+              "priceCurrency": "EUR",
+              "description": "Growth plan - Unlimited products with advanced BOM features",
+              "availability": "https://schema.org/InStock",
+              "validFrom": "2024-01-01"
             }
-          ]
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Multi-level BOM management",
+            "Real-time inventory tracking",
+            "Automatic material requirements calculation",
+            "Component availability checking",
+            "Production planning",
+            "Cost tracking and rollup",
+            "Multi-location support"
+          ],
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/bill-of-materials-inventory-management"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Bill of Materials Inventory Management: Complete Integration Guide",
+          "description": "Learn how integrated BOM and inventory management systems track components and finished goods, calculate material requirements, and prevent production delays.",
+          "author": {
+            "@type": "Organization",
+            "name": "StockFlow"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "StockFlow",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.stockflow.be/logo.png"
+            }
+          },
+          "datePublished": "2024-01-01",
+          "dateModified": new Date().toISOString().split('T')[0],
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.stockflow.be/bill-of-materials-inventory-management"
+          }
         }
       ]} />
     </SeoPageLayout>

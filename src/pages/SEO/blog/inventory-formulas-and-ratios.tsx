@@ -11,52 +11,56 @@ const canonicalPath = "/blog/inventory-formulas-and-ratios";
 const metaDescription = "Essential inventory formulas and ratios explained. Learn how to calculate inventory turnover, days sales of inventory (DSI), reorder points, safety stock, and other key inventory metrics.";
 const keywords = "inventory formulas, inventory ratios, inventory turnover formula, days sales of inventory, inventory metrics, inventory KPIs, inventory calculations, stock formulas";
 const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Explore Inventory Formulas And Ratios through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Essential inventory formulas and ratios include: inventory turnover (COGS ÷ Average Inventory), days sales of inventory (365 ÷ Turnover), reorder point (Lead Time × Average Daily Usage + Safety Stock), safety stock (Z-score × Standard Deviation × √Lead Time), and economic order quantity (EOQ). These formulas help optimize stock levels, prevent stockouts, reduce costs, and improve cash flow. Understanding and applying these formulas enables data-driven inventory management decisions.";
 const takeaways = [
-  "Understand the core themes behind Inventory Formulas And Ratios and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Inventory Formulas And Ratios into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make inventory formulas and ratios sustainable at scale."
+  "Key formulas include inventory turnover (COGS ÷ Average Inventory), days sales of inventory (365 ÷ Turnover), and reorder point (Lead Time × Daily Usage + Safety Stock).",
+  "Safety stock formula (Z-score × Standard Deviation × √Lead Time) protects against demand variability, while EOQ optimizes order quantities to minimize total costs.",
+  "These formulas help optimize stock levels, prevent stockouts, reduce costs by 20-30%, and improve cash flow through data-driven inventory management."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what inventory formulas and ratios should deliver for customers, finance, and frontline teams."
+    "title": "Calculate key ratios",
+    "description": "Start with inventory turnover (COGS ÷ Average Inventory) and days sales of inventory (365 ÷ Turnover). These ratios indicate how efficiently inventory is managed and help identify optimization opportunities."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how inventory formulas and ratios happens today, where gaps exist, and which systems hold the data."
+    "title": "Set up reorder points",
+    "description": "Calculate reorder points using: Lead Time × Average Daily Usage + Safety Stock. Set up automated alerts in inventory management software when inventory reaches reorder levels."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of inventory formulas and ratios inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Optimize with formulas",
+    "description": "Use safety stock formulas to buffer against variability, calculate EOQ to optimize order quantities, and regularly review ratios to identify trends and optimization opportunities."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly inventory formulas and ratios initiatives move from idea to rollout."
+    "label": "Formula accuracy",
+    "detail": "Track how accurately formulas are calculated and applied. Use inventory management software to automate calculations and ensure consistent application of formulas across all items."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new inventory formulas and ratios process across locations or departments."
+    "label": "Ratio improvements",
+    "detail": "Monitor improvements in key ratios: inventory turnover, days sales of inventory, and stockout frequency. Effective use of formulas typically improves turnover by 20-40% and reduces stockouts by 40-60%."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to inventory formulas and ratios workflows."
+    "label": "Cost optimization",
+    "detail": "Measure cost reductions from formula-driven optimization. Proper use of formulas (EOQ, safety stock, reorder points) typically reduces carrying costs by 20-30% through better inventory optimization."
   }
 ];
 const faqData = [
   {
-    "question": "What is Inventory Formulas And Ratios?",
-    "answer": "Inventory Formulas And Ratios refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What are the essential inventory formulas?",
+    "answer": "Essential formulas include: inventory turnover (COGS ÷ Average Inventory), days sales of inventory (365 ÷ Turnover), reorder point (Lead Time × Average Daily Usage + Safety Stock), safety stock (Z-score × Standard Deviation × √Lead Time), and economic order quantity (EOQ = √(2 × Annual Demand × Ordering Cost ÷ Holding Cost))."
   },
   {
-    "question": "How can I get started with inventory formulas and ratios?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot inventory formulas and ratios within one team, then expand once you capture early wins."
+    "question": "How do you calculate inventory turnover?",
+    "answer": "Calculate inventory turnover as: Cost of Goods Sold ÷ Average Inventory. Average Inventory = (Beginning Inventory + Ending Inventory) ÷ 2. The result shows how many times inventory is sold and replaced per year. Higher turnover indicates more efficient inventory management."
   },
   {
-    "question": "Where does StockFlow add value for inventory formulas and ratios?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of inventory formulas and ratios with real-time dashboards."
+    "question": "What is the reorder point formula?",
+    "answer": "Reorder point = (Lead Time × Average Daily Usage) + Safety Stock. Lead time is days to receive new stock, average daily usage is units sold per day, and safety stock buffers against variability. When inventory reaches this level, place a new order."
+  },
+  {
+    "question": "How do you calculate safety stock?",
+    "answer": "Safety stock = Z-score × Standard Deviation of Demand × √Lead Time. Z-score depends on desired service level (1.65 for 95%, 2.33 for 99%). This formula protects against demand variability and supplier delays, preventing stockouts."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoInventoryFormulasAndRatiosPage() {
       
     >
       <SEO
-        title={`Inventory Formulas And Ratios 2025 - Inventory Formulas And`}
+        title={`Inventory Formulas And Ratios 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

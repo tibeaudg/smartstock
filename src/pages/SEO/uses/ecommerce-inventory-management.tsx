@@ -92,8 +92,8 @@ export default function EcommerceInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Ecommerce Inventory Management 2025 - Ecommerce Inventory..."
-        description="Discover how ecommerce inventory management to automate your processes. Find out how ecommerce inventory management to optimize your inventory. Get started f..."
+        title="Ecommerce Inventory Management 2025 - Multi-Channel Software | StockFlow"
+        description="Complete ecommerce inventory management. Multi-channel sync, real-time stock updates, automated reordering. Integrate with Shopify, Amazon, WooCommerce. Prevent overselling. Start free trial."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/ecommerce-inventory-management"
       />

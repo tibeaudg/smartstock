@@ -100,7 +100,7 @@ export default function InventorySystemForSmallBusiness() {
     >
       <SEO
         title="Inventory System for Small Business 2025 - Free Plan Available | StockFlow"
-        description="Best inventory system for small business. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Easy setup, no training needed. Start free today."
+        description="Best inventory system for small business. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Easy setup, no training needed. Start free trial - no credit card required."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-system-for-small-business"
       />

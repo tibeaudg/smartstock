@@ -11,52 +11,56 @@ const canonicalPath = "/blog/asset-tracking-101";
 const metaDescription = "Complete beginner's guide to asset tracking. Learn what asset tracking is, how it works, methods, tools, and best practices for tracking equipment, tools, and fixed assets.";
 const keywords = "asset tracking 101, asset tracking basics, asset tracking guide, equipment tracking, asset management, fixed asset tracking, asset tracking systems, tool tracking";
 const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Explore Asset Tracking 101 through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Asset tracking 101: Asset tracking monitors and manages business assets (equipment, tools, furniture, vehicles) throughout their lifecycle. Key activities: track locations, schedule maintenance, manage depreciation, monitor utilization, prevent loss, and ensure compliance. Methods: barcode scanning (cost-effective, works with smartphones), QR codes (store more data), RFID (bulk scanning, more expensive), or asset management software. Unlike inventory (sold/consumed), assets are used over time and need different tracking: maintenance schedules, depreciation accounting, location history, and utilization metrics. Asset tracking prevents loss, extends asset life, and optimizes utilization.";
 const takeaways = [
-  "Understand the core themes behind Asset Tracking 101 and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Asset Tracking 101 into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make asset tracking 101 sustainable at scale."
+  "Asset tracking monitors assets (equipment, tools, furniture, vehicles) throughout their lifecycle: locations, maintenance, depreciation, utilization, and compliance.",
+  "Methods: barcode scanning (cost-effective), QR codes (more data), RFID (bulk scanning, expensive), or asset management software. Unlike inventory (sold/consumed), assets are used over time.",
+  "Asset tracking prevents loss, extends asset life through maintenance, supports depreciation accounting, optimizes utilization, and ensures compliance. Use asset management software for best results."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what asset tracking 101 should deliver for customers, finance, and frontline teams."
+    "title": "Identify assets to track",
+    "description": "List all business assets: equipment, tools, furniture, vehicles, technology. Include purchase dates, values, locations, and maintenance requirements. Create a comprehensive asset register."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how asset tracking 101 happens today, where gaps exist, and which systems hold the data."
+    "title": "Choose tracking method",
+    "description": "Select tracking method: barcode scanning (cost-effective, works with smartphones), QR codes (store more data), RFID (bulk scanning, more expensive), or asset management software. Most businesses use barcode scanning with software."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of asset tracking 101 inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Implement tracking system",
+    "description": "Deploy asset management software to track locations, schedule maintenance, monitor utilization, and maintain records. Use barcode or QR code labels for easy scanning. Software provides real-time visibility and helps prevent loss."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly asset tracking 101 initiatives move from idea to rollout."
+    "label": "Asset visibility",
+    "detail": "Measure how well you can locate and track assets. Effective tracking provides real-time visibility into asset locations, conditions, and utilization, preventing loss and improving efficiency."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new asset tracking 101 process across locations or departments."
+    "label": "Loss prevention",
+    "detail": "Track reduction in asset loss from better tracking. Accurate tracking and assignment records help prevent loss, protecting investments and ensuring assets are available when needed."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to asset tracking 101 workflows."
+    "label": "Maintenance compliance",
+    "detail": "Monitor adherence to maintenance schedules. Scheduled maintenance prevents breakdowns, extends asset life, and reduces repair costs. Asset management software enables maintenance scheduling and tracking."
   }
 ];
 const faqData = [
   {
-    "question": "What is Asset Tracking 101?",
-    "answer": "Asset Tracking 101 refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is asset tracking?",
+    "answer": "Asset tracking monitors and manages business assets (equipment, tools, furniture, vehicles) throughout their lifecycle. Key activities include tracking locations, scheduling maintenance, managing depreciation, monitoring utilization, preventing loss, and ensuring compliance. Unlike inventory (sold/consumed), assets are used over time."
   },
   {
-    "question": "How can I get started with asset tracking 101?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot asset tracking 101 within one team, then expand once you capture early wins."
+    "question": "How does asset tracking differ from inventory tracking?",
+    "answer": "Assets are used over time (equipment, tools, furniture) and need maintenance, depreciation tracking, and location management. Inventory is sold/consumed (products, materials) and needs stock level tracking and reordering. Both are important but require different tracking approaches."
   },
   {
-    "question": "Where does StockFlow add value for asset tracking 101?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of asset tracking 101 with real-time dashboards."
+    "question": "What methods are used for asset tracking?",
+    "answer": "Methods include: barcode scanning (cost-effective, works with smartphones), QR codes (store more data), RFID (bulk scanning without line-of-sight, but more expensive), and asset management software. Most businesses use barcode scanning with software for best balance of cost and functionality."
+  },
+  {
+    "question": "Why is asset tracking important?",
+    "answer": "Important because it prevents loss, enables maintenance scheduling (extends asset life), supports depreciation accounting, improves utilization, ensures compliance, and helps make informed purchasing decisions. Effective tracking protects investments and improves operational efficiency."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoAssetTracking101Page() {
       
     >
       <SEO
-        title={`Asset Tracking 101 2025 - Asset Tracking 101`}
+        title={`Asset Tracking 101 2025 - Complete Beginner's Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

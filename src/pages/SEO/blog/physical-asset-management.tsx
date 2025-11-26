@@ -11,52 +11,56 @@ const canonicalPath = "/blog/physical-asset-management";
 const metaDescription = "Complete guide to physical asset management. Learn how to track, maintain, and manage physical assets like equipment, tools, and fixed assets. Best practices and software solutions.";
 const keywords = "physical asset management, asset management, fixed asset management, asset tracking, equipment asset management, asset management software, asset tracking system";
 const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Explore Physical Asset Management through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Physical asset management tracks and manages tangible business assets (equipment, tools, furniture, vehicles, technology) throughout their lifecycle. Key activities include: tracking asset locations, scheduling maintenance, managing depreciation, monitoring utilization, preventing loss, and ensuring compliance. Unlike inventory (sold/consumed), assets are used over time and need different tracking: maintenance schedules, depreciation accounting, location history, and utilization metrics. Effective asset management prevents loss, extends asset life through maintenance, supports depreciation accounting, and optimizes asset utilization.";
 const takeaways = [
-  "Understand the core themes behind Physical Asset Management and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Physical Asset Management into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make physical asset management sustainable at scale."
+  "Physical asset management tracks tangible assets (equipment, tools, furniture, vehicles) throughout their lifecycle: locations, maintenance, depreciation, utilization, and compliance.",
+  "Unlike inventory (sold/consumed), assets are used over time and need different tracking: maintenance schedules, depreciation accounting, location history, and utilization metrics.",
+  "Effective management prevents loss, extends asset life through maintenance, supports depreciation accounting, optimizes utilization, and ensures compliance."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what physical asset management should deliver for customers, finance, and frontline teams."
+    "title": "Identify and catalog assets",
+    "description": "List all physical assets: equipment, tools, furniture, vehicles, technology. Include purchase dates, values, locations, and maintenance requirements. Create a comprehensive asset register."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how physical asset management happens today, where gaps exist, and which systems hold the data."
+    "title": "Implement tracking system",
+    "description": "Use asset management software to track locations, maintenance schedules, depreciation, and utilization. Use barcode or QR code labels for easy scanning. Many systems support both inventory and asset tracking."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of physical asset management inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Maintain and optimize",
+    "description": "Keep asset records updated: track movements, schedule maintenance, update depreciation, monitor utilization, and ensure compliance. Regular maintenance extends asset life and optimizes utilization."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly physical asset management initiatives move from idea to rollout."
+    "label": "Asset visibility",
+    "detail": "Measure how well you can locate and track assets. Effective asset management provides real-time visibility into asset locations, conditions, and utilization, preventing loss and improving efficiency."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new physical asset management process across locations or departments."
+    "label": "Maintenance compliance",
+    "detail": "Track adherence to maintenance schedules. Scheduled maintenance prevents breakdowns, extends asset life, and reduces repair costs. Asset management software enables maintenance scheduling and tracking."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to physical asset management workflows."
+    "label": "Asset utilization",
+    "detail": "Monitor how effectively assets are utilized. Tracking helps identify underutilized assets, optimize allocation, make informed purchasing decisions, and improve return on investment."
   }
 ];
 const faqData = [
   {
-    "question": "What is Physical Asset Management?",
-    "answer": "Physical Asset Management refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is physical asset management?",
+    "answer": "Physical asset management tracks and manages tangible business assets (equipment, tools, furniture, vehicles, technology) throughout their lifecycle. Key activities include tracking locations, scheduling maintenance, managing depreciation, monitoring utilization, preventing loss, and ensuring compliance."
   },
   {
-    "question": "How can I get started with physical asset management?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot physical asset management within one team, then expand once you capture early wins."
+    "question": "How does asset management differ from inventory management?",
+    "answer": "Assets are used over time (equipment, tools, furniture) and need maintenance, depreciation tracking, and location management. Inventory is sold/consumed (products, materials) and needs stock level tracking and reordering. Both are important but require different tracking approaches."
   },
   {
-    "question": "Where does StockFlow add value for physical asset management?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of physical asset management with real-time dashboards."
+    "question": "What are the benefits of asset management?",
+    "answer": "Benefits include: preventing loss, enabling maintenance scheduling, supporting depreciation accounting, improving utilization, ensuring compliance, optimizing asset allocation, and making informed purchasing decisions. Asset management protects investments and improves operational efficiency."
+  },
+  {
+    "question": "What software is used for asset management?",
+    "answer": "Asset management software tracks locations, maintenance schedules, depreciation, utilization, and compliance. Many inventory management systems also support asset tracking, making it easy to manage both inventory and assets in one platform."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoPhysicalAssetManagementPage() {
       
     >
       <SEO
-        title={`Physical Asset Management 2025 - Physical Asset Management`}
+        title={`Physical Asset Management 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

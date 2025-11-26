@@ -200,9 +200,9 @@ export default function ConstructionInventoryManagementSystem() {
       faqData={faqData}
     >
       <SEO
-        title="Construction Inventory Management System 2025 | Free Plan | StockFlow"
-        description="Learn how construction inventory management systems help track materials and equipment across job sites. Mobile scanning, theft prevention, automated alerts. Start free today."
-        keywords="construction inventory management system, construction inventory software, construction materials tracking, construction inventory app, job site inventory, construction equipment tracking, material management construction, construction inventory control, construction stock management, building materials inventory"
+        title="Construction Inventory Management System 2025 | Job Site Tracking | StockFlow"
+        description="Construction inventory management system for tracking materials and equipment across job sites. Mobile scanning, theft prevention, automated alerts. Free plan for up to 100 products. Start free today."
+        keywords="construction inventory management system, construction inventory software, construction materials tracking, construction inventory app, job site inventory, construction equipment tracking, material management construction, construction inventory control, construction stock management, building materials inventory, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/construction-inventory-management-system"
         structuredData={[structuredData, faqStructuredData]}
       />
@@ -220,7 +220,7 @@ export default function ConstructionInventoryManagementSystem() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Unlike basic <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, construction-specific systems account for job site logistics, material delivery schedules, equipment maintenance, and multi-project cost allocation. Learn more about <Link to="/uses/contractor-inventory-management" className="text-blue-600 hover:underline font-semibold">contractor inventory management</Link> for field service businesses.
+            Unlike basic <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, construction-specific systems account for job site logistics, material delivery schedules, equipment maintenance, and multi-project cost allocation. Learn more about <Link to="/uses/contractor-inventory-management" className="text-blue-600 hover:underline font-semibold">contractor inventory management</Link> for field service businesses. Explore <Link to="/solutions/construction-inventory-app" className="text-blue-600 hover:underline font-semibold">construction inventory app</Link> options or see <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link>.
           </p>
         </div>
       </section>

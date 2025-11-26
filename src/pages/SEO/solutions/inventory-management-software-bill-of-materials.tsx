@@ -97,9 +97,9 @@ export default function InventoryManagementSoftwareBillOfMaterials() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software Bill of Materials 2025 | StockFlow"
-        description="Get inventory management software with bill of materials integration. Track finished goods and components, calculate material requirements automatically, and manage production planning. Free plan available."
-        keywords="inventory management software bill of materials, inventory software bill of materials, inventory management with bom, bom inventory management software, inventory system with bill of materials, stock management with bom, manufacturing inventory with bom, production inventory software, assembly inventory management, stockflow, stock flow"
+        title="Inventory Management Software Bill of Materials 2025 | BOM Integration | StockFlow"
+        description="Get inventory management software with bill of materials integration. Track finished goods and components, calculate material requirements automatically, and manage production planning. Free plan for up to 100 products. Start free trial."
+        keywords="inventory management software bill of materials, inventory software bill of materials, inventory management with bom, bom inventory management software, inventory system with bill of materials, stock management with bom, manufacturing inventory with bom, production inventory software, assembly inventory management, bom inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software-bill-of-materials"
       />
 
@@ -112,7 +112,7 @@ export default function InventoryManagementSoftwareBillOfMaterials() {
             </h1>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              Combine <strong>inventory management software</strong> with <strong>bill of materials</strong> functionality to track both finished goods and components in one integrated system. Automatically calculate material requirements, manage production planning, and optimize your manufacturing operations.
+              Combine <strong>inventory management software</strong> with <strong>bill of materials</strong> functionality to track both finished goods and components in one integrated system. Automatically calculate material requirements, manage production planning, and optimize your manufacturing operations. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> provides comprehensive BOM integration. Learn more about <Link to="/bill-of-materials-inventory-management" className="text-blue-600 hover:underline font-semibold">bill of materials inventory management</Link> or explore <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link>.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
@@ -152,7 +152,7 @@ export default function InventoryManagementSoftwareBillOfMaterials() {
           </p>
 
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            For manufacturing and assembly businesses, <strong>inventory management software bill of materials</strong> is essential. It eliminates manual calculations, prevents production delays, and provides complete visibility into both finished goods and component inventory. StockFlow combines comprehensive <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management</Link> with powerful BOM functionality, making it the perfect solution for manufacturers.
+            For manufacturing and assembly businesses, <strong>inventory management software bill of materials</strong> is essential. It eliminates manual calculations, prevents production delays, and provides complete visibility into both finished goods and component inventory. StockFlow combines comprehensive <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with powerful BOM functionality, making it the perfect solution for manufacturers. Explore <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link> options or learn about <Link to="/bill-of-materials-inventory-management" className="text-blue-600 hover:underline font-semibold">bill of materials inventory management</Link>.
           </p>
         </div>
       </section>

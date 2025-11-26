@@ -192,9 +192,9 @@ export default function WarehouseModelingSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Warehouse Modeling Software 2025 | Free Plan | StockFlow"
-        description="Learn how warehouse modeling software helps design and optimize warehouse layouts. 3D visualization, space optimization, material flow simulation. Start free today."
-        keywords="warehouse modeling software, warehouse design software, warehouse layout software, warehouse optimization software, warehouse planning software, 3d warehouse modeling, warehouse space optimization, warehouse layout design, warehouse simulation software, warehouse capacity planning"
+        title="Warehouse Modeling Software 2025 | Layout Optimization | StockFlow"
+        description="Warehouse modeling software for layout design, space optimization, and material flow simulation. 3D visualization, capacity planning, picking route optimization. Free plan for up to 100 products. Start optimizing your warehouse today."
+        keywords="warehouse modeling software, warehouse design software, warehouse layout software, warehouse optimization software, warehouse planning software, 3d warehouse modeling, warehouse space optimization, warehouse layout design, warehouse simulation software, warehouse capacity planning, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/warehouse-modeling-software"
         structuredData={[structuredData, faqStructuredData]}
       />
@@ -208,11 +208,11 @@ export default function WarehouseModelingSoftware() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Effective warehouse modeling increases storage capacity by 20-30%, reduces picking time by 15-25%, optimizes space utilization, identifies bottlenecks before they occur, and helps plan warehouse expansions efficiently. Modern <Link to="/warehouse-management-software" className="text-blue-600 hover:underline font-semibold">warehouse management software</Link> like StockFlow includes layout planning tools that use real inventory and order data to recommend optimal storage configurations.
+            Effective warehouse modeling increases storage capacity by 20-30%, reduces picking time by 15-25%, optimizes space utilization, identifies bottlenecks before they occur, and helps plan warehouse expansions efficiently. Modern <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> like StockFlow includes layout planning tools that use real inventory and order data to recommend optimal storage configurations. For comprehensive warehouse solutions, explore <Link to="/solutions/warehouse-modeling-software" className="text-blue-600 hover:underline font-semibold">warehouse modeling software</Link> options.
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Unlike basic <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> that focuses on tracking, warehouse modeling focuses on design and optimization. Many WMS systems include basic modeling tools, while dedicated modeling software offers advanced 3D visualization and simulation capabilities.
+            Unlike basic <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> that focuses on tracking, warehouse modeling focuses on design and optimization. Many WMS systems include basic modeling tools, while dedicated modeling software offers advanced 3D visualization and simulation capabilities. Learn more about <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link> for comprehensive warehouse management.
           </p>
         </div>
       </section>

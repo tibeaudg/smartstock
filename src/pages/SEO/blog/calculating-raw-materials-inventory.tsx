@@ -11,52 +11,56 @@ const canonicalPath = "/blog/calculating-raw-materials-inventory";
 const metaDescription = "Learn how to calculate raw materials inventory. Formulas, methods, and examples for calculating raw materials inventory value, costs, and quantities for manufacturing.";
 const keywords = "calculating raw materials inventory, raw materials inventory calculation, raw materials inventory formula, calculate raw materials, manufacturing inventory calculation";
 const heroBadge = "Topic Guide • Updated July 2024";
-const summaryCopy = "Explore Calculating Raw Materials Inventory through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Calculate raw materials inventory by: counting physical quantities (conduct physical counts), determining unit costs (purchase price per unit), calculating total value (quantity × unit cost), using costing methods (FIFO, LIFO, weighted average), tracking by location (warehouse, production floor), and maintaining accurate records. Formulas: Total Value = Quantity × Unit Cost, Average Cost = Total Cost / Total Quantity, Ending Inventory = Beginning Inventory + Purchases - Usage. Methods: FIFO (first in, first out - uses oldest costs), LIFO (last in, first out - uses newest costs), weighted average (average of all costs). Accurate calculation is essential for financial reporting, cost control, and production planning.";
 const takeaways = [
-  "Understand the core themes behind Calculating Raw Materials Inventory and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Calculating Raw Materials Inventory into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make calculating raw materials inventory sustainable at scale."
+  "Calculate by: counting physical quantities, determining unit costs, calculating total value (quantity × unit cost), using costing methods (FIFO, LIFO, weighted average), tracking by location, and maintaining accurate records.",
+  "Formulas: Total Value = Quantity × Unit Cost, Average Cost = Total Cost / Total Quantity, Ending Inventory = Beginning Inventory + Purchases - Usage.",
+  "Methods: FIFO (uses oldest costs), LIFO (uses newest costs), weighted average (average of all costs). Accurate calculation is essential for financial reporting, cost control, and production planning."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what calculating raw materials inventory should deliver for customers, finance, and frontline teams."
+    "title": "Conduct physical counts",
+    "description": "Count physical quantities of all raw materials. Use barcode scanning for accuracy, count by location (warehouse, production floor), and verify quantities against records. Accurate counts are the foundation for calculation."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how calculating raw materials inventory happens today, where gaps exist, and which systems hold the data."
+    "title": "Determine unit costs",
+    "description": "Calculate unit costs using your costing method: FIFO (first in, first out - uses oldest costs), LIFO (last in, first out - uses newest costs), or weighted average (average of all costs). Choose method based on accounting requirements and business needs."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of calculating raw materials inventory inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Calculate total value",
+    "description": "Calculate total inventory value: Total Value = Quantity × Unit Cost. Use inventory management software to automate calculations, maintain accurate records, and generate reports for financial reporting and cost control."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly calculating raw materials inventory initiatives move from idea to rollout."
+    "label": "Calculation accuracy",
+    "detail": "Measure accuracy of raw materials inventory calculations. Accurate calculations are essential for financial reporting, cost control, and production planning. Use inventory software to ensure accuracy."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new calculating raw materials inventory process across locations or departments."
+    "label": "Time efficiency",
+    "detail": "Track time spent on calculations. Inventory management software automates calculations, reducing time spent and improving accuracy compared to manual methods."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to calculating raw materials inventory workflows."
+    "label": "Cost accuracy",
+    "detail": "Monitor accuracy of cost calculations. Proper costing methods (FIFO, LIFO, weighted average) ensure accurate cost reporting and help with financial planning and decision-making."
   }
 ];
 const faqData = [
   {
-    "question": "What is Calculating Raw Materials Inventory?",
-    "answer": "Calculating Raw Materials Inventory refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "How do you calculate raw materials inventory?",
+    "answer": "Calculate by: counting physical quantities (conduct physical counts), determining unit costs (purchase price per unit), calculating total value (quantity × unit cost), using costing methods (FIFO, LIFO, weighted average), tracking by location, and maintaining accurate records. Formula: Total Value = Quantity × Unit Cost."
   },
   {
-    "question": "How can I get started with calculating raw materials inventory?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot calculating raw materials inventory within one team, then expand once you capture early wins."
+    "question": "What costing methods are used for raw materials inventory?",
+    "answer": "Common methods include: FIFO (first in, first out - uses oldest costs, matches physical flow), LIFO (last in, first out - uses newest costs, tax benefits in some regions), and weighted average (average of all costs, smooths cost fluctuations). Choose based on accounting requirements and business needs."
   },
   {
-    "question": "Where does StockFlow add value for calculating raw materials inventory?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of calculating raw materials inventory with real-time dashboards."
+    "question": "What is the formula for raw materials inventory value?",
+    "answer": "Basic formula: Total Value = Quantity × Unit Cost. Other formulas: Average Cost = Total Cost / Total Quantity, Ending Inventory = Beginning Inventory + Purchases - Usage. Inventory management software automates these calculations."
+  },
+  {
+    "question": "Why is accurate raw materials inventory calculation important?",
+    "answer": "Important because it's essential for financial reporting (balance sheet accuracy), cost control (production cost accuracy), production planning (material availability), and decision-making (purchasing, pricing). Accurate calculations ensure proper financial reporting and operational planning."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoCalculatingRawMaterialsInventoryPage() {
       
     >
       <SEO
-        title={`Calculating Raw Materials Inventory 2025`}
+        title={`Calculating Raw Materials Inventory 2025 - Formulas & Methods | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}

@@ -11,52 +11,56 @@ const canonicalPath = "/blog/inventory-vs-supplies";
 const metaDescription = "Understand the difference between inventory and supplies. Learn how to categorize and manage both effectively. Key distinctions for accounting and inventory management.";
 const keywords = "inventory vs supplies, difference between inventory and supplies, inventory definition, supplies definition, inventory accounting, supplies accounting, inventory management";
 const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Explore Inventory Vs Supplies through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Inventory refers to products held for sale to customers (finished goods, raw materials, work-in-progress), while supplies are items used in business operations but not sold (office supplies, cleaning materials, maintenance items). Key differences: inventory is tracked as an asset on the balance sheet and affects COGS when sold, while supplies are expensed when purchased and don't directly generate revenue. Proper categorization is important for accounting, financial reporting, and inventory management accuracy.";
 const takeaways = [
-  "Understand the core themes behind Inventory Vs Supplies and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Inventory Vs Supplies into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make inventory vs supplies sustainable at scale."
+  "Inventory includes products held for sale (finished goods, raw materials, WIP) and is tracked as an asset affecting COGS when sold.",
+  "Supplies are items used in operations but not sold (office supplies, cleaning materials) and are expensed when purchased.",
+  "Key difference: inventory generates revenue when sold, while supplies support operations but don't directly generate revenue. Proper categorization is essential for accounting accuracy."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what inventory vs supplies should deliver for customers, finance, and frontline teams."
+    "title": "Categorize items correctly",
+    "description": "Identify which items are inventory (products for sale) vs supplies (operational items). Inventory includes finished goods, raw materials, and work-in-progress. Supplies include office materials, cleaning products, and maintenance items."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how inventory vs supplies happens today, where gaps exist, and which systems hold the data."
+    "title": "Set up separate tracking",
+    "description": "Use inventory management software to track inventory and supplies separately. This ensures accurate accounting, proper financial reporting, and better management of both categories."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of inventory vs supplies inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Review accounting treatment",
+    "description": "Ensure proper accounting: inventory is tracked as an asset and affects COGS when sold, while supplies are expensed when purchased. Consult with an accountant to ensure correct categorization."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly inventory vs supplies initiatives move from idea to rollout."
+    "label": "Categorization accuracy",
+    "detail": "Track how accurately items are categorized as inventory vs supplies. Proper categorization ensures accurate financial reporting and inventory management. Target 100% accuracy."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new inventory vs supplies process across locations or departments."
+    "label": "Inventory vs supplies ratio",
+    "detail": "Monitor the ratio of inventory value to supplies value. This helps understand business focus and ensures proper resource allocation between revenue-generating inventory and operational supplies."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to inventory vs supplies workflows."
+    "label": "Accounting accuracy",
+    "detail": "Measure accuracy of financial reporting based on proper categorization. Correct categorization ensures accurate balance sheets, COGS calculations, and expense reporting."
   }
 ];
 const faqData = [
   {
-    "question": "What is Inventory Vs Supplies?",
-    "answer": "Inventory Vs Supplies refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is the difference between inventory and supplies?",
+    "answer": "Inventory refers to products held for sale to customers (finished goods, raw materials, work-in-progress) and is tracked as an asset affecting COGS when sold. Supplies are items used in business operations but not sold (office supplies, cleaning materials, maintenance items) and are expensed when purchased. Inventory generates revenue when sold, while supplies support operations."
   },
   {
-    "question": "How can I get started with inventory vs supplies?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot inventory vs supplies within one team, then expand once you capture early wins."
+    "question": "How do you categorize inventory vs supplies?",
+    "answer": "Categorize based on purpose: inventory includes products for sale (finished goods, raw materials, WIP), while supplies include operational items (office materials, cleaning products, maintenance items). Ask: 'Will this be sold to customers?' If yes, it's inventory. If no, it's supplies."
   },
   {
-    "question": "Where does StockFlow add value for inventory vs supplies?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of inventory vs supplies with real-time dashboards."
+    "question": "Why is it important to distinguish inventory from supplies?",
+    "answer": "Distinguishing is important for accurate accounting, financial reporting, and inventory management. Inventory is tracked as an asset and affects COGS when sold, while supplies are expensed when purchased. Proper categorization ensures accurate balance sheets, profit calculations, and inventory optimization."
+  },
+  {
+    "question": "How does accounting differ for inventory vs supplies?",
+    "answer": "Inventory is tracked as an asset on the balance sheet and affects Cost of Goods Sold (COGS) when sold. Supplies are expensed when purchased and appear as operating expenses. This difference impacts financial reporting, profit calculations, and tax treatment."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoInventoryVsSuppliesPage() {
       
     >
       <SEO
-        title={`Inventory Vs Supplies 2025 - Inventory Vs Supplies`}
+        title={`Inventory Vs Supplies 2025 - Key Differences Explained | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
@@ -119,18 +123,20 @@ export default function SeoInventoryVsSuppliesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Inventory vs Supplies: Key Differences</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Inventory</strong> refers to products held for sale to customers (finished goods, raw materials, work-in-progress) and is tracked as an asset on the balance sheet, affecting Cost of Goods Sold (COGS) when sold. <strong>Supplies</strong> are items used in business operations but not sold (office supplies, cleaning materials, maintenance items) and are expensed when purchased.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              The key difference is that inventory generates revenue when sold, while supplies support operations but don't directly generate revenue. Proper categorization is essential for accurate accounting, financial reporting, and inventory management. Inventory is tracked as an asset and affects COGS, while supplies are expensed immediately.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              To categorize correctly, ask: 'Will this be sold to customers?' If yes, it's inventory. If no, it's supplies. Use inventory management software to track both categories separately for accurate accounting and better management. Learn more about <Link to="/blog/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
+              <h3 className="text-xl font-semibold">Why the distinction matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                Proper categorization ensures accurate accounting, financial reporting, and inventory management. Inventory affects balance sheets and COGS, while supplies affect operating expenses. Incorrect categorization leads to inaccurate financial statements, profit calculations, and inventory optimization decisions."
               </p>
             </div>
           </div>
@@ -224,21 +230,21 @@ export default function SeoInventoryVsSuppliesPage() {
             </div>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
+                <h3 className="text-lg font-semibold">Separate tracking</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so inventory vs supplies decisions never rely on outdated spreadsheets.
+                  Track inventory and supplies separately in StockFlow. Categorize items correctly, maintain accurate records for both, and ensure proper accounting treatment for financial reporting."
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
+                <h3 className="text-lg font-semibold">Accurate categorization</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when inventory vs supplies KPIs drift from plan.
+                  Use StockFlow's categorization features to properly distinguish inventory from supplies. This ensures accurate accounting, financial reporting, and inventory management."
                 </p>
               </div>
               <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
+                <h3 className="text-lg font-semibold">Financial reporting</h3>
                 <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for inventory vs supplies progress.
+                  Generate accurate financial reports with proper categorization. StockFlow helps you track inventory as assets and supplies as expenses, ensuring accurate balance sheets and profit calculations."
                 </p>
               </div>
             </div>

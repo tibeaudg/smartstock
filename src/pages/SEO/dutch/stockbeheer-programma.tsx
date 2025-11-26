@@ -130,8 +130,8 @@ export default function ProgrammaStockbeheer() {
       faqData={faqData}
     >
       <SEO
-        title="Stockbeheer Programma 2025 - Stockbeheer Programma 2025"
-        description="Lees de gids stockbeheer programma tijd en geld te besparen. Lees de gids stockbeheer programma tijd en geld te besparen.. Krijg direct toegang. StockFlow he...'s: cloud-based, on-premise, branchespecifieke en gratis oplossingen. Ontdek welk Stockbeheer Programma het beste bij jouw bedrijf past. Start met StockFlow's gratis plan."
+        title="Stockbeheer Programma 2025 - Gratis Plan | StockFlow"
+        description="Beste stockbeheer programma voor KMO's. Gratis plan, cloud-based, gebruiksvriendelijk, automatische bestellingen. Start gratis vandaag."
         keywords="Stockbeheer Programma, stockbeheer programma, stockbeheer software, software stockbeheer, magazijnbeheer software, voorraadbeheer software, voorraadbeheer programma, digitaal magazijnbeheer, stock beheer, beste stockbeheer programma's, voorraadbeheer gratis, magazijnbeheer programma, programma voorraadbeheer, software voor magazijnbeheer, beter stockbeheer"
         url="https://www.stockflow.be/programma-stockbeheer"
         locale="nl-BE"

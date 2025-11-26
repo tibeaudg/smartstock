@@ -59,9 +59,9 @@ export default function SEOResourcesBlogPage() {
       description="Explore our complete library of articles, guides, and resources about inventory management."
     >
       <SEO
-        title="Blog - StockFlow | Inventory Management Articles & Guides"
-        description="Explore our complete library of articles, guides, and resources about inventory management, software comparisons, and industry insights."
-        keywords="inventory management blog, inventory articles, stock management guides, inventory software guides, warehouse management articles"
+        title="Inventory Management Blog 2025 - Articles, Guides & Resources | StockFlow"
+        description="Explore 95+ articles about inventory management, software comparisons, best practices, and industry insights. Expert guides to optimize your inventory operations. Free resources."
+        keywords="inventory management blog, inventory articles, stock management guides, inventory software guides, warehouse management articles, inventory best practices, inventory management tips, inventory control guides"
         url="https://www.stockflow.be/resources/blog"
         structuredData={structuredData}
       />

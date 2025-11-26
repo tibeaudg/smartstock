@@ -199,9 +199,9 @@ export default function InventorySoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory System Software 2025 | Best Inventory Software | Free Plan | StockFlow"
-        description="Discover the best inventory system software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. Start free today - no credit card required."
-        keywords="inventory software, stock management software, inventory tracking software, inventory management software, stock software, inventory control software, warehouse management software, inventory system software, stock tracking software, inventory software for small business, best inventory software, inventory software free, cloud inventory software, inventory software comparison, inventory software features, inventory software pricing, inventory software reviews, inventory software demo, inventory software trial, inventory management system, stock management system, inventory tracking system"
+        title="Inventory Software 2025 | Best Inventory System Software | StockFlow"
+        description="Best inventory software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. Free plan for up to 100 products. Start free today - no credit card required."
+        keywords="inventory software, stock management software, inventory tracking software, inventory management software, stock software, inventory control software, warehouse management software, inventory system software, stock tracking software, inventory software for small business, best inventory software, inventory software free, cloud inventory software, inventory software comparison, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-software"
       />
 
@@ -211,7 +211,7 @@ export default function InventorySoftware() {
           Streamline your inventory management with powerful software that tracks stock levels, automates reordering, and provides real-time insights. Join 500+ businesses using StockFlow to optimize their inventory.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Inventory software is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. It provides real-time visibility into inventory levels, automates reordering processes, and helps prevent stockouts or overstock situations.
+          <strong>Inventory software</strong> is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. It provides real-time visibility into inventory levels, automates reordering processes, and helps prevent stockouts or overstock situations. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> combines powerful features with intuitive design, making it accessible for businesses of all sizes. Explore <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> options or learn about <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link>.
         </p>
       </div>
 

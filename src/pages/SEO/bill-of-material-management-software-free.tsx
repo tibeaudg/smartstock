@@ -213,7 +213,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
             </h1>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              Managing production with <strong>free BOM management software</strong> is now easier than ever. Whether you're manufacturing electronics, furniture, or custom products, <strong>bill of materials software free</strong> helps you track components, calculate material requirements, and optimize production costs—all without upfront investment. This free BOM software integrates seamlessly with <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> to provide complete production control.
+              Managing production with <strong>free BOM management software</strong> is now easier than ever. Whether you're manufacturing electronics, furniture, or custom products, <strong>bill of materials software free</strong> helps you track components, calculate material requirements, and optimize production costs—all without upfront investment. This free BOM software integrates seamlessly with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> to provide complete production control. Compare with <Link to="/bill-of-materials-management-software-free" className="text-blue-600 hover:underline font-semibold">alternative free BOM solutions</Link> or explore <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">paid BOM management software</Link> options.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
@@ -281,7 +281,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
           </div>
 
           <p className="text-lg text-gray-700 leading-relaxed">
-            <strong>Free BOM management software</strong> like StockFlow provides these essential capabilities without upfront costs, making it accessible for small manufacturers who need professional BOM management on a budget. When combined with <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, BOM software becomes a powerful tool for production planning and material control. Learn more about <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> solutions that include BOM features.
+            <strong>Free BOM management software</strong> like StockFlow provides these essential capabilities without upfront costs, making it accessible for small manufacturers who need professional BOM management on a budget. When combined with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, BOM software becomes a powerful tool for production planning and material control. Learn more about <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> solutions that include BOM features, or explore <Link to="/bill-of-materials-inventory-management" className="text-blue-600 hover:underline font-semibold">integrated BOM and inventory management</Link> systems.
           </p>
         </div>
       </section>

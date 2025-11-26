@@ -11,52 +11,56 @@ const canonicalPath = "/blog/year-end-inventory";
 const metaDescription = "Complete guide to year-end inventory. Learn how to conduct year-end inventory counts, accounting procedures, tax implications, and best practices for closing inventory.";
 const keywords = "year end inventory, year-end inventory, end of year inventory, year end inventory count, closing inventory, year end inventory accounting, inventory year end";
 const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Explore Year End Inventory through the lens of modern inventory and operations leadership. This StockFlow-exclusive guide synthesizes the best lessons from the original Sortly article and translates them into actionable steps for teams that need structure, visibility, and measurable wins.";
+const summaryCopy = "Year-end inventory is the physical count and valuation of all inventory at the end of the fiscal year for financial reporting and tax purposes. It involves counting all items, valuing inventory (FIFO, LIFO, or weighted average), reconciling discrepancies, and reporting values for accounting. Year-end inventory is required for accurate financial statements, tax calculations, and compliance. Best practices include: preparing in advance, using cycle counts throughout the year, using inventory management software for accuracy, and reconciling discrepancies promptly.";
 const takeaways = [
-  "Understand the core themes behind Year End Inventory and why they matter for modern operations teams.",
-  "Follow a structured framework to translate Year End Inventory into day-to-day improvements.",
-  "Highlight StockFlow capabilities that make year end inventory sustainable at scale."
+  "Year-end inventory is the physical count and valuation of all inventory at fiscal year-end for financial reporting and tax purposes.",
+  "It involves counting all items, valuing inventory (FIFO, LIFO, or weighted average), reconciling discrepancies, and reporting values for accounting.",
+  "Best practices include preparing in advance, using cycle counts throughout the year, using inventory management software, and reconciling discrepancies promptly."
 ];
 const actionSteps = [
   {
-    "title": "Align on the outcome",
-    "description": "Confirm what year end inventory should deliver for customers, finance, and frontline teams."
+    "title": "Prepare in advance",
+    "description": "Plan year-end inventory count weeks in advance. Organize inventory, ensure all items are accessible, prepare counting sheets or use inventory management software, and schedule staff for counting."
   },
   {
-    "title": "Audit current workflows",
-    "description": "Document how year end inventory happens today, where gaps exist, and which systems hold the data."
+    "title": "Conduct physical count",
+    "description": "Count all inventory items accurately. Use barcode scanning or inventory management software for efficiency and accuracy. Count systematically by location or category to avoid missing items."
   },
   {
-    "title": "Launch targeted improvements",
-    "description": "Prototype a lean version of year end inventory inside StockFlow, measure the impact, and expand in sprints."
+    "title": "Value and reconcile",
+    "description": "Value inventory using your chosen method (FIFO, LIFO, or weighted average). Reconcile physical counts with system records, investigate discrepancies, and adjust records. Report values for accounting and tax purposes."
   }
 ];
 const metrics = [
   {
-    "label": "Execution velocity",
-    "detail": "Track how quickly year end inventory initiatives move from idea to rollout."
+    "label": "Count accuracy",
+    "detail": "Measure accuracy of year-end inventory counts. Target 95-99% accuracy. Use inventory management software and barcode scanning to improve accuracy and reduce errors."
   },
   {
-    "label": "Team adoption",
-    "detail": "Measure participation rates in the new year end inventory process across locations or departments."
+    "label": "Time to complete",
+    "detail": "Track time spent on year-end inventory. Effective preparation and software use reduce time significantly. Cycle counts throughout the year make year-end counts faster."
   },
   {
-    "label": "Quality & accuracy",
-    "detail": "Monitor error rates, rework, or data accuracy tied to year end inventory workflows."
+    "label": "Discrepancy rate",
+    "detail": "Monitor discrepancies between physical counts and system records. Lower discrepancy rates indicate better ongoing inventory management. Investigate and resolve discrepancies promptly."
   }
 ];
 const faqData = [
   {
-    "question": "What is Year End Inventory?",
-    "answer": "Year End Inventory refers to the practices, insights, or stories captured in the original Stockflow article. This guide reframes the topic for StockFlow users who want to move faster, stay organized, and build resilient inventory operations."
+    "question": "What is year-end inventory?",
+    "answer": "Year-end inventory is the physical count and valuation of all inventory at the end of the fiscal year for financial reporting and tax purposes. It involves counting all items, valuing inventory (FIFO, LIFO, or weighted average), reconciling discrepancies, and reporting values for accounting."
   },
   {
-    "question": "How can I get started with year end inventory?",
-    "answer": "Start by clarifying the objective, mapping the stakeholders, and collecting baseline metrics. Use the action playbook in this article to pilot year end inventory within one team, then expand once you capture early wins."
+    "question": "Why is year-end inventory important?",
+    "answer": "Year-end inventory is required for accurate financial statements, tax calculations, and compliance. It provides the ending inventory value used in cost of goods sold calculations and financial reporting. Accurate year-end inventory is essential for proper accounting."
   },
   {
-    "question": "Where does StockFlow add value for year end inventory?",
-    "answer": "StockFlow centralizes data, automates alerts, and connects cross-functional teams. That means fewer spreadsheets, faster decisions, and the ability to prove the value of year end inventory with real-time dashboards."
+    "question": "How do you conduct year-end inventory?",
+    "answer": "Conduct by: preparing in advance, organizing inventory, counting all items accurately (using barcode scanning or software), valuing inventory using your chosen method, reconciling with system records, investigating discrepancies, and reporting values for accounting."
+  },
+  {
+    "question": "Can inventory software help with year-end inventory?",
+    "answer": "Yes, inventory management software helps by: maintaining accurate records throughout the year, enabling efficient counting with barcode scanning, providing valuation methods, generating reports, and reducing discrepancies. Software makes year-end inventory faster and more accurate."
   }
 ];
 const structuredData = [
@@ -106,7 +110,7 @@ export default function SeoYearEndInventoryPage() {
       
     >
       <SEO
-        title={`Year End Inventory 2025 - Year End Inventory`}
+        title={`Year End Inventory 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflow.be${canonicalPath}`}
@@ -119,18 +123,20 @@ export default function SeoYearEndInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Year End Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Year-end inventory</strong> is the physical count and valuation of all inventory at the end of the fiscal year for financial reporting and tax purposes. It involves counting all items, valuing inventory (FIFO, LIFO, or weighted average), reconciling discrepancies, and reporting values for accounting.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Year-end inventory is required for accurate financial statements, tax calculations, and compliance. It provides the ending inventory value used in cost of goods sold calculations and financial reporting. Best practices include preparing in advance, using cycle counts throughout the year, using inventory management software for accuracy, and reconciling discrepancies promptly.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Effective year-end inventory processes reduce time spent, improve accuracy, and ensure compliance. Inventory management software helps by maintaining accurate records throughout the year, enabling efficient counting with barcode scanning, and generating reports. Learn more about <Link to="/blog/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">physical inventory counts</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
+              <h3 className="text-xl font-semibold">Why year-end inventory matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
+                Year-end inventory is required for accurate financial statements, tax calculations, and compliance. It provides the ending inventory value used in cost of goods sold calculations. Accurate year-end inventory is essential for proper accounting and financial reporting."
               </p>
             </div>
           </div>

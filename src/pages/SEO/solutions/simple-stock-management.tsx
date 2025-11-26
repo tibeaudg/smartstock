@@ -50,8 +50,8 @@ export default function SimpleStockManagement() {
     >
       <SEO
         title="Simple Stock Management 2025 - Easy Inventory Control | StockFlow"
-        description="Simple stock management made easy. Intuitive inventory control without complexity. Real-time tracking, automated alerts, barcode scanning. Free plan available. Start managing stock today."
-        keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control, easy stock management, simple inventory system, user-friendly inventory, easy stock tracking, stockflow, stock flow"
+        description="Simple stock management made easy. Intuitive inventory control without complexity. Real-time tracking, automated alerts, barcode scanning. Free plan for up to 100 products. Start managing stock today."
+        keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control, easy stock management, simple inventory system, user-friendly inventory, easy stock tracking, simple inventory management, easy stock control, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/simple-stock-management"
       />
 
@@ -74,7 +74,7 @@ export default function SimpleStockManagement() {
                 Simple stock management prioritizes ease of use over complex features. The interface is designed to be intuitive, requiring minimal training to get started. This simplicity makes inventory management accessible to businesses that don't have dedicated IT staff or extensive training resources.
               </p>
               <p className="text-gray-700">
-                Despite its simplicity, simple stock management integrates effectively with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> solutions, providing essential functionality without overwhelming complexity. This integration ensures that businesses have access to professional-grade tools in an easy-to-use format.
+                Despite its simplicity, simple stock management integrates effectively with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> solutions, providing essential functionality without overwhelming complexity. This integration ensures that businesses have access to professional-grade tools in an easy-to-use format. For businesses needing more advanced features, explore <Link to="/solutions/stock-management-software" className="text-blue-600 hover:text-blue-800 underline">stock management software</Link> or <Link to="/solutions/inventory-software" className="text-blue-600 hover:text-blue-800 underline">inventory software</Link> options.
               </p>
             </div>
 
@@ -84,7 +84,7 @@ export default function SimpleStockManagement() {
                 Simple stock management includes the core features that most businesses need: real-time tracking, barcode scanning, automated alerts, and basic reporting. <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:text-blue-800 underline">Mobile inventory management</Link> capabilities allow businesses to manage stock from smartphones, while cloud-based architecture ensures access from anywhere.
               </p>
               <p className="text-gray-700">
-                The focus on essential features means that businesses can start managing inventory immediately without learning complex workflows or configuring advanced options. Integration with <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:text-blue-800 underline">online inventory management</Link> systems enables businesses to maintain accurate stock levels across all sales channels.
+                The focus on essential features means that businesses can start managing inventory immediately without learning complex workflows or configuring advanced options. Integration with <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:text-blue-800 underline">online inventory management</Link> systems enables businesses to maintain accurate stock levels across all sales channels. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> for comprehensive solutions.
               </p>
             </div>
           </div>

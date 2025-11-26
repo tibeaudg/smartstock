@@ -155,9 +155,9 @@ export default function MobileInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Mobile Inventory Management 2025 - Mobile Inventory Manag..."
-        description="Find out how mobile inventory management to optimize your inventory management. Find out how mobile inventory management to optimize your inventory. Get star..."
-        keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app"
+        title="Mobile Inventory Management 2025 - Manage Stock on the Go | StockFlow"
+        description="Mobile inventory management for iOS and Android. Barcode scanning, offline mode, real-time sync. Manage inventory from anywhere. Free plan for up to 100 products. Start free trial."
+        keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/mobile-inventory-management"
         locale="en"
         alternateLanguages={[
@@ -173,7 +173,7 @@ export default function MobileInventoryManagement() {
           Manage inventory from anywhere with mobile inventory management. Real-time updates, barcode scanning, and offline mode.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Mobile inventory management allows you to track and manage inventory from your smartphone or tablet. You can scan barcodes, update stock levels, check inventory status, and generate reports from anywhere - whether you're in the warehouse, on the shop floor, or traveling.
+          <strong>Mobile inventory management</strong> allows you to track and manage inventory from your smartphone or tablet. You can scan barcodes, update stock levels, check inventory status, and generate reports from anywhere - whether you're in the warehouse, on the shop floor, or traveling. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> includes comprehensive mobile capabilities. Learn more about <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:underline font-semibold">online inventory management</Link> or explore <Link to="/solutions/stock-management-software" className="text-blue-600 hover:underline font-semibold">stock management software</Link> solutions.
         </p>
       </div>
 

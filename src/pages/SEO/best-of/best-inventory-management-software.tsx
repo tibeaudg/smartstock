@@ -73,7 +73,7 @@ export default function BestInventoryManagementSoftware() {
         <p className="text-lg text-slate-600 leading-relaxed">
           The "best" software isn't about the longest feature list. It's about <strong>operational resilience</strong>. 
           Does it work when the Wi-Fi cuts out? Can it handle unit-of-measure conversions (buying cases, selling units) automatically? 
-          This guide compares the three main categories of inventory systems to help you decide. For more details, see our <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> comparison.
+          This guide compares the three main categories of inventory systems to help you decide. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> comparison.
         </p>
       </div>
 

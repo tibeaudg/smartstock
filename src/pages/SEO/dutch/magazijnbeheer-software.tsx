@@ -73,8 +73,8 @@ export default function MagazijnbeheerSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Magazijnbeheer Software 2025 - Magazijnbeheer Software 2025's) | Bespaar 35% + 15u/week | StockFlow"
-        description="Ontdek hoe magazijnbeheer software de beste software te kiezen. Vind uit hoe magazijnbeheer software tijd en geld te besparen.. Begin nu met gratis proefperi...'s. GRATIS plan (100 SKU's), real-time tracking, barcode scanning. Bespaar 35% kosten & 15 uur/week! 5-7 dagen setup. Vertrouwd door 1.000+ bedrijven. Start NU gratis - geen creditcard!"
+        title="Magazijnbeheer Software 2025 - Gratis Plan | StockFlow"
+        description="Beste magazijnbeheer software voor kleine bedrijven. Gratis plan, real-time tracking, barcode scanning, multi-locatie. Bespaar 35% kosten. Start gratis vandaag."
         keywords="magazijnbeheer software, voorraadbeheer software, warehouse management, stockbeheer software, gratis magazijnbeheer, KMO software, magazijnbeheer software gratis, beste magazijnbeheer software, magazijnbeheer software voor kleine bedrijven, online magazijnbeheer"
         url="https://www.stockflow.be/magazijnbeheer-software"
         structuredData={structuredData}

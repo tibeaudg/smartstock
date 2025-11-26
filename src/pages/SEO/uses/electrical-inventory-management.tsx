@@ -296,8 +296,8 @@ export default function ElectricalInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Electrical Inventory Management 2025 - Electrical Invento..."
-        description="Discover how electrical inventory management to automate your processes. Find out how electrical inventory management to optimize your inventory. Start free ..."
+        title="Electrical Inventory Management 2025 - Electrician Software | StockFlow"
+        description="Complete electrical inventory management for electricians. Track supplies, tools, equipment across job sites and service vehicles. Mobile scanning, job costing. Reduce material loss. Start free trial."
         keywords="electrical inventory management, electrician inventory software, electrical contractor inventory, electrical supplies tracking, electrical materials management, job site inventory, service vehicle inventory, electrical job costing, contractor inventory software"
         url="https://www.stockflow.be/electrical-inventory-management"
       />

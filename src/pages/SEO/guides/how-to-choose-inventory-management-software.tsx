@@ -109,8 +109,8 @@ const HowToChooseInventoryManagementSoftware = () => {
       faqData={faqData}
     >
       <SEO
-        title="How To Choose Inventory Management Software 2025"
-        description="Learn how how to choose inventory management software to save time and money. Learn how how to choose inventory management software to automate. Get started ..."
+        title="How To Choose Inventory Management Software 2025 - Complete Buyer Guide | StockFlow"
+        description="Complete guide to choosing inventory management software. Step-by-step evaluation process, feature comparison, pricing guide, and selection criteria. Find the best software for your business. Start free trial."
         keywords={expandedKeywords}
         url="https://www.stockflow.be/how-to-choose-inventory-management-software"
         locale="en"
@@ -129,7 +129,7 @@ const HowToChooseInventoryManagementSoftware = () => {
           
           <p className="text-xl text-gray-600 mb-8">
             Selecting the right inventory management software is crucial for your business success. 
-            This comprehensive guide walks you through every step of the evaluation and selection process.
+            This comprehensive guide walks you through every step of the evaluation and selection process. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> comparison.
           </p>
 
           <section className="mb-12">

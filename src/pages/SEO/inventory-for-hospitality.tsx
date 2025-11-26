@@ -174,9 +174,9 @@ export default function InventoryForHospitality() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Software for Hospitality Industry | StockFlow"
-        description="Optimize inventory for hospitality businesses. Track F&B, supplies, and equipment efficiently. Reduce waste, improve margins, and streamline operations with specialized hospitality inventory management."
-        keywords="hospitality inventory, hotel stock management, restaurant inventory, hospitality supply chain, food cost management, restaurant inventory software, hotel inventory management, catering inventory, hospitality inventory system, F&B inventory, hospitality stock control, restaurant stock management"
+        title="Hospitality Inventory Management 2025 | F&B Software | StockFlow"
+        description="Specialized hospitality inventory management reduces food waste 20-30%, improves profit margins, and streamlines F&B operations. Track ingredients, calculate food costs, manage recipes, and optimize stock levels for restaurants, hotels, and catering."
+        keywords="hospitality inventory, hotel stock management, restaurant inventory, hospitality supply chain, food cost management, restaurant inventory software, hotel inventory management, catering inventory, hospitality inventory system, F&B inventory, hospitality stock control, restaurant stock management, food and beverage inventory, hospitality inventory software"
         url="https://www.stockflow.be/inventory-for-hospitality"
         locale="en"
         alternateLanguages={[
@@ -188,12 +188,12 @@ export default function InventoryForHospitality() {
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight text-center">
+            Inventory Management for Hospitality
+          </h1>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="text-blue-600">Specialized Inventory Solutions</span> for the Hospitality Industry
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Track F&B inventory, calculate food costs, manage recipes, and optimize stock levels for restaurants, hotels, cafes, and catering businesses. Reduce waste, improve margins, and streamline operations.
+            <p className="text-xl text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
+              <strong>Inventory management for hospitality</strong> involves tracking, monitoring, and optimizing food & beverage (F&B) inventory, supplies, and equipment for restaurants, hotels, cafes, and catering businesses. Specialized <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> helps hospitality businesses reduce food waste by 20-30%, improve profit margins through better cost control, and streamline operations. Learn more about <Link to="/uses/higher-education-inventory-management" className="text-blue-600 hover:underline font-semibold">industry-specific inventory solutions</Link>.
             </p>
           </div>
         </div>

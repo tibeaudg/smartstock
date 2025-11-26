@@ -91,8 +91,8 @@ export default function VoorraadbeheerHorecaPage() {
       faqData={faqData}
     >
       <SEO
-        title="Complete Guide Voorraadbeheer Horeca - Beste Voorraadbehe..."
-        description="Lees de gids voorraadbeheer horeca de beste software te kiezen. Vind uit hoe voorraadbeheer horeca uw voorraadbeheer te optimaliseren. Ontdek. Start vandaag ..."
+        title="Voorraadbeheer Horeca 2025 - Restaurant & Hotel Software | StockFlow"
+        description="Complete voorraadbeheer software voor horeca. Houdbaarheidsdata, recepturen, foodcost tracking, verspilling voorkomen. Start gratis vandaag."
         keywords="voorraadbeheer horeca, horeca voorraad, horeca voorraadbeheer software, horeca inventaris, foodcost, keukenvoorraad, restaurant voorraadbeheer, derving horeca, voorraadbeheersysteem horeca, voedselverspilling horeca, horeca marge, kostprijs horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
         structuredData={structuredData}

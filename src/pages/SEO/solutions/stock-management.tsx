@@ -51,8 +51,8 @@ export default function StockManagement() {
     >
       <SEO
         title="Stock Management 2025 - Optimize Inventory Levels & Reduce Costs | StockFlow"
-        description="Master stock management with real-time tracking, automated reordering, and demand forecasting. Reduce carrying costs by 30%, prevent stockouts, and improve cash flow. Free trial available."
-        keywords="stock management, inventory control, stock tracking, warehouse management, inventory software, stock control system, SMB inventory, small business stock, stock management software, stock optimization, stock management app, stock management tools, stockflow, stock flow"
+        description="Master stock management with real-time tracking, automated reordering, and demand forecasting. Reduce carrying costs by 30%, prevent stockouts, and improve cash flow. Free plan for up to 100 products. Start free trial."
+        keywords="stock management, inventory control, stock tracking, warehouse management, inventory software, stock control system, SMB inventory, small business stock, stock management software, stock optimization, stock management app, stock management tools, stock control, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/stock-management"
       />
 
@@ -85,7 +85,7 @@ export default function StockManagement() {
                 Stock management revolves around maintaining optimal inventory levels - having enough stock to meet demand without overstocking. This balance prevents stockouts that lead to lost sales while avoiding excess inventory that ties up capital and increases storage costs. Effective stock management requires accurate tracking, demand forecasting, and strategic reordering.
               </p>
               <p className="text-gray-700">
-                Modern stock management integrates with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> to automate these processes, providing real-time visibility and automated alerts when stock levels require attention. This integration ensures that stock management becomes a proactive rather than reactive process.
+                Modern stock management integrates with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:text-blue-800 underline">inventory management software</Link> to automate these processes, providing real-time visibility and automated alerts when stock levels require attention. This integration ensures that stock management becomes a proactive rather than reactive process. Explore <Link to="/solutions/stock-management-software" className="text-blue-600 hover:text-blue-800 underline">stock management software</Link> solutions or learn about <Link to="/solutions/simple-stock-management" className="text-blue-600 hover:text-blue-800 underline">simple stock management</Link> options.
               </p>
             </div>
 

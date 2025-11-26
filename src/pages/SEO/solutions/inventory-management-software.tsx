@@ -196,9 +196,9 @@ export default function InventoryManagementSoftware() {
     faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software 2025 | Free Plan Available | StockFlow"
-        description="Get the best inventory management software 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 35% costs & 15 hours/week. Start free trial - no credit card required."
-        keywords="inventory management software, inventory software, stock management software, inventory system, inventory tracking software, inventory management system, best inventory software, stockflow, stock flow"
+        title="Inventory Management Software 2025 | Free Plan | StockFlow"
+        description="Best inventory management software 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 35% costs & 15 hours/week. Start free - no credit card required."
+        keywords="inventory management software, inventory software, stock management software, inventory system, inventory tracking software, inventory management system, best inventory software, online inventory management, cloud inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software"
         locale="en"
         alternateLanguages={[
@@ -383,7 +383,7 @@ export default function InventoryManagementSoftware() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management Software?</h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            <strong>Inventory management software</strong> is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. Unlike manual methods like <Link to="/inventory-excel" className="text-blue-600 hover:underline font-semibold">Excel spreadsheets</Link>, modern inventory management software provides real-time visibility, automated processes, and comprehensive analytics. Compare options in our <Link to="/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide or explore <Link to="/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> solutions.
+            <strong>Inventory management software</strong> is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. Unlike manual methods like Excel spreadsheets, modern inventory management software provides real-time visibility, automated processes, and comprehensive analytics. Compare options in our <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide or explore <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> solutions. For cloud-based options, see <Link to="/solutions/inventory-management-software-cloud-based" className="text-blue-600 hover:underline font-semibold">cloud-based inventory management software</Link>.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -439,7 +439,7 @@ export default function InventoryManagementSoftware() {
           </div>
 
           <p className="text-gray-700 leading-relaxed">
-            Whether you're running an <Link to="/inventory-for-ecommerce" className="text-blue-600 hover:underline font-semibold">e-commerce business</Link>, managing a <Link to="/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail store</Link>, operating a <Link to="/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse</Link>, or managing <Link to="/uses/medical-supply-inventory-control-system" className="text-blue-600 hover:underline font-semibold">medical supplies</Link> or <Link to="/uses/hvac-inventory-management" className="text-blue-600 hover:underline font-semibold">HVAC parts</Link>, inventory management software is essential for modern business operations.
+            Whether you're running an <Link to="/uses/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">e-commerce business</Link>, managing a <Link to="/industries/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail store</Link>, operating a <Link to="/industries/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse</Link>, or managing <Link to="/uses/medical-supply-inventory-control-system" className="text-blue-600 hover:underline font-semibold">medical supplies</Link>, inventory management software is essential for modern business operations. Explore <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link> for comprehensive options.
           </p>
         </div>
       </section>

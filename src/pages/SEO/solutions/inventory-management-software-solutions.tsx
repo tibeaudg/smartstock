@@ -74,8 +74,8 @@ export default function InventoryManagementSoftwareSolutionsPage() {
     >
       <SEO
         title="Inventory Management Software Solutions 2025 | Complete Solutions | StockFlow"
-        description="Get complete inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control. Free plan available. Start free trial."
-        keywords="inventory management software solutions, inventory solutions, inventory management solution, stock management solution, inventory system software, cloud inventory solution, stockflow, stock flow"
+        description="Get complete inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control. Free plan for up to 100 products. Start free trial."
+        keywords="inventory management software solutions, inventory solutions, inventory management solution, stock management solution, inventory system software, cloud inventory solution, inventory management systems solutions, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software-solutions"
         structuredData={structuredData}
       />
@@ -90,7 +90,7 @@ export default function InventoryManagementSoftwareSolutionsPage() {
               One solution to control purchasing, stock, and fulfillment
             </h1>
             <p className="text-base sm:text-lg text-gray-700 mt-5 leading-relaxed">
-              StockFlow gives operations, finance, and sales teams a shared platform for demand planning, warehouse efficiency, and customer fulfillment. Automate routine tasks so you can focus on growth.
+              StockFlow gives operations, finance, and sales teams a shared platform for demand planning, warehouse efficiency, and customer fulfillment. Automate routine tasks so you can focus on growth. Our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> provides comprehensive solutions for businesses of all sizes. Explore <Link to="/solutions/inventory-software" className="text-blue-600 hover:underline font-semibold">inventory software</Link> options or learn about <Link to="/solutions/inventory-management-systems-solutions" className="text-blue-600 hover:underline font-semibold">inventory management systems solutions</Link>.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link to="/auth" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg text-center">

@@ -202,8 +202,8 @@ export default function RetailInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Retail Inventory Management 2025 - Retail Inventory Manag..."
-        description="Learn how retail inventory management to choose the best software. Read the guide retail inventory management to automate your processes.. Try free now."
+        title="Retail Inventory Management 2025 - Software for Small Shops | StockFlow"
+        description="Complete retail inventory management software for small shops. Real-time stock tracking, barcode scanning, low stock alerts, POS integration. Reduce costs by 25%, prevent stockouts. Start free trial."
         keywords="retail inventory management, small retail shop software, retail stock management, shop inventory system, retail inventory tracking, small business inventory, retail POS integration, inventory management for retailers, retail stock control, shop management software, retail inventory software, small shop inventory, retail inventory solution, shop stock tracking, retail inventory app"
         url="https://www.stockflow.be/retail-inventory-management"
         structuredData={structuredData}

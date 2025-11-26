@@ -193,9 +193,9 @@ export default function ShopifyPlusWmsIntegration() {
       faqData={faqData}
     >
       <SEO
-        title="Shopify Plus WMS Integration 2025 | Free Plan | StockFlow"
-        description="Learn how Shopify Plus WMS integration automates inventory sync and order fulfillment. Real-time sync, prevent overselling, multi-channel support. Start free today."
-        keywords="shopify plus wms integration, shopify wms integration, shopify warehouse management, shopify inventory sync, shopify plus inventory management, shopify warehouse software, shopify inventory system, shopify wms software, shopify plus warehouse, ecommerce wms integration"
+        title="Shopify Plus WMS Integration 2025 | Inventory Sync | StockFlow"
+        description="Shopify Plus WMS integration automates inventory sync and order fulfillment. Real-time sync, prevent overselling, multi-channel support. Free plan for up to 100 products. Start free today."
+        keywords="shopify plus wms integration, shopify wms integration, shopify warehouse management, shopify inventory sync, shopify plus inventory management, shopify warehouse software, shopify inventory system, shopify wms software, shopify plus warehouse, ecommerce wms integration, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/shopify-plus-wms-integration"
         structuredData={[structuredData, faqStructuredData]}
       />
@@ -209,7 +209,7 @@ export default function ShopifyPlusWmsIntegration() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Modern <Link to="/warehouse-management-software" className="text-blue-600 hover:underline font-semibold">warehouse management software</Link> like StockFlow offers native Shopify Plus integration that syncs inventory automatically. When a customer places an order on Shopify Plus, the WMS receives order details, updates inventory levels, and syncs stock counts back to Shopify in real-time. This eliminates manual data entry, prevents overselling, and ensures accurate inventory across all sales channels including Amazon, eBay, and other marketplaces.
+            Modern <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> like StockFlow offers native Shopify Plus integration that syncs inventory automatically. When a customer places an order on Shopify Plus, the WMS receives order details, updates inventory levels, and syncs stock counts back to Shopify in real-time. This eliminates manual data entry, prevents overselling, and ensures accurate inventory across all sales channels including Amazon, eBay, and other marketplaces. Learn more about <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link>.
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
