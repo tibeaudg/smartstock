@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
@@ -129,7 +129,7 @@ export default function SeoCanIUseQRCodesForInventoryPage() {
               QR codes are ideal for businesses wanting smartphone-based inventory tracking without expensive barcode scanners. Most modern smartphones have built-in QR code scanning in their camera apps, making QR codes more accessible than traditional barcodes. QR codes enable fast, accurate inventory tracking using smartphones, improving efficiency and accuracy.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              To use QR codes for inventory, generate QR codes for each item, use inventory management software with QR code scanning support, and scan codes with smartphones to update inventory levels and track movements. Learn more about <Link to="/blog/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with QR code support.
+              To use QR codes for inventory, generate QR codes for each item, use inventory management software with QR code scanning support, and scan codes with smartphones to update inventory levels and track movements. Learn more about <Link to="/barcode-scanning-inventory" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with QR code support.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why QR codes matter for inventory</h3>

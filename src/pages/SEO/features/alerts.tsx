@@ -22,6 +22,7 @@ import {
   Truck
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
