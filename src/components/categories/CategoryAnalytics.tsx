@@ -3,14 +3,14 @@
  * Displays product counts, stock values, and statistics for a category
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Package, 
   DollarSign,
   AlertTriangle,
   XCircle,
-  ChevronDown,
-  ChevronUp,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import type { CategoryAnalytics as CategoryAnalyticsType } from '@/types/categoryTypes';
@@ -23,6 +23,7 @@ interface CategoryAnalyticsProps {
 export const CategoryAnalytics: React.FC<CategoryAnalyticsProps> = ({
   categoryId,
 }) => {
+  const [isOpen, setIsOpen] = useState(true);
   const { data: analytics, isLoading } = useCategoryAnalytics(categoryId);
 
   if (!categoryId) {
@@ -131,11 +132,15 @@ export const CategoryAnalytics: React.FC<CategoryAnalyticsProps> = ({
   ];
 
   return (
-    <Collapsible defaultOpen={true}>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger className="w-full">
         <div className="flex items-center justify-between w-full px-1 py-2 hover:bg-gray-50 rounded-md transition-colors">
           <h3 className="text-sm font-semibold text-gray-900">Category Overview</h3>
-          <ChevronDown className="w-4 h-4 text-gray-500 data-[state=open]:rotate-180 transition-transform" />
+          {isOpen ? (
+            <Eye className="w-5 h-5 text-gray-600 transition-opacity" />
+          ) : (
+            <EyeOff className="w-5 h-5 text-gray-600 transition-opacity" />
+          )}
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent>

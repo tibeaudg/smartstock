@@ -73,6 +73,7 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { useProductCount } from '@/hooks/useDashboardData';
 import { useSubscription } from '@/hooks/useSubscription';
 import * as XLSX from 'xlsx';
+import { cn } from '@/lib/utils';
 
 const getStockStatus = (quantity: number, minLevel: number) => {
   // Ensure we're working with numbers
@@ -161,6 +162,8 @@ interface Product {
   category_name: string | null;
   image_url?: string | null;
   location?: string | null;
+  sku?: string | null;
+  barcode?: string | null;
   is_variant?: boolean;
   parent_product_id?: string | null;
   variant_name?: string | null;
@@ -557,6 +560,7 @@ interface ProductRowProps {
   isExpanded?: boolean;
   variantCount?: number;
   columnVisibility: Record<string, boolean>;
+  compactMode?: boolean;
   onToggleExpand?: () => void;
   onSelect?: (id: string) => void;
   onStockAction: (product: Product, action: StockAction) => void;
@@ -581,6 +585,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
   isExpanded = false,
   variantCount = 0,
   columnVisibility,
+  compactMode = false,
   onToggleExpand,
   onSelect,
   onStockAction,
@@ -609,24 +614,39 @@ const ProductRow: React.FC<ProductRowProps> = ({
   return (
     <tr 
     
-      className={`${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer border-b-2 border-gray-100`}
+      className={cn(
+        `${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer border-b-2 border-gray-100`,
+        compactMode && 'h-10'
+      )}
     >
       {/* Selection checkbox */}
       {isAdmin && (
-        <td className="px-3 py-3 text-center w-12" onClick={(e) => e.stopPropagation()}>
+        <td className={cn(
+          "text-center w-12",
+          compactMode ? "px-2 py-1.5" : "px-3 py-3"
+        )} onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             checked={isSelected}
             onChange={() => onSelect?.(product.id)}
-            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+            className={cn(
+              "text-blue-600 rounded border-gray-300 focus:ring-blue-500",
+              compactMode ? "w-3 h-3" : "w-4 h-4"
+            )}
           />
         </td>
       )}
 
       {/* Product column */}
       {columnVisibility.product && (
-        <td className="px-4 py-3 w-1/3">
-          <div className="flex items-center gap-3">
+        <td className={cn(
+          "w-1/3",
+          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+        )}>
+          <div className={cn(
+            "flex items-center",
+            compactMode ? "gap-1.5" : "gap-3"
+          )}>
             {/* Expand/Collapse indicator for variants */}
             {hasChildren && (
               <button
@@ -659,7 +679,10 @@ const ProductRow: React.FC<ProductRowProps> = ({
             {/* Product image */}
             <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
               {product.image_url ? (
-                <div className="w-12 h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
+                <div className={cn(
+                  "bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden",
+                  compactMode ? "w-8 h-8" : "w-12 h-12"
+                )}>
                   <img
                     src={product.image_url}
                     alt={`${product.name} product image`}
@@ -670,7 +693,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
               ) : (
                 <PhotoUploadPlaceholder
                   productId={product.id}
-                  size="medium"
+                  size={compactMode ? "small" : "medium"}
                   onUploadSuccess={() => onImageUpload?.()}
                 />
               )}
@@ -678,8 +701,14 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
             {/* Product info */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-sm font-medium text-gray-900 truncate">
+              <div className={cn(
+                "flex items-center",
+                compactMode ? "gap-1" : "gap-2 mb-1"
+              )}>
+                <h3 className={cn(
+                  "font-medium text-gray-900 truncate",
+                  compactMode ? "text-xs" : "text-sm"
+                )}>
                   {product.name}
                   {isVariant && product.variant_name && (
                     <span className="text-gray-600"> - {product.variant_name}</span>
@@ -690,6 +719,27 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs hidden md:inline-flex">
                     {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
                   </Badge>
+                )}
+              </div>
+              
+              {/* SKU and Barcode display - always visible */}
+              <div className={cn(
+                "flex flex-col gap-0.5",
+                compactMode ? "mt-0.5" : "mt-1"
+              )}>
+                <p className={cn(
+                  "text-gray-600 font-mono",
+                  compactMode ? "text-[10px]" : "text-xs"
+                )}>
+                  SKU: <span className="text-gray-500">{(isVariant ? product.variant_sku : product.sku) || '-'}</span>
+                </p>
+                {(isVariant ? product.variant_barcode : product.barcode) && (
+                  <p className={cn(
+                    "text-gray-600 font-mono",
+                    compactMode ? "text-[10px]" : "text-xs"
+                  )}>
+                    Barcode: <span className="text-gray-500">{(isVariant ? product.variant_barcode : product.barcode)}</span>
+                  </p>
                 )}
               </div>
               
@@ -705,7 +755,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
               )}
               
               {/* Description */}
-              {product.description && (
+              {product.description && !compactMode && (
                 <p className="text-xs text-gray-500 truncate max-w-xs">
                   {product.description}
                 </p>
@@ -717,11 +767,20 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Location column */}
       {columnVisibility.location && (
-        <td className="px-4 py-3 text-center w-1/8">
+        <td className={cn(
+          "text-center w-1/8",
+          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+        )}>
           {!hasChildren && (
             <div className="flex items-center justify-center gap-1">
-              <MapPin className="w-3 h-3 text-gray-400" />
-              <span className="text-sm text-gray-600">
+              <MapPin className={cn(
+                "text-gray-400",
+                compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+              )} />
+              <span className={cn(
+                "text-gray-600",
+                compactMode ? "text-xs" : "text-sm"
+              )}>
                 {product.location || '-'}
               </span>
             </div>
@@ -731,33 +790,53 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Stock column with Status */}
       {columnVisibility.current && (
-        <td className="px-4 py-3 text-center w-1/8">
+        <td className={cn(
+          "text-center w-1/8",
+          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+        )}>
           {!hasChildren && (
             <TooltipProvider delayDuration={150}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div
-                    className="space-y-1 cursor-pointer rounded-md p-2 transition-colors group hover:bg-blue-600"
+                    className={cn(
+                      compactMode ? "rounded-md p-0.5 transition-colors cursor-pointer group hover:bg-blue-600" : "space-y-1 rounded-md p-2 transition-colors cursor-pointer group hover:bg-blue-600"
+                    )}
                     onClick={(e) => {
                       e.stopPropagation();
                       onStockAction(product, 'in');
                     }}
                   >
-                    <div className="flex items-center justify-center gap-2">
+                    <div className={cn(
+                      "flex items-center justify-center",
+                      compactMode ? "gap-1" : "gap-2"
+                    )}>
                       <div
-                        className={`w-2 h-2 rounded-full ${getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level)} ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''} group-hover:ring group-hover:ring-white/80`}
+                        className={cn(
+                          "rounded-full",
+                          getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level),
+                          Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : '',
+                          "group-hover:ring group-hover:ring-white/80",
+                          compactMode ? "w-1.5 h-1.5" : "w-2 h-2"
+                        )}
                       />
                       <span
-                        className={`text-sm font-semibold transition-colors ${Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600 group-hover:text-white' : 'text-gray-900 group-hover:text-white'}`}
+                        className={cn(
+                          "font-semibold transition-colors",
+                          Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600 group-hover:text-white' : 'text-gray-900 group-hover:text-white',
+                          compactMode ? "text-xs" : "text-sm"
+                        )}
                       >
                         {formatStockQuantity(product.quantity_in_stock)}
                       </span>
                     </div>
 
-                    {/* Status label */}
-                    <div className="text-xs font-medium text-gray-600 transition-colors group-hover:text-white/90">
-                      {stockStatus}
-                    </div>
+                    {/* Status label - only show in non-compact mode */}
+                    {!compactMode && (
+                      <div className="text-xs font-medium text-gray-600 transition-colors group-hover:text-white/90">
+                        {stockStatus}
+                      </div>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent
@@ -769,6 +848,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   <p className="font-medium">
                     {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
                   </p>
+                  <p className="text-xs text-gray-500 mt-1">Status: {stockStatus}</p>
                   {Number(product.quantity_in_stock) === 0 && (
                     <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
                   )}
@@ -785,9 +865,15 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Category column */}
       {columnVisibility.category && (
-        <td className="px-4 py-3 text-center w-1/8">
+        <td className={cn(
+          "text-center w-1/8",
+          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+        )}>
           {!hasChildren && (
-            <span className="text-sm text-gray-600">
+            <span className={cn(
+              "text-gray-600",
+              compactMode ? "text-xs" : "text-sm"
+            )}>
               {product.category_name || '-'}
             </span>
           )}
@@ -795,21 +881,35 @@ const ProductRow: React.FC<ProductRowProps> = ({
       )}
 
 
-      {/* Combined Pricing column */}
-      {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
-        <td className="px-4 py-3 text-center w-1/8">
+      {/* Cost column */}
+      {columnVisibility.purchasePrice && (
+        <td className={cn(
+          "text-center w-1/8",
+          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+        )}>
           {!hasChildren && (
-            <div className="space-y-1">
-              {columnVisibility.purchasePrice && (
-                <div className="text-sm text-red-600 font-medium">
-                  ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
-                </div>
-              )}
-              {columnVisibility.salePrice && (
-                <div className="text-sm text-green-600 font-medium">
-                  ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
-                </div>
-              )}
+            <div className={cn(
+              "text-red-600 font-medium",
+              compactMode ? "text-xs" : "text-sm"
+            )}>
+              ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
+            </div>
+          )}
+        </td>
+      )}
+
+      {/* Price column */}
+      {columnVisibility.salePrice && (
+        <td className={cn(
+          "text-center w-1/8",
+          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+        )}>
+          {!hasChildren && (
+            <div className={cn(
+              "text-green-600 font-medium",
+              compactMode ? "text-xs" : "text-sm"
+            )}>
+              ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
             </div>
           )}
         </td>
@@ -1473,6 +1573,7 @@ const fetchProducts = async (
       branch_id: string;
       image_url: string | null;
       location: string | null;
+      sku: string | null;
       is_variant: boolean;
       parent_product_id: string | null;
       variant_name: string | null;
@@ -1662,6 +1763,9 @@ export const StockList = () => {
     actions: true
   });
 
+  // Compact mode state
+  const [compactMode, setCompactMode] = useState(false);
+
   // Parent row expand/collapse
   const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({});
   const toggleExpand = (parentId: string) => {
@@ -1691,6 +1795,23 @@ export const StockList = () => {
   useEffect(() => {
     localStorage.setItem('stockTableColumnVisibility', JSON.stringify(columnVisibility));
   }, [columnVisibility]);
+
+  // Load compact mode from localStorage on component mount
+  useEffect(() => {
+    const savedCompactMode = localStorage.getItem('stockTableCompactMode');
+    if (savedCompactMode !== null) {
+      try {
+        setCompactMode(JSON.parse(savedCompactMode));
+      } catch (error) {
+        console.error('Error parsing saved compact mode:', error);
+      }
+    }
+  }, []);
+
+  // Save compact mode to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('stockTableCompactMode', JSON.stringify(compactMode));
+  }, [compactMode]);
 
   // Toggle column visibility
   const toggleColumnVisibility = (column: keyof typeof columnVisibility) => {
@@ -2788,6 +2909,13 @@ export const StockList = () => {
                     Import Excel
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={compactMode}
+                    onCheckedChange={(checked) => setCompactMode(checked)}
+                  >
+                    Compact Mode
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem disabled className="font-semibold">
                     Column Visibility
                   </DropdownMenuItem>
@@ -3449,6 +3577,13 @@ export const StockList = () => {
                     Import Excel
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem
+                    checked={compactMode}
+                    onCheckedChange={(checked) => setCompactMode(checked)}
+                  >
+                    Compact Mode
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem disabled className="font-semibold">
                     Column Visibility
                   </DropdownMenuItem>
@@ -3789,43 +3924,75 @@ export const StockList = () => {
             <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
                 {isAdmin && (
-                  <th className="px-3 py-4 text-center w-12">
+                  <th className={cn(
+                    "text-center w-12",
+                    compactMode ? "px-2 py-1.5" : "px-3 py-4"
+                  )}>
                     <input
                       type="checkbox"
                       checked={selectAll && filteredProducts.length > 0}
                       onChange={(e) => handleSelectAllChange(e.target.checked)}
-                      className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                      className={cn(
+                        "text-blue-600 rounded border-gray-300 focus:ring-blue-500",
+                        compactMode ? "w-3 h-3" : "w-4 h-4"
+                      )}
                     />
                   </th>
                 )}
                 {columnVisibility.product && (
-                  <th className="px-4 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3">
+                  <th className={cn(
+                    "text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
                     Product
                   </th>
                 )}
                 {columnVisibility.location && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
+                  <th className={cn(
+                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
                     Location
                   </th>
                 )}
                 {columnVisibility.current && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
+                  <th className={cn(
+                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
                     Stock Level
                   </th>
                 )}
 
                 {columnVisibility.category && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
+                  <th className={cn(
+                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
                     Category
                   </th>
                 )}
-                {(columnVisibility.purchasePrice || columnVisibility.salePrice) && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8">
-                    Pricing
+                {columnVisibility.purchasePrice && (
+                  <th className={cn(
+                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
+                    Cost
+                  </th>
+                )}
+                {columnVisibility.salePrice && (
+                  <th className={cn(
+                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
+                    Price
                   </th>
                 )}
                 {columnVisibility.actions && (
-                  <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12">
+                  <th className={cn(
+                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12",
+                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                  )}>
                     Actions
                   </th>
                 )}    
@@ -3904,6 +4071,7 @@ export const StockList = () => {
                         isExpanded={isExpanded}
                         variantCount={variantCount}
                         columnVisibility={columnVisibility}
+                        compactMode={compactMode}
                         onToggleExpand={() => toggleExpand(parent.id)}
                         onSelect={handleSelectProduct}
                         onStockAction={handleStockAction}
@@ -3946,6 +4114,7 @@ export const StockList = () => {
                                 isVariant={true}
                                 isSelected={childChecked}
                                 columnVisibility={columnVisibility}
+                                compactMode={compactMode}
                                 onSelect={handleSelectProduct}
                                 onStockAction={handleStockAction}
                                 onEdit={(product) => {

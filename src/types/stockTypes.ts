@@ -11,6 +11,7 @@ export type Product = {
   sale_price: number;
   status: string | null;
   image_url?: string | null;
+  sku?: string | null;
   // Variants support
   is_variant?: boolean;
   parent_product_id?: string | null;

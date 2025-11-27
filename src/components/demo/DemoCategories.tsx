@@ -122,6 +122,10 @@ export const DemoCategories: React.FC<DemoCategoriesProps> = ({ sessionToken, se
           aValue = Number(a.purchase_price) || 0;
           bValue = Number(b.purchase_price) || 0;
           break;
+        case 'sale_price':
+          aValue = Number(a.sale_price || a.unit_price) || 0;
+          bValue = Number(b.sale_price || b.unit_price) || 0;
+          break;
         default:
           return 0;
       }
@@ -413,8 +417,17 @@ export const DemoCategories: React.FC<DemoCategoriesProps> = ({ sessionToken, se
                                 onClick={() => handleSort('purchase_price')}
                               >
                                 <div className="flex items-center justify-center">
-                                  Pricing
+                                  Cost
                                   {getSortIcon('purchase_price')}
+                                </div>
+                              </th>
+                              <th 
+                                className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell"
+                                onClick={() => handleSort('sale_price')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Price
+                                  {getSortIcon('sale_price')}
                                 </div>
                               </th>
                               <th className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell">
@@ -499,15 +512,17 @@ export const DemoCategories: React.FC<DemoCategoriesProps> = ({ sessionToken, se
                                     </span>
                                   </td>
 
-                                  {/* Pricing column */}
+                                  {/* Cost column */}
                                   <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden sm:table-cell">
-                                    <div className="space-y-1">
-                                      <div className="text-sm text-red-600 font-medium">
-                                        {formatPrice(product.purchase_price || 0)}
-                                      </div>
-                                      <div className="text-sm text-green-600 font-medium">
-                                        {formatPrice(product.sale_price || product.unit_price || 0)}
-                                      </div>
+                                    <div className="text-sm text-red-600 font-medium">
+                                      {formatPrice(product.purchase_price || 0)}
+                                    </div>
+                                  </td>
+
+                                  {/* Price column */}
+                                  <td className="px-2 sm:px-4 py-3 text-center w-1/8 hidden sm:table-cell">
+                                    <div className="text-sm text-green-600 font-medium">
+                                      {formatPrice(product.sale_price || product.unit_price || 0)}
                                     </div>
                                   </td>
 

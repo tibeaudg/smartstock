@@ -27,7 +27,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, List, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X } from 'lucide-react';
+import { Grid3x3, List, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -37,10 +37,9 @@ import { EditProductInfoModal } from '@/components/EditProductInfoModal';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
 import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
 import { ImagePreviewModal } from '@/components/ImagePreviewModal';
-import { AddProductMethodModal } from '@/components/AddProductMethodModal';
 import { AddProductModal } from '@/components/AddProductModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
@@ -59,7 +58,7 @@ export default function CategorysPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>('all');
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -74,6 +73,9 @@ export default function CategorysPage() {
   const [sortColumn, setSortColumn] = useState<string | null>('date_added');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   
+  // Compact mode state
+  const [compactMode, setCompactMode] = useState(false);
+  
   // Product modal states
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
@@ -83,7 +85,6 @@ export default function CategorysPage() {
   const [isMobileProductDetailModalOpen, setIsMobileProductDetailModalOpen] = useState(false);
   
   // Add product modal states
-  const [isAddProductMethodModalOpen, setIsAddProductMethodModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isBarcodeScannerOpen, setIsBarcodeScannerOpen] = useState(false);
   const [scannedSKU, setScannedSKU] = useState<string>('');
@@ -388,10 +389,37 @@ export default function CategorysPage() {
     setShowAddModal(true);
   };
 
+  const handleSubmitCategory = async () => {
+    if (!formData.name.trim()) {
+      toast.error('Category name is required');
+      return;
+    }
+
+    if (!user) {
+      toast.error('You must be logged in to add categories');
+      return;
+    }
+
+    try {
+      const categoryData: CategoryCreateData = {
+        name: formData.name.trim(),
+        description: formData.description.trim() || null,
+        parent_category_id: formData.parentCategoryId || null,
+      };
+
+      await createCategory.mutateAsync(categoryData);
+      toast.success('Category added successfully!');
+      setShowAddModal(false);
+      setFormData({ name: '', description: '', parentCategoryId: null });
+    } catch (error) {
+      console.error('Error adding category:', error);
+    }
+  };
+
   const handleAddSubcategory = () => {
     if (selectedCategoryId && selectedCategoryId !== 'all') {
-      setFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
-      setShowAddModal(true);
+      setSubCategoryFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
+      setShowAddSubCategoryModal(true);
     }
   };
 
@@ -539,18 +567,6 @@ export default function CategorysPage() {
     return new Intl.NumberFormat('en-US').format(Number(quantity) || 0);
   };
 
-  // Handler for add product method selection
-  const handleAddProductMethodSelect = (method: 'manual' | 'scan') => {
-    if (method === 'scan') {
-      setIsBarcodeScannerOpen(true);
-    } else {
-      // Manual - open add product modal directly
-      setScannedSKU('');
-      setPreFilledProductName('');
-      setIsAddModalOpen(true);
-    }
-  };
-
   // Handler for barcode detection (when adding products)
   const handleBarcodeDetected = async (barcode: string) => {
     try {
@@ -645,7 +661,24 @@ export default function CategorysPage() {
   }
 
   // State for mobile category pane visibility
-  const [showCategoryPane, setShowCategoryPane] = useState(!isMobile || !selectedCategoryId);
+  const [showCategoryPane, setShowCategoryPane] = useState(!isMobile || selectedCategoryId === 'all');
+
+  // Load compact mode from localStorage on component mount
+  React.useEffect(() => {
+    const savedCompactMode = localStorage.getItem('stockTableCompactMode');
+    if (savedCompactMode !== null) {
+      try {
+        setCompactMode(JSON.parse(savedCompactMode));
+      } catch (error) {
+        console.error('Error parsing saved compact mode:', error);
+      }
+    }
+  }, []);
+
+  // Save compact mode to localStorage whenever it changes
+  React.useEffect(() => {
+    localStorage.setItem('stockTableCompactMode', JSON.stringify(compactMode));
+  }, [compactMode]);
 
   // Sync selectedCategory with selectedCategoryId to prevent stale state
   // This ensures selectedCategory is always in sync with selectedCategoryId
@@ -690,6 +723,23 @@ export default function CategorysPage() {
 
   // On mobile, hide category pane when a specific category is selected
   // Show category pane when no category is selected (null) or when viewing 'all' products
+  // Load compact mode from localStorage on component mount
+  React.useEffect(() => {
+    const savedCompactMode = localStorage.getItem('stockTableCompactMode');
+    if (savedCompactMode !== null) {
+      try {
+        setCompactMode(JSON.parse(savedCompactMode));
+      } catch (error) {
+        console.error('Error parsing saved compact mode:', error);
+      }
+    }
+  }, []);
+
+  // Save compact mode to localStorage whenever it changes
+  React.useEffect(() => {
+    localStorage.setItem('stockTableCompactMode', JSON.stringify(compactMode));
+  }, [compactMode]);
+
   React.useEffect(() => {
     if (isMobile) {
       setShowCategoryPane(!selectedCategoryId || selectedCategoryId === 'all');
@@ -820,8 +870,8 @@ export default function CategorysPage() {
                 onEdit={openEditModal}
                 onDelete={openDeleteDialog}
                 onAddChild={(parent) => {
-                  setFormData({ name: '', description: '', parentCategoryId: parent.id });
-                  setShowAddModal(true);
+                  setSubCategoryFormData({ name: '', description: '', parentCategoryId: parent.id });
+                  setShowAddSubCategoryModal(true);
                 }}
                 activeId={dragDrop.activeId}
                 isMoving={dragDrop.isMoving}
@@ -836,7 +886,7 @@ export default function CategorysPage() {
 
         {/* Right Pane - Category Details & Products */}
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
-          {selectedCategoryId ? (
+          {selectedCategoryId && (selectedCategoryId !== 'all' || categoryProducts.length > 0 || productsLoading) ? (
             <>
               {/* Right Pane Header */}
               <CategoryHeader
@@ -847,7 +897,11 @@ export default function CategorysPage() {
                 onViewModeChange={setProductViewMode}
                 onAddCategory={handleAddCategory}
                 onAddSubcategory={handleAddSubcategory}
-                onAddProduct={() => setIsAddProductMethodModalOpen(true)}
+                onAddProduct={() => {
+                  setScannedSKU('');
+                  setPreFilledProductName('');
+                  setIsAddModalOpen(true);
+                }}
                 onBreadcrumbClick={handleBreadcrumbClick}
                 isMobile={isMobile}
               />
@@ -885,40 +939,61 @@ export default function CategorysPage() {
                       )}
                     </div>
                     {(searchTerm.trim() ? filteredProducts : categoryProducts).length > 0 && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-9 px-3"
-                          >
-                            <Filter className="w-4 h-4 mr-2" />
-                            <span className="hidden sm:inline">Sort</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem onClick={() => handleSort('name')}>
-                            <ArrowUpDown className="w-4 h-4 mr-2" />
-                            Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleSort('stock')}>
-                            <ArrowUpDown className="w-4 h-4 mr-2" />
-                            Stock {sortColumn === 'stock' && (sortDirection === 'asc' ? '↑' : '↓')}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleSort('location')}>
-                            <ArrowUpDown className="w-4 h-4 mr-2" />
-                            Location {sortColumn === 'location' && (sortDirection === 'asc' ? '↑' : '↓')}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleSort('date_added')}>
-                            <ArrowUpDown className="w-4 h-4 mr-2" />
-                            Date Added {sortColumn === 'date_added' && (sortDirection === 'asc' ? '↑' : '↓')}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleSort('purchase_price')}>
-                            <ArrowUpDown className="w-4 h-4 mr-2" />
-                            Price {sortColumn === 'purchase_price' && (sortDirection === 'asc' ? '↑' : '↓')}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="flex items-center gap-2">
+                        {/* Compact Mode Toggle Button */}
+                        <Button
+                          variant={compactMode ? "default" : "outline"}
+                          size="sm"
+                          className="h-9 px-3"
+                          onClick={() => setCompactMode(!compactMode)}
+                        >
+                          {compactMode ? (
+                            <Check className="w-4 h-4 mr-2" />
+                          ) : (
+                            <Minimize2 className="w-4 h-4 mr-2" />
+                          )}
+                          <span className="hidden sm:inline">Compact Mode</span>
+                        </Button>
+
+                        {/* Sort Options Dropdown */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-9 px-3"
+                            >
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              <span className="hidden sm:inline">Sort</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-48">
+                            <DropdownMenuItem disabled className="font-semibold text-xs">
+                              Sort Options
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleSort('name')}>
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleSort('stock')}>
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              Stock {sortColumn === 'stock' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleSort('location')}>
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              Location {sortColumn === 'location' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleSort('date_added')}>
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              Date Added {sortColumn === 'date_added' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleSort('purchase_price')}>
+                              <ArrowUpDown className="w-4 h-4 mr-2" />
+                              Price {sortColumn === 'purchase_price' && (sortDirection === 'asc' ? '↑' : '↓')}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     )}
                   </div>
                 {productsLoading ? (
@@ -987,7 +1062,10 @@ export default function CategorysPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell"
+                              className={cn(
+                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell",
+                                compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                              )}
                               onClick={() => handleSort('date_added')}
                             >
                               <div className="flex items-center justify-center">
@@ -996,15 +1074,33 @@ export default function CategorysPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell"
+                              className={cn(
+                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell",
+                                compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                              )}
                               onClick={() => handleSort('purchase_price')}
                             >
                               <div className="flex items-center justify-center">
-                                Pricing
+                                Cost
                                 {getSortIcon('purchase_price')}
                               </div>
                             </th>
-                            <th className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell">
+                            <th 
+                              className={cn(
+                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell",
+                                compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                              )}
+                              onClick={() => handleSort('sale_price')}
+                            >
+                              <div className="flex items-center justify-center">
+                                Price
+                                {getSortIcon('sale_price')}
+                              </div>
+                            </th>
+                            <th className={cn(
+                              "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell",
+                              compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                            )}>
                               Actions
                             </th>
                           </tr>
@@ -1021,15 +1117,25 @@ export default function CategorysPage() {
                                 className={cn(
                                   'hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
                                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
-                                  isMobile && 'cursor-pointer'
+                                  isMobile && 'cursor-pointer',
+                                  compactMode && 'h-10'
                                 )}
                               >
                                 {/* Product column */}
-                                <td className="px-2 sm:px-4 py-4 w-1/3">
-                                  <div className="flex items-center gap-2 sm:gap-3">
+                                <td className={cn(
+                                  "w-1/3",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )}>
+                                  <div className={cn(
+                                    "flex items-center",
+                                    compactMode ? "gap-1.5" : "gap-2 sm:gap-3"
+                                  )}>
                                     <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                                       {product.image_url ? (
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden">
+                                        <div className={cn(
+                                          "bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden",
+                                          compactMode ? "w-8 h-8" : "w-10 h-10 sm:w-12 sm:h-12"
+                                        )}>
                                           <img
                                             src={product.image_url}
                                             alt={product.name}
@@ -1038,16 +1144,45 @@ export default function CategorysPage() {
                                           />
                                         </div>
                                       ) : (
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                                          <Package className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+                                        <div className={cn(
+                                          "bg-gray-100 rounded-lg flex items-center justify-center",
+                                          compactMode ? "w-8 h-8" : "w-10 h-10 sm:w-12 sm:h-12"
+                                        )}>
+                                          <Package className={cn(
+                                            "text-gray-400",
+                                            compactMode ? "w-4 h-4" : "w-5 h-5 sm:w-6 sm:h-6"
+                                          )} />
                                         </div>
                                       )}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                                      <h3 className={cn(
+                                        "font-medium text-gray-900 truncate",
+                                        compactMode ? "text-xs" : "text-sm"
+                                      )}>
                                         {product.name}
                                       </h3>
-                                      {product.description && (
+                                      {/* SKU and Barcode display - always visible */}
+                                      <div className={cn(
+                                        "flex flex-col gap-0.5",
+                                        compactMode ? "mt-0.5" : "mt-1"
+                                      )}>
+                                        <p className={cn(
+                                          "text-gray-600 font-mono",
+                                          compactMode ? "text-[10px]" : "text-xs"
+                                        )}>
+                                          SKU: <span className="text-gray-500">{product.sku || '-'}</span>
+                                        </p>
+                                        {product.barcode && (
+                                          <p className={cn(
+                                            "text-gray-600 font-mono",
+                                            compactMode ? "text-[10px]" : "text-xs"
+                                          )}>
+                                            Barcode: <span className="text-gray-500">{product.barcode}</span>
+                                          </p>
+                                        )}
+                                      </div>
+                                      {product.description && !compactMode && (
                                         <p className="text-xs text-gray-500 truncate max-w-xs mt-1 hidden sm:block">
                                           {product.description}
                                         </p>
@@ -1057,23 +1192,35 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Location column */}
-                                <td className="px-2 sm:px-4 py-4 text-center w-1/8 hidden md:table-cell">
+                                <td className={cn(
+                                  "text-center w-1/8 hidden md:table-cell",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )}>
                                   <div className="flex items-center justify-center gap-1">
-                                    <MapPin className="w-3 h-3 text-gray-400" />
-                                    <span className="text-sm text-gray-600">
+                                    <MapPin className={cn(
+                                      "text-gray-400",
+                                      compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                                    )} />
+                                    <span className={cn(
+                                      "text-gray-600",
+                                      compactMode ? "text-xs" : "text-sm"
+                                    )}>
                                       {product.location || '-'}
                                     </span>
                                   </div>
                                 </td>
 
                                 {/* Stock column */}
-                                <td className="px-2 sm:px-4 py-4 text-center w-1/8" onClick={(e) => isMobile && e.stopPropagation()}>
+                                <td className={cn(
+                                  "text-center w-1/8",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )} onClick={(e) => isMobile && e.stopPropagation()}>
                                   <TooltipProvider delayDuration={150}>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <div
                                           className={cn(
-                                            "space-y-1 rounded-md p-2 transition-colors",
+                                            compactMode ? "rounded-md p-0.5 transition-colors" : "space-y-1 rounded-md p-2 transition-colors",
                                             !isMobile && "cursor-pointer group hover:bg-blue-600"
                                           )}
                                           onClick={(e) => {
@@ -1083,32 +1230,40 @@ export default function CategorysPage() {
                                             }
                                           }}
                                         >
-                                          <div className="flex items-center justify-center gap-2">
+                                          <div className={cn(
+                                            "flex items-center justify-center",
+                                            compactMode ? "gap-1" : "gap-2"
+                                          )}>
                                             <div
                                               className={cn(
-                                                'w-2 h-2 rounded-full',
+                                                'rounded-full',
                                                 stockDotColor,
-                                                Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : ''
+                                                Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : '',
+                                                compactMode ? 'w-1.5 h-1.5' : 'w-2 h-2'
                                               )}
                                             />
                                             <span
                                               className={cn(
-                                                'text-sm font-semibold transition-colors',
+                                                'font-semibold transition-colors',
                                                 Number(product.quantity_in_stock) === 0
                                                   ? 'animate-pulse text-red-600'
                                                   : 'text-gray-900',
-                                                !isMobile && 'group-hover:text-white'
+                                                !isMobile && 'group-hover:text-white',
+                                                compactMode ? 'text-xs' : 'text-sm'
                                               )}
                                             >
                                               {formatStockQuantity(product.quantity_in_stock)}
                                             </span>
                                           </div>
-                                          <div className={cn(
-                                            "text-xs font-medium transition-colors",
-                                            isMobile ? "text-gray-600" : "text-gray-600 group-hover:text-white/90"
-                                          )}>
-                                            {stockStatus}
-                                          </div>
+                                          {/* Status label - only show in non-compact mode */}
+                                          {!compactMode && (
+                                            <div className={cn(
+                                              "text-xs font-medium transition-colors",
+                                              isMobile ? "text-gray-600" : "text-gray-600 group-hover:text-white/90"
+                                            )}>
+                                              {stockStatus}
+                                            </div>
+                                          )}
                                         </div>
                                       </TooltipTrigger>
                                       {!isMobile && (
@@ -1116,6 +1271,7 @@ export default function CategorysPage() {
                                           <p className="font-medium">
                                             {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
                                           </p>
+                                          <p className="text-xs text-gray-500 mt-1">Status: {stockStatus}</p>
                                           {Number(product.quantity_in_stock) === 0 && (
                                             <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
                                           )}
@@ -1130,8 +1286,14 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Date Added column */}
-                                <td className="px-2 sm:px-4 py-4 text-center w-1/8 hidden lg:table-cell">
-                                  <span className="text-sm text-gray-600">
+                                <td className={cn(
+                                  "text-center w-1/8 hidden lg:table-cell",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )}>
+                                  <span className={cn(
+                                    "text-gray-600",
+                                    compactMode ? "text-xs" : "text-sm"
+                                  )}>
                                     {product.created_at 
                                       ? new Date(product.created_at).toLocaleDateString('en-US', {
                                           year: 'numeric',
@@ -1142,24 +1304,44 @@ export default function CategorysPage() {
                                   </span>
                                 </td>
 
-                                {/* Pricing column */}
-                                <td className="px-2 sm:px-4 py-4 text-center w-1/8 hidden sm:table-cell">
-                                  <div className="space-y-1">
-                                    <div className="text-sm text-red-600 font-medium">
-                                      ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
-                                    </div>
-                                    <div className="text-sm text-green-600 font-medium">
-                                      ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
-                                    </div>
+                                {/* Cost column */}
+                                <td className={cn(
+                                  "text-center w-1/8 hidden sm:table-cell",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )}>
+                                  <div className={cn(
+                                    "text-red-600 font-medium",
+                                    compactMode ? "text-xs" : "text-sm"
+                                  )}>
+                                    ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
+                                  </div>
+                                </td>
+
+                                {/* Price column */}
+                                <td className={cn(
+                                  "text-center w-1/8 hidden sm:table-cell",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )}>
+                                  <div className={cn(
+                                    "text-green-600 font-medium",
+                                    compactMode ? "text-xs" : "text-sm"
+                                  )}>
+                                    ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
                                   </div>
                                 </td>
 
                                 {/* Actions column */}
-                                <td className="px-2 sm:px-4 py-4 text-center w-1/12 hidden md:table-cell" onClick={(e) => e.stopPropagation()}>
+                                <td className={cn(
+                                  "text-center w-1/12 hidden md:table-cell",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )} onClick={(e) => e.stopPropagation()}>
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                      <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                                        <MoreVertical className="w-4 h-4" />
+                                      <Button variant="outline" size="sm" className={cn(
+                                        "p-0",
+                                        compactMode ? "h-6 w-6" : "h-8 w-8"
+                                      )}>
+                                        <MoreVertical className={compactMode ? "w-3 h-3" : "w-4 h-4"} />
                                       </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="w-56">
@@ -1272,18 +1454,22 @@ export default function CategorysPage() {
               <div className="text-center max-w-md">
                 <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Select a Category
+                  No Products Yet
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Choose a category from the sidebar to view its details and products
+                  Your inventory is empty. Add your first product to get started.
                 </p>
                   <div className="flex items-center justify-center gap-2 flex-wrap">
                   <Button
-                    onClick={handleAddCategory}
+                    onClick={() => {
+                      setScannedSKU('');
+                      setPreFilledProductName('');
+                      setIsAddModalOpen(true);
+                    }}
                     className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6"
                   >
                     <Plus className="w-4 h-4 mr-2" />
-                    Add Category
+                    Add Your First Product
                   </Button>
                 </div>
               </div>
@@ -1332,7 +1518,7 @@ export default function CategorysPage() {
             <Button variant="outline" onClick={() => setShowAddModal(false)}>
               Cancel
             </Button>
-            <Button onClick={handleAddCategory} disabled={createCategory.isPending}>
+            <Button onClick={handleSubmitCategory} disabled={createCategory.isPending}>
               {createCategory.isPending ? 'Adding...' : 'Add Category'}
             </Button>
           </DialogFooter>
@@ -1340,7 +1526,16 @@ export default function CategorysPage() {
       </Dialog>
 
       {/* Add Sub Category Modal */}
-      <Dialog open={showAddSubCategoryModal} onOpenChange={setShowAddSubCategoryModal}>
+      <Dialog 
+        open={showAddSubCategoryModal} 
+        onOpenChange={(open) => {
+          setShowAddSubCategoryModal(open);
+          if (!open) {
+            // Reset form when modal closes
+            setSubCategoryFormData({ name: '', description: '', parentCategoryId: null });
+          }
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add New Sub Category</DialogTitle>
@@ -1348,13 +1543,25 @@ export default function CategorysPage() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="sub-parent">Parent Category *</Label>
+              {subCategoryFormData.parentCategoryId && (
+                <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-md">
+                  <p className="text-sm text-blue-900">
+                    <span className="font-medium">Parent:</span>{' '}
+                    {categories.find(c => c.id === subCategoryFormData.parentCategoryId)?.name || 'Unknown'}
+                  </p>
+                </div>
+              )}
               <HierarchicalCategorySelector
                 value={subCategoryFormData.parentCategoryId}
                 onValueChange={(id, name) => setSubCategoryFormData(prev => ({ ...prev, parentCategoryId: id || null }))}
                 placeholder="Select parent category..."
                 allowCreate={false}
               />
-              <p className="text-xs text-gray-500 mt-1">You must select a parent category for subcategories</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {subCategoryFormData.parentCategoryId 
+                  ? 'You can change the parent category if needed'
+                  : 'You must select a parent category for subcategories'}
+              </p>
             </div>
             <div>
               <Label htmlFor="sub-name">Sub Category Name *</Label>
@@ -1377,7 +1584,13 @@ export default function CategorysPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddSubCategoryModal(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setShowAddSubCategoryModal(false);
+                setSubCategoryFormData({ name: '', description: '', parentCategoryId: null });
+              }}
+            >
               Cancel
             </Button>
             <Button 
@@ -1529,12 +1742,6 @@ export default function CategorysPage() {
       )}
 
       {/* Add Product Modals */}
-      <AddProductMethodModal
-        isOpen={isAddProductMethodModalOpen}
-        onClose={() => setIsAddProductMethodModalOpen(false)}
-        onSelectMethod={handleAddProductMethodSelect}
-      />
-      
       <AddProductModal
         isOpen={isAddModalOpen}
         onClose={() => {

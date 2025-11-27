@@ -807,13 +807,13 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                               />
                               <Button
                                 type="button"
-                                variant="outline"
+                                variant="default"
                                 onClick={() => setShowScanner(true)}
                                 disabled={loading}
-                                className="px-4 py-3 border-blue-200 hover:border-blue-500"
+                                className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium whitespace-nowrap"
                               >
-                                <Scan className="w-4 h-4 mr-2" />
-                                Scan
+                                <Scan className="w-5 h-5 mr-2" />
+                                Scan Barcode
                               </Button>
                             </div>
                           </FormControl>

@@ -9,8 +9,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  ChevronRight,
-  ChevronDown,
+  Eye,
+  EyeOff,
   Edit,
   Trash2,
   Plus,
@@ -58,6 +58,8 @@ interface CategoryTreeNodeProps {
   onEdit?: (category: CategoryTree) => void;
   onDelete?: (category: CategoryTree) => void;
   onAddChild?: (parentCategory: CategoryTree) => void;
+  isLastChild?: boolean; // Whether this is the last child in its parent's children array
+  parentHasMoreSiblings?: boolean; // Whether parent has more siblings after it
 }
 
 const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
@@ -71,6 +73,8 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
   onEdit,
   onDelete,
   onAddChild,
+  isLastChild = false,
+  parentHasMoreSiblings = false,
 }) => {
   const hasChildren = category.children && category.children.length > 0;
   const isExpanded = expanded.has(category.id);
@@ -104,68 +108,115 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
     setDropRef(node);
   };
 
+  // Calculate indentation - cleaner tree structure
+  const indentPerLevel = 20; // Spacing per level
+  const totalIndent = level * indentPerLevel;
+  const connectorWidth = 20; // Width for tree connectors
+
   return (
     <div className="select-none" ref={nodeRef} style={style}>
       <div
         className={cn(
-          'group flex items-center gap-3 px-4 py-2 border-b border-gray-200 transition-colors',
-          'hover:bg-gray-50 cursor-pointer',
+          'group flex items-center gap-2 px-3 py-2.5 transition-colors relative',
+          'hover:bg-gray-50 cursor-pointer rounded-sm',
           isOver && 'bg-blue-50 border-2 border-blue-300 border-dashed',
-          isSelected && 'bg-blue-50 border-l-4 border-l-blue-600 border-b border-gray-200'
+          isSelected && 'bg-blue-50 border-l-4 border-l-blue-600'
         )}
         style={{ 
-          paddingLeft: `${level * 24 + 16}px`,
-          minHeight: '48px'
+          paddingLeft: `${totalIndent + (level > 0 ? connectorWidth : 0)}px`,
+          minHeight: '44px'
         }}
         onClick={() => onCategoryClick?.(category)}
       >
+        {/* Tree connector lines for nested items */}
+        {level > 0 && (
+          <div 
+            className="absolute left-0 top-0 flex items-center pointer-events-none" 
+            style={{ 
+              width: `${connectorWidth}px`,
+              height: '100%'
+            }}
+          >
+            {/* Vertical line extending down - only if not last child or has expanded children */}
+            {(!isLastChild || (hasChildren && isExpanded)) && (
+              <div 
+                className="absolute left-0 top-1/2 w-0.5 bg-gray-300/50"
+                style={{ 
+                  height: isLastChild && hasChildren && isExpanded ? '50%' : '100%',
+                  transform: 'translateY(-50%)'
+                }}
+              />
+            )}
+            {/* Horizontal line connecting to item */}
+            <div 
+              className="absolute top-1/2 h-0.5 bg-gray-300/50"
+              style={{ 
+                left: '0px',
+                width: `${connectorWidth - 8}px`
+              }}
+            />
+            {/* Vertical line from parent level - only if parent has more siblings */}
+            {parentHasMoreSiblings && (
+              <div 
+                className="absolute left-0 top-0 w-0.5 bg-gray-300/50"
+                style={{ height: '50%' }}
+              />
+            )}
+          </div>
+        )}
+
         {/* Drag handle */}
         <div
           {...attributes}
           {...listeners}
-          className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600"
+          className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={(e) => e.stopPropagation()}
         >
-          <GripVertical className="w-5 h-5" />
+          <GripVertical className="w-4 h-4" />
         </div>
 
-        {/* Expand/collapse button */}
+        {/* Expand/collapse button - always visible for items with children */}
         {hasChildren ? (
           <Button
             variant="ghost"
             size="sm"
-            className="h-7 w-7 p-0"
+            className="h-7 w-7 p-0 flex-shrink-0 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded"
             onClick={(e) => {
               e.stopPropagation();
               onToggleExpand(category.id);
             }}
           >
             {isExpanded ? (
-              <ChevronDown className="w-5 h-5" />
+              <Eye className="w-4 h-4" />
             ) : (
-              <ChevronRight className="w-5 h-5" />
+              <EyeOff className="w-4 h-4" />
             )}
           </Button>
         ) : (
-          <div className="w-7" />
+          // Spacer for items without children to maintain alignment
+          <div className="w-7 flex-shrink-0" />
         )}
 
         {/* Category name and info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className={cn(
-              "text-base font-medium truncate",
-              isSelected ? "text-blue-700" : "text-gray-900"
+              "text-sm truncate",
+              isSelected 
+                ? "text-blue-700 font-semibold" 
+                : level > 0 
+                  ? "text-gray-700 font-medium" 
+                  : "text-gray-900 font-medium"
             )}>
               {category.name}
             </span>
-            {category.product_count !== undefined && (
-              <Badge variant="secondary" className="text-xs h-6 px-2">
+            {category.product_count !== undefined && category.product_count > 0 && (
+              <Badge variant="secondary" className="text-xs h-5 px-1.5 font-normal bg-gray-100 text-gray-600">
                 {category.product_count}
               </Badge>
             )}
             {!category.is_active && (
-              <Badge variant="secondary" className="text-xs h-6 px-2">
+              <Badge variant="secondary" className="text-xs h-5 px-1.5 bg-gray-100 text-gray-500">
                 Inactive
               </Badge>
             )}
@@ -214,10 +265,9 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
       {/* Children */}
       {hasChildren && isExpanded && (
         <div className="relative">
-          {/* Tree connector line */}
-          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-200" style={{ left: `${level * 24 + 16 + 12}px` }} />
-          <div className="pl-6">
-            {category.children.map((child, index) => (
+          {category.children.map((child, index) => {
+            const isLast = index === category.children.length - 1;
+            return (
               <CategoryTreeNode
                 key={child.id}
                 category={child}
@@ -230,9 +280,11 @@ const CategoryTreeNode: React.FC<CategoryTreeNodeProps> = ({
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onAddChild={onAddChild}
+                isLastChild={isLast}
+                parentHasMoreSiblings={!isLast}
               />
-            ))}
-          </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -336,21 +388,26 @@ export const CategoryTreeView: React.FC<CategoryTreeViewProps> = ({
               )}
             >
               <div>
-                {tree.map((category) => (
-                  <CategoryTreeNode
-                    key={category.id}
-                    category={category}
-                    level={0}
-                    expanded={expanded}
-                    selectedCategoryId={selectedCategoryId}
-                    activeId={activeId}
-                    onToggleExpand={onToggleExpand || (() => {})}
-                    onCategoryClick={onCategoryClick}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    onAddChild={onAddChild}
-                  />
-                ))}
+                {tree.map((category, index) => {
+                  const isLast = index === tree.length - 1;
+                  return (
+                    <CategoryTreeNode
+                      key={category.id}
+                      category={category}
+                      level={0}
+                      expanded={expanded}
+                      selectedCategoryId={selectedCategoryId}
+                      activeId={activeId}
+                      onToggleExpand={onToggleExpand || (() => {})}
+                      onCategoryClick={onCategoryClick}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                      onAddChild={onAddChild}
+                      isLastChild={isLast}
+                      parentHasMoreSiblings={false}
+                    />
+                  );
+                })}
               </div>
             </div>
             <DragOverlay>
