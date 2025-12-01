@@ -195,7 +195,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
     >
       <SEO
         title="Free BOM Software 2025: Bill of Materials Management | StockFlow"
-        description="Get free BOM management software for manufacturing. Track components, calculate material requirements, manage production. Free plan for up to 30 products. No credit card required. Start free BOM management today."
+        description="Get free BOM management software for manufacturing. Track components, calculate material requirements, manage production. Free plan for up to 30 products. Reduce material waste by 30%. No credit card required. Start free today."
         keywords="bill of materials software free, free bom software, bill of materials management software free, bom software free, free bom management software, bill of materials free software, stockflow, stock flow"
         url="https://www.stockflow.be/bill-of-material-management-software-free"
         locale="en-US"

@@ -55,6 +55,26 @@ export default function ConstructionInventoryApp() {
     {
       question: "How do construction inventory apps prevent material theft?",
       answer: "Construction inventory apps prevent theft through: real-time tracking of high-value materials, location monitoring (know where materials are stored), access controls (who can check out materials), usage tracking (materials assigned to specific projects), automated alerts for unusual activity, and regular audits with mobile scanning. Quick detection of discrepancies helps identify and prevent theft."
+    },
+    {
+      question: "What is the ROI of construction inventory apps?",
+      answer: "The ROI is typically very high. Construction companies see: 10+ hours saved per week on inventory tasks, 15-25% reduction in material waste, 20-30% reduction in material theft, improved inventory accuracy to 99%+, and prevention of project delays from material shortages. Most companies see ROI within the first month through efficiency gains and theft prevention."
+    },
+    {
+      question: "How do construction inventory apps handle material transfers between job sites?",
+      answer: "Construction inventory apps handle transfers by: scanning materials at the source job site, recording transfer details (quantity, destination, date), updating inventory at both locations automatically, tracking material movement history, and providing real-time visibility of material locations. This ensures materials are properly tracked when moved between sites."
+    },
+    {
+      question: "Can construction inventory apps work without internet?",
+      answer: "Yes, modern construction inventory apps like StockFlow work completely offline. Workers can scan barcodes, update inventory, check stock levels, and record material usage without internet connectivity. When connectivity is restored, all changes automatically sync to the cloud. This is essential for remote construction sites with poor connectivity."
+    },
+    {
+      question: "How do construction inventory apps improve accuracy?",
+      answer: "Construction inventory apps improve accuracy by: eliminating manual data entry errors through barcode scanning (99.9% accuracy), providing real-time updates preventing outdated information, enabling instant updates from job sites, and maintaining complete audit trails. This reduces errors from 88% (manual) to less than 1% (automated)."
+    },
+    {
+      question: "What training is required for construction inventory apps?",
+      answer: "Good construction inventory apps like StockFlow require minimal training. Most workers can learn to scan barcodes and update inventory within 10-15 minutes. The app interface is intuitive, and StockFlow provides helpful guides and 24/7 support. No technical knowledge or extensive training programs required."
     }
   ];
 

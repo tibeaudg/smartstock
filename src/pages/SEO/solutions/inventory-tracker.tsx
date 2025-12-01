@@ -37,7 +37,39 @@ export default function InventoryTracker() {
     },
     {
       question: "Is an inventory tracker suitable for small businesses?",
-      answer: "Absolutely! Inventory trackers are especially beneficial for small businesses as they help automate manual processes, reduce errors, and provide insights that were previously only available to large enterprises. StockFlow offers affordable solutions for businesses of all sizes."
+      answer: "Absolutely! Inventory trackers are especially beneficial for small businesses as they help automate manual processes, reduce errors, and provide insights that were previously only available to large enterprises. StockFlow offers affordable solutions for businesses of all sizes, with a free plan perfect for small businesses."
+    },
+    {
+      question: "How accurate is an inventory tracker?",
+      answer: "Modern inventory trackers achieve 99%+ accuracy when using barcode scanning, compared to 85-90% accuracy with manual tracking. This dramatic improvement reduces errors, prevents stockouts, and ensures accurate financial reporting. Real-time tracking ensures data is always current."
+    },
+    {
+      question: "Can an inventory tracker prevent stockouts?",
+      answer: "Yes, inventory trackers prevent stockouts by providing real-time visibility into stock levels, setting automated low stock alerts, calculating optimal reorder points, and enabling proactive purchasing. When inventory reaches predetermined levels, the system automatically alerts you to reorder."
+    },
+    {
+      question: "How much does an inventory tracker cost?",
+      answer: "Inventory tracker costs vary. StockFlow offers a free plan for up to 30 products, making it accessible for small businesses. Premium plans start at €29/month for unlimited products and advanced tracking features. This is much more affordable than traditional tracking systems."
+    },
+    {
+      question: "Can I use an inventory tracker on my mobile phone?",
+      answer: "Yes, modern inventory trackers like StockFlow offer mobile apps for iOS and Android. You can track inventory, scan barcodes, check stock levels, and view reports from your smartphone or tablet. This gives you complete control over your inventory wherever you are."
+    },
+    {
+      question: "What's the difference between an inventory tracker and inventory management software?",
+      answer: "An inventory tracker focuses on monitoring and recording inventory movements, while inventory management software includes tracking plus additional features like automated reordering, advanced reporting, and integrations. StockFlow combines both - comprehensive tracking with full inventory management capabilities."
+    },
+    {
+      question: "How does an inventory tracker improve efficiency?",
+      answer: "Inventory trackers improve efficiency by: automating data entry through barcode scanning, providing real-time updates eliminating manual checks, reducing errors that require corrections, speeding up operations by 5-10x, and enabling staff to work faster with less training."
+    },
+    {
+      question: "Can an inventory tracker track items across multiple locations?",
+      answer: "Yes, modern inventory trackers like StockFlow support multi-location tracking. You can track inventory across warehouses, stores, and distribution centers from a single dashboard. Location-specific reporting helps you optimize stock levels at each location."
+    },
+    {
+      question: "Is an inventory tracker difficult to set up?",
+      answer: "No, modern inventory trackers like StockFlow are designed for easy setup. You can be operational within hours: create an account, add your products, and start tracking. No complex installations or extensive training required - the intuitive interface makes it accessible to everyone."
     }
   ];
 

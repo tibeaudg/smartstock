@@ -79,6 +79,22 @@ export default function InventoryManagementSoftware() {
     {
       question: "How long does it take to implement inventory management software?",
       answer: "Implementation time varies, but cloud-based solutions like StockFlow can be set up in hours or days rather than weeks. Most businesses are fully operational within 1-2 weeks, including data migration, team training, and process optimization. The key is choosing user-friendly software that doesn't require extensive IT support."
+    },
+    {
+      question: "What is the ROI of inventory management software?",
+      answer: "The ROI of inventory management software is typically very high. Businesses see average returns of: 70% time savings on inventory tasks, 25% reduction in inventory carrying costs, 90% reduction in errors, and 15-20% revenue growth from better stock availability. Most businesses see ROI within the first month through cost savings and efficiency gains."
+    },
+    {
+      question: "Can inventory management software prevent stockouts?",
+      answer: "Yes, inventory management software prevents stockouts through automated reorder points that alert you when stock is low, demand forecasting based on historical data, safety stock calculations, and real-time visibility across all sales channels. This ensures you always have the right products in stock when customers need them."
+    },
+    {
+      question: "Is cloud-based inventory management software better than on-premise?",
+      answer: "For most businesses, cloud-based inventory management software offers significant advantages: lower upfront costs, automatic updates, remote access from any device, better security through professional hosting, easier collaboration, and no IT infrastructure needed. On-premise solutions are typically only cost-effective for very large enterprises with dedicated IT teams."
+    },
+    {
+      question: "How does inventory management software help with demand forecasting?",
+      answer: "Inventory management software analyzes historical sales data, seasonal patterns, and trends to predict future demand. This helps you optimize stock levels, reduce overstock, prevent stockouts, and make better purchasing decisions. Advanced systems use AI and machine learning for even more accurate forecasts."
     }
   ];
 

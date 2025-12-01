@@ -36,7 +36,39 @@ export default function SimpleStockManagement() {
     },
     {
       question: "Can I upgrade from simple stock management to more advanced features?",
-      answer: "Yes, most simple stock management systems offer upgrade paths. As your business grows, you can add more advanced features like detailed analytics, advanced reporting, and integrations with other business systems."
+      answer: "Yes, most simple stock management systems offer upgrade paths. As your business grows, you can add more advanced features like detailed analytics, advanced reporting, and integrations with other business systems. StockFlow grows with you from simple to advanced features seamlessly."
+    },
+    {
+      question: "How much does simple stock management cost?",
+      answer: "Simple stock management is very affordable. StockFlow offers a free plan for up to 30 products, perfect for small businesses. Premium plans start at €29/month for unlimited products and advanced features. This is much cheaper than complex enterprise systems while providing all essential features."
+    },
+    {
+      question: "Is simple stock management suitable for beginners?",
+      answer: "Absolutely! Simple stock management is designed specifically for beginners and non-technical users. The interface is intuitive, setup takes minutes, and no training is required. You can start managing inventory immediately without any prior experience with inventory systems."
+    },
+    {
+      question: "What's the difference between simple and complex stock management?",
+      answer: "Simple stock management focuses on essential features with an easy-to-use interface, while complex systems include advanced features that may be unnecessary for many businesses. Simple systems are faster to learn, easier to use, and more affordable, while still providing all the core functionality most businesses need."
+    },
+    {
+      question: "Can simple stock management handle multiple locations?",
+      answer: "Yes, even simple stock management systems like StockFlow support multiple locations. You can track inventory across different warehouses, stores, or storage areas from a single dashboard. This makes it suitable for businesses with multiple locations without adding complexity."
+    },
+    {
+      question: "How quickly can I set up simple stock management?",
+      answer: "Simple stock management can be set up in minutes. With StockFlow, you can create an account, add your products, and start tracking within 5-10 minutes. There's no complex configuration or lengthy training required - just start using it immediately."
+    },
+    {
+      question: "Does simple stock management include mobile access?",
+      answer: "Yes, modern simple stock management systems like StockFlow include mobile apps for iOS and Android. You can check stock levels, scan barcodes, and update inventory from your smartphone or tablet, making it convenient to manage inventory from anywhere."
+    },
+    {
+      question: "Can simple stock management integrate with my accounting software?",
+      answer: "Yes, simple stock management systems like StockFlow integrate with popular accounting software including QuickBooks, Xero, and others. This eliminates double data entry and ensures your financial records are always accurate and up-to-date."
+    },
+    {
+      question: "Is simple stock management secure?",
+      answer: "Yes, simple stock management systems use enterprise-grade security including SSL encryption, secure cloud hosting, regular backups, and role-based access controls. Your inventory data is protected with the same security standards used by large enterprises."
     }
   ];
 

@@ -32,6 +32,34 @@ export default function EnterpriseInventoryManagement() {
     {
       question: "Can enterprise inventory management software scale?",
       answer: "Yes, StockFlow scales from small businesses to large enterprises. It handles unlimited products, multiple warehouses, high transaction volumes, and complex operations. The pay-as-you-grow pricing model means you only pay for what you use as you scale."
+    },
+    {
+      question: "What is the ROI of enterprise inventory management software?",
+      answer: "The ROI is typically very high. Enterprises see: 30-40% reduction in carrying costs, 25-35% improvement in inventory accuracy, prevention of stockouts across locations, improved cash flow, and better decision-making through advanced analytics. Most enterprises see ROI within 6-12 months."
+    },
+    {
+      question: "How does enterprise inventory management handle multiple locations?",
+      answer: "Enterprise inventory management handles multiple locations by: providing centralized control with location-specific views, enabling transfers between locations, tracking inventory at each location separately, providing location-based reporting, and supporting location-specific reorder points. StockFlow supports unlimited locations."
+    },
+    {
+      question: "Can enterprise inventory management integrate with ERP systems?",
+      answer: "Yes, enterprise inventory management integrates with ERP systems through APIs and pre-built connectors. This enables seamless data flow between inventory management and ERP for financial reporting, production planning, and business intelligence. StockFlow offers comprehensive API access for ERP integration."
+    },
+    {
+      question: "What security features does enterprise inventory management provide?",
+      answer: "Enterprise inventory management provides: role-based access control, data encryption (in transit and at rest), audit trails for all actions, compliance with GDPR and other regulations, regular security audits, and dedicated security support. StockFlow provides enterprise-grade security at all pricing levels."
+    },
+    {
+      question: "How does enterprise inventory management support compliance?",
+      answer: "Enterprise inventory management supports compliance by: maintaining complete audit trails, tracking lot/serial numbers for traceability, supporting expiration date tracking, providing compliance reporting, and ensuring data security. StockFlow helps enterprises meet regulatory requirements across industries."
+    },
+    {
+      question: "Can enterprise inventory management handle high transaction volumes?",
+      answer: "Yes, StockFlow is designed to handle high transaction volumes typical of enterprise operations. The system processes thousands of transactions per day, maintains real-time accuracy, and scales automatically as your business grows. Cloud infrastructure ensures reliable performance at scale."
+    },
+    {
+      question: "What support is available for enterprise inventory management?",
+      answer: "Enterprise inventory management typically includes: dedicated account managers, priority support (24/7), custom onboarding and training, quarterly optimization reviews, and API support. StockFlow provides comprehensive support for enterprise customers, ensuring successful implementation and ongoing optimization."
     }
   ];
 

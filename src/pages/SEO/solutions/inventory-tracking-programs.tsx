@@ -51,6 +51,26 @@ export default function InventoryTrackingPrograms() {
     {
       question: "Do inventory tracking programs require training?",
       answer: "Good inventory tracking programs like StockFlow are designed to be intuitive and user-friendly, requiring minimal training. Most users can start tracking inventory within minutes. StockFlow provides helpful guides and 24/7 support to help you get started quickly."
+    },
+    {
+      question: "What is the ROI of inventory tracking programs?",
+      answer: "The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and 15-20% revenue growth from better availability. Most businesses see ROI within the first month through cost savings and efficiency gains."
+    },
+    {
+      question: "Can inventory tracking programs work offline?",
+      answer: "Yes, many modern inventory tracking programs like StockFlow offer offline capabilities through mobile apps. You can scan barcodes, update inventory, and make changes offline. Data is stored locally and automatically syncs when you reconnect to the internet. This ensures you can work even in areas with poor connectivity."
+    },
+    {
+      question: "How accurate are inventory tracking programs?",
+      answer: "Modern inventory tracking programs achieve 99%+ accuracy when using barcode scanning, compared to 85-90% accuracy with manual tracking. This dramatic improvement reduces errors, prevents stockouts, and ensures accurate financial reporting. Real-time tracking ensures data is always current."
+    },
+    {
+      question: "What's the difference between inventory tracking programs and inventory management software?",
+      answer: "Inventory tracking programs focus on monitoring and recording inventory movements, while inventory management software includes tracking plus additional features like automated reordering, advanced reporting, and integrations. StockFlow combines both - comprehensive tracking with full inventory management capabilities."
+    },
+    {
+      question: "Can inventory tracking programs prevent stockouts?",
+      answer: "Yes, inventory tracking programs prevent stockouts by providing real-time visibility into stock levels, setting automated low stock alerts, calculating optimal reorder points, and enabling proactive purchasing. When inventory reaches predetermined levels, the system automatically alerts you to reorder."
     }
   ];
 

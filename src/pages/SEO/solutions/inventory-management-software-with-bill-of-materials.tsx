@@ -70,6 +70,22 @@ export default function InventoryManagementSoftwareWithBillOfMaterials() {
     {
       question: "How long does it take to implement inventory management software with BOM?",
       answer: "Cloud-based solutions like StockFlow can be set up in days rather than weeks. Most businesses are fully operational within 1-2 weeks, including: importing your product catalog and BOMs, setting up inventory locations, configuring reorder points, training your team, and integrating with existing systems. The key is choosing user-friendly software that doesn't require extensive IT support."
+    },
+    {
+      question: "What is the ROI of inventory management software with BOM?",
+      answer: "The ROI is typically very high. Manufacturers see: 30-40% reduction in material waste, 25% reduction in carrying costs, prevention of production delays (which can cost thousands per day), improved cost accuracy for pricing, and 20-30% time savings on material planning. Most businesses see ROI within the first month."
+    },
+    {
+      question: "Can inventory management software with BOM handle multi-level assemblies?",
+      answer: "Yes, advanced inventory management software with BOM supports multi-level assemblies where components themselves are assemblies. For example, a finished product may contain a sub-assembly, which contains individual components. The system automatically calculates requirements at all levels and tracks inventory accordingly."
+    },
+    {
+      question: "How does inventory management software with BOM help with cost control?",
+      answer: "BOM-integrated inventory software helps with cost control by: tracking component costs and calculating total product costs automatically, identifying cost variances when component prices change, providing cost rollup analysis to see where costs come from, enabling accurate pricing based on actual material costs, and identifying opportunities to reduce costs through component substitution."
+    },
+    {
+      question: "Is inventory management software with BOM suitable for make-to-order manufacturing?",
+      answer: "Yes, inventory management software with BOM is ideal for make-to-order manufacturing. You can create BOMs for custom orders, check component availability before accepting orders, automatically reserve components for specific orders, track material usage per order, and maintain accurate costs for custom pricing. This ensures you can fulfill custom orders profitably."
     }
   ];
 

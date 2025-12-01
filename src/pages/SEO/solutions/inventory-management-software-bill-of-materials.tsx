@@ -52,6 +52,30 @@ export default function InventoryManagementSoftwareBillOfMaterials() {
     {
       question: "Does inventory management software bill of materials integrate with other systems?",
       answer: "Yes, modern inventory management software bill of materials like StockFlow integrates with accounting software (QuickBooks, Xero), e-commerce platforms (Shopify, WooCommerce), ERP systems, and purchasing platforms. This ensures seamless data flow from production planning through inventory tracking to financial reporting."
+    },
+    {
+      question: "What is the ROI of inventory management software bill of materials?",
+      answer: "The ROI is typically very high. Manufacturers see: 30-40% reduction in material waste, 25% reduction in carrying costs, prevention of production delays (which can cost thousands per day), improved cost accuracy for pricing, and 20-30% time savings on material planning. Most businesses see ROI within the first month."
+    },
+    {
+      question: "Can inventory management software bill of materials handle multi-level assemblies?",
+      answer: "Yes, advanced inventory management software bill of materials supports multi-level assemblies where components themselves are assemblies. For example, a finished product may contain a sub-assembly, which contains individual components. The system automatically calculates requirements at all levels and tracks inventory accordingly."
+    },
+    {
+      question: "How does inventory management software bill of materials help with cost control?",
+      answer: "BOM-integrated inventory software helps with cost control by: tracking component costs and calculating total product costs automatically, identifying cost variances when component prices change, providing cost rollup analysis to see where costs come from, enabling accurate pricing based on actual material costs, and identifying opportunities to reduce costs through component substitution."
+    },
+    {
+      question: "Is inventory management software bill of materials suitable for make-to-order manufacturing?",
+      answer: "Yes, inventory management software bill of materials is ideal for make-to-order manufacturing. You can create BOMs for custom orders, check component availability before accepting orders, automatically reserve components for specific orders, track material usage per order, and maintain accurate costs for custom pricing. This ensures you can fulfill custom orders profitably."
+    },
+    {
+      question: "How long does it take to implement inventory management software bill of materials?",
+      answer: "Cloud-based solutions like StockFlow can be set up in days rather than weeks. Most businesses are fully operational within 1-2 weeks, including: importing your product catalog and BOMs, setting up inventory locations, configuring reorder points, training your team, and integrating with existing systems. The key is choosing user-friendly software."
+    },
+    {
+      question: "What's the difference between basic inventory software and software with bill of materials?",
+      answer: "Basic inventory management software tracks quantities of finished products only. Software with bill of materials tracks both finished products AND the components needed to build them, calculates material requirements automatically, manages production planning, tracks component costs, and provides material availability alerts. This makes it essential for any manufacturing or assembly business."
     }
   ];
 

@@ -106,6 +106,34 @@ export default function OnlineInventorySoftware() {
       question: 'What kind of support do we get?',
       answer:
         'StockFlow offers 24/7 chat, phone, and email support plus an in-app academy. Growth and Scale plans include dedicated success managers and quarterly optimization workshops.'
+    },
+    {
+      question: 'What are the benefits of online inventory software vs desktop software?',
+      answer: 'Online inventory software offers: access from anywhere with internet, automatic updates without installation, no IT infrastructure needed, automatic backups, real-time collaboration, lower upfront costs, and mobile access. Desktop software requires installation, manual updates, local servers, and doesn\'t offer remote access. Online solutions are more flexible and cost-effective for most businesses.'
+    },
+    {
+      question: 'Is online inventory software secure?',
+      answer: 'Yes, reputable online inventory software like StockFlow uses enterprise-grade security including SSL encryption, encrypted data storage, regular security audits, GDPR compliance, role-based access controls, and automatic backups. Your inventory data is protected with the same security standards used by banks and large enterprises.'
+    },
+    {
+      question: 'Can online inventory software work offline?',
+      answer: 'Many online inventory software solutions offer offline capabilities through mobile apps. You can scan barcodes, update inventory, and make changes offline. Data is stored locally and automatically syncs when you reconnect to the internet. This ensures you can work even in areas with poor connectivity.'
+    },
+    {
+      question: 'How does online inventory software improve efficiency?',
+      answer: 'Online inventory software improves efficiency by: automating manual processes (saving 10-15 hours/week), providing real-time visibility eliminating manual checks, reducing errors through barcode scanning (99.9% accuracy), enabling faster operations (5-10x faster than manual), and providing analytics for better decision-making.'
+    },
+    {
+      question: 'What is the ROI of online inventory software?',
+      answer: 'The ROI is typically very high. Businesses see: 70% time savings, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and 15-20% revenue growth. Most businesses see ROI within the first month through cost savings and efficiency gains.'
+    },
+    {
+      question: 'Can online inventory software handle multiple locations?',
+      answer: 'Yes, online inventory software supports multiple locations. You can track inventory across warehouses, stores, and distribution centers from a single dashboard. Location-specific reporting helps optimize stock levels at each location, and you can transfer stock between locations seamlessly.'
+    },
+    {
+      question: 'How quickly can I set up online inventory software?',
+      answer: 'Online inventory software can be set up very quickly. With StockFlow, you can be operational within hours: create an account, import your products, configure settings, and start tracking. Most businesses are fully operational within 1-2 days, compared to weeks or months for on-premise solutions.'
     }
   ];
 

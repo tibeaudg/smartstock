@@ -39,7 +39,43 @@ export default function MobileInventoryManagement() {
     },
     {
       question: "How accurate is mobile barcode scanning for inventory?",
-      answer: "Mobile barcode scanning achieves 99.9% accuracy - far better than manual entry which has an 88% error rate. The camera-based scanner reads standard barcodes (UPC, EAN, Code 128) instantly and updates inventory in real-time across all devices."
+      answer: "Mobile barcode scanning achieves 99.9% accuracy - far better than manual entry which has an 88% error rate. The camera-based scanner reads standard barcodes (UPC, EAN, Code 128) instantly and updates inventory in real-time across all devices. This dramatically reduces errors and speeds up inventory operations."
+    },
+    {
+      question: "What are the benefits of mobile inventory management?",
+      answer: "Mobile inventory management offers: work from anywhere (warehouse, store, on the go), faster inventory updates with barcode scanning, real-time visibility for all team members, reduced errors through automation, offline capability for poor connectivity areas, and instant access to reports and analytics. Businesses typically see 40-60% productivity increase."
+    },
+    {
+      question: "Which devices support mobile inventory management?",
+      answer: "StockFlow's mobile inventory management works on all modern smartphones and tablets: iPhone (iOS 12+), Android phones (Android 8+), and iPads. The app is optimized for different screen sizes and works in both portrait and landscape modes. No special hardware is required - just your existing mobile device."
+    },
+    {
+      question: "Can multiple team members use mobile inventory management simultaneously?",
+      answer: "Yes, multiple team members can use mobile inventory management at the same time. All updates sync in real-time across all devices, so everyone always sees the latest inventory levels. Role-based permissions ensure team members only access what they need, maintaining security while enabling collaboration."
+    },
+    {
+      question: "How does mobile inventory management improve warehouse operations?",
+      answer: "Mobile inventory management improves warehouse operations by: enabling cycle counts on the floor without returning to a computer, instant barcode scanning for receiving and picking, real-time location updates, faster order fulfillment, and reduced walking time. Warehouse staff can complete tasks 5-10x faster than with paper-based systems."
+    },
+    {
+      question: "Is mobile inventory management more expensive than desktop-only systems?",
+      answer: "No, mobile inventory management is typically included in modern cloud-based inventory systems at no extra cost. StockFlow includes mobile apps for iOS and Android in all plans, including the free plan. There's no additional charge for mobile access - it's part of the standard package."
+    },
+    {
+      question: "Can I use mobile inventory management for cycle counting?",
+      answer: "Absolutely! Mobile inventory management is perfect for cycle counting. You can walk through your warehouse with your phone, scan barcodes to count items, and update inventory in real-time. The app tracks which items you've counted and which still need attention, making cycle counts faster and more accurate."
+    },
+    {
+      question: "What happens if I lose internet connection while using mobile inventory management?",
+      answer: "StockFlow's mobile app works offline. When you lose connection, you can continue scanning, updating counts, and making changes. All data is stored locally on your device and automatically syncs when you reconnect to the internet. You never lose work, even in areas with poor connectivity."
+    },
+    {
+      question: "How does mobile inventory management compare to paper-based systems?",
+      answer: "Mobile inventory management is far superior to paper-based systems: instant updates vs. delayed data entry, 99.9% accuracy vs. 88% with manual entry, real-time visibility vs. outdated information, automatic calculations vs. manual math, and digital records vs. paper that can be lost. The time savings alone make it essential for modern businesses."
+    },
+    {
+      question: "Can I generate reports from mobile inventory management?",
+      answer: "Yes, StockFlow's mobile app includes reporting features. You can view inventory reports, stock levels, low stock alerts, sales trends, and analytics directly on your mobile device. While full reporting is available on desktop, mobile gives you quick access to key metrics when you're away from your computer."
     }
   ];
 
@@ -156,7 +192,7 @@ export default function MobileInventoryManagement() {
     >
       <SEO
         title="Mobile Inventory Management 2025 - Manage Stock on the Go | StockFlow"
-        description="Mobile inventory management for iOS and Android. Barcode scanning, offline mode, real-time sync. Manage inventory from anywhere. Free plan for up to 100 products. Start free trial."
+        description="Mobile inventory management for iOS and Android. Barcode scanning, offline mode, real-time sync. Manage inventory from anywhere. Free plan for up to 30 products. Increase productivity 40-60%. Start free - no credit card required."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/mobile-inventory-management"
         locale="en"

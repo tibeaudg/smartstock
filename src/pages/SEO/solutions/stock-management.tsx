@@ -38,7 +38,39 @@ export default function StockManagement() {
     },
     {
       question: "What are the best stock management practices?",
-      answer: "Best practices include: regular inventory audits, using the FIFO (First In, First Out) method, setting minimum stock levels, tracking stock movements in real-time, organizing your warehouse efficiently, and using barcode scanning for accuracy."
+      answer: "Best practices include: regular inventory audits, using the FIFO (First In, First Out) method, setting minimum stock levels, tracking stock movements in real-time, organizing your warehouse efficiently, and using barcode scanning for accuracy. Modern stock management software automates many of these practices."
+    },
+    {
+      question: "How does stock management improve cash flow?",
+      answer: "Stock management improves cash flow by: preventing overstocking (which ties up capital), optimizing stock levels to reduce carrying costs, identifying slow-moving inventory for clearance, preventing stockouts (which lose sales), and providing data for better purchasing decisions. This can free up 20-30% of capital tied in stock."
+    },
+    {
+      question: "What is the difference between stock management and inventory management?",
+      answer: "Stock management typically refers to physical goods in storage ready for sale, while inventory management encompasses a broader scope including raw materials, work-in-progress, and finished goods across the entire supply chain. In practice, the terms are often used interchangeably, and modern software handles both."
+    },
+    {
+      question: "How can I automate stock management?",
+      answer: "Automate stock management by: using digital stock management software, setting automated reorder points, implementing barcode scanning, using real-time tracking systems, automating reporting, and integrating with other business systems. StockFlow provides all these automation tools in one platform."
+    },
+    {
+      question: "What are common stock management mistakes?",
+      answer: "Common mistakes include: not tracking stock in real-time, setting incorrect reorder points, ignoring slow-moving inventory, not conducting regular audits, relying on manual processes, and not using data for decision-making. Modern stock management software helps prevent these mistakes."
+    },
+    {
+      question: "How often should I review my stock management?",
+      answer: "Review stock management regularly: daily for fast-moving items, weekly for medium-moving items, monthly for slow-moving items, and quarterly for comprehensive analysis. Modern stock management software provides real-time dashboards so you can monitor stock levels continuously."
+    },
+    {
+      question: "Can stock management help with demand forecasting?",
+      answer: "Yes, effective stock management includes demand forecasting based on historical sales data, seasonal patterns, and trends. This helps you optimize stock levels, reduce overstock, prevent stockouts, and make better purchasing decisions. StockFlow includes built-in forecasting tools."
+    },
+    {
+      question: "What is ABC analysis in stock management?",
+      answer: "ABC analysis categorizes stock into three groups: A-items (20% of products, 80% of value) - highest priority, B-items (30% products, 15% value) - medium priority, and C-items (50% products, 5% value) - low priority. This helps focus management efforts on high-value items for maximum impact."
+    },
+    {
+      question: "How does stock management software help small businesses?",
+      answer: "Stock management software helps small businesses by: automating manual processes, reducing errors, providing real-time visibility, preventing stockouts, optimizing cash flow, and enabling data-driven decisions. StockFlow offers a free plan perfect for small businesses to get started."
     }
   ];
 

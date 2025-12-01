@@ -39,6 +39,30 @@ const faqData = [
   {
     question: 'Hoe verschilt realtime voorraadbeheer van theoretisch verbruik?',
     answer: 'Theoretisch verbruik is altijd foutgevoelig omdat het afhankelijk is van leveringsfouten, fouten in POS-aanslagen, niet-geregistreerd afval, variatie in porties en onnauwkeurige recepturen. Realtime digitaal voorraadbeheer toont exact wat er ligt, wat bijna op is en wat afwijkingen veroorzaakt — zonder dat dit een dagelijkse strijd wordt.'
+  },
+  {
+    question: 'Hoe voorkom ik voedselverspilling met voorraadbeheer software?',
+    answer: 'Voorraadbeheer software voor horeca helpt voedselverspilling voorkomen door houdbaarheidsdata tracking, FIFO (First In First Out) suggesties, realtime inzicht in voorraadniveaus, en automatische meldingen voor producten die bijna verlopen. Je kunt ook verspilling analyseren en patronen identificeren om waste te verminderen. Dit kan je honderden tot duizenden euro\'s per maand besparen.'
+  },
+  {
+    question: 'Kan ik recepturen en kostprijzen beheren met horeca voorraadbeheer software?',
+    answer: 'Ja, professionele horeca voorraadbeheer software zoals StockFlow biedt receptbeheer waarbij je ingrediënten koppelt aan gerechten, automatische kostprijsberekening per portie, en menu engineering tools. Dit helpt je om winstgevende gerechten te identificeren, marges te optimaliseren en voedselkosten te controleren. Perfect voor restaurants die hun winstgevendheid willen verbeteren.'
+  },
+  {
+    question: 'Is voorraadbeheer software geschikt voor kleine restaurants?',
+    answer: 'Absoluut! StockFlow biedt een gratis plan voor tot 30 producten, perfect voor kleine restaurants en cafés die willen starten met professioneel voorraadbeheer zonder grote investering. Je kunt groeien naar premium plannen wanneer je bedrijf uitbreidt. Veel kleine restaurants besparen 10-15 uur per week en honderden euro\'s per maand door betere voorraadcontrole.'
+  },
+  {
+    question: 'Hoe integreert horeca voorraadbeheer software met POS systemen?',
+    answer: 'Moderne voorraadbeheer software voor horeca integreert met populaire POS systemen zoals Lightspeed, Square, en andere kassasystemen. Elke verkoop wordt automatisch geregistreerd in je voorraad, waardoor je realtime inzicht hebt in wat er verkocht wordt en wat er nog op voorraad is. Dit voorkomt overselling en zorgt voor accurate voorraadniveaus zonder handmatige invoer.'
+  },
+  {
+    question: 'Wat is het verschil tussen voorraadbeheer en foodcost berekening?',
+    answer: 'Voorraadbeheer focust op het bijhouden van hoeveel producten je hebt en wanneer je moet bestellen. Foodcost berekening gaat verder en berekent de kostprijs per gerecht, analyseert marges, en helpt bij menu engineering. StockFlow combineert beide: je beheert je voorraad én berekent automatisch je foodcost percentages, waardoor je precies weet welke gerechten winstgevend zijn.'
+  },
+  {
+    question: 'Kan ik voorraadbeheer software gebruiken voor drankvoorraad?',
+    answer: 'Ja, voorraadbeheer software voor horeca is perfect voor zowel keukenvoorraad als drankvoorraad. Je kunt aparte locaties instellen voor keuken en bar, houdbaarheidsdata bijhouden voor verse producten, en voor drankvoorraad kun je volumes, flessen en kratten beheren. Dit geeft je volledig overzicht over al je voorraden in één systeem.'
   }
 ];
 
@@ -92,7 +116,7 @@ export default function VoorraadbeheerHorecaPage() {
     >
       <SEO
         title="Voorraadbeheer Horeca 2025 - Restaurant & Hotel Software | StockFlow"
-        description="Complete voorraadbeheer software voor horeca. Houdbaarheidsdata, recepturen, foodcost tracking, verspilling voorkomen. Start gratis vandaag."
+        description="Complete voorraadbeheer software voor restaurants, cafés en hotels. Houdbaarheidsdata tracking, recepturen, foodcost berekening, verspilling voorkomen. Bespaar 25% op voedselkosten. Start gratis - geen creditcard vereist."
         keywords="voorraadbeheer horeca, horeca voorraad, horeca voorraadbeheer software, horeca inventaris, foodcost, keukenvoorraad, restaurant voorraadbeheer, derving horeca, voorraadbeheersysteem horeca, voedselverspilling horeca, horeca marge, kostprijs horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
         structuredData={structuredData}

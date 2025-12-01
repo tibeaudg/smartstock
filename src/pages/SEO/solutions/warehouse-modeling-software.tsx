@@ -56,6 +56,26 @@ export default function WarehouseModelingSoftware() {
     {
       question: "How do I get started with warehouse modeling?",
       answer: "Start by mapping your current warehouse layout (dimensions, storage zones, aisles). Import inventory data (SKUs, quantities, dimensions). Define storage requirements (temperature zones, weight limits, access needs). Use modeling software to test different configurations. Analyze results (space utilization, travel time, picking efficiency). Implement best configuration. StockFlow's warehouse management system includes step-by-step layout planning tools."
+    },
+    {
+      question: "What is the ROI of warehouse modeling software?",
+      answer: "The ROI is typically very high. Businesses see: 20-30% increase in storage capacity (store more without expansion), 15-25% reduction in picking time (faster order fulfillment), reduced warehouse operating costs, improved space utilization, and ability to delay expensive warehouse expansions. Most businesses see ROI within 6-12 months through space optimization and efficiency gains."
+    },
+    {
+      question: "Can warehouse modeling software help with warehouse expansion planning?",
+      answer: "Yes, warehouse modeling software is essential for expansion planning. You can model different expansion scenarios, test layouts before construction, optimize space utilization in new areas, plan material flow for expanded facilities, and calculate ROI of expansion vs optimization. This prevents costly mistakes and ensures expansions are designed efficiently from the start."
+    },
+    {
+      question: "How accurate are warehouse modeling software predictions?",
+      answer: "Accuracy depends on data quality. With accurate inventory data, order patterns, and picking frequencies, warehouse modeling software can predict space utilization within 5-10% accuracy and picking time improvements within 10-15% accuracy. The more real data you input, the more accurate the models. StockFlow uses real inventory and order data for accurate modeling."
+    },
+    {
+      question: "What's the difference between 2D and 3D warehouse modeling?",
+      answer: "2D modeling shows layouts from above (floor plans) - good for space planning and zone configuration. 3D modeling shows full warehouse visualization including height, racking systems, and vertical space - better for understanding material flow and identifying bottlenecks. Advanced systems offer both views. StockFlow's warehouse management includes layout planning with both 2D and 3D visualization capabilities."
+    },
+    {
+      question: "Can warehouse modeling software optimize existing warehouses?",
+      answer: "Yes, warehouse modeling software can optimize existing warehouses by: analyzing current layout efficiency, identifying wasted space, recommending zone reconfigurations, optimizing picking routes, suggesting storage slot reassignments, and testing improvements before implementation. You can improve efficiency 15-25% without major construction, just by reorganizing existing space."
     }
   ];
 

@@ -37,6 +37,38 @@ export default function SoftwareForInventoryManagement() {
     {
       question: "What features should software for inventory management have?",
       answer: "Essential features include real-time tracking, barcode scanning, automated alerts, reporting and analytics, mobile access, multi-user support, integration capabilities, and scalability. StockFlow includes all these features and more."
+    },
+    {
+      question: "How much does software for inventory management cost?",
+      answer: "Costs vary widely. StockFlow offers a free plan for up to 30 products, perfect for small businesses. Premium plans start at €29/month for unlimited products and advanced features. Enterprise solutions can cost hundreds or thousands per month. Most businesses find cloud-based solutions like StockFlow offer the best value."
+    },
+    {
+      question: "Is software for inventory management difficult to learn?",
+      answer: "Modern software for inventory management like StockFlow is designed to be intuitive and easy to learn. The interface is user-friendly, setup is straightforward, and no technical knowledge is required. Most users can start managing inventory within hours of signing up. Training and support are available if needed."
+    },
+    {
+      question: "Can software for inventory management work offline?",
+      answer: "Many modern software solutions for inventory management offer offline capabilities through mobile apps. You can scan barcodes, update inventory, and make changes offline. Data is stored locally and automatically syncs when you reconnect to the internet. This is essential for warehouses or locations with unreliable connectivity."
+    },
+    {
+      question: "How does software for inventory management improve accuracy?",
+      answer: "Software for inventory management improves accuracy by: eliminating manual data entry errors through barcode scanning (99.9% accuracy), providing real-time updates preventing outdated information, automating calculations reducing math errors, and maintaining audit trails for accountability. This reduces errors from 88% (manual) to less than 1% (automated)."
+    },
+    {
+      question: "What is the ROI of software for inventory management?",
+      answer: "The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and 15-20% revenue growth from better availability. Most businesses see ROI within the first month."
+    },
+    {
+      question: "Can software for inventory management handle multiple locations?",
+      answer: "Yes, most software for inventory management supports multiple locations. You can track inventory across warehouses, stores, and distribution centers from a single dashboard. Location-specific reporting helps you optimize stock levels at each location, and you can transfer stock between locations seamlessly."
+    },
+    {
+      question: "How long does it take to implement software for inventory management?",
+      answer: "Cloud-based software for inventory management like StockFlow can be implemented quickly. Most businesses are operational within 1-2 days: create an account, import products, configure settings, and start tracking. This is much faster than on-premise solutions which can take weeks or months."
+    },
+    {
+      question: "Is software for inventory management secure?",
+      answer: "Reputable software for inventory management uses enterprise-grade security including SSL encryption, encrypted data storage, regular backups, GDPR compliance, and role-based access controls. StockFlow uses bank-level security to protect your inventory data, ensuring it's as secure as your financial information."
     }
   ];
 

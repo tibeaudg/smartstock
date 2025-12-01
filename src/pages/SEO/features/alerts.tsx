@@ -171,6 +171,38 @@ const faqData = [
     question: 'How quickly will I receive alerts?',
     answer:
       'Alerts are sent in real-time as soon as the conditions are met. You can receive notifications immediately via email, SMS, or push notifications, ensuring you can take action quickly to prevent stockouts or other issues.'
+  },
+  {
+    question: 'What is the ROI of inventory alerts?',
+    answer: 'The ROI is typically very high. Businesses see: prevention of stockouts (which can cost 20% of lost sales), 25% reduction in carrying costs, improved cash flow, and better inventory turnover. Most businesses see ROI within the first month through stockout prevention and cost savings.'
+  },
+  {
+    question: 'Can inventory alerts be customized by product category?',
+    answer: 'Yes, StockFlow allows you to set different alert thresholds for different product categories. Fast-moving items can have higher reorder points, while slow-moving items can have lower thresholds. This ensures alerts are relevant and actionable for each product type.'
+  },
+  {
+    question: 'How do inventory alerts prevent stockouts?',
+    answer: 'Inventory alerts prevent stockouts by: monitoring stock levels in real-time, sending notifications when levels drop below reorder points, providing lead time information for reordering, and enabling proactive purchasing before stockouts occur. Early warnings give you time to reorder before running out.'
+  },
+  {
+    question: 'Can I set up alerts for expiration dates?',
+    answer: 'Yes, StockFlow supports expiration date alerts. You can set alerts to notify you when items are approaching expiration dates, enabling you to sell or use items before they expire. This reduces waste and improves inventory turnover.'
+  },
+  {
+    question: 'How do inventory alerts integrate with purchase orders?',
+    answer: 'Inventory alerts can automatically trigger purchase order creation. When stock levels drop below reorder points, the system can generate purchase requisitions or purchase orders automatically. This streamlines procurement and ensures timely reordering. StockFlow integrates alerts with purchase order workflows.'
+  },
+  {
+    question: 'Can I receive alerts on mobile devices?',
+    answer: 'Yes, StockFlow sends alerts to mobile devices via push notifications, SMS, or email. You can receive real-time notifications on your smartphone, enabling you to respond quickly to inventory issues even when away from the office.'
+  },
+  {
+    question: 'How do inventory alerts help with inventory optimization?',
+    answer: 'Inventory alerts help optimize inventory by: identifying slow-moving items that need attention, highlighting fast-moving items that need higher stock levels, preventing overstock situations, and ensuring optimal stock levels. This improves cash flow and reduces carrying costs.'
+  },
+  {
+    question: 'Can I set up alerts for multiple locations?',
+    answer: 'Yes, StockFlow supports location-specific alerts. You can set different reorder points and alert thresholds for each warehouse or location. This ensures alerts are relevant to each location\'s specific inventory needs and turnover rates.'
   }
 ];
 

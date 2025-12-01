@@ -58,6 +58,26 @@ export default function AssetsInventory() {
     {
       question: "How do I implement assets inventory management?",
       answer: "Start by cataloging all assets with key details (serial numbers, purchase dates, locations, values). Label each asset with barcodes or QR codes. Set up location hierarchy (departments, buildings, rooms). Configure maintenance schedules and alerts. Train staff on mobile scanning. Conduct regular audits. StockFlow's setup wizard guides you through this process in under an hour."
+    },
+    {
+      question: "What is the ROI of assets inventory management?",
+      answer: "The ROI is typically very high. Businesses see: prevention of asset loss (which can cost thousands per year), reduced maintenance costs through scheduled maintenance, improved asset utilization, compliance with regulations, and accurate asset valuation for accounting. Most businesses see ROI within 3-6 months through loss prevention and maintenance optimization."
+    },
+    {
+      question: "Can assets inventory software track asset depreciation?",
+      answer: "Yes, modern assets inventory systems like StockFlow track asset depreciation. You can set depreciation methods (straight-line, declining balance), calculate depreciation automatically, generate depreciation reports for accounting, track asset values over time, and maintain accurate asset valuations. This simplifies accounting and ensures compliance with financial reporting requirements."
+    },
+    {
+      question: "How do assets inventory systems prevent asset loss?",
+      answer: "Assets inventory systems prevent loss by: tracking asset locations in real-time, maintaining complete audit trails, setting up access controls, conducting regular audits with mobile scanning, monitoring asset movements, and providing alerts for unusual activity. Quick detection of missing assets helps identify and prevent loss."
+    },
+    {
+      question: "Can assets inventory software integrate with accounting systems?",
+      answer: "Yes, assets inventory systems integrate with accounting software through APIs. This enables automatic asset value updates, depreciation calculations, asset purchase recording, and financial reporting. Integration ensures asset data in inventory matches accounting records, simplifying financial management. StockFlow offers API access for accounting integration."
+    },
+    {
+      question: "What's the difference between assets inventory and fixed asset accounting?",
+      answer: "Assets inventory focuses on physical tracking (location, maintenance, condition) while fixed asset accounting focuses on financial tracking (cost, depreciation, book value). Many businesses need both - physical tracking for operations and financial tracking for accounting. Integrated systems like StockFlow can handle both aspects in one platform."
     }
   ];
 

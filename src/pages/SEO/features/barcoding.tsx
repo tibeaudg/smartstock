@@ -170,6 +170,42 @@ const faqData = [
     question: 'Does StockFlow support GS1 barcodes?',
     answer:
       'Absolutely. StockFlow parses GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry. It supports all major barcode formats including UPC, EAN, Code 128, QR codes, and more.'
+  },
+  {
+    question: 'What is the ROI of barcoding for inventory management?',
+    answer: 'The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 99.7% accuracy (vs 85-90% manual), 90% reduction in errors, prevention of stockouts, and 15-20% revenue growth from better availability. Most businesses see ROI within the first month through efficiency gains.'
+  },
+  {
+    question: 'How does barcoding improve inventory accuracy?',
+    answer: 'Barcoding improves accuracy by: eliminating manual data entry errors (99.7% accuracy vs 85-90% manual), providing instant product identification, preventing duplicate entries, ensuring correct product matching, and maintaining complete audit trails. This reduces errors from 88% (manual) to less than 1% (automated).'
+  },
+  {
+    question: 'Can I generate barcodes for my products?',
+    answer: 'Yes, StockFlow can generate barcodes for all your products. When you add a product, the system can automatically generate a unique barcode. You can then print barcode labels for your products, making them easy to scan and track.'
+  },
+  {
+    question: 'How fast is barcoding compared to manual entry?',
+    answer: 'Barcoding is 5-10x faster than manual entry. Scanning a barcode takes less than 1 second, while manual entry can take 10-30 seconds per item. For high-volume operations, this translates to hours saved per day and significantly improved productivity.'
+  },
+  {
+    question: 'Can barcoding work with damaged or partially visible barcodes?',
+    answer: 'StockFlow includes advanced barcode recognition that can handle damaged, partially visible, or low-quality barcodes. The system uses image processing and validation to improve recognition rates. However, it\'s best practice to maintain good quality barcode labels for optimal scanning.'
+  },
+  {
+    question: 'How does barcoding integrate with other inventory processes?',
+    answer: 'Barcoding integrates seamlessly with receiving, picking, shipping, cycle counting, and transfers. When you scan a barcode, the system automatically updates inventory, tracks movements, and maintains audit trails. This creates a complete automated workflow from receiving to shipping.'
+  },
+  {
+    question: 'Can I use barcoding for serial number tracking?',
+    answer: 'Yes, StockFlow supports serial number tracking through barcoding. Each serialized item can have a unique barcode, enabling you to track individual items throughout their lifecycle. This is essential for high-value items, warranty tracking, and compliance requirements.'
+  },
+  {
+    question: 'What barcode formats does StockFlow support?',
+    answer: 'StockFlow supports all major barcode formats including: UPC-A, UPC-E, EAN-13, EAN-8, Code 128, Code 39, QR codes, Data Matrix, GS1 barcodes, and more. The system automatically recognizes the format and processes it accordingly.'
+  },
+  {
+    question: 'How does barcoding help with inventory audits?',
+    answer: 'Barcoding makes inventory audits faster and more accurate. Instead of manually counting and recording items, you scan barcodes to quickly verify quantities. The system automatically compares scanned counts to system records, identifies discrepancies, and updates inventory. This reduces audit time by 70-80%.'
   }
 ];
 

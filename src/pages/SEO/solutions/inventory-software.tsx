@@ -68,6 +68,14 @@ export default function InventorySoftware() {
     {
       question: "Can inventory software help reduce inventory costs?",
       answer: "Yes, inventory software helps reduce costs by optimizing stock levels to minimize carrying costs, identifying slow-moving or obsolete inventory, preventing overstocking, reducing waste, and improving purchasing decisions through data-driven insights. Businesses typically see 20-35% reduction in inventory carrying costs with effective inventory software."
+    },
+    {
+      question: "What is the difference between cloud-based and on-premise inventory software?",
+      answer: "Cloud-based inventory software is hosted online and accessible from anywhere, with automatic updates and no IT infrastructure needed. On-premise software requires local installation, servers, and IT maintenance. Cloud-based solutions like StockFlow are more affordable, flexible, and suitable for most businesses, while on-premise is typically only for very large enterprises."
+    },
+    {
+      question: "How does inventory software improve customer satisfaction?",
+      answer: "Inventory software improves customer satisfaction by: preventing stockouts so products are always available, ensuring accurate order fulfillment, providing real-time availability information, enabling faster order processing, and reducing shipping delays. Happy customers lead to repeat business and positive reviews."
     }
   ];
 

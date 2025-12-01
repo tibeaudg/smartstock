@@ -107,6 +107,38 @@ const faqData = [
     question: 'What is supplier management software?',
     answer:
       'Supplier management software helps businesses centralize vendor information, automate purchasing workflows, track supplier performance, and streamline procurement processes. It enables better supplier relationships and reduces procurement costs.'
+  },
+  {
+    question: 'What are the benefits of supplier management software?',
+    answer: 'Benefits include: centralized supplier database, automated purchase order generation, supplier performance tracking, cost reduction through better negotiations, improved supplier relationships, streamlined procurement workflows, reduced manual work, and better visibility into supplier performance. Businesses typically see 20-30% reduction in procurement costs.'
+  },
+  {
+    question: 'How does supplier management software improve procurement?',
+    answer: 'Supplier management software improves procurement by: automating purchase order creation from low stock alerts, tracking supplier performance (on-time delivery, quality), maintaining supplier databases with contact information and terms, enabling better negotiations with performance data, and streamlining approval workflows. This reduces procurement time by 40-50%.'
+  },
+  {
+    question: 'Can supplier management software track supplier performance?',
+    answer: 'Yes, supplier management software tracks key performance metrics including: on-time delivery rates, order accuracy, quality ratings, cost trends, lead times, and fill rates. This data helps identify reliable suppliers, negotiate better terms, and make informed purchasing decisions. StockFlow provides comprehensive supplier performance analytics.'
+  },
+  {
+    question: 'How much does supplier management software cost?',
+    answer: 'Costs vary. StockFlow includes supplier management features in its inventory management platform, starting with a free plan for up to 30 products. Premium plans start at €29/month for unlimited products and advanced supplier management features. This is much more affordable than standalone supplier management systems.'
+  },
+  {
+    question: 'Can supplier management software integrate with inventory management?',
+    answer: 'Yes, integrated supplier management software like StockFlow connects directly with inventory management. When inventory reaches reorder points, the system can automatically generate purchase orders to preferred suppliers, track deliveries, and update inventory when orders arrive. This creates a seamless procurement-to-inventory workflow.'
+  },
+  {
+    question: 'What features should supplier management software have?',
+    answer: 'Essential features include: supplier database with contact information, purchase order management, supplier performance tracking, automated reordering, approval workflows, supplier communication tools, cost tracking and analysis, and integration with inventory management. StockFlow includes all these features in one platform.'
+  },
+  {
+    question: 'Is supplier management software suitable for small businesses?',
+    answer: 'Yes, supplier management software is beneficial for businesses of all sizes. StockFlow offers supplier management features in its free plan, making it accessible for small businesses. As you grow, you can leverage advanced features like supplier performance analytics and automated purchasing workflows.'
+  },
+  {
+    question: 'How does supplier management software help with cost control?',
+    answer: 'Supplier management software helps control costs by: tracking supplier pricing trends, identifying cost-saving opportunities, enabling better negotiations with performance data, consolidating purchases with preferred suppliers, reducing rush orders through better planning, and identifying suppliers with the best value. This can reduce procurement costs by 20-30%.'
   }
 ];
 

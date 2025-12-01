@@ -73,6 +73,26 @@ export default function ProgrammaStockbeheer() {
     {
       question: "Is er gratis stockbeheer software beschikbaar?",
       answer: `Ja, er zijn verschillende gratis stockbeheer programma's beschikbaar. StockFlow biedt bijvoorbeeld een gratis versie voor maximaal 30 producten, perfect voor kleine bedrijven om te starten. Gratis programma's bieden meestal basis functionaliteit, terwijl betaalde versies geavanceerde functies zoals automatische bestellingen, multi-locatie ondersteuning en uitgebreide rapportages bieden. Premium abonnementen beginnen vanaf ${formatPrice(29)}/maand.`
+    },
+    {
+      question: "Wat zijn de belangrijkste functies van een stockbeheer programma?",
+      answer: "Belangrijke functies zijn: real-time voorraadtracking, barcode scanning voor nauwkeurigheid, automatische bestelmeldingen bij lage voorraad, multi-locatie ondersteuning, mobiele app voor toegang onderweg, rapportage en analytics, integratiemogelijkheden met webshops en boekhouding, en team samenwerking. StockFlow biedt al deze functies in een gebruiksvriendelijk Stockbeheer Programma."
+    },
+    {
+      question: "Hoeveel kost een stockbeheer programma per maand?",
+      answer: `Kosten variëren per aanbieder. StockFlow biedt een volledig gratis Stockbeheer Programma voor tot 30 producten. Premium plannen beginnen vanaf ${formatPrice(29)} per maand voor onbeperkte producten en geavanceerde functies. Dit is veel goedkoper dan traditionele ERP systemen die vaak €100-500+ per maand kosten. De meeste bedrijven besparen meer dan ze uitgeven door betere voorraadoptimalisatie.`
+    },
+    {
+      question: "Kan ik een stockbeheer programma gebruiken op mijn mobiele telefoon?",
+      answer: "Ja, de meeste moderne stockbeheer programma's zoals StockFlow bieden mobiele apps voor iOS en Android. Hiermee kun je voorraad tellen met barcode scanning, bestellingen plaatsen, voorraadniveaus bekijken en meldingen ontvangen - allemaal vanaf je smartphone of tablet. Perfect voor magazijnmedewerkers en managers die onderweg zijn."
+    },
+    {
+      question: "Is een stockbeheer programma geschikt voor kleine bedrijven?",
+      answer: "Absoluut! Moderne stockbeheer programma's zoals StockFlow zijn speciaal ontworpen voor kleine bedrijven en KMO's. Gratis plannen maken het toegankelijk, en het programma schaalt mee met je groei. Veel kleine bedrijven besparen 10-15 uur per week en honderden euro's per maand door betere voorraadcontrole met een goed Stockbeheer Programma."
+    },
+    {
+      question: "Hoe voorkom ik fouten met een stockbeheer programma?",
+      answer: "Een goed stockbeheer programma voorkomt fouten door: automatische voorraadupdates (geen handmatige invoer), barcode scanning voor 99.9% nauwkeurigheid, real-time synchronisatie tussen alle systemen, automatische validatie van data, en duidelijke workflows. Dit reduceert fouten met 90% vergeleken met handmatige methodes zoals Excel."
     }
   ];
 

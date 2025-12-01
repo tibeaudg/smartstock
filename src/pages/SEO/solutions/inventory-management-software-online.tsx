@@ -57,6 +57,26 @@ export default function InventoryManagementSoftwareOnline() {
     {
       question: "How does online inventory management software integrate with e-commerce platforms?",
       answer: "Online inventory management software like StockFlow integrates seamlessly with e-commerce platforms including Shopify, WooCommerce, Amazon, eBay, and more. This integration automatically syncs inventory levels across all sales channels, preventing overselling and ensuring accurate stock information for customers."
+    },
+    {
+      question: "What is the ROI of online inventory management software?",
+      answer: "The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and 15-20% revenue growth from better availability. Most businesses see ROI within the first month through cost savings and efficiency gains."
+    },
+    {
+      question: "How much does online inventory management software cost?",
+      answer: `Costs vary, but StockFlow offers a free plan for up to 30 products, making it accessible for small businesses. Premium plans start at ${formatPrice(29)}/month for unlimited products and advanced features. This is much more affordable than on-premise solutions which can cost thousands in upfront fees and maintenance.`
+    },
+    {
+      question: "Can online inventory management software handle multiple locations?",
+      answer: "Yes, online inventory management software supports multiple locations. You can track inventory across warehouses, stores, and distribution centers from a single dashboard. Location-specific reporting helps optimize stock levels at each location, and you can transfer stock between locations seamlessly."
+    },
+    {
+      question: "How quickly can I set up online inventory management software?",
+      answer: "Online inventory management software can be set up very quickly. With StockFlow, you can be operational within hours: create an account, import your products, configure settings, and start tracking. Most businesses are fully operational within 1-2 days, compared to weeks or months for on-premise solutions."
+    },
+    {
+      question: "Is online inventory management software suitable for large enterprises?",
+      answer: "Yes, online inventory management software scales to enterprise levels. StockFlow and similar solutions support unlimited products, multiple locations, hundreds of users, and high transaction volumes. Enterprise features include advanced reporting, API access, dedicated support, and custom integrations."
     }
   ];
 

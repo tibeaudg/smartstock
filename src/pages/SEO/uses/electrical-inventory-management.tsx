@@ -67,6 +67,26 @@ export default function ElectricalInventoryManagement() {
     {
       question: "How does inventory management integrate with job costing?",
       answer: "Inventory systems track which materials are allocated to specific jobs, automatically calculating material costs per project. This helps with accurate job bidding, profitability analysis, and identifying projects that consume more materials than estimated, allowing for better pricing and estimation over time."
+    },
+    {
+      question: "What is the ROI of electrical inventory management?",
+      answer: "The ROI is typically very high. Electrical contractors see: 20-30% reduction in material waste, 15-25% reduction in theft, 10-15 hours saved per week on inventory tasks, improved project profitability, and prevention of project delays. Most contractors see ROI within 3-6 months."
+    },
+    {
+      question: "How does electrical inventory management prevent copper wire theft?",
+      answer: "Electrical inventory management prevents theft by: tracking high-value items like copper wire in real-time, maintaining detailed records of who checked out materials, conducting regular audits, setting up alerts for unusual consumption, and providing complete audit trails. This reduces theft by 20-30%."
+    },
+    {
+      question: "Can electrical inventory systems track voltage and specifications?",
+      answer: "Yes, electrical inventory systems track voltage ratings, amperage, gauge, wire type, and other electrical specifications. This ensures technicians use the correct materials for each job, preventing errors and ensuring code compliance."
+    },
+    {
+      question: "How does electrical inventory management handle multiple job sites?",
+      answer: "Electrical inventory management handles multiple job sites by: tracking materials at each location separately, enabling transfers between sites, providing real-time visibility across all sites, and supporting location-specific reorder points. This ensures materials are available where needed."
+    },
+    {
+      question: "Can electrical inventory systems track tool calibration?",
+      answer: "Yes, electrical inventory systems can track tool calibration schedules including: calibration due dates, calibration history, calibration certificates, and tool condition. This ensures tools are properly maintained and calibrated for accurate measurements and safety compliance."
     }
   ];
 

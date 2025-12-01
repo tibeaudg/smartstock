@@ -67,6 +67,26 @@ export default function WarehouseInventoryManagement() {
     {
       question: "Can I track inventory by bin location within my warehouse?",
       answer: "Yes, modern warehouse inventory systems support detailed bin/shelf/rack location tracking. Each product can be stored in multiple locations, and the system directs pickers to the optimal location based on quantity needed, pick path efficiency, and FIFO/FEFO requirements."
+    },
+    {
+      question: "What is the ROI of warehouse inventory management?",
+      answer: "The ROI is typically very high. Warehouses see: 20-30% improvement in picking efficiency, 15-25% reduction in errors, 25% reduction in carrying costs, prevention of stockouts, and improved customer satisfaction. Most warehouses see ROI within 6-12 months through efficiency gains and cost savings."
+    },
+    {
+      question: "How does warehouse inventory management improve picking accuracy?",
+      answer: "Warehouse inventory management improves picking accuracy by: barcode scanning at every step (99.9% accuracy), bin location verification, pick path optimization, real-time inventory visibility, and automated validation. This reduces picking errors from 5-10% to less than 1%."
+    },
+    {
+      question: "Can warehouse inventory management handle FIFO/FEFO?",
+      answer: "Yes, warehouse inventory management supports FIFO (First In, First Out) and FEFO (First Expired, First Out) workflows. The system tracks lot numbers, expiration dates, and receipt dates, directing pickers to the oldest inventory first. This reduces waste and ensures product freshness."
+    },
+    {
+      question: "How does warehouse inventory management optimize space utilization?",
+      answer: "Warehouse inventory management optimizes space by: analyzing storage patterns, recommending optimal slotting, tracking space utilization by zone, identifying underutilized areas, and suggesting layout improvements. This can increase storage capacity by 20-30% without expanding the warehouse."
+    },
+    {
+      question: "Can warehouse inventory management integrate with shipping carriers?",
+      answer: "Yes, modern warehouse inventory management systems integrate with shipping carriers (UPS, FedEx, DHL, etc.) for: automatic label generation, rate shopping, tracking number updates, and shipping cost tracking. StockFlow offers API access for carrier integration."
     }
   ];
 

@@ -38,6 +38,34 @@ export default function EcommerceInventoryManagement() {
     {
       question: "Can inventory management software integrate with multiple e-commerce platforms?",
       answer: "Yes, StockFlow integrates with multiple e-commerce platforms including Shopify, WooCommerce, Amazon, BigCommerce, Wix, and more. This allows you to manage inventory across all your sales channels from one system, ensuring accurate stock levels and preventing overselling."
+    },
+    {
+      question: "What is the ROI of ecommerce inventory management?",
+      answer: "The ROI is typically very high. E-commerce businesses see: elimination of overselling (which can cost 20% of lost sales), 20+ hours saved per week on manual inventory updates, 15-25% reduction in carrying costs, 99%+ inventory accuracy, and ability to scale to high volumes without additional staff. Most businesses see ROI within the first month."
+    },
+    {
+      question: "How does ecommerce inventory management prevent overselling?",
+      answer: "Ecommerce inventory management prevents overselling by: synchronizing inventory levels across all platforms in real-time, automatically updating stock when products are sold, reserving inventory when orders are placed, and providing centralized inventory control. When inventory is low, the system automatically updates all platforms to prevent further sales."
+    },
+    {
+      question: "Can ecommerce inventory management handle multiple warehouses?",
+      answer: "Yes, modern ecommerce inventory management like StockFlow supports multiple warehouses. You can route orders to the nearest warehouse, track inventory across all locations, transfer stock between warehouses, and set location-specific reorder points. This is essential for high-volume e-commerce operations with multiple fulfillment centers."
+    },
+    {
+      question: "How quickly does inventory sync across platforms?",
+      answer: "With StockFlow, inventory syncs across platforms in real-time (within seconds). When a product is sold on one platform, inventory levels update automatically on all connected platforms. This ensures accurate stock levels and prevents overselling across all your sales channels."
+    },
+    {
+      question: "Can ecommerce inventory management track sales across platforms?",
+      answer: "Yes, ecommerce inventory management tracks sales across all platforms, providing unified reporting on: total sales, best-selling products, sales by platform, inventory turnover, and revenue analytics. This gives you complete visibility into your multi-channel e-commerce operations."
+    },
+    {
+      question: "How does ecommerce inventory management help with seasonal demand?",
+      answer: "Ecommerce inventory management helps with seasonal demand by: tracking historical sales data, forecasting demand based on trends, setting dynamic reorder points for peak seasons, and providing alerts for high-demand items. This ensures you have adequate stock during peak seasons and avoid overstock during slow periods."
+    },
+    {
+      question: "Can I manage inventory for dropshipping with ecommerce inventory management?",
+      answer: "Yes, ecommerce inventory management can handle dropshipping by: tracking supplier inventory levels, managing multiple suppliers, automating order routing to suppliers, and maintaining accurate stock counts. StockFlow supports both traditional inventory and dropshipping models."
     }
   ];
 

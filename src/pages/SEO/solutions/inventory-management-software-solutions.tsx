@@ -21,10 +21,42 @@ const faqData = [
     question: 'How does pricing work?',
     answer: 'Start free for up to 30 products. Paid tiers unlock advanced automations, analytics, and additional users. Pricing scales predictably with your active SKUs.'
   },
-  {
-    question: 'Is StockFlow suitable for multi-location inventory?',
-    answer: 'Absolutely. You can manage multiple warehouses and retail stores with transfer workflows, per-location reorder points, and mobile scanning.'
-  }
+    {
+      question: 'Is StockFlow suitable for multi-location inventory?',
+      answer: 'Absolutely. You can manage multiple warehouses and retail stores with transfer workflows, per-location reorder points, and mobile scanning.'
+    },
+    {
+      question: 'What are inventory management software solutions?',
+      answer: 'Inventory management software solutions are comprehensive platforms that combine multiple tools and capabilities for managing inventory. These solutions typically include: real-time tracking, barcode scanning, automated alerts, reporting and analytics, integration capabilities, mobile access, and scalability - all in one unified system. StockFlow provides a complete inventory management software solution.'
+    },
+    {
+      question: 'How do inventory management software solutions differ from basic inventory software?',
+      answer: 'Inventory management software solutions are comprehensive platforms that combine multiple tools and capabilities, while basic inventory software may offer limited features. Solutions typically include: tracking, reporting, automation, integrations, analytics, mobile access, and scalability - all in one unified platform. StockFlow provides a complete solution rather than multiple disconnected tools.'
+    },
+    {
+      question: 'What industries benefit from inventory management software solutions?',
+      answer: 'All industries with physical inventory benefit, including: retail, e-commerce, manufacturing, wholesale, healthcare, food service, construction, and distribution. While some industries have specialized needs, comprehensive solutions like StockFlow work well across multiple industries with customizable features.'
+    },
+    {
+      question: 'How much do inventory management software solutions cost?',
+      answer: 'Costs vary widely. StockFlow offers a free plan for up to 30 products, making it accessible for small businesses. Premium plans start at €29/month for unlimited products and advanced features. Enterprise solutions can cost €500+/month. StockFlow offers the best value with affordable pay-as-you-grow pricing.'
+    },
+    {
+      question: 'Can inventory management software solutions integrate with ERP systems?',
+      answer: 'Yes, modern inventory management software solutions like StockFlow integrate with ERP systems through APIs and pre-built connectors. This allows inventory data to flow seamlessly between systems, ensuring accurate financial records, production planning, and business intelligence. Integration capabilities are essential for growing businesses.'
+    },
+    {
+      question: 'What is the implementation time for inventory management software solutions?',
+      answer: 'Cloud-based solutions like StockFlow can be implemented quickly - typically within 1-2 weeks including data migration, configuration, and training. On-premise solutions can take months. The key is choosing user-friendly software that doesn\'t require extensive IT support or complex setup procedures.'
+    },
+    {
+      question: 'Are inventory management software solutions scalable?',
+      answer: 'Yes, modern solutions are designed to scale. StockFlow grows with your business from startup to enterprise level, supporting unlimited products, multiple locations, hundreds of users, and high transaction volumes. You can start with a free plan and upgrade as you grow without switching systems.'
+    },
+    {
+      question: 'What support do inventory management software solutions provide?',
+      answer: 'Reputable solutions like StockFlow provide: 24/7 customer support (chat, phone, email), comprehensive documentation and guides, training resources and onboarding, dedicated success managers for premium plans, and regular software updates. Good support is essential for successful implementation and ongoing operations.'
+    }
 ];
 
 const structuredData = generateComprehensiveStructuredData('software', {

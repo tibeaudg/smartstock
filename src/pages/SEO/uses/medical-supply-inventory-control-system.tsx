@@ -56,6 +56,26 @@ export default function MedicalSupplyInventoryControlSystem() {
     {
       question: "How do medical inventory control systems help reduce waste?",
       answer: "Medical inventory control systems reduce waste through: FEFO rotation (use oldest items first), automated expiration alerts (proactive management), usage analytics (identify waste patterns), par level optimization (right-size inventory), preference cards (optimize surgical supply usage), and cycle counting (maintain accurate records). Healthcare facilities typically reduce supply waste by 25-40% with proper inventory control."
+    },
+    {
+      question: "What is the ROI of medical supply inventory control systems?",
+      answer: "The ROI is typically very high. Healthcare facilities see: 25-40% reduction in supply waste, 20-30% reduction in carrying costs, prevention of expired product waste, improved patient safety, faster recall response, and better compliance. Most facilities see ROI within 6-12 months through waste reduction and cost savings."
+    },
+    {
+      question: "How do medical inventory control systems handle controlled substances?",
+      answer: "Medical inventory control systems handle controlled substances with: strict access controls, detailed audit trails, automated reporting for DEA compliance, lot/serial number tracking, usage documentation, and reconciliation requirements. This ensures compliance with controlled substance regulations and prevents diversion."
+    },
+    {
+      question: "Can medical inventory control systems track implantable devices?",
+      answer: "Yes, medical inventory control systems track implantable devices with: serial number tracking, patient assignment, lot number traceability, expiration dates, recall management, and complete audit trails. This is essential for patient safety, regulatory compliance, and product liability."
+    },
+    {
+      question: "How does medical inventory control help with patient billing?",
+      answer: "Medical inventory control helps with patient billing by: tracking supply usage per patient, linking supplies to procedures, providing itemized cost reports, ensuring accurate charge capture, and integrating with billing systems. This improves revenue capture and ensures patients are billed correctly."
+    },
+    {
+      question: "Can medical inventory control systems track temperature-sensitive supplies?",
+      answer: "Yes, medical inventory control systems can track temperature-sensitive supplies including: storage location (refrigerated, frozen, room temperature), temperature monitoring, expiration dates, and compliance requirements. This ensures supplies are stored properly and remain viable for patient use."
     }
   ];
 

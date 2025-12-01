@@ -98,7 +98,39 @@ export default function MobielVoorraadbeheer() {
     },
     {
       question: "Kan ik mijn team uitnodigen voor mobiel voorraadbeheer?",
-      answer: "Ja, je kunt onbeperkt teamleden uitnodigen. Iedereen krijgt toegang tot de mobiele app met eigen inloggegevens."
+      answer: "Ja, je kunt onbeperkt teamleden uitnodigen. Iedereen krijgt toegang tot de mobiele app met eigen inloggegevens en rollen. Je kunt permissies instellen zodat medewerkers alleen toegang hebben tot wat ze nodig hebben."
+    },
+    {
+      question: "Wat zijn de voordelen van mobiel voorraadbeheer?",
+      answer: "Mobiel voorraadbeheer biedt vele voordelen: werk overal waar je bent, scan barcodes direct ter plaatse, voer telrondes uit zonder papier, krijg real-time meldingen, werk samen met je team in real-time, en bespaar tijd door directe data-invoer. Dit verhoogt productiviteit met 40-60% en reduceert fouten met 90%."
+    },
+    {
+      question: "Welke smartphones zijn compatibel met mobiel voorraadbeheer?",
+      answer: "StockFlow's mobiele app werkt op alle moderne smartphones en tablets: iPhone (iOS 12+), Android telefoons (Android 8+), en iPads. De app is geoptimaliseerd voor verschillende schermformaten en werkt zowel in portret als landschapsmodus."
+    },
+    {
+      question: "Kan ik barcodes scannen zonder speciale scanner?",
+      answer: "Ja! StockFlow gebruikt de ingebouwde camera van je smartphone of tablet om barcodes te scannen. Geen dure hardware scanners nodig. De app herkent standaard barcodes (EAN, UPC, Code 128) en QR codes. Dit maakt het toevoegen en bijwerken van voorraad veel sneller en accurater."
+    },
+    {
+      question: "Hoe werkt offline synchronisatie in mobiel voorraadbeheer?",
+      answer: "Wanneer je offline werkt, worden alle wijzigingen lokaal opgeslagen op je apparaat. Zodra je weer internetverbinding hebt, synchroniseert de app automatisch alle data met de cloud. Dit betekent dat je nooit data verliest, zelfs als je tijdelijk geen internet hebt. Perfect voor magazijnen met slechte WiFi."
+    },
+    {
+      question: "Is mobiel voorraadbeheer geschikt voor grote magazijnen?",
+      answer: "Absoluut! Mobiel voorraadbeheer is ideaal voor grote magazijnen omdat medewerkers kunnen werken op de vloer zonder naar een computer te gaan. Barcode scanning versnelt processen, en real-time updates zorgen dat iedereen altijd de laatste informatie heeft. Dit is essentieel voor efficiënte magazijnoperaties."
+    },
+    {
+      question: "Kan ik foto's maken van producten met mobiel voorraadbeheer?",
+      answer: "Ja, StockFlow's mobiele app laat je foto's maken en direct koppelen aan producten. Dit is handig voor visuele identificatie, het documenteren van productcondities, en het maken van productcatalogi. Foto's worden automatisch geoptimaliseerd en opgeslagen in de cloud."
+    },
+    {
+      question: "Hoe snel kan ik voorraad bijwerken met mobiel voorraadbeheer?",
+      answer: "Met mobiel voorraadbeheer en barcode scanning kun je voorraad 5-10x sneller bijwerken dan handmatig. Een barcode scan neemt minder dan een seconde, terwijl handmatige invoer 10-30 seconden kan duren. Dit bespaart uren per week, vooral bij grote voorraden of regelmatige telrondes."
+    },
+    {
+      question: "Wat is het verschil tussen mobiel en desktop voorraadbeheer?",
+      answer: "Mobiel voorraadbeheer is optimaal voor: barcode scanning, telrondes, voorraadupdates op de vloer, en onderweg werken. Desktop is beter voor: uitgebreide rapportage, bulk operaties, en gedetailleerde analyses. StockFlow biedt beide - gebruik mobiel voor dagelijkse taken en desktop voor management en planning."
     }
   ];
 
@@ -124,7 +156,7 @@ export default function MobielVoorraadbeheer() {
     >
       <SEO
         title="Mobiel Voorraadbeheer 2025 - App & Barcode Scanning | StockFlow"
-        description="Mobiel voorraadbeheer met smartphone app. Barcode scanning, offline modus, real-time updates. Beheer voorraad onderweg. Start gratis vandaag."
+        description="Mobiel voorraadbeheer met smartphone app. Barcode scanning, offline modus, real-time updates. Beheer voorraad onderweg. Bespaar 40-60% tijd. Start gratis vandaag - geen creditcard vereist."
         keywords="mobiel voorraadbeheer, voorraadbeheer app, voorraadbeheer smartphone, voorraadbeheer tablet, mobiele voorraadbeheer software, voorraadbeheer mobiel, voorraadbeheer app downloaden, voorraadbeheer iOS, voorraadbeheer Android, voorraadbeheer offline, voorraadbeheer barcode scanning, voorraadbeheer realtime, voorraadbeheer team, voorraadbeheer onderweg"
         url="https://www.stockflow.be/mobiel-voorraadbeheer"
       />

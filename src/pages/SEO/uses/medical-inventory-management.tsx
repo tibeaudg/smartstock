@@ -69,6 +69,30 @@ export default function MedicalInventoryManagement() {
     {
       question: "How can healthcare facilities reduce medical supply waste?",
       answer: "Implement proper expiration tracking with FEFO rotation, use automated alerts for approaching expiration, conduct cycle counting to maintain accurate records, analyze usage patterns to optimize par levels, implement preference cards for surgical procedures, train staff on proper storage and handling, and use data analytics to identify waste patterns."
+    },
+    {
+      question: "What is the difference between medical inventory management and general inventory management?",
+      answer: "Medical inventory management has unique requirements: lot/serial number tracking for recalls, expiration date management (critical for patient safety), regulatory compliance (FDA, ISO 13485), sterile storage requirements, temperature-controlled storage tracking, patient-specific tracking for implants, and strict audit trails. General inventory systems lack these healthcare-specific features, making specialized medical inventory software essential."
+    },
+    {
+      question: "How do you set par levels for medical supplies?",
+      answer: "Par levels are minimum stock quantities needed to maintain operations. Calculate par levels using: average daily usage × lead time + safety stock. For critical items, add extra safety stock. Review and adjust monthly based on actual usage patterns. Modern medical inventory software automatically calculates and suggests optimal par levels based on historical data, helping prevent both stockouts and overstock."
+    },
+    {
+      question: "Can medical inventory software help with cost control?",
+      answer: "Yes, medical inventory software significantly helps with cost control by: reducing waste from expired products (saves 10-30% of supply costs), preventing overstocking of expensive supplies, optimizing par levels to reduce carrying costs, identifying usage patterns to negotiate better pricing, tracking costs per department/procedure, and providing analytics to identify cost-saving opportunities. Many facilities save 20-30% on supply costs."
+    },
+    {
+      question: "What is FEFO and why is it important in medical inventory?",
+      answer: "FEFO (First Expired, First Out) is a rotation method where items closest to expiration are used first. This is critical in healthcare to prevent expired products from being used on patients, which can cause serious harm. Medical inventory software automatically tracks expiration dates and alerts staff when items are approaching expiration, ensuring FEFO rotation and patient safety."
+    },
+    {
+      question: "How does medical inventory management improve patient safety?",
+      answer: "Medical inventory management improves patient safety by: ensuring critical supplies are always available, preventing use of expired products through automated alerts, enabling rapid product recalls through lot/serial tracking, maintaining proper storage conditions (temperature, sterility), providing complete traceability from receipt to patient use, and ensuring regulatory compliance. These systems are essential for patient safety in modern healthcare."
+    },
+    {
+      question: "What features should medical inventory management software have?",
+      answer: "Essential features include: lot/serial number tracking, expiration date management with automated alerts, barcode/QR code scanning, multi-location support, par level management, automated reorder points, regulatory compliance tools (FDA, ISO), audit trails, integration with EMR/EHR systems, temperature monitoring, sterile storage tracking, usage analytics, and recall management. StockFlow provides all these features in an affordable, user-friendly platform."
     }
   ];
 
@@ -349,7 +373,7 @@ export default function MedicalInventoryManagement() {
     >
       <SEO
         title="Medical Inventory Management 2025 - Healthcare Software | StockFlow"
-        description="Complete medical inventory management for healthcare facilities. Track supplies, pharmaceuticals, equipment with expiration dates, lot/serial numbers, FDA compliance. Reduce waste by 30%. Start free trial."
+        description="Complete medical inventory management for hospitals, clinics & pharmacies. Track supplies, pharmaceuticals, equipment with expiration dates, lot/serial numbers, FDA compliance. Reduce waste by 30%, prevent stockouts. Start free - no credit card required."
         keywords="medical inventory management, healthcare inventory software, hospital inventory system, pharmacy inventory management, medical supply tracking, expiration date tracking, lot number tracking, medical device traceability, FDA compliance, ISO 13485, healthcare supply chain"
         url="https://www.stockflow.be/medical-inventory-management"
       />

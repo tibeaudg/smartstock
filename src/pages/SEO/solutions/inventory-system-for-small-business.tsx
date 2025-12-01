@@ -39,6 +39,34 @@ export default function InventorySystemForSmallBusiness() {
     {
       question: "How long does it take to set up an inventory system for small business?",
       answer: "Setting up an inventory system for small business can take as little as 5 minutes with StockFlow. Simply create an account, add your products, and start tracking. No complex installations or training required. The intuitive interface makes it easy for small business owners to get started quickly."
+    },
+    {
+      question: "What is the ROI of an inventory system for small business?",
+      answer: "The ROI of an inventory system for small business is typically very high. Small businesses see: 70% time savings on inventory tasks, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and improved cash flow. Most small businesses see ROI within the first month."
+    },
+    {
+      question: "Can small businesses use inventory systems without technical knowledge?",
+      answer: "Yes, modern inventory systems like StockFlow are designed for non-technical users. The interface is intuitive, setup is straightforward, and no programming knowledge is required. Small business owners can start using the system immediately with minimal training. Support is available if needed."
+    },
+    {
+      question: "How does an inventory system help small businesses compete with larger companies?",
+      answer: "An inventory system levels the playing field by giving small businesses enterprise-level tools: real-time visibility, automated processes, data-driven insights, and professional inventory management. This helps small businesses operate more efficiently, reduce costs, and provide better customer service - all at an affordable price."
+    },
+    {
+      question: "Is an inventory system worth it for a very small business with few products?",
+      answer: "Yes, even businesses with just 10-20 products benefit from an inventory system. It prevents stockouts, saves time on manual tracking, provides professional reporting, and scales as you grow. StockFlow's free plan makes it accessible for the smallest businesses, and you only pay more as you grow."
+    },
+    {
+      question: "Can small businesses integrate inventory systems with their accounting software?",
+      answer: "Yes, most modern inventory systems like StockFlow integrate with popular accounting software including QuickBooks, Xero, and others. This eliminates double data entry, ensures accurate financial records, and saves time. Integration is typically straightforward and doesn't require technical expertise."
+    },
+    {
+      question: "What happens if a small business outgrows its inventory system?",
+      answer: "Modern inventory systems like StockFlow are designed to scale. As your business grows, you can upgrade to plans with more products, advanced features, and additional users. There's no need to switch systems - StockFlow grows with you from startup to enterprise level."
+    },
+    {
+      question: "How does an inventory system help small businesses with cash flow?",
+      answer: "An inventory system improves cash flow by: preventing overstocking (which ties up capital), optimizing stock levels to reduce carrying costs, identifying slow-moving inventory for clearance, preventing stockouts (which lose sales), and providing data for better purchasing decisions. This can free up 20-30% of capital tied in inventory."
     }
   ];
 
@@ -100,7 +128,7 @@ export default function InventorySystemForSmallBusiness() {
     >
       <SEO
         title="Inventory System for Small Business 2025 - Free Plan Available | StockFlow"
-        description="Best inventory system for small business. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Easy setup, no training needed. Start free trial - no credit card required."
+        description="Best inventory system for small business. Free plan for up to 30 products. Real-time tracking, barcode scanning, automated alerts. Save 70% time, 25% costs. Start free - no credit card required."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-system-for-small-business"
       />

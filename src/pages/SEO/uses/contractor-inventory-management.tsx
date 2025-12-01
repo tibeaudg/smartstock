@@ -42,6 +42,26 @@ export default function ContractorInventoryManagement() {
     {
       question: "How do contractors prevent tool theft with inventory management?",
       answer: "Contractor inventory management software helps prevent tool theft by maintaining detailed records of who checked out which tools, when they were checked out, and when they should be returned. Regular inventory audits, tool checkout tracking, and automated reminders help ensure accountability and reduce loss."
+    },
+    {
+      question: "What is the ROI of contractor inventory management?",
+      answer: "The ROI is typically very high. Contractors see: 60% reduction in tool and equipment loss, 10-15 hours saved per week on inventory tasks, 20-30% improvement in project profitability, prevention of project delays, and better cost control. Most contractors see ROI within 3-6 months."
+    },
+    {
+      question: "How does contractor inventory management improve project profitability?",
+      answer: "Contractor inventory management improves profitability by: tracking material costs per project, preventing over-ordering, identifying cost overruns early, optimizing tool utilization, reducing equipment rental costs, and ensuring accurate project billing. This improves project margins by 15-25%."
+    },
+    {
+      question: "Can contractor inventory systems track equipment maintenance?",
+      answer: "Yes, contractor inventory systems track equipment maintenance including: maintenance schedules, service history, warranty information, repair costs, and maintenance reminders. This extends equipment lifespan, prevents breakdowns, and reduces maintenance costs."
+    },
+    {
+      question: "How does contractor inventory management handle material transfers between job sites?",
+      answer: "Contractor inventory management handles transfers by: scanning materials at the source job site, recording transfer details (quantity, destination, date), updating inventory at both locations automatically, tracking material movement history, and providing real-time visibility. This ensures materials are properly tracked when moved."
+    },
+    {
+      question: "Can contractor inventory systems integrate with accounting software?",
+      answer: "Yes, contractor inventory systems integrate with accounting software through APIs. This enables: automatic cost allocation to projects, financial reporting, budget tracking, and seamless data flow between inventory and accounting. StockFlow offers API access for accounting integration."
     }
   ];
 

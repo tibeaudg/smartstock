@@ -65,6 +65,26 @@ export default function EducationInventoryManagement() {
     {
       question: "How does inventory management help with annual audits?",
       answer: "Generate comprehensive reports showing all assets, their locations, purchase dates, values, and custodians. Track all transactions (purchases, distributions, returns, disposals) with timestamps and user records. Quickly produce depreciation schedules and asset valuations. This makes annual audits fast and demonstrates proper stewardship of funds."
+    },
+    {
+      question: "What is the ROI of education inventory management?",
+      answer: "The ROI is typically very high. Schools see: 60-80% reduction in lost textbooks and devices, 20-30% reduction in duplicate purchases, improved budget allocation, faster annual audits, and better resource utilization. Most schools see ROI within 6-12 months through loss prevention and cost savings."
+    },
+    {
+      question: "How does education inventory management prevent device loss?",
+      answer: "Education inventory management prevents loss by: tracking who checked out which devices, setting up automated return reminders, maintaining complete audit trails, conducting regular audits, and providing accountability. This reduces device loss from 15-20% to under 2%."
+    },
+    {
+      question: "Can education inventory systems track software licenses?",
+      answer: "Yes, education inventory systems can track software licenses including: license keys, expiration dates, number of seats, assigned users, and renewal dates. This helps schools manage software compliance and optimize license costs."
+    },
+    {
+      question: "How does education inventory management help with budget planning?",
+      answer: "Education inventory management helps with budget planning by: tracking spending by department, analyzing usage patterns, identifying underutilized assets, forecasting future needs, and providing cost reports. This enables data-driven budget decisions and optimal resource allocation."
+    },
+    {
+      question: "Can education inventory systems handle asset disposal?",
+      answer: "Yes, education inventory systems handle asset disposal by: tracking disposal dates, reasons for disposal, disposal methods, and maintaining records for audits. This ensures proper asset lifecycle management and compliance with disposal regulations."
     }
   ];
 

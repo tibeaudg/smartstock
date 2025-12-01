@@ -62,12 +62,52 @@ const faqData = [
     answer:
       'Nee. De mobiele apps van StockFlow werken met de camera van je smartphone. Voor intensief gebruik kun je optioneel Bluetooth scanners koppelen.'
   },
-  {
-    question: 'Wat als mijn team liever stap voor stap automatiseert?',
-    answer:
-      'Geen probleem. Je activeert functies wanneer je er klaar voor bent. Start bijvoorbeeld met automatische alerts en voeg later geavanceerde workflows toe.'
-  }
-];
+    {
+      question: 'Wat als mijn team liever stap voor stap automatiseert?',
+      answer:
+        'Geen probleem. Je activeert functies wanneer je er klaar voor bent. Start bijvoorbeeld met automatische alerts en voeg later geavanceerde workflows toe. StockFlow is modulair opgebouwd, zodat je kunt groeien in je eigen tempo.'
+    },
+    {
+      question: 'Wat zijn de voordelen van geautomatiseerd voorraadbeheer?',
+      answer: 'Geautomatiseerd voorraadbeheer biedt vele voordelen: 70% tijdsbesparing op administratie, 25% kostenreductie door betere planning, 90% minder fouten door automatisering, real-time inzicht altijd en overal, automatische bestelmeldingen, en betere klanttevredenheid door minder stockouts. De ROI is meestal binnen de eerste maand zichtbaar.'
+    },
+    {
+      question: 'Hoe begin ik met voorraadbeheer automatiseren?',
+      answer: 'Begin met deze stappen: 1) Analyseer je huidige processen en identificeer bottlenecks, 2) Kies gebruiksvriendelijke software zoals StockFlow, 3) Importeer je bestaande voorraaddata, 4) Stel automatische meldingen in, 5) Train je team. Start klein met één proces en breid geleidelijk uit. StockFlow biedt een gratis plan om te beginnen.'
+    },
+    {
+      question: 'Welke processen kan ik automatiseren in voorraadbeheer?',
+      answer: 'Je kunt automatiseren: voorraadupdates bij verkopen/inkopen, bestelmeldingen bij lage voorraad, voorraadsynchronisatie tussen kanalen, rapportage generatie, cycle counting planning, leverancierscommunicatie, en data-import/export. Moderne software zoals StockFlow biedt al deze automatiseringen in één platform.'
+    },
+    {
+      question: 'Hoeveel tijd bespaar ik met geautomatiseerd voorraadbeheer?',
+      answer: 'Bedrijven besparen gemiddeld 10-15 uur per week door automatisering. Dit komt door: geen handmatige tellingen meer, automatische voorraadupdates, geautomatiseerde bestellingen, en real-time synchronisatie. Veel bedrijven zien 70% tijdsbesparing op voorraadadministratie, waardoor ze kunnen focussen op groei.'
+    },
+    {
+      question: 'Is voorraadbeheer automatiseren duur?',
+      answer: 'Nee, automatiseren hoeft niet duur te zijn. StockFlow biedt een volledig gratis plan voor tot 30 producten, perfect om te starten. Premium plannen beginnen vanaf €29 per maand. De besparingen (tijd en kosten) zijn meestal veel hoger dan de investering. De ROI is meestal binnen de eerste maand zichtbaar.'
+    },
+    {
+      question: 'Kan ik voorraadbeheer automatiseren zonder technische kennis?',
+      answer: 'Ja! Moderne voorraadbeheer software zoals StockFlow is speciaal ontworpen voor niet-technische gebruikers. De interface is intuïtief, setup is eenvoudig, en je hebt geen programmeerkennis nodig. De meeste bedrijven zijn binnen 1-2 dagen operationeel zonder IT-ondersteuning.'
+    },
+    {
+      question: 'Wat is het verschil tussen handmatig en geautomatiseerd voorraadbeheer?',
+      answer: 'Handmatig voorraadbeheer betekent: Excel bijhouden, handmatig tellen, vergeten bestellingen, en foutgevoelige processen. Geautomatiseerd voorraadbeheer betekent: real-time tracking, automatische updates, slimme bestelmeldingen, en 90% minder fouten. Automatisering bespaart tijd, geld en voorkomt problemen.'
+    },
+    {
+      question: 'Hoe automatiseer ik bestellingen in voorraadbeheer?',
+      answer: 'Automatiseer bestellingen door: bestelpunten in te stellen (minimum voorraadniveaus), automatische meldingen te activeren, leveranciers te koppelen, en waar mogelijk automatische bestelsuggesties te gebruiken. StockFlow berekent optimale bestelpunten op basis van historische data en stuurt automatische meldingen wanneer je moet bestellen.'
+    },
+    {
+      question: 'Kan ik voorraadbeheer automatiseren met Excel?',
+      answer: 'Excel heeft beperkte automatisering mogelijkheden. Je kunt formules gebruiken, maar echte automatisering (real-time updates, automatische meldingen, multi-user toegang) vereist gespecialiseerde software. StockFlow biedt echte automatisering die Excel niet kan bieden, en importeert je bestaande Excel-data eenvoudig.'
+    },
+    {
+      question: 'Wat zijn de risico\'s van niet-automatiseren?',
+      answer: 'Zonder automatisering loop je risico op: stockouts door vergeten bestellingen, overstock door slechte planning, handmatige invoerfouten, tijdverspilling op administratie, en verouderde informatie. Deze problemen kosten bedrijven gemiddeld 10-20% van hun voorraadwaarde per jaar. Automatisering voorkomt deze risico\'s.'
+    }
+  ];
 
 export default function VoorraadbeheerAutomatiseren5Stappen() {
   usePageRefresh();
@@ -81,7 +121,7 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
     >
       <SEO
         title="Voorraadbeheer Automatiseren in 5 Stappen 2025 | StockFlow"
-        description="Leer hoe je voorraadbeheer automatiseert in 5 eenvoudige stappen. Complete gids met praktische tips. Bespaar tijd en voorkom fouten. Start gratis vandaag."
+        description="Leer hoe je voorraadbeheer automatiseert in 5 eenvoudige stappen. Complete gids met praktische tips. Bespaar 70% tijd, 25% kosten. Start gratis vandaag - geen creditcard vereist."
         keywords="voorraadbeheer automatiseren, voorraad automatiseren stappen, voorraad software workflow, stockflow automatisering"
         url="https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
         locale="nl"

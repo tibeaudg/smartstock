@@ -27,6 +27,42 @@ export default function VoorraadbeheerTips() {
     {
       question: "Hoe voorkom ik fouten in voorraadbeheer?",
       answer: "Door gebruik te maken van digitale tools, duidelijke procedures en regelmatige controles kun je veelvoorkomende fouten voorkomen en je proces optimaliseren."
+    },
+    {
+      question: "Wat zijn de beste voorraadbeheer tips voor kleine bedrijven?",
+      answer: "De beste tips voor kleine bedrijven: 1) Start met gratis software zoals StockFlow, 2) Automatiseer bestelmeldingen, 3) Gebruik barcode scanning voor nauwkeurigheid, 4) Stel realistische bestelpunten in, 5) Voer regelmatig cycle counts uit, 6) Analyseer verkoopdata om trends te spotten, 7) Houd safety stock aan voor populaire producten. Deze tips helpen je om 70% tijd te besparen en 25% kosten te reduceren."
+    },
+    {
+      question: "Hoe stel ik optimale bestelpunten in?",
+      answer: "Optimale bestelpunten bereken je door te kijken naar: gemiddeld dagelijks verbruik, leverancier levertijd, en gewenste safety stock. Moderne voorraadbeheer software zoals StockFlow berekent dit automatisch op basis van historische data. Als richtlijn: bestelpunt = (gemiddeld dagelijks verbruik × levertijd) + safety stock. Dit voorkomt zowel stockouts als overstock."
+    },
+    {
+      question: "Wat is het ABC-analyse systeem voor voorraadbeheer?",
+      answer: "ABC-analyse verdeelt je voorraad in drie categorieën: A-items (20% van producten, 80% van waarde) - hoogste prioriteit, B-items (30% producten, 15% waarde) - gemiddelde prioriteit, en C-items (50% producten, 5% waarde) - lage prioriteit. Focus je monitoring en bestellingen op A-items voor maximale impact. Dit is een van de meest effectieve voorraadbeheer tips voor efficiëntie."
+    },
+    {
+      question: "Hoe kan ik voorraadkosten verlagen?",
+      answer: "Verlaag voorraadkosten door: 1) Voorkom overstock door betere vraagvoorspelling, 2) Onderhandel betere leveranciersvoorwaarden, 3) Optimaliseer bestelfrequenties, 4) Identificeer en verkoop dead stock, 5) Gebruik just-in-time principes waar mogelijk, 6) Analyseer en elimineer verspilling. Met goede voorraadbeheer software kun je deze kosten met 20-30% verlagen."
+    },
+    {
+      question: "Wat zijn de belangrijkste voorraadbeheer KPI's om te monitoren?",
+      answer: "Belangrijke KPI's zijn: voorraadomzetratio (hoe vaak je voorraad verkoopt), days sales in inventory (hoe lang voorraad blijft liggen), stockout percentage, overstock percentage, voorraadnauwkeurigheid, en carrying costs. Monitor deze maandelijks en stel doelen. Goede voorraadbeheer software geeft je realtime inzicht in al deze metrics."
+    },
+    {
+      question: "Hoe voorkom ik stockouts zonder overstock?",
+      answer: "Voorkom stockouts zonder overstock door: 1) Stel accurate bestelpunten in op basis van data, 2) Houd safety stock aan voor variabele vraag, 3) Monitor verkooptrends en seizoenspatronen, 4) Gebruik automatische bestelmeldingen, 5) Werk met betrouwbare leveranciers, 6) Voer regelmatig cycle counts uit voor nauwkeurigheid. Moderne software helpt je de perfecte balans te vinden."
+    },
+    {
+      question: "Wat is het verschil tussen voorraadbeheer en magazijnbeheer?",
+      answer: "Voorraadbeheer focust op 'wat en hoeveel' je hebt - het bijhouden van voorraadniveaus, bestellingen en leveranciers. Magazijnbeheer is breder en omvat ook fysieke operaties zoals locatiebeheer, picking, packing en shipping. Veel moderne software zoals StockFlow combineert beide voor complete controle. Voor kleine bedrijven is voorraadbeheer vaak voldoende."
+    },
+    {
+      question: "Hoe vaak moet ik mijn voorraad tellen?",
+      answer: "Frequentie hangt af van je bedrijfstype. Voor kleine bedrijven: maandelijks of kwartaal cycle counts. Voor retail: wekelijks voor A-items, maandelijks voor B-items. Voor horeca: dagelijks voor verse producten, wekelijks voor droge voorraad. Moderne software met barcode scanning maakt tellen veel sneller en accurater. Automatische tracking reduceert de noodzaak voor handmatige tellingen."
+    },
+    {
+      question: "Kan ik voorraadbeheer tips toepassen zonder software?",
+      answer: "Basis tips kun je toepassen zonder software: houd eenvoudige spreadsheets bij, stel bestelpunten in, voer regelmatig tellingen uit. Echter, voor echte efficiëntie en tijdsbesparing is software essentieel. Gratis software zoals StockFlow maakt alle geavanceerde tips toegankelijk zonder grote investering. De ROI is meestal binnen de eerste maand zichtbaar."
     }
   ];
 
@@ -44,7 +80,7 @@ export default function VoorraadbeheerTips() {
     >
       <SEO
         title="Voorraadbeheer Tips 2025 - 10 Expert Strategieën | StockFlow"
-        description="Ontdek 10 bewezen voorraadbeheer tips voor KMO's. Bespaar 70% tijd, voorkom tekorten, optimaliseer voorraad. Gratis tips van experts. Start gratis vandaag."
+        description="Ontdek 15 bewezen voorraadbeheer tips voor KMO's. Bespaar 70% tijd, voorkom tekorten, verlaag kosten met 25%. Praktische strategieën die direct werken. Start gratis vandaag - geen creditcard vereist."
         keywords="voorraadbeheer tips, stockbeheer tips, voorraadbeheer best practices, voorraadbeheer strategieën, voorraad optimaliseren, KMO voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, magazijnbeheer tips, inventarisatie tips, voorraadbeheer optimalisatie, efficiënt voorraadbeheer, voorraadbeheer kosten besparen, stockbeheer software, tips voor stockbeheer, voorraadbeheer best practices 2025"
         url="https://www.stockflow.be/voorraadbeheer-tips"
         modifiedTime={new Date().toISOString()}

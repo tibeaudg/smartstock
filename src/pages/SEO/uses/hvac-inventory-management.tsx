@@ -57,6 +57,26 @@ export default function HvacInventoryManagement() {
     {
       question: "Can HVAC inventory systems integrate with service scheduling?",
       answer: "Yes, modern HVAC inventory systems integrate with service scheduling software. This enables: automatic parts reservation when jobs are scheduled, parts availability checks before scheduling, parts preparation for upcoming jobs, and service history tracking linked to inventory usage. StockFlow offers API access for integration with popular HVAC service management platforms."
+    },
+    {
+      question: "What is the ROI of HVAC inventory management?",
+      answer: "The ROI is typically very high. HVAC contractors see: 30-40% reduction in service callbacks, 15-25% reduction in parts inventory costs, improved first-visit completion rates, and better customer satisfaction. Most contractors see ROI within 3-6 months through reduced callbacks and optimized parts purchasing."
+    },
+    {
+      question: "How does HVAC inventory management prevent service callbacks?",
+      answer: "HVAC inventory management prevents callbacks by: ensuring technicians have the right parts on the first visit, tracking parts availability in real-time, enabling quick parts ordering from job sites, and maintaining accurate vehicle stock levels. This reduces callbacks by 30-40%."
+    },
+    {
+      question: "Can HVAC inventory systems track warranty information?",
+      answer: "Yes, HVAC inventory systems track warranty information for installed equipment including: warranty expiration dates, warranty terms, service history, and warranty claim tracking. This helps contractors manage warranties effectively and ensure proper service coverage."
+    },
+    {
+      question: "How does HVAC inventory management handle emergency parts needs?",
+      answer: "HVAC inventory management handles emergencies by: providing real-time visibility into parts availability across all vehicles and warehouses, enabling quick parts transfers between vehicles, supporting urgent parts ordering, and tracking emergency parts usage. This ensures urgent repairs can be completed quickly."
+    },
+    {
+      question: "Can HVAC inventory systems track refrigerant usage?",
+      answer: "Yes, HVAC inventory systems can track refrigerant usage including: refrigerant type, quantity, lot numbers, expiration dates, and compliance requirements. This is essential for environmental compliance and proper refrigerant management."
     }
   ];
 

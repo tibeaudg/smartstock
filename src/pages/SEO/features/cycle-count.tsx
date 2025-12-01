@@ -42,6 +42,30 @@ export default function CycleCount() {
     {
       question: "What are the best practices for cycle count?",
       answer: "Best practices for cycle count include: counting during off-peak hours, using barcode scanners for accuracy, counting items in their storage locations, documenting discrepancies immediately, analyzing root causes of errors, prioritizing high-value items, maintaining consistent counting schedules, and using inventory management software for automation."
+    },
+    {
+      question: "What is the ROI of cycle counting?",
+      answer: "The ROI is typically very high. Businesses see: 20-30% improvement in inventory accuracy, prevention of stockouts and overstock, reduced carrying costs, improved cash flow, and better decision-making. Most businesses see ROI within 3-6 months through improved accuracy and reduced inventory discrepancies."
+    },
+    {
+      question: "How does cycle count differ from ABC analysis?",
+      answer: "ABC analysis categorizes items by value (A=high, B=medium, C=low). Cycle count uses this categorization to determine counting frequency - A items counted more frequently than C items. ABC analysis helps prioritize which items to count, while cycle count is the actual counting process. StockFlow combines both for optimal inventory management."
+    },
+    {
+      question: "Can cycle count be automated?",
+      answer: "Yes, inventory management software like StockFlow automates cycle counting by: scheduling counts automatically, generating count lists, tracking count progress, comparing counted quantities to system records, identifying discrepancies, and updating inventory records. This makes cycle counting more efficient and less disruptive."
+    },
+    {
+      question: "What causes inventory discrepancies that cycle count identifies?",
+      answer: "Common causes include: theft or loss, data entry errors, receiving errors, shipping errors, damage not recorded, misplaced items, and system errors. Cycle counting helps identify these issues early before they become major problems. Regular counting prevents small discrepancies from accumulating into large errors."
+    },
+    {
+      question: "How do you calculate cycle count accuracy?",
+      answer: "Cycle count accuracy is calculated as: (Number of items counted correctly / Total items counted) × 100. For example, if you count 100 items and 95 match system records, accuracy is 95%. Target accuracy is typically 95-99%. StockFlow automatically calculates and reports cycle count accuracy."
+    },
+    {
+      question: "Can cycle count replace full physical inventory?",
+      answer: "For many businesses, yes. Regular cycle counting maintains accuracy year-round, eliminating the need for disruptive full physical counts. However, some businesses still do annual full counts for compliance or verification. The best approach combines regular cycle counting with periodic full counts for validation."
     }
   ];
 

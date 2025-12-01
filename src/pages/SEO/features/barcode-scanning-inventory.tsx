@@ -60,6 +60,34 @@ const BarcodeScanningInventory = () => {
     {
       question: 'Is barcode scanning accurate for inventory counts?',
       answer: 'Barcode scanning is highly accurate - significantly more accurate than manual counting. It reduces human error, speeds up inventory operations, and provides real-time stock level updates.'
+    },
+    {
+      question: 'What is the ROI of barcode scanning for inventory?',
+      answer: 'The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 99.9% accuracy (vs 85-90% manual), 90% reduction in errors, prevention of stockouts, and 15-20% revenue growth from better availability. Most businesses see ROI within the first month through efficiency gains.'
+    },
+    {
+      question: 'Can barcode scanning work offline?',
+      answer: 'Yes, StockFlow\'s mobile barcode scanning works completely offline. You can scan barcodes, update inventory, and make changes offline. Data is stored locally and automatically syncs when you reconnect to the internet. This ensures you can work even in areas with poor connectivity.'
+    },
+    {
+      question: 'Do I need special hardware for barcode scanning?',
+      answer: 'No, StockFlow works with any smartphone camera to scan barcodes. No additional hardware is required. However, if you prefer, you can use dedicated barcode scanners that connect via USB or Bluetooth. StockFlow supports both smartphone cameras and dedicated scanners.'
+    },
+    {
+      question: 'How does barcode scanning improve inventory accuracy?',
+      answer: 'Barcode scanning improves accuracy by: eliminating manual data entry errors (99.9% accuracy vs 85-90% manual), providing instant product identification, preventing duplicate entries, ensuring correct product matching, and maintaining complete audit trails. This reduces errors from 88% (manual) to less than 1% (automated).'
+    },
+    {
+      question: 'Can I scan multiple items at once with barcode scanning?',
+      answer: 'Yes, StockFlow supports batch scanning where you can scan multiple items in sequence. The system automatically updates quantities, tracks all scanned items, and provides a summary of the batch. This is especially useful for receiving shipments, cycle counts, and inventory audits.'
+    },
+    {
+      question: 'How fast is barcode scanning compared to manual entry?',
+      answer: 'Barcode scanning is 5-10x faster than manual entry. Scanning a barcode takes less than 1 second, while manual entry can take 10-30 seconds per item. For high-volume operations, this translates to hours saved per day and significantly improved productivity.'
+    },
+    {
+      question: 'Can barcode scanning integrate with other systems?',
+      answer: 'Yes, barcode scanning data can integrate with accounting systems, e-commerce platforms, ERP systems, and other business tools. StockFlow offers API access and pre-built integrations for seamless data flow between systems.'
     }
   ];
 

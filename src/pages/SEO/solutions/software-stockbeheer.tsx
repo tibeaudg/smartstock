@@ -26,7 +26,39 @@ export default function SoftwareStockbeheer() {
     },
     {
       question: "Kan ik software stockbeheer integreren met mijn bestaande systemen?",
-      answer: "Ja, moderne software stockbeheer zoals StockFlow kan vaak geÃ¯ntegreerd worden met boekhoudsoftware, webshops en andere bedrijfssystemen voor een naadloze workflow."
+      answer: "Ja, moderne software stockbeheer zoals StockFlow kan vaak geïntegreerd worden met boekhoudsoftware, webshops en andere bedrijfssystemen voor een naadloze workflow. Dit bespaart tijd en voorkomt dubbele invoer."
+    },
+    {
+      question: "Wat zijn de belangrijkste functies van software stockbeheer?",
+      answer: "Belangrijke functies zijn: real-time voorraadtracking, barcode scanning voor nauwkeurigheid, automatische bestelmeldingen bij lage voorraad, multi-locatie ondersteuning, mobiele app voor toegang onderweg, rapportage en analytics, integratiemogelijkheden met webshops en boekhouding, en team samenwerking. StockFlow biedt al deze functies in een gebruiksvriendelijk pakket."
+    },
+    {
+      question: "Hoeveel kost software stockbeheer per maand?",
+      answer: "Kosten variëren per aanbieder. StockFlow biedt een volledig gratis plan voor tot 30 producten. Premium plannen beginnen vanaf €29 per maand voor onbeperkte producten en geavanceerde functies. Dit is veel goedkoper dan traditionele ERP systemen die vaak €100-500+ per maand kosten."
+    },
+    {
+      question: "Kan ik software stockbeheer gebruiken op mijn mobiele telefoon?",
+      answer: "Ja, de meeste moderne software stockbeheer zoals StockFlow biedt mobiele apps voor iOS en Android. Hiermee kun je voorraad tellen met barcode scanning, bestellingen plaatsen, voorraadniveaus bekijken en meldingen ontvangen - allemaal vanaf je smartphone of tablet."
+    },
+    {
+      question: "Is software stockbeheer geschikt voor kleine bedrijven?",
+      answer: "Absoluut! Moderne software stockbeheer zoals StockFlow is speciaal ontworpen voor kleine bedrijven en KMO's. Gratis plannen maken het toegankelijk, en de software schaalt mee met je groei. Veel kleine bedrijven besparen 10-15 uur per week en honderden euro's per maand."
+    },
+    {
+      question: "Hoe voorkom ik fouten met software stockbeheer?",
+      answer: "Software stockbeheer voorkomt fouten door: automatische voorraadupdates (geen handmatige invoer), barcode scanning voor 99.9% nauwkeurigheid, real-time synchronisatie tussen alle systemen, automatische validatie van data, en duidelijke workflows. Dit reduceert fouten met 90% vergeleken met handmatige methodes."
+    },
+    {
+      question: "Wat is het verschil tussen software stockbeheer en magazijnbeheer software?",
+      answer: "Software stockbeheer richt zich op het beheren van voorraadniveaus, bestellingen en leveranciers. Magazijnbeheer software is breder en omvat ook fysieke magazijnoperaties zoals locatiebeheer, picking en shipping. Veel moderne software zoals StockFlow combineert beide functionaliteiten."
+    },
+    {
+      question: "Hoe lang duurt het om software stockbeheer te implementeren?",
+      answer: "Met gebruiksvriendelijke software zoals StockFlow kun je binnen 1-2 dagen volledig operationeel zijn. Je importeert je producten, configureert basis instellingen en traint je team. Geen lange implementatietrajecten of dure consultants nodig."
+    },
+    {
+      question: "Is software stockbeheer veilig voor mijn data?",
+      answer: "Ja, moderne cloud-based software stockbeheer zoals StockFlow gebruikt enterprise-grade beveiliging met encryptie, regelmatige backups en GDPR compliance. Je data is veiliger dan op lokale servers omdat professionele datacenters betere beveiliging en monitoring hebben."
     }
   ];
 

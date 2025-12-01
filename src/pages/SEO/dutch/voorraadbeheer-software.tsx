@@ -54,6 +54,26 @@ export default function VoorraadbeheerSoftware() {
     {
       question: "Kan ik automatisch voorraad laten bestellen?",
       answer: "Ja, goede voorraadbeheer software kan je waarschuwen bij lage voorraad en zelfs automatisch bestelsuggesties doen. Dit voorkomt dat je producten uitverkocht raakt en optimaliseert je voorraadniveaus."
+    },
+    {
+      question: "Wat is het verschil tussen voorraadbeheer software en ERP software?",
+      answer: "Voorraadbeheer software focust specifiek op het beheren van voorraad, bestellingen en leveranciers. ERP software is een breder systeem dat ook boekhouding, HR, CRM en andere bedrijfsprocessen omvat. Voor veel KMO's is gespecialiseerde voorraadbeheer software zoals StockFlow voldoende en veel gebruiksvriendelijker dan complexe ERP systemen."
+    },
+    {
+      question: "Hoe veilig is mijn data in voorraadbeheer software?",
+      answer: "Moderne cloud-based voorraadbeheer software zoals StockFlow gebruikt enterprise-grade beveiliging met encryptie, regelmatige backups en GDPR compliance. Je data is veiliger dan op lokale servers omdat professionele datacenters betere beveiliging en monitoring hebben. Alle data wordt dagelijks geback-upt en je hebt altijd toegang tot je informatie."
+    },
+    {
+      question: "Kan ik voorraadbeheer software gebruiken op mijn mobiele telefoon?",
+      answer: "Ja, de meeste moderne voorraadbeheer software zoals StockFlow biedt mobiele apps voor iOS en Android. Hiermee kun je voorraad tellen met barcode scanning, bestellingen plaatsen, voorraadniveaus bekijken en meldingen ontvangen - allemaal vanaf je smartphone of tablet. Perfect voor magazijnmedewerkers en managers die onderweg zijn."
+    },
+    {
+      question: "Wat is de beste voorraadbeheer software voor webshops?",
+      answer: "De beste voorraadbeheer software voor webshops biedt real-time synchronisatie met je webshop platform, multi-channel ondersteuning, automatische voorraadupdates bij verkopen, en integratie met populaire platforms zoals Shopify, WooCommerce en Magento. StockFlow biedt deze integraties en helpt webshops om nooit meer producten te verkopen die niet op voorraad zijn."
+    },
+    {
+      question: "Hoeveel kost voorraadbeheer software per maand?",
+      answer: "Kosten variëren per aanbieder. StockFlow biedt een volledig gratis plan voor tot 30 producten. Premium plannen beginnen vanaf €29 per maand voor onbeperkte producten en geavanceerde functies. Dit is veel goedkoper dan traditionele ERP systemen die vaak €100-500+ per maand kosten. De meeste bedrijven besparen meer dan ze uitgeven door betere voorraadoptimalisatie."
     }
   ];
 
@@ -152,8 +172,8 @@ export default function VoorraadbeheerSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Voorraadbeheer Software 2025 - Gratis Plan | StockFlow"
-        description="Beste voorraadbeheer software voor KMO's. Gratis plan tot 30 producten, real-time tracking, barcode scanning, automatische meldingen. Start gratis vandaag."
+        title="Voorraadbeheer Software 2025 - Gratis Plan & Real-time Tracking | StockFlow"
+        description="Beste voorraadbeheer software voor KMO's en webshops. Gratis plan tot 30 producten. Real-time tracking, barcode scanning, automatische bestelmeldingen. Bespaar 70% tijd op voorraadbeheer. Start gratis vandaag - geen creditcard vereist."
         keywords="stockbeheer programma, voorraadbeheer programma, voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software, programma voor voorraadbeheer, stockbeheer programma gratis"
         url="https://www.stockflow.be/voorraadbeheer-software"
         locale="nl"

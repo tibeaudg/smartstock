@@ -57,6 +57,26 @@ export default function ShopifyPlusWmsIntegration() {
     {
       question: "What happens if the WMS integration goes offline?",
       answer: "Modern WMS systems handle offline scenarios gracefully. StockFlow stores order data locally and syncs when connection is restored. Inventory levels are cached to prevent overselling. Orders continue processing in the WMS even if Shopify connection is temporarily lost. Automatic retry mechanisms ensure data syncs once connectivity is restored."
+    },
+    {
+      question: "What is the ROI of Shopify Plus WMS integration?",
+      answer: "The ROI is typically very high. E-commerce businesses see: elimination of overselling (which can cost 20% of lost sales), 20+ hours saved per week on manual inventory updates, 15-25% reduction in carrying costs, 99%+ inventory accuracy, and ability to scale to high volumes without additional staff. Most businesses see ROI within the first month."
+    },
+    {
+      question: "Can Shopify Plus WMS integration handle multiple warehouses?",
+      answer: "Yes, modern WMS integrations like StockFlow support multiple warehouses. You can route orders to the nearest warehouse, track inventory across all locations, transfer stock between warehouses, and set location-specific reorder points. This is essential for high-volume Shopify Plus stores with multiple fulfillment centers."
+    },
+    {
+      question: "Does Shopify Plus WMS integration work with Shopify (non-Plus)?",
+      answer: "Yes, StockFlow integrates with both Shopify and Shopify Plus. The integration works the same way - automatically syncing inventory, orders, and product data. Shopify Plus stores may benefit from additional features like advanced reporting and dedicated support, but the core integration works for all Shopify plans."
+    },
+    {
+      question: "How does Shopify Plus WMS integration prevent overselling?",
+      answer: "Integration prevents overselling by: real-time inventory synchronization between Shopify and WMS, automatic stock level updates when orders are placed, inventory reservation when orders are created, and multi-channel inventory pooling. When inventory is low, the system automatically updates Shopify to prevent further sales until stock is replenished."
+    },
+    {
+      question: "What data syncs between Shopify Plus and WMS?",
+      answer: "Data that syncs includes: inventory levels (bidirectional), order details (from Shopify to WMS), order status updates (from WMS to Shopify), product information (descriptions, prices, variants), and fulfillment tracking. This ensures both systems always have accurate, up-to-date information."
     }
   ];
 

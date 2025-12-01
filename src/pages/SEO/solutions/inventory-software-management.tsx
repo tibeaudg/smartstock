@@ -67,6 +67,14 @@ export default function InventorySoftwareManagement() {
     {
       question: "What is stock control software?",
       answer: "Stock control software is designed to monitor and manage stock levels, track movements, and prevent stockouts or overstock situations. It includes features like automated alerts, reorder point management, and real-time visibility. StockFlow provides comprehensive stock control software with free plans for small businesses."
+    },
+    {
+      question: "What is the ROI of inventory software management?",
+      answer: "The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and 15-20% revenue growth from better availability. Most businesses see ROI within the first month through cost savings and efficiency gains."
+    },
+    {
+      question: "How does inventory software management improve accuracy?",
+      answer: "Inventory software management improves accuracy by: eliminating manual data entry errors through barcode scanning (99.9% accuracy), providing real-time updates preventing outdated information, automating calculations reducing math errors, and maintaining audit trails for accountability. This reduces errors from 88% (manual) to less than 1% (automated)."
     }
   ];
 

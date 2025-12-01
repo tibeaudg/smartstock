@@ -55,6 +55,26 @@ export default function InventoryOptimizationServices() {
     {
       question: "Can inventory optimization services work with existing inventory software?",
       answer: "Yes, inventory optimization services can work with existing inventory software. Consultants analyze data from your current system, provide recommendations, and help implement improvements. However, using optimization services with modern inventory software (like StockFlow) that includes built-in optimization tools provides better results and faster implementation."
+    },
+    {
+      question: "What is the ROI of inventory optimization services?",
+      answer: "The ROI of inventory optimization services is typically very high. Businesses see: 20-30% reduction in carrying costs, 15-25% improvement in service levels, 30-50% reduction in dead stock, and 10-20% improvement in cash flow. Most businesses see ROI within 3-6 months, with ongoing benefits thereafter."
+    },
+    {
+      question: "Do I need inventory optimization services if I have inventory software?",
+      answer: "It depends. Modern inventory software like StockFlow includes built-in optimization tools and analytics, reducing the need for separate consulting services. However, complex businesses with large inventories may benefit from expert analysis and strategic recommendations. Many businesses find that software with optimization features is sufficient."
+    },
+    {
+      question: "What industries benefit most from inventory optimization services?",
+      answer: "Industries that benefit most include: retail, e-commerce, manufacturing, wholesale, healthcare, food & beverage, and any business with complex supply chains or high inventory turnover. However, businesses of all sizes and industries can benefit from inventory optimization."
+    },
+    {
+      question: "How do inventory optimization services identify dead stock?",
+      answer: "Services identify dead stock by analyzing: sales velocity (how fast items sell), days of inventory on hand, last sale dates, seasonal patterns, and market trends. They then recommend liquidation strategies, markdowns, or disposal to free up capital and warehouse space."
+    },
+    {
+      question: "Can inventory optimization services improve supplier relationships?",
+      answer: "Yes, optimization services analyze supplier performance including: delivery times, order accuracy, pricing, and reliability. This data helps negotiate better terms, identify reliable suppliers, and improve overall supply chain efficiency. Better supplier relationships lead to lower costs and better service."
     }
   ];
 

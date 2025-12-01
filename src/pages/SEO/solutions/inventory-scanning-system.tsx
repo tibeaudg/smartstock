@@ -39,6 +39,34 @@ export default function InventoryScanningSystem() {
     {
       question: "How much does an inventory scanning system cost?",
       answer: "Inventory scanning system costs vary. StockFlow offers inventory scanning as part of its inventory management software, starting with a free plan. No special hardware is needed - just use your smartphone. This makes inventory scanning accessible and affordable for businesses of all sizes."
+    },
+    {
+      question: "What types of barcodes can inventory scanning systems read?",
+      answer: "Modern inventory scanning systems like StockFlow can read multiple barcode formats including: UPC (Universal Product Code), EAN (European Article Number), Code 128, QR codes, and other standard formats. The system automatically recognizes the format and processes the scan accordingly."
+    },
+    {
+      question: "How accurate is barcode scanning compared to manual entry?",
+      answer: "Barcode scanning achieves 99.9% accuracy, compared to 88% accuracy with manual entry. This dramatic improvement reduces errors, prevents costly mistakes, and ensures inventory records are always accurate. Scanning is also 5-10x faster than manual entry."
+    },
+    {
+      question: "Can inventory scanning systems work with existing barcodes?",
+      answer: "Yes, inventory scanning systems work with existing product barcodes. Most products already have barcodes (UPC, EAN) that can be scanned directly. For products without barcodes, you can generate and print custom barcodes using the system, or use QR codes for internal tracking."
+    },
+    {
+      question: "How does an inventory scanning system improve warehouse operations?",
+      answer: "Inventory scanning systems improve warehouse operations by: speeding up receiving and picking processes, reducing errors in order fulfillment, enabling real-time location tracking, speeding up cycle counts, and improving overall warehouse efficiency. Operations can be 5-10x faster with scanning."
+    },
+    {
+      question: "Is training required to use an inventory scanning system?",
+      answer: "Minimal training is required. Modern inventory scanning systems like StockFlow are intuitive - point your phone camera at a barcode and it scans automatically. Most staff can learn to use the system in minutes. The simplicity makes it accessible to everyone, regardless of technical skill."
+    },
+    {
+      question: "Can inventory scanning systems track serial numbers?",
+      answer: "Yes, advanced inventory scanning systems can track serial numbers and lot numbers. This is essential for industries requiring traceability, such as electronics, pharmaceuticals, and food products. StockFlow supports serial number tracking for complete product traceability."
+    },
+    {
+      question: "How does an inventory scanning system integrate with inventory management?",
+      answer: "Inventory scanning systems integrate seamlessly with inventory management software. When you scan a barcode, the system automatically updates inventory levels, records the movement, updates reports, and syncs data across all devices in real-time. This creates a complete inventory management solution."
     }
   ];
 

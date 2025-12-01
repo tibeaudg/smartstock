@@ -24,28 +24,56 @@ export default function BestInventoryManagementSoftware() {
   
   const faqData = [
     {
-      question: "What is the Cross-dock Warehouse?",
-      answer: "The Cross-dock Warehouse depends on your business needs, but StockFlow consistently ranks as the top choice for small to medium businesses. It offers real-time tracking, barcode scanning, automated alerts, and excellent customer support at an affordable price."
+      question: "What is a cross-dock warehouse?",
+      answer: "A cross-dock warehouse is a distribution facility where incoming shipments are unloaded from inbound trucks and immediately sorted, consolidated, and loaded onto outbound trucks with minimal or no storage time. Products spend hours or minutes in the facility rather than days or weeks, reducing handling costs, storage costs, and transit time. Cross-docking is used for high-velocity products, time-sensitive shipments, and consolidation operations."
     },
     {
-      question: "How do I choose the Cross-dock Warehouse for my business?",
-      answer: "Consider factors like your business size, inventory complexity, budget, integration needs, and required features. Look for software with real-time tracking, mobile access, barcode scanning, reporting capabilities, and good customer support. StockFlow offers a free trial to test all features."
+      question: "How does cross-dock warehouse inventory management work?",
+      answer: "Cross-dock warehouse inventory management tracks products as they flow through the facility in real-time. The system records inbound shipments, matches them to outbound orders, tracks sorting and consolidation, monitors loading operations, and provides visibility into product flow. Since products don't sit in storage, the system focuses on flow management rather than static inventory levels."
     },
     {
-      question: "How does StockFlow compare to Exact and Visma Net?",
-      answer: "StockFlow offers the best value for SMBs. It starts at €0/month (vs €255-€450 for competitors), includes all essential features in the free plan, provides 24/7 support (vs business hours/email only), and has no hidden setup fees. While enterprise solutions like Exact and Visma offer advanced features, StockFlow provides everything most businesses need at a fraction of the cost."
+      question: "What are the benefits of cross-dock warehouse operations?",
+      answer: "Benefits include: reduced storage costs (no long-term storage needed), faster order fulfillment (same-day or next-day shipping), lower handling costs (fewer touches), reduced inventory carrying costs, improved cash flow (faster inventory turnover), and better customer service (faster delivery). Cross-docking can reduce distribution costs by 20-30%."
     },
     {
-      question: "What features should the Cross-dock Warehouse have?",
-      answer: "The Cross-dock Warehouse should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support."
+      question: "What types of products are suitable for cross-docking?",
+      answer: "Products suitable for cross-docking include: high-velocity items with predictable demand, time-sensitive products (perishables, urgent orders), products with short shelf lives, items that don't require quality inspection, standardized products with consistent handling, and products moving in full truckloads or pallets. Low-velocity or variable-demand items are less suitable."
     },
     {
-      question: "Is there Cloud-based Inventory Management Platform?",
-      answer: "Yes, StockFlow offers a free plan for small businesses with up to 100 products. This allows you to test the software and see if it meets your needs before upgrading to a paid plan with advanced features."
+      question: "How does inventory management software support cross-dock operations?",
+      answer: "Inventory management software supports cross-dock operations by: tracking inbound shipments in real-time, matching inbound to outbound orders automatically, providing visibility into product flow, managing consolidation and sorting, tracking loading operations, and maintaining complete audit trails. StockFlow provides real-time tracking essential for cross-dock operations."
     },
     {
-      question: "What makes StockFlow the Cross-dock Warehouse?",
-      answer: "StockFlow stands out as the Cross-dock Warehouse due to its user-friendly interface, comprehensive features, excellent customer support, affordable pricing, real-time tracking capabilities, and ability to scale with your business growth."
+      question: "What features should cross-dock warehouse software have?",
+      answer: "Essential features include: real-time shipment tracking, inbound/outbound matching, consolidation management, dock door scheduling, carrier integration, barcode scanning for fast processing, visibility dashboards, and reporting. The system must handle high transaction volumes and provide instant updates as products flow through the facility."
+    },
+    {
+      question: "How much does cross-dock warehouse management software cost?",
+      answer: `Cross-dock warehouse software pricing varies. Basic systems start at ${formatPrice(200)}/month. Enterprise solutions can cost ${formatPrice(1000)}-${formatPrice(5000)}/month. StockFlow offers cross-dock inventory management starting with a free plan for up to 100 products, with scalable pricing (€0.004 per product/month), making it affordable for small to mid-sized operations.`
+    },
+    {
+      question: "Can cross-dock operations work with multiple suppliers and customers?",
+      answer: "Yes, cross-dock operations commonly handle multiple suppliers and customers. The system consolidates products from multiple suppliers into outbound shipments for multiple customers. This requires sophisticated matching algorithms, consolidation planning, and real-time visibility. StockFlow supports multi-supplier and multi-customer cross-dock operations."
+    },
+    {
+      question: "What is the difference between cross-docking and traditional warehousing?",
+      answer: "Cross-docking minimizes or eliminates storage time - products flow through the facility in hours. Traditional warehousing stores products for days, weeks, or months. Cross-docking requires faster processing, better coordination, and real-time visibility. Traditional warehousing focuses on storage optimization and longer-term inventory management."
+    },
+    {
+      question: "How does cross-dock warehouse management reduce costs?",
+      answer: "Cross-dock warehouse management reduces costs by: eliminating storage costs (no long-term storage), reducing handling (fewer touches), minimizing inventory carrying costs (faster turnover), reducing labor costs (streamlined operations), and improving space utilization. This can reduce distribution costs by 20-30% compared to traditional warehousing."
+    },
+    {
+      question: "Can cross-dock operations handle quality inspections?",
+      answer: "Cross-dock operations can include quick quality checks, but extensive inspections slow down the flow. Most cross-dock facilities perform minimal quality checks (visual inspection, count verification) and rely on supplier quality. Products requiring detailed inspection are less suitable for cross-docking."
+    },
+    {
+      question: "How does inventory management software help with cross-dock scheduling?",
+      answer: "Inventory management software helps with cross-dock scheduling by: tracking inbound shipment arrival times, scheduling dock door assignments, coordinating outbound shipments, managing consolidation windows, and providing real-time visibility into facility capacity. This ensures smooth flow and prevents bottlenecks."
+    },
+    {
+      question: "What is the ROI of cross-dock warehouse operations?",
+      answer: "The ROI is typically very high. Businesses see: 20-30% reduction in distribution costs, faster order fulfillment, improved customer satisfaction, reduced inventory carrying costs, and better cash flow. Most businesses see ROI within 6-12 months through cost savings and efficiency gains."
     }
   ];
 

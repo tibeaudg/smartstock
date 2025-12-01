@@ -35,6 +35,42 @@ export default function InventoryPlatform() {
     {
       question: "How does an inventory platform work?",
       answer: "An inventory platform works by centralizing inventory data, providing real-time tracking, automating processes, integrating with other systems, and offering analytics and reporting. StockFlow provides all these capabilities as a unified inventory platform."
+    },
+    {
+      question: "What are the benefits of using an inventory platform?",
+      answer: "Benefits include: centralized management of all inventory operations, real-time visibility across locations, automated processes reducing manual work, seamless integration with other business systems, comprehensive analytics and reporting, scalability to grow with your business, and mobile access for on-the-go management. Inventory platforms provide a complete solution rather than multiple disconnected tools."
+    },
+    {
+      question: "How much does an inventory platform cost?",
+      answer: "Inventory platform costs vary. StockFlow offers a free plan for up to 30 products, making it accessible for small businesses. Premium plans start at €29/month for unlimited products and advanced features. This is much more affordable than building custom solutions or using multiple separate tools."
+    },
+    {
+      question: "Can an inventory platform integrate with my existing systems?",
+      answer: "Yes, modern inventory platforms like StockFlow integrate with accounting software (QuickBooks, Xero), e-commerce platforms (Shopify, WooCommerce), POS systems, shipping providers, and other business tools through APIs and pre-built integrations. This creates a unified system where data flows seamlessly between platforms."
+    },
+    {
+      question: "Is an inventory platform suitable for small businesses?",
+      answer: "Absolutely! Inventory platforms are designed to scale from small to large businesses. StockFlow's free plan is perfect for small businesses to get started, and you can upgrade as you grow. The platform provides enterprise-level capabilities at affordable prices, making professional inventory management accessible to businesses of all sizes."
+    },
+    {
+      question: "What's the difference between an inventory platform and inventory software?",
+      answer: "An inventory platform is a comprehensive system that provides multiple tools and capabilities in one unified solution, while inventory software may refer to a single tool or application. Platforms typically offer: tracking, reporting, automation, integrations, analytics, and mobile access all in one system. StockFlow is an inventory platform that combines all these capabilities."
+    },
+    {
+      question: "How quickly can I set up an inventory platform?",
+      answer: "Cloud-based inventory platforms like StockFlow can be set up very quickly. You can be operational within hours: create an account, import your products, configure settings, and start tracking. Most businesses are fully operational within 1-2 days, compared to weeks or months for custom solutions."
+    },
+    {
+      question: "Can multiple users access an inventory platform simultaneously?",
+      answer: "Yes, inventory platforms support multiple users with role-based access controls. Team members can work simultaneously with real-time synchronization, ensuring everyone sees the latest data. Different permission levels ensure users only access what they need, maintaining security while enabling collaboration."
+    },
+    {
+      question: "Does an inventory platform require technical knowledge?",
+      answer: "No, modern inventory platforms like StockFlow are designed for non-technical users. The interface is intuitive, setup is straightforward, and no programming knowledge is required. Most businesses can start using the platform immediately with minimal training."
+    },
+    {
+      question: "What security measures do inventory platforms have?",
+      answer: "Reputable inventory platforms implement enterprise-grade security including: SSL encryption for data transmission, encrypted data storage, regular security audits, GDPR compliance, role-based access controls, automatic backups, and secure authentication. StockFlow uses bank-level security to protect your inventory data."
     }
   ];
 

@@ -58,6 +58,26 @@ export default function ConstructionInventoryManagementSystem() {
     {
       question: "Can construction inventory software integrate with project management tools?",
       answer: "Many construction inventory systems integrate with project management software through APIs. This enables automatic material requirements based on project schedules, real-time material availability for project planning, cost tracking per project, and material delivery coordination. StockFlow offers API access for integration with popular construction management platforms."
+    },
+    {
+      question: "What is the ROI of construction inventory management systems?",
+      answer: "The ROI is typically very high. Construction companies see: 15-25% reduction in material waste, 20-30% reduction in material theft, 10-15 hours saved per week on inventory tasks, prevention of project delays from material shortages, and 20-30% reduction in carrying costs. Most companies see ROI within the first month through waste reduction and theft prevention."
+    },
+    {
+      question: "How do construction inventory systems handle material deliveries?",
+      answer: "Construction inventory systems manage deliveries by: scheduling deliveries to specific job sites, tracking delivery status in real-time, receiving materials with mobile scanning, verifying quantities against purchase orders, documenting delivery issues (damage, shortages), and updating inventory automatically upon receipt. This ensures materials arrive when needed and are properly accounted for."
+    },
+    {
+      question: "Can construction inventory systems track material usage per project?",
+      answer: "Yes, modern construction inventory systems track material usage per project. When materials are used on a project, the system records the project assignment, quantity used, date, and cost. This enables accurate project costing, budget tracking, and material planning for future projects. StockFlow supports project-based material tracking and reporting."
+    },
+    {
+      question: "How do construction inventory systems prevent material waste?",
+      answer: "Construction inventory systems prevent waste by: tracking material quantities accurately (preventing over-ordering), monitoring material expiration dates, optimizing purchasing based on project schedules, identifying unused materials for reuse, tracking material usage patterns, and providing alerts for materials approaching expiration. This reduces waste by 15-25%."
+    },
+    {
+      question: "What reporting features do construction inventory systems provide?",
+      answer: "Construction inventory systems provide reports on: material usage by project, inventory levels by job site, material costs per project, supplier performance, equipment utilization, theft and loss tracking, and material waste analysis. These reports help optimize purchasing, control costs, and improve project profitability. StockFlow offers comprehensive construction inventory reporting."
     }
   ];
 

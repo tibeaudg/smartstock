@@ -50,6 +50,30 @@ export default function InventoryManagementSoftwareList() {
     {
       question: "Are there industry-specific inventory management software lists?",
       answer: "Yes, there are industry-specific inventory management software options. For retail: Square for Retail, Lightspeed. For manufacturing: Katana, MRPeasy. For e-commerce: TradeGecko, Zoho Inventory. For healthcare: specialized medical inventory systems. For food service: specialized restaurant inventory systems. However, many general solutions like StockFlow work well across multiple industries with customizable features."
+    },
+    {
+      question: "What is the average cost of inventory management software from a software list?",
+      answer: `Costs vary widely. Free plans are available (StockFlow offers up to 30 products free). Small business plans typically cost ${formatPrice(29)}-${formatPrice(100)}/month. Mid-market solutions cost ${formatPrice(100)}-${formatPrice(500)}/month. Enterprise solutions can cost ${formatPrice(500)}+/month. StockFlow offers the best value with a free plan and affordable pay-as-you-grow pricing starting at ${formatPrice(0.004)}/product/month.`
+    },
+    {
+      question: "How do I compare inventory management software from a list?",
+      answer: "Compare software by: creating a checklist of required features, testing free trials, comparing pricing and value, evaluating ease of use, checking integration capabilities, reading customer reviews, assessing customer support quality, and considering scalability. Most providers offer free trials - take advantage to test before committing."
+    },
+    {
+      question: "What are the most important features in an inventory management software list?",
+      answer: "Most important features are: real-time tracking (essential for accuracy), barcode scanning (improves speed and accuracy), automated reorder points (prevents stockouts), multi-location support (for growing businesses), mobile access (for on-the-go management), integration capabilities (connects with other systems), and good reporting (for decision-making). StockFlow includes all these features."
+    },
+    {
+      question: "Can I switch between inventory management software from a list?",
+      answer: "Yes, but switching can be time-consuming. Most inventory management software supports data export/import, making migration possible. However, it's better to choose the right solution initially. StockFlow offers a free plan so you can test thoroughly before committing, reducing the need to switch later."
+    },
+    {
+      question: "What should small businesses look for in an inventory management software list?",
+      answer: "Small businesses should prioritize: free or affordable pricing, ease of use (no technical knowledge required), essential features (real-time tracking, barcode scanning, alerts), good customer support, scalability to grow with the business, and mobile access. StockFlow is specifically designed for small businesses with these priorities in mind."
+    },
+    {
+      question: "How do enterprise solutions differ from SMB solutions in a software list?",
+      answer: "Enterprise solutions typically offer: advanced reporting and analytics, custom integrations, dedicated support, advanced user management, higher transaction volumes, and industry-specific features. SMB solutions like StockFlow focus on essential features, ease of use, and affordability. Many SMB solutions scale to enterprise levels as businesses grow."
     }
   ];
 

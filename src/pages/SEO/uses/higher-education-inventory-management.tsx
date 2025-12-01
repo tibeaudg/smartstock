@@ -68,6 +68,26 @@ export default function HigherEducationInventoryManagement() {
     {
       question: "What's the difference between K-12 and higher education inventory management?",
       answer: "Higher education inventory management typically requires: more complex grant and budget tracking, research equipment calibration and maintenance records, multi-department approval workflows, integration with research management systems, compliance reporting for federal grants, and tracking of specialized academic resources. K-12 systems focus more on student checkout systems and classroom supplies."
+    },
+    {
+      question: "What is the ROI of higher education inventory management?",
+      answer: "The ROI is typically very high. Universities see: 60-80% reduction in lost equipment, 20-30% reduction in duplicate purchases, improved grant compliance, faster audit processes, better budget allocation, and improved resource utilization. Most institutions see ROI within 6-12 months through loss prevention and cost savings."
+    },
+    {
+      question: "How does higher education inventory management prevent equipment loss?",
+      answer: "Higher education inventory management prevents loss by: tracking who checked out which equipment, setting up automated return reminders, maintaining complete audit trails, conducting regular audits, providing accountability, and tracking equipment location in real-time. This reduces equipment loss by 60-80%."
+    },
+    {
+      question: "Can higher education inventory systems track equipment calibration?",
+      answer: "Yes, higher education inventory systems track equipment calibration including: calibration schedules, calibration history, calibration certificates, calibration due dates, and compliance requirements. This is essential for research equipment that requires regular calibration for accurate results."
+    },
+    {
+      question: "How does higher education inventory management help with grant compliance?",
+      answer: "Higher education inventory management helps with grant compliance by: tracking grant-funded assets separately, maintaining detailed records of purchases and usage, providing audit trails for grant auditors, tracking depreciation for grant reporting, and ensuring proper stewardship of grant funds. This is essential for maintaining funding eligibility."
+    },
+    {
+      question: "Can higher education inventory systems integrate with research management platforms?",
+      answer: "Yes, higher education inventory systems integrate with research management platforms through APIs. This enables: automatic equipment reservation for research projects, usage tracking linked to research activities, cost allocation to research grants, and compliance reporting. StockFlow offers API access for research management integration."
     }
   ];
 

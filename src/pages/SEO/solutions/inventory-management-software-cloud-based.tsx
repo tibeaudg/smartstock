@@ -55,6 +55,26 @@ export default function InventoryManagementSoftwareCloudBased() {
     {
       question: "Can cloud-based inventory management software integrate with other systems?",
       answer: "Yes, modern cloud-based inventory management software like StockFlow integrates with accounting systems (QuickBooks, Xero), e-commerce platforms (Shopify, WooCommerce), POS systems, shipping providers, and other business tools through APIs and pre-built integrations. Cloud-based solutions often have better integration capabilities than on-premise systems due to their web-based architecture."
+    },
+    {
+      question: "What happens if I lose internet connection with cloud-based inventory software?",
+      answer: "Many cloud-based inventory software solutions like StockFlow offer offline capabilities through mobile apps. You can continue working offline - scanning barcodes, updating inventory, and making changes. All data is stored locally and automatically syncs when you reconnect to the internet. You never lose work, even with intermittent connectivity."
+    },
+    {
+      question: "Is cloud-based inventory software suitable for large enterprises?",
+      answer: "Yes, cloud-based inventory software scales to enterprise levels. StockFlow and similar solutions support unlimited products, multiple locations, hundreds of users, and high transaction volumes. Enterprise features include advanced reporting, API access, dedicated support, and custom integrations. Many large enterprises prefer cloud solutions for flexibility and lower IT overhead."
+    },
+    {
+      question: "How does cloud-based inventory software handle data backups?",
+      answer: "Cloud-based inventory software automatically backs up your data daily (or more frequently) to secure, redundant servers. This protects against data loss from hardware failures, disasters, or human error. Most providers maintain multiple backup copies in different geographic locations for maximum protection. You never need to worry about backing up your inventory data."
+    },
+    {
+      question: "Can I migrate from on-premise to cloud-based inventory software?",
+      answer: "Yes, migration is straightforward. Cloud-based providers like StockFlow offer data import tools to migrate your existing inventory data, product catalogs, and historical records. Most migrations can be completed within days, and providers typically offer migration support to ensure a smooth transition. Many businesses find cloud-based solutions more cost-effective and easier to maintain."
+    },
+    {
+      question: "What is the difference between SaaS and cloud-based inventory software?",
+      answer: "SaaS (Software as a Service) and cloud-based are often used interchangeably. Both refer to software hosted on remote servers and accessed via the internet. The key characteristics are: subscription-based pricing, automatic updates, no installation required, and access from anywhere. StockFlow is a SaaS/cloud-based inventory management solution."
     }
   ];
 

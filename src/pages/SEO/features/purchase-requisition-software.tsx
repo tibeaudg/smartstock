@@ -55,6 +55,26 @@ export default function PurchaseRequisitionSoftware() {
     {
       question: "How do approval workflows work in purchase requisition software?",
       answer: "Approval workflows route requisitions to appropriate approvers based on rules: amount thresholds (requisitions over $X require manager approval), department rules (IT purchases require IT manager), category rules (capital expenses require CFO), or custom rules. Multi-level approvals ensure high-value purchases get proper authorization. StockFlow's purchase requisition module supports flexible approval workflows."
+    },
+    {
+      question: "What is the ROI of purchase requisition software?",
+      answer: "The ROI is typically very high. Businesses see: 50-70% reduction in procurement time, 20-30% reduction in unauthorized spending, elimination of manual paperwork, improved procurement visibility, and better supplier relationships. Most businesses see ROI within the first month through time savings and spending control."
+    },
+    {
+      question: "Can purchase requisition software track budgets?",
+      answer: "Yes, modern purchase requisition software tracks budgets by department, category, project, or time period. The system can enforce budget limits, warn when approaching limits, and require additional approvals for over-budget purchases. This helps control spending and ensures purchases align with budgets. StockFlow includes comprehensive budget tracking."
+    },
+    {
+      question: "How does purchase requisition software prevent unauthorized spending?",
+      answer: "Purchase requisition software prevents unauthorized spending by: requiring approvals before purchase orders are created, enforcing spending limits, tracking budgets, maintaining approval hierarchies, and providing complete audit trails. All purchases must go through the approval process, preventing unauthorized spending outside the system."
+    },
+    {
+      question: "Can employees create requisitions from mobile devices?",
+      answer: "Yes, modern purchase requisition software like StockFlow offers mobile apps for iOS and Android. Employees can create requisitions, check approval status, and receive notifications from their smartphones. This enables procurement on-the-go and faster requisition creation."
+    },
+    {
+      question: "How does purchase requisition software integrate with accounting?",
+      answer: "Purchase requisition software integrates with accounting systems through APIs. When purchase orders are created, they sync to accounting for budget tracking. When invoices are received, they match to purchase orders. This ensures accurate financial records and eliminates manual data entry. StockFlow offers API access for accounting integration."
     }
   ];
 

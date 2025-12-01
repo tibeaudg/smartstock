@@ -57,6 +57,26 @@ export default function InventoryManagementOnline() {
     {
       question: "What features should online inventory management include?",
       answer: "Online inventory management should include real-time tracking, barcode scanning, automated reorder points, multi-location support, mobile access, reporting and analytics, integration capabilities, user role management, and excellent customer support. Cloud-based access from anywhere is also essential."
+    },
+    {
+      question: "What is the ROI of inventory management online?",
+      answer: "The ROI is typically very high. Businesses see: 70% time savings on inventory tasks, 25% reduction in carrying costs, 90% reduction in errors, prevention of stockouts (which can cost 20% of lost sales), and 15-20% revenue growth from better availability. Most businesses see ROI within the first month through cost savings and efficiency gains."
+    },
+    {
+      question: "How much does inventory management online cost?",
+      answer: `Costs vary, but StockFlow offers a free plan for up to 30 products, making it accessible for small businesses. Premium plans start at ${formatPrice(29)}/month for unlimited products and advanced features. This is much more affordable than on-premise solutions which can cost thousands in upfront fees and maintenance.`
+    },
+    {
+      question: "Can inventory management online handle multiple locations?",
+      answer: "Yes, inventory management online supports multiple locations. You can track inventory across warehouses, stores, and distribution centers from a single dashboard. Location-specific reporting helps optimize stock levels at each location, and you can transfer stock between locations seamlessly."
+    },
+    {
+      question: "How quickly can I set up inventory management online?",
+      answer: "Inventory management online can be set up very quickly. With StockFlow, you can be operational within hours: create an account, import your products, configure settings, and start tracking. Most businesses are fully operational within 1-2 days, compared to weeks or months for on-premise solutions."
+    },
+    {
+      question: "What's the difference between inventory management online and desktop software?",
+      answer: "Inventory management online is cloud-based and accessible from anywhere with internet, with automatic updates and no installation needed. Desktop software requires local installation, manual updates, and doesn't offer remote access. Online solutions are more flexible, cost-effective, and suitable for modern businesses with multiple locations or remote teams."
     }
   ];
 
