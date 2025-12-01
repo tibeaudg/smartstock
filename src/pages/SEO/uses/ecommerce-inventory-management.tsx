@@ -120,8 +120,8 @@ export default function EcommerceInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Ecommerce Inventory Management 2025 - Multi-Channel Software | StockFlow"
-        description="Complete ecommerce inventory management. Multi-channel sync, real-time stock updates, automated reordering. Integrate with Shopify, Amazon, WooCommerce. Prevent overselling. Start free trial."
+        title="Ecommerce Inventory Management 2025 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
+        description="Complete ecommerce inventory management 2025. Multi-channel sync, real-time updates, prevent overselling. Integrate Shopify, Amazon, WooCommerce. Save 20+ hours/week, 99%+ accuracy. Free plan available. Start free trial - no credit card required."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/ecommerce-inventory-management"
       />
@@ -132,8 +132,21 @@ export default function EcommerceInventoryManagement() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               <span className="text-blue-600">Ecommerce Management Software</span> for Multi Platform Operations
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
               Manage inventory across multiple e-commerce platforms and sales channels from one system. Multi platform and cross platform inventory management for growing online businesses.
+            </p>
+            <div className="bg-blue-50 rounded-lg p-6 max-w-4xl mx-auto">
+              <p className="text-lg text-gray-700 leading-relaxed">
+                <strong>Ecommerce inventory management</strong> is essential for online businesses selling across multiple channels. Without proper multi-platform inventory management, businesses face overselling, stockouts, manual data entry errors, and lost sales. Modern ecommerce inventory management software like StockFlow synchronizes inventory across all platforms in real-time, preventing overselling and ensuring accurate stock levels.
+              </p>
+            </div>
+          </div>
+          <div className="prose prose-lg max-w-none mt-8">
+            <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              E-commerce businesses selling on multiple platforms (Shopify, Amazon, WooCommerce, eBay, etc.) face unique inventory challenges. Each platform requires accurate stock levels, but manually updating inventory across channels is time-consuming and error-prone. <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Multi-platform inventory management software</Link> solves this by providing a centralized system that automatically syncs inventory across all your sales channels.
+            </p>
+            <p className="text-lg text-gray-700 leading-relaxed">
+              The benefits are significant: businesses using proper ecommerce inventory management see 99%+ inventory accuracy, eliminate overselling (which can cost 20% of lost sales), save 20+ hours per week on manual updates, and reduce carrying costs by 15-25%. Most importantly, it enables businesses to scale to high volumes without proportionally increasing staff.
             </p>
           </div>
         </div>
@@ -186,18 +199,127 @@ export default function EcommerceInventoryManagement() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Supported <span className="text-blue-600">E-commerce Platforms</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              StockFlow integrates with all major e-commerce platforms for multi platform inventory management.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
+              StockFlow integrates with all major e-commerce platforms for multi platform inventory management. Real-time synchronization ensures accurate stock levels across all channels.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {platforms.map((platform, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <h3 className="text-xl font-semibold mb-2">{platform.name}</h3>
                 <p className="text-gray-600">{platform.description}</p>
               </div>
             ))}
+          </div>
+
+          <div className="bg-white rounded-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">How Multi-Platform Integration Works</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-blue-600">1</span>
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Connect Platforms</h4>
+                <p className="text-sm text-gray-600">Link all your e-commerce platforms through secure API connections</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-green-600">2</span>
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Real-Time Sync</h4>
+                <p className="text-sm text-gray-600">Inventory updates automatically across all platforms within seconds</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-purple-600">3</span>
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Prevent Overselling</h4>
+                <p className="text-sm text-gray-600">When stock runs low, all platforms update automatically to prevent overselling</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="roi" className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+            ROI of Ecommerce Inventory Management
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Cost Savings</h3>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span><strong>Eliminate overselling:</strong> Prevents 20% of lost sales from overselling incidents</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span><strong>Reduce carrying costs:</strong> 15-25% reduction through optimized inventory levels</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span><strong>Prevent stockouts:</strong> Maintain optimal stock levels to avoid lost sales</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Time Savings</h3>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span><strong>20+ hours/week saved:</strong> Eliminate manual inventory updates across platforms</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span><strong>99%+ accuracy:</strong> Automated sync eliminates human error</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <span><strong>Scale efficiently:</strong> Handle high volumes without additional staff</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-8 bg-blue-600 text-white rounded-lg p-8 text-center">
+            <p className="text-xl font-semibold mb-2">Most businesses see ROI within the first month</p>
+            <p className="text-lg opacity-90">Through cost savings, time savings, and elimination of overselling</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="use-cases" className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+            Common Use Cases for Ecommerce Inventory Management
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Multi-Channel Retailers</h3>
+              <p className="text-gray-700 mb-3">
+                Businesses selling on Shopify, Amazon, eBay, and their own website need unified inventory management. StockFlow syncs inventory across all channels in real-time, preventing overselling and ensuring accurate stock levels.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Dropshipping Operations</h3>
+              <p className="text-gray-700 mb-3">
+                Manage supplier inventory levels, automate order routing, and track stock across multiple suppliers. StockFlow supports both traditional inventory and dropshipping models.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Seasonal Businesses</h3>
+              <p className="text-gray-700 mb-3">
+                Handle peak season demand spikes with dynamic reorder points and demand forecasting. StockFlow tracks historical sales data to predict seasonal trends and optimize stock levels.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Growing E-commerce Stores</h3>
+              <p className="text-gray-700 mb-3">
+                Scale from one platform to multiple channels without proportionally increasing staff. StockFlow automates inventory management as you grow, maintaining accuracy and efficiency.
+              </p>
+            </div>
           </div>
         </div>
       </section>

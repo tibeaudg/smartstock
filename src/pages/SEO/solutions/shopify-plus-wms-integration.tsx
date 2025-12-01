@@ -213,8 +213,8 @@ export default function ShopifyPlusWmsIntegration() {
       faqData={faqData}
     >
       <SEO
-        title="Shopify Plus WMS Integration 2025 | Inventory Sync | StockFlow"
-        description="Shopify Plus WMS integration automates inventory sync and order fulfillment. Real-time sync, prevent overselling, multi-channel support. Free plan for up to 100 products. Start free today."
+        title="Shopify Plus WMS Integration 2025 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
+        description="Shopify Plus WMS integration 2025 automates inventory sync and order fulfillment. Real-time sync, prevent overselling, multi-channel support. Save 20+ hours/week, 99%+ accuracy. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="shopify plus wms integration, shopify wms integration, shopify warehouse management, shopify inventory sync, shopify plus inventory management, shopify warehouse software, shopify inventory system, shopify wms software, shopify plus warehouse, ecommerce wms integration, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/shopify-plus-wms-integration"
         structuredData={[structuredData, faqStructuredData]}

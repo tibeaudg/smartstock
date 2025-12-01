@@ -19,8 +19,8 @@ export default function SEOIntegrationsPage() {
   return (
     <>
       <SEO
-        title="Inventory Management Integrations 2025 - 45+ Connections | StockFlow"
-        description="Connect StockFlow with 45+ business tools. Integrate with Shopify, Amazon, QuickBooks, Xero, WooCommerce, and more. Automate inventory sync across sales channels and accounting systems. Start free trial."
+        title="Inventory Management Integrations 2025 - 45+ Connections, Save Time | StockFlow"
+        description="Connect StockFlow with 45+ business tools 2025. Integrate Shopify, Amazon, QuickBooks, Xero, WooCommerce. Automate inventory sync, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
         keywords="inventory integrations, inventory management integrations, e-commerce integrations, accounting integrations, POS integrations, Shopify integration, QuickBooks integration, inventory API, stockflow integrations"
         url="https://www.stockflow.be/features/integrations"
         structuredData={structuredData}

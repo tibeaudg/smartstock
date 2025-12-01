@@ -86,8 +86,8 @@ export default function StockflowVsTradegecko() {
       faqData={faqData}
     >
       <SEO
-        title="StockFlow vs TradeGecko 2025 - Migration Guide & Alternative | StockFlow"
-        description="Compare StockFlow vs TradeGecko (QuickBooks Commerce). Modern alternative with better automation, EU hosting, and free migration assistance. See feature comparison and migrate from TradeGecko. Start free trial."
+        title="StockFlow vs TradeGecko 2025 - Free Migration, Better Automation | StockFlow"
+        description="Compare StockFlow vs TradeGecko 2025 (QuickBooks Commerce). Modern alternative with better automation, EU hosting, free migration. Save costs, improve efficiency. Start free trial - no credit card required."
         keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison, tradegecko migration, tradegecko alternative 2025, quickbooks commerce alternative, inventory software after tradegecko"
         url="https://www.stockflow.be/stockflow-vs-tradegecko"
         publishedTime="2024-01-01T00:00:00Z"

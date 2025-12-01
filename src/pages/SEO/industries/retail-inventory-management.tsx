@@ -202,8 +202,8 @@ export default function RetailInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Retail Inventory Management 2025 - Software for Small Shops | StockFlow"
-        description="Complete retail inventory management software for small shops. Real-time stock tracking, barcode scanning, low stock alerts, POS integration. Reduce costs by 25%, prevent stockouts. Start free trial."
+        title="Retail Inventory Management 2025 - Save 25% Costs, 10+ Hours/Week | StockFlow"
+        description="Complete retail inventory management 2025 for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
         keywords="retail inventory management, small retail shop software, retail stock management, shop inventory system, retail inventory tracking, small business inventory, retail POS integration, inventory management for retailers, retail stock control, shop management software, retail inventory software, small shop inventory, retail inventory solution, shop stock tracking, retail inventory app"
         url="https://www.stockflow.be/retail-inventory-management"
         structuredData={structuredData}
@@ -214,8 +214,11 @@ export default function RetailInventoryManagement() {
         <p className="text-lg black leading-relaxed mb-6">
           Stop losing sales to stockouts. Manage your retail inventory like a pro with real-time tracking, smart alerts, and powerful analytics designed for small shops.
         </p>
+        <p className="text-lg text-slate-600 leading-relaxed mb-4">
+          <strong>Retail inventory management</strong> is the process of tracking and controlling stock levels in retail stores to ensure products are available when customers need them, while minimizing carrying costs and preventing overstock situations. For small retail shops, effective inventory management is crucial for competing with larger retailers and maintaining profitability.
+        </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Retail inventory management is the process of tracking and controlling stock levels in retail stores to ensure products are available when customers need them, while minimizing carrying costs and preventing overstock situations.
+          Small retail businesses face unique challenges: limited storage space, seasonal demand fluctuations, tight profit margins, and competition with larger stores. <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Retail inventory management software</Link> helps small shops overcome these challenges by providing real-time visibility, automated alerts, and data-driven insights. Learn more about <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:underline font-semibold">mobile inventory management</Link> for on-the-go access or explore <Link to="/solutions/stock-management-software" className="text-blue-600 hover:underline font-semibold">stock management software</Link> solutions.
         </p>
       </div>
 
@@ -353,6 +356,90 @@ export default function RetailInventoryManagement() {
         </div>
       </section>
 
+      {/* ROI Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+            ROI of Retail Inventory Management
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Cost Savings</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                  <span className="text-gray-700">Inventory cost reduction</span>
+                  <span className="text-2xl font-bold text-green-600">25%</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                  <span className="text-gray-700">Overstock reduction</span>
+                  <span className="text-2xl font-bold text-blue-600">40%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700">Stockout prevention</span>
+                  <span className="text-2xl font-bold text-purple-600">95%</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Time Savings</h3>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                  <span className="text-gray-700">Hours saved per week</span>
+                  <span className="text-2xl font-bold text-green-600">10+</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                  <span className="text-gray-700">Faster inventory counts</span>
+                  <span className="text-2xl font-bold text-blue-600">5x</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700">Error reduction</span>
+                  <span className="text-2xl font-bold text-purple-600">90%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 bg-blue-600 text-white rounded-lg p-6 text-center">
+            <p className="text-xl font-semibold mb-2">Most retail shops see ROI within the first month</p>
+            <p className="text-lg opacity-90">Through cost savings, time savings, and improved customer satisfaction</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Best Practices Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+            Best Practices for Retail Inventory Management
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">1. Set Accurate Reorder Points</h3>
+              <p className="text-gray-700">
+                Calculate reorder points based on lead time, average daily sales, and safety stock. This ensures you reorder before running out while avoiding overstock. <Link to="/glossary/what-is-lead-time" className="text-blue-600 hover:underline font-semibold">Learn more about lead time</Link> and how it affects reorder points.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">2. Use ABC Analysis</h3>
+              <p className="text-gray-700">
+                Focus your attention on high-value items (A-items) that drive most of your revenue. These items need tighter control and more frequent monitoring than low-value items.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">3. Regular Cycle Counting</h3>
+              <p className="text-gray-700">
+                Instead of annual physical counts, perform regular cycle counts of high-value items. This maintains accuracy year-round and identifies discrepancies quickly.
+              </p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">4. Track Seasonal Trends</h3>
+              <p className="text-gray-700">
+                Monitor historical sales data to identify seasonal patterns. Adjust stock levels before peak seasons to ensure you have adequate inventory when demand spikes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="bg-blue-600 text-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
@@ -360,16 +447,21 @@ export default function RetailInventoryManagement() {
             Ready to Transform Your Retail Inventory?
           </h2>
           <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join hundreds of retail shops using StockFlow to manage their inventory more efficiently and profitably.
+            Join hundreds of retail shops using StockFlow to manage their inventory more efficiently and profitably. Start with our free plan for up to 100 products.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link
               to="/auth"
               className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
             >
-              Start Free Trial
+              Start Free Trial →
             </Link>
-
+            <Link
+              to="/solutions/inventory-management-software"
+              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition"
+            >
+              Learn More
+            </Link>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
             <div className="flex items-center">
@@ -382,7 +474,7 @@ export default function RetailInventoryManagement() {
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 mr-2" />
-              Free trial
+              Free plan available
             </div>
           </div>
         </div>

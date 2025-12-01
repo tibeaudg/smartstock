@@ -212,7 +212,7 @@ export default function InventoryManagementSoftware() {
     faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software 2025 | Free Plan | StockFlow"
+        title="Inventory Management Software 2025 - Save 35% Costs, 15 Hours/Week | StockFlow"
         description="Best inventory management software 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 35% costs & 15 hours/week. Start free - no credit card required."
         keywords="inventory management software, inventory software, stock management software, inventory system, inventory tracking software, inventory management system, best inventory software, online inventory management, cloud inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software"

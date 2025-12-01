@@ -191,8 +191,8 @@ export default function MobileInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Mobile Inventory Management 2025 - Manage Stock on the Go | StockFlow"
-        description="Mobile inventory management for iOS and Android. Barcode scanning, offline mode, real-time sync. Manage inventory from anywhere. Free plan for up to 30 products. Increase productivity 40-60%. Start free - no credit card required."
+        title="Mobile Inventory Management 2025 - Save 40-60% Time, 99.9% Accuracy | StockFlow"
+        description="Mobile inventory management 2025 for iOS and Android. Barcode scanning, offline mode, real-time sync. Increase productivity 40-60%, achieve 99.9% accuracy. Free plan available. Start free trial - no credit card required."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/mobile-inventory-management"
         locale="en"
@@ -343,6 +343,146 @@ export default function MobileInventoryManagement() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+            Mobile Inventory Management Use Cases
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Warehouse Operations</h3>
+              <p className="text-gray-700 mb-3">
+                Warehouse staff can perform cycle counts, receive shipments, and pick orders directly on the warehouse floor without returning to a computer. This reduces walking time by 60% and increases productivity significantly.
+              </p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Cycle counting on the warehouse floor</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Receiving shipments with barcode scanning</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Order picking and fulfillment verification</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Retail Store Management</h3>
+              <p className="text-gray-700 mb-3">
+                Store managers can check stock levels, scan products, and update inventory while walking the sales floor. This enables real-time inventory visibility and faster response to customer inquiries.
+              </p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Quick stock checks on the sales floor</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Price verification and updates</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Real-time inventory visibility for staff</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Field Service & Delivery</h3>
+              <p className="text-gray-700 mb-3">
+                Delivery drivers and field service technicians can update inventory levels, scan products, and check stock availability while on the road. This improves customer service and inventory accuracy.
+              </p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Update inventory during deliveries</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Check product availability for customers</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Record returns and exchanges on-site</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Multi-Location Management</h3>
+              <p className="text-gray-700 mb-3">
+                Business owners managing multiple locations can check inventory at any location from anywhere. This enables better decision-making and faster response to inventory needs across all locations.
+              </p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Monitor inventory across all locations</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Transfer stock between locations</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Unified view of all inventory</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROI Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
+            ROI of Mobile Inventory Management
+          </h2>
+          <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-lg p-8">
+            <div className="grid md:grid-cols-3 gap-6 mb-6">
+              <div className="bg-white rounded-lg p-6 text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">40-60%</div>
+                <div className="text-lg font-semibold text-gray-900 mb-2">Productivity Increase</div>
+                <p className="text-sm text-gray-600">Faster operations with mobile barcode scanning</p>
+              </div>
+              <div className="bg-white rounded-lg p-6 text-center">
+                <div className="text-4xl font-bold text-green-600 mb-2">99.9%</div>
+                <div className="text-lg font-semibold text-gray-900 mb-2">Accuracy Rate</div>
+                <p className="text-sm text-gray-600">Compared to 88% with manual entry</p>
+              </div>
+              <div className="bg-white rounded-lg p-6 text-center">
+                <div className="text-4xl font-bold text-purple-600 mb-2">5-10x</div>
+                <div className="text-lg font-semibold text-gray-900 mb-2">Faster Operations</div>
+                <p className="text-sm text-gray-600">Than paper-based systems</p>
+              </div>
+            </div>
+            <p className="text-lg text-gray-700 text-center">
+              Businesses using mobile inventory management see significant improvements in efficiency, accuracy, and cost savings. The ability to update inventory from anywhere eliminates delays and reduces errors, leading to better inventory control and improved profitability.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 px-4 bg-blue-600 text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Start Managing Inventory on the Go Today
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            StockFlow's mobile inventory management is included in all plans, including our free plan for up to 100 products. Start managing inventory from anywhere with no credit card required.
+          </p>
+          <Link
+            to="/auth"
+            className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
+          >
+            Start Free Trial →
+          </Link>
         </div>
       </section>
 

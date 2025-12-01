@@ -184,7 +184,7 @@ export default function InventoryManagementSoftwareList() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software List 2025 | Best Inventory Software | StockFlow"
+        title="Inventory Management Software List 2025 - Compare & Save 50-90% | StockFlow"
         description="Compare the best inventory management software list. Reviews, features, pricing, and recommendations for small businesses, e-commerce, and enterprise. Free plan for up to 100 products. Start free trial."
         keywords="inventory management software list, best inventory management software, inventory software list, inventory management software comparison, top inventory software, inventory management software reviews, inventory software recommendations, best inventory software 2025, inventory software comparison, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software-list"

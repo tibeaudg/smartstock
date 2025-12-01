@@ -226,8 +226,8 @@ export default function InventoryOptimization() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Optimization 2025: Strategies, Tools & Best Practices | StockFlow"
-        description="Master inventory optimization in 2025. Reduce costs by 30%, improve cash flow, and eliminate stockouts with proven strategies, AI-powered tools, and best practices. Complete guide."
+        title="Inventory Optimization 2025 - Save 30% Costs, 15-25% Cash Flow | StockFlow"
+        description="Master inventory optimization 2025. Reduce costs by 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI-powered tools, best practices. Free plan available. Start free trial - no credit card required."
         keywords="inventory optimization, optimal inventory, stock optimization, inventory balance, inventory efficiency, stock level optimization, inventory management optimization, inventory cost optimization, ABC analysis, demand forecasting, reorder points, safety stock, EOQ, inventory turnover"
         url="https://www.stockflow.be/glossary/inventory-optimization"
         publishedTime={pageMetadata.published}

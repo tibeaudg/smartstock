@@ -114,8 +114,8 @@ export default function CycleCount() {
       
     >
       <SEO
-        title="Cycle Count Inventory 2025 | Cycle Counting Software | StockFlow"
-        description="Implement cycle count inventory for continuous accuracy. Automate cycle counting, track discrepancies, and optimize stock levels. Free plan available."
+        title="Cycle Count Inventory 2025 - Improve Accuracy 20-30%, Save Time | StockFlow"
+        description="Implement cycle count inventory 2025 for continuous accuracy. Automate cycle counting, improve accuracy 20-30%, track discrepancies. Free plan available. Start free trial - no credit card required."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
         url="https://www.stockflow.be/cycle-count"
       />

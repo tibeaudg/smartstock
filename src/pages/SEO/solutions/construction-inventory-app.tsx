@@ -211,8 +211,8 @@ export default function ConstructionInventoryApp() {
       faqData={faqData}
     >
       <SEO
-        title="Construction Inventory App 2025 | Mobile Job Site Tracking | StockFlow"
-        description="Mobile construction inventory app for job sites. Offline capability, barcode scanning, multi-site tracking. Track materials and equipment from anywhere. Reduce theft, save 10+ hours weekly. Free plan for up to 100 products. Start free trial."
+        title="Construction Inventory App 2025 - Save 10+ Hours/Week, Reduce Theft 20-30% | StockFlow"
+        description="Mobile construction inventory app 2025 for job sites. Offline capability, barcode scanning, multi-site tracking. Save 10+ hours/week, reduce theft 20-30%, improve accuracy 99%+. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="construction inventory app, construction inventory mobile app, construction materials app, job site inventory app, construction inventory tracking app, mobile construction inventory, construction inventory software mobile, construction app inventory, construction materials tracking app, construction inventory management app, mobile construction inventory management, construction site inventory app"
         url="https://www.stockflow.be/solutions/construction-inventory-app"
         structuredData={[structuredData, faqStructuredData]}

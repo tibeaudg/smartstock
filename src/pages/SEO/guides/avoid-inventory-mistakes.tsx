@@ -154,8 +154,8 @@ export default function AvoidInventoryMistakes() {
       faqData={faqData}
     >
       <SEO
-        title="Avoid Inventory Mistakes 2025 - 7 Common Errors & Solutions | StockFlow"
-        description="Learn how to avoid costly inventory mistakes that cost businesses 10-20% of inventory value annually. Discover the 7 most common errors and proven solutions to prevent them. Start free trial."
+        title="Avoid Inventory Mistakes 2025 - Save 10-20% Costs, 7 Solutions | StockFlow"
+        description="Avoid costly inventory mistakes 2025 that cost 10-20% of inventory value annually. Discover 7 common errors and proven solutions. Reduce errors 90-95%. Free plan available. Start free trial - no credit card required."
         keywords="inventory mistakes, stock errors, inventory problems, avoid inventory errors, common inventory mistakes, inventory management errors, prevent inventory mistakes, inventory tracking errors"
         url="https://www.stockflow.be/avoid-inventory-mistakes"
         locale="en"

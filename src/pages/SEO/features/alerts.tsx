@@ -240,8 +240,8 @@ export default function AlertsPage() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Alerts 2025 - Automated Stock Notifications | StockFlow"
-        description="Automated inventory alerts notify you of low stock, reorder points, stockouts, and expiration dates. Real-time notifications via email, SMS, or in-app. Prevent stockouts and optimize inventory levels. Start free trial."
+        title="Inventory Alerts 2025 - Prevent Stockouts, Save 25% Costs | StockFlow"
+        description="Automated inventory alerts 2025 notify you of low stock, reorder points, stockouts. Prevent stockouts, save 25% costs. Real-time notifications via email, SMS, in-app. Free plan available. Start free trial - no credit card required."
         keywords="inventory alerts, stock alerts, low stock alerts, reorder alerts, inventory notifications, stock level alerts, inventory management alerts, automated inventory alerts, stockout alerts, inventory alert system, stockflow"
         url="https://www.stockflow.be/alerts"
         structuredData={structuredData}

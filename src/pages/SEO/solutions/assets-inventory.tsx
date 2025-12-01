@@ -193,8 +193,8 @@ export default function AssetsInventory() {
       faqData={faqData}
     >
       <SEO
-        title="Assets Inventory Management Software 2025 | Equipment Tracking | StockFlow"
-        description="Assets inventory management software for tracking equipment, vehicles, and IT assets. Barcode scanning, maintenance scheduling, location tracking. Free plan for up to 100 assets. Start free today."
+        title="Assets Inventory Management Software 2025 - Reduce Loss 40-60%, Save Time | StockFlow"
+        description="Assets inventory management software 2025 for tracking equipment, vehicles, IT assets. Barcode scanning, maintenance scheduling, location tracking. Reduce loss 40-60%, save 10+ hours/week. Free plan for up to 100 assets. Start free trial - no credit card required."
         keywords="assets inventory, asset inventory management, asset tracking software, equipment inventory, IT asset management, asset management system, fixed asset tracking, asset tracking app, asset inventory software, equipment tracking software, asset management software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/assets-inventory"
         structuredData={[structuredData, faqStructuredData]}

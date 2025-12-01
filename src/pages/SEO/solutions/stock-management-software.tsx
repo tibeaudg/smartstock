@@ -214,8 +214,8 @@ export default function StockManagementSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Stock Management Software 2025 - Real-Time Inventory Control | StockFlow"
-        description="Professional stock management software for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Start free trial."
+        title="Stock Management Software 2025 - Save 10+ Hours/Week, 90% Fewer Errors | StockFlow"
+        description="Professional stock management software 2025 for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="stock management software, inventory software, stock control, warehouse software, SMB stock, small business inventory, stock tracking software, inventory management for small business, stock management system, stock control software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/stock-management-software"
         locale="en"

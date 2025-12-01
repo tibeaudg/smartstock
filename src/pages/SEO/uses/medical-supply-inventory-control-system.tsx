@@ -218,8 +218,8 @@ export default function MedicalSupplyInventoryControlSystem() {
       faqData={faqData}
     >
       <SEO
-        title="Medical Supply Inventory Control System 2025 | Free Plan | StockFlow"
-        description="Discover how medical supply inventory control systems help track supplies, pharmaceuticals, and equipment. Expiration tracking, lot/serial numbers, regulatory compliance. Start free today."
+        title="Medical Supply Inventory Control System 2025 - Reduce Waste 30%, Free Plan | StockFlow"
+        description="Medical supply inventory control system 2025. Track supplies, pharmaceuticals, equipment. Expiration tracking, lot/serial numbers, regulatory compliance. Reduce waste 30%, save costs. Free plan available. Start free trial - no credit card required."
         keywords="medical supply inventory control system, medical inventory control system, medical supply management, healthcare inventory control, medical inventory system, hospital inventory control, medical supply tracking, healthcare inventory management, medical inventory software, medical supply software"
         url="https://www.stockflow.be/uses/medical-supply-inventory-control-system"
         structuredData={[structuredData, faqStructuredData]}

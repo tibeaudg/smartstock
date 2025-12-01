@@ -443,8 +443,8 @@ export default function OnlineInventorySoftware() {
       
     >
       <SEO
-        title="Online Inventory Software 2025 | Cloud-Based System | StockFlow"
-        description="Best online inventory software 2025. Cloud-based, real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products. Start free trial - no credit card required."
+        title="Online Inventory Software 2025 - Save 70% Time, 25% Costs | StockFlow"
+        description="Best online inventory software 2025. Cloud-based, real-time tracking, barcode scanning, multi-channel sync. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="online inventory software, cloud inventory software, web-based inventory software, online inventory management, cloud inventory management, online inventory system, inventory software online, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/online-inventory-software"
         publishedTime={pageMetadata.published}

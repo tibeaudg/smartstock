@@ -211,8 +211,8 @@ export default function InventoryOptimizationServices() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Optimization Services 2025 | Free Tools | StockFlow"
-        description="Learn how inventory optimization services help reduce costs and improve efficiency. Demand forecasting, reorder point optimization, dead stock elimination. Start free today."
+        title="Inventory Optimization Services 2025 - Reduce Costs 20-30%, Free Tools | StockFlow"
+        description="Learn how inventory optimization services 2025 help reduce costs and improve efficiency. Reduce costs 20-30%, improve service levels 15-25%, eliminate dead stock 30-50%. Free tools available. Start free trial - no credit card required."
         keywords="inventory optimization services, inventory optimization consulting, inventory analysis services, inventory management consulting, inventory optimization, inventory consulting services, stock optimization, inventory reduction services, inventory planning services, inventory improvement services"
         url="https://www.stockflow.be/solutions/inventory-optimization-services"
         structuredData={[structuredData, faqStructuredData]}

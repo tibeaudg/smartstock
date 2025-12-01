@@ -108,8 +108,8 @@ export default function OnlineInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Online Inventory Management 2025 | Cloud-Based System | StockFlow"
-        description="Get online inventory management software. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Free plan for up to 30 products. Save 70% time, 25% costs. Start free - no credit card required."
+        title="Online Inventory Management 2025 - Save 70% Time, 25% Costs | StockFlow"
+        description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management online, online inventory management, inventory management software online, online inventory management software, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system, cloud inventory software, online inventory system, web inventory management, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/online-inventory-management"
         structuredData={structuredData}

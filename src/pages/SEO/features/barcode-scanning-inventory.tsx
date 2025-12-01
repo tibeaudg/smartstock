@@ -125,8 +125,8 @@ const BarcodeScanningInventory = () => {
       faqData={faqData}
     >
       <SEO
-        title="Barcode Scanning Inventory 2025 - Mobile Scanner App | StockFlow"
-        description="Use barcode scanning for inventory management. Mobile barcode scanner app works with smartphone cameras. Scan products to update inventory in real-time. 99.9% accuracy, 10x faster than manual entry. Start free trial."
+        title="Barcode Scanning Inventory 2025 - 99.9% Accuracy, 10x Faster | StockFlow"
+        description="Barcode scanning for inventory management 2025. Mobile scanner app works with smartphone cameras. 99.9% accuracy, 10x faster than manual entry. Real-time updates. Free plan available. Start free trial - no credit card required."
         keywords={expandedKeywords}
         url="https://www.stockflow.be/barcode-scanning-inventory"
         locale="en"

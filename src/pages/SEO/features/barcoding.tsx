@@ -243,8 +243,8 @@ export default function BarcodingPage() {
       faqData={faqData}
     >
       <SEO
-        title="Barcoding for Inventory Management 2025 | StockFlow"
-        description="Implement barcoding for inventory management. Generate, print, and scan barcodes with your smartphone. Improve accuracy and efficiency. Free plan available."
+        title="Barcoding for Inventory Management 2025 - 99.7% Accuracy, 5x Faster | StockFlow"
+        description="Implement barcoding for inventory management 2025. Generate, print, scan barcodes with smartphone. Achieve 99.7% accuracy, 5x faster than manual entry. Free plan available. Start free trial - no credit card required."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
         url="https://www.stockflow.be/barcoding"
         structuredData={structuredData}

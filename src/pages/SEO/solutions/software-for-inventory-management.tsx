@@ -205,8 +205,8 @@ export default function SoftwareForInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Software for Inventory Management 2025 - Best Solutions | StockFlow"
-        description="Best software for inventory management. Real-time tracking, automated alerts, barcode scanning, and advanced analytics. Comprehensive tools for inventory control. Free plan for up to 100 products. Start free trial."
+        title="Software for Inventory Management 2025 - Save 70% Time, 25% Costs | StockFlow"
+        description="Best software for inventory management 2025. Real-time tracking, automated alerts, barcode scanning, advanced analytics. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="software for inventory management, inventory management software, software inventory management, best software for inventory management, inventory management software tools, software for inventory tracking, inventory management software solution, software for stock management, inventory management software platform, software for inventory control, inventory management software system, software for inventory optimization, inventory management software tools, software for inventory planning, inventory management software solution, software for inventory analysis, inventory management software platform, software for inventory automation, softwares for inventory management, inventory tracking programs, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/software-for-inventory-management"
       />

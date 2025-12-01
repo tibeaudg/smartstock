@@ -209,8 +209,8 @@ export default function HigherEducationInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Higher Education Inventory Management 2025 | University & College Inventory | StockFlow"
-        description="Complete higher education inventory management for colleges and universities. Track research equipment, lab supplies, technology, and library materials. Reduce loss by 85%, streamline grant audits, and optimize budgets."
+        title="Higher Education Inventory Management 2025 - Reduce Loss 85%, Save Time | StockFlow"
+        description="Complete higher education inventory management 2025 for colleges and universities. Track research equipment, lab supplies, technology. Reduce loss by 85%, streamline grant audits. Free plan available. Start free trial - no credit card required."
         keywords="higher education inventory management, university inventory management, college inventory management, university asset management, research equipment tracking, lab inventory management, higher education inventory software, university inventory system, college asset tracking, grant compliance inventory, stockflow, stock flow"
         url="https://www.stockflow.be/uses/higher-education-inventory-management"
       />

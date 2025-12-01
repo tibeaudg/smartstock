@@ -105,8 +105,8 @@ export default function InventoryManagementSoftwareSolutionsPage() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software Solutions 2025 | Complete Solutions | StockFlow"
-        description="Get complete inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control. Free plan for up to 100 products. Start free trial."
+        title="Inventory Management Software Solutions 2025 - Save 70% Time, 25% Costs | StockFlow"
+        description="Get complete inventory management software solutions 2025. Unify purchasing, warehousing, analytics. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management software solutions, inventory solutions, inventory management solution, stock management solution, inventory system software, cloud inventory solution, inventory management systems solutions, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software-solutions"
         structuredData={structuredData}
