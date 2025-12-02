@@ -212,8 +212,8 @@ export default function InventoryManagementSoftware() {
     faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software 2025 - Save 35% Costs, 15 Hours/Week | StockFlow"
-        description="Best inventory management software 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 35% costs & 15 hours/week. Start free - no credit card required."
+        title="Inventory Software 2025: FREE Plan, Save 35% Costs | StockFlow"
+        description="Best inventory management software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week. 5-7 day setup. Trusted by 1,000+ businesses. Start free - no credit card required."
         keywords="inventory management software, inventory software, stock management software, inventory system, inventory tracking software, inventory management system, best inventory software, online inventory management, cloud inventory software, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-management-software"
         locale="en"
@@ -228,12 +228,17 @@ export default function InventoryManagementSoftware() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Finally, a way to make 100% automatic inventory decisions
-            </h2>
-            <p className="text-lg text-gray-600">
-              StockFlow uses all your data to always order the right products at the right time.
-            </p>
+            <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-6 max-w-4xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+                Finally, a way to make 100% automatic inventory decisions
+              </h2>
+              <p className="text-lg text-gray-700 mb-3">
+                StockFlow uses all your data to always order the right products at the right time.
+              </p>
+              <p className="text-base text-gray-600">
+                <strong>Proven Results:</strong> Businesses using <strong>inventory management software</strong> like StockFlow save an average of <strong>35% on inventory costs</strong>, <strong>15 hours per week</strong> on manual tracking, and achieve <strong>99% inventory accuracy</strong> (vs 85% with manual methods).
+              </p>
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
@@ -397,9 +402,28 @@ export default function InventoryManagementSoftware() {
       {/* What is Inventory Management Software - Comprehensive Guide */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management Software?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management Software? Complete 2025 Guide</h2>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 mb-8">
+            <p className="text-lg text-gray-800 leading-relaxed mb-4">
+              <strong>Inventory management software</strong> is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. Unlike manual methods like Excel spreadsheets, modern <strong>inventory management software</strong> provides real-time visibility, automated processes, and comprehensive analytics.
+            </p>
+            <div className="grid md:grid-cols-3 gap-4 mt-4">
+              <div className="bg-white rounded-lg p-4">
+                <div className="text-2xl font-bold text-blue-600 mb-1">99%</div>
+                <div className="text-sm text-gray-600">Inventory Accuracy</div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <div className="text-2xl font-bold text-blue-600 mb-1">35%</div>
+                <div className="text-sm text-gray-600">Cost Reduction</div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <div className="text-2xl font-bold text-blue-600 mb-1">15h</div>
+                <div className="text-sm text-gray-600">Time Saved/Week</div>
+              </div>
+            </div>
+          </div>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            <strong>Inventory management software</strong> is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations. Unlike manual methods like Excel spreadsheets, modern inventory management software provides real-time visibility, automated processes, and comprehensive analytics. Compare options in our <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide or explore <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> solutions. For cloud-based options, see <Link to="/solutions/inventory-management-software-cloud-based" className="text-blue-600 hover:underline font-semibold">cloud-based inventory management software</Link>.
+            Compare options in our <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide, explore <Link to="/solutions/software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">software for inventory management</Link> solutions, or check <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> options. For cloud-based options, see <Link to="/solutions/inventory-management-software-cloud-based" className="text-blue-600 hover:underline font-semibold">cloud-based inventory management software</Link>. Manufacturing businesses should also consider <Link to="/bill-of-material-management-software-free" className="text-blue-600 hover:underline font-semibold">free BOM management software</Link> for production planning.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -805,7 +829,7 @@ export default function InventoryManagementSoftware() {
             }
           },
           "datePublished": "2024-01-01",
-          "dateModified": new Date().toISOString().split('T')[0],
+          "dateModified": "2025-11-26",
           "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.stockflow.be/inventory-management-software"

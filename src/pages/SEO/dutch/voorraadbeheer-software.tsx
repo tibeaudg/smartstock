@@ -172,8 +172,8 @@ export default function VoorraadbeheerSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Voorraadbeheer Software 2025 - Gratis Plan & Real-time Tracking | StockFlow"
-        description="Beste voorraadbeheer software voor KMO's en webshops. Gratis plan tot 30 producten. Real-time tracking, barcode scanning, automatische bestelmeldingen. Bespaar 70% tijd op voorraadbeheer. Start gratis vandaag - geen creditcard vereist."
+        title="Voorraadbeheer Software 2025: GRATIS Plan, Bespaar 70% Tijd | StockFlow"
+        description="Beste voorraadbeheer software 2025. GRATIS plan (30 producten), real-time tracking, barcode scanning. Bespaar 70% tijd, 25% kosten. Vertrouwd door 1.000+ bedrijven. Start gratis - geen creditcard vereist."
         keywords="stockbeheer programma, voorraadbeheer programma, voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software, programma voor voorraadbeheer, stockbeheer programma gratis"
         url="https://www.stockflow.be/voorraadbeheer-software"
         locale="nl"
@@ -185,11 +185,31 @@ export default function VoorraadbeheerSoftware() {
 
       {/* Introduction */}
       <div className="mb-12">
-        <p className="text-lg black leading-relaxed mb-6">
-          Van kleine ondernemer tot groeiende webshop - beheer je voorraad professioneel met software die is ontworpen voor jouw succes. Start gratis en ervaar het verschil.
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">Waarom Voorraadbeheer Software Belangrijk Is</h2>
+          <p className="text-lg text-gray-800 leading-relaxed mb-4">
+            Bedrijven die <strong>voorraadbeheer software</strong> gebruiken zien dramatische verbeteringen: <strong>70% tijdsbesparing</strong> op voorraadbeheer, <strong>25% lagere voorraadkosten</strong>, en <strong>99% nauwkeurigheid</strong> (vs 85% met handmatige methoden). Deze gids helpt je de juiste oplossing te kiezen.
+          </p>
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="bg-white rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-blue-600">70%</div>
+              <div className="text-xs text-gray-600">Tijdsbesparing</div>
+            </div>
+            <div className="bg-white rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-blue-600">25%</div>
+              <div className="text-xs text-gray-600">Kostenbesparing</div>
+            </div>
+            <div className="bg-white rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-blue-600">99%</div>
+              <div className="text-xs text-gray-600">Nauwkeurigheid</div>
+            </div>
+          </div>
+        </div>
+        <p className="text-lg text-slate-800 leading-relaxed mb-6">
+          Van kleine ondernemer tot groeiende webshop - beheer je voorraad professioneel met <strong>voorraadbeheer software</strong> die is ontworpen voor jouw succes. Start gratis en ervaar het verschil.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Voorraadbeheer software helpt kleine bedrijven om hun voorraad efficiënt te beheren. Het automatiseert het bijhouden van producten, bestellingen en leveringen, waardoor je tijd bespaart en fouten voorkomt.
+          <strong>Voorraadbeheer software</strong> helpt kleine bedrijven om hun voorraad efficiënt te beheren. Het automatiseert het bijhouden van producten, bestellingen en leveringen, waardoor je tijd bespaart en fouten voorkomt. De meeste bedrijven zien ROI binnen de eerste maand.
         </p>
       </div>
 

@@ -115,8 +115,8 @@ export default function VoorraadbeheerHorecaPage() {
       faqData={faqData}
     >
       <SEO
-        title="Voorraadbeheer Horeca 2025 - Restaurant & Hotel Software | StockFlow"
-        description="Complete voorraadbeheer software voor restaurants, cafés en hotels. Houdbaarheidsdata tracking, recepturen, foodcost berekening, verspilling voorkomen. Bespaar 25% op voedselkosten. Start gratis - geen creditcard vereist."
+        title="Horeca Voorraadbeheer 2025: Bespaar 25% Kosten | StockFlow"
+        description="Complete voorraadbeheer software voor restaurants, cafés en hotels. Houdbaarheidsdata, recepturen, foodcost. Bespaar 25% op voedselkosten, voorkom verspilling. GRATIS plan (30 producten). Start gratis - geen creditcard vereist."
         keywords="voorraadbeheer horeca, horeca voorraad, horeca voorraadbeheer software, horeca inventaris, foodcost, keukenvoorraad, restaurant voorraadbeheer, derving horeca, voorraadbeheersysteem horeca, voedselverspilling horeca, horeca marge, kostprijs horeca"
         url="https://www.stockflow.be/voorraadbeheer-horeca"
         structuredData={structuredData}
@@ -126,11 +126,31 @@ export default function VoorraadbeheerHorecaPage() {
 
       {/* Introduction */}
       <div className="mb-12">
-        <p className="text-lg black leading-relaxed mb-6">
-          Voorraadbeheer in de horeca is één van de meest bepalende factoren voor je winstgevendheid—en toch blijft het voor veel restaurants, cafés en hotelkeukens een blinde vlek. Met moderne tools en slimme processen kun je dit volledig omdraaien.
+        <div className="bg-gradient-to-r from-orange-50 to-red-50 border-l-4 border-orange-600 p-6 rounded-r-lg mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">Waarom Horeca Voorraadbeheer Cruciaal Is</h2>
+          <p className="text-lg text-gray-800 leading-relaxed mb-4">
+            Voorraadbeheer in de horeca is één van de meest bepalende factoren voor je winstgevendheid—en toch blijft het voor veel restaurants, cafés en hotelkeukens een blinde vlek. Met moderne <strong>voorraadbeheer software</strong> kun je dit volledig omdraaien.
+          </p>
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="bg-white rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-orange-600">25%</div>
+              <div className="text-xs text-gray-600">Kostenbesparing</div>
+            </div>
+            <div className="bg-white rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-orange-600">30%</div>
+              <div className="text-xs text-gray-600">Minder Verspilling</div>
+            </div>
+            <div className="bg-white rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-orange-600">15-25%</div>
+              <div className="text-xs text-gray-600">Betere Marges</div>
+            </div>
+          </div>
+        </div>
+        <p className="text-lg text-slate-800 leading-relaxed mb-6">
+          <strong>Horeca voorraadbeheer</strong> vereist speciale aandacht voor houdbaarheidsdata, recepturen, kostprijzen per gerecht, en het voorkomen van verspilling. Een goed systeem helpt restaurants en cafés om hun marges te verbeteren en efficiënter te werken.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Horeca voorraadbeheer vereist speciale aandacht voor houdbaarheidsdata, recepturen, kostprijzen per gerecht, en het voorkomen van verspilling. Een goed systeem helpt restaurants en cafés om hun marges te verbeteren en efficiënter te werken.
+          Bedrijven die <strong>voorraadbeheer software voor horeca</strong> gebruiken zien gemiddeld <strong>25% besparing op voedselkosten</strong>, <strong>30% minder verspilling</strong>, en <strong>15-25% betere marges</strong> binnen 3 maanden. De meeste restaurants zien ROI binnen de eerste maand.
         </p>
       </div>
 

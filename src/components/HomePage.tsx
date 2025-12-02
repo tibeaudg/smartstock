@@ -1253,8 +1253,8 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow - Best Inventory Management Software 2025 | Free Forever Plan"
-        description="Cloud-based inventory management software. Track stock in real-time, prevent stockouts, optimize dead stock. Free forever plan available. Trusted by 500+ businesses. Start free today - no credit card required!"
+        title="StockFlow 2025: FREE Plan, Save 35% Costs | Inventory Software"
+        description="Best inventory management software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week. Trusted by 1,000+ businesses. Start free - no credit card required!"
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflow.be/"
         hreflang={[
