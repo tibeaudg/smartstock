@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import SeoPageLayout from '@/components/SeoPageLayout';
+import { StructuredData } from '@/components/StructuredData';
 import {
   Smartphone,
   QrCode,
@@ -249,6 +250,18 @@ export default function BarcodingPage() {
         url="https://www.stockflow.be/barcoding"
         structuredData={structuredData}
       />
+      <StructuredData data={[structuredData, {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqData.map(faq => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      }]} />
 
       {/* Hero */}
       <div className="bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-600 text-white py-20">

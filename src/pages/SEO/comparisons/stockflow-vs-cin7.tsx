@@ -3,6 +3,7 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -110,6 +111,7 @@ export default function StockFlowVsCin7() {
         url="https://www.stockflow.be/stockflow-vs-cin7"
         structuredData={structuredData}
       />
+      <StructuredData data={structuredData} />
 
       {/* Introduction */}
       <div className="mb-12">

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import SeoPageLayout from '@/components/SeoPageLayout';
+import { StructuredData } from '@/components/StructuredData';
 import {
   Smartphone,
   QrCode,
@@ -246,6 +247,18 @@ export default function AlertsPage() {
         url="https://www.stockflow.be/alerts"
         structuredData={structuredData}
       />
+      <StructuredData data={[structuredData, {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqData.map(faq => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      }]} />
 
       {/* Introduction */}
       <div className="mb-12">

@@ -2,6 +2,7 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { StructuredData } from '@/components/StructuredData';
 import {
   Workflow,
   ClipboardCheck,
@@ -112,6 +113,77 @@ const faqData = [
 export default function VoorraadbeheerAutomatiseren5Stappen() {
   usePageRefresh();
 
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqData.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Voorraadbeheer Automatiseren in 5 Stappen 2025",
+      "description": "Leer hoe je voorraadbeheer automatiseert in 5 eenvoudige stappen. Complete gids met praktische tips. Bespaar 70% tijd, 25% kosten.",
+      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "author": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.stockflow.be/logo.png"
+        }
+      },
+      "datePublished": "2024-01-01",
+      "dateModified": new Date().toISOString().split('T')[0],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
+      },
+      "inLanguage": "nl"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Voorraadbeheer Automatiseren in 5 Stappen",
+      "description": "Stap-voor-stap gids om voorraadbeheer te automatiseren",
+      "step": stappen.map((stap, index) => ({
+        "@type": "HowToStep",
+        "position": index + 1,
+        "name": stap.titel,
+        "text": stap.beschrijving
+      }))
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.stockflow.be"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Voorraadbeheer Automatiseren",
+          "item": "https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
+        }
+      ]
+    }
+  ];
+
   return (
     <SeoPageLayout 
       title="Voorraadbeheer Automatiseren in 5 Stappen"
@@ -125,7 +197,9 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
         keywords="voorraadbeheer automatiseren, voorraad automatiseren stappen, voorraad software workflow, stockflow automatisering"
         url="https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
         locale="nl"
+        structuredData={structuredData}
       />
+      <StructuredData data={structuredData} />
 
       <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">

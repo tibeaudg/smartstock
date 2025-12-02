@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { StructuredData } from '@/components/StructuredData';
 import {
   ArrowRight,
   ExternalLink,
@@ -89,7 +90,7 @@ export default function CompareInventorySoftware() {
     },
     {
       question: "Are there free inventory software options to compare?",
-      answer: "Yes, many inventory management systems offer free tiers or free trials. StockFlow provides a free plan for up to 30 products, allowing you to test the system before committing to a paid plan."
+      answer: "Yes, many inventory management systems offer free tiers or free trials. StockFlow provides a free plan for up to 100 products, allowing you to test the system before committing to a paid plan."
     },
     {
       question: "How do pricing models differ between inventory software?",
@@ -98,6 +99,64 @@ export default function CompareInventorySoftware() {
     {
       question: "Can I switch inventory software if I'm not satisfied?",
       answer: "Yes, but switching can be time-consuming. That's why it's important to thoroughly compare options and use free trials before committing. Look for software with good data export capabilities to make future migrations easier."
+    }
+  ];
+
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqData.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Compare Inventory Software 2025 - Complete Buyer's Guide",
+      "description": "Compare top inventory management software 2025. Side-by-side feature comparison, pricing, integrations. Save 50-90% costs vs competitors, free plan available.",
+      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "author": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.stockflow.be/logo.png"
+        }
+      },
+      "datePublished": "2024-01-01",
+      "dateModified": new Date().toISOString().split('T')[0],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.stockflow.be/compare-inventory-software"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.stockflow.be"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Compare Inventory Software",
+          "item": "https://www.stockflow.be/compare-inventory-software"
+        }
+      ]
     }
   ];
 
@@ -115,7 +174,9 @@ export default function CompareInventorySoftware() {
         url="https://www.stockflow.be/compare-inventory-software"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
+        structuredData={structuredData}
       />
+      <StructuredData data={structuredData} />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-50 via-white to-white py-12 md:py-20 px-4">

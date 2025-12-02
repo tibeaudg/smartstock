@@ -4,200 +4,245 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import {
-  Smartphone,
-  QrCode,
-  Scan,
-  BarChart3,
+  Camera,
+  Image,
   CheckCircle,
   ArrowRight,
   Zap,
   Cloud,
   ShieldCheck,
   Clock,
-  ListChecks,
-  Layers,
   Database,
   Boxes,
   ClipboardCheck,
-  Truck
+  Truck,
+  Link as LinkIcon
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { StructuredData } from '@/components/StructuredData';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
-    icon: <Scan className="h-6 w-6" />,
-    title: 'Lightning-Fast Barcode Capture',
-    description: 'Sub-second recognition with auto-focus, glare detection, and vibration feedback for frictionless scanning.'
+    icon: <Camera className="h-6 w-6" />,
+    title: 'Easy Photo Upload',
+    description: 'Upload product photos directly from your smartphone, tablet, or computer. Support for multiple image formats and automatic optimization.'
   },
   {
-    icon: <Smartphone className="h-6 w-6" />,
-    title: 'Works on Every Device',
-    description: 'Use any camera-enabled phone, tablet, rugged scanner, or laptop without installing native apps.'
+    icon: <Image className="h-6 w-6" />,
+    title: 'Multiple Images Per Product',
+    description: 'Add multiple photos per product to show different angles, variations, or packaging. Organize images for better product identification.'
   },
   {
     icon: <Cloud className="h-6 w-6" />,
-    title: 'Real-Time Inventory Sync',
-    description: 'Update stock counts, reservations, and transfers instantly across warehouses, stores, and channels.'
+    title: 'Cloud Storage',
+    description: 'All photos are securely stored in the cloud with automatic backups. Access your product images from anywhere, anytime.'
   },
   {
     icon: <ShieldCheck className="h-6 w-6" />,
-    title: 'Error Prevention Controls',
-    description: 'Enforce quantity thresholds, duplicate detection, and lot validation before updates go live.'
+    title: 'Secure & Private',
+    description: 'Your product photos are encrypted and stored securely. Control who can view and manage images with role-based permissions.'
   },
   {
-    icon: <BarChart3 className="h-6 w-6" />,
-    title: 'Operations Visibility',
-    description: 'Track scan activity, top movers, and exceptions with dashboards built for operations and finance.'
+    icon: <Database className="h-6 w-6" />,
+    title: 'Organized Image Library',
+    description: 'Organize product photos by category, location, or custom tags. Quickly find images with search and filtering capabilities.'
   },
   {
-    icon: <ListChecks className="h-6 w-6" />,
-    title: 'Workflow Automation',
-    description: 'Trigger pick lists, replenishment alerts, and quality checks with configurable scan-driven rules.'
+    icon: <LinkIcon className="h-6 w-6" />,
+    title: 'E-commerce Integration',
+    description: 'Automatically sync product photos to your e-commerce platforms like Shopify, WooCommerce, and Amazon for consistent product listings.'
   }
 ];
 
 const metrics = [
   {
-    icon: <Clock className="h-5 w-5" />,
-    label: '< 1 sec',
-    title: 'Average scan time',
-    description: 'Designed for high-volume lines, cycle counts, and receiving docks.'
+    icon: <Camera className="h-5 w-5" />,
+    label: 'Unlimited',
+    title: 'Product Photos',
+    description: 'Upload unlimited photos per product to showcase all angles and variations.'
   },
   {
     icon: <CheckCircle className="h-5 w-5" />,
-    label: '99.7%',
-    title: 'Scan accuracy',
-    description: 'Built-in validation ensures clean data even with damaged labels.'
+    label: '100%',
+    title: 'Visual Accuracy',
+    description: 'Photos help identify products instantly, reducing picking errors and improving accuracy.'
   },
   {
     icon: <Database className="h-5 w-5" />,
-    label: '50K+',
-    title: 'SKU records synced',
-    description: 'Handles complex catalogs, variants, and serialized items at scale.'
+    label: 'Fast',
+    title: 'Image Loading',
+    description: 'Optimized images load quickly on mobile and desktop for efficient inventory management.'
   }
 ];
 
 const workflowSteps = [
   {
-    title: 'Launch the web scanner',
-    description: 'Open StockFlow on any secure device and choose the scan workflow that matches your task.'
+    title: 'Upload Product Photos',
+    description: 'Take photos with your smartphone or upload existing images. StockFlow supports multiple formats and automatically optimizes file sizes.'
   },
   {
-    title: 'Aim and capture',
-    description: 'Our camera assistant guides placement, auto-focusing and verifying codes before submission.'
+    title: 'Organize & Tag',
+    description: 'Add photos to products, organize by category, and tag images for easy searching. Link photos to specific variants or locations.'
   },
   {
-    title: 'Review in real time',
-    description: 'See live product data, quantity prompts, and exception flags so you never miss a detail.'
+    title: 'Use in Operations',
+    description: 'View product photos during picking, receiving, and cycle counts. Visual identification reduces errors and speeds up operations.'
   },
   {
-    title: 'Sync and automate',
-    description: 'Updates flow instantly to inventory, fulfillment, and analytics with audit trails for every scan.'
+    title: 'Sync to Channels',
+    description: 'Automatically sync product photos to your e-commerce platforms, ensuring consistent product listings across all sales channels.'
   }
 ];
 
-const barcodeTypes = [
+const photoBenefits = [
   {
-    name: 'UPC & EAN',
-    description: 'Core retail SKUs and consumer packaged goods.'
+    name: 'Faster Product Identification',
+    description: 'Visual identification speeds up picking, receiving, and cycle counting operations. Staff can quickly identify products without reading codes or descriptions.'
   },
   {
-    name: 'Code 39 & Code 128',
-    description: 'Logistics, warehousing, manufacturing, and asset tracking.'
+    name: 'Reduced Errors',
+    description: 'Photos help prevent picking mistakes and receiving errors. Visual confirmation ensures the right product is selected or received.'
   },
   {
-    name: 'QR Code & Data Matrix',
-    description: 'Field maintenance, traceability, marketing, and rental fleets.'
+    name: 'Better Training',
+    description: 'New team members learn product identification faster with visual references. Photos serve as training materials for warehouse and retail staff.'
   },
   {
-    name: 'ITF & GS1 DataBar',
-    description: 'Carton labelling, pharmaceuticals, and wholesale distribution.'
+    name: 'E-commerce Ready',
+    description: 'Product photos automatically sync to e-commerce platforms, ensuring your online listings have high-quality images that drive sales.'
   }
 ];
 
 const useCases = [
   {
     icon: <Boxes className="h-6 w-6" />,
-    title: 'Retail & Omnichannel',
+    title: 'Retail & E-commerce',
     points: [
-      'Cycle count store or backroom inventory in minutes.',
-      'Keep eCommerce stock levels accurate for every channel.',
-      'Empower associates with guided scan flows and smart prompts.'
+      'Upload product photos for online listings and in-store displays.',
+      'Sync images automatically to Shopify, Amazon, and WooCommerce.',
+      'Help customers identify products with clear, high-quality images.'
     ]
   },
   {
     icon: <ClipboardCheck className="h-6 w-6" />,
-    title: 'Operations & Compliance',
+    title: 'Warehouse Operations',
     points: [
-      'Capture lot, batch, and expiration data as you scan.',
-      'Generate audit-ready trails automatically for every adjustment.',
-      'Run investigations faster with search-ready scan history.'
+      'Use photos for visual product identification during picking.',
+      'Reduce picking errors with visual confirmation of products.',
+      'Train new staff faster with visual product references.'
     ]
   },
   {
     icon: <Truck className="h-6 w-6" />,
-    title: 'Warehouse & 3PL',
+    title: 'Receiving & Quality Control',
     points: [
-      'Accelerate receiving, putaway, and replenishment tasks.',
-      'Reduce mis-picks with verification prompts at packing stations.',
-      'Integrate with WMS, ERP, and shipping tools through the StockFlow API.'
+      'Compare received items against product photos for verification.',
+      'Document product condition with photos during receiving.',
+      'Maintain visual records for quality control and compliance.'
     ]
   }
 ];
 
 const faqData = [
   {
-    question: 'Do I need dedicated hardware to use StockFlow Scan?',
+    question: 'How do I add photos to inventory items?',
     answer:
-      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow scanner securely in the browser.'
+      'Adding photos is easy! Simply open any product in StockFlow, click the photo upload button, and select images from your device. You can upload from your smartphone, tablet, or computer. StockFlow supports multiple image formats and automatically optimizes file sizes.'
   },
   {
-    question: 'Can the scanner work offline?',
+    question: 'How many photos can I add per product?',
     answer:
-      'Yes. Teams can continue scanning without connectivity. StockFlow queues changes locally and syncs them automatically once a connection is restored.'
+      'StockFlow allows unlimited photos per product. Add multiple images to show different angles, color variations, packaging options, or product details. Organize photos as primary images, secondary images, or custom categories.'
   },
   {
-    question: 'How does StockFlow maintain scan accuracy?',
+    question: 'Do product photos sync to my e-commerce store?',
     answer:
-      'We combine checksum validation, duplicate detection, and product-level rules to stop incorrect submissions before they reach inventory records.'
+      'Yes! When you connect StockFlow with e-commerce platforms like Shopify, WooCommerce, or Amazon, product photos automatically sync to your online listings. This ensures consistent, high-quality product images across all sales channels.'
   },
   {
-    question: 'Does StockFlow support GS1 barcodes and serialization?',
+    question: 'What image formats does StockFlow support?',
     answer:
-      'Absolutely. We parse GS1 application identifiers, serial numbers, lots, and expiration dates so you can meet compliance requirements without manual entry.'
+      'StockFlow supports common image formats including JPEG, PNG, GIF, and WebP. Images are automatically optimized for fast loading on mobile and desktop devices while maintaining quality.'
   },
   {
-    question: 'How quickly can we roll out StockFlow Scan?',
+    question: 'How do photos help with inventory management?',
     answer:
-      'Most teams go live in days. Invite your users, configure workflows, and share a secure URL—no app store approvals or device imaging needed.'
+      'Product photos improve inventory management by enabling visual identification during picking, receiving, and cycle counting. Photos reduce errors, speed up operations, and help train new staff. They also enhance e-commerce listings and customer experience.'
+  },
+  {
+    question: 'Can I organize photos by category or location?',
+    answer:
+      'Yes, StockFlow allows you to organize product photos with tags, categories, and custom labels. You can filter and search photos by these attributes, making it easy to find specific images when needed.'
+  },
+  {
+    question: 'Are my product photos secure?',
+    answer:
+      'Absolutely. All product photos are encrypted and stored securely in the cloud with automatic backups. You control who can view and manage images through role-based permissions. Your photos are private and protected.'
+  },
+  {
+    question: 'Can I use photos for quality control?',
+    answer:
+      'Yes! Product photos are excellent for quality control. You can compare received items against product photos, document product condition, and maintain visual records for compliance and quality assurance purposes.'
   }
 ];
 
 export default function InventoryPhotosPage() {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'StockFlow Inventory Photos',
-    description:
-      'StockFlow Inventory Photos is a browser-based inventory photo solution for real-time inventory control, omni-channel fulfillment, and warehouse accuracy.',
-    url: 'https://www.stockflow.be/inventory-photos',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: ['iOS', 'Android', 'Windows', 'macOS'],
-    featureList: features.map((feature) => feature.title),
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'EUR'
+  const structuredData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'StockFlow Inventory Photos',
+      description:
+        'Add and manage product photos in StockFlow for better inventory identification, reduced errors, and improved e-commerce listings. Upload unlimited photos per product with automatic optimization and cloud storage.',
+      url: 'https://www.stockflow.be/inventory-photos',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: ['iOS', 'Android', 'Windows', 'macOS'],
+      featureList: features.map((feature) => feature.title),
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR'
+      },
+      inLanguage: 'en'
     },
-    inLanguage: 'en',
-    potentialAction: {
-      '@type': 'UseAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://app.stockflow.be/inventory-photos'
-      }
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqData.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer
+        }
+      }))
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://www.stockflow.be'
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Resources',
+          item: 'https://www.stockflow.be/resources'
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: 'Inventory Photos',
+          item: 'https://www.stockflow.be/inventory-photos'
+        }
+      ]
     }
-  };
+  ];
 
   return (
     <SeoPageLayout 
@@ -208,11 +253,12 @@ export default function InventoryPhotosPage() {
     >
       <SEO
         title="Inventory Photos 2025 - Product Image Management | StockFlow"
-        description="Add photos to inventory items for better identification and tracking. Upload product images, manage visual inventory, and improve accuracy with photo-based inventory management. Start free trial."
-        keywords="inventory photos, inventory photo solution, inventory photo management, inventory photo system, inventory photo software, inventory photo app, inventory photo platform, inventory photo service, inventory photo tool, inventory photo technology, inventory photo innovation, inventory photo solution for inventory management, inventory photo solution for inventory tracking, inventory photo solution for inventory control, inventory photo solution for inventory optimization, inventory photo solution for inventory visibility, inventory photo solution for inventory accuracy, inventory photo solution for inventory efficiency, inventory photo solution for inventory compliance, inventory photo solution for inventory security, inventory photo solution for inventory cost reduction, inventory photo solution for inventory growth, inventory photo solution for inventory success, inventory photo solution for inventory future"
+        description="Add photos to inventory items for better identification and tracking. Upload product images, manage visual inventory, and improve accuracy with photo-based inventory management. Sync to e-commerce, reduce errors. Start free trial."
+        keywords="inventory photos, product photos, inventory image management, product image upload, inventory photography, e-commerce product photos, warehouse photos, inventory visual identification, stock photos, product image sync"
         url="https://www.stockflow.be/inventory-photos"
         structuredData={structuredData}
       />
+      <StructuredData data={structuredData} />
 
       {/* Hero */}
       <div className="bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-600 text-white py-20">
@@ -220,13 +266,13 @@ export default function InventoryPhotosPage() {
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div>
               <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
-                Inventory Photos
+                Product Photo Management
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                StockFlow Scan for Real-Time Inventory Accuracy
+                Inventory Photos for Better Product Identification
               </h1>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
-                Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
+                Add unlimited photos to your inventory items for visual identification, reduced errors, and improved e-commerce listings. Upload from any device, organize with tags, and sync automatically to your online stores.
               </p>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {metrics.map((metric, index) => (
@@ -243,19 +289,19 @@ export default function InventoryPhotosPage() {
               <div className="mt-6 flex flex-wrap gap-3 text-sm text-indigo-100/80">
                 <span className="inline-flex items-center">
                   <CheckCircle className="mr-2 h-4 w-4" />
-                  GS1 & QR compatible
+                  Unlimited photos per product
                 </span>
                 <span className="inline-flex items-center">
                   <CheckCircle className="mr-2 h-4 w-4" />
-                  Works online & offline
+                  Auto-sync to e-commerce
                 </span>
               </div>
             </div>
             <div className="relative ">
               <div className="absolute -inset-4 rounded-3xl bg-white/10 blur-3xl" />
                   <img
-                    src="/scanner2.png"
-                    alt="StockFlow barcode scanner interface"
+                    src="/Inventory-Management.png"
+                    alt="StockFlow inventory photo management interface"
                     className="h-[96] w-64 object-cover rounded-3xl"
                   />
             </div>
@@ -268,10 +314,10 @@ export default function InventoryPhotosPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Barcode Scanning Built for High-Velocity Operations
+              Product Photo Management Built for Efficiency
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow Scan powers inventory teams with rapid data capture, validation, and automation—without the friction of installing traditional scanning apps.
+              StockFlow makes it easy to add, organize, and use product photos throughout your inventory operations. Visual identification reduces errors and speeds up workflows.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -294,9 +340,9 @@ export default function InventoryPhotosPage() {
       <div id="how-it-works" className="bg-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">How StockFlow Scan Works</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">How Inventory Photos Work</h2>
             <p className="text-lg text-gray-600">
-              A guided scanning workflow that keeps teams fast, compliant, and confident at every step.
+              A simple workflow for adding, organizing, and using product photos throughout your inventory operations.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
@@ -323,17 +369,17 @@ export default function InventoryPhotosPage() {
       <div className="bg-gradient-to-r from-indigo-50 via-white to-blue-50 py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold mb-4">Support for the Codes Your Supply Chain Runs On</h2>
+            <h2 className="text-3xl font-bold mb-4">Benefits of Product Photos in Inventory</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              StockFlow reads common retail symbologies, GS1 identifiers, and 2D codes so you can consolidate scanning workflows into one platform.
+              Product photos improve inventory management by enabling visual identification, reducing errors, and enhancing e-commerce listings.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2">
-            {barcodeTypes.map((barcode, index) => (
+            {photoBenefits.map((benefit, index) => (
               <Card key={index} className="border-indigo-100">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold text-indigo-700 mb-2">{barcode.name}</h3>
-                  <p className="text-gray-600">{barcode.description}</p>
+                  <h3 className="text-xl font-semibold text-indigo-700 mb-2">{benefit.name}</h3>
+                  <p className="text-gray-600">{benefit.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -345,9 +391,9 @@ export default function InventoryPhotosPage() {
       <div className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Designed for Inventory Teams Everywhere</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Product Photos for Every Business Type</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              From high-volume retail to regulated warehousing, StockFlow Scan adapts to your SOPs, devices, and reporting needs.
+              From e-commerce stores to warehouses, product photos improve operations across all industries and business sizes.
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
@@ -377,35 +423,35 @@ export default function InventoryPhotosPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-2 items-start">
             <div>
-              <h2 className="text-3xl font-bold mb-4">Deploy in Days, Not Months</h2>
+              <h2 className="text-3xl font-bold mb-4">Get Started in Minutes</h2>
               <p className="text-gray-600 mb-6">
-                StockFlow Scan is web-first, so you can onboard teams instantly. Share a secure link, configure workflows, and monitor adoption without waiting on app store approvals or device imaging.
+                Adding photos to your inventory is quick and easy. Upload images from any device, organize with tags, and start using photos immediately. No special setup or training required.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <Zap className="h-5 w-5 text-indigo-600 mt-1" />
                   <div>
-                    <h3 className="text-lg font-semibold">Fast configuration</h3>
+                    <h3 className="text-lg font-semibold">Easy upload</h3>
                     <p className="text-gray-600">
-                      Set locations, user roles, barcode validation rules, and automation triggers from one admin console.
+                      Upload photos from smartphones, tablets, or computers. Support for drag-and-drop, bulk uploads, and automatic image optimization.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <ListChecks className="h-5 w-5 text-indigo-600 mt-1" />
+                  <ClipboardCheck className="h-5 w-5 text-indigo-600 mt-1" />
                   <div>
-                    <h3 className="text-lg font-semibold">Built-in compliance</h3>
+                    <h3 className="text-lg font-semibold">Smart organization</h3>
                     <p className="text-gray-600">
-                      Enforce SOPs with role-based permissions, device telemetry, and detailed audit logs for every scan.
+                      Organize photos with tags, categories, and custom labels. Search and filter images quickly to find what you need.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Cloud className="h-5 w-5 text-indigo-600 mt-1" />
                   <div>
-                    <h3 className="text-lg font-semibold">Integrations that scale</h3>
+                    <h3 className="text-lg font-semibold">E-commerce sync</h3>
                     <p className="text-gray-600">
-                      Connect StockFlow with your ERP, WMS, and analytics stack using REST APIs, webhooks, and native connectors.
+                      Automatically sync product photos to Shopify, WooCommerce, Amazon, and other e-commerce platforms for consistent listings.
                     </p>
                   </div>
                 </div>
@@ -416,15 +462,15 @@ export default function InventoryPhotosPage() {
               <ul className="space-y-4 text-gray-600">
                 <li className="flex items-start gap-3">
                   <ShieldCheck className="h-5 w-5 text-indigo-600 mt-1" />
-                  <span>Role-based access, SSO support, and enforced MFA keep your inventory protected.</span>
+                  <span>Encrypted cloud storage with automatic backups keeps your product photos secure and accessible.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Cloud className="h-5 w-5 text-indigo-600 mt-1" />
-                  <span>Global edge infrastructure delivers sub-second performance for distributed teams.</span>
+                  <span>Optimized images load quickly on mobile and desktop for efficient inventory management.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <Database className="h-5 w-5 text-indigo-600 mt-1" />
-                  <span>Full audit trails and exports ensure every scan is traceable for compliance checks.</span>
+                  <span>Unlimited storage for product photos with automatic organization and search capabilities.</span>
                 </li>
               </ul>
             </div>
@@ -435,15 +481,16 @@ export default function InventoryPhotosPage() {
       {/* CTA */}
       <div className="bg-gradient-to-r from-indigo-700 to-blue-600 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to See StockFlow Scan in Action?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Start Adding Photos to Your Inventory Today</h2>
           <p className="text-lg text-indigo-100 mb-8">
-            Try the scanner with your own barcode labels or connect with our team for a guided walkthrough tailored to your inventory workflows.
+            Upload product photos, organize your image library, and improve inventory accuracy. Start with the free plan and add unlimited photos.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-indigo-700 hover:bg-indigo-100" asChild>
-              <a href="https://app.stockflow.be/scan" target="_blank" rel="noopener noreferrer">
-                Start Scanning Now
-              </a>
+              <Link to="/auth">
+                Start Free Trial
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </Button>
             <Button
               size="lg"
@@ -451,9 +498,9 @@ export default function InventoryPhotosPage() {
               className="border-white text-white hover:bg-white/10"
               asChild
             >
-              <a href="https://www.stockflow.be/contact" target="_blank" rel="noopener noreferrer">
-                Book a Demo
-              </a>
+              <Link to="/contact">
+                Learn More
+              </Link>
             </Button>
           </div>
         </div>
