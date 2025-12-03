@@ -161,7 +161,6 @@ const HeroSection = memo<{
             <strong>Updated on:</strong> {updatedDate}
           </time>
         )}
-        {updatedDate && <span className="w-1 h-1 bg-slate-300 rounded-full" aria-hidden="true"></span>}
       </div>
 
 
