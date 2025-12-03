@@ -170,7 +170,7 @@ export default function InventoryForHospitality() {
     <SeoPageLayout 
       title="Inventory for Hospitality"
       heroTitle="Inventory for Hospitality"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
@@ -193,7 +193,7 @@ export default function InventoryForHospitality() {
           </h1>
           <div className="text-center mb-12">
             <p className="text-xl text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
-              <strong>Inventory management for hospitality</strong> involves tracking, monitoring, and optimizing food & beverage (F&B) inventory, supplies, and equipment for restaurants, hotels, cafes, and catering businesses. Specialized <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> helps hospitality businesses reduce food waste by 20-30%, improve profit margins through better cost control, and streamline operations. Learn more about <Link to="/uses/higher-education-inventory-management" className="text-blue-600 hover:underline font-semibold">industry-specific inventory solutions</Link>.
+              <strong>Inventory management for hospitality</strong> involves tracking, monitoring, and optimizing food & beverage (F&B) inventory, supplies, and equipment for restaurants, hotels, cafes, and catering businesses. Specialized <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> helps hospitality businesses reduce food waste by 20-30%, improve profit margins through better cost control, and streamline operations. Learn more about <Link to="/higher-education-inventory-management" className="text-blue-600 hover:underline font-semibold">industry-specific inventory solutions</Link>.
             </p>
           </div>
         </div>

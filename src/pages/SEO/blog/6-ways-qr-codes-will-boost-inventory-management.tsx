@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "6 Ways QR Codes Will Boost Inventory Management";
-const canonicalPath = "/blog/6-ways-qr-codes-will-boost-inventory-management";
+const canonicalPath = "/6-ways-qr-codes-will-boost-inventory-management";
 const metaDescription = "6 ways QR codes boost inventory management. Learn how QR codes improve accuracy, speed up tracking, reduce errors, and enhance inventory management efficiency.";
 const keywords = "QR codes inventory, QR codes boost inventory, QR code inventory benefits, QR code inventory management, QR code tracking, inventory QR codes";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/6-ways-qr-codes-will-boost-inventory-management"
+      "@id": "https://www.stockflow.be/6-ways-qr-codes-will-boost-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo6WaysQRCodesWillBoostInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

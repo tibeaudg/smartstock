@@ -312,7 +312,7 @@ export default function ElectricalInventoryManagement() {
     <SeoPageLayout 
       title="Electrical Inventory Management"
       heroTitle="Electrical Inventory Management"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

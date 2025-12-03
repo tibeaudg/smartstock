@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "10 Reasons To Upgrade Your IT Asset Management Strategy";
-const canonicalPath = "/blog/10-reasons-to-upgrade-your-it-asset-management-strategy";
+const canonicalPath = "/10-reasons-to-upgrade-your-it-asset-management-strategy";
 const metaDescription = "10 reasons to upgrade your IT asset management strategy. Learn how modern IT asset management improves security, compliance, cost control, and IT operations efficiency.";
 const keywords = "IT asset management, IT asset management strategy, upgrade IT asset management, IT asset tracking, ITAM strategy, IT asset management benefits";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-04",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/10-reasons-to-upgrade-your-it-asset-management-strategy"
+      "@id": "https://www.stockflow.be/10-reasons-to-upgrade-your-it-asset-management-strategy"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo10ReasonsToUpgradeYourITAssetManagementStrategyPage()
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

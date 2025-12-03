@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Track Raw Materials";
-const canonicalPath = "/blog/how-to-track-raw-materials";
+const canonicalPath = "/how-to-track-raw-materials";
 const metaDescription = "Learn how to track raw materials inventory effectively. Methods, best practices, and tools for tracking raw materials from receipt to production. Complete guide for manufacturers.";
 const keywords = "how to track raw materials, raw materials tracking, raw materials inventory, track raw materials, raw materials management, manufacturing inventory, material tracking";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-track-raw-materials"
+      "@id": "https://www.stockflow.be/how-to-track-raw-materials"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToTrackRawMaterialsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

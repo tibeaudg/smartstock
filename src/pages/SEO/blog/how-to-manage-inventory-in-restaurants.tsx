@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Manage Inventory In Restaurants";
-const canonicalPath = "/blog/how-to-manage-inventory-in-restaurants";
+const canonicalPath = "/how-to-manage-inventory-in-restaurants";
 const metaDescription = "Complete guide to managing inventory in restaurants. Learn food inventory management, expiration tracking, waste reduction, and best practices for restaurant stock control.";
 const keywords = "restaurant inventory management, restaurant inventory, food inventory management, restaurant stock management, restaurant inventory control, food service inventory";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-manage-inventory-in-restaurants"
+      "@id": "https://www.stockflow.be/how-to-manage-inventory-in-restaurants"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

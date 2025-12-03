@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Store Construction Materials";
-const canonicalPath = "/blog/how-to-store-construction-materials";
+const canonicalPath = "/how-to-store-construction-materials";
 const metaDescription = "Complete guide to storing construction materials inventory. Learn storage methods, organization systems, and inventory tracking for construction sites. Prevent damage and theft.";
 const keywords = "how to store construction materials, construction materials storage, construction inventory storage, construction materials organization, construction inventory management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-store-construction-materials"
+      "@id": "https://www.stockflow.be/how-to-store-construction-materials"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToStoreConstructionMaterialsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

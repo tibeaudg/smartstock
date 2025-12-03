@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why You Need Medical Inventory Management Software";
-const canonicalPath = "/blog/why-you-need-medical-inventory-management-software";
+const canonicalPath = "/why-you-need-medical-inventory-management-software";
 const metaDescription = "Why you need medical inventory management software. Learn how specialized medical inventory software helps with compliance, expiration tracking, and managing medical supplies.";
 const keywords = "medical inventory management software, medical inventory software, healthcare inventory software, medical supplies software, medical inventory system, hospital inventory software";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/why-you-need-medical-inventory-management-software"
+      "@id": "https://www.stockflow.be/why-you-need-medical-inventory-management-software"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhyYouNeedMedicalInventoryManagementSoftwarePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

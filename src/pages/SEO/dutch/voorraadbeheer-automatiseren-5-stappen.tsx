@@ -188,7 +188,7 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
     <SeoPageLayout 
       title="Voorraadbeheer Automatiseren in 5 Stappen"
       heroTitle="Voorraadbeheer Automatiseren in 5 Stappen"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

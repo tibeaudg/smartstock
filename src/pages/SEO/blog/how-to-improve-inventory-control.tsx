@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Improve Inventory Control";
-const canonicalPath = "/blog/how-to-improve-inventory-control";
+const canonicalPath = "/how-to-improve-inventory-control";
 const metaDescription = "10 proven strategies to improve inventory control. Learn techniques to increase accuracy, reduce errors, prevent stockouts, and optimize inventory management processes.";
 const keywords = "how to improve inventory control, improve inventory control, inventory control improvement, better inventory control, inventory accuracy improvement, inventory control strategies";
 const heroBadge = "Topic Guide • Updated October 2022";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2022-10-20",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-improve-inventory-control"
+      "@id": "https://www.stockflow.be/how-to-improve-inventory-control"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToImproveInventoryControlPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoHowToImproveInventoryControlPage() {
               Key strategies for improving inventory control include implementing automated tracking systems (barcode scanning), setting up automated reorder points, conducting regular cycle counts, using inventory management software, training staff on proper procedures, and analyzing inventory metrics. These improvements typically increase accuracy from 60-80% to 95-99% and reduce stockouts by 40-60%.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Modern inventory management software like StockFlow automates many control processes, providing real-time visibility, automated alerts, and comprehensive reporting. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/blog/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control basics</Link>.
+              Modern inventory management software like StockFlow automates many control processes, providing real-time visibility, automated alerts, and comprehensive reporting. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control basics</Link>.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why improving inventory control matters</h3>

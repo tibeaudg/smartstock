@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Is There An App To Keep Track Of Inventory";
-const canonicalPath = "/blog/is-there-an-app-to-keep-track-of-inventory";
+const canonicalPath = "/is-there-an-app-to-keep-track-of-inventory";
 const metaDescription = "Straight answer and hands-on playbook: when off-the-shelf inventory apps work and the messy situations they don't. Practical fixes and how StockFlow helps you stop firefighting spreadsheets.";
 const keywords = "inventory app, inventory tracking app, inventory management app, StockFlow, inventory operations, warehouse manager guide";
 const heroBadge = "Topic Guide • Updated 20 November 2025";
@@ -142,7 +142,7 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
     <SeoPageLayout
       title={topicTitle}
       heroTitle={topicTitle}
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

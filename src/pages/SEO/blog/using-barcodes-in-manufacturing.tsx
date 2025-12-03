@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Using Barcodes In Manufacturing";
-const canonicalPath = "/blog/using-barcodes-in-manufacturing";
+const canonicalPath = "/using-barcodes-in-manufacturing";
 const metaDescription = "Complete guide to using barcodes in manufacturing. Learn how barcode systems improve production tracking, inventory accuracy, quality control, and manufacturing efficiency.";
 const keywords = "barcodes in manufacturing, manufacturing barcodes, barcode manufacturing, barcode production tracking, manufacturing barcode system, barcode manufacturing process";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/using-barcodes-in-manufacturing"
+      "@id": "https://www.stockflow.be/using-barcodes-in-manufacturing"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoUsingBarcodesInManufacturingPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A GS1 Barcode";
-const canonicalPath = "/blog/what-is-a-gs1-barcode";
+const canonicalPath = "/what-is-a-gs1-barcode";
 const metaDescription = "What is a GS1 barcode? Learn GS1 barcode definition, standards, how GS1 barcodes work, benefits, and when to use GS1 barcodes for inventory and product identification.";
 const keywords = "what is GS1 barcode, GS1 barcode, GS1 barcode definition, GS1 barcode standards, GS1 barcode system, GS1 barcode format, GS1 barcode meaning";
 const heroBadge = "Topic Guide • Updated May 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-05-29",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-a-gs1-barcode"
+      "@id": "https://www.stockflow.be/what-is-a-gs1-barcode"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsAGS1BarcodePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsAGS1BarcodePage() {
               The most common GS1 barcode formats are <strong>UPC</strong> (Universal Product Code, 12 digits, used primarily in North America), <strong>EAN-13</strong> (European Article Number, 13 digits, used worldwide), and <strong>EAN-8</strong> (8 digits, used for small products). All GS1 barcodes follow strict standards that ensure they can be read by any GS1-compliant scanner or system, enabling seamless global trade and inventory management.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              GS1 barcodes are essential for businesses that sell through major retailers (which require GS1 compliance), operate internationally, or need to ensure compatibility across different inventory systems. Learn more about <Link to="/blog/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link> or explore <Link to="/solutions/inventory-scanning-system" className="text-blue-600 hover:underline font-semibold">inventory scanning systems</Link>.
+              GS1 barcodes are essential for businesses that sell through major retailers (which require GS1 compliance), operate internationally, or need to ensure compatibility across different inventory systems. Learn more about <Link to="/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link> or explore <Link to="/solutions/inventory-scanning-system" className="text-blue-600 hover:underline font-semibold">inventory scanning systems</Link>.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why GS1 barcodes matter</h3>

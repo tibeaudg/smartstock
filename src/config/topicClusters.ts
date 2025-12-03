@@ -987,8 +987,8 @@ export const industryVerticalCluster: TopicCluster = {
     { path: '/inventory-management-books', title: 'Bookstore Inventory Management', language: 'en', category: 'Industries', description: 'Book and media inventory control', image: '/dashboard.png' },
     { path: '/inventory-management-hardware', title: 'Hardware Store Inventory Management', language: 'en', category: 'Industries', description: 'Hardware and tools inventory tracking', image: '/dashboard.png' },
     { path: '/inventory-management-hvac', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'HVAC parts and equipment inventory', image: '/dashboard.png' },
-    { path: '/uses/hvac-inventory-management', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'Track HVAC parts, equipment, and service vehicles with mobile scanning and seasonal demand optimization', image: '/dashboard.png' },
-    { path: '/uses/medical-supply-inventory-control-system', title: 'Medical Supply Inventory Control System', language: 'en', category: 'Industries', description: 'Track medical supplies with expiration tracking, lot/serial numbers, and regulatory compliance', image: '/dashboard.png' },
+    { path: '/hvac-inventory-management', title: 'HVAC Inventory Management', language: 'en', category: 'Industries', description: 'Track HVAC parts, equipment, and service vehicles with mobile scanning and seasonal demand optimization', image: '/dashboard.png' },
+    { path: '/medical-supply-inventory-control-system', title: 'Medical Supply Inventory Control System', language: 'en', category: 'Industries', description: 'Track medical supplies with expiration tracking, lot/serial numbers, and regulatory compliance', image: '/dashboard.png' },
     { path: '/inventory-management-furniture', title: 'Furniture Inventory Management', language: 'en', category: 'Industries', description: 'Furniture and home goods inventory', image: '/dashboard.png' },
     { path: '/inventory-management-toys', title: 'Toy Store Inventory Management', language: 'en', category: 'Industries', description: 'Toys and games inventory tracking', image: '/dashboard.png' },
     { path: '/inventory-management-office', title: 'Office Supply Inventory Management', language: 'en', category: 'Industries', description: 'Office supplies and stationery inventory', image: '/dashboard.png' },
@@ -1201,7 +1201,7 @@ export function getBreadcrumbPath(pagePath: string): Array<{ name: string; path:
     }
   }
 
-  // If it's a category index page (e.g., /blog, /glossary), don't add duplicate
+  // If it's a category index page (e.g., , /glossary), don't add duplicate
   if (isCategoryPage) {
     breadcrumbs.push({ 
       name: categoryMap[firstSegment] || firstSegment, 

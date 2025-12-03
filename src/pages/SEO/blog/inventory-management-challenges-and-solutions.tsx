@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Management Challenges And Solutions";
-const canonicalPath = "/blog/inventory-management-challenges-and-solutions";
+const canonicalPath = "/inventory-management-challenges-and-solutions";
 const metaDescription = "Common inventory management challenges and proven solutions. Learn how to solve stockouts, overstocking, inaccurate counts, and other inventory problems. Practical solutions for businesses.";
 const keywords = "inventory management challenges, inventory problems, inventory solutions, inventory challenges solutions, stockout solutions, overstock solutions, inventory accuracy problems";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-management-challenges-and-solutions"
+      "@id": "https://www.stockflow.be/inventory-management-challenges-and-solutions"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryManagementChallengesAndSolutionsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoInventoryManagementChallengesAndSolutionsPage() {
               <strong>Solutions</strong> include implementing inventory management software with real-time tracking, using barcode scanning for accuracy, setting automated reorder points, maintaining safety stock, conducting regular cycle counts, improving demand forecasting, and establishing clear procedures. Implementing solutions typically improves accuracy by 30-50%, reduces stockouts by 40-60%, and reduces costs by 20-30% through better inventory optimization.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Software solutions address multiple challenges simultaneously by providing real-time visibility, automating reordering, improving accuracy, and enabling data-driven decisions. Learn more about <Link to="/blog/inventory-management-best-practices" className="text-blue-600 hover:underline font-semibold">inventory management best practices</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Software solutions address multiple challenges simultaneously by providing real-time visibility, automating reordering, improving accuracy, and enabling data-driven decisions. Learn more about <Link to="/inventory-management-best-practices" className="text-blue-600 hover:underline font-semibold">inventory management best practices</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why solving challenges matters</h3>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is The Best Free Inventory Management Software";
-const canonicalPath = "/blog/what-is-the-best-free-inventory-management-software";
+const canonicalPath = "/what-is-the-best-free-inventory-management-software";
 const metaDescription = "What is the best free inventory management software? Compare free inventory software options, features, limitations, and find the best free solution for your business.";
 const keywords = "best free inventory software, free inventory management software, free inventory software, free inventory system, best free inventory management, free inventory tracking";
 const heroBadge = "Topic Guide • Updated July 2023";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2023-07-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-the-best-free-inventory-management-software"
+      "@id": "https://www.stockflow.be/what-is-the-best-free-inventory-management-software"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsTheBestFreeInventoryManagementSoftwarePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsTheBestFreeInventoryManagementSoftwarePage() {
               Free plans typically include basic inventory tracking, limited products (50-100), barcode scanning, mobile access, basic reporting, and multi-user support. Advanced features like integrations, unlimited products, and advanced analytics usually require paid upgrades. Most free plans work well for businesses with 50-100 products and basic inventory management needs.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Key considerations when choosing free software: product limits, features included, ease of use, mobile apps, and upgrade paths. StockFlow's free plan includes most essential features and scales to paid plans as you grow. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/blog/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
+              Key considerations when choosing free software: product limits, features included, ease of use, mobile apps, and upgrade paths. StockFlow's free plan includes most essential features and scales to paid plans as you grow. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why free inventory software matters</h3>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Asset Tracking 101";
-const canonicalPath = "/blog/asset-tracking-101";
+const canonicalPath = "/asset-tracking-101";
 const metaDescription = "Complete beginner's guide to asset tracking. Learn what asset tracking is, how it works, methods, tools, and best practices for tracking equipment, tools, and fixed assets.";
 const keywords = "asset tracking 101, asset tracking basics, asset tracking guide, equipment tracking, asset management, fixed asset tracking, asset tracking systems, tool tracking";
 const heroBadge = "Topic Guide • Updated October 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-10-29",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/asset-tracking-101"
+      "@id": "https://www.stockflow.be/asset-tracking-101"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoAssetTracking101Page() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

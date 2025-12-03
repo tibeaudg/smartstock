@@ -203,7 +203,7 @@ export default function InventoryManagementOnline() {
     <SeoPageLayout 
       title="Inventory Management Online"
       heroTitle="Inventory Management Online"
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
       
       

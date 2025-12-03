@@ -105,13 +105,8 @@ const defaultArticleImages = [
   '/czc.png',
 ] as const;
 
-const defaultHeroBadges: HeroBadge[] = [
-  { text: "1,000+ happy teams" },
-];
 
-const defaultHeroCTAs: HeroCTA[] = [
-  { label: "Watch Demo", href: "/demo", variant: "primary" }
-];
+
 
 
 
@@ -153,21 +148,8 @@ const HeroSection = memo<{
   if (!heroTitle && !updatedDate) return null;
 
   return (
-    <section className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center space-y-8" aria-labelledby="hero-title">
-      {defaultHeroBadges.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-3 mb-8" role="list" aria-label="Feature highlights">
-          {defaultHeroBadges.map((badge, index) => (
-            <span 
-              key={index} 
-              role="listitem"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold tracking-wide uppercase border border-blue-100"
-            >
-              <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
-              {badge.text}
-            </span>
-          ))}
-        </div>
-      )}
+    <section className="max-w-full rounded-b-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center space-y-8" aria-labelledby="hero-title">
+
       
       <h1 id="hero-title" className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 max-w-4xl mx-auto leading-[1.1]">
         {heroTitle || title}
@@ -182,23 +164,7 @@ const HeroSection = memo<{
         {updatedDate && <span className="w-1 h-1 bg-slate-300 rounded-full" aria-hidden="true"></span>}
       </div>
 
-      {defaultHeroCTAs.length > 0 && (
-        <div className="flex justify-center gap-4 flex-wrap" role="group" aria-label="Call to action buttons">
-          {defaultHeroCTAs.map((cta, i) => (
-            <a 
-              key={i} 
-              href={cta.href}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                cta.variant === 'secondary' 
-                  ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 focus:ring-slate-500' 
-                  : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/20 focus:ring-blue-500'
-              }`}
-            >
-              {cta.label}
-            </a>
-          ))}
-        </div>
-      )}
+
     </section>
   );
 });
@@ -548,7 +514,7 @@ const RecentArticlesSection = memo<{
             {heading}
           </h2>
           <Link 
-            to="/blog" 
+            to="" 
             className="text-blue-600 font-medium flex items-center hover:gap-2 transition-all text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
           >
             View all <ArrowRight className="w-4 h-4 ml-1" aria-hidden="true" />

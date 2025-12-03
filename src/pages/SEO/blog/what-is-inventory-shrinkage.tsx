@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 const topicTitle = "What Is Inventory Shrinkage";
-const canonicalPath = "/blog/what-is-inventory-shrinkage";
+const canonicalPath = "/what-is-inventory-shrinkage";
 const metaDescription = "Learn what inventory shrinkage is, its main causes (theft, damage, errors), and proven strategies to reduce shrinkage. Complete guide with prevention tips and best practices.";
 const keywords = "inventory shrinkage, stock shrinkage, inventory loss, inventory theft, reduce shrinkage, inventory accuracy, inventory control, shrinkage prevention, inventory management";
 const heroBadge = "Inventory Management Guide • Updated October 2025";
@@ -92,7 +92,7 @@ const structuredData = [
     "datePublished": "2025-10-29",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-inventory-shrinkage"
+      "@id": "https://www.stockflow.be/what-is-inventory-shrinkage"
     }
   }
 ];
@@ -109,7 +109,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

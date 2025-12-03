@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Analysis";
-const canonicalPath = "/blog/inventory-analysis";
+const canonicalPath = "/inventory-analysis";
 const metaDescription = "Complete guide to inventory analysis. Learn how to analyze inventory performance, identify slow-moving items, optimize stock levels, and make data-driven inventory decisions.";
 const keywords = "inventory analysis, inventory analytics, inventory reporting, inventory performance analysis, inventory metrics, inventory KPIs, inventory data analysis, stock analysis";
 const heroBadge = "Topic Guide • Updated November 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-11-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-analysis"
+      "@id": "https://www.stockflow.be/inventory-analysis"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryAnalysisPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

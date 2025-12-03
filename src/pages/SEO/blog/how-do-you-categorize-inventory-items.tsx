@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do You Categorize Inventory Items";
-const canonicalPath = "/blog/how-do-you-categorize-inventory-items";
+const canonicalPath = "/how-do-you-categorize-inventory-items";
 const metaDescription = "Learn how to categorize inventory items effectively. Methods for organizing inventory by type, value, movement, and other criteria. ABC analysis and categorization best practices.";
 const keywords = "how to categorize inventory, inventory categorization, inventory classification, categorize inventory items, inventory organization, ABC analysis, inventory categories";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-do-you-categorize-inventory-items"
+      "@id": "https://www.stockflow.be/how-do-you-categorize-inventory-items"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowDoYouCategorizeInventoryItemsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoHowDoYouCategorizeInventoryItemsPage() {
               ABC analysis classifies items by value: A items (high value, low quantity - 20% of items, 80% of value) require tight control, B items (moderate) standard control, C items (low value, high quantity - 80% of items, 20% of value) simple control. Effective categorization improves organization, reporting, analytics, and decision-making.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Use inventory management software to maintain categories digitally with tags, custom fields, and category hierarchies. Software ensures consistency and enables category-based reporting and analytics. Learn more about <Link to="/blog/inventory-analysis" className="text-blue-600 hover:underline font-semibold">inventory analysis</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with categorization features.
+              Use inventory management software to maintain categories digitally with tags, custom fields, and category hierarchies. Software ensures consistency and enables category-based reporting and analytics. Learn more about <Link to="/inventory-analysis" className="text-blue-600 hover:underline font-semibold">inventory analysis</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with categorization features.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why categorization matters</h3>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Much Does Inventory Software Cost";
-const canonicalPath = "/blog/how-much-does-inventory-software-cost";
+const canonicalPath = "/how-much-does-inventory-software-cost";
 const metaDescription = "Complete guide to inventory software pricing. Learn typical costs, pricing models, and what to expect. Compare free vs paid options and find affordable solutions for your business.";
 const keywords = "inventory software cost, inventory software pricing, how much does inventory software cost, inventory management software price, inventory software pricing models, affordable inventory software";
 const heroBadge = "Topic Guide • Updated October 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-10-30",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-much-does-inventory-software-cost"
+      "@id": "https://www.stockflow.be/how-much-does-inventory-software-cost"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowMuchDoesInventorySoftwareCostPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

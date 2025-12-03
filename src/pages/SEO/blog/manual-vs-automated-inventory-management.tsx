@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Manual Vs Automated Inventory Management";
-const canonicalPath = "/blog/manual-vs-automated-inventory-management";
+const canonicalPath = "/manual-vs-automated-inventory-management";
 const metaDescription = "Compare manual vs automated inventory management. Learn the pros and cons of each approach, when to automate, and how automation improves accuracy, efficiency, and cost savings.";
 const keywords = "manual vs automated inventory, automated inventory management, manual inventory management, inventory automation, automated vs manual inventory, inventory management automation";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/manual-vs-automated-inventory-management"
+      "@id": "https://www.stockflow.be/manual-vs-automated-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoManualVsAutomatedInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoManualVsAutomatedInventoryManagementPage() {
               Manual methods work for very small businesses (20-30 items) but become error-prone and time-consuming as you grow. Automation is essential for businesses with 50+ items, multiple locations, or complex inventory needs. Automated systems prevent stockouts through automated reordering, eliminate manual entry errors, and provide comprehensive reporting and analytics.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Key benefits of automation include improved accuracy, time savings, automated reordering, real-time visibility, mobile access, and scalability. Automation pays for itself through improved efficiency and reduced errors. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/blog/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
+              Key benefits of automation include improved accuracy, time savings, automated reordering, real-time visibility, mobile access, and scalability. Automation pays for itself through improved efficiency and reduced errors. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why automation matters</h3>

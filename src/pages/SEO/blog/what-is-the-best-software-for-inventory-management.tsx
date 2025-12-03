@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is The Best Software For Inventory Management";
-const canonicalPath = "/blog/what-is-the-best-software-for-inventory-management";
+const canonicalPath = "/what-is-the-best-software-for-inventory-management";
 const metaDescription = "What is the best software for inventory management? Compare top inventory management software options, features, pricing, and find the best solution for your business.";
 const keywords = "best inventory management software, best inventory software, inventory management software comparison, top inventory software, inventory software reviews, best inventory system";
 const heroBadge = "Topic Guide • Updated December 2022";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2022-12-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-the-best-software-for-inventory-management"
+      "@id": "https://www.stockflow.be/what-is-the-best-software-for-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsTheBestSoftwareForInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsTheBestSoftwareForInventoryManagementPage() {
               Key factors to consider include: real-time tracking capabilities, barcode scanning support, automated reordering, multi-location management, mobile apps for on-the-go access, integration with e-commerce and accounting systems, ease of use, pricing (free plans available), and customer support. The best software balances features, usability, and cost while scaling with your business growth.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Top options range from free plans for startups (StockFlow offers free for up to 100 products) to enterprise solutions costing hundreds per month. Start with free trials to test features and ease of use before committing. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/blog/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory management software</Link> options.
+              Top options range from free plans for startups (StockFlow offers free for up to 100 products) to enterprise solutions costing hundreds per month. Start with free trials to test features and ease of use before committing. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory management software</Link> options.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why choosing the right software matters</h3>

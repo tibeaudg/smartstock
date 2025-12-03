@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do You Control Inventory";
-const canonicalPath = "/blog/how-do-you-control-inventory";
+const canonicalPath = "/how-do-you-control-inventory";
 const metaDescription = "Learn how to control inventory effectively. Essential inventory control methods, techniques, and best practices to maintain accurate stock levels and prevent stockouts or overstock.";
 const keywords = "how to control inventory, inventory control, control inventory, inventory control methods, inventory control techniques, stock control, inventory management control";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-do-you-control-inventory"
+      "@id": "https://www.stockflow.be/how-do-you-control-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowDoYouControlInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

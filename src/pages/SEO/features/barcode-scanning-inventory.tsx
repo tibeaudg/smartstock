@@ -121,7 +121,7 @@ const BarcodeScanningInventory = () => {
     <SeoPageLayout 
       title="Barcode Scanning Inventory"
       heroTitle="Barcode Scanning Inventory"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

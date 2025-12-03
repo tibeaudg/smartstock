@@ -151,7 +151,7 @@ export default function MobielVoorraadbeheer() {
     <SeoPageLayout
       title="Mobiel Voorraadbeheer"
       heroTitle="Mobiel Voorraadbeheer"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

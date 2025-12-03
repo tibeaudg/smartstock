@@ -112,7 +112,7 @@ export default function InventoryPlatform() {
     <SeoPageLayout 
       title="Inventory Platform"
       heroTitle="Inventory Platform"
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
       
       

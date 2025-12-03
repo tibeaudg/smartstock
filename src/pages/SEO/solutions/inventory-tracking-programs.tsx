@@ -176,7 +176,7 @@ export default function InventoryTrackingPrograms() {
     <SeoPageLayout 
       title="Inventory Tracking Programs"
       heroTitle="Inventory Tracking Programs"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "RFID Vs Barcode For Inventory Management";
-const canonicalPath = "/blog/rfid-vs-barcode-for-inventory-management";
+const canonicalPath = "/rfid-vs-barcode-for-inventory-management";
 const metaDescription = "Compare RFID vs barcode for inventory management. Learn the differences, pros and cons, costs, and which technology is best for your inventory tracking needs.";
 const keywords = "RFID vs barcode, RFID vs barcode inventory, RFID inventory tracking, barcode inventory tracking, RFID vs barcode comparison, inventory tracking technology";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/rfid-vs-barcode-for-inventory-management"
+      "@id": "https://www.stockflow.be/rfid-vs-barcode-for-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoRFIDVsBarcodeForInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

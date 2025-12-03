@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "The Best Inventory Tracking Methods For Businesses";
-const canonicalPath = "/blog/the-best-inventory-tracking-methods-for-businesses";
+const canonicalPath = "/the-best-inventory-tracking-methods-for-businesses";
 const metaDescription = "Best inventory tracking methods for businesses. Compare manual tracking, barcode scanning, RFID, and software solutions. Learn which method works best for your business.";
 const keywords = "best inventory tracking methods, inventory tracking methods, inventory tracking techniques, inventory tracking systems, how to track inventory, inventory tracking solutions";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/the-best-inventory-tracking-methods-for-businesses"
+      "@id": "https://www.stockflow.be/the-best-inventory-tracking-methods-for-businesses"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoTheBestInventoryTrackingMethodsForBusinessesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -5,7 +5,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { Target, Zap, Eye, Coins, TrendingUp, ClipboardCheck } from "lucide-react";
 
 const topicTitle = "Barcode Inventory System";
-const canonicalPath = "/blog/barcode-inventory-system";
+const canonicalPath = "/barcode-inventory-system";
 const metaDescription = "Complete guide to barcode inventory systems. Learn how barcode inventory systems work, benefits, implementation, features, and how to choose the best barcode inventory software for your business.";
 const keywords = "barcode inventory system, barcode inventory software, barcode scanning inventory, barcode inventory tracking, inventory barcode scanner, mobile barcode scanning, QR code inventory system, barcode inventory management, how to implement barcode inventory system, benefits of barcode inventory system, barcode inventory system cost, barcode scanning software, inventory tracking system, barcode stock management, mobile inventory scanner, barcode reader for inventory, scan inventory app, barcode tracking system, inventory scanning solution";
 
@@ -90,7 +90,7 @@ export default function BarcodeInventoryPage() {
     <SeoPageLayout 
       title={topicTitle}
       heroTitle={topicTitle}
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

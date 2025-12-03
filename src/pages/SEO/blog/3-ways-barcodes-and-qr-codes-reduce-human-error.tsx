@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "3 Ways Barcodes And QR Codes Reduce Human Error";
-const canonicalPath = "/blog/3-ways-barcodes-and-qr-codes-reduce-human-error";
+const canonicalPath = "/3-ways-barcodes-and-qr-codes-reduce-human-error";
 const metaDescription = "3 ways barcodes and QR codes reduce human error in inventory management. Learn how scanning technology improves accuracy, eliminates data entry mistakes, and prevents inventory errors.";
 const keywords = "barcodes reduce human error, QR codes reduce errors, inventory accuracy, barcode scanning accuracy, reduce inventory errors, inventory error prevention, scanning technology";
 const heroBadge = "Topic Guide • Updated July 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-07-11",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/3-ways-barcodes-and-qr-codes-reduce-human-error"
+      "@id": "https://www.stockflow.be/3-ways-barcodes-and-qr-codes-reduce-human-error"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo3WaysBarcodesAndQRCodesReduceHumanErrorPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

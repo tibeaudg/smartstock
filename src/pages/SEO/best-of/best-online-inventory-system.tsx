@@ -34,7 +34,7 @@ export default function BestOnlineInventorySystem() {
   return (
     <SeoPageLayout title="Best Online Inventory System"
     heroTitle="Best Online Inventory System"
-    updatedDate="20/11/2025"
+    updatedDate="3/12/2025"
     faqData={faqData}
     >
 

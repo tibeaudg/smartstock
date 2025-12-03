@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Inventory Management Changes With Multiple Locations";
-const canonicalPath = "/blog/how-inventory-management-changes-with-multiple-locations";
+const canonicalPath = "/how-inventory-management-changes-with-multiple-locations";
 const metaDescription = "Learn how inventory management changes when operating multiple locations. Challenges, strategies, and solutions for managing inventory across stores, warehouses, and distribution centers.";
 const keywords = "multiple location inventory, inventory multiple locations, multi-location inventory challenges, inventory across locations, multi-site inventory management, inventory distribution";
 const heroBadge = "Topic Guide • Updated July 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-07-11",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-inventory-management-changes-with-multiple-locations"
+      "@id": "https://www.stockflow.be/how-inventory-management-changes-with-multiple-locations"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowInventoryManagementChangesWithMultipleLocationsPag
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoHowInventoryManagementChangesWithMultipleLocationsPag
               Solutions include centralized inventory management software with multi-location support, real-time tracking across all locations, transfer management, and location-specific analytics. Effective multi-location management improves visibility, reduces stockouts by 40-60%, optimizes allocation, and enables data-driven decisions across all locations.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Centralized systems provide real-time visibility, enable efficient transfers, optimize allocation, and ensure consistent processes across all locations. Learn more about <Link to="/blog/multiple-location-inventory-management" className="text-blue-600 hover:underline font-semibold">multiple location inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with multi-location support.
+              Centralized systems provide real-time visibility, enable efficient transfers, optimize allocation, and ensure consistent processes across all locations. Learn more about <Link to="/multiple-location-inventory-management" className="text-blue-600 hover:underline font-semibold">multiple location inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with multi-location support.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why multi-location management matters</h3>

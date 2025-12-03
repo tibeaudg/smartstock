@@ -73,7 +73,7 @@ export default function VoorraadbeheerTips() {
     <SeoPageLayout 
       title="Voorraadbeheer Tips voor KMO's"
       heroTitle="Voorraadbeheer Tips voor KMO's"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
       
      

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Formulas And Ratios";
-const canonicalPath = "/blog/inventory-formulas-and-ratios";
+const canonicalPath = "/inventory-formulas-and-ratios";
 const metaDescription = "Essential inventory formulas and ratios explained. Learn how to calculate inventory turnover, days sales of inventory (DSI), reorder points, safety stock, and other key inventory metrics.";
 const keywords = "inventory formulas, inventory ratios, inventory turnover formula, days sales of inventory, inventory metrics, inventory KPIs, inventory calculations, stock formulas";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-formulas-and-ratios"
+      "@id": "https://www.stockflow.be/inventory-formulas-and-ratios"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryFormulasAndRatiosPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

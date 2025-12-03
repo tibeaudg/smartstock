@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Buffer Stock";
-const canonicalPath = "/blog/buffer-stock";
+const canonicalPath = "/buffer-stock";
 const metaDescription = "What is buffer stock? Learn buffer stock definition, how to calculate buffer stock, and why buffer stock is important for preventing stockouts and ensuring supply continuity.";
 const keywords = "buffer stock, buffer stock definition, buffer stock calculation, safety stock buffer, buffer inventory, buffer stock formula, what is buffer stock";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/buffer-stock"
+      "@id": "https://www.stockflow.be/buffer-stock"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoBufferStockPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

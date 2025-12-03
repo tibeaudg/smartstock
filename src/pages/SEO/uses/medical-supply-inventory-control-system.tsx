@@ -192,7 +192,7 @@ export default function MedicalSupplyInventoryControlSystem() {
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/uses/medical-supply-inventory-control-system"
+      "@id": "https://www.stockflow.be/medical-supply-inventory-control-system"
     }
   };
 
@@ -214,14 +214,14 @@ export default function MedicalSupplyInventoryControlSystem() {
       title="Medical Supply Inventory Control System 2025"
       heroTitle="Medical Supply Inventory Control System: Track Supplies, Pharmaceuticals & Equipment"
       description="Complete medical supply inventory control system. Track medical supplies, pharmaceuticals, and equipment with expiration tracking, lot/serial numbers, and regulatory compliance. Free plan available."
-      updatedDate="2025-01-15"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
         title="Medical Supply Inventory Control System 2025 - Reduce Waste 30%, Free Plan | StockFlow"
         description="Medical supply inventory control system 2025. Track supplies, pharmaceuticals, equipment. Expiration tracking, lot/serial numbers, regulatory compliance. Reduce waste 30%, save costs. Free plan available. Start free trial - no credit card required."
         keywords="medical supply inventory control system, medical inventory control system, medical supply management, healthcare inventory control, medical inventory system, hospital inventory control, medical supply tracking, healthcare inventory management, medical inventory software, medical supply software"
-        url="https://www.stockflow.be/uses/medical-supply-inventory-control-system"
+        url="https://www.stockflow.be/medical-supply-inventory-control-system"
         structuredData={[structuredData, faqStructuredData]}
       />
 
@@ -238,7 +238,7 @@ export default function MedicalSupplyInventoryControlSystem() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Learn more about <Link to="/uses/medical-inventory-management" className="text-blue-600 hover:underline font-semibold">medical inventory management</Link> for comprehensive healthcare inventory solutions, or explore <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for general inventory control.
+            Learn more about <Link to="/medical-inventory-management" className="text-blue-600 hover:underline font-semibold">medical inventory management</Link> for comprehensive healthcare inventory solutions, or explore <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for general inventory control.
           </p>
         </div>
       </section>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Implement A Barcode System In A Warehouse";
-const canonicalPath = "/blog/how-to-implement-a-barcode-system-in-a-warehouse";
+const canonicalPath = "/how-to-implement-a-barcode-system-in-a-warehouse";
 const metaDescription = "Step-by-step guide to implementing a barcode system in your warehouse. Learn equipment needs, setup process, best practices, and how barcode systems improve inventory accuracy.";
 const keywords = "how to implement barcode system warehouse, warehouse barcode system, barcode system implementation, warehouse barcode setup, barcode system warehouse, warehouse inventory barcode";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-implement-a-barcode-system-in-a-warehouse"
+      "@id": "https://www.stockflow.be/how-to-implement-a-barcode-system-in-a-warehouse"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToImplementABarcodeSystemInAWarehousePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

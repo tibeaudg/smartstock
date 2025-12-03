@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Year End Inventory";
-const canonicalPath = "/blog/year-end-inventory";
+const canonicalPath = "/year-end-inventory";
 const metaDescription = "Complete guide to year-end inventory. Learn how to conduct year-end inventory counts, accounting procedures, tax implications, and best practices for closing inventory.";
 const keywords = "year end inventory, year-end inventory, end of year inventory, year end inventory count, closing inventory, year end inventory accounting, inventory year end";
 const heroBadge = "Topic Guide • Updated October 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-10-29",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/year-end-inventory"
+      "@id": "https://www.stockflow.be/year-end-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoYearEndInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoYearEndInventoryPage() {
               Year-end inventory is required for accurate financial statements, tax calculations, and compliance. It provides the ending inventory value used in cost of goods sold calculations and financial reporting. Best practices include preparing in advance, using cycle counts throughout the year, using inventory management software for accuracy, and reconciling discrepancies promptly.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Effective year-end inventory processes reduce time spent, improve accuracy, and ensure compliance. Inventory management software helps by maintaining accurate records throughout the year, enabling efficient counting with barcode scanning, and generating reports. Learn more about <Link to="/blog/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">physical inventory counts</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Effective year-end inventory processes reduce time spent, improve accuracy, and ensure compliance. Inventory management software helps by maintaining accurate records throughout the year, enabling efficient counting with barcode scanning, and generating reports. Learn more about <Link to="/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">physical inventory counts</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why year-end inventory matters</h3>

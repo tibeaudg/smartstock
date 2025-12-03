@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Physical Asset Management";
-const canonicalPath = "/blog/physical-asset-management";
+const canonicalPath = "/physical-asset-management";
 const metaDescription = "Complete guide to physical asset management. Learn how to track, maintain, and manage physical assets like equipment, tools, and fixed assets. Best practices and software solutions.";
 const keywords = "physical asset management, asset management, fixed asset management, asset tracking, equipment asset management, asset management software, asset tracking system";
 const heroBadge = "Topic Guide • Updated October 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-10-12",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/physical-asset-management"
+      "@id": "https://www.stockflow.be/physical-asset-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoPhysicalAssetManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

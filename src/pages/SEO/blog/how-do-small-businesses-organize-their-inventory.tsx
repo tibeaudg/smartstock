@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do Small Businesses Organize Their Inventory";
-const canonicalPath = "/blog/how-do-small-businesses-organize-their-inventory";
+const canonicalPath = "/how-do-small-businesses-organize-their-inventory";
 const metaDescription = "Learn how small businesses organize inventory effectively. Practical strategies, organization systems, and tools for small business inventory management. Free tips and best practices.";
 const keywords = "how to organize inventory small business, small business inventory organization, organize inventory, inventory organization tips, small business stock organization, inventory management small business";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-do-small-businesses-organize-their-inventory"
+      "@id": "https://www.stockflow.be/how-do-small-businesses-organize-their-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowDoSmallBusinessesOrganizeTheirInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoHowDoSmallBusinessesOrganizeTheirInventoryPage() {
               Free software like StockFlow (free for up to 100 products) helps maintain digital organization, improving efficiency and reducing errors. Effective organization improves efficiency, reduces time spent finding items by 50-70%, prevents errors, and makes inventory management easier as your business grows.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices for small businesses: start with simple categorization, use clear labeling, implement basic storage systems, and use free inventory software to maintain digital organization. Keep it simple and scalable. Learn more about <Link to="/blog/how-do-you-organize-inventory" className="text-blue-600 hover:underline font-semibold">how to organize inventory</Link> or explore <Link to="/blog/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory management software</Link> options.
+              Best practices for small businesses: start with simple categorization, use clear labeling, implement basic storage systems, and use free inventory software to maintain digital organization. Keep it simple and scalable. Learn more about <Link to="/how-do-you-organize-inventory" className="text-blue-600 hover:underline font-semibold">how to organize inventory</Link> or explore <Link to="/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory management software</Link> options.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why organization matters for small businesses</h3>

@@ -236,7 +236,7 @@ export default function InventoryManagementSoftwareOnline() {
       title="Online Inventory Management Software"
       heroTitle="Online Inventory Management Software"
       description="Get online inventory management software with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products."
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
@@ -302,7 +302,7 @@ export default function InventoryManagementSoftwareOnline() {
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-900 mb-2">E-commerce Stores</h3>
-              <p className="text-gray-700 text-sm">Wanting real-time stock syncing across multiple sales channels. Explore <Link to="/uses/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">e-commerce inventory management</Link> solutions.</p>
+              <p className="text-gray-700 text-sm">Wanting real-time stock syncing across multiple sales channels. Explore <Link to="/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">e-commerce inventory management</Link> solutions.</p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-semibold text-gray-900 mb-2">Retail Shops</h3>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A Barcode Inventory System";
-const canonicalPath = "/blog/what-is-a-barcode-inventory-system";
+const canonicalPath = "/what-is-a-barcode-inventory-system";
 const metaDescription = "What is a barcode inventory system? Learn how barcode systems work, benefits, components, and how to implement barcode scanning for inventory tracking.";
 const keywords = "barcode inventory system, barcode system, barcode scanning inventory, barcode inventory tracking, barcode system inventory, inventory barcode scanner";
 const heroBadge = "Topic Guide • Updated May 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-05-06",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-a-barcode-inventory-system"
+      "@id": "https://www.stockflow.be/what-is-a-barcode-inventory-system"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsABarcodeInventorySystemPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

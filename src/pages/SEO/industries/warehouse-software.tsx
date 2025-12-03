@@ -209,7 +209,7 @@ export default function WarehouseSoftware() {
     <SeoPageLayout 
       title="Warehouse Software"
       heroTitle="Warehouse Software"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

@@ -210,7 +210,7 @@ export default function HvacInventoryManagement() {
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/uses/hvac-inventory-management"
+      "@id": "https://www.stockflow.be/hvac-inventory-management"
     }
   };
 
@@ -232,14 +232,14 @@ export default function HvacInventoryManagement() {
       title="HVAC Inventory Management 2025"
       heroTitle="HVAC Inventory Management: Track Parts, Equipment & Service Vehicles"
       description="Complete HVAC inventory management guide. Track HVAC parts, equipment, and supplies with mobile scanning, service vehicle management, and seasonal demand optimization. Free plan available."
-      updatedDate="2025-01-15"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
         title="HVAC Inventory Management 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
         description="Complete HVAC inventory management 2025. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Start free trial - no credit card required."
         keywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
-        url="https://www.stockflow.be/uses/hvac-inventory-management"
+        url="https://www.stockflow.be/hvac-inventory-management"
         structuredData={[structuredData, faqStructuredData]}
       />
 
@@ -256,7 +256,7 @@ export default function HvacInventoryManagement() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Learn more about <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for comprehensive inventory solutions, or explore <Link to="/uses/contractor-inventory-management" className="text-blue-600 hover:underline font-semibold">contractor inventory management</Link> for field service businesses.
+            Learn more about <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for comprehensive inventory solutions, or explore <Link to="/contractor-inventory-management" className="text-blue-600 hover:underline font-semibold">contractor inventory management</Link> for field service businesses.
           </p>
         </div>
       </section>

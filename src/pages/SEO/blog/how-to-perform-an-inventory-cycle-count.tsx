@@ -6,7 +6,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Perform An Inventory Cycle Count";
-const canonicalPath = "/blog/how-to-perform-an-inventory-cycle-count";
+const canonicalPath = "/how-to-perform-an-inventory-cycle-count";
 const metaDescription = "Step-by-step guide to performing inventory cycle counts. Learn how to count inventory accurately, schedule cycle counts, and use cycle counting to maintain inventory accuracy without disrupting operations.";
 const keywords = "how to perform cycle count, inventory cycle count, cycle counting, how to count inventory, inventory audit, cycle count procedure, inventory counting, stock counting";
 const heroBadge = "How-To Guide • Updated September 2025";
@@ -91,7 +91,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-perform-an-inventory-cycle-count"
+      "@id": "https://www.stockflow.be/how-to-perform-an-inventory-cycle-count"
     }
   }
 ];
@@ -108,7 +108,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

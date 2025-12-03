@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "3 Best Inventory New Years Resolutions";
-const canonicalPath = "/blog/3-best-inventory-new-years-resolutions";
+const canonicalPath = "/3-best-inventory-new-years-resolutions";
 const metaDescription = "3 best inventory management New Year's resolutions for businesses. Practical goals to improve inventory accuracy, reduce costs, and optimize stock levels in the new year.";
 const keywords = "inventory new years resolutions, inventory goals, inventory improvements, inventory resolutions, inventory management goals, new year inventory planning";
 const heroBadge = "Topic Guide • Updated January 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-01-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/3-best-inventory-new-years-resolutions"
+      "@id": "https://www.stockflow.be/3-best-inventory-new-years-resolutions"
     }
   }
 ];
@@ -103,7 +103,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

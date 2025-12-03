@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Parts Inventory Management Best Practices";
-const canonicalPath = "/blog/parts-inventory-management-best-practices";
+const canonicalPath = "/parts-inventory-management-best-practices";
 const metaDescription = "Best practices for parts inventory management. Learn how to track spare parts, manage maintenance inventory, prevent stockouts, and optimize parts inventory for manufacturing and maintenance.";
 const keywords = "parts inventory management, spare parts inventory, parts inventory best practices, maintenance inventory, parts tracking, spare parts management, inventory parts";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-17",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/parts-inventory-management-best-practices"
+      "@id": "https://www.stockflow.be/parts-inventory-management-best-practices"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

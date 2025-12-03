@@ -10,7 +10,6 @@ import { HomePage } from "./components/HomePage";
 import { HomePageNL } from "./components/HomePageNL";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
-import SEOOverviewPage from './pages/seo';
 import DemoPage from './pages/demo';
 import { Dashboard } from './components/Dashboard';
 import { StockMovements } from './components/StockMovements';
@@ -349,7 +348,6 @@ const AuthRoute = () => {
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/seo" element={<SEOOverviewPage />} />
         <Route path="/demo/*" element={<DemoPage />} />
 
         {/* Legacy route redirects */}

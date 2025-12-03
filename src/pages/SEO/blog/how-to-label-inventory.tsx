@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Label Inventory";
-const canonicalPath = "/blog/how-to-label-inventory";
+const canonicalPath = "/how-to-label-inventory";
 const metaDescription = "Complete guide to labeling inventory. Learn best practices for creating inventory labels, barcode labeling, QR codes, and labeling systems. Improve tracking and organization.";
 const keywords = "how to label inventory, inventory labeling, inventory labels, barcode labeling, inventory tags, QR code labels, inventory labeling system, stock labeling";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-label-inventory"
+      "@id": "https://www.stockflow.be/how-to-label-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToLabelInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

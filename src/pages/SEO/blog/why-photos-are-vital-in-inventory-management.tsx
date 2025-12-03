@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why Photos Are Vital In Inventory Management";
-const canonicalPath = "/blog/why-photos-are-vital-in-inventory-management";
+const canonicalPath = "/why-photos-are-vital-in-inventory-management";
 const metaDescription = "Why photos are vital in inventory management. Learn how product photos improve identification, reduce errors, enhance records, and make inventory management more efficient.";
 const keywords = "photos in inventory management, inventory photos, product photos inventory, inventory images, visual inventory management, inventory photography";
 const heroBadge = "Topic Guide • Updated July 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-07-30",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/why-photos-are-vital-in-inventory-management"
+      "@id": "https://www.stockflow.be/why-photos-are-vital-in-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhyPhotosAreVitalInInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhyPhotosAreVitalInInventoryManagementPage() {
               Photos also improve records, enable remote verification, speed up new staff training, and make inventory management more intuitive. Most inventory management software supports photo uploads, making it easy to add visual references to inventory records. Visual identification is especially important for distinguishing between similar items.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices include: taking clear photos from multiple angles, highlighting key identifying features, using good lighting, and keeping photos updated. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with photo support or explore <Link to="/blog/how-to-organize-inventory" className="text-blue-600 hover:underline font-semibold">inventory organization</Link> strategies.
+              Best practices include: taking clear photos from multiple angles, highlighting key identifying features, using good lighting, and keeping photos updated. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with photo support or explore <Link to="/how-to-organize-inventory" className="text-blue-600 hover:underline font-semibold">inventory organization</Link> strategies.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why photos matter</h3>

@@ -168,7 +168,7 @@ export default function VoorraadbeheerSoftware() {
     <SeoPageLayout 
       title="Voorraadbeheer Software voor KMO's"
       heroTitle="Voorraadbeheer Software voor KMO's"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

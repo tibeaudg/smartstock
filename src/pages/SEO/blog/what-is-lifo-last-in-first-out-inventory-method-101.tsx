@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is Lifo Last In First Out Inventory Method 101";
-const canonicalPath = "/blog/what-is-lifo-last-in-first-out-inventory-method-101";
+const canonicalPath = "/what-is-lifo-last-in-first-out-inventory-method-101";
 const metaDescription = "What is LIFO (Last In First Out) inventory method? Learn LIFO definition, how it works, advantages, disadvantages, and when to use LIFO vs FIFO inventory costing.";
 const keywords = "LIFO inventory method, last in first out, LIFO method, LIFO vs FIFO, LIFO inventory costing, LIFO accounting, inventory costing methods";
 const heroBadge = "Topic Guide • Updated May 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-05-01",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-lifo-last-in-first-out-inventory-method-101"
+      "@id": "https://www.stockflow.be/what-is-lifo-last-in-first-out-inventory-method-101"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsLifoLastInFirstOutInventoryMethod101Page() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsLifoLastInFirstOutInventoryMethod101Page() {
               LIFO is primarily used in the United States for tax advantages during periods of inflation. Because LIFO matches higher current costs to current revenue, it typically results in higher COGS and lower taxable income compared to FIFO (First In First Out). However, LIFO is not allowed under IFRS accounting standards (used outside the US) and can create inventory valuation issues, as the balance sheet may show outdated inventory values.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              The choice between LIFO and FIFO depends on tax strategy, accounting standards, and business needs. Learn more about <Link to="/blog/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> that supports different costing methods.
+              The choice between LIFO and FIFO depends on tax strategy, accounting standards, and business needs. Learn more about <Link to="/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> that supports different costing methods.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why LIFO matters</h3>

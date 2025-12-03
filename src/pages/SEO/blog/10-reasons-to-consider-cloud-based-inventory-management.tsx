@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "10 Reasons To Consider Cloud Based Inventory Management";
-const canonicalPath = "/blog/10-reasons-to-consider-cloud-based-inventory-management";
+const canonicalPath = "/10-reasons-to-consider-cloud-based-inventory-management";
 const metaDescription = "10 compelling reasons to choose cloud-based inventory management. Learn benefits like accessibility, cost savings, automatic updates, scalability, and security advantages.";
 const keywords = "cloud based inventory management, cloud inventory software, cloud inventory benefits, online inventory management, SaaS inventory, cloud inventory advantages";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-04",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/10-reasons-to-consider-cloud-based-inventory-management"
+      "@id": "https://www.stockflow.be/10-reasons-to-consider-cloud-based-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo10ReasonsToConsiderCloudBasedInventoryManagementPage(
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

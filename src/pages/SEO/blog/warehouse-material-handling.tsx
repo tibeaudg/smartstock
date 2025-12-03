@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Warehouse Material Handling";
-const canonicalPath = "/blog/warehouse-material-handling";
+const canonicalPath = "/warehouse-material-handling";
 const metaDescription = "Best practices for warehouse material handling. Learn efficient material handling methods, equipment, safety, and how proper handling improves warehouse operations and inventory management.";
 const keywords = "warehouse material handling, material handling warehouse, warehouse handling, material handling best practices, warehouse operations, material handling equipment";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/warehouse-material-handling"
+      "@id": "https://www.stockflow.be/warehouse-material-handling"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWarehouseMaterialHandlingPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Perpetual Inventory And Physical Inventory";
-const canonicalPath = "/blog/perpetual-inventory-and-physical-inventory";
+const canonicalPath = "/perpetual-inventory-and-physical-inventory";
 const metaDescription = "Compare perpetual inventory vs physical inventory. Learn the differences, advantages, disadvantages, and when to use each inventory tracking method for your business.";
 const keywords = "perpetual inventory vs physical inventory, perpetual inventory, physical inventory, inventory tracking methods, perpetual vs periodic inventory, inventory systems";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/perpetual-inventory-and-physical-inventory"
+      "@id": "https://www.stockflow.be/perpetual-inventory-and-physical-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoPerpetualInventoryAndPhysicalInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoPerpetualInventoryAndPhysicalInventoryPage() {
               Most businesses use perpetual inventory for daily operations with periodic cycle counts (weekly/monthly for high-value items) to verify accuracy. This combination provides real-time tracking without disrupting operations. Perpetual inventory is ideal for modern businesses needing instant visibility, while physical inventory is used for annual financial reporting.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practice: Use perpetual inventory with periodic cycle counts to verify accuracy. This maintains real-time visibility while ensuring records match physical stock. Learn more about <Link to="/blog/what-is-the-best-way-to-count-inventory" className="text-blue-600 hover:underline font-semibold">inventory counting methods</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with perpetual tracking.
+              Best practice: Use perpetual inventory with periodic cycle counts to verify accuracy. This maintains real-time visibility while ensuring records match physical stock. Learn more about <Link to="/what-is-the-best-way-to-count-inventory" className="text-blue-600 hover:underline font-semibold">inventory counting methods</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with perpetual tracking.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why perpetual inventory matters</h3>

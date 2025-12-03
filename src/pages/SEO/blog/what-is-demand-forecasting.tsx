@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is Demand Forecasting";
-const canonicalPath = "/blog/what-is-demand-forecasting";
+const canonicalPath = "/what-is-demand-forecasting";
 const metaDescription = "What is demand forecasting? Learn demand forecasting definition, methods, benefits, and how to use demand forecasting to optimize inventory levels and reduce costs.";
 const keywords = "what is demand forecasting, demand forecasting definition, demand forecasting methods, inventory demand forecasting, demand forecasting benefits, forecast demand";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-demand-forecasting"
+      "@id": "https://www.stockflow.be/what-is-demand-forecasting"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsDemandForecastingPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsDemandForecastingPage() {
               Accurate demand forecasting prevents stockouts (which result in lost sales) and overstocking (which ties up capital), directly impacting profitability. Common forecasting methods include time series analysis (identifying patterns over time), moving averages (simple averages of past periods), exponential smoothing (weighted averages that give more weight to recent data), and machine learning algorithms (for complex pattern recognition). The best method depends on your data patterns, product characteristics, and business needs.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Modern inventory management software includes built-in demand forecasting capabilities that automate calculations and continuously improve accuracy. Learn more about <Link to="/blog/what-is-a-stockout" className="text-blue-600 hover:underline font-semibold">preventing stockouts</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with forecasting features.
+              Modern inventory management software includes built-in demand forecasting capabilities that automate calculations and continuously improve accuracy. Learn more about <Link to="/what-is-a-stockout" className="text-blue-600 hover:underline font-semibold">preventing stockouts</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with forecasting features.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why demand forecasting matters</h3>

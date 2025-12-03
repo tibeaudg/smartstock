@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A Good Inventory Turnover Ratio";
-const canonicalPath = "/blog/what-is-a-good-inventory-turnover-ratio";
+const canonicalPath = "/what-is-a-good-inventory-turnover-ratio";
 const metaDescription = "What is a good inventory turnover ratio? Learn ideal inventory turnover rates by industry, how to calculate it, and how to improve your inventory turnover ratio.";
 const keywords = "good inventory turnover ratio, inventory turnover ratio, ideal inventory turnover, inventory turnover rate, inventory turnover by industry, calculate inventory turnover";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-a-good-inventory-turnover-ratio"
+      "@id": "https://www.stockflow.be/what-is-a-good-inventory-turnover-ratio"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
               Good turnover ratios vary significantly by industry: retail typically sees 4-6x per year, manufacturing 6-8x, and fast-moving consumer goods 8-12x. However, very high turnover (above 12-15x) may indicate stockouts and lost sales, while very low turnover (below 2-3x) suggests overstocking or slow-moving items. The ideal ratio balances having enough stock to meet demand without tying up excessive capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Improving inventory turnover requires optimizing stock levels, improving demand forecasting, and eliminating slow-moving items. Learn more about <Link to="/blog/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with turnover analytics.
+              Improving inventory turnover requires optimizing stock levels, improving demand forecasting, and eliminating slow-moving items. Learn more about <Link to="/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with turnover analytics.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why inventory turnover matters</h3>

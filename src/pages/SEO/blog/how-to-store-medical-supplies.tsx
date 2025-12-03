@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Store Medical Supplies";
-const canonicalPath = "/blog/how-to-store-medical-supplies";
+const canonicalPath = "/how-to-store-medical-supplies";
 const metaDescription = "Best practices for storing medical supplies inventory. Learn proper storage methods, organization systems, and inventory management for medical facilities. Compliance and safety guidelines.";
 const keywords = "how to store medical supplies, medical supplies storage, medical inventory storage, medical supplies organization, medical inventory management, healthcare inventory";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-store-medical-supplies"
+      "@id": "https://www.stockflow.be/how-to-store-medical-supplies"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToStoreMedicalSuppliesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -93,7 +93,7 @@ export default function BillOfMaterialsInventoryManagement() {
       title="Bill of Materials Inventory Management | BOM & Inventory Integration"
       heroTitle="Bill of Materials Inventory Management"
       description="Complete bill of materials inventory management system. Track components and finished goods, calculate material requirements, and manage production with integrated BOM and inventory tracking."
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

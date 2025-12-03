@@ -100,7 +100,7 @@ export default function SoftwareStockbeheer() {
     <SeoPageLayout 
       title="Software Stockbeheer voor Kleine Bedrijven"
       heroTitle="Software Stockbeheer voor Kleine Bedrijven"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

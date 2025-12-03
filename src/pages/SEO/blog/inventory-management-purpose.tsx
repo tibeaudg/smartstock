@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Management Purpose";
-const canonicalPath = "/blog/inventory-management-purpose";
+const canonicalPath = "/inventory-management-purpose";
 const metaDescription = "Learn the purpose and importance of inventory management. Why inventory management matters for businesses, its key objectives, and benefits for operations, cash flow, and customer satisfaction.";
 const keywords = "inventory management purpose, why inventory management, importance of inventory management, inventory management objectives, inventory management benefits, purpose of inventory control";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-management-purpose"
+      "@id": "https://www.stockflow.be/inventory-management-purpose"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryManagementPurposePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoInventoryManagementPurposePage() {
               Effective inventory management balances service levels (product availability) with inventory investment, directly impacting profitability and customer satisfaction. The purpose is achieved through accurate tracking, automated reordering, demand forecasting, safety stock management, regular audits, and data-driven optimization. Businesses with strong inventory management see 20-30% improvement in profitability through better inventory optimization.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Without proper inventory management, businesses face stockouts (lost sales), overstocking (tied-up capital), inaccurate records, waste from obsolescence, and inefficient operations. Learn more about <Link to="/blog/why-is-inventory-management-important" className="text-blue-600 hover:underline font-semibold">why inventory management is important</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Without proper inventory management, businesses face stockouts (lost sales), overstocking (tied-up capital), inaccurate records, waste from obsolescence, and inefficient operations. Learn more about <Link to="/why-is-inventory-management-important" className="text-blue-600 hover:underline font-semibold">why inventory management is important</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why the purpose matters</h3>

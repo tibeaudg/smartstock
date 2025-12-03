@@ -82,7 +82,7 @@ export default function StockflowVsTradegecko() {
     <SeoPageLayout 
       title="StockFlow vs TradeGecko"
       heroTitle="StockFlow vs TradeGecko"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

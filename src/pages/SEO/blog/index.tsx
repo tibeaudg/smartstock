@@ -9,7 +9,7 @@ import SEO from "@/components/SEO";
 import { StructuredData } from "@/components/StructuredData";
 
 // Get original file paths to determine folder structure
-// From src/pages/SEO/blog/, ../ goes to src/pages/SEO/
+// From src/pages/SEO/, ../ goes to src/pages/SEO/
 // So ../**/*.tsx matches all .tsx files in src/pages/SEO/**/*
 const seoFileModules = {
   ...(import.meta as any).glob("../**/*.tsx", { eager: false }),
@@ -177,7 +177,7 @@ export default function SeoBlogIndexPage() {
 
     // Combine routes with metadata, creating basic metadata for pages without it
     const processedPages = routes
-      .filter(route => route.path !== '/blog') // Exclude this overview page itself
+      .filter(route => route.path !== '') // Exclude this overview page itself
       .map(route => {
         const existingMetadata = metadataMap.get(route.path);
         
@@ -185,7 +185,7 @@ export default function SeoBlogIndexPage() {
         const folderCategory = getCategoryFromRoutePath(route.path);
         
         // Debug logging (development only)
-        if (process.env.NODE_ENV === 'development' && folderCategory === 'other' && route.path !== '/blog') {
+        if (process.env.NODE_ENV === 'development' && folderCategory === 'other' && route.path !== '') {
           console.warn(`Route ${route.path} mapped to category "other". Available in map: ${routePathToCategoryMap.has(route.path)}`);
         }
         
@@ -316,7 +316,7 @@ export default function SeoBlogIndexPage() {
     "@type": "CollectionPage",
     "name": "Articles Overview - StockFlow",
     "description": "Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.",
-    "url": "https://www.stockflow.be/blog",
+    "url": "https://www.stockflow.be",
     "mainEntity": {
       "@type": "ItemList",
       "name": "StockFlow Articles",
@@ -340,7 +340,7 @@ export default function SeoBlogIndexPage() {
         title="Articles Overview - StockFlow | Inventory Management Blog"
         description="Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights."
         keywords="inventory management articles, inventory blog, stock management guides, inventory software articles, warehouse management resources"
-        url="https://www.stockflow.be/blog"
+        url="https://www.stockflow.be"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />

@@ -248,7 +248,7 @@ export default function InventoryPhotosPage() {
     <SeoPageLayout 
       title="Inventory Photos"
       heroTitle="Inventory Photos"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

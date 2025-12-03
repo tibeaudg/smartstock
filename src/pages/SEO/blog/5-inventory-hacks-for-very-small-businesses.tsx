@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "5 Inventory Hacks For Very Small Businesses";
-const canonicalPath = "/blog/5-inventory-hacks-for-very-small-businesses";
+const canonicalPath = "/5-inventory-hacks-for-very-small-businesses";
 const metaDescription = "Discover 5 practical inventory management hacks for very small businesses. Simple, cost-effective strategies to improve inventory control without expensive software. Free tips and tools.";
 const keywords = "inventory hacks small business, small business inventory tips, inventory management small business, simple inventory management, small business stock control, inventory tips, inventory tricks, small business inventory solutions";
 const heroBadge = "Small Business Guide • Updated March 2025";
@@ -88,7 +88,7 @@ const structuredData = [
     "datePublished": "2025-03-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/5-inventory-hacks-for-very-small-businesses"
+      "@id": "https://www.stockflow.be/5-inventory-hacks-for-very-small-businesses"
     }
   }
 ];

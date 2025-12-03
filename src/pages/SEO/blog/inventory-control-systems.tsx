@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Control Systems";
-const canonicalPath = "/blog/inventory-control-systems";
+const canonicalPath = "/inventory-control-systems";
 const metaDescription = "Complete guide to inventory control systems. Learn about different types of inventory control systems, how they work, and how to choose the right system for your business.";
 const keywords = "inventory control systems, inventory control, inventory systems, stock control systems, inventory management systems, inventory tracking systems, inventory software";
 const heroBadge = "Topic Guide • Updated November 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-11-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-control-systems"
+      "@id": "https://www.stockflow.be/inventory-control-systems"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryControlSystemsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

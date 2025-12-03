@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Vs Supplies";
-const canonicalPath = "/blog/inventory-vs-supplies";
+const canonicalPath = "/inventory-vs-supplies";
 const metaDescription = "Understand the difference between inventory and supplies. Learn how to categorize and manage both effectively. Key distinctions for accounting and inventory management.";
 const keywords = "inventory vs supplies, difference between inventory and supplies, inventory definition, supplies definition, inventory accounting, supplies accounting, inventory management";
 const heroBadge = "Topic Guide • Updated October 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-10-22",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-vs-supplies"
+      "@id": "https://www.stockflow.be/inventory-vs-supplies"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryVsSuppliesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoInventoryVsSuppliesPage() {
               The key difference is that inventory generates revenue when sold, while supplies support operations but don't directly generate revenue. Proper categorization is essential for accurate accounting, financial reporting, and inventory management. Inventory is tracked as an asset and affects COGS, while supplies are expensed immediately.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              To categorize correctly, ask: 'Will this be sold to customers?' If yes, it's inventory. If no, it's supplies. Use inventory management software to track both categories separately for accurate accounting and better management. Learn more about <Link to="/blog/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              To categorize correctly, ask: 'Will this be sold to customers?' If yes, it's inventory. If no, it's supplies. Use inventory management software to track both categories separately for accurate accounting and better management. Learn more about <Link to="/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why the distinction matters</h3>

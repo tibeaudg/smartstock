@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is The Best Way To Keep Track Of Inventory";
-const canonicalPath = "/blog/what-is-the-best-way-to-keep-track-of-inventory";
+const canonicalPath = "/what-is-the-best-way-to-keep-track-of-inventory";
 const metaDescription = "What is the best way to keep track of inventory? Compare methods: spreadsheets, barcode systems, RFID, and inventory software. Learn which tracking method works best.";
 const keywords = "best way to track inventory, how to keep track of inventory, inventory tracking methods, track inventory, inventory tracking best practices, inventory tracking solutions";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-the-best-way-to-keep-track-of-inventory"
+      "@id": "https://www.stockflow.be/what-is-the-best-way-to-keep-track-of-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsTheBestWayToKeepTrackOfInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsTheBestWayToKeepTrackOfInventoryPage() {
               Barcode scanning eliminates manual entry errors (reducing errors by 90%) and speeds up operations by 5-10x compared to manual tracking. Inventory management software automates reordering, provides real-time visibility across all locations, and generates reports for better decision-making. While spreadsheets work for very small businesses (20-30 items), they become error-prone and time-consuming as you grow.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Modern tracking solutions include mobile apps for on-the-go access, automated alerts for low stock, integration with e-commerce and accounting systems, and comprehensive analytics. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/blog/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link>.
+              Modern tracking solutions include mobile apps for on-the-go access, automated alerts for low stock, integration with e-commerce and accounting systems, and comprehensive analytics. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link>.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why proper tracking matters</h3>

@@ -180,7 +180,7 @@ export default function InventoryManagementSoftwareList() {
       title="Inventory Management Software List | Best Inventory Software 2025"
       heroTitle="Inventory Management Software List"
       description="Complete inventory management software list with reviews, features, and pricing. Compare the best inventory management software options for your business. Free plan available."
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

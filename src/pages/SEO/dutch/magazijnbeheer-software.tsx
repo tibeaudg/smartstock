@@ -105,7 +105,7 @@ export default function MagazijnbeheerSoftware() {
     <SeoPageLayout 
       title="Magazijnbeheer Software voor Kleine Bedrijven"
       heroTitle="Magazijnbeheer Software voor Kleine Bedrijven"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

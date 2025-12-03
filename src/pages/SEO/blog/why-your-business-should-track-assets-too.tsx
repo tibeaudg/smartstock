@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why Your Business Should Track Assets Too";
-const canonicalPath = "/blog/why-your-business-should-track-assets-too";
+const canonicalPath = "/why-your-business-should-track-assets-too";
 const metaDescription = "Why your business should track assets in addition to inventory. Learn the benefits of asset tracking, how it differs from inventory, and why both matter for operations.";
 const keywords = "why track assets, asset tracking benefits, track assets business, asset management importance, asset tracking vs inventory, business asset tracking";
 const heroBadge = "Topic Guide • Updated March 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-03-27",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/why-your-business-should-track-assets-too"
+      "@id": "https://www.stockflow.be/why-your-business-should-track-assets-too"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhyYourBusinessShouldTrackAssetsTooPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhyYourBusinessShouldTrackAssetsTooPage() {
               Asset tracking prevents loss, enables maintenance scheduling, supports depreciation accounting, improves utilization, and ensures compliance. Many inventory management systems also support asset tracking, making it easy to manage both inventory and assets in one platform. This provides comprehensive visibility into all business resources.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Key benefits include preventing loss, enabling maintenance scheduling, supporting depreciation accounting, improving utilization, and ensuring compliance. Learn more about <Link to="/blog/asset-tracking-101" className="text-blue-600 hover:underline font-semibold">asset tracking</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with asset tracking features.
+              Key benefits include preventing loss, enabling maintenance scheduling, supporting depreciation accounting, improving utilization, and ensuring compliance. Learn more about <Link to="/asset-tracking-101" className="text-blue-600 hover:underline font-semibold">asset tracking</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with asset tracking features.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why asset tracking matters</h3>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Pharmacy Inventory Management Best Practices";
-const canonicalPath = "/blog/pharmacy-inventory-management-best-practices";
+const canonicalPath = "/pharmacy-inventory-management-best-practices";
 const metaDescription = "Essential pharmacy inventory management best practices. Learn compliance requirements, expiration tracking, controlled substances management, and specialized strategies for pharmacies.";
 const keywords = "pharmacy inventory management, pharmacy inventory best practices, pharmacy stock management, pharmacy inventory control, pharmacy inventory software, pharmaceutical inventory";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/pharmacy-inventory-management-best-practices"
+      "@id": "https://www.stockflow.be/pharmacy-inventory-management-best-practices"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoPharmacyInventoryManagementBestPracticesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

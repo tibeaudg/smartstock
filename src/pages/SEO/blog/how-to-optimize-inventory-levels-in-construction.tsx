@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Optimize Inventory Levels In Construction";
-const canonicalPath = "/blog/how-to-optimize-inventory-levels-in-construction";
+const canonicalPath = "/how-to-optimize-inventory-levels-in-construction";
 const metaDescription = "Learn how to optimize inventory levels in construction. Strategies to reduce waste, prevent stockouts, manage materials efficiently, and improve construction project profitability.";
 const keywords = "optimize inventory construction, construction inventory optimization, construction inventory management, construction materials inventory, construction stock management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-optimize-inventory-levels-in-construction"
+      "@id": "https://www.stockflow.be/how-to-optimize-inventory-levels-in-construction"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToOptimizeInventoryLevelsInConstructionPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

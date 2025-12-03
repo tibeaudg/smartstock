@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Are The 3 Major Inventory Management Techniques";
-const canonicalPath = "/blog/what-are-the-3-major-inventory-management-techniques";
+const canonicalPath = "/what-are-the-3-major-inventory-management-techniques";
 const metaDescription = "Learn the 3 major inventory management techniques: ABC analysis, Just-in-Time (JIT), and Economic Order Quantity (EOQ). Compare methods and choose the right approach.";
 const keywords = "inventory management techniques, 3 major inventory techniques, ABC analysis, JIT inventory, EOQ, inventory management methods, inventory techniques";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-are-the-3-major-inventory-management-techniques"
+      "@id": "https://www.stockflow.be/what-are-the-3-major-inventory-management-techniques"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatAreThe3MajorInventoryManagementTechniquesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

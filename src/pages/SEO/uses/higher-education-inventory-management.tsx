@@ -205,14 +205,14 @@ export default function HigherEducationInventoryManagement() {
     <SeoPageLayout 
       title="Higher Education Inventory Management"
       heroTitle="Higher Education Inventory Management"
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
         title="Higher Education Inventory Management 2025 - Reduce Loss 85%, Save Time | StockFlow"
         description="Complete higher education inventory management 2025 for colleges and universities. Track research equipment, lab supplies, technology. Reduce loss by 85%, streamline grant audits. Free plan available. Start free trial - no credit card required."
         keywords="higher education inventory management, university inventory management, college inventory management, university asset management, research equipment tracking, lab inventory management, higher education inventory software, university inventory system, college asset tracking, grant compliance inventory, stockflow, stock flow"
-        url="https://www.stockflow.be/uses/higher-education-inventory-management"
+        url="https://www.stockflow.be/higher-education-inventory-management"
       />
 
       {/* Introduction */}

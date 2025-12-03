@@ -240,7 +240,7 @@ export default function BarcodingPage() {
     <SeoPageLayout 
       title="Barcoding"
       heroTitle="Barcoding"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

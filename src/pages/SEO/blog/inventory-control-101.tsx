@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Control 101";
-const canonicalPath = "/blog/inventory-control-101";
+const canonicalPath = "/inventory-control-101";
 const metaDescription = "Learn inventory control fundamentals: tracking, monitoring, and managing stock levels. Essential guide to inventory control systems, methods, and best practices for businesses.";
 const keywords = "inventory control 101, inventory control basics, inventory control systems, inventory control methods, stock control, inventory tracking, inventory monitoring, inventory management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-control-101"
+      "@id": "https://www.stockflow.be/inventory-control-101"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryControl101Page() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoInventoryControl101Page() {
               Key components of inventory control include: accurate tracking (using software with barcode scanning), regular cycle counts (weekly/monthly for high-value items), reorder points (minimum stock levels that trigger new orders), safety stock (buffers against demand variability), and maintaining 95-99% inventory accuracy. The goal is to balance having enough stock to meet demand without tying up excessive capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Effective inventory control prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow by 20-30%, and enables data-driven purchasing decisions. Learn more about <Link to="/blog/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Effective inventory control prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow by 20-30%, and enables data-driven purchasing decisions. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why inventory control matters</h3>

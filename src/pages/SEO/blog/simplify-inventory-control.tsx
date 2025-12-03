@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Simplify Inventory Control";
-const canonicalPath = "/blog/simplify-inventory-control";
+const canonicalPath = "/simplify-inventory-control";
 const metaDescription = "How to simplify inventory control. Learn strategies, tools, and best practices to streamline inventory management, reduce complexity, and make inventory control easier.";
 const keywords = "simplify inventory control, simplify inventory management, easy inventory control, streamline inventory, simple inventory management, inventory simplification";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/simplify-inventory-control"
+      "@id": "https://www.stockflow.be/simplify-inventory-control"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoSimplifyInventoryControlPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoSimplifyInventoryControlPage() {
               Simplification reduces time spent by 50-70%, improves accuracy from 60-80% to 95-99%, and makes inventory management easier and more efficient. Automation eliminates error-prone manual tasks, barcode scanning speeds up data entry, and centralized systems provide real-time visibility without complexity.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices include: replacing spreadsheets with software, automating reordering, using mobile apps for tracking, and consolidating systems. Learn more about <Link to="/blog/manual-vs-automated-inventory-management" className="text-blue-600 hover:underline font-semibold">automated inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Best practices include: replacing spreadsheets with software, automating reordering, using mobile apps for tracking, and consolidating systems. Learn more about <Link to="/manual-vs-automated-inventory-management" className="text-blue-600 hover:underline font-semibold">automated inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why simplification matters</h3>

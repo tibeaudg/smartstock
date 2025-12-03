@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Common Inventory Mistakes And How To Avoid Them";
-const canonicalPath = "/blog/common-inventory-mistakes-and-how-to-avoid-them";
+const canonicalPath = "/common-inventory-mistakes-and-how-to-avoid-them";
 const metaDescription = "Learn the most common inventory management mistakes and how to avoid them. Prevent stockouts, overstocking, inaccurate counts, and other costly inventory errors.";
 const keywords = "common inventory mistakes, inventory management mistakes, inventory errors, how to avoid inventory mistakes, inventory problems, inventory mistakes to avoid";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/common-inventory-mistakes-and-how-to-avoid-them"
+      "@id": "https://www.stockflow.be/common-inventory-mistakes-and-how-to-avoid-them"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoCommonInventoryMistakesAndHowToAvoidThemPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

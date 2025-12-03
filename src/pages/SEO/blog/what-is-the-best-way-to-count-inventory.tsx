@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is The Best Way To Count Inventory";
-const canonicalPath = "/blog/what-is-the-best-way-to-count-inventory";
+const canonicalPath = "/what-is-the-best-way-to-count-inventory";
 const metaDescription = "What is the best way to count inventory? Compare physical counts, cycle counting, and automated methods. Learn best practices for accurate inventory counting.";
 const keywords = "best way to count inventory, how to count inventory, inventory counting methods, inventory count, cycle counting, physical inventory count, inventory counting best practices";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-the-best-way-to-count-inventory"
+      "@id": "https://www.stockflow.be/what-is-the-best-way-to-count-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsTheBestWayToCountInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsTheBestWayToCountInventoryPage() {
               Cycle counting involves counting different inventory items on a rotating schedule—high-value or fast-moving items weekly or monthly, and slower items quarterly. This maintains ongoing accuracy without shutting down operations. Barcode scanning improves counting accuracy to 99.9% and speeds up the process by 5-10x compared to manual counting. Full physical counts are typically done annually for financial reporting.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices include using inventory management software to track counts, training staff on proper procedures, investigating discrepancies immediately, and counting high-value items more frequently. Learn more about <Link to="/blog/how-to-perform-an-inventory-cycle-count" className="text-blue-600 hover:underline font-semibold">cycle counting</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with counting features.
+              Best practices include using inventory management software to track counts, training staff on proper procedures, investigating discrepancies immediately, and counting high-value items more frequently. Learn more about <Link to="/how-to-perform-an-inventory-cycle-count" className="text-blue-600 hover:underline font-semibold">cycle counting</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with counting features.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why efficient counting matters</h3>

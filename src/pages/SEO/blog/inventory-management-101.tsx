@@ -6,7 +6,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Management 101";
-const canonicalPath = "/blog/inventory-management-101";
+const canonicalPath = "/inventory-management-101";
 const metaDescription = "Complete beginner's guide to inventory management. Learn the fundamentals, key concepts, types of inventory, and essential strategies for effective stock control. Perfect for small businesses.";
 const keywords = "inventory management 101, inventory management basics, inventory management fundamentals, inventory management guide, inventory management for beginners, stock management basics, inventory control basics";
 const heroBadge = "Beginner's Guide • Updated September 2025";
@@ -87,7 +87,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-management-101"
+      "@id": "https://www.stockflow.be/inventory-management-101"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryManagement101Page() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

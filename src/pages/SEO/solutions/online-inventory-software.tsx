@@ -437,7 +437,7 @@ export default function OnlineInventorySoftware() {
     <SeoPageLayout 
       title="Online Inventory Software" 
       heroTitle="Online Inventory Software"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

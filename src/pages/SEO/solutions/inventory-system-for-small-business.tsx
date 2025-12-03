@@ -123,7 +123,7 @@ export default function InventorySystemForSmallBusiness() {
     <SeoPageLayout 
       title="Inventory System for Small Business"
       heroTitle="Inventory System for Small Business"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

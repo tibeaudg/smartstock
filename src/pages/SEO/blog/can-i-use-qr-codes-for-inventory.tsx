@@ -6,7 +6,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Can I Use QR Codes For Inventory";
-const canonicalPath = "/blog/can-i-use-qr-codes-for-inventory";
+const canonicalPath = "/can-i-use-qr-codes-for-inventory";
 const metaDescription = "Yes, you can use QR codes for inventory management. Learn how QR codes work for inventory tracking, benefits, setup, and best practices for QR code inventory systems.";
 const keywords = "QR codes for inventory, QR code inventory tracking, QR code inventory system, inventory QR codes, QR code scanning inventory, QR code inventory management";
 const summaryCopy = "Yes, you can use QR codes for inventory management. QR codes store more data than barcodes, can be scanned with any smartphone camera, and work well for inventory tracking. Benefits include: easy scanning with smartphones (no special scanners needed), storing more information (product details, location, history), cost-effective (free QR code generators), and better for mobile inventory management. QR codes are ideal for businesses wanting smartphone-based inventory tracking without expensive barcode scanners.";
@@ -82,7 +82,7 @@ const structuredData = [
     "datePublished": "2025-10-22",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/can-i-use-qr-codes-for-inventory"
+      "@id": "https://www.stockflow.be/can-i-use-qr-codes-for-inventory"
     }
   }
 ];
@@ -102,7 +102,7 @@ export default function SeoCanIUseQRCodesForInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

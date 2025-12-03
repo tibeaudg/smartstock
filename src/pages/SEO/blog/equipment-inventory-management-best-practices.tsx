@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Equipment Inventory Management Best Practices";
-const canonicalPath = "/blog/equipment-inventory-management-best-practices";
+const canonicalPath = "/equipment-inventory-management-best-practices";
 const metaDescription = "Essential equipment inventory management best practices. Learn how to track, maintain, and manage equipment inventory effectively. Prevent loss and optimize equipment utilization.";
 const keywords = "equipment inventory management, equipment inventory best practices, equipment tracking, equipment management, tool inventory management, asset inventory management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/equipment-inventory-management-best-practices"
+      "@id": "https://www.stockflow.be/equipment-inventory-management-best-practices"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoEquipmentInventoryManagementBestPracticesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

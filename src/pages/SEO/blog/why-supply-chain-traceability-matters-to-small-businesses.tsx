@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why Supply Chain Traceability Matters To Small Businesses";
-const canonicalPath = "/blog/why-supply-chain-traceability-matters-to-small-businesses";
+const canonicalPath = "/why-supply-chain-traceability-matters-to-small-businesses";
 const metaDescription = "Why supply chain traceability matters to small businesses. Learn how traceability improves quality, compliance, customer trust, and helps small businesses compete effectively.";
 const keywords = "supply chain traceability, supply chain traceability small business, traceability benefits, supply chain tracking, product traceability, supply chain transparency";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/why-supply-chain-traceability-matters-to-small-businesses"
+      "@id": "https://www.stockflow.be/why-supply-chain-traceability-matters-to-small-businesses"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhySupplyChainTraceabilityMattersToSmallBusinessesPag
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

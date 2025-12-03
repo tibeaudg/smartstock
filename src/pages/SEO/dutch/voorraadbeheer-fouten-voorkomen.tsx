@@ -157,7 +157,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
     <SeoPageLayout
       title="Fouten in Voorraadbeheer Voorkomen"
       heroTitle="Fouten in Voorraadbeheer Voorkomen"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

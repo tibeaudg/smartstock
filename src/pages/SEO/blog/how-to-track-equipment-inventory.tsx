@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Track Equipment Inventory";
-const canonicalPath = "/blog/how-to-track-equipment-inventory";
+const canonicalPath = "/how-to-track-equipment-inventory";
 const metaDescription = "Complete guide to tracking equipment inventory. Learn methods, tools, and best practices for tracking equipment, tools, and assets. Barcode scanning and software solutions.";
 const keywords = "how to track equipment inventory, equipment tracking, equipment inventory, track equipment, asset tracking, equipment management, tool tracking, equipment inventory system";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-track-equipment-inventory"
+      "@id": "https://www.stockflow.be/how-to-track-equipment-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToTrackEquipmentInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

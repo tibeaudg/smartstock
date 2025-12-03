@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Supply Chain Inventory Management";
-const canonicalPath = "/blog/supply-chain-inventory-management";
+const canonicalPath = "/supply-chain-inventory-management";
 const metaDescription = "Complete guide to supply chain inventory management. Learn strategies, best practices, and how to optimize inventory across the supply chain to reduce costs and improve efficiency.";
 const keywords = "supply chain inventory management, supply chain inventory, inventory supply chain, supply chain inventory optimization, supply chain stock management, inventory in supply chain";
 const heroBadge = "Topic Guide • Updated October 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-10-02",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/supply-chain-inventory-management"
+      "@id": "https://www.stockflow.be/supply-chain-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoSupplyChainInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -110,7 +110,7 @@ export default function InventoryScanningSystem() {
     <SeoPageLayout 
       title="Inventory Scanning System"
       heroTitle="Inventory Scanning System"
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
       
       

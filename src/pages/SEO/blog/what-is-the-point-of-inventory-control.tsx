@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is The Point Of Inventory Control";
-const canonicalPath = "/blog/what-is-the-point-of-inventory-control";
+const canonicalPath = "/what-is-the-point-of-inventory-control";
 const metaDescription = "What is the point of inventory control? Learn why inventory control matters, its benefits, objectives, and how proper inventory control improves business operations.";
 const keywords = "point of inventory control, why inventory control, inventory control purpose, importance of inventory control, inventory control benefits, inventory control objectives";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-the-point-of-inventory-control"
+      "@id": "https://www.stockflow.be/what-is-the-point-of-inventory-control"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsThePointOfInventoryControlPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsThePointOfInventoryControlPage() {
               Inventory control serves multiple critical purposes: it prevents stockouts that result in lost sales and customer dissatisfaction, reduces overstocking that ties up capital and increases storage costs, improves cash flow by optimizing inventory levels, minimizes waste from obsolescence, enables data-driven purchasing decisions, and provides visibility into business operations. Without proper control, businesses face stockouts, excess inventory, inaccurate records, and inefficient operations.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Modern inventory control uses software, automation, and data analytics to maintain optimal stock levels. Learn more about <Link to="/blog/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Modern inventory control uses software, automation, and data analytics to maintain optimal stock levels. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why inventory control matters</h3>

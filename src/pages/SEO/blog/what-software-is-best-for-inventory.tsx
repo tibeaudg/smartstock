@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Software Is Best For Inventory";
-const canonicalPath = "/blog/what-software-is-best-for-inventory";
+const canonicalPath = "/what-software-is-best-for-inventory";
 const metaDescription = "What software is best for inventory? Compare inventory software options, features, and pricing. Find the best inventory management software for your business needs.";
 const keywords = "best software for inventory, inventory software, inventory management software, best inventory software, inventory software comparison, inventory system software";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-software-is-best-for-inventory"
+      "@id": "https://www.stockflow.be/what-software-is-best-for-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatSoftwareIsBestForInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatSoftwareIsBestForInventoryPage() {
               Key factors to consider include: ease of use, essential features (real-time tracking, barcode scanning, reporting), pricing (free plans available), scalability, mobile access, and integration capabilities. Cloud-based solutions are ideal because they require no IT infrastructure, provide automatic updates, and are accessible from anywhere. Best options range from free plans for startups to enterprise solutions for large operations.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Essential features include real-time tracking, barcode scanning, automated reorder alerts, mobile apps, multi-location support, reporting, and integrations. Start with free plans or trials to test before committing. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/blog/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
+              Essential features include real-time tracking, barcode scanning, automated reorder alerts, mobile apps, multi-location support, reporting, and integrations. Start with free plans or trials to test before committing. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why choosing the right software matters</h3>

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "5 Signs Your Inventory Management Needs An Overhaul";
-const canonicalPath = "/blog/5-signs-your-inventory-management-needs-an-overhaul";
+const canonicalPath = "/5-signs-your-inventory-management-needs-an-overhaul";
 const metaDescription = "5 warning signs your inventory management needs an overhaul. Learn when to upgrade your inventory system, recognize problems, and take action to improve operations.";
 const keywords = "inventory management overhaul, inventory system upgrade, inventory problems, inventory management issues, when to upgrade inventory, inventory management warning signs";
 const heroBadge = "Topic Guide • Updated June 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-06-19",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/5-signs-your-inventory-management-needs-an-overhaul"
+      "@id": "https://www.stockflow.be/5-signs-your-inventory-management-needs-an-overhaul"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo5SignsYourInventoryManagementNeedsAnOverhaulPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

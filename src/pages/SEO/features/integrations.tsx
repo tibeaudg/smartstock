@@ -151,7 +151,7 @@ export default function SEOIntegrationsPage() {
     <SeoPageLayout 
       title="Inventory Management Integrations"
       heroTitle="Inventory Management Integrations"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

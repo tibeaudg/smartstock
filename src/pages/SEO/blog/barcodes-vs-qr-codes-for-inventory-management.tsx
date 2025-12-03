@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Barcodes Vs QR Codes For Inventory Management";
-const canonicalPath = "/blog/barcodes-vs-qr-codes-for-inventory-management";
+const canonicalPath = "/barcodes-vs-qr-codes-for-inventory-management";
 const metaDescription = "Compare barcodes vs QR codes for inventory management. Learn the differences, pros and cons, use cases, and which to choose for your inventory tracking needs. Complete comparison guide.";
 const keywords = "barcodes vs QR codes, barcode vs QR code inventory, inventory barcodes, inventory QR codes, barcode scanning inventory, QR code scanning, inventory tracking codes";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/barcodes-vs-qr-codes-for-inventory-management"
+      "@id": "https://www.stockflow.be/barcodes-vs-qr-codes-for-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoBarcodesVsQRCodesForInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

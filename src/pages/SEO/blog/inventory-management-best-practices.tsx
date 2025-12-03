@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Management Best Practices";
-const canonicalPath = "/blog/inventory-management-best-practices";
+const canonicalPath = "/inventory-management-best-practices";
 const metaDescription = "Discover 15 essential inventory management best practices to optimize stock levels, reduce costs, and improve efficiency. Proven strategies for businesses of all sizes.";
 const keywords = "inventory management best practices, inventory best practices, stock management best practices, inventory optimization, inventory control best practices, inventory management tips, inventory management strategies";
 const heroBadge = "Topic Guide • Updated January 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-01-11",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-management-best-practices"
+      "@id": "https://www.stockflow.be/inventory-management-best-practices"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoInventoryManagementBestPracticesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoInventoryManagementBestPracticesPage() {
               Implementing best practices typically improves inventory accuracy by 30-50% (from 60-80% to 95-99%), reduces stockouts by 40-60%, and reduces costs by 20-30% through better inventory optimization. Additional practices include conducting regular audits, training staff on proper procedures, establishing clear accountability, and using real-time tracking systems.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices prevent stockouts (lost sales), reduce overstocking (frees up capital), improve cash flow, minimize waste from obsolescence, and enable data-driven purchasing decisions. Learn more about <Link to="/blog/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Best practices prevent stockouts (lost sales), reduce overstocking (frees up capital), improve cash flow, minimize waste from obsolescence, and enable data-driven purchasing decisions. Learn more about <Link to="/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why best practices matter</h3>

@@ -233,7 +233,7 @@ export default function ShopifyPlusWmsIntegration() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Integration works through secure APIs: Shopify sends order data to the WMS when orders are placed, the WMS processes orders and manages fulfillment, and inventory levels sync back to Shopify automatically. Learn more about <Link to="/uses/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">ecommerce inventory management</Link> for multi-channel sellers.
+            Integration works through secure APIs: Shopify sends order data to the WMS when orders are placed, the WMS processes orders and manages fulfillment, and inventory levels sync back to Shopify automatically. Learn more about <Link to="/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">ecommerce inventory management</Link> for multi-channel sellers.
           </p>
         </div>
       </section>

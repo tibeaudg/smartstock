@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do You Organize Inventory";
-const canonicalPath = "/blog/how-do-you-organize-inventory";
+const canonicalPath = "/how-do-you-organize-inventory";
 const metaDescription = "Complete guide to organizing inventory effectively. Learn organization methods, storage systems, categorization strategies, and best practices for maintaining organized inventory.";
 const keywords = "how to organize inventory, inventory organization, organize inventory, inventory organization methods, inventory storage organization, inventory organization tips";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-do-you-organize-inventory"
+      "@id": "https://www.stockflow.be/how-do-you-organize-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowDoYouOrganizeInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoHowDoYouOrganizeInventoryPage() {
               Effective organization improves efficiency, reduces time spent finding items by 50-70%, prevents errors, and enables better inventory management. Use software to maintain organization digitally and physically. Well-organized inventory is essential for operational efficiency and scales as your business grows.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices include: ABC analysis for high-value items, organizing by product type, grouping fast-moving items together, using consistent naming, clear labeling, and inventory management software for digital organization. Learn more about <Link to="/blog/how-do-you-categorize-inventory-items" className="text-blue-600 hover:underline font-semibold">categorizing inventory items</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Best practices include: ABC analysis for high-value items, organizing by product type, grouping fast-moving items together, using consistent naming, clear labeling, and inventory management software for digital organization. Learn more about <Link to="/how-do-you-categorize-inventory-items" className="text-blue-600 hover:underline font-semibold">categorizing inventory items</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why organization matters</h3>

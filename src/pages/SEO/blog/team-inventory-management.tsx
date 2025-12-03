@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Team Inventory Management";
-const canonicalPath = "/blog/team-inventory-management";
+const canonicalPath = "/team-inventory-management";
 const metaDescription = "Best practices for team-based inventory management. Learn how to manage inventory with multiple users, role-based access, collaboration tools, and team workflows.";
 const keywords = "team inventory management, multi-user inventory, inventory collaboration, team inventory tracking, inventory team access, collaborative inventory management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/team-inventory-management"
+      "@id": "https://www.stockflow.be/team-inventory-management"
     }
   }
 ];

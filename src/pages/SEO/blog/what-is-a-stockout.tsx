@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A Stockout";
-const canonicalPath = "/blog/what-is-a-stockout";
+const canonicalPath = "/what-is-a-stockout";
 const metaDescription = "What is a stockout? Learn stockout definition, causes, costs, and how to prevent stockouts with proper inventory management, safety stock, and reorder points.";
 const keywords = "what is a stockout, stockout definition, stockout meaning, prevent stockouts, stockout costs, inventory stockout, out of stock";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/what-is-a-stockout"
+      "@id": "https://www.stockflow.be/what-is-a-stockout"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoWhatIsAStockoutPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoWhatIsAStockoutPage() {
               Stockouts happen when demand exceeds available inventory and no safety stock is maintained to buffer against variability. Common causes include inaccurate demand forecasting, delayed supplier deliveries, inadequate safety stock levels, poor inventory tracking, unexpected demand spikes, and supply chain disruptions. The cost of stockouts extends beyond lost sales—it includes customer dissatisfaction, rush shipping costs, and damage to brand reputation.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Preventing stockouts requires accurate inventory tracking, automated reorder points, safety stock buffers, reliable supplier relationships, and real-time visibility. Learn more about <Link to="/blog/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Preventing stockouts requires accurate inventory tracking, automated reorder points, safety stock buffers, reliable supplier relationships, and real-time visibility. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why preventing stockouts matters</h3>

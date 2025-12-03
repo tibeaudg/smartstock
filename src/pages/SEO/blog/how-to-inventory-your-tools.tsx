@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Inventory Your Tools";
-const canonicalPath = "/blog/how-to-inventory-your-tools";
+const canonicalPath = "/how-to-inventory-your-tools";
 const metaDescription = "Step-by-step guide to inventorying tools and equipment. Learn methods for tracking tools, organizing tool inventory, and preventing tool loss. Best practices for tool management.";
 const keywords = "how to inventory tools, tool inventory, tool tracking, inventory tools, tool management, equipment inventory, tool organization, track tools";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-inventory-your-tools"
+      "@id": "https://www.stockflow.be/how-to-inventory-your-tools"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToInventoryYourToolsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

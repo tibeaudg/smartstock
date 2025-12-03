@@ -190,7 +190,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
       title="Free Bill of Materials Management Software | BOM Software Free"
       heroTitle="Free Bill of Materials Management Software"
       description="Discover the best free BOM (Bill of Materials) management software for manufacturing and assembly. Track components, calculate material requirements, and manage production with StockFlow's free BOM software."
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

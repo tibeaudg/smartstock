@@ -99,7 +99,7 @@ export default function BillOfMaterialsManagementSoftwareFree() {
       title="Free Bill of Materials Management Software | BOM Software Free"
       heroTitle="Free Bill of Materials Management Software"
       description="Get free bill of materials management software for manufacturing. Create and manage BOMs, track components, calculate material requirements, and optimize production—all at no cost."
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

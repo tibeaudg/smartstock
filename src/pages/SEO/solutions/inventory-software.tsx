@@ -203,7 +203,7 @@ export default function InventorySoftware() {
     <SeoPageLayout 
       title="Inventory Software"
       heroTitle="Inventory Software"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

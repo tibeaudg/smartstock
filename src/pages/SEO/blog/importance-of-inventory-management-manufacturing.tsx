@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Importance Of Inventory Management Manufacturing";
-const canonicalPath = "/blog/importance-of-inventory-management-manufacturing";
+const canonicalPath = "/importance-of-inventory-management-manufacturing";
 const metaDescription = "Why inventory management is critical for manufacturing. Learn how proper inventory control improves production, reduces costs, prevents stockouts, and optimizes manufacturing operations.";
 const keywords = "inventory management manufacturing, manufacturing inventory, importance of inventory management, manufacturing inventory control, production inventory management, manufacturing stock management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/importance-of-inventory-management-manufacturing"
+      "@id": "https://www.stockflow.be/importance-of-inventory-management-manufacturing"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoImportanceOfInventoryManagementManufacturingPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

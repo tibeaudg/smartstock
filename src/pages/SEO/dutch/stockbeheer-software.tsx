@@ -146,7 +146,7 @@ export default function ProgrammaStockbeheer() {
     <SeoPageLayout 
       title="Programma Stockbeheer"
       heroTitle="Programma Stockbeheer"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

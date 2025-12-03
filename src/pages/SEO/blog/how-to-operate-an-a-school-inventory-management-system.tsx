@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Operate An A School Inventory Management System";
-const canonicalPath = "/blog/how-to-operate-an-a-school-inventory-management-system";
+const canonicalPath = "/how-to-operate-an-a-school-inventory-management-system";
 const metaDescription = "Guide to operating a school inventory management system. Learn how to manage school supplies, equipment, and assets. Best practices for educational institution inventory management.";
 const keywords = "school inventory management, school inventory system, educational inventory management, school supplies inventory, school equipment tracking, school asset management";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-operate-an-a-school-inventory-management-system"
+      "@id": "https://www.stockflow.be/how-to-operate-an-a-school-inventory-management-system"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToOperateAnASchoolInventoryManagementSystemPage() 
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Creative Inventory Hacks For Small Businesses";
-const canonicalPath = "/blog/creative-inventory-hacks-for-small-businesses";
+const canonicalPath = "/creative-inventory-hacks-for-small-businesses";
 const metaDescription = "Creative inventory hacks and tips for small businesses. Learn budget-friendly strategies, DIY solutions, and clever tricks to manage inventory effectively without expensive software.";
 const keywords = "inventory hacks small business, creative inventory tips, small business inventory hacks, budget inventory management, DIY inventory, inventory tips small business";
 const heroBadge = "Topic Guide • Updated June 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-06-13",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/creative-inventory-hacks-for-small-businesses"
+      "@id": "https://www.stockflow.be/creative-inventory-hacks-for-small-businesses"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoCreativeInventoryHacksForSmallBusinessesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

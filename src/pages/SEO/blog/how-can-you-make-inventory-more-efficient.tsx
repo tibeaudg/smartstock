@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Can You Make Inventory More Efficient";
-const canonicalPath = "/blog/how-can-you-make-inventory-more-efficient";
+const canonicalPath = "/how-can-you-make-inventory-more-efficient";
 const metaDescription = "10 proven strategies to make inventory management more efficient. Learn automation techniques, optimization methods, and best practices to reduce costs and improve operations.";
 const keywords = "how to make inventory efficient, inventory efficiency, efficient inventory management, optimize inventory, inventory optimization, improve inventory efficiency, inventory automation";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-can-you-make-inventory-more-efficient"
+      "@id": "https://www.stockflow.be/how-can-you-make-inventory-more-efficient"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowCanYouMakeInventoryMoreEfficientPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

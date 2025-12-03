@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Calculating Beginning Inventory";
-const canonicalPath = "/blog/calculating-beginning-inventory";
+const canonicalPath = "/calculating-beginning-inventory";
 const metaDescription = "Learn how to calculate beginning inventory. Step-by-step guide with formulas and examples. Calculate opening inventory for accounting and inventory management.";
 const keywords = "calculating beginning inventory, beginning inventory calculation, beginning inventory formula, opening inventory, calculate beginning inventory, starting inventory";
 const heroBadge = "Topic Guide • Updated December 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-12-20",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/calculating-beginning-inventory"
+      "@id": "https://www.stockflow.be/calculating-beginning-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoCalculatingBeginningInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -309,7 +309,7 @@ export default function EducationInventoryManagement() {
     <SeoPageLayout 
       title="Education Inventory Management"
       heroTitle="Education Inventory Management"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

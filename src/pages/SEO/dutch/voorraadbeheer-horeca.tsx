@@ -111,7 +111,7 @@ export default function VoorraadbeheerHorecaPage() {
     <SeoPageLayout 
       title="Voorraadbeheer voor Horeca"
       heroTitle="Voorraadbeheer voor Horeca"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

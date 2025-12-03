@@ -208,7 +208,7 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software"
     heroTitle="Inventory Management Software"
-    updatedDate="20/11/2025"
+    updatedDate="3/12/2025"
     faqData={faqData}
     >
       <SEO
@@ -479,7 +479,7 @@ export default function InventoryManagementSoftware() {
           </div>
 
           <p className="text-gray-700 leading-relaxed">
-            Whether you're running an <Link to="/uses/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">e-commerce business</Link>, managing a <Link to="/industries/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail store</Link>, operating a <Link to="/industries/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse</Link>, or managing <Link to="/uses/medical-supply-inventory-control-system" className="text-blue-600 hover:underline font-semibold">medical supplies</Link>, inventory management software is essential for modern business operations. Explore <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link> for comprehensive options.
+            Whether you're running an <Link to="/ecommerce-inventory-management" className="text-blue-600 hover:underline font-semibold">e-commerce business</Link>, managing a <Link to="/industries/retail-inventory-management" className="text-blue-600 hover:underline font-semibold">retail store</Link>, operating a <Link to="/industries/warehouse-software" className="text-blue-600 hover:underline font-semibold">warehouse</Link>, or managing <Link to="/medical-supply-inventory-control-system" className="text-blue-600 hover:underline font-semibold">medical supplies</Link>, inventory management software is essential for modern business operations. Explore <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:underline font-semibold">inventory management software solutions</Link> for comprehensive options.
           </p>
         </div>
       </section>

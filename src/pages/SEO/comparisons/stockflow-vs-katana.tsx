@@ -79,7 +79,7 @@ export default function StockflowVsKatana() {
     <SeoPageLayout 
       title="StockFlow vs Katana"
       heroTitle="StockFlow vs Katana"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

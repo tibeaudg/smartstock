@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "9 Must Have Inventory Control Software Features";
-const canonicalPath = "/blog/9-must-have-inventory-control-software-features";
+const canonicalPath = "/9-must-have-inventory-control-software-features";
 const metaDescription = "9 must-have inventory control software features. Learn essential features like real-time tracking, barcode scanning, automated alerts, reporting, and multi-location support.";
 const keywords = "inventory software features, inventory control features, must have inventory features, inventory software requirements, inventory management features, inventory system features";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/9-must-have-inventory-control-software-features"
+      "@id": "https://www.stockflow.be/9-must-have-inventory-control-software-features"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

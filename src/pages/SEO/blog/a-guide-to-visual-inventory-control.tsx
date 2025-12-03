@@ -6,7 +6,7 @@ import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "A Guide To Visual Inventory Control";
-const canonicalPath = "/blog/a-guide-to-visual-inventory-control";
+const canonicalPath = "/a-guide-to-visual-inventory-control";
 const metaDescription = "Complete guide to visual inventory control methods. Learn how to use visual systems, color coding, and organization techniques to improve inventory management and reduce errors.";
 const keywords = "visual inventory control, visual inventory management, visual stock control, inventory visual systems, visual inventory organization, color coding inventory";
 const takeaways = [
@@ -77,7 +77,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/a-guide-to-visual-inventory-control"
+      "@id": "https://www.stockflow.be/a-guide-to-visual-inventory-control"
     }
   }
 ];
@@ -97,7 +97,7 @@ export default function SeoAGuideToVisualInventoryControlPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

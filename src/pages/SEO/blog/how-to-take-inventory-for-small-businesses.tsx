@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Take Inventory For Small Businesses";
-const canonicalPath = "/blog/how-to-take-inventory-for-small-businesses";
+const canonicalPath = "/how-to-take-inventory-for-small-businesses";
 const metaDescription = "Step-by-step guide to taking inventory for small businesses. Learn inventory counting methods, tools, and best practices. Simple strategies that work for small operations.";
 const keywords = "how to take inventory small business, small business inventory, taking inventory, inventory count small business, small business stock count, inventory methods small business";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-to-take-inventory-for-small-businesses"
+      "@id": "https://www.stockflow.be/how-to-take-inventory-for-small-businesses"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowToTakeInventoryForSmallBusinessesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -108,7 +108,7 @@ export default function CycleCount() {
     <SeoPageLayout 
       title="Cycle Count"
       heroTitle="Cycle Count"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
       
       
@@ -127,7 +127,7 @@ export default function CycleCount() {
               What is <span className="text-blue-600">Cycle Count</span>?
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Cycle count is an inventory auditing technique where inventory is counted on a rotating schedule throughout the year, rather than counting everything at once. This maintains inventory accuracy continuously without major disruptions. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/blog/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">perpetual inventory vs physical inventory</Link> comparison.
+              Cycle count is an inventory auditing technique where inventory is counted on a rotating schedule throughout the year, rather than counting everything at once. This maintains inventory accuracy continuously without major disruptions. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">perpetual inventory vs physical inventory</Link> comparison.
             </p>
           </div>
         </div>

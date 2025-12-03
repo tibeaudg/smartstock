@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "6 Inventory Management Tips When Times Are Tight";
-const canonicalPath = "/blog/6-inventory-management-tips-when-times-are-tight";
+const canonicalPath = "/6-inventory-management-tips-when-times-are-tight";
 const metaDescription = "6 inventory management tips for tough economic times. Learn cost-saving strategies, cash flow optimization, and inventory control techniques when budgets are tight.";
 const keywords = "inventory management tips, inventory tips, inventory cost savings, inventory during recession, inventory management budget, inventory cost reduction";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/6-inventory-management-tips-when-times-are-tight"
+      "@id": "https://www.stockflow.be/6-inventory-management-tips-when-times-are-tight"
     }
   }
 ];
@@ -103,7 +103,7 @@ export default function Seo6InventoryManagementTipsWhenTimesAreTightPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

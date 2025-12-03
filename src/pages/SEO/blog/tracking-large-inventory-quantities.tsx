@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Tracking Large Inventory Quantities";
-const canonicalPath = "/blog/tracking-large-inventory-quantities";
+const canonicalPath = "/tracking-large-inventory-quantities";
 const metaDescription = "How to track large inventory quantities effectively. Learn strategies, tools, and best practices for managing high-volume inventory, bulk tracking, and scaling inventory systems.";
 const keywords = "tracking large inventory, large inventory quantities, high volume inventory, bulk inventory tracking, large inventory management, scale inventory tracking";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/tracking-large-inventory-quantities"
+      "@id": "https://www.stockflow.be/tracking-large-inventory-quantities"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoTrackingLargeInventoryQuantitiesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -97,7 +97,7 @@ export default function BillOfMaterialsManagementSoftware() {
       title="Bill of Materials Management Software | BOM Software"
       heroTitle="Bill of Materials Management Software"
       description="Complete bill of materials management software for manufacturing. Create BOMs, track components, calculate material requirements, and manage production with StockFlow."
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

@@ -328,7 +328,7 @@ export default function InventoryManagementGuide() {
     <SeoPageLayout 
       title="Inventory Management Guide"
       heroTitle="Inventory Management Guide"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
       
       

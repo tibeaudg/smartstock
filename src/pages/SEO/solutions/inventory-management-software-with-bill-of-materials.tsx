@@ -150,7 +150,7 @@ export default function InventoryManagementSoftwareWithBillOfMaterials() {
       title="Inventory Management Software with Bill of Materials | BOM Integration"
       heroTitle="Inventory Management Software with Bill of Materials"
       description="Complete inventory management software with integrated bill of materials (BOM) functionality. Track finished goods and components, calculate material requirements, and manage production with StockFlow."
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

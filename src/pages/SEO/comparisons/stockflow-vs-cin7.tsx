@@ -101,7 +101,7 @@ export default function StockFlowVsCin7() {
     <SeoPageLayout 
       title="StockFlow vs Cin7"
       heroTitle="StockFlow vs Cin7"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "The Future Of QR Codes What Lies Ahead For Inventory Management";
-const canonicalPath = "/blog/the-future-of-qr-codes-what-lies-ahead-for-inventory-management";
+const canonicalPath = "/the-future-of-qr-codes-what-lies-ahead-for-inventory-management";
 const metaDescription = "The future of QR codes in inventory management. Learn emerging trends, new applications, and how QR code technology will evolve to improve inventory tracking and management.";
 const keywords = "future of QR codes, QR codes future, QR code trends, QR code inventory future, inventory technology trends, QR code evolution";
 const heroBadge = "Topic Guide • Updated December 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-12-20",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/the-future-of-qr-codes-what-lies-ahead-for-inventory-management"
+      "@id": "https://www.stockflow.be/the-future-of-qr-codes-what-lies-ahead-for-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoTheFutureOfQRCodesWhatLiesAheadForInventoryManagement
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

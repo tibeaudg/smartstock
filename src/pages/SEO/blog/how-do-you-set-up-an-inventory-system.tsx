@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do You Set Up An Inventory System";
-const canonicalPath = "/blog/how-do-you-set-up-an-inventory-system";
+const canonicalPath = "/how-do-you-set-up-an-inventory-system";
 const metaDescription = "Step-by-step guide to setting up an inventory system. Learn how to implement inventory tracking, choose software, organize items, and establish processes. Complete setup guide.";
 const keywords = "how to set up inventory system, inventory system setup, setting up inventory, inventory system implementation, inventory setup guide, inventory system installation";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-do-you-set-up-an-inventory-system"
+      "@id": "https://www.stockflow.be/how-do-you-set-up-an-inventory-system"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowDoYouSetUpAnInventorySystemPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

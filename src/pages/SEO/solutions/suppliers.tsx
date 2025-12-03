@@ -209,7 +209,7 @@ export default function SuppliersSolutionPage() {
     <SeoPageLayout 
       title="Suppliers"
       heroTitle="Suppliers"
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

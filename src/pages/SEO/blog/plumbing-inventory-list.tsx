@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Plumbing Inventory List";
-const canonicalPath = "/blog/plumbing-inventory-list";
+const canonicalPath = "/plumbing-inventory-list";
 const metaDescription = "Essential plumbing inventory list template. Learn what items to track, how to organize plumbing supplies, and best practices for managing plumbing inventory for contractors.";
 const keywords = "plumbing inventory list, plumbing inventory, plumbing supplies inventory, plumbing parts inventory, contractor inventory, plumbing materials list";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/plumbing-inventory-list"
+      "@id": "https://www.stockflow.be/plumbing-inventory-list"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoPlumbingInventoryListPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Multiple Warehouse Inventory Management";
-const canonicalPath = "/blog/multiple-warehouse-inventory-management";
+const canonicalPath = "/multiple-warehouse-inventory-management";
 const metaDescription = "Guide to managing inventory across multiple warehouses. Learn strategies for multi-warehouse inventory tracking, transfers, allocation, and centralized control. Best practices for distribution.";
 const keywords = "multiple warehouse inventory, multi-warehouse inventory management, inventory multiple warehouses, warehouse inventory management, multi-warehouse tracking, inventory distribution";
 const heroBadge = "Topic Guide • Updated November 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-11-06",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/multiple-warehouse-inventory-management"
+      "@id": "https://www.stockflow.be/multiple-warehouse-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoMultipleWarehouseInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoMultipleWarehouseInventoryManagementPage() {
               Key challenges include lack of visibility across warehouses, difficulty tracking transfers, allocation optimization, and maintaining accuracy at each warehouse. Solutions include centralized inventory management software with multi-warehouse support, real-time tracking across all facilities, transfer management, and warehouse-specific reporting. Effective multi-warehouse management improves visibility, reduces stockouts, and enables data-driven distribution decisions.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Centralized systems provide real-time visibility, enable efficient transfers, optimize allocation, and ensure consistent processes across all warehouses. Learn more about <Link to="/blog/multiple-location-inventory-management" className="text-blue-600 hover:underline font-semibold">multiple location inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with multi-warehouse support.
+              Centralized systems provide real-time visibility, enable efficient transfers, optimize allocation, and ensure consistent processes across all warehouses. Learn more about <Link to="/multiple-location-inventory-management" className="text-blue-600 hover:underline font-semibold">multiple location inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with multi-warehouse support.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why multi-warehouse management matters</h3>

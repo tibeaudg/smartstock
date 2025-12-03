@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Calculating Raw Materials Inventory";
-const canonicalPath = "/blog/calculating-raw-materials-inventory";
+const canonicalPath = "/calculating-raw-materials-inventory";
 const metaDescription = "Learn how to calculate raw materials inventory. Formulas, methods, and examples for calculating raw materials inventory value, costs, and quantities for manufacturing.";
 const keywords = "calculating raw materials inventory, raw materials inventory calculation, raw materials inventory formula, calculate raw materials, manufacturing inventory calculation";
 const heroBadge = "Topic Guide • Updated July 2024";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2024-07-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/calculating-raw-materials-inventory"
+      "@id": "https://www.stockflow.be/calculating-raw-materials-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoCalculatingRawMaterialsInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

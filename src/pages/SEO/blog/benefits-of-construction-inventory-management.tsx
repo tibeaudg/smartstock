@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Benefits Of Construction Inventory Management";
-const canonicalPath = "/blog/benefits-of-construction-inventory-management";
+const canonicalPath = "/benefits-of-construction-inventory-management";
 const metaDescription = "Key benefits of construction inventory management. Learn how proper inventory control reduces waste, prevents theft, improves project efficiency, and saves money in construction.";
 const keywords = "construction inventory management benefits, benefits of inventory management construction, construction inventory advantages, construction materials management, construction inventory control";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/benefits-of-construction-inventory-management"
+      "@id": "https://www.stockflow.be/benefits-of-construction-inventory-management"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoBenefitsOfConstructionInventoryManagementPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

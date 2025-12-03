@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do Small Businesses Keep Inventory";
-const canonicalPath = "/blog/how-do-small-businesses-keep-inventory";
+const canonicalPath = "/how-do-small-businesses-keep-inventory";
 const metaDescription = "Practical methods for small businesses to keep and track inventory. Learn simple inventory management strategies, tools, and best practices that work for small operations.";
 const keywords = "how small businesses keep inventory, small business inventory, small business stock management, inventory for small business, small business inventory tracking, simple inventory management";
 const heroBadge = "Topic Guide • Updated July 2020";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2020-07-21",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/how-do-small-businesses-keep-inventory"
+      "@id": "https://www.stockflow.be/how-do-small-businesses-keep-inventory"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoHowDoSmallBusinessesKeepInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       
@@ -131,7 +131,7 @@ export default function SeoHowDoSmallBusinessesKeepInventoryPage() {
               For businesses with 50+ items, inventory management software is essential for accuracy and efficiency. Key practices include maintaining accurate records, tracking all movements, setting reorder points, conducting regular counts, and using software to automate tracking and alerts. Free software makes professional inventory management accessible to small businesses.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Software typically improves accuracy from 60-80% to 95-99%, reduces time spent by 50-70%, and prevents stockouts through automated reordering. Learn more about <Link to="/blog/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory management software</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+              Software typically improves accuracy from 60-80% to 95-99%, reduces time spent by 50-70%, and prevents stockouts through automated reordering. Learn more about <Link to="/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory management software</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why proper tracking matters</h3>

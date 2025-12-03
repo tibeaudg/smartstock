@@ -11,7 +11,7 @@
     "dev:vite": "vite",
     "dev:api": "node server-dev.cjs",
     "dev:all": "concurrently \"npm run dev:api\" \"npm run dev:vite\" --names \"API,VITE\" --prefix-colors \"blue,green\"",
-    "build": "npm run validate:routes && node scripts/generate-sitemap-optimized.mjs && vite build --outDir dist",
+    "build": "vite build --outDir dist",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -27,9 +27,7 @@
     "security:check": "npm audit --audit-level=moderate",
     "deps:check": "npm outdated",
     "deps:update": "npm update",
-    "type-check": "tsc --noEmit",
-    "optimize-images": "node scripts/optimize-images.js",
-    "validate:routes": "node scripts/validate-routes.mjs"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

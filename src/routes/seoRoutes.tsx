@@ -72,7 +72,7 @@ export function getSeoRoutes(): SeoRoute[] {
   // Files to exclude from routing (helper functions, not page components)
   const excludedFiles = new Set([
     'glossary/createGlossaryPage',
-    'resources/blog', // Exclude to avoid conflict with blog/index.tsx
+    'resources', // Exclude to avoid conflict with blog/index.tsx
   ]);
 
   cachedRoutes = Object.entries(modules)

@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "The Role Of Asset Management Software";
-const canonicalPath = "/blog/the-role-of-asset-management-software";
+const canonicalPath = "/the-role-of-asset-management-software";
 const metaDescription = "Learn the role and importance of asset management software. How asset tracking software helps businesses track equipment, prevent loss, and optimize asset utilization.";
 const keywords = "asset management software, role of asset management, asset tracking software, asset management importance, asset management benefits, asset management system";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/the-role-of-asset-management-software"
+      "@id": "https://www.stockflow.be/the-role-of-asset-management-software"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function SeoTheRoleOfAssetManagementSoftwarePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

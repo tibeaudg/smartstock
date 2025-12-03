@@ -7,7 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "10 Most Common Inventory Management Mistakes Small Businesses";
-const canonicalPath = "/blog/10-most-common-inventory-management-mistakes-small-businesses";
+const canonicalPath = "/10-most-common-inventory-management-mistakes-small-businesses";
 const metaDescription = "10 most common inventory management mistakes small businesses make. Learn what they are and how to avoid them to save money and improve operations.";
 const keywords = "inventory mistakes small business, small business inventory mistakes, common inventory mistakes, inventory errors small business, inventory management mistakes";
 const heroBadge = "Topic Guide • Updated September 2025";
@@ -84,7 +84,7 @@ const structuredData = [
     "datePublished": "2025-09-03",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/10-most-common-inventory-management-mistakes-small-businesses"
+      "@id": "https://www.stockflow.be/10-most-common-inventory-management-mistakes-small-businesses"
     }
   }
 ];
@@ -104,7 +104,7 @@ export default function Seo10MostCommonInventoryManagementMistakesSmallBusinesse
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="20/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
        
       

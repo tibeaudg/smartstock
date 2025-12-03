@@ -118,7 +118,7 @@ export default function InventoryOptimizationServices() {
       title="Inventory Optimization Services | Inventory Optimization Consulting"
       heroTitle="Inventory Optimization Services"
       description="Professional inventory optimization services to reduce costs, improve cash flow, and optimize stock levels. Get expert analysis, recommendations, and implementation support."
-      updatedDate="25/11/2025"
+      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
