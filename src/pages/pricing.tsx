@@ -19,6 +19,11 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 import Footer from '@/components/Footer';
+import { CustomerLogos } from '@/components/trust/CustomerLogos';
+import { ReviewBadges } from '@/components/trust/ReviewBadges';
+import { TestimonialQuotes } from '@/components/trust/TestimonialQuotes';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Package, Layers, Building, ShoppingBag } from 'lucide-react';
 
 type BillingCycle = 'monthly' | 'yearly';
 type IconComponent = React.ComponentType<{ className?: string }>;
@@ -535,8 +540,8 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="StockFlow Pricing - Inventory Plans with 14-Day Free Trial"
-        description="Start your 14-day free trial. Compare Free, Advanced, Ultra, Premium, and Enterprise plans. Save 50% on yearly billing."
+        title="Inventory Software Pricing 2025 | Free Plan | StockFlow"
+        description="Compare inventory management software pricing. Free plan (100 SKUs), paid plans from €29/mo. 14-day free trial. Save 50% with yearly billing. Start free!"
         keywords="inventory management pricing, stockflow pricing, inventory software plans, stockflow free trial, inventory management cost"
         url="https://www.stockflow.be/pricing"
         structuredData={structuredData}
@@ -549,6 +554,13 @@ export default function PricingPage() {
       />
 
       <main className="container mx-auto px-4 pb-24 pt-24 md:pt-28">
+        {/* Customer Logos Section */}
+        <CustomerLogos 
+          variant="grid" 
+          heading="Trusted by 500+ businesses"
+          className="mb-12"
+        />
+
         <section className="text-center max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold text-black leading-tight">
             Start Your 14-Day Free Trial Today.
@@ -703,6 +715,136 @@ export default function PricingPage() {
           })}
         </section>
 
+        {/* Related Resources Section */}
+        <section className="mt-20 py-16 bg-gray-50 rounded-2xl">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Explore StockFlow Resources
+              </h2>
+              <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+                Learn more about features, solutions, and industry applications.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-4 gap-6">
+              {/* Features Link */}
+              <Card className="hover:shadow-lg transition-all duration-300">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                    <Package className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <CardTitle className="text-lg">Features</CardTitle>
+                  <CardDescription className="text-sm">
+                    Explore all StockFlow features
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Link 
+                    to="/features" 
+                    className="text-blue-600 hover:text-blue-800 font-semibold text-sm flex items-center gap-2 group"
+                  >
+                    View Features
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Main Pillar Page */}
+              <Card className="hover:shadow-lg transition-all duration-300">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-3">
+                    <Layers className="h-6 w-6 text-indigo-600" />
+                  </div>
+                  <CardTitle className="text-lg">Complete Guide</CardTitle>
+                  <CardDescription className="text-sm">
+                    Inventory management guide
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Link 
+                    to="/inventory-management-software" 
+                    className="text-blue-600 hover:text-blue-800 font-semibold text-sm flex items-center gap-2 group"
+                  >
+                    Read Guide
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Solutions */}
+              <Card className="hover:shadow-lg transition-all duration-300">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                    <ShoppingBag className="h-6 w-6 text-green-600" />
+                  </div>
+                  <CardTitle className="text-lg">Solutions</CardTitle>
+                  <CardDescription className="text-sm">
+                    Solutions by use case
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Link 
+                    to="/solutions/inventory-management-software" 
+                    className="text-blue-600 hover:text-blue-800 text-xs flex items-center gap-1 group"
+                  >
+                    <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    Software Solutions
+                  </Link>
+                  <Link 
+                    to="/solutions/inventory-management-software-cloud-based" 
+                    className="text-blue-600 hover:text-blue-800 text-xs flex items-center gap-1 group"
+                  >
+                    <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    Cloud-Based
+                  </Link>
+                </CardContent>
+              </Card>
+
+              {/* Industries */}
+              <Card className="hover:shadow-lg transition-all duration-300">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
+                    <Building className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-lg">Industries</CardTitle>
+                  <CardDescription className="text-sm">
+                    Industry-specific solutions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Link 
+                    to="/industries/contractor-inventory-management" 
+                    className="text-blue-600 hover:text-blue-800 text-xs flex items-center gap-1 group"
+                  >
+                    <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    Contractors
+                  </Link>
+                  <Link 
+                    to="/industries/warehouse-inventory-management" 
+                    className="text-blue-600 hover:text-blue-800 text-xs flex items-center gap-1 group"
+                  >
+                    <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    Warehouses
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Review Badges Section */}
+        <section className="mt-16 py-8 bg-gray-50 rounded-2xl">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="text-center mb-6">
+              <p className="text-sm font-medium text-gray-600 mb-4">
+                Trusted by thousands of businesses
+              </p>
+              <ReviewBadges variant="horizontal" />
+            </div>
+          </div>
+        </section>
+
         <section className="mt-24">
           <h2 className="text-center text-3xl font-bold text-gray-900 md:text-4xl">
             Compare Plans
@@ -767,6 +909,26 @@ export default function PricingPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </section>
+
+        {/* Testimonial Quotes Section */}
+        <section className="mt-20 py-12 bg-white">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                What Our Customers Say
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                See how businesses are saving money with StockFlow
+              </p>
+            </div>
+            <TestimonialQuotes 
+              variant="grid" 
+              maxQuotes={2}
+              showRating={true}
+              showSavings={true}
+            />
           </div>
         </section>
 

@@ -10,6 +10,7 @@ import { HomePage } from "./components/HomePage";
 import { HomePageNL } from "./components/HomePageNL";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
+import ServerError from "./pages/ServerError";
 import DemoPage from './pages/demo';
 import { Dashboard } from './components/Dashboard';
 import { StockMovements } from './components/StockMovements';
@@ -56,6 +57,10 @@ import CategorysPage from './pages/categories';
 import AdminPage from './pages/admin';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
+import ResourcesPage from './pages/resources';
+import CustomersPage from './pages/customers';
+import CustomerDetailPage from './pages/customers/[id]';
+import ReportingPage from './pages/reporting';
 import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 import { AuthContext } from './hooks/useAuth';
@@ -344,14 +349,19 @@ const AuthRoute = () => {
 
         
         <Route path="/features" element={<FeaturesPage />} />
+        <Route path="/reporting" element={<ReportingPage />} />
         <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/auth" element={<AuthRoute />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/demo/*" element={<DemoPage />} />
+        <Route path="/resources" element={<ResourcesPage />} />
+        <Route path="/customers" element={<CustomersPage />} />
+        <Route path="/customers/:id" element={<CustomerDetailPage />} />
 
         {/* Legacy route redirects */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />
+        <Route path="/asset-tracking" element={<Navigate to="/solutions/asset-tracking" replace />} />
 
         {/* SEO routes (auto-generated from src/pages/SEO) */}
         {(() => {
@@ -436,6 +446,9 @@ const AuthRoute = () => {
           </Route>
         </Route>
 
+        {/* Error routes */}
+        <Route path="/500" element={<ServerError />} />
+        
         {/* Fallback route */}
         <Route path="*" element={<NotFound />} />
       </Routes>

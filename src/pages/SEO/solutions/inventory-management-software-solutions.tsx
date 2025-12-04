@@ -3,6 +3,8 @@ import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { useState } from 'react';
+import VideoModal from '@/components/VideoModal';
 
 const faqData = [
   {
@@ -96,6 +98,7 @@ const structuredData = generateComprehensiveStructuredData('software', {
 
 export default function InventoryManagementSoftwareSolutionsPage() {
   usePageRefresh();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   return (
     <SeoPageLayout 
@@ -128,9 +131,9 @@ export default function InventoryManagementSoftwareSolutionsPage() {
               <Link to="/auth" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg text-center">
                 Start Free
               </Link>
-              <Link to="/demo" className="border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold px-6 py-3 rounded-lg text-center">
+              <button onClick={() => setIsVideoModalOpen(true)} className="border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold px-6 py-3 rounded-lg text-center">
                 Explore Solutions Demo
-              </Link>
+              </button>
             </div>
             <p className="text-xs text-gray-500 mt-4">Trusted by wholesalers, retailers & D2C brands across Europe</p>
           </div>
@@ -182,6 +185,10 @@ export default function InventoryManagementSoftwareSolutionsPage() {
         </div>
       </section>
 
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+      />
     </SeoPageLayout>
   );
 }

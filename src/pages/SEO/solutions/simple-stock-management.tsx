@@ -81,8 +81,8 @@ export default function SimpleStockManagement() {
       
     >
       <SEO
-        title="Simple Stock Management 2025 - Save 70% Time, Easy Setup | StockFlow"
-        description="Simple stock management 2025 made easy. Intuitive inventory control without complexity. Real-time tracking, automated alerts, barcode scanning. Save 70% time, easy setup in minutes. Free plan for up to 100 products. Start free trial - no credit card required."
+        title="Simple Stock Management Software | StockFlow"
+        description="Simple stock management made easy. Intuitive inventory control, real-time tracking, automated alerts, barcode scanning. Save 70% time. Free plan available."
         keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control, easy stock management, simple inventory system, user-friendly inventory, easy stock tracking, simple inventory management, easy stock control, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/simple-stock-management"
       />

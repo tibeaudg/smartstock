@@ -326,8 +326,8 @@ export default function WarehouseInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Warehouse Inventory Management 2025 - 99%+ Accuracy, Save 25% Costs | StockFlow"
-        description="Complete warehouse inventory management 2025. Bin location tracking, barcode scanning, pick optimization. Improve accuracy to 99%+, reduce costs 25%, save 20-30% labor. Free plan available. Start free trial - no credit card required."
+        title="Warehouse Inventory Management Software | StockFlow"
+        description="Warehouse inventory software with bin location tracking, barcode scanning & pick optimization. Improve accuracy to 99%+, reduce costs 25%. Free plan available."
         keywords="warehouse inventory management, warehouse management system, WMS, bin location tracking, barcode scanning, pick and pack, cycle counting, warehouse optimization, inventory accuracy, warehouse software"
         url="https://www.stockflow.be/warehouse-inventory-management"
       />

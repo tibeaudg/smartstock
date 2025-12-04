@@ -3,6 +3,7 @@ import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Link, useLocation } from 'react-router-dom';
+import VideoModal from '@/components/VideoModal';
 import { generateSidebarContent } from '@/utils/seoPageHelpers';
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -47,6 +48,7 @@ type PricingPlan = {
 export default function OnlineInventorySoftware() {
   usePageRefresh();
   const location = useLocation();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
   const [roiInputs, setRoiInputs] = useState({
     inventoryValue: '',
@@ -576,12 +578,12 @@ export default function OnlineInventorySoftware() {
               >
                 Start my free trial
               </Link>
-              <a
-                href="https://www.stockflow.be/demo"
+              <button
+                onClick={() => setIsVideoModalOpen(true)}
                 className="inline-flex items-center justify-center rounded-full border border-blue-600 px-6 py-3 text-base font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
               >
                 Watch a 5-min demo
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -1155,6 +1157,10 @@ export default function OnlineInventorySoftware() {
             reviewBody: testimonial.content
           }))
         ]}
+      />
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
       />
     </SeoPageLayout>
   );

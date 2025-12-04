@@ -19,15 +19,20 @@ import {
   Package,
   AlertCircle,
   DollarSign,
-  ChevronDown
+  ChevronDown,
+  Building
 } from 'lucide-react';
 import { englishMainCluster, getRelatedPages } from '@/config/topicClusters';
 
 import { StructuredData } from '@/components/StructuredData';
+import { generateProductPageStructuredData, generateFAQSchema } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  const location = useLocation();
 
   // Get related pages from topic cluster
   const relatedPages = getRelatedPages('/inventory-management-software', 6);
@@ -148,23 +153,23 @@ export default function InventoryManagementSoftware() {
 
   const useCases = [
     {
-      title: "E-commerce",
-      description: "Perfect for online stores managing multiple product lines and seasonal inventory fluctuations.",
+      title: "Medical Device Distributors",
+      description: "Track medical devices with FDA compliance, serial number tracing, expiration date management, and regulatory reporting. Perfect for independent distributors managing sensitive inventory with strict traceability requirements.",
       icon: "ðŸ›’"
     },
     {
-      title: "Retail",
-      description: "Ideal for physical stores needing real-time inventory tracking and point-of-sale integration.",
+      title: "Event & AV Production",
+      description: "Manage AV equipment, lighting, sound systems, and staging across multiple events and venues. Real-time scheduling prevents double-booking and ensures equipment availability when needed.",
       icon: "ðŸª"
     },
     {
-      title: "Wholesale",
-      description: "Great for wholesale businesses managing large quantities and multiple suppliers.",
+      title: "Rental Businesses",
+      description: "Optimize rental inventory for machinery, party equipment, tools, and high-value assets. Track rental periods, maintenance schedules, availability, and prevent revenue loss from unreturned items.",
       icon: "ðŸ“¦"
     },
     {
-      title: "Manufacturing",
-      description: "Essential for manufacturers tracking raw materials, work-in-progress, and finished goods.",
+      title: "Multi-Location Operations",
+      description: "Essential for businesses managing inventory across warehouses, distribution centers, and multiple locations. Real-time visibility and automated transfers ensure optimal stock distribution.",
       icon: "ðŸ­"
     }
   ];
@@ -218,15 +223,15 @@ export default function InventoryManagementSoftware() {
   ];
 
   return (
-    <SeoPageLayout title="Inventory Management Software"
-    heroTitle="Inventory Management Software"
+    <SeoPageLayout title="Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses"
+    heroTitle="Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses"
     updatedDate="3/12/2025"
     faqData={faqData}
     >
       <SEO
-        title="Inventory Management Software 2025: FREE Plan, Save 35% Costs | StockFlow"
-        description="Inventory management software that helps businesses track stock, manage orders, and optimize levels. FREE plan available. Real-time tracking, demand forecasting, barcode scanning. Save 35% costs & 15 hours/week. Compare Zoho Inventory, Katana, Square, Ordoro. Trusted by 1,000+ businesses."
-        keywords="inventory management software, inventory software, stock management software, inventory system, inventory tracking software, inventory management system, best inventory software, online inventory management, cloud inventory software, zoho inventory, katana inventory, square for retail, ordoro, quickbooks commerce, inflow inventory, sortly, stockflow, stock flow, warehouse management software, inventory control software"
+        title="Inventory Software for Medical, Event & Rental | StockFlow"
+        description="Specialized inventory software for medical device distributors, event companies & rental businesses. Compliance tracking, equipment scheduling. Free plan available."
+        keywords="inventory management software for medical device distributors, medical device inventory tracking, AV equipment inventory management, rental business inventory software, event production inventory, medical device compliance tracking, AV equipment scheduling, rental inventory management, party equipment tracking, machinery rental software, medical device distributor software, event company inventory, rental business software, stockflow, inventory tracking software"
         url="https://www.stockflow.be/solutions/inventory-management-software"
         locale="en"
         alternateLanguages={[
@@ -238,13 +243,13 @@ export default function InventoryManagementSoftware() {
       {/* Enhanced Introduction Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management Software?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              <strong>Inventory management software</strong> is a digital solution that helps businesses track, manage, and optimize their stock levels, orders, and warehouse operations in real-time. Unlike manual methods like Excel spreadsheets or paper-based systems, modern <strong>inventory management software</strong> provides up-to-the-minute visibility into inventory levels, automates reordering processes, and helps prevent costly stockouts or overstock situations.
+              <strong>Inventory management software</strong> is essential for three critical business verticals: <strong>Independent Medical Device Distributors</strong> managing FDA compliance and traceability, <strong>Local Event & AV Production Companies</strong> tracking equipment across multiple venues and events, and <strong>Rental Businesses</strong> (machinery, party equipment, etc.) scheduling and managing high-value assets. Unlike manual methods like Excel spreadsheets or paper-based systems, modern <strong>inventory management software</strong> provides up-to-the-minute visibility into inventory levels, automates reordering processes, and helps prevent costly stockouts or overstock situations.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              This type of software enables businesses to make informed decisions about purchasing, allocation, and fulfillment by providing comprehensive analytics, demand forecasting, and automated replenishment capabilities. Whether you're running an e-commerce store, managing a retail chain, operating a warehouse, or handling wholesale distribution, <strong>inventory management software</strong> is essential for modern business operations.
+              For medical device distributors, this software ensures regulatory compliance with serial number tracking and expiration date management. Event and AV production companies rely on it for equipment scheduling, multi-location tracking, and preventing double-booking. Rental businesses use it to optimize asset utilization, track maintenance schedules, and manage rental periods. StockFlow's specialized <strong>inventory management software</strong> provides comprehensive analytics, demand forecasting, and automated replenishment capabilities tailored to these unique operational needs.
             </p>
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-6">
               <p className="text-base text-gray-800 mb-3">
@@ -498,7 +503,7 @@ export default function InventoryManagementSoftware() {
                 StockFlow is a comprehensive <strong>inventory management software</strong> solution designed for growing businesses that need a balanced feature set across e-commerce, retail, and wholesale operations. Unlike specialized tools that excel in one area, StockFlow provides a versatile platform that adapts to different business models and scales with your growth.
               </p>
               <p className="text-gray-700 leading-relaxed mb-6">
-                <strong>Best for:</strong> Small to medium businesses (SMEs), e-commerce stores, retail chains, wholesale distributors, and growing companies that need comprehensive inventory control without the complexity of enterprise solutions.
+                <strong>Best for:</strong> Independent Medical Device Distributors requiring FDA compliance and traceability, Local Event & AV Production Companies managing equipment across multiple venues, Rental Businesses (machinery, party equipment, tools) optimizing asset utilization, and growing companies that need comprehensive inventory control without the complexity of enterprise solutions.
               </p>
               <div className="grid md:grid-cols-2 gap-6 mb-6">
             
@@ -643,10 +648,10 @@ export default function InventoryManagementSoftware() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-              Inventory Management Software for Every Business Type
+              Inventory Management Software Built for Your Industry
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Discover how businesses across different industries use <strong>inventory management software</strong> like StockFlow for strategic, automatic purchasing and inventory optimization.
+              StockFlow's <strong>inventory management software</strong> is specifically designed for <strong>Medical Device Distributors</strong> requiring compliance tracking, <strong>Event & AV Production Companies</strong> managing equipment across venues, and <strong>Rental Businesses</strong> optimizing asset utilization. Discover how these specialized businesses use StockFlow for strategic inventory optimization.
             </p>
           </div>
 
@@ -943,81 +948,97 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
+      {/* Product & Pricing Links Section */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Ready to Get Started with StockFlow?
+            </h2>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              Explore our features, pricing, and see how StockFlow can transform your inventory management.
+            </p>
+          </div>
 
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Link 
+              to="/features"
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <Package className="h-5 w-5 text-blue-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  View All Features
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                Explore all StockFlow features including mobile scanning, analytics, and more.
+              </p>
+              <span className="text-blue-600 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                Learn More <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+
+            <Link 
+              to="/pricing"
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                  <DollarSign className="h-5 w-5 text-green-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  See Pricing
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                Transparent pricing starting with a free plan. No credit card required.
+              </p>
+              <span className="text-blue-600 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                View Plans <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+
+            <Link 
+              to="/industries/contractor-inventory-management"
+              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <Building className="h-5 w-5 text-purple-600" />
+                </div>
+                <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  Industry Solutions
+                </h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">
+                See how businesses in your industry use StockFlow.
+              </p>
+              <span className="text-blue-600 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+                Explore <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
 
       {/* Schema.org Structured Data */}
-      <StructuredData data={[
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
-            }
-          }))
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "StockFlow - Inventory Management Software",
-          "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Web Browser",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
-          "softwareVersion": "1.0",
-          "datePublished": "2024-01-01",
-          "dateModified": "new Date().toISOString().split('T')[0]",
-          "offers": [
-            {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "EUR",
-              "description": "Free plan - 100% free inventory management for SMEs",
-              "availability": "https://schema.org/InStock",
-              "validFrom": "2024-01-01"
-            },
-            {
-              "@type": "Offer",
-              "price": "29",
-              "priceCurrency": "EUR",
-              "description": "Growth plan - Advanced features for growing businesses",
-              "availability": "https://schema.org/InStock",
-              "validFrom": "2024-01-01"
-            }
-          ],
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "150",
-            "bestRating": "5",
-            "worstRating": "1"
+      <StructuredData data={generateProductPageStructuredData({
+        softwareData: {
+          name: "StockFlow - Inventory Management Software",
+          description: "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
+          category: "BusinessApplication",
+          operatingSystem: "Web Browser",
+          price: "0",
+          currency: "EUR",
+          rating: {
+            value: "4.8",
+            count: "150"
           },
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
-            }
-          },
-          "image": [
-            "https://www.stockflow.be/Inventory-Management.png",
-            "https://www.stockflow.be/optimized/desktop.png"
-          ],
-          "screenshot": "https://www.stockflow.be/optimized/desktop.png",
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-software"
-          },
-          "featureList": [
+          features: [
             "Real-time inventory tracking",
             "Barcode scanning",
             "Automated reorder points",
@@ -1027,80 +1048,32 @@ export default function InventoryManagementSoftware() {
             "Team collaboration",
             "Integration capabilities"
           ],
-          "keywords": "inventory management software, stock management, inventory control, warehouse management, inventory tracking, stock management software, inventory system, warehouse software, inventory optimization, stock control software, inventory management system, warehouse management system, inventory tracking software, stock management system, inventory software, warehouse tracking, inventory control system, stock tracking software, inventory management solution, warehouse inventory software, inventory management platform, inventory tracking programs, softwares for inventory management, inventory and stock management software, manage inventory, inventory planning software"
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "StockFlow",
-          "url": "https://www.stockflow.be",
-          "logo": "https://www.stockflow.be/logo.png",
-          "description": "Professional inventory management software for growing businesses",
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "BE"
-          },
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "contactType": "customer service",
-            "email": "info@stockflow.be"
-          },
-          "sameAs": [
-            "https://www.linkedin.com/company/stockflow"
-          ]
-        },         {
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "name": "Inventory Management Software 2025 | FREE Plan | Save 35% Costs + 15h/Week",
-          "description": "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week! 5-7 day setup. Trusted by 1,000+ businesses.",
-          "url": "https://www.stockflow.be/inventory-management-software",
-          "mainEntity": {
-            "@type": "SoftwareApplication",
-            "name": "StockFlow - Inventory Management Software"
-          },
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://www.stockflow.be"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Inventory Management Software",
-                "item": "https://www.stockflow.be/inventory-management-software"
-              }
-            ]
-          }
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "Inventory Management Software 2025: Free Plan Available",
-          "description": "Best inventory management software 2025. Free plan available. Real-time tracking, barcode scanning. Save 35% costs & 15 hours/week.",
-          "author": {
-            "@type": "Organization",
-            "name": "StockFlow"
-          },
-          "publisher": {
-            "@type": "Organization",
-            "name": "StockFlow",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+          image: [
+            "/Inventory-Management.png",
+            "/optimized/desktop.png"
+          ],
+          screenshot: "/optimized/desktop.png",
+          url: "/solutions/inventory-management-software",
+          offers: [
+            {
+              price: "0",
+              priceCurrency: "EUR",
+              description: "Free plan - 100% free inventory management for SMEs",
+              availability: "https://schema.org/InStock",
+              validFrom: "2024-01-01"
+            },
+            {
+              price: "29",
+              priceCurrency: "EUR",
+              description: "Growth plan - Advanced features for growing businesses",
+              availability: "https://schema.org/InStock",
+              validFrom: "2024-01-01"
             }
-          },
-          "datePublished": "2024-01-01",
-          "dateModified": "2025-11-26",
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-management-software"
-          }
-        }
-      ]} />
+          ]
+        },
+        faqData: faqData,
+        includeBreadcrumbs: false // Breadcrumbs are already in SeoPageLayout
+      })} />
     </SeoPageLayout>
   );
 }

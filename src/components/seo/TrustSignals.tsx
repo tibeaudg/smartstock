@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Award, Users, Star, Lock, CheckCircle } from 'lucide-react';
+import { ReviewBadges } from '@/components/trust/ReviewBadges';
 
 interface TrustSignal {
   icon: React.ReactNode;
@@ -12,6 +13,8 @@ interface TrustSignalsProps {
   showUserCount?: boolean;
   showRating?: boolean;
   showSecurity?: boolean;
+  showReviewBadges?: boolean;
+  showCustomerLogos?: boolean;
   className?: string;
 }
 
@@ -20,6 +23,8 @@ export const TrustSignals: React.FC<TrustSignalsProps> = ({
   showUserCount = true,
   showRating = true,
   showSecurity = true,
+  showReviewBadges = false,
+  showCustomerLogos = false,
   className = '',
 }) => {
   const signals: TrustSignal[] = [];
@@ -55,7 +60,7 @@ export const TrustSignals: React.FC<TrustSignalsProps> = ({
   });
 
   if (variant === 'grid') {
-    return (
+    const gridContent = (
       <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 ${className}`}>
         {signals.map((signal, index) => (
           <div
@@ -75,10 +80,23 @@ export const TrustSignals: React.FC<TrustSignalsProps> = ({
         ))}
       </div>
     );
+
+    if (showReviewBadges) {
+      return (
+        <div className="flex flex-col gap-6">
+          {gridContent}
+          <div className="flex justify-center">
+            <ReviewBadges variant="horizontal" />
+          </div>
+        </div>
+      );
+    }
+
+    return gridContent;
   }
 
   if (variant === 'full') {
-    return (
+    const fullContent = (
       <div className={`flex flex-wrap items-center gap-6 ${className}`}>
         {signals.map((signal, index) => (
           <div key={index} className="flex items-center gap-3">
@@ -95,10 +113,23 @@ export const TrustSignals: React.FC<TrustSignalsProps> = ({
         ))}
       </div>
     );
+
+    if (showReviewBadges) {
+      return (
+        <div className="flex flex-col gap-4">
+          {fullContent}
+          <div className="mt-2">
+            <ReviewBadges variant="horizontal" />
+          </div>
+        </div>
+      );
+    }
+
+    return fullContent;
   }
 
   // Compact variant (default)
-  return (
+  const content = (
     <div className={`flex flex-wrap items-center gap-4 text-sm ${className}`}>
       {signals.map((signal, index) => (
         <div key={index} className="flex items-center gap-2">
@@ -111,6 +142,20 @@ export const TrustSignals: React.FC<TrustSignalsProps> = ({
       ))}
     </div>
   );
+
+  // Wrap with review badges if requested
+  if (showReviewBadges) {
+    return (
+      <div className="flex flex-col gap-4">
+        {content}
+        <div className="mt-2">
+          <ReviewBadges variant="compact" />
+        </div>
+      </div>
+    );
+  }
+
+  return content;
 };
 
 export const SecurityBadges: React.FC<{ className?: string }> = ({ className = '' }) => {

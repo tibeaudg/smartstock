@@ -171,6 +171,78 @@ export default function RetailInventoryManagement() {
     }
   ];
 
+  const useCases = [
+    {
+      title: "Multi-Store Inventory Sync",
+      description: "Sync inventory across multiple retail locations in real-time. See what's in stock at each store and transfer items between locations as needed.",
+      icon: Store,
+      metrics: "Manage inventory across unlimited store locations"
+    },
+    {
+      title: "Seasonal Demand Management",
+      description: "Track historical sales data to predict seasonal demand patterns. Prepare for busy periods by optimizing stock levels and identifying trending products.",
+      icon: TrendingUp,
+      metrics: "35% reduction in stockouts during peak seasons"
+    },
+    {
+      title: "POS Integration",
+      description: "Integrate with POS systems to automatically update stock levels when sales occur. Ensure inventory is always accurate across all sales channels.",
+      icon: ShoppingCart,
+      metrics: "Real-time inventory sync with POS systems"
+    },
+    {
+      title: "Supplier Management",
+      description: "Track suppliers, order history, and delivery schedules. Streamline purchasing and ensure timely restocking of popular items.",
+      icon: Users,
+      metrics: "25% improvement in supplier relationships"
+    },
+    {
+      title: "E-commerce Integration",
+      description: "Sync inventory with online stores and marketplaces. Prevent overselling and ensure accurate stock availability across all sales channels.",
+      icon: Package,
+      metrics: "95% reduction in overselling incidents"
+    },
+    {
+      title: "Inventory Audits",
+      description: "Perform regular inventory audits with mobile barcode scanning. Maintain accuracy year-round and identify discrepancies quickly.",
+      icon: Smartphone,
+      metrics: "10+ hours saved per week on inventory counts"
+    }
+  ];
+
+  const metrics = [
+    {
+      value: "35%",
+      label: "Reduction in Stockouts",
+      description: "Prevent lost sales during peak seasons"
+    },
+    {
+      value: "25%",
+      label: "Cost Savings",
+      description: "Reduce inventory carrying costs"
+    },
+    {
+      value: "10+",
+      label: "Hours Saved Per Week",
+      description: "Eliminate manual inventory tracking"
+    },
+    {
+      value: "95%",
+      label: "Reduction in Overselling",
+      description: "Real-time sync prevents overselling"
+    },
+    {
+      value: "40%",
+      label: "Reduction in Overstock",
+      description: "Optimize purchasing decisions"
+    },
+    {
+      value: "99%",
+      label: "Inventory Accuracy",
+      description: "Real-time tracking ensures accuracy"
+    }
+  ];
+
   const implementationSteps = [
     {
       step: "1",
@@ -202,8 +274,8 @@ export default function RetailInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Retail Inventory Management 2025 - Save 25% Costs, 10+ Hours/Week | StockFlow"
-        description="Complete retail inventory management 2025 for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
+        title="Retail Inventory Management Software | StockFlow"
+        description="Retail inventory software for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. Free plan available."
         keywords="retail inventory management, small retail shop software, retail stock management, shop inventory system, retail inventory tracking, small business inventory, retail POS integration, inventory management for retailers, retail stock control, shop management software, retail inventory software, small shop inventory, retail inventory solution, shop stock tracking, retail inventory app"
         url="https://www.stockflow.be/retail-inventory-management"
         structuredData={structuredData}
@@ -221,6 +293,88 @@ export default function RetailInventoryManagement() {
           Small retail businesses face unique challenges: limited storage space, seasonal demand fluctuations, tight profit margins, and competition with larger stores. <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Retail inventory management software</Link> helps small shops overcome these challenges by providing real-time visibility, automated alerts, and data-driven insights. Learn more about <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:underline font-semibold">mobile inventory management</Link> for on-the-go access or explore <Link to="/solutions/stock-management-software" className="text-blue-600 hover:underline font-semibold">stock management software</Link> solutions.
         </p>
       </div>
+
+      {/* Metrics Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Proven Results for <span className="text-blue-600">Retail Shops</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              See the measurable impact retail inventory management has on shop operations.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {metrics.map((metric, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
+                <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
+                <p className="text-gray-600">{metric.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Retail Inventory <span className="text-blue-600">Use Cases</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              How retail shops use StockFlow to manage inventory and boost profits.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {useCases.map((useCase, index) => (
+              <div key={index} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <useCase.icon className="w-12 h-12 text-blue-600 mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{useCase.title}</h3>
+                <p className="text-gray-600 mb-4">{useCase.description}</p>
+                <div className="bg-blue-50 p-3 rounded-lg">
+                  <p className="text-sm font-semibold text-blue-800">{useCase.metrics}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Screenshot Section */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              See StockFlow in <span className="text-blue-600">Action</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              Manage retail inventory with real-time tracking, POS integration, and multi-store sync.
+            </p>
+          </div>
+          <div className="bg-white rounded-lg shadow-xl p-4">
+            <img 
+              src="/dashboard.png" 
+              alt="StockFlow Retail Inventory Management Dashboard - Real-time tracking, POS integration, and multi-store sync"
+              className="w-full rounded-lg"
+            />
+            {/* NOTE: Replace this placeholder image with actual StockFlow retail dashboard screenshot showing:
+                - Multi-store inventory view
+                - POS integration interface
+                - Real-time stock tracking
+                - Seasonal demand analytics
+                - Supplier management dashboard
+                - Mobile scanning for retail inventory */}
+            <p className="text-sm text-gray-500 mt-4 text-center italic">
+              Screenshot placeholder - Replace with actual StockFlow retail inventory dashboard
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Retail Challenges Section */}
       <section className="py-16 px-4 bg-white">

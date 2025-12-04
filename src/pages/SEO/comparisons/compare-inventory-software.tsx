@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
+import { useState } from 'react';
+import VideoModal from '@/components/VideoModal';
 import {
   ArrowRight,
   ExternalLink,
@@ -78,6 +80,7 @@ const evaluationChecklist = [
 
 export default function CompareInventorySoftware() {
   usePageRefresh();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const faqData = [
     {
@@ -201,12 +204,12 @@ export default function CompareInventorySoftware() {
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
-              <Link
-                to="/demo"
+              <button
+                onClick={() => setIsVideoModalOpen(true)}
                 className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition"
               >
                 Talk to an expert
-              </Link>
+              </button>
             </div>
             <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-slate-600">
               <div className="flex items-center gap-2">
@@ -364,13 +367,13 @@ export default function CompareInventorySoftware() {
             workspace so you can compare results against your current stack.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              to="/demo"
+            <button
+              onClick={() => setIsVideoModalOpen(true)}
               className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition"
             >
               Book a tailored walkthrough
               <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+            </button>
             <Link
               to="/customer-stories"
               className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition"
@@ -380,6 +383,10 @@ export default function CompareInventorySoftware() {
           </div>
         </div>
       </section>
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+      />
     </SeoPageLayout>
   );
 }

@@ -559,6 +559,30 @@ export type Database = {
           },
         ]
       }
+      leads: {
+        Row: {
+          id: string
+          email: string
+          source: string
+          metadata: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          source: string
+          metadata?: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          source?: string
+          metadata?: Json
+          created_at?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           branch_id: string | null

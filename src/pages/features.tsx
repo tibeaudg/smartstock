@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import Header from '@/components/HeaderPublic';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { Link } from 'react-router-dom';
 
 export default function FeaturesPage() {
   const navigate = useNavigate();
@@ -129,8 +130,8 @@ export default function FeaturesPage() {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="Inventory Management Features - Complete Feature Guide 2025 | StockFlow"
-        description="Discover comprehensive inventory management features including mobile barcode scanning, real-time tracking, advanced analytics, multi-location support, dead stock optimization, and team collaboration. Complete guide to stock management features and inventory software features."
+        title="Inventory Software Features 2025 | StockFlow"
+        description="Complete inventory management features: mobile barcode scanning, real-time tracking, multi-location support, analytics & reporting. Free plan available."
         keywords="inventory management features, stock management features, inventory software features, barcode scanning features, inventory tracking features, inventory management tools, stock management tools, inventory features list, best inventory management features, inventory software capabilities, stock control features, warehouse management features, inventory system features, inventory tracking software features, inventory management system features"
         url="https://www.stockflow.be/features"
         structuredData={structuredData}
@@ -334,6 +335,126 @@ export default function FeaturesPage() {
                   <span>Location-specific reporting and analytics</span>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Resources Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Explore More About StockFlow
+            </h2>
+            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+              Learn more about inventory management solutions, industry applications, and pricing.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Main Pillar Page Link */}
+            <Card className="hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl mb-2">Complete Guide</CardTitle>
+                <CardDescription>
+                  Comprehensive guide to inventory management software
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link 
+                  to="/inventory-management-software" 
+                  className="text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-2 group"
+                >
+                  Read Complete Guide
+                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* Solutions Pages Link */}
+            <Card className="hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl mb-2">Solutions</CardTitle>
+                <CardDescription>
+                  Explore inventory management solutions by use case
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Link 
+                  to="/solutions/inventory-management-software" 
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
+                >
+                  <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  Inventory Software Solutions
+                </Link>
+                <Link 
+                  to="/solutions/mobile-inventory-management" 
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
+                >
+                  <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  Mobile Inventory Management
+                </Link>
+                <Link 
+                  to="/solutions/inventory-management-software-cloud-based" 
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
+                >
+                  <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  Cloud-Based Solutions
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* Industry Pages Link */}
+            <Card className="hover:shadow-xl transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl mb-2">By Industry</CardTitle>
+                <CardDescription>
+                  See how features work in different industries
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Link 
+                  to="/industries/contractor-inventory-management" 
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
+                >
+                  <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  Contractor Inventory
+                </Link>
+                <Link 
+                  to="/industries/warehouse-inventory-management" 
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
+                >
+                  <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  Warehouse Management
+                </Link>
+                <Link 
+                  to="/industries/retail-inventory-management" 
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
+                >
+                  <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  Retail Inventory
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Pricing CTA */}
+          <div className="mt-12 text-center">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 text-white">
+              <h3 className="text-2xl font-bold mb-4">Ready to See Pricing?</h3>
+              <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+                View our transparent pricing plans and start your 14-day free trial. No credit card required.
+              </p>
+              <Link to="/pricing">
+                <Button 
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-gray-100"
+                >
+                  View Pricing Plans
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

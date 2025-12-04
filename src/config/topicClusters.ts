@@ -821,6 +821,14 @@ export const comparisonCluster: TopicCluster = {
       image: '/dashboard.png'
     },
     {
+      path: '/stockflow-vs-spreadsheets',
+      title: 'StockFlow vs Spreadsheets',
+      language: 'en',
+      category: 'Vergelijkingen',
+      description: 'Compare StockFlow and spreadsheets for inventory management',
+      image: '/dashboard.png'
+    },
+    {
       path: '/stockflow-vs-exact-online',
       title: 'StockFlow vs Exact Online',
       language: 'en',
@@ -1089,6 +1097,76 @@ export const extendedComparisonCluster: TopicCluster = {
   ]
 };
 
+// Small Business Inventory Management Cluster
+export const smallBusinessInventoryCluster: TopicCluster = {
+  pillar: {
+    path: '/blog/inventory-management-for-small-business-complete-guide',
+    title: 'Inventory Management for Small Business — Complete Guide',
+    language: 'en',
+    category: 'Blog',
+    description: 'Complete guide to inventory management for small businesses covering fundamentals, software selection, implementation, best practices, and ROI',
+    image: '/dashboard.png'
+  },
+  clusters: [
+    {
+      path: '/blog/barcodes-vs-qr-codes-for-inventory-management',
+      title: 'Barcode vs QR Code for Inventory Management',
+      language: 'en',
+      category: 'Blog',
+      description: 'Compare barcodes vs QR codes for inventory management. Learn the differences, pros and cons, use cases, and which to choose for your inventory tracking needs.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/blog/inventory-management-for-contractors',
+      title: 'Inventory Management for Contractors',
+      language: 'en',
+      category: 'Blog',
+      description: 'Specialized guide for contractors managing inventory across job sites, vehicles, and warehouses with mobile inventory solutions.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/blog/how-to-set-up-barcode-scanning-with-stockflow',
+      title: 'How to Set Up Barcode Scanning with StockFlow',
+      language: 'en',
+      category: 'Blog',
+      description: 'Step-by-step tutorial for implementing barcode scanning in StockFlow. Learn how to configure and use barcode scanning for inventory tracking.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/blog/roi-calculator-for-inventory-software',
+      title: 'ROI Calculator for Inventory Software',
+      language: 'en',
+      category: 'Blog',
+      description: 'Calculate the ROI of inventory management software. Use our interactive calculator to estimate cost savings, time savings, and return on investment.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/blog/small-business-inventory-management-mistakes',
+      title: 'Small Business Inventory Management Mistakes to Avoid',
+      language: 'en',
+      category: 'Blog',
+      description: 'Common inventory management mistakes small businesses make and how to avoid them. Learn from real examples and improve your inventory processes.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/blog/how-to-choose-inventory-software-for-small-business',
+      title: 'How to Choose Inventory Software for Small Business',
+      language: 'en',
+      category: 'Blog',
+      description: "Buyer's guide for small businesses evaluating inventory software. Learn what features to look for and how to select the right solution.",
+      image: '/dashboard.png'
+    },
+    {
+      path: '/blog/migrating-from-excel-to-inventory-software',
+      title: 'Migrating from Excel to Inventory Software',
+      language: 'en',
+      category: 'Blog',
+      description: 'Step-by-step migration guide for businesses moving from Excel spreadsheets to professional inventory management software.',
+      image: '/dashboard.png'
+    }
+  ]
+};
+
 // All clusters
 export const allClusters: TopicCluster[] = [
   dutchMainCluster,
@@ -1099,7 +1177,8 @@ export const allClusters: TopicCluster[] = [
   industryVerticalCluster,
   featureCluster,
   buyerIntentCluster,
-  extendedComparisonCluster
+  extendedComparisonCluster,
+  smallBusinessInventoryCluster
 ];
 
 // Helper function to find cluster for a given page

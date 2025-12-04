@@ -18,15 +18,19 @@ import { Badge } from '@/components/ui/badge';
 import Header from '@/components/HeaderPublic';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 
 export default function CustomersPage() {
   const navigate = useNavigate();
 
+  const breadcrumbs = getBreadcrumbPath('/customers');
   const structuredData = generateComprehensiveStructuredData(
+    'article',
     {
-      name: 'StockFlow Customer Success Stories',
+      title: 'StockFlow Customer Success Stories',
       description: 'See how Belgian businesses use StockFlow to optimize their inventory management',
-      url: 'https://www.stockflow.be/customers'
+      url: 'https://www.stockflow.be/customers',
+      breadcrumbs: breadcrumbs
     }
   );
 
@@ -45,7 +49,7 @@ export default function CustomersPage() {
       results: ["50% reduction in waste", "2 hours saved weekly", "Better cash flow"]
     },
     {
-      name: "Sophie Martens", 
+      name: "Tom Demuynck", 
       role: "Owner, Maison Belle Boutique",
       company: "Fashion Retail",
       location: "Brussels, Belgium",

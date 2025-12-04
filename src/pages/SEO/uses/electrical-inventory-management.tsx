@@ -316,8 +316,8 @@ export default function ElectricalInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Electrical Inventory Management 2025 - Reduce Material Loss, Save Time | StockFlow"
-        description="Complete electrical inventory management 2025 for electricians. Track supplies, tools, equipment across job sites. Mobile scanning, job costing. Reduce material loss, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
+        title="Inventory Software for Electrical Contractors | StockFlow"
+        description="Electrical contractor inventory software. Track supplies, tools & equipment across teams. Van stock visibility, job-ready kitting. Mobile barcode scanning."
         keywords="electrical inventory management, electrician inventory software, electrical contractor inventory, electrical supplies tracking, electrical materials management, job site inventory, service vehicle inventory, electrical job costing, contractor inventory software"
         url="https://www.stockflow.be/electrical-inventory-management"
       />

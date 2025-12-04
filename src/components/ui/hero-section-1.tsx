@@ -29,7 +29,7 @@ export function HeroSection() {
         <>
             <main>
                 <section className="relative overflow-visible">
-                    <div className="relative pt-24 md:pt-36 min-h-[600px] md:min-h-[800px] pb-20" style={{ background: 'transparent' }}>
+                    <div className="relative pt-24 md:pt-36 min-h-[600px] md:min-h-[800px]" style={{ background: 'transparent' }}>
                         <div className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
 
 
@@ -112,91 +112,6 @@ export function HeroSection() {
                     </div>
 
 
-        
-
-
-
-                    <div className="group relative bg-white m-auto max-w-5xl px-6">
-                        <div className="absolute  inset-0 z-10 flex items-center justify-center">
-                
-                        </div>
-                        <div className="mx-auto grid max-w-2xl grid-cols-4 gap-x-32 gap-y-12 transition-all duration-500 bg-white rounded-2xl mb-24">
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-5 w-fit dark:invert"
-                                    src="nike.png"
-                                    alt="Nike Logo"
-                                    height="auto"
-                                    width="auto"
-                                />
-                            </div>
-
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-4 w-fit dark:invert"
-                                    src="acronis.png"
-                                    alt="Acronis Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-4 w-fit dark:invert"
-                                    src="nestle.png"
-                                    alt="Nestle Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-5 w-fit dark:invert"
-                                    src="puma.png"
-                                    alt="Puma Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-5 w-fit dark:invert"
-                                    src="unicef.png"
-                                    alt="Unicef Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-4 w-fit dark:invert"
-                                    src="gap.png"
-                                    alt="Gap Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-7 w-fit dark:invert"
-                                            src="toyota.png"
-                                    alt="Toyota Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-
-                            <div className="flex">
-                                <img
-                                    className="mx-auto h-6 w-fit dark:invert"
-                                    src="ikea.png"
-                                    alt="Ikea Logo"
-                                    height="16"
-                                    width="auto"
-                                />
-                            </div>
-                        </div>
-                    </div>
                 </section>
             </main>
         </>

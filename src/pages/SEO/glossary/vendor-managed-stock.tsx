@@ -2,6 +2,8 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useState } from 'react';
+import VideoModal from '@/components/VideoModal';
 import {
   Package,
   CheckCircle,
@@ -19,6 +21,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 export default function VendorManagedStock() {
   usePageRefresh();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const faqData = [
     {
@@ -274,12 +277,12 @@ export default function VendorManagedStock() {
               >
                 Start Free Trial
               </Link>
-              <Link
-                to="/demo"
+              <button
+                onClick={() => setIsVideoModalOpen(true)}
                 className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-blue-50 transition-colors text-lg"
               >
                 View Demo
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -320,6 +323,10 @@ export default function VendorManagedStock() {
           "dateModified": new Date().toISOString().split('T')[0]
         }
       ]} />
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+      />
     </SeoPageLayout>
   );
 }

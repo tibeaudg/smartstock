@@ -38,8 +38,17 @@ export interface SoftwareApplicationData {
     count: string;
   };
   features?: string[];
-  image?: string;
+  image?: string | string[];
+  screenshot?: string;
   url: string;
+  baseUrl?: string;
+  offers?: Array<{
+    price: string;
+    priceCurrency: string;
+    description?: string;
+    availability?: string;
+    validFrom?: string;
+  }>;
 }
 
 export interface ServiceData {
@@ -161,7 +170,74 @@ export function generateWebSiteSchema(organizationName: string, baseUrl: string)
 
 // Generate SoftwareApplication Schema
 export function generateSoftwareApplicationSchema(data: SoftwareApplicationData) {
-  return {
+  const baseUrl = data.baseUrl || "https://www.stockflow.be";
+  
+  // Normalize image to array format
+  const images = data.image 
+    ? (Array.isArray(data.image) ? data.image : [data.image])
+    : ["https://www.stockflow.be/Inventory-Management.png"];
+  
+  // Ensure all image URLs are absolute
+  const normalizedImages = images.map(img => 
+    img.startsWith('http') ? img : `${baseUrl}${img.startsWith('/') ? '' : '/'}${img}`
+  );
+  
+  // Default screenshot if not provided
+  const screenshot = data.screenshot 
+    ? (data.screenshot.startsWith('http') ? data.screenshot : `${baseUrl}${data.screenshot.startsWith('/') ? '' : '/'}${data.screenshot}`)
+    : `${baseUrl}/optimized/desktop.png`;
+  
+  // Handle offers - support both single offer and array of offers
+  let offers;
+  if (data.offers && Array.isArray(data.offers) && data.offers.length > 0) {
+    // Multiple offers
+    offers = data.offers.map(offer => ({
+      "@type": "Offer",
+      "price": offer.price,
+      "priceCurrency": offer.priceCurrency,
+      "description": offer.description || data.description,
+      "availability": offer.availability || "https://schema.org/InStock",
+      "priceValidUntil": "2025-12-31",
+      "validFrom": offer.validFrom || "2024-01-01",
+      "seller": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      }
+    }));
+  } else {
+    // Single offer (backward compatible)
+    offers = {
+      "@type": "Offer",
+      "price": data.price,
+      "priceCurrency": data.currency,
+      "description": data.description,
+      "availability": "https://schema.org/InStock",
+      "priceValidUntil": "2025-12-31",
+      "validFrom": "2024-01-01",
+      "seller": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      }
+    };
+  }
+  
+  // Aggregate rating with proper defaults
+  const aggregateRating = data.rating ? {
+      "@type": "AggregateRating",
+      "ratingValue": data.rating.value,
+      "ratingCount": data.rating.count,
+      "bestRating": "5",
+      "worstRating": "1"
+    } : {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150",
+      "bestRating": "5",
+      "worstRating": "1"
+    };
+  
+  // Build the schema
+  const schema: any = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": data.name,
@@ -171,31 +247,8 @@ export function generateSoftwareApplicationSchema(data: SoftwareApplicationData)
     "operatingSystem": data.operatingSystem,
     "softwareVersion": "2.0",
     "releaseNotes": "Latest version with enhanced features",
-    "offers": {
-      "@type": "Offer",
-      "price": data.price,
-      "priceCurrency": data.currency,
-      "description": data.description,
-      "availability": "https://schema.org/InStock",
-      "priceValidUntil": "2025-12-31",
-      "seller": {
-        "@type": "Organization",
-        "name": "StockFlow"
-      }
-    },
-    "aggregateRating": data.rating ? {
-      "@type": "AggregateRating",
-      "ratingValue": data.rating.value,
-      "ratingCount": data.rating.count,
-      "bestRating": "5",
-      "worstRating": "1"
-    } : {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "32",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
+    "offers": offers,
+    "aggregateRating": aggregateRating,
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -205,23 +258,64 @@ export function generateSoftwareApplicationSchema(data: SoftwareApplicationData)
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": `${baseUrl}/logo.png`
       }
     },
-    "image": data.image,
+    "image": normalizedImages.length === 1 ? normalizedImages[0] : normalizedImages,
+    "screenshot": screenshot,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": data.url
+      "@id": data.url.startsWith('http') ? data.url : `${baseUrl}${data.url.startsWith('/') ? '' : '/'}${data.url}`
     },
-    "featureList": data.features,
     "softwareHelp": {
       "@type": "WebPage",
-      "url": "https://www.stockflow.be/contact"
+      "url": `${baseUrl}/contact`
     },
-    "installUrl": "https://www.stockflow.be/auth",
-    "downloadUrl": "https://www.stockflow.be/auth",
+    "installUrl": `${baseUrl}/auth`,
+    "downloadUrl": `${baseUrl}/auth`,
     "permissions": "Web Browser"
   };
+  
+  // Add featureList if provided
+  if (data.features && data.features.length > 0) {
+    schema.featureList = data.features;
+  }
+  
+  return schema;
+}
+
+// Generate comprehensive structured data for product pages
+export interface ProductPageStructuredDataOptions {
+  softwareData: SoftwareApplicationData;
+  faqData?: Array<{question: string; answer: string}>;
+  breadcrumbs?: BreadcrumbItem[];
+  includeBreadcrumbs?: boolean;
+  baseUrl?: string;
+}
+
+export function generateProductPageStructuredData(options: ProductPageStructuredDataOptions) {
+  const { softwareData, faqData, breadcrumbs, includeBreadcrumbs = false, baseUrl = "https://www.stockflow.be" } = options;
+  
+  const schemas: any[] = [];
+  
+  // Add SoftwareApplication schema
+  const softwareSchema = generateSoftwareApplicationSchema({
+    ...softwareData,
+    baseUrl
+  });
+  schemas.push(softwareSchema);
+  
+  // Add FAQ schema if provided
+  if (faqData && faqData.length > 0) {
+    schemas.push(generateFAQSchema(faqData));
+  }
+  
+  // Add BreadcrumbList if requested and breadcrumbs are provided
+  if (includeBreadcrumbs && breadcrumbs && breadcrumbs.length > 0) {
+    schemas.push(generateBreadcrumbSchema(breadcrumbs));
+  }
+  
+  return schemas;
 }
 
 // Generate Service Schema

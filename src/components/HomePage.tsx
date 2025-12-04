@@ -35,6 +35,10 @@ import {
 
 import { HeroSection } from "@/components/ui/hero-section-1"
 import { PlatformPreviewSection } from "./PlatformPreviewSection";
+import { CustomerLogos } from "./trust/CustomerLogos";
+import { ReviewBadges } from "./trust/ReviewBadges";
+import { TestimonialQuotes } from "./trust/TestimonialQuotes";
+import { CaseStudyThumbnails } from "./trust/CaseStudyThumbnails";
 
 
 
@@ -995,7 +999,7 @@ export const HomePage = () => {
       },
       "author": {
         "@type": "Person",
-        "name": "Sophie Martens"
+        "name": "Tom Demuynck"
       },
       "reviewRating": {
         "@type": "Rating",
@@ -1253,8 +1257,8 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="StockFlow 2025: FREE Plan, Save 35% Costs | Inventory Software"
-        description="Best inventory management software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week. Trusted by 1,000+ businesses. Start free - no credit card required!"
+        title="Free Inventory Management — StockFlow | Barcode, Mobile, Reporting"
+        description="Free inventory management software with barcode scanning, mobile access & reporting. Track stock in real-time, prevent stockouts, save 35% costs. Start free - no credit card!"
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflow.be/"
         hreflang={[
@@ -1276,6 +1280,21 @@ export const HomePage = () => {
 
         <HeroSection />
 
+      {/* Customer Logos Section */}
+      <CustomerLogos 
+        variant="marquee" 
+        heading="Trusted by leading businesses"
+      />
+
+      {/* Review Badges Section */}
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+            <ReviewBadges variant="horizontal" />
+          </div>
+        </div>
+      </section>
+
             
 
 
@@ -1290,7 +1309,7 @@ export const HomePage = () => {
                   Powerful Features
                 </span>
               </div>
-              <h2 className="max-w-4xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold"> Everything You Need to Manage Inventory 
+              <h2 className="max-w-4xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-6xl leading-none font-bold"> Everything You Need to Manage Inventory 
                 
               </h2> 
 
@@ -1411,7 +1430,7 @@ export const HomePage = () => {
           {/* Header Section */}
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               {/* Main Title */}
-              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold">
                 Start Tracking In 3 Simple Steps
               </h2>
               
@@ -1500,9 +1519,28 @@ export const HomePage = () => {
         </div>
       </section>
 
+      {/* Testimonial Quotes Section */}
+      <section className="py-16 sm:py-20 md:py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="max-w-3xl mx-auto text-balance text-4xl sm:text-5xl md:text-6xl leading-none font-bold text-center mb-4">
+              What Our Customers Say
+            </h2>
+            <p className="text-md text-gray-600 max-w-2xl mx-auto">
+              See how businesses are saving time and money with StockFlow
+            </p>
+          </div>
+          <TestimonialQuotes 
+            variant="carousel" 
+            maxQuotes={3}
+            showRating={true}
+            showSavings={true}
+          />
+        </div>
+      </section>
 
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white ">
-        <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
+        <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center">
           Case Studies
         </h2>
         <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed text-center">
@@ -1513,6 +1551,8 @@ export const HomePage = () => {
   items={data as Gallery4Item[]}
 />
       </section>
+
+
 
 
 
@@ -1527,7 +1567,7 @@ export const HomePage = () => {
                   CONNECT YOUR TOOLS
                 </span>
               </div>
-              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center">
                 Connect with Your Tools<br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-blue-600">
                   
@@ -1569,7 +1609,7 @@ export const HomePage = () => {
                   FAQs
                 </span>
               </div>
-              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center">
               Got Questions? <br className="hidden sm:block" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-600">
                   We've Got Answers
@@ -1738,7 +1778,7 @@ export const HomePage = () => {
                 {/* Content */}
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                   {/* Main Headline */}
-                  <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-none font-bold text-center text-white">
+                  <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center text-white">
                     Ready to simplify your stock management?
                   </h2>
                   

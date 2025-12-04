@@ -82,8 +82,8 @@ export default function StockManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Stock Management 2025 - Optimize Inventory Levels & Reduce Costs | StockFlow"
-        description="Master stock management with real-time tracking, automated reordering, and demand forecasting. Reduce carrying costs by 30%, prevent stockouts, and improve cash flow. Free plan for up to 100 products. Start free trial."
+        title="Stock Management Software 2025 | StockFlow"
+        description="Stock management with real-time tracking, automated reordering & demand forecasting. Reduce costs 30%, prevent stockouts. Free plan available."
         keywords="stock management, inventory control, stock tracking, warehouse management, inventory software, stock control system, SMB inventory, small business stock, stock management software, stock optimization, stock management app, stock management tools, stock control, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/stock-management"
       />

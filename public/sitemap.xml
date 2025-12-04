@@ -2,12 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.stockflow.be/</loc>
-  </url>
-  <url>
-    <loc>https://www.stockflow.be/auth</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/best-inventory-management-software</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/best-online-inventory-software</loc>
@@ -395,9 +398,15 @@
   </url>
   <url>
     <loc>https://www.stockflow.be/integrations</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/purchase-requisition-software</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/glossary</loc>
@@ -451,10 +460,16 @@
     <loc>https://www.stockflow.be/inventory-turnover-ratio</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/retail-inventory-management</loc>  
+    <loc>https://www.stockflow.be/retail-inventory-management</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflow.be/retail-price</loc> 
+    <loc>https://www.stockflow.be/retail-price</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/warehouse-software</loc>
@@ -466,10 +481,10 @@
     <loc>https://www.stockflow.be/wholesaler-inventory-management</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/integrations</loc>
-  </url>
-  <url>
     <loc>https://www.stockflow.be/inventory-for-hospitality</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/inventory-optimization-services</loc>
@@ -495,6 +510,12 @@
 
   <url>
     <loc>https://www.stockflow.be/assets-inventory</loc>
+  </url>
+  <url>
+    <loc>https://www.stockflow.be/solutions/asset-tracking</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/solutions/construction-inventory-app</loc>
@@ -596,7 +617,10 @@
     <loc>https://www.stockflow.be/contractor-inventory-management</loc>
   </url>
   <url>
-    <loc>https://www.stockflow.be/cross-dock-warehouse</loc> 
+    <loc>https://www.stockflow.be/cross-dock-warehouse</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.stockflow.be/ecommerce-inventory-management</loc>

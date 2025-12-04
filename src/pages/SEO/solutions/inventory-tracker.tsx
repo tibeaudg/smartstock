@@ -230,8 +230,8 @@ export default function InventoryTracker() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Tracker 2025 - 99%+ Accuracy, Save 10+ Hours/Week | StockFlow"
-        description="Best inventory tracker 2025 for real-time stock monitoring. Track inventory movements, locations, levels with barcode scanning. 99%+ accuracy, save 10+ hours/week, prevent stockouts. Free plan for up to 100 products. Start free trial - no credit card required."
+        title="Inventory Tracker Software 2025 | StockFlow"
+        description="Best inventory tracker 2025 for real-time stock monitoring. Track movements, locations, levels with barcode scanning. 99%+ accuracy. Free plan available."
         keywords="inventory tracker, stock tracker, inventory tracking, stock tracking, inventory monitoring, stock monitoring, inventory tracking software, stock tracking software, inventory tracking app, stock tracking app, real-time inventory tracking, inventory movement tracking, stock movement tracking, inventory tracking system, stock tracking system, inventory tracker app, stock tracker app, inventory tracking tool, stock tracking tool, inventory tracking solution, stock tracking solution"
         url="https://www.stockflow.be/solutions/inventory-tracker"
         locale="en"

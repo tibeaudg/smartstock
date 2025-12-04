@@ -180,8 +180,8 @@ export default function InventoryTrackingPrograms() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Tracking Programs 2025 - 99%+ Accuracy, Save 70% Time | StockFlow"
-        description="Best inventory tracking programs 2025. Real-time tracking, barcode scanning, automated alerts. Achieve 99%+ accuracy, save 70% time. Free plan for up to 100 products. Start free trial - no credit card required."
+        title="Inventory Tracking Programs 2025 | StockFlow"
+        description="Best inventory tracking programs 2025. Real-time tracking, barcode scanning, automated alerts. Achieve 99%+ accuracy, save 70% time. Free plan available."
         keywords="inventory tracking programs, inventory tracking software, inventory tracking program, inventory tracking system, inventory tracking app, inventory tracking solution, inventory tracking platform, inventory tracking tool, inventory tracking software free, inventory tracking program free, best inventory tracking program, inventory tracking software for small business, inventory tracking software online, cloud inventory tracking, inventory tracking software comparison, inventory tracking software reviews, inventory tracking software features, inventory tracking software cost, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-tracking-programs"
       />

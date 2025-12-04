@@ -171,8 +171,8 @@ export default function ContractorInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Contractor Inventory Management 2025 - Reduce Tool Loss 60%, Save Time | StockFlow"
-        description="Complete contractor inventory management 2025. Track tools, equipment, materials across job sites. Barcode scanning, tool checkout. Reduce tool loss by 60%, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
+        title="Inventory Software for Contractors — StockFlow"
+        description="Contractor inventory management software. Track tools, equipment & materials across job sites. Barcode scanning, tool checkout. Reduce loss 60%. Free plan."
         keywords="contractor inventory management, contractor inventory software, construction inventory management, tool tracking software, equipment inventory management, contractor inventory system, construction inventory software, tool management software, contractor equipment tracking, construction inventory tracking, contractor inventory app, construction tool tracking, contractor material management, contractor inventory solution, contractor inventory platform, construction equipment management, contractor inventory control, construction inventory app, contractor tool management, construction material tracking, stockflow, stock flow"
         url="https://www.stockflow.be/contractor-inventory-management"
       />

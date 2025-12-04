@@ -30,6 +30,7 @@ import { useIsMobile } from '../hooks/useWindowSize';
 import { useLocation } from "react-router-dom";
 import type { LucideIcon } from 'lucide-react';
 import { Button } from './ui/button';
+import VideoModal from './VideoModal';
 
 
 
@@ -105,6 +106,7 @@ const Header: React.FC<HeaderProps> = ({
   const location = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const isAuthPage = location.pathname.startsWith("/auth");
 
@@ -262,15 +264,15 @@ const Header: React.FC<HeaderProps> = ({
         to: '/pricing'
       },
       {
+        id: 'resources',
+        label: 'Resources',
+        to: '/resources'
+      },
+      {
         id: 'blog',
         label: 'Blog',
         to: '/blog'
-      },
-    {
-        id: 'demo',
-        label: 'Demo',
-        to: '/demo'
-        }
+      }
     ],
     []
   );
@@ -319,7 +321,7 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const updateMegaMenuPosition = (trigger: HTMLElement) => {
-    if (typeof window === 'undefined') {
+    if (typeof window === 'undefined' || !trigger) {
       return;
     }
 
@@ -517,7 +519,7 @@ const Header: React.FC<HeaderProps> = ({
                     key={item.id}
                     className="relative"
                     onMouseEnter={event => {
-                      if (item.megaMenu) {
+                      if (item.megaMenu && event.currentTarget) {
                         handleMegaMenuOpen(item.id, event.currentTarget as HTMLElement);
                       } else {
                         setActiveMenu(null);
@@ -541,6 +543,10 @@ const Header: React.FC<HeaderProps> = ({
                               return null;
                             }
 
+                            if (!event.currentTarget) {
+                              return item.id;
+                            }
+
                             const parent = (event.currentTarget.parentElement || event.currentTarget) as HTMLElement;
                             updateMegaMenuPosition(parent);
                             return item.id;
@@ -550,6 +556,17 @@ const Header: React.FC<HeaderProps> = ({
                       >
                         {item.label}
                         <ChevronDown className={`h-4 w-4 transition-transform ${activeMenu === item.id ? 'rotate-180' : ''}`} />
+                      </button>
+                    ) : item.id === 'demo' ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsVideoModalOpen(true);
+                          handleNavigate();
+                        }}
+                        className="inline-flex items-center rounded-full px-3 py-2 transition-colors hover:text-blue-600"
+                      >
+                        {item.label}
                       </button>
                     ) : (
                       <Link
@@ -629,6 +646,18 @@ const Header: React.FC<HeaderProps> = ({
                           expandedMobileMenus[item.id] ? 'rotate-180' : ''
                         }`}
                       />
+                    </button>
+                  ) : item.id === 'demo' ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsVideoModalOpen(true);
+                        setIsMobileMenuOpen(false);
+                        handleNavigate();
+                      }}
+                      className="block w-full text-left px-4 py-3 text-base font-semibold text-gray-800"
+                    >
+                      {item.label}
                     </button>
                   ) : (
                     <Link
@@ -735,6 +764,10 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         )}
       </div>
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+      />
     </header>
   );
 };

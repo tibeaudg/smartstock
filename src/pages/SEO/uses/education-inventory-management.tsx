@@ -313,8 +313,8 @@ export default function EducationInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Education Inventory Management 2025 - Reduce Loss 85%, Save Budget | StockFlow"
-        description="Complete education inventory management 2025 for schools. Track textbooks, technology, supplies, equipment. Checkout system, budget tracking. Reduce loss by 85%, save budget. Free plan available. Start free trial - no credit card required."
+        title="School Inventory Management Software | StockFlow"
+        description="Education inventory software for schools. Track textbooks, technology, supplies & equipment. Checkout system, budget tracking. Reduce loss 85%. Free plan."
         keywords="school inventory management, education inventory software, textbook tracking, school asset management, technology checkout system, K-12 inventory, college inventory management, school supplies tracking, educational institution inventory"
         url="https://www.stockflow.be/education-inventory-management"
       />

@@ -3,7 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Header from './HeaderPublic';
 import Footer from './Footer';
-import { getBreadcrumbPath, getAllSeoPages, getRelatedPages } from '@/config/topicClusters';
+import VideoModal from './VideoModal';
+import { getBreadcrumbPath, getAllSeoPages, getRelatedPages, findClusterForPage } from '@/config/topicClusters';
+import { InternalLinkingWidget } from '@/components/seo/InternalLinkingWidget';
 import { detectPageLanguage } from '@/utils/seoPageHelpers';
 import { getStableRelatedArticles } from '@/utils/linkAlgo';
 import { 
@@ -570,36 +572,44 @@ RecentArticlesSection.displayName = 'RecentArticlesSection';
 
 
 const CTASection = memo<{ pageLanguage: 'nl' | 'en' }>(({ pageLanguage }) => {
+  const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
   const heading = pageLanguage === 'nl' ? 'Klaar voor de volgende stap?' : 'Ready to Simplify Your Stock Management?';
   const ctaText = pageLanguage === 'nl' ? 'Start Gratis' : 'Start Free Trial';
+  const watchDemoText = pageLanguage === 'nl' ? 'Bekijk Demo' : 'Watch Demo';
 
   return (
-    <section className="py-24 bg-blue-700 relative overflow-hidden" aria-labelledby="cta-heading">
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" aria-hidden="true"></div>
-      <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <h2 id="cta-heading" className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-          {heading}
-        </h2>
-        <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
-          Join the inventory revolution with the platform engineered for accuracy and speed.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4" role="group" aria-label="Call to action buttons">
-          <button 
-            className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-500"
-            onClick={() => window.location.href = '/auth'}
-          >
-            {ctaText}
-          </button>
-          <a 
-            href="/demo" 
-            className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-blue-400 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-500"
-          >
-            Watch Demo
-          </a>
+    <>
+      <section className="py-24 bg-blue-700 relative overflow-hidden" aria-labelledby="cta-heading">
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" aria-hidden="true"></div>
+        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+          <h2 id="cta-heading" className="text-3xl md:text-5xl font-bold text-white mb-6 tracking-tight">
+            {heading}
+          </h2>
+          <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
+            Join the inventory revolution with the platform engineered for accuracy and speed.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4" role="group" aria-label="Call to action buttons">
+            <button 
+              className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-blue-50 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-500"
+              onClick={() => window.location.href = '/auth'}
+            >
+              {ctaText}
+            </button>
+            <button 
+              onClick={() => setIsVideoModalOpen(true)}
+              className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-blue-400 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-blue-500"
+            >
+              {watchDemoText}
+            </button>
+          </div>
+          <p className="mt-6 text-sm text-blue-200 opacity-80">No credit card required • 14-day free trial</p>
         </div>
-        <p className="mt-6 text-sm text-blue-200 opacity-80">No credit card required • 14-day free trial</p>
-      </div>
-    </section>
+      </section>
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+      />
+    </>
   );
 });
 CTASection.displayName = 'CTASection';
@@ -635,6 +645,12 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   // --- Memoized Data ---
   const breadcrumbItems = useMemo(() => getBreadcrumbPath(location.pathname), [location.pathname]);
   const clusterArticles = useMemo(() => getRelatedPages(location.pathname), [location.pathname]);
+  
+  // Detect if current page is a pillar page
+  const cluster = useMemo(() => findClusterForPage(location.pathname), [location.pathname]);
+  const isPillarPage = useMemo(() => {
+    return cluster?.pillar.path === location.pathname;
+  }, [cluster, location.pathname]);
   
   const allAvailableArticles = useMemo(() => {
     if (clusterArticles.length > 0) return clusterArticles;
@@ -729,6 +745,30 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
               leading-relaxed">
               {children}
             </div>
+
+            {/* Product/Pricing CTAs for Pillar Pages */}
+            {isPillarPage && (
+              <div className="mt-12 mb-8">
+                <InternalLinkingWidget
+                  currentPath={location.pathname}
+                  variant="pillar"
+                  showProductLinks={true}
+                  className="max-w-4xl mx-auto"
+                />
+              </div>
+            )}
+
+            {/* Contextual Links for Cluster Pages */}
+            {!isPillarPage && cluster && (
+              <div className="mt-12 mb-8">
+                <InternalLinkingWidget
+                  currentPath={location.pathname}
+                  variant="cluster"
+                  showProductLinks={true}
+                  className="max-w-4xl mx-auto"
+                />
+              </div>
+            )}
           </div>
         </article>
 
