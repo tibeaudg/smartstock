@@ -9,6 +9,8 @@ import { useMobile } from '@/hooks/use-mobile';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
+import { useCategoryProducts } from '@/hooks/useCategories';
 
 
 
@@ -201,6 +203,9 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   // Haal alle dashboarddata op (voor de statistieken) - load in background
   const { data: metrics, isLoading: loading, isFetching: metricsFetching } = useDashboardData();
 
+  // Fetch all products for analytics
+  const { data: allProducts = [] } = useCategoryProducts('all');
+
   // State voor grafiek-periode
   const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
   
@@ -326,9 +331,11 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
       </div>
-      
 
-
+      {/* Category Overview Analytics */}
+      <div className="mt-4 sm:mt-6">
+        <AllProductsAnalytics products={allProducts} />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
 

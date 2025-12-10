@@ -105,6 +105,15 @@ const getStockStatusDotColor = (quantity: number, minLevel: number) => {
   return 'bg-green-500';
 };
 
+// Helper function to get stock pill color classes
+const getStockPillColor = (quantity: number, minLevel: number) => {
+  const qty = Number(quantity);
+  const min = Number(minLevel);
+  if (qty === 0) return 'bg-red-100 text-red-700 border-red-200 border';
+  if (qty > 0 && qty <= min) return 'bg-yellow-100 text-yellow-700 border-yellow-200 border';
+  return 'bg-green-100 text-green-700 border-green-200 border';
+};
+
 // Helper function to format variant attributes
 const formatVariantAttributes = (attributes: Record<string, unknown> | null): string[] => {
   if (!attributes) return [];
@@ -551,7 +560,142 @@ const ProductDetailDrawer: React.FC<ProductDetailDrawerProps> = ({ product, isOp
   );
 };
 
-// Product Row Component for Desktop
+// EditableCell component for inline editing
+interface EditableCellProps {
+  value: string | number;
+  onSave: (newValue: string | number) => Promise<void>;
+  type?: 'text' | 'number';
+  className?: string;
+  compactMode?: boolean;
+  placeholder?: string;
+  isEditing?: boolean;
+  onEditingChange?: (editing: boolean) => void;
+}
+
+const EditableCell: React.FC<EditableCellProps> = ({
+  value,
+  onSave,
+  type = 'text',
+  className = '',
+  compactMode = false,
+  placeholder = '',
+  isEditing: externalIsEditing,
+  onEditingChange
+}) => {
+  const [internalIsEditing, setInternalIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(String(value));
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Use external editing state if provided, otherwise use internal
+  const isEditing = externalIsEditing !== undefined ? externalIsEditing : internalIsEditing;
+  const setIsEditing = externalIsEditing !== undefined 
+    ? (editing: boolean) => onEditingChange?.(editing)
+    : setInternalIsEditing;
+
+  // Sync editValue when value changes (but not while editing)
+  useEffect(() => {
+    if (!isEditing) {
+      setEditValue(String(value));
+    }
+  }, [value, isEditing]);
+
+  // Auto-start editing when external isEditing becomes true
+  useEffect(() => {
+    if (externalIsEditing && !internalIsEditing && !isSaving) {
+      setInternalIsEditing(true);
+      setEditValue(String(value));
+    }
+  }, [externalIsEditing, value, isSaving, internalIsEditing]);
+
+  const handleClick = () => {
+    if (!isSaving) {
+      setIsEditing(true);
+      setEditValue(String(value));
+    }
+  };
+
+  const handleSave = async () => {
+    if (editValue === String(value)) {
+      setIsEditing(false);
+      if (externalIsEditing !== undefined && onEditingChange) {
+        onEditingChange(false);
+      }
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const finalValue = type === 'number' ? Number(editValue) : editValue;
+      await onSave(finalValue);
+      setIsEditing(false);
+      if (externalIsEditing !== undefined && onEditingChange) {
+        onEditingChange(false);
+      }
+    } catch (error) {
+      console.error('Error saving:', error);
+      setEditValue(String(value)); // Revert on error
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditValue(String(value));
+    setIsEditing(false);
+    if (externalIsEditing !== undefined && onEditingChange) {
+      onEditingChange(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSave();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      handleCancel();
+    }
+  };
+
+  if (isEditing) {
+    return (
+      <Input
+        type={type}
+        value={editValue}
+        onChange={(e) => setEditValue(e.target.value)}
+        onBlur={handleSave}
+        onKeyDown={handleKeyDown}
+        autoFocus
+        disabled={isSaving}
+        className={cn(
+          "h-7 px-2 text-sm border-blue-500 focus:border-blue-500 focus:ring-blue-500",
+          compactMode && "h-6 text-xs",
+          className
+        )}
+        placeholder={placeholder}
+      />
+    );
+  }
+
+  return (
+    <div
+      onClick={handleClick}
+      className={cn(
+        "cursor-pointer hover:bg-gray-100 rounded px-1 py-0.5 transition-colors min-h-[28px] flex items-center",
+        compactMode && "min-h-[24px]",
+        className
+      )}
+      title="Click to edit"
+    >
+      {isSaving ? (
+        <span className="text-gray-400 text-xs">Saving...</span>
+      ) : (
+        <span>{value || placeholder || '-'}</span>
+      )}
+    </div>
+  );
+};
+
 interface ProductRowProps {
   product: Product;
   isVariant?: boolean;
@@ -574,7 +718,13 @@ interface ProductRowProps {
   onDuplicate?: (product: Product) => void;
   onDelete?: (product: Product) => void;
   onMoveToLocation?: (product: Product) => void;
+  onFieldUpdate?: (productId: string, field: string, value: string | number) => Promise<void>;
+  onStockUpdate?: (productId: string, newQuantity: number) => Promise<void>;
   rowIndex?: number;
+  isFocused?: boolean;
+  isEditingStock?: boolean;
+  onStartEditingStock?: () => void;
+  rowRef?: (node: HTMLTableRowElement | null) => void;
 }
 
 const ProductRow: React.FC<ProductRowProps> = ({
@@ -599,7 +749,13 @@ const ProductRow: React.FC<ProductRowProps> = ({
   onDuplicate,  
   onDelete,
   onMoveToLocation,
-  rowIndex = 0
+  onFieldUpdate,
+  onStockUpdate,
+  rowIndex = 0,
+  isFocused = false,
+  isEditingStock = false,
+  onStartEditingStock,
+  rowRef
 }) => {
   const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
   const stockLevelPercentage = getStockLevelPercentage(product.quantity_in_stock, product.minimum_stock_level);
@@ -607,23 +763,25 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
   // Determine row background color for alternating pattern
   const getRowBackgroundColor = () => {
-    if (isVariant) return 'bg-blue-50/30';
-    return rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+    if (isVariant) return 'bg-blue-50/20';
+    return rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50/50';
   };
 
   return (
     <tr 
-    
+      ref={rowRef}
+      tabIndex={0}
       className={cn(
-        `${getRowBackgroundColor()} hover:bg-gray-100 hover:shadow-sm transition-all duration-200 cursor-pointer border-b-2 border-gray-100`,
-        compactMode && 'h-10'
+        `${getRowBackgroundColor()} hover:bg-gray-50 transition-colors cursor-pointer border-b border-gray-100`,
+        compactMode && 'h-8',
+        isFocused && 'ring-2 ring-blue-500 ring-offset-1 outline-none'
       )}
     >
       {/* Selection checkbox */}
       {isAdmin && (
         <td className={cn(
           "text-center w-12",
-          compactMode ? "px-2 py-1.5" : "px-3 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )} onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
@@ -641,11 +799,11 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.product && (
         <td className={cn(
           "w-1/3",
-          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           <div className={cn(
             "flex items-center",
-            compactMode ? "gap-1.5" : "gap-3"
+            compactMode ? "gap-1.5" : "gap-2"
           )}>
             {/* Expand/Collapse indicator for variants */}
             {hasChildren && (
@@ -680,8 +838,8 @@ const ProductRow: React.FC<ProductRowProps> = ({
             <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
               {product.image_url ? (
                 <div className={cn(
-                  "bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden",
-                  compactMode ? "w-8 h-8" : "w-12 h-12"
+                  "bg-gray-50 rounded border flex items-center justify-center overflow-hidden",
+                  compactMode ? "w-8 h-8" : "w-10 h-10"
                 )}>
                   <img
                     src={product.image_url}
@@ -703,17 +861,29 @@ const ProductRow: React.FC<ProductRowProps> = ({
             <div className="flex-1 min-w-0">
               <div className={cn(
                 "flex items-center",
-                compactMode ? "gap-1" : "gap-2 mb-1"
+                compactMode ? "gap-1" : "gap-2"
               )}>
-                <h3 className={cn(
-                  "font-medium text-gray-900 truncate",
-                  compactMode ? "text-xs" : "text-sm"
-                )}>
-                  {product.name}
-                  {isVariant && product.variant_name && (
-                    <span className="text-gray-600"> - {product.variant_name}</span>
-                  )}
-                </h3>
+                {onFieldUpdate ? (
+                  <EditableCell
+                    value={product.name}
+                    onSave={async (newValue) => {
+                      await onFieldUpdate(product.id, 'name', String(newValue));
+                    }}
+                    type="text"
+                    compactMode={compactMode}
+                    className="font-medium text-gray-900 truncate flex-1"
+                  />
+                ) : (
+                  <h3 className={cn(
+                    "font-medium text-gray-900 truncate",
+                    compactMode ? "text-xs" : "text-sm"
+                  )}>
+                    {product.name}
+                  </h3>
+                )}
+                {isVariant && product.variant_name && (
+                  <span className="text-gray-600 text-sm"> - {product.variant_name}</span>
+                )}
 
                 {hasChildren && !isExpanded && variantCount > 0 && (
                   <Badge className="bg-blue-100 text-blue-700 border border-blue-200 text-xs hidden md:inline-flex">
@@ -722,30 +892,9 @@ const ProductRow: React.FC<ProductRowProps> = ({
                 )}
               </div>
               
-              {/* SKU and Barcode display - always visible */}
-              <div className={cn(
-                "flex flex-col gap-0.5",
-                compactMode ? "mt-0.5" : "mt-1"
-              )}>
-                <p className={cn(
-                  "text-gray-600 font-mono",
-                  compactMode ? "text-[10px]" : "text-xs"
-                )}>
-                  SKU: <span className="text-gray-500">{(isVariant ? product.variant_sku : product.sku) || '-'}</span>
-                </p>
-                {(isVariant ? product.variant_barcode : product.barcode) && (
-                  <p className={cn(
-                    "text-gray-600 font-mono",
-                    compactMode ? "text-[10px]" : "text-xs"
-                  )}>
-                    Barcode: <span className="text-gray-500">{(isVariant ? product.variant_barcode : product.barcode)}</span>
-                  </p>
-                )}
-              </div>
-              
               {/* Variant attributes */}
               {isVariant && variantAttributes.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-1">
+                <div className="flex flex-wrap gap-1 mt-0.5">
                   {variantAttributes.map((attr, index) => (
                     <Badge key={index} variant="secondary" className="text-xs bg-gray-50">
                       {attr}
@@ -753,15 +902,37 @@ const ProductRow: React.FC<ProductRowProps> = ({
                   ))}
                 </div>
               )}
-              
-              {/* Description */}
-              {product.description && !compactMode && (
-                <p className="text-xs text-gray-500 truncate max-w-xs">
-                  {product.description}
-                </p>
-              )}
             </div>
           </div>
+        </td>
+      )}
+
+      {/* SKU column */}
+      {columnVisibility.sku && (
+        <td className={cn(
+          "text-left w-1/12",
+          compactMode ? "px-2 py-1" : "px-3 py-2"
+        )}>
+          {!hasChildren && onFieldUpdate ? (
+            <EditableCell
+              value={(isVariant ? product.variant_sku : product.sku) || ''}
+              onSave={async (newValue) => {
+                const field = isVariant ? 'variant_sku' : 'sku';
+                await onFieldUpdate(product.id, field, String(newValue));
+              }}
+              type="text"
+              compactMode={compactMode}
+              className="font-mono font-medium text-gray-900"
+              placeholder="SKU"
+            />
+          ) : !hasChildren ? (
+            <span className={cn(
+              "text-gray-900 font-mono font-medium",
+              compactMode ? "text-xs" : "text-sm"
+            )}>
+              {(isVariant ? product.variant_sku : product.sku) || '-'}
+            </span>
+          ) : null}
         </td>
       )}
 
@@ -769,7 +940,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.location && (
         <td className={cn(
           "text-center w-1/8",
-          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           {!hasChildren && (
             <div className="flex items-center justify-center gap-1">
@@ -777,12 +948,25 @@ const ProductRow: React.FC<ProductRowProps> = ({
                 "text-gray-400",
                 compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
               )} />
-              <span className={cn(
-                "text-gray-600",
-                compactMode ? "text-xs" : "text-sm"
-              )}>
-                {product.location || '-'}
-              </span>
+              {onFieldUpdate ? (
+                <EditableCell
+                  value={product.location || ''}
+                  onSave={async (newValue) => {
+                    await onFieldUpdate(product.id, 'location', String(newValue));
+                  }}
+                  type="text"
+                  compactMode={compactMode}
+                  className="text-gray-600"
+                  placeholder="Location"
+                />
+              ) : (
+                <span className={cn(
+                  "text-gray-600",
+                  compactMode ? "text-xs" : "text-sm"
+                )}>
+                  {product.location || '-'}
+                </span>
+              )}
             </div>
           )}
         </td>
@@ -792,73 +976,101 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.current && (
         <td className={cn(
           "text-center w-1/8",
-          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           {!hasChildren && (
-            <TooltipProvider delayDuration={150}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div
-                    className={cn(
-                      compactMode ? "rounded-md p-0.5 transition-colors cursor-pointer group hover:bg-blue-600" : "space-y-1 rounded-md p-2 transition-colors cursor-pointer group hover:bg-blue-600"
-                    )}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onStockAction(product, 'in');
-                    }}
-                  >
-                    <div className={cn(
-                      "flex items-center justify-center",
-                      compactMode ? "gap-1" : "gap-2"
-                    )}>
-                      <div
-                        className={cn(
-                          "rounded-full",
-                          getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level),
-                          Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : '',
-                          "group-hover:ring group-hover:ring-white/80",
-                          compactMode ? "w-1.5 h-1.5" : "w-2 h-2"
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          "font-semibold transition-colors",
-                          Number(product.quantity_in_stock) === 0 ? 'animate-pulse text-red-600 group-hover:text-white' : 'text-gray-900 group-hover:text-white',
-                          compactMode ? "text-xs" : "text-sm"
-                        )}
-                      >
-                        {formatStockQuantity(product.quantity_in_stock)}
-                      </span>
-                    </div>
-
-                    {/* Status label - only show in non-compact mode */}
-                    {!compactMode && (
-                      <div className="text-xs font-medium text-gray-600 transition-colors group-hover:text-white/90">
-                        {stockStatus}
+            <div className="flex items-center justify-center">
+              {onStockUpdate ? (
+                <TooltipProvider delayDuration={150}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div>
+                        <EditableCell
+                          value={product.quantity_in_stock}
+                          onSave={async (newValue) => {
+                            await onStockUpdate(product.id, Number(newValue));
+                            setEditingCell(null);
+                          }}
+                          type="number"
+                          compactMode={compactMode}
+                          isEditing={isEditingStock}
+                          onEditingChange={(editing) => {
+                            if (!editing) {
+                              setEditingCell(null);
+                            }
+                          }}
+                          className={cn(
+                            "font-semibold inline-flex items-center justify-center",
+                            getStockPillColor(product.quantity_in_stock, product.minimum_stock_level),
+                            compactMode ? "text-xs px-2 py-0.5" : "text-sm px-2.5 py-1"
+                          )}
+                        />
                       </div>
-                    )}
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="top"
-                  align="center"
-                  sideOffset={8}
-                  className="z-[200000] max-w-xs shadow-lg"
-                >
-                  <p className="font-medium">
-                    {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">Status: {stockStatus}</p>
-                  {Number(product.quantity_in_stock) === 0 && (
-                    <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
-                  )}
-                  {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
-                    <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
-                  )}
-                  <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      align="center"
+                      sideOffset={8}
+                      className="z-[200000] max-w-xs shadow-lg"
+                    >
+                      <p className="font-medium">
+                        {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">Status: {stockStatus}</p>
+                      {Number(product.quantity_in_stock) === 0 && (
+                        <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                      )}
+                      {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                        <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                      )}
+                      <p className="text-xs text-gray-400 mt-1">Click to edit quantity</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <TooltipProvider delayDuration={150}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="inline-flex"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onStockAction(product, 'in');
+                        }}
+                      >
+                        <Badge
+                          className={cn(
+                            "font-semibold cursor-pointer transition-colors hover:opacity-80",
+                            getStockPillColor(product.quantity_in_stock, product.minimum_stock_level),
+                            compactMode ? "text-xs px-2 py-0.5" : "text-sm px-2.5 py-1"
+                          )}
+                        >
+                          {formatStockQuantity(product.quantity_in_stock)}
+                        </Badge>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      align="center"
+                      sideOffset={8}
+                      className="z-[200000] max-w-xs shadow-lg"
+                    >
+                      <p className="font-medium">
+                        {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">Status: {stockStatus}</p>
+                      {Number(product.quantity_in_stock) === 0 && (
+                        <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
+                      )}
+                      {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                        <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
+                      )}
+                      <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </div>
           )}
         </td>
       )}
@@ -867,7 +1079,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.category && (
         <td className={cn(
           "text-center w-1/8",
-          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           {!hasChildren && (
             <span className={cn(
@@ -885,7 +1097,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.purchasePrice && (
         <td className={cn(
           "text-center w-1/8",
-          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           {!hasChildren && (
             <div className={cn(
@@ -902,7 +1114,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {columnVisibility.salePrice && (
         <td className={cn(
           "text-center w-1/8",
-          compactMode ? "px-2 py-1.5" : "px-4 py-3"
+          compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           {!hasChildren && (
             <div className={cn(
@@ -917,7 +1129,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
 
       {/* Actions column */}
       {columnVisibility.actions && (
-        <td className="px-4 py-3 text-center w-1/12" onClick={(e) => e.stopPropagation()}>
+        <td className="px-3 py-2 text-center w-1/12" onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 w-8 p-0">
@@ -1715,6 +1927,16 @@ export const StockList = () => {
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   const [isVariantSelectionModalOpen, setIsVariantSelectionModalOpen] = useState(false);
   const [isManualStockModalOpen, setIsManualStockModalOpen] = useState(false);
+
+  // Keyboard navigation state
+  const [focusedRowIndex, setFocusedRowIndex] = useState<number | null>(null);
+  const [editingCell, setEditingCell] = useState<{ rowIndex: number; field: 'stock' } | null>(null);
+  const tableRef = React.useRef<HTMLTableElement>(null);
+  const rowRefs = React.useRef<Map<number, HTMLTableRowElement>>(new Map());
+
+  // Scan-to-action state
+  const [barcodeBuffer, setBarcodeBuffer] = useState('');
+  const barcodeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   // Test state variable
   const [isStockOperationModalOpen, setIsStockOperationModalOpen] = useState(false);
 
@@ -1755,6 +1977,7 @@ export const StockList = () => {
   // Column visibility state
   const [columnVisibility, setColumnVisibility] = useState({
     product: true,
+    sku: true,
     current: true,
     category: true,
     location: true,
@@ -1763,8 +1986,8 @@ export const StockList = () => {
     actions: true
   });
 
-  // Compact mode state
-  const [compactMode, setCompactMode] = useState(false);
+  // Compact mode state - default to true
+  const [compactMode, setCompactMode] = useState(true);
 
   // Parent row expand/collapse
   const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({});
@@ -1796,22 +2019,8 @@ export const StockList = () => {
     localStorage.setItem('stockTableColumnVisibility', JSON.stringify(columnVisibility));
   }, [columnVisibility]);
 
-  // Load compact mode from localStorage on component mount
-  useEffect(() => {
-    const savedCompactMode = localStorage.getItem('stockTableCompactMode');
-    if (savedCompactMode !== null) {
-      try {
-        setCompactMode(JSON.parse(savedCompactMode));
-      } catch (error) {
-        console.error('Error parsing saved compact mode:', error);
-      }
-    }
-  }, []);
-
-  // Save compact mode to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('stockTableCompactMode', JSON.stringify(compactMode));
-  }, [compactMode]);
+  // Compact mode is always true (default) - no longer using localStorage
+  // Removed localStorage loading and saving to ensure compact mode is always the default
 
   // Toggle column visibility
   const toggleColumnVisibility = (column: keyof typeof columnVisibility) => {
@@ -2253,6 +2462,20 @@ export const StockList = () => {
     return { parents, children };
   }, [filteredProducts, productsTyped]);
 
+  // Create flat list of visible rows for keyboard navigation (parents + expanded children)
+  const visibleRows = useMemo(() => {
+    const rows: Array<{ product: Product; isVariant: boolean; parentIndex: number; childIndex?: number }> = [];
+    grouped.parents.forEach((parent, parentIndex) => {
+      rows.push({ product: parent, isVariant: false, parentIndex });
+      if (expandedParents[parent.id] && grouped.children[parent.id]) {
+        grouped.children[parent.id].forEach((child, childIndex) => {
+          rows.push({ product: child, isVariant: true, parentIndex, childIndex });
+        });
+      }
+    });
+    return rows;
+  }, [grouped, expandedParents]);
+
   // Handle select all checkbox change
   const handleSelectAllChange = (checked: boolean) => {
     setSelectAll(checked);
@@ -2268,13 +2491,212 @@ export const StockList = () => {
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        // If editing a cell, cancel editing first
+        if (editingCell) {
+          setEditingCell(null);
+          event.stopPropagation();
+          return;
+        }
         clearAllFilters();
       }
     };
 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [clearAllFilters]);
+  }, [clearAllFilters, editingCell]);
+
+  // Keyboard navigation handlers
+  const handleKeyboardNavigation = useCallback((e: KeyboardEvent) => {
+    // Don't intercept if user is typing in an input, textarea, or contenteditable
+    const activeElement = document.activeElement;
+    if (
+      activeElement &&
+      (activeElement.tagName === 'INPUT' ||
+       activeElement.tagName === 'TEXTAREA' ||
+       activeElement.isContentEditable ||
+       (activeElement as HTMLElement).closest('[contenteditable="true"]'))
+    ) {
+      return;
+    }
+
+    // Only handle navigation in list view
+    if (viewMode !== 'list') return;
+
+    // Arrow key navigation
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      
+      if (visibleRows.length === 0) return;
+
+      const currentIndex = focusedRowIndex ?? -1;
+      let newIndex: number;
+
+      if (e.key === 'ArrowDown') {
+        newIndex = currentIndex < visibleRows.length - 1 ? currentIndex + 1 : currentIndex;
+      } else {
+        newIndex = currentIndex > 0 ? currentIndex - 1 : 0;
+      }
+
+      setFocusedRowIndex(newIndex);
+      
+      // Scroll to focused row
+      const rowElement = rowRefs.current.get(newIndex);
+      if (rowElement) {
+        rowElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // Enter key to edit stock
+    if (e.key === 'Enter' && focusedRowIndex !== null && !editingCell) {
+      e.preventDefault();
+      const row = visibleRows[focusedRowIndex];
+      if (row && !row.isVariant && !grouped.children[row.product.id]) {
+        // Only allow editing for non-variant products without children
+        setEditingCell({ rowIndex: focusedRowIndex, field: 'stock' });
+      }
+    }
+  }, [focusedRowIndex, visibleRows, viewMode, editingCell, grouped]);
+
+  // Keyboard navigation effect
+  useEffect(() => {
+    if (viewMode === 'list') {
+      window.addEventListener('keydown', handleKeyboardNavigation);
+      return () => window.removeEventListener('keydown', handleKeyboardNavigation);
+    }
+  }, [handleKeyboardNavigation, viewMode]);
+
+  // Scan-to-action: Detect barcode input (8+ numeric characters)
+  const handleBarcodeScan = useCallback(async (barcode: string) => {
+    if (!activeBranch?.branch_id) {
+      toast.error('No active branch selected');
+      return;
+    }
+
+    try {
+      // Search for products by barcode, variant_barcode, or sku
+      const { data: products, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('branch_id', activeBranch.branch_id)
+        .or(`barcode.eq.${barcode},variant_barcode.eq.${barcode},sku.eq.${barcode}`)
+        .limit(50);
+
+      if (error) {
+        console.error('Error searching for product:', error);
+        toast.error('Error searching for product');
+        return;
+      }
+
+      if (!products || products.length === 0) {
+        toast.info(`No product found with barcode: ${barcode}`);
+        return;
+      }
+
+      if (products.length === 1) {
+        // Single match - open product detail view
+        const product = products[0] as Product;
+        toast.success(`Found: ${product.name}`);
+        
+        // If product has variants, expand it
+        if (!product.is_variant && grouped.children[product.id]) {
+          setExpandedParents(prev => ({ ...prev, [product.id]: true }));
+        }
+        
+        // Open detail drawer if product has variants
+        if (grouped.children[product.id] && grouped.children[product.id].length > 0) {
+          setExpandedDetails(prev => ({ ...prev, [product.id]: true }));
+        }
+        
+        // Focus on the product row
+        const rowIndex = visibleRows.findIndex(r => r.product.id === product.id);
+        if (rowIndex >= 0) {
+          setFocusedRowIndex(rowIndex);
+          const rowElement = rowRefs.current.get(rowIndex);
+          if (rowElement) {
+            rowElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      } else {
+        // Multiple matches - filter list to show matches
+        toast.success(`Found ${products.length} products matching barcode`);
+        const productIds = products.map(p => p.id);
+        // Note: This would require adding a filter by product IDs
+        // For now, we'll just show a message and focus on first match
+        const firstProduct = products[0] as Product;
+        const rowIndex = visibleRows.findIndex(r => r.product.id === firstProduct.id);
+        if (rowIndex >= 0) {
+          setFocusedRowIndex(rowIndex);
+          const rowElement = rowRefs.current.get(rowIndex);
+          if (rowElement) {
+            rowElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error processing barcode scan:', error);
+      toast.error('Error processing barcode scan');
+    }
+  }, [activeBranch, grouped, visibleRows]);
+
+  // Scan-to-action detection effect
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't intercept if user is typing in an input, textarea, or contenteditable
+      const activeElement = document.activeElement;
+      if (
+        activeElement &&
+        (activeElement.tagName === 'INPUT' ||
+         activeElement.tagName === 'TEXTAREA' ||
+         activeElement.isContentEditable ||
+         (activeElement as HTMLElement).closest('[contenteditable="true"]'))
+      ) {
+        return;
+      }
+
+      // Only process numeric keys
+      if (/^[0-9]$/.test(e.key)) {
+        // Clear existing timeout
+        if (barcodeTimeoutRef.current) {
+          clearTimeout(barcodeTimeoutRef.current);
+        }
+
+        // Add to buffer
+        setBarcodeBuffer(prev => {
+          const newBuffer = prev + e.key;
+          
+          // Check if buffer is 8+ characters (barcode detected)
+          if (newBuffer.length >= 8) {
+            // Process barcode immediately
+            handleBarcodeScan(newBuffer);
+            return ''; // Clear buffer
+          }
+          
+          return newBuffer;
+        });
+
+        // Set timeout to clear buffer if no more input
+        barcodeTimeoutRef.current = setTimeout(() => {
+          setBarcodeBuffer('');
+        }, 500);
+      } else {
+        // Non-numeric key - clear buffer
+        if (barcodeBuffer.length > 0) {
+          setBarcodeBuffer('');
+          if (barcodeTimeoutRef.current) {
+            clearTimeout(barcodeTimeoutRef.current);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (barcodeTimeoutRef.current) {
+        clearTimeout(barcodeTimeoutRef.current);
+      }
+    };
+  }, [barcodeBuffer, handleBarcodeScan]);
 
   // Bulk action handlers
 
@@ -2481,6 +2903,100 @@ export const StockList = () => {
       setSelectedProduct(product);
       setSelectedAction(action);
       setIsEditModalOpen(true);
+    }
+  };
+
+  // Handler for inline stock quantity update
+  const handleInlineStockUpdate = async (productId: string, newQuantity: number) => {
+    if (!activeBranch?.branch_id || !user) {
+      toast.error('No active branch or user');
+      return;
+    }
+
+    try {
+      // Get current product
+      const product = productsTyped.find(p => p.id === productId);
+      if (!product) {
+        toast.error('Product not found');
+        return;
+      }
+
+      const currentQuantity = Number(product.quantity_in_stock) || 0;
+      const quantityDiff = newQuantity - currentQuantity;
+
+      if (quantityDiff === 0) {
+        return; // No change
+      }
+
+      // Create stock transaction
+      const transactionType = quantityDiff > 0 ? 'incoming' : 'outgoing';
+      const { error: transactionError } = await supabase
+        .from('stock_transactions')
+        .insert({
+          product_id: productId,
+          product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
+          transaction_type: transactionType,
+          quantity: Math.abs(quantityDiff),
+          unit_price: product.unit_price,
+          reference_number: `INLINE_${Date.now()}`,
+          notes: `Stock updated inline from ${currentQuantity} to ${newQuantity}`,
+          user_id: user.id,
+          created_by: user.id,
+          branch_id: activeBranch.branch_id,
+          variant_id: product.is_variant ? productId : null,
+          variant_name: product.is_variant ? product.variant_name : null
+        });
+
+      if (transactionError) {
+        throw transactionError;
+      }
+
+      // Update product quantity
+      const { error: updateError } = await supabase
+        .from('products')
+        .update({ quantity_in_stock: newQuantity })
+        .eq('id', productId);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
+      toast.success(`Stock updated to ${newQuantity}`);
+    } catch (error) {
+      console.error('Error updating stock:', error);
+      toast.error('Failed to update stock');
+      throw error;
+    }
+  };
+
+  // Handler for inline field updates (SKU, name, location, etc.)
+  const handleInlineFieldUpdate = async (productId: string, field: string, value: string | number) => {
+    if (!activeBranch?.branch_id || !user) {
+      toast.error('No active branch or user');
+      return;
+    }
+
+    try {
+      const updateData: Record<string, unknown> = { [field]: value };
+
+      const { error } = await supabase
+        .from('products')
+        .update(updateData)
+        .eq('id', productId);
+
+      if (error) {
+        throw error;
+      }
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['products', activeBranch.branch_id] });
+      toast.success(`${field} updated`);
+    } catch (error) {
+      console.error(`Error updating ${field}:`, error);
+      toast.error(`Failed to update ${field}`);
+      throw error;
     }
   };
 
@@ -2869,152 +3385,7 @@ export const StockList = () => {
   // Mobile card view
   if (isMobile) {
     return (
-      <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4 px-2 sm:px-4">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-                Products
-              </h1>
-            </div>
-            
-            {/* View Mode and Settings Buttons for Mobile */}
-            <div className="flex items-center gap-2">
-              {/* View Toggle Button */}
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-9 shrink-0"
-                onClick={() => setViewMode(viewMode === 'list' ? 'card' : 'list')}
-                title={viewMode === 'list' ? 'Switch to Card View' : 'Switch to List View'}
-              >
-                {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
-              </Button>
-              
-              {/* Settings Dropdown - Hidden on mobile */}
-              {!isMobile && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="h-9 shrink-0">
-                      <Settings className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem disabled className="font-semibold">
-                    Import & Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
-                    <Upload className="w-4 h-4 mr-2" />
-                    Import Excel
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    checked={compactMode}
-                    onCheckedChange={(checked) => setCompactMode(checked)}
-                  >
-                    Compact Mode
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem disabled className="font-semibold">
-                    Column Visibility
-                  </DropdownMenuItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.product}
-                    onCheckedChange={() => toggleColumnVisibility('product')}
-                  >
-                    Product
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.location}
-                    onCheckedChange={() => toggleColumnVisibility('location')}
-                  >
-                    Locations
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.current}
-                    onCheckedChange={() => toggleColumnVisibility('current')}
-                  >
-                    Current Stock
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.category}
-                    onCheckedChange={() => toggleColumnVisibility('category')}
-                  >
-                    Category
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.purchasePrice}
-                    onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
-                  >
-                    Purchase Price
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.salePrice}
-                    onCheckedChange={() => toggleColumnVisibility('salePrice')}
-                  >
-                    Sale Price
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.actions}
-                    onCheckedChange={() => toggleColumnVisibility('actions')}
-                  >
-                    Actions
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Secondary action buttons - two rows on mobile */}
-        <div className="flex flex-col gap-2">
-          {/* First row: Scan and Manual */}
-          <div className="flex gap-2">
-            <Button 
-              onClick={() => {
-                setSelectedOperationType('scan');
-                setIsStockOperationModalOpen(true);
-              }} 
-              variant="outline"
-              className="flex-1 h-10 text-xs sm:text-sm px-2"
-            >
-              <Scan className="w-4 h-4 sm:mr-2" />
-              <span className="truncate">Scan</span>
-            </Button>
-            <Button 
-              onClick={() => {
-                setSelectedAction('in'); // Default to 'in' for manual
-                setIsManualStockModalOpen(true);
-              }} 
-              className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2"
-            >
-              <Plus className="w-4 h-4 sm:mr-2" />
-              <span className="truncate">Manual</span>
-            </Button>
-          </div>
-          
-          {/* Second row: Import and Export */}
-          <div className="flex gap-2">
-                <Button 
-                  onClick={() => setIsBulkImportModalOpen(true)}
-                  variant="outline"
-                  className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
-                >
-                  <Upload className="w-4 h-4 sm:mr-2" />
-                  <span className="truncate">Import</span>
-                </Button>
-                <Button 
-                  onClick={handleExportToExcel}
-                  variant="outline"
-                  className="flex-1 h-10 text-blue-600 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm px-2"
-                >
-                  <Download className="w-4 h-4 sm:mr-2" />
-                  <span className="truncate">Export</span>
-                </Button>
-          </div>
-        </div>
+      <div className="space-y-3 sm:space-y-4">
                    
         {/* Only show products content when on products tab */}
         {activeTab === 'products' && (
@@ -3537,152 +3908,6 @@ export const StockList = () => {
   // Desktop table view
   return (
     <div className="space-y-2">
-      {/* Header Section with Title and Actions */}
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-gray-900 mb-2`}>
-                Products
-              </h1>
-            </div>
-            
-            {/* View Mode and Settings Buttons */}
-            <div className="flex items-center gap-2">
-              {/* View Toggle Button */}
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="h-9 shrink-0 border-gray-300 hover:border-gray-400 focus:border-gray-400"
-                onClick={() => setViewMode(viewMode === 'list' ? 'card' : 'list')}
-                title={viewMode === 'list' ? 'Switch to Card View' : 'Switch to List View'}
-              >
-                {viewMode === 'list' ? <List className="w-4 h-4" /> : <Grid3x3 className="w-4 h-4" />}
-              </Button>
-              
-              {/* Settings Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 shrink-0 border-gray-300 hover:border-gray-400 focus:border-gray-400 mr-2">
-                    <Settings className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuItem disabled className="font-semibold">
-                    Import & Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setIsBulkImportModalOpen(true)}>
-                    <Upload className="w-4 h-4 mr-2" />
-                    Import Excel
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem
-                    checked={compactMode}
-                    onCheckedChange={(checked) => setCompactMode(checked)}
-                  >
-                    Compact Mode
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem disabled className="font-semibold">
-                    Column Visibility
-                  </DropdownMenuItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.product}
-                    onCheckedChange={() => toggleColumnVisibility('product')}
-                  >
-                    Product
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.location}
-                    onCheckedChange={() => toggleColumnVisibility('location')}
-                  >
-                    Locations
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.current}
-                    onCheckedChange={() => toggleColumnVisibility('current')}
-                  >
-                    Current Stock
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.category}
-                    onCheckedChange={() => toggleColumnVisibility('category')}
-                  >
-                    Category
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.purchasePrice}
-                    onCheckedChange={() => toggleColumnVisibility('purchasePrice')}
-                  >
-                    Purchase Price
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.salePrice}
-                    onCheckedChange={() => toggleColumnVisibility('salePrice')}
-                  >
-                    Sale Price
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={columnVisibility.actions}
-                    onCheckedChange={() => toggleColumnVisibility('actions')}
-                  >
-                    Actions
-                  </DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </div>
-        
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2">
-          <Button 
-            onClick={() => {
-              setSelectedOperationType('scan');
-              setIsStockOperationModalOpen(true);
-            }} 
-            variant="default"
-            size="sm"
-            className="h-9 bg-blue-600 hover:bg-blue-700"
-          >
-            <Scan className="w-4 h-4 mr-2" />
-            Scan
-          </Button>
-          <Button 
-            onClick={() => {
-              setSelectedAction('in'); // Default to 'in' for manual
-              setIsManualStockModalOpen(true);
-            }} 
-            variant="default"
-            size="sm"
-            className="h-9 bg-blue-600 hover:bg-blue-700"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Manual
-          </Button>
-          <Button 
-            onClick={() => setIsBulkImportModalOpen(true)}
-            variant="outline"
-            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
-          >
-            <Upload className="w-4 h-4 mr-2" />
-            Import
-          </Button>
-          <Button 
-            onClick={handleExportToExcel}
-            variant="outline"
-            className="h-9 text-blue-600 border-blue-200 hover:bg-blue-50"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-        </div>
-
-
-
-
-      </div>
 
 
       {/* Filter Header - Active Filters Display */}
@@ -3918,7 +4143,7 @@ export const StockList = () => {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-visible">
+        <div className="bg-white overflow-visible">
           <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
             <table className="w-full divide-y divide-gray-200">
             <thead className="bg-gray-50 sticky top-0 z-10">
@@ -3942,15 +4167,23 @@ export const StockList = () => {
                 {columnVisibility.product && (
                   <th className={cn(
                     "text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Product
+                  </th>
+                )}
+                {columnVisibility.sku && (
+                  <th className={cn(
+                    "text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12",
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
+                  )}>
+                    SKU
                   </th>
                 )}
                 {columnVisibility.location && (
                   <th className={cn(
                     "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Location
                   </th>
@@ -3958,7 +4191,7 @@ export const StockList = () => {
                 {columnVisibility.current && (
                   <th className={cn(
                     "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Stock Level
                   </th>
@@ -3967,7 +4200,7 @@ export const StockList = () => {
                 {columnVisibility.category && (
                   <th className={cn(
                     "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Category
                   </th>
@@ -3975,7 +4208,7 @@ export const StockList = () => {
                 {columnVisibility.purchasePrice && (
                   <th className={cn(
                     "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Cost
                   </th>
@@ -3983,7 +4216,7 @@ export const StockList = () => {
                 {columnVisibility.salePrice && (
                   <th className={cn(
                     "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Price
                   </th>
@@ -3991,7 +4224,7 @@ export const StockList = () => {
                 {columnVisibility.actions && (
                   <th className={cn(
                     "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12",
-                    compactMode ? "px-2 py-1.5" : "px-4 py-4"
+                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
                   )}>
                     Actions
                   </th>
@@ -4053,26 +4286,29 @@ export const StockList = () => {
                   </td>
                 </tr>
               ) : (
-                grouped.parents.map((parent, parentIndex) => {
-                  const parentChecked = selectedProductIds.includes(parent.id);
-                  const hasChildren = (grouped.children[parent.id]?.length || 0) > 0;
-                  const variantCount = grouped.children[parent.id]?.length || 0;
-                  const isExpanded = expandedParents[parent.id] || false;
-                  
-                  const parentDetailExpanded = expandedDetails[parent.id] || false;
+                visibleRows.map((row, rowIndex) => {
+                  const { product, isVariant } = row;
+                  const isChecked = selectedProductIds.includes(product.id);
+                  const hasChildren = (grouped.children[product.id]?.length || 0) > 0;
+                  const variantCount = grouped.children[product.id]?.length || 0;
+                  const isExpanded = expandedParents[product.id] || false;
+                  const isDetailExpanded = expandedDetails[product.id] || false;
+                  const isFocused = focusedRowIndex === rowIndex;
+                  const isEditingStock = editingCell?.rowIndex === rowIndex && editingCell?.field === 'stock';
                   const totalColumns = (isAdmin ? 1 : 0) + Object.values(columnVisibility).filter(Boolean).length;
                   
                   return (
-                    <React.Fragment key={parent.id}>
+                    <React.Fragment key={product.id}>
                       <ProductRow
-                        product={parent}
-                        isSelected={parentChecked}
+                        product={product}
+                        isVariant={isVariant}
+                        isSelected={isChecked}
                         hasChildren={hasChildren}
                         isExpanded={isExpanded}
                         variantCount={variantCount}
                         columnVisibility={columnVisibility}
                         compactMode={compactMode}
-                        onToggleExpand={() => toggleExpand(parent.id)}
+                        onToggleExpand={() => toggleExpand(product.id)}
                         onSelect={handleSelectProduct}
                         onStockAction={handleStockAction}
                         onEdit={(product) => {
@@ -4085,65 +4321,34 @@ export const StockList = () => {
                           setIsImagePreviewOpen(true);
                         }}
                         isAdmin={isAdmin}
-                        isDetailExpanded={parentDetailExpanded}
-                        onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(parent.id) : undefined}
+                        isDetailExpanded={isDetailExpanded}
+                        onToggleDetailExpand={hasChildren ? () => toggleDetailExpand(product.id) : undefined}
                         onImageUpload={() => refetch()}
                         onDuplicate={handleDuplicateProduct}
                         onDelete={handleDeleteProduct}
                         onMoveToLocation={handleMoveToLocation}
-                        rowIndex={parentIndex}
+                        onFieldUpdate={handleInlineFieldUpdate}
+                        onStockUpdate={handleInlineStockUpdate}
+                        rowIndex={rowIndex}
+                        isFocused={isFocused}
+                        isEditingStock={isEditingStock}
+                        onStartEditingStock={() => setEditingCell({ rowIndex, field: 'stock' })}
+                        rowRef={(node) => {
+                          if (node) {
+                            rowRefs.current.set(rowIndex, node);
+                          } else {
+                            rowRefs.current.delete(rowIndex);
+                          }
+                        }}
                       />
                       
-                      {/* Product Detail Drawer for Parent - only show for products with variants */}
+                      {/* Product Detail Drawer - only show for products with variants */}
                       {hasChildren && (
                         <ProductDetailDrawer
-                          product={parent}
-                          isOpen={parentDetailExpanded}
+                          product={product}
+                          isOpen={isDetailExpanded}
                           columnCount={totalColumns}
                         />
-                      )}
-                      
-                      {isExpanded && hasChildren && (
-                        grouped.children[parent.id].map((child, childIndex) => {
-                          const childChecked = selectedProductIds.includes(child.id);
-                          const childDetailExpanded = expandedDetails[child.id] || false;
-                          return (
-                            <React.Fragment key={child.id}>
-                              <ProductRow
-                                product={child}
-                                isVariant={true}
-                                isSelected={childChecked}
-                                columnVisibility={columnVisibility}
-                                compactMode={compactMode}
-                                onSelect={handleSelectProduct}
-                                onStockAction={handleStockAction}
-                                onEdit={(product) => {
-                                  setSelectedProduct(product);
-                                  setIsEditInfoModalOpen(true);
-                                }}
-                                onImagePreview={(url) => {
-                                  setPreviewImageUrl(url);
-                                  setIsImagePreviewOpen(true);
-                                }}
-                                isAdmin={isAdmin}
-                                isDetailExpanded={childDetailExpanded}
-                                onToggleDetailExpand={() => toggleDetailExpand(child.id)}
-                                onImageUpload={() => refetch()}
-                                onDuplicate={handleDuplicateProduct}
-                                onDelete={handleDeleteProduct}
-                                onMoveToLocation={handleMoveToLocation}
-                                rowIndex={parentIndex + childIndex + 1}
-                              />
-                              
-                              {/* Product Detail Drawer for Variant - variants always have detail drawer */}
-                              <ProductDetailDrawer
-                                product={child}
-                                isOpen={childDetailExpanded}
-                                columnCount={totalColumns}
-                              />
-                            </React.Fragment>
-                          );
-                        })
                       )}
                       
                       {/* Empty state for no variants - Desktop */}

@@ -16,22 +16,19 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory, useCategoryRealtime, useCategoryProducts } from '@/hooks/useCategories';
-import { useCategoryDragDrop } from '@/hooks/useCategoryDragDrop';
-import { CategoryTreeView } from '@/components/categories/CategoryTreeView';
+import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory, useCategoryRealtime, useProductsByCategories } from '@/hooks/useCategories';
+import { CategoryFacetFilter } from '@/components/categories/CategoryFacetFilter';
 import { CategoryCustomizationModal } from '@/components/categories/CategoryCustomizationModal';
-import { CategoryAnalytics } from '@/components/categories/CategoryAnalytics';
-import { CategoryHeader } from '@/components/categories/CategoryHeader';
 import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, List, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check } from 'lucide-react';
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
-import { getCategoryPath, getCategoryIdsIncludingDescendants } from '@/lib/categories/categoryUtils';
+import { getCategoryPath, getCategoryIdsIncludingDescendants, flattenCategoryTree } from '@/lib/categories/categoryUtils';
 import { cn } from '@/lib/utils';
 import { EditProductInfoModal } from '@/components/EditProductInfoModal';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
@@ -41,7 +38,6 @@ import { AddProductModal } from '@/components/AddProductModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 
 export default function CategorysPage() {
@@ -58,7 +54,11 @@ export default function CategorysPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null | 'all'>('all');
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  // Filter sidebar collapse state - default to collapsed
+  const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
+  // Track if we should auto-collapse after next operation (when "Show All" is clicked)
+  const [shouldAutoCollapse, setShouldAutoCollapse] = useState(false);
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -66,15 +66,17 @@ export default function CategorysPage() {
     }
     return 'table';
   });
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   
   // Sorting state - default to date_added descending (newest first)
   const [sortColumn, setSortColumn] = useState<string | null>('date_added');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   
-  // Compact mode state
-  const [compactMode, setCompactMode] = useState(false);
+  // Compact mode state - default to true
+  const [compactMode, setCompactMode] = useState(true);
+  
+  // Row selection state
+  const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
   
   // Product modal states
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -111,47 +113,23 @@ export default function CategorysPage() {
   const createCategory = useCreateCategory();
   const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
-  const dragDrop = useCategoryDragDrop(categories);
-  const { data: categoryProducts = [], isLoading: productsLoading } = useCategoryProducts(selectedCategoryId);
+  const { data: categoryProducts = [], isLoading: productsLoading } = useProductsByCategories(selectedCategoryIds);
   const queryClient = useQueryClient();
   useCategoryRealtime();
+  
+  // Get product counts for categories
+  const { data: productCounts } = useQuery({
+    queryKey: ['categoryProductCounts', user?.id, activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!user) return new Map<string, number>();
+      const { getCategoryProductCounts } = await import('@/lib/categories/categoryService');
+      return getCategoryProductCounts(user.id, activeBranch?.branch_id);
+    },
+    enabled: !!user && categories.length > 0,
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
 
-  // Helper function to filter category tree based on search term
-  const filterCategoryTree = React.useCallback((nodes: CategoryTree[], term: string): CategoryTree[] => {
-    if (!term.trim()) return nodes;
-
-    const searchTerm = term.toLowerCase();
-    const filtered: CategoryTree[] = [];
-
-    const matchesSearch = (category: CategoryTree): boolean => {
-      return (
-        category.name.toLowerCase().includes(searchTerm) ||
-        (category.description && category.description.toLowerCase().includes(searchTerm))
-      );
-    };
-
-    const hasMatchingDescendant = (category: CategoryTree): boolean => {
-      if (matchesSearch(category)) return true;
-      return category.children?.some(child => hasMatchingDescendant(child)) || false;
-    };
-
-    nodes.forEach(node => {
-      if (hasMatchingDescendant(node)) {
-        const filteredNode: CategoryTree = {
-          ...node,
-          children: node.children ? filterCategoryTree(node.children, term) : [],
-        };
-        filtered.push(filteredNode);
-      }
-    });
-
-    return filtered;
-  }, []);
-
-  // Filter categories based on search
-  const filteredTree = React.useMemo(() => {
-    return filterCategoryTree(tree, searchTerm);
-  }, [tree, searchTerm, filterCategoryTree]);
+  // Removed filterCategoryTree and filteredTree - no longer needed with facet filter approach
 
   // Filter products based on search
   const filteredProducts = React.useMemo(() => {
@@ -182,6 +160,10 @@ export default function CategorysPage() {
         case 'name':
           aValue = a.name?.toLowerCase() || '';
           bValue = b.name?.toLowerCase() || '';
+          break;
+        case 'sku':
+          aValue = (a.sku || '').toLowerCase();
+          bValue = (b.sku || '').toLowerCase();
           break;
         case 'location':
           aValue = (a.location || '').toLowerCase();
@@ -223,7 +205,38 @@ export default function CategorysPage() {
     });
   }, [filteredProducts, categoryProducts, searchTerm, sortColumn, sortDirection]);
 
+  // Detect repetitive locations (appearing in >70% of rows)
+  const repetitiveLocations = React.useMemo(() => {
+    if (sortedProducts.length === 0) return new Set<string>();
+    
+    const locationCounts = new Map<string, number>();
+    sortedProducts.forEach((product: any) => {
+      const location = product.location || '';
+      locationCounts.set(location, (locationCounts.get(location) || 0) + 1);
+    });
+    
+    const threshold = sortedProducts.length * 0.7;
+    const repetitive = new Set<string>();
+    
+    locationCounts.forEach((count, location) => {
+      if (count > threshold) {
+        repetitive.add(location);
+      }
+    });
+    
+    return repetitive;
+  }, [sortedProducts]);
 
+  // Helper function to get price color
+  const getPriceColor = (value: number | null | undefined, positiveColor: string): string => {
+    if (value === null || value === undefined || Number(value) === 0) {
+      return 'text-gray-400';
+    }
+    if (Number(value) < 0) {
+      return 'text-red-600';
+    }
+    return positiveColor;
+  };
 
   const handleAddSubCategory = async () => {
     if (!subCategoryFormData.name.trim()) {
@@ -314,75 +327,8 @@ export default function CategorysPage() {
     setShowCustomizationModal(true);
   };
 
-  const handleCategoryClick = (category: CategoryTree) => {
-    setSelectedCategory(category);
-    setSelectedCategoryId(category.id);
-    
-    // Expand the category if it has children
-    if (category.children && category.children.length > 0) {
-      setExpandedCategories(prev => {
-        const next = new Set(prev);
-        next.add(category.id);
-        return next;
-      });
-    }
-  };
-
-  const handleToggleExpand = (categoryId: string) => {
-    setExpandedCategories(prev => {
-      const next = new Set(prev);
-      if (next.has(categoryId)) {
-        next.delete(categoryId);
-      } else {
-        next.add(categoryId);
-      }
-      return next;
-    });
-  };
-
-  const handleExpandAll = () => {
-    const allIds = new Set<string>();
-    const collectIds = (nodes: CategoryTree[]) => {
-      nodes.forEach(node => {
-        if (node.children && node.children.length > 0) {
-          allIds.add(node.id);
-          collectIds(node.children);
-        }
-      });
-    };
-    collectIds(tree);
-    setExpandedCategories(allIds);
-  };
-
-  const handleCollapseAll = () => {
-    setExpandedCategories(new Set());
-  };
-
-  const handleBreadcrumbClick = (categoryId: string | null) => {
-    if (categoryId === null) {
-      setSelectedCategory(null);
-      setSelectedCategoryId('all');
-    } else {
-      const category = tree.find(c => c.id === categoryId) || 
-        (() => {
-          const findInTree = (nodes: CategoryTree[]): CategoryTree | undefined => {
-            for (const node of nodes) {
-              if (node.id === categoryId) return node;
-              if (node.children?.length) {
-                const found = findInTree(node.children);
-                if (found) return found;
-              }
-            }
-            return undefined;
-          };
-          return findInTree(tree);
-        })();
-      
-      if (category) {
-        handleCategoryClick(category);
-      }
-    }
-  };
+  // Removed handleCategoryClick, handleToggleExpand, handleExpandAll, handleCollapseAll, handleBreadcrumbClick
+  // These are no longer needed with the facet filter approach
 
   const handleAddCategory = () => {
     setFormData({ name: '', description: '', parentCategoryId: null });
@@ -417,11 +363,53 @@ export default function CategorysPage() {
   };
 
   const handleAddSubcategory = () => {
-    if (selectedCategoryId && selectedCategoryId !== 'all') {
-      setSubCategoryFormData({ name: '', description: '', parentCategoryId: selectedCategoryId });
+    // If only one category is selected, use it as parent
+    if (selectedCategoryIds.length === 1) {
+      setSubCategoryFormData({ name: '', description: '', parentCategoryId: selectedCategoryIds[0] });
+      setShowAddSubCategoryModal(true);
+    } else {
+      // Otherwise, show modal without pre-selected parent
+      setSubCategoryFormData({ name: '', description: '', parentCategoryId: null });
       setShowAddSubCategoryModal(true);
     }
   };
+
+  // Handler for "Show All" button - uncollapse sidebar and set auto-collapse flag
+  const handleShowAll = () => {
+    setIsFilterCollapsed(false);
+    setShouldAutoCollapse(true);
+  };
+
+  // Handler for category chip toggle in Quick Filter
+  const handleQuickFilterToggle = (categoryId: string) => {
+    const newSelection = selectedCategoryIds.includes(categoryId)
+      ? selectedCategoryIds.filter(id => id !== categoryId)
+      : [...selectedCategoryIds, categoryId];
+    handleCategorySelectionChange(newSelection);
+  };
+
+  // Wrapper for category selection change to handle auto-collapse
+  const handleCategorySelectionChange = (categoryIds: string[]) => {
+    setSelectedCategoryIds(categoryIds);
+    // Auto-collapse if flag is set and user has made a selection
+    if (shouldAutoCollapse && categoryIds.length > 0) {
+      setTimeout(() => {
+        setIsFilterCollapsed(true);
+        setShouldAutoCollapse(false);
+      }, 300);
+    }
+  };
+
+  // Auto-collapse sidebar after category selection changes (when shouldAutoCollapse is true)
+  useEffect(() => {
+    if (shouldAutoCollapse && selectedCategoryIds.length > 0) {
+      const timer = setTimeout(() => {
+        setIsFilterCollapsed(true);
+        setShouldAutoCollapse(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedCategoryIds, shouldAutoCollapse]);
 
 
   const handleFavoriteToggle = async (productId: string, isFavorite: boolean) => {
@@ -436,7 +424,7 @@ export default function CategorysPage() {
       
       if (error) throw error;
       
-      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
     } catch (error) {
       console.error('Error toggling favorite:', error);
@@ -486,7 +474,7 @@ export default function CategorysPage() {
 
       toast.success('Product duplicated successfully');
       
-      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
     } catch (error) {
@@ -514,7 +502,7 @@ export default function CategorysPage() {
 
       toast.success('Product deleted successfully');
       
-      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
     } catch (error) {
@@ -538,7 +526,7 @@ export default function CategorysPage() {
 
       toast.success('Product location updated successfully');
       
-      queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
     } catch (error) {
       console.error('Error updating product location:', error);
@@ -610,6 +598,131 @@ export default function CategorysPage() {
     }
   };
 
+  // Handler for barcode search from search bar (navigate to product in table)
+  const handleBarcodeSearch = async (barcode: string) => {
+    try {
+      if (!activeBranch) {
+        toast.error('No active branch selected');
+        return;
+      }
+
+      // Search for product by SKU or barcode
+      const { data: products, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('branch_id', activeBranch.branch_id)
+        .or(`sku.eq.${barcode},barcode.eq.${barcode}`)
+        .limit(1);
+
+      if (error) {
+        console.error('Error searching for product:', error);
+        toast.error('Error searching for product');
+        return;
+      }
+
+      if (products && products.length > 0) {
+        const foundProduct: any = products[0];
+        // If product has a category and it's not in the current filter, add it to ensure the product is visible
+        if (foundProduct.category_id && !selectedCategoryIds.includes(foundProduct.category_id)) {
+          // Flatten tree to get flat categories array
+          const flatCategories = flattenCategoryTree(tree);
+          // Get the category and all its descendants
+          const categoryIds = getCategoryIdsIncludingDescendants(foundProduct.category_id, flatCategories);
+          // Merge with existing selected categories
+          setSelectedCategoryIds([...selectedCategoryIds, ...categoryIds]);
+        }
+        
+        // Set search term to product name to highlight it
+        setSearchTerm(foundProduct.name);
+        
+        // Scroll to the product in the table after a short delay to ensure DOM is updated
+        setTimeout(() => {
+          const productElement = document.querySelector(`[data-product-id="${foundProduct.id}"]`);
+          if (productElement) {
+            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Highlight the row briefly
+            const row = productElement as HTMLElement;
+            row.style.backgroundColor = '#dbeafe';
+            setTimeout(() => {
+              row.style.backgroundColor = '';
+            }, 2000);
+          }
+        }, 300);
+        
+        toast.success(`Found: ${foundProduct.name}`);
+      } else {
+        // Product not found - offer to add it
+        setSearchTerm('');
+        setScannedSKU(barcode);
+        setPreFilledProductName('');
+        setIsAddModalOpen(true);
+        toast.info('Product not found - will create new product');
+      }
+    } catch (error) {
+      console.error('Error processing barcode search:', error);
+      toast.error('Error processing barcode search');
+    }
+  };
+
+  // Detect if input looks like a barcode (numeric, 8-13 digits or alphanumeric)
+  const isBarcodePattern = (input: string): boolean => {
+    // Remove whitespace
+    const cleaned = input.trim();
+    // Check if it's all numeric and 8-13 digits (common barcode lengths)
+    if (/^\d{8,13}$/.test(cleaned)) {
+      return true;
+    }
+    // Check if it's alphanumeric and looks like a barcode (e.g., EAN-13 with check digit)
+    if (/^[A-Z0-9]{8,20}$/i.test(cleaned) && cleaned.length >= 8) {
+      return true;
+    }
+    return false;
+  };
+
+  // Handle search input with command palette functionality
+  const handleSearchChange = (value: string) => {
+    // Check for "/add" command
+    if (value.toLowerCase().trim() === '/add') {
+      setSearchTerm('');
+      setScannedSKU('');
+      setPreFilledProductName('');
+      setIsAddModalOpen(true);
+      return;
+    }
+
+    // Check for barcode pattern (when user stops typing)
+    // We'll check on Enter key or when input looks complete
+    setSearchTerm(value);
+  };
+
+  // Handle search submission (Enter key or blur)
+  const handleSearchSubmit = (value: string) => {
+    const trimmed = value.trim();
+    
+    if (!trimmed) {
+      setSearchTerm('');
+      return;
+    }
+
+    // Check for "/add" command
+    if (trimmed.toLowerCase() === '/add') {
+      setSearchTerm('');
+      setScannedSKU('');
+      setPreFilledProductName('');
+      setIsAddModalOpen(true);
+      return;
+    }
+
+    // Check for barcode pattern
+    if (isBarcodePattern(trimmed)) {
+      handleBarcodeSearch(trimmed);
+      return;
+    }
+
+    // Otherwise, just set as normal search term
+    setSearchTerm(trimmed);
+  };
+
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -630,6 +743,109 @@ export default function CategorysPage() {
       return <ArrowUp className="w-3 h-3 ml-1 text-blue-600" />;
     }
     return <ArrowDown className="w-3 h-3 ml-1 text-blue-600" />;
+  };
+
+  // Bulk action handlers
+  const handleBulkPrintLabels = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    try {
+      const selectedProducts = sortedProducts.filter((p: any) => selectedProductIds.has(p.id));
+      
+      // Create CSV data for labels
+      const csvHeaders = ['Name', 'SKU', 'Barcode', 'Location', 'Stock'];
+      const csvData = selectedProducts.map((product: any) => [
+        product.name || '',
+        product.sku || '',
+        product.barcode || '',
+        product.location || '',
+        product.quantity_in_stock || 0
+      ]);
+
+      const csvContent = [csvHeaders, ...csvData]
+        .map(row => row.map(cell => `"${cell}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `product_labels_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success(`Exported ${selectedProductIds.size} product label${selectedProductIds.size !== 1 ? 's' : ''} for printing`);
+    } catch (error) {
+      console.error('Error exporting labels:', error);
+      toast.error('Failed to export labels');
+    }
+  };
+
+  const handleBulkTransferStock = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    const newLocation = prompt(
+      `Enter new location for ${selectedProductIds.size} selected product${selectedProductIds.size !== 1 ? 's' : ''}:`,
+      ''
+    );
+
+    if (newLocation === null) return;
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ location: newLocation.trim() || null })
+        .in('id', Array.from(selectedProductIds));
+
+      if (error) throw error;
+
+      toast.success(`Updated location for ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}`);
+      setSelectedProductIds(new Set());
+      
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    } catch (error) {
+      console.error('Error transferring stock:', error);
+      toast.error('Failed to update product locations');
+    }
+  };
+
+  const handleBulkChangeStatus = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    const statusOptions = ['active', 'inactive', 'archived'];
+    const currentStatus = prompt(
+      `Enter new status for ${selectedProductIds.size} selected product${selectedProductIds.size !== 1 ? 's' : ''}:\n` +
+      `Options: ${statusOptions.join(', ')}`,
+      'active'
+    );
+
+    if (currentStatus === null) return;
+
+    if (!statusOptions.includes(currentStatus.toLowerCase())) {
+      toast.error(`Invalid status. Must be one of: ${statusOptions.join(', ')}`);
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ status: currentStatus.toLowerCase() })
+        .in('id', Array.from(selectedProductIds));
+
+      if (error) throw error;
+
+      toast.success(`Updated status for ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}`);
+      setSelectedProductIds(new Set());
+      
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    } catch (error) {
+      console.error('Error changing status:', error);
+      toast.error('Failed to update product status');
+    }
   };
 
   const handleCustomizationSave = async (icon: string | null, color: string | null) => {
@@ -660,342 +876,218 @@ export default function CategorysPage() {
     );
   }
 
-  // State for mobile category pane visibility
-  const [showCategoryPane, setShowCategoryPane] = useState(!isMobile || selectedCategoryId === 'all');
+  // Removed showCategoryPane state - no longer needed
 
-  // Load compact mode from localStorage on component mount
-  React.useEffect(() => {
-    const savedCompactMode = localStorage.getItem('stockTableCompactMode');
-    if (savedCompactMode !== null) {
-      try {
-        setCompactMode(JSON.parse(savedCompactMode));
-      } catch (error) {
-        console.error('Error parsing saved compact mode:', error);
-      }
-    }
-  }, []);
-
-  // Save compact mode to localStorage whenever it changes
-  React.useEffect(() => {
-    localStorage.setItem('stockTableCompactMode', JSON.stringify(compactMode));
-  }, [compactMode]);
-
-  // Sync selectedCategory with selectedCategoryId to prevent stale state
-  // This ensures selectedCategory is always in sync with selectedCategoryId
-  React.useEffect(() => {
-    // Always clear selectedCategory when showing 'all' or when no category is selected
-    if (selectedCategoryId === 'all') {
-      setSelectedCategory(null);
-      return;
-    }
-    
-    if (!selectedCategoryId) {
-      setSelectedCategory(null);
-      return;
-    }
-    
-    // Skip if tree is not loaded yet
-    if (!tree || tree.length === 0) {
-      return;
-    }
-    
-    // Only update if the selected category doesn't match the selectedCategoryId
-    if (!selectedCategory || selectedCategory.id !== selectedCategoryId) {
-      // Find and set the category from the tree if it doesn't match
-      const findInTree = (nodes: CategoryTree[]): CategoryTree | undefined => {
-        for (const node of nodes) {
-          if (node.id === selectedCategoryId) return node;
-          if (node.children?.length) {
-            const found = findInTree(node.children);
-            if (found) return found;
-          }
-        }
-        return undefined;
-      };
-      const category = findInTree(tree);
-      if (category) {
-        setSelectedCategory(category);
-      } else {
-        setSelectedCategory(null);
-      }
-    }
-  }, [selectedCategoryId, tree]);
-
-  // On mobile, hide category pane when a specific category is selected
-  // Show category pane when no category is selected (null) or when viewing 'all' products
-  // Load compact mode from localStorage on component mount
-  React.useEffect(() => {
-    const savedCompactMode = localStorage.getItem('stockTableCompactMode');
-    if (savedCompactMode !== null) {
-      try {
-        setCompactMode(JSON.parse(savedCompactMode));
-      } catch (error) {
-        console.error('Error parsing saved compact mode:', error);
-      }
-    }
-  }, []);
-
-  // Save compact mode to localStorage whenever it changes
-  React.useEffect(() => {
-    localStorage.setItem('stockTableCompactMode', JSON.stringify(compactMode));
-  }, [compactMode]);
-
-  React.useEffect(() => {
-    if (isMobile) {
-      setShowCategoryPane(!selectedCategoryId || selectedCategoryId === 'all');
-    } else {
-      setShowCategoryPane(true);
-    }
-  }, [isMobile, selectedCategoryId]);
+  // Compact mode is always true (default) - no longer using localStorage
+  // Removed localStorage loading and saving to ensure compact mode is always the default
 
   return (
     <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
-      {/* Unified Search Bar */}
-      <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 border-b bg-white">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Search categories and products…"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-10 h-10 text-sm"
-          />
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm('')}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors"
-              aria-label="Clear search"
-            >
-              <X className="w-4 h-4 text-gray-400" />
-            </button>
-          )}
-        </div>
-        {searchTerm && (
-          <div className="mt-2 text-xs text-gray-500">
-            {filteredTree.length > 0 && (
-              <span>{filteredTree.length} {filteredTree.length === 1 ? 'category' : 'categories'}</span>
-            )}
-            {filteredTree.length > 0 && filteredProducts.length > 0 && <span className="mx-2">•</span>}
-            {filteredProducts.length > 0 && (
-              <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}</span>
-            )}
-            {filteredTree.length === 0 && filteredProducts.length === 0 && (
-              <span>No results found</span>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Split-Pane Layout */}
+      {/* Main Layout with Filter Sidebar and Product Table */}
       <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
-        {/* Left Pane - Category Tree */}
-        <div className={cn(
-          `${isMobile ? 'absolute inset-0 z-20' : 'w-[280px] md:w-[320px] lg:w-[360px]'} border-r bg-white flex flex-col flex-shrink-0 transition-transform duration-300`,
-          isMobile && !showCategoryPane && '-translate-x-full'
-        )}>
-          {/* Left Pane Header - Fixed */}
-          <div className="flex-shrink-0 px-3 py-2.5 border-b bg-white">
-            <Button
-              onClick={handleAddCategory}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              size="sm"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Category
-            </Button>
-          </div>
-          
-          {/* Category Tree - Scrollable */}
-          <div className="flex-1 overflow-y-auto min-h-0">
-            {/* Show All Products Button - Always at top */}
-            <div className="px-2 py-2 border-b bg-gray-50/50">
-              <button
-                type="button"
-                onClick={() => {
-                  // Explicitly clear both states to ensure clean reset
-                  setSelectedCategory(null);
-                  setSelectedCategoryId('all');
-                }}
-                className={cn(
-                  'w-full flex items-center gap-2 px-2.5 py-2 rounded-md transition-colors text-sm font-medium',
-                  selectedCategoryId === 'all'
-                    ? 'bg-blue-50 border-l-2 border-l-blue-600 text-blue-700'
-                    : 'hover:bg-gray-100 text-gray-900'
-                )}
-              >
-                <Package className="w-4 h-4" />
-                <span>Show All Products</span>
-              </button>
-            </div>
+        {/* Left Sidebar - Category Facet Filter */}
+        <CategoryFacetFilter
+          tree={tree}
+          selectedCategoryIds={selectedCategoryIds}
+          onSelectionChange={handleCategorySelectionChange}
+          productCounts={productCounts}
+          isCollapsed={isFilterCollapsed}
+          onToggleCollapse={() => setIsFilterCollapsed(!isFilterCollapsed)}
+          onAddCategory={handleAddCategory}
+        />
 
-            {isLoading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
-                  <p className="text-gray-600">Loading categories...</p>
-                </div>
-              </div>
-            ) : tree.length === 0 ? (
-              <div className="flex items-center justify-center py-12 px-4">
-                <div className="text-center">
-                  <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No categories
-                  </h3>
-                  <p className="text-base text-gray-600 mb-4">
-                    You have no categories yet. Create your first category to get started.
-                  </p>
+        {/* Main Content - Products Table (100% width when filter collapsed) */}
+        <div className={cn(
+          "flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative",
+          isFilterCollapsed && "w-full"
+        )}>
+          {/* Quick Filter Bar - Category Chips */}
+          {(() => {
+            const flatCategories = flattenCategoryTree(tree);
+            const topLevelCategories = flatCategories.filter(cat => !cat.parent_category_id);
+            const sortedTopLevel = [...topLevelCategories].sort((a, b) => a.name.localeCompare(b.name));
+            
+            if (sortedTopLevel.length === 0) return null;
+            
+            return (
+              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-white border-b border-gray-200">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-medium text-gray-500 mr-1">Quick Filter:</span>
+                  {sortedTopLevel.slice(0, 8).map((category) => {
+                    const isSelected = selectedCategoryIds.includes(category.id);
+                    const count = productCounts?.get(category.id) || 0;
+                    return (
+                      <button
+                        key={category.id}
+                        onClick={() => handleQuickFilterToggle(category.id)}
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors",
+                          isSelected
+                            ? "bg-blue-600 text-white hover:bg-blue-700"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        )}
+                      >
+                        {isSelected && <Check className="w-3 h-3" />}
+                        <span>{category.name}</span>
+                        {count > 0 && (
+                          <Badge variant="secondary" className={cn(
+                            "h-4 px-1 text-[10px]",
+                            isSelected ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-600"
+                          )}>
+                            {count}
+                          </Badge>
+                        )}
+                      </button>
+                    );
+                  })}
                   <Button
-                    onClick={() => {
-                      setFormData({ name: '', description: '', parentCategoryId: null });
-                      setShowAddModal(true);
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleShowAll}
+                    className="h-7 px-2 text-xs ml-auto"
                   >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create First Category
+                    <Filter className="w-3 h-3 mr-1" />
+                    Show All
                   </Button>
                 </div>
               </div>
-            ) : (
-              <CategoryTreeView
-                tree={filteredTree}
-                selectedCategoryId={selectedCategoryId}
-                expanded={expandedCategories}
-                onCategoryClick={handleCategoryClick}
-                onToggleExpand={handleToggleExpand}
-                onExpandAll={handleExpandAll}
-                onCollapseAll={handleCollapseAll}
-                onEdit={openEditModal}
-                onDelete={openDeleteDialog}
-                onAddChild={(parent) => {
-                  setSubCategoryFormData({ name: '', description: '', parentCategoryId: parent.id });
-                  setShowAddSubCategoryModal(true);
-                }}
-                activeId={dragDrop.activeId}
-                isMoving={dragDrop.isMoving}
-                onDragStart={dragDrop.handleDragStart}
-                onDragOver={dragDrop.handleDragOver}
-                onDragEnd={dragDrop.handleDragEnd}
-                onDragCancel={dragDrop.handleDragCancel}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Right Pane - Category Details & Products */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
-          {selectedCategoryId && (selectedCategoryId !== 'all' || categoryProducts.length > 0 || productsLoading) ? (
+            );
+          })()}
+          
+          {(categoryProducts.length > 0 || productsLoading) ? (
             <>
-              {/* Right Pane Header */}
-              <CategoryHeader
-                selectedCategoryId={selectedCategoryId}
-                selectedCategory={selectedCategory}
-                categories={categories}
-                productViewMode={productViewMode}
-                onViewModeChange={setProductViewMode}
-                onAddCategory={handleAddCategory}
-                onAddSubcategory={handleAddSubcategory}
-                onAddProduct={() => {
-                  setScannedSKU('');
-                  setPreFilledProductName('');
-                  setIsAddModalOpen(true);
-                }}
-                onBreadcrumbClick={handleBreadcrumbClick}
-                isMobile={isMobile}
-              />
-
-              {/* Products Section - Scrollable (includes stats) */}
-              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" style={{ WebkitOverflowScrolling: 'touch' }}>
-                {/* Stats Row - Scrolls with content */}
-                {selectedCategoryId === 'all' ? (
-                  <div className="px-3 md:px-4 lg:px-6 py-3 bg-white border-b">
-                    <AllProductsAnalytics products={categoryProducts} />
+              {/* Row A: Control Bar - Search Bar + Action Buttons */}
+              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 bg-white border-b flex items-center gap-3 transition-all duration-200">
+                {selectedProductIds.size > 0 ? (
+                  // Bulk Action Bar
+                  <div className="flex items-center justify-between w-full gap-3">
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm font-medium text-gray-900">
+                        {selectedProductIds.size} product{selectedProductIds.size !== 1 ? 's' : ''} selected
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleBulkPrintLabels}
+                        >
+                          <Printer className="w-4 h-4 mr-2" />
+                          Print Labels
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleBulkTransferStock}
+                        >
+                          <Truck className="w-4 h-4 mr-2" />
+                          Transfer Stock
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleBulkChangeStatus}
+                        >
+                          <Tag className="w-4 h-4 mr-2" />
+                          Change Status
+                        </Button>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedProductIds(new Set())}
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Clear Selection
+                    </Button>
                   </div>
-                ) : selectedCategoryId && (
-                  <div className="px-3 md:px-4 lg:px-6 py-3 bg-white border-b">
-                    <CategoryAnalytics categoryId={selectedCategoryId} />
-                  </div>
-                )}
-                
-                <div className="px-3 md:px-4 lg:px-6 py-4">
-                  {/* Products Section Header */}
-                  <div className="mb-4 flex items-center justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg md:text-xl font-bold text-gray-900">Products</h3>
-                      {(searchTerm.trim() ? filteredProducts : categoryProducts).length > 0 && (
-                        <p className="text-sm text-gray-500 mt-1">
-                          {searchTerm.trim() ? filteredProducts.length : categoryProducts.length} {(searchTerm.trim() ? filteredProducts.length : categoryProducts.length) === 1 ? 'product' : 'products'}
-                          {searchTerm.trim() && (
-                            <span className="ml-2 text-blue-600">(filtered)</span>
-                          )}
-                          {sortColumn && (
-                            <span className="ml-2">
-                              • Sorted by {sortColumn.replace('_', ' ')}
-                            </span>
-                          )}
-                        </p>
+                ) : (
+                  // Normal Header: Search Bar (left, expanded) + Action Buttons (right)
+                  <>
+                    {/* Search Bar - Left, Expanded Width */}
+                    <div className="flex-1 relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Input
+                        type="text"
+                        placeholder="Search products… or type /add to create product"
+                        value={searchTerm}
+                        onChange={(e) => handleSearchChange(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleSearchSubmit(searchTerm);
+                          }
+                        }}
+                        onBlur={() => {
+                          // If the input looks like a barcode, process it
+                          if (searchTerm.trim() && isBarcodePattern(searchTerm.trim())) {
+                            handleSearchSubmit(searchTerm);
+                          }
+                        }}
+                        className="pl-10 pr-10 h-10 text-sm"
+                      />
+                      {searchTerm && (
+                        <button
+                          onClick={() => setSearchTerm('')}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors"
+                          aria-label="Clear search"
+                        >
+                          <X className="w-4 h-4 text-gray-400" />
+                        </button>
                       )}
                     </div>
-                    {(searchTerm.trim() ? filteredProducts : categoryProducts).length > 0 && (
-                      <div className="flex items-center gap-2">
-                        {/* Compact Mode Toggle Button */}
-                        <Button
-                          variant={compactMode ? "default" : "outline"}
-                          size="sm"
-                          className="h-9 px-3"
-                          onClick={() => setCompactMode(!compactMode)}
-                        >
-                          {compactMode ? (
-                            <Check className="w-4 h-4 mr-2" />
-                          ) : (
-                            <Minimize2 className="w-4 h-4 mr-2" />
-                          )}
-                          <span className="hidden sm:inline">Compact Mode</span>
-                        </Button>
-
-                        {/* Sort Options Dropdown */}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-9 px-3"
-                            >
-                              <ArrowUpDown className="w-4 h-4 mr-2" />
-                              <span className="hidden sm:inline">Sort</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuItem disabled className="font-semibold text-xs">
-                              Sort Options
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleSort('name')}>
-                              <ArrowUpDown className="w-4 h-4 mr-2" />
-                              Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleSort('stock')}>
-                              <ArrowUpDown className="w-4 h-4 mr-2" />
-                              Stock {sortColumn === 'stock' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleSort('location')}>
-                              <ArrowUpDown className="w-4 h-4 mr-2" />
-                              Location {sortColumn === 'location' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleSort('date_added')}>
-                              <ArrowUpDown className="w-4 h-4 mr-2" />
-                              Date Added {sortColumn === 'date_added' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleSort('purchase_price')}>
-                              <ArrowUpDown className="w-4 h-4 mr-2" />
-                              Price {sortColumn === 'purchase_price' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                    {/* Action Buttons - Right */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setScannedSKU('');
+                          setPreFilledProductName('');
+                          setIsAddModalOpen(true);
+                        }}
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add Product
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
+                      >
+                        {productViewMode === 'table' ? (
+                          <>
+                            <Grid3x3 className="w-4 h-4 mr-2" />
+                            Grid
+                          </>
+                        ) : (
+                          <>
+                            <Table2 className="w-4 h-4 mr-2" />
+                            Table
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+              
+              {/* Search Results Info - Show below search bar when searching */}
+              {searchTerm && (
+                <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-gray-50 border-b">
+                  <div className="text-xs text-gray-500">
+                    {filteredProducts.length > 0 && (
+                      <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found</span>
+                    )}
+                    {filteredProducts.length === 0 && (
+                      <span>No results found</span>
                     )}
                   </div>
+                </div>
+              )}
+
+              {/* Products Section - Scrollable */}
+              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <div className="">
                 {productsLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="text-center">
@@ -1034,6 +1126,38 @@ export default function CategorysPage() {
                       <table className={cn("w-full divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
                         <thead className="bg-gray-50/80 backdrop-blur-sm sticky top-0 z-10">
                           <tr>
+                            <th 
+                              className={cn(
+                                "text-center w-12",
+                                compactMode ? "px-2 py-1.5" : "px-3 py-4"
+                              )}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedProductIds.size > 0 && selectedProductIds.size === sortedProducts.length}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedProductIds(new Set(sortedProducts.map((p: any) => p.id)));
+                                  } else {
+                                    setSelectedProductIds(new Set());
+                                  }
+                                }}
+                                className={cn(
+                                  "text-blue-600 rounded border-gray-300 focus:ring-blue-500",
+                                  compactMode ? "w-3 h-3" : "w-4 h-4"
+                                )}
+                              />
+                            </th>
+                            <th 
+                              className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors"
+                              onClick={() => handleSort('sku')}
+                            >
+                              <div className="flex items-center">
+                                SKU
+                                {getSortIcon('sku')}
+                              </div>
+                            </th>
                             <th 
                               className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors"
                               onClick={() => handleSort('name')}
@@ -1113,6 +1237,7 @@ export default function CategorysPage() {
                             return (
                               <tr
                                 key={product.id}
+                                data-product-id={product.id}
                                 onClick={() => handleMobileRowClick(product)}
                                 className={cn(
                                   'hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
@@ -1121,6 +1246,45 @@ export default function CategorysPage() {
                                   compactMode && 'h-10'
                                 )}
                               >
+                                {/* Selection checkbox */}
+                                <td 
+                                  className={cn(
+                                    "text-center w-12",
+                                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
+                                  )} 
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedProductIds.has(product.id)}
+                                    onChange={(e) => {
+                                      e.stopPropagation();
+                                      const newSet = new Set(selectedProductIds);
+                                      if (e.target.checked) {
+                                        newSet.add(product.id);
+                                      } else {
+                                        newSet.delete(product.id);
+                                      }
+                                      setSelectedProductIds(newSet);
+                                    }}
+                                    className={cn(
+                                      "text-blue-600 rounded border-gray-300 focus:ring-blue-500",
+                                      compactMode ? "w-3 h-3" : "w-4 h-4"
+                                    )}
+                                  />
+                                </td>
+                                {/* SKU column */}
+                                <td className={cn(
+                                  "text-left",
+                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                )}>
+                                  <span className={cn(
+                                    "font-mono text-gray-900",
+                                    compactMode ? "text-xs" : "text-xs sm:text-sm"
+                                  )}>
+                                    {product.sku || '-'}
+                                  </span>
+                                </td>
                                 {/* Product column */}
                                 <td className={cn(
                                   "w-1/3",
@@ -1162,26 +1326,15 @@ export default function CategorysPage() {
                                       )}>
                                         {product.name}
                                       </h3>
-                                      {/* SKU and Barcode display - always visible */}
-                                      <div className={cn(
-                                        "flex flex-col gap-0.5",
-                                        compactMode ? "mt-0.5" : "mt-1"
-                                      )}>
+                                      {/* Barcode display - less prominent */}
+                                      {product.barcode && (
                                         <p className={cn(
-                                          "text-gray-600 font-mono",
-                                          compactMode ? "text-[10px]" : "text-xs"
+                                          "text-gray-500 font-mono",
+                                          compactMode ? "text-[9px] mt-0.5" : "text-[10px] mt-0.5"
                                         )}>
-                                          SKU: <span className="text-gray-500">{product.sku || '-'}</span>
+                                          {product.barcode}
                                         </p>
-                                        {product.barcode && (
-                                          <p className={cn(
-                                            "text-gray-600 font-mono",
-                                            compactMode ? "text-[10px]" : "text-xs"
-                                          )}>
-                                            Barcode: <span className="text-gray-500">{product.barcode}</span>
-                                          </p>
-                                        )}
-                                      </div>
+                                      )}
                                       {product.description && !compactMode && (
                                         <p className="text-xs text-gray-500 truncate max-w-xs mt-1 hidden sm:block">
                                           {product.description}
@@ -1202,7 +1355,7 @@ export default function CategorysPage() {
                                       compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
                                     )} />
                                     <span className={cn(
-                                      "text-gray-600",
+                                      repetitiveLocations.has(product.location || '') ? "text-gray-400" : "text-gray-600",
                                       compactMode ? "text-xs" : "text-sm"
                                     )}>
                                       {product.location || '-'}
@@ -1310,10 +1463,11 @@ export default function CategorysPage() {
                                   compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
-                                    "text-red-600 font-medium",
+                                    getPriceColor(product.purchase_price, 'text-gray-900'),
+                                    "font-medium",
                                     compactMode ? "text-xs" : "text-sm"
                                   )}>
-                                    ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '-'}
+                                    ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '0.00'}
                                   </div>
                                 </td>
 
@@ -1323,10 +1477,11 @@ export default function CategorysPage() {
                                   compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
-                                    "text-green-600 font-medium",
+                                    getPriceColor(product.sale_price, 'text-green-600'),
+                                    "font-medium",
                                     compactMode ? "text-xs" : "text-sm"
                                   )}>
-                                    ${product.sale_price ? Number(product.sale_price).toFixed(2) : '-'}
+                                    ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
                                   </div>
                                 </td>
 
@@ -1394,58 +1549,7 @@ export default function CategorysPage() {
                       </table>
                     </div>
                   </div>
-                ) : (
-                  <div className="space-y-2">
-                    {sortedProducts.map((product: any) => (
-                      <Card key={product.id} className="hover:shadow-md transition-shadow">
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between gap-4 flex-wrap">
-                            <div className="flex items-center gap-4 flex-1 min-w-0">
-                              {product.image_url ? (
-                                <img
-                                  src={product.image_url}
-                                  alt={product.name}
-                                  className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
-                                />
-                              ) : (
-                                <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                  <Package className="w-8 h-8 text-gray-400" />
-                                </div>
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-base md:text-lg truncate">{product.name}</h3>
-                                {product.description && (
-                                  <p className="text-sm text-gray-600 line-clamp-1">{product.description}</p>
-                                )}
-                                <div className="flex items-center gap-4 mt-2 text-sm text-gray-500 flex-wrap">
-                                  <span>Stock: {product.quantity_in_stock}</span>
-                                  {product.location && <span>Location: {product.location}</span>}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleStockAction(product, 'in')}
-                                className="whitespace-nowrap"
-                              >
-                                Adjust Stock
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleProductEdit(product)}
-                              >
-                                Edit
-                              </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
+                ) : null}
                 </div>
               </div>
             </>
@@ -1704,9 +1808,9 @@ export default function CategorysPage() {
             }}
             product={selectedProduct}
             onProductUpdated={() => {
-              queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
-              queryClient.invalidateQueries({ queryKey: ['products'] });
-              queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
             }}
           />
         </>
@@ -1721,9 +1825,9 @@ export default function CategorysPage() {
           }}
           product={selectedProduct}
           onProductUpdated={() => {
-            queryClient.invalidateQueries({ queryKey: ['categoryProducts', selectedCategoryId] });
-            queryClient.invalidateQueries({ queryKey: ['products'] });
-            queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
           }}
         />
       )}
@@ -1771,24 +1875,18 @@ export default function CategorysPage() {
             refetchType: 'active',
           });
           await queryClient.invalidateQueries({ queryKey: ['products'] });
-          // Also invalidate the specific current category view
-          if (selectedCategoryId && selectedCategoryId !== 'all') {
-            await queryClient.invalidateQueries({ 
-              queryKey: ['categoryProducts', selectedCategoryId],
-              refetchType: 'active',
-            });
-            await queryClient.invalidateQueries({ 
-              queryKey: ['categoryAnalytics', selectedCategoryId],
-              refetchType: 'active',
-            });
-          }
+          // Invalidate products by categories queries
+          await queryClient.invalidateQueries({ 
+            queryKey: ['productsByCategories'],
+            refetchType: 'active',
+          });
           setIsAddModalOpen(false);
           setPreFilledProductName('');
           setScannedSKU('');
         }}
         preFilledSKU={scannedSKU}
         preFilledName={preFilledProductName}
-        preFilledCategoryId={selectedCategoryId && selectedCategoryId !== 'all' ? selectedCategoryId : undefined}
+        preFilledCategoryId={selectedCategoryIds.length === 1 ? selectedCategoryIds[0] : undefined}
       />
 
       {isBarcodeScannerOpen && (

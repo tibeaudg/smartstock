@@ -601,3 +601,88 @@ export async function getAllProducts(
   return productsWithNames;
 }
 
+/**
+ * Get products in multiple categories (including all descendant categories)
+ * Returns products that belong to ANY of the selected categories (OR logic)
+ */
+export async function getProductsByCategories(
+  categoryIds: string[],
+  userId: string,
+  branchId?: string
+): Promise<any[]> {
+  // If no categories selected, return all products
+  if (categoryIds.length === 0) {
+    return getAllProducts(userId, branchId);
+  }
+
+  // Get all categories to find descendants
+  const { data: allCategories } = await supabase
+    .from('categories')
+    .select('*')
+    .eq('user_id', userId);
+
+  if (!allCategories) {
+    return [];
+  }
+
+  const { getCategoryDescendants } = await import('./categoryUtils');
+  
+  // Collect all category IDs including descendants for each selected category
+  const allCategoryIds = new Set<string>();
+  categoryIds.forEach(categoryId => {
+    allCategoryIds.add(categoryId);
+    const descendants = getCategoryDescendants(categoryId, allCategories as Category[]);
+    descendants.forEach(desc => allCategoryIds.add(desc.id));
+  });
+
+  const categoryIdsArray = Array.from(allCategoryIds);
+
+  // Build query
+  let productsQuery = supabase
+    .from('products')
+    .select('*')
+    .in('category_id', categoryIdsArray);
+
+  if (branchId) {
+    productsQuery = productsQuery.eq('branch_id', branchId);
+  }
+
+  const { data: products, error } = await productsQuery
+    .order('name', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching products by categories:', error);
+    return [];
+  }
+
+  if (!products || products.length === 0) {
+    return [];
+  }
+
+  // Get category names
+  const productCategoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
+
+  let categories: { [key: string]: string } = {};
+  if (productCategoryIds.length > 0) {
+    const { data: categoryData } = await supabase
+      .from('categories')
+      .select('id, name')
+      .in('id', productCategoryIds);
+    
+    if (categoryData) {
+      categories = categoryData.reduce((acc: { [key: string]: string }, cat: { id: string; name: string }) => {
+        acc[cat.id] = cat.name;
+        return acc;
+      }, {} as { [key: string]: string });
+    }
+  }
+
+  // Add category names to products
+  const productsWithNames = products.map(product => ({
+    ...product,
+    category_name: product.category_id ? categories[product.category_id] || null : null
+  }));
+
+  return productsWithNames;
+}
+

@@ -14,6 +14,7 @@ import {
   getCategoryAnalytics as getCategoryAnalyticsService,
   getCategoryProducts as getCategoryProductsService,
   getAllProducts as getAllProductsService,
+  getProductsByCategories as getProductsByCategoriesService,
   getCategoryProductCounts as getCategoryProductCountsService,
 } from '@/lib/categories/categoryService';
 import { buildCategoryTree, getCategoryPath } from '@/lib/categories/categoryUtils';
@@ -132,6 +133,29 @@ export function useCategoryProducts(categoryId: string | null | 'all') {
       );
     },
     enabled: !!user && (categoryId === 'all' || !!categoryId),
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+}
+
+/**
+ * Hook to get products in multiple categories (including descendants)
+ * Returns products that belong to ANY of the selected categories (OR logic)
+ */
+export function useProductsByCategories(categoryIds: string[]) {
+  const { user } = useAuth();
+  const { activeBranch } = useBranches();
+  
+  return useQuery({
+    queryKey: ['productsByCategories', categoryIds.sort().join(','), user?.id, activeBranch?.branch_id],
+    queryFn: () => {
+      if (!user) return [];
+      return getProductsByCategoriesService(
+        categoryIds,
+        user.id,
+        activeBranch?.branch_id
+      );
+    },
+    enabled: !!user,
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 }
