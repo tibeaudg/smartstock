@@ -42,7 +42,7 @@ export default function InventoryTrackingPrograms() {
     },
     {
       question: "How much do inventory tracking programs cost?",
-      answer: "Inventory tracking program costs vary widely. Enterprise solutions can cost thousands per month, while StockFlow offers a free plan for small businesses and affordable pay-as-you-grow pricing starting at �0.004 per product per month. Most programs offer free trials to test before committing."
+      answer: "Inventory tracking program costs vary widely. Enterprise solutions can cost thousands per month, while StockFlow is completely free forever with unlimited products and all features included. No credit card required, no subscriptions, no hidden fees. �0.004 per product per month. Most programs offer free trials to test before committing."
     },
     {
       question: "What is the best inventory tracking program for small businesses?",
@@ -395,7 +395,7 @@ export default function InventoryTrackingPrograms() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Get Started Free
             </Link>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">

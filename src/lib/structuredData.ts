@@ -160,8 +160,8 @@ export function generateWebSiteSchema(organizationName: string, baseUrl: string)
       {
         "@type": "WebPage",
         "@id": `${baseUrl}/pricing`,
-        "name": "Prijzen - Gratis & Premium Tarieven",
-        "description": "Transparante prijzen voor voorraadbeheer software",
+        "name": "Pricing - Completely Free Forever",
+        "description": "StockFlow is completely free forever - all features included, no credit card required",
         "url": `${baseUrl}/pricing`
       }
     ]

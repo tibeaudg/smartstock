@@ -139,13 +139,7 @@ export const SEO: React.FC<SEOProps> = ({
       {category && <meta property="article:section" content={category} />}
       {category && <meta property="article:tag" content={category} />}
       
-      {/* Product pricing meta tags */}
-      {productPrice && (
-        <>
-          <meta property="product:price:amount" content={productPrice} />
-          <meta property="product:price:currency" content={productCurrency} />
-        </>
-      )}
+      {/* Product pricing meta tags - removed since platform is free */}
       
       {/* App linking meta tags */}
       {appUrl && (

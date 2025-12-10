@@ -93,7 +93,7 @@ export default function OnlineInventorySoftware() {
     {
       question: 'Is there a free online inventory software plan that scales?',
       answer:
-        'StockFlow’s Free plan covers up to 100 SKUs, unlimited locations, and mobile barcode scanning. As you scale, pricing adjusts to €0.004 per SKU per month with no hidden setup or support fees.',
+        'StockFlow is completely free forever with unlimited SKUs, unlimited locations, and mobile barcode scanning. All features included at no cost - no hidden fees, no subscriptions.',
       ctaLabel: 'Start StockFlow Free',
       ctaHref: '/auth'
     },
@@ -211,7 +211,7 @@ export default function OnlineInventorySoftware() {
     },
     {
       feature: 'Total cost (year 1)',
-      stockflow: '€0–€1.2k (avg SMB)',
+      stockflow: 'Completely Free Forever',
       exact: '€6k+ license & setup',
       visma: '€8k+ license & setup',
       netsuite: '€15k+ license & setup',
@@ -319,119 +319,8 @@ export default function OnlineInventorySoftware() {
     }
   ];
 
-  const pricingPlans: PricingPlan[] = [
-    {
-      name: 'Free',
-      icon: Send,
-      description: 'Best for getting started.',
-      badge: null,
-      monthly: { price: '$0', suffix: 'USD/MO.' },
-      yearly: { price: '$0', suffix: 'USD/MO.', subtext: 'Billed annually at $0' },
-      metrics: [
-        { label: 'Unique Items', value: '100 Unique Items' },
-        { label: 'User Licenses', value: '1 User License' }
-      ],
-      extras: null,
-      features: [
-        'In-app Barcode & QR Code Scanning',
-        'Offline Mobile Access',
-        'Automatic Sync'
-      ],
-      cta: { label: 'Sign Up', href: '/auth', external: false }
-    },
-    {
-      name: 'Advanced',
-      icon: Lightbulb,
-      description: 'Best for maintaining optimal stock levels.',
-      badge: null,
-      monthly: { price: '$29', suffix: 'USD/MO.' },
-      yearly: { price: '$174', suffix: 'USD/YR', subtext: 'Equivalent to $14.50/mo' },
-      notes: {
-        monthly: 'Switch to yearly to save $174',
-        yearly: 'Billed annually — save $174'
-      },
-      metrics: [
-        { label: 'Unique Items', value: '500 Unique Items' },
-        { label: 'User Licenses', value: '2 User Licenses' }
-      ],
-      extras: 'Unlimited QR Code Label Creation',
-      features: [
-        'Inventory Import',
-        'Item Photos',
-        'Inventory Lists',
-        'Email Support'
-      ],
-      cta: { label: 'Start Free Trial', href: '/auth', external: false }
-    },
-    {
-      name: 'Ultra',
-      icon: Rocket,
-      description: 'Best for simplifying day-to-day tasks.',
-      badge: 'Most Popular',
-      monthly: { price: '$99', suffix: 'USD/MO.' },
-      yearly: { price: '$594', suffix: 'USD/YR', subtext: 'Equivalent to $49.50/mo' },
-      notes: {
-        monthly: 'Switch to yearly to save $594',
-        yearly: 'Billed annually — save $594'
-      },
-      metrics: [
-        { label: 'Unique Items', value: '2,000 Unique Items' },
-        { label: 'User Licenses', value: '5 User Licenses' }
-      ],
-      extras: 'Purchase Orders',
-      features: [
-        'Unlimited QR & Barcode Label Creation',
-        'Automated Purchase Orders',
-        'Low Stock Alerts',
-        'Date-based Alerts'
-      ],
-      cta: { label: 'Start Free Trial', href: '/auth', external: false }
-    },
-    {
-      name: 'Premium',
-      icon: ShieldCheck,
-      description: 'Best for streamlining complex operations.',
-      badge: null,
-      monthly: { price: '$199', suffix: 'USD/MO.' },
-      yearly: { price: '$1,194', suffix: 'USD/YR', subtext: 'Equivalent to $99.50/mo' },
-      notes: {
-        monthly: 'Switch to yearly to save $1,194',
-        yearly: 'Billed annually — save $1,194'
-      },
-      metrics: [
-        { label: 'Unique Items', value: '5,000 Unique Items' },
-        { label: 'User Licenses', value: '8 User Licenses' }
-      ],
-      extras: 'QuickBooks Online Integration',
-      features: [
-        'Customizable Role Permissions',
-        'QuickBooks Online Integration',
-        'Advanced Reporting',
-        'Priority Support'
-      ],
-      cta: { label: 'Start Free Trial', href: '/auth', external: false }
-    },
-    {
-      name: 'Enterprise',
-      icon: Infinity,
-      description: 'Best for customized inventory control.',
-      badge: null,
-      monthly: { price: 'Get a Quote' },
-      yearly: { price: 'Get a Quote' },
-      metrics: [
-        { label: 'Unique Items', value: '10,000+ Unique Items' },
-        { label: 'User Licenses', value: '12+ User Licenses' }
-      ],
-      extras: 'Dedicated Customer Success Manager',
-      features: [
-        'API & Webhooks',
-        'SSO & Advanced Security',
-        'Dedicated Customer Success Manager',
-        'Custom Inventory Setup'
-      ],
-      cta: { label: 'Talk to Sales', href: 'https://www.stockflow.be/contact', external: true }
-    }
-  ];
+  // StockFlow is completely free - no pricing plans needed
+  const pricingPlans: PricingPlan[] = [];
 
 
 
@@ -446,7 +335,7 @@ export default function OnlineInventorySoftware() {
     >
       <SEO
         title="Online Inventory Software 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Best online inventory software 2025. Cloud-based, real-time tracking, barcode scanning, multi-channel sync. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Best online inventory software 2025. Cloud-based, real-time tracking, barcode scanning, multi-channel sync. StockFlow is completely free forever - all features included, unlimited usage, no credit card required."
         keywords="online inventory software, cloud inventory software, web-based inventory software, online inventory management, cloud inventory management, online inventory system, inventory software online, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/online-inventory-software"
         publishedTime={pageMetadata.published}
@@ -576,7 +465,7 @@ export default function OnlineInventorySoftware() {
                 to="/auth"
                 className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-700 transition-colors"
               >
-                Start my free trial
+                Get Started Free
               </Link>
               <button
                 onClick={() => setIsVideoModalOpen(true)}
@@ -829,7 +718,7 @@ export default function OnlineInventorySoftware() {
                     <td className="px-4 py-3 text-center"><CheckCircle className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="bg-gray-50">
-                    <td className="px-4 py-3 text-xs text-gray-900 font-medium sticky left-0 bg-inherit z-10">Free plan available</td>
+                    <td className="px-4 py-3 text-xs text-gray-900 font-medium sticky left-0 bg-inherit z-10">Completely free forever</td>
                     <td className="px-4 py-3 text-center"><CheckCircle className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="px-4 py-3 text-center"><span className="text-gray-400">—</span></td>
                     <td className="px-4 py-3 text-center"><span className="text-gray-400">—</span></td>
@@ -853,33 +742,53 @@ export default function OnlineInventorySoftware() {
       <section id="pricing" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12 space-y-6">
-            <div className="inline-flex items-center justify-center gap-3 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
-              <span>Save 50% on yearly pricing</span>
-              <div className="flex rounded-full border border-blue-100 bg-white p-1">
-                {(['yearly', 'monthly'] as const).map((cycle) => (
-                  <button
-                    key={cycle}
-                    type="button"
-                    onClick={() => setBillingCycle(cycle)}
-                    className={`rounded-full px-4 py-1 text-sm font-semibold transition-colors ${
-                      billingCycle === cycle ? 'bg-blue-600 text-white shadow' : 'text-blue-600 hover:bg-blue-100'
-                    }`}
-                  >
-                    {cycle === 'yearly' ? 'Yearly' : 'Monthly'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Plan</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Completely Free Forever</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Flexible pricing that scales with your SKU count. Every plan includes analytics, barcode scanning, and 24/7
-                support.
+                StockFlow is completely free with all features included. No credit card required, no subscriptions, no hidden fees.
               </p>
             </div>
           </div>
 
+          <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-8 md:p-12 text-center">
+            <div className="max-w-2xl mx-auto">
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                StockFlow is Completely Free Forever
+              </h3>
+              <p className="text-lg text-gray-700 mb-6">
+                No credit card required. No subscriptions. No hidden fees. All features included forever.
+              </p>
+              <div className="grid md:grid-cols-2 gap-4 mb-8 text-left">
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">What's Included</h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>✓ Unlimited products</li>
+                    <li>✓ Unlimited users</li>
+                    <li>✓ Unlimited branches</li>
+                    <li>✓ Unlimited orders</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">All Features</h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>✓ Barcode scanning</li>
+                    <li>✓ Advanced analytics</li>
+                    <li>✓ API access</li>
+                    <li>✓ Priority support</li>
+                  </ul>
+                </div>
+              </div>
+              <a
+                href="/auth?mode=register"
+                className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors"
+              >
+                Get Started Free
+              </a>
+            </div>
+          </div>
+          
+          {/* Old pricing plans section - removed since platform is free */}
+          {false && pricingPlans.length > 0 && (
           <div className="grid gap-8 lg:grid-cols-3">
             {pricingPlans.map((plan) => {
               const Icon = plan.icon;
@@ -966,9 +875,10 @@ export default function OnlineInventorySoftware() {
               );
             })}
           </div>
+          )}
 
           <p className="mt-8 text-center text-sm text-gray-500">
-            All plans include unlimited locations, API access, and dedicated onboarding assistance.
+            StockFlow is completely free forever with unlimited locations, API access, and dedicated onboarding assistance.
           </p>
         </div>
       </section>
@@ -1000,7 +910,7 @@ export default function OnlineInventorySoftware() {
             name: 'Best Online Inventory Software 2025: Compare Cloud Solutions',
             headline: 'Best Online Inventory Software 2025: Compare Cloud Solutions',
             description:
-              'Compare top online inventory software 2025. Free plan available. Real-time tracking, barcode scanning, multi-channel sync. Start free trial. 500+ businesses trust StockFlow.',
+              'Compare top online inventory software 2025. StockFlow is completely free forever. Real-time tracking, barcode scanning, multi-channel sync. Start free. 500+ businesses trust StockFlow.',
             url: 'https://www.stockflow.be/online-inventory-software',
             inLanguage: 'en',
             isPartOf: {
@@ -1040,7 +950,7 @@ export default function OnlineInventorySoftware() {
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: 'Best Online Inventory Software 2025: Complete Comparison Guide',
-            description: 'Compare top online inventory software 2025. Free plan available. Real-time tracking, barcode scanning, multi-channel sync. Start free trial. 500+ businesses trust StockFlow.',
+            description: 'Compare top online inventory software 2025. StockFlow is completely free forever. Real-time tracking, barcode scanning, multi-channel sync. Start free. 500+ businesses trust StockFlow.',
             author: {
               '@type': 'Organization',
               name: 'StockFlow'
@@ -1066,7 +976,7 @@ export default function OnlineInventorySoftware() {
             '@type': 'SoftwareApplication',
             name: 'StockFlow Online Inventory Software',
             description:
-              'StockFlow provides real-time inventory automation, barcode scanning, multi-location control, and a free plan for up to 100 SKUs with pay-as-you-grow pricing.',
+              'StockFlow provides real-time inventory automation, barcode scanning, multi-location control, and is completely free forever with unlimited SKUs and all features included.',
             applicationCategory: 'BusinessApplication',
             applicationSubCategory: 'Inventory Management Software',
             operatingSystem: 'Web Browser',
@@ -1075,15 +985,7 @@ export default function OnlineInventorySoftware() {
                 '@type': 'Offer',
                 price: '0',
                 priceCurrency: 'EUR',
-                description: 'Free plan - Up to 100 products',
-                availability: 'https://schema.org/InStock',
-                priceValidUntil: '2026-12-31'
-              },
-              {
-                '@type': 'Offer',
-                price: '0.004',
-                priceCurrency: 'EUR',
-                description: 'Growth plan - Pay-as-you-grow pricing, €0.004 per product/month (products 101+)',
+                description: 'Completely free forever - Unlimited products',
                 availability: 'https://schema.org/InStock',
                 priceValidUntil: '2026-12-31'
               },

@@ -40,7 +40,7 @@ export default function StockFlowVsSortly() {
   const faqData = [
     {
       question: "Why should I switch from Sortly to StockFlow?",
-      answer: "StockFlow offers a free plan (100 SKUs) vs Sortly's $25/month starting price, saving you 90%+ in costs. StockFlow provides faster setup (5-7 days vs 30+ days), better operational features like automated reorder points and multi-location management, European data hosting for GDPR compliance, and 24/7 customer support. StockFlow is designed for teams that need fast barcode workflows and inventory operations, while Sortly focuses more on visual catalog browsing."
+      answer: "StockFlow is completely free forever with all features included, while Sortly charges $25/month. StockFlow provides faster setup (5-7 days vs 30+ days), better operational features like automated reorder points and multi-location management, European data hosting for GDPR compliance, and 24/7 customer support. StockFlow is designed for teams that need fast barcode workflows and inventory operations, while Sortly focuses more on visual catalog browsing."
     },
     {
       question: "How does migration from Sortly to StockFlow work?",
@@ -48,7 +48,7 @@ export default function StockFlowVsSortly() {
     },
     {
       question: "What's the cost difference between StockFlow and Sortly?",
-      answer: "StockFlow offers a free plan for up to 100 products, while Sortly starts at $25/month. For growing businesses, StockFlow's Growth plan is €29/month (approximately $32) with unlimited products, while Sortly's Advanced plan is $49/month with item limits. Over the first year, StockFlow can save you $300-600+ compared to Sortly, plus you get free setup and migration assistance (Sortly may charge for setup)."
+      answer: "StockFlow is completely free forever with unlimited products and all features included, while Sortly starts at $25/month and charges up to $99/month for advanced features. StockFlow saves you $300-1200+ per year compared to Sortly, plus you get free setup and migration assistance (Sortly may charge for setup)."
     },
     {
       question: "What are the key feature differences between StockFlow and Sortly?",
@@ -68,7 +68,7 @@ export default function StockFlowVsSortly() {
     },
     {
       question: "Is StockFlow's free plan better than Sortly's paid plans?",
-      answer: "StockFlow's free plan includes up to 100 products with real-time tracking, barcode scanning, mobile app access, multi-location support, and basic reporting—features that Sortly charges $25-49/month for. StockFlow's free tier is designed to let you test the full system before upgrading, while Sortly requires payment from day one. Many small businesses find StockFlow's free plan sufficient for their needs."
+      answer: "StockFlow is completely free forever with unlimited products, real-time tracking, barcode scanning, mobile app access, multi-location support, advanced reporting, and all premium features—everything that Sortly charges $25-99/month for. StockFlow requires no payment ever, while Sortly requires payment from day one."
     },
     {
       question: "What support does StockFlow offer compared to Sortly?",
@@ -82,8 +82,8 @@ export default function StockFlowVsSortly() {
 
   const featureComparison = [
     {
-      feature: "Free Plan Available",
-      stockflow: "✓ Free (100 SKUs)",
+      feature: "Pricing",
+      stockflow: "✓ Completely Free Forever",
       sortly: "✗ Starts at $25/month"
     },
     {
@@ -155,22 +155,22 @@ export default function StockFlowVsSortly() {
 
   const pricingComparison = [
     {
-      plan: "Free/Starter Plan",
-      stockflow: "€0/month (100 SKUs)",
-      sortly: "$25/month (Basic plan)",
-      savings: "Save $300/year"
+      plan: "Pricing",
+      stockflow: "Completely Free Forever",
+      sortly: "$25-99/month",
+      savings: "Save $300-1200+/year"
     },
     {
-      plan: "Growth/Advanced Plan",
-      stockflow: "€29/month (unlimited)",
-      sortly: "$49/month (Advanced plan)",
-      savings: "Save $240/year"
+      plan: "Products",
+      stockflow: "Unlimited",
+      sortly: "Limited by plan",
+      savings: "No limits"
     },
     {
-      plan: "Premium/Ultra Plan",
-      stockflow: "€79/month (all features)",
-      sortly: "$99/month (Ultra plan)",
-      savings: "Save $240/year"
+      plan: "Features",
+      stockflow: "All features included",
+      sortly: "Limited by plan",
+      savings: "Everything included"
     },
     {
       plan: "Setup & Migration",
@@ -251,7 +251,7 @@ export default function StockFlowVsSortly() {
     >
       <SEO
         title="StockFlow vs Sortly — Compare Features, Pricing, and Migration 2025 | StockFlow"
-        description="Compare StockFlow vs Sortly: Free plan vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 90% costs. Free migration assistance. Start free trial - no credit card required."
+        description="Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Start free - no credit card required."
         keywords="StockFlow vs Sortly, Sortly vs StockFlow, StockFlow comparison, Sortly alternative, inventory software comparison, migrate from Sortly, StockFlow features, Sortly pricing, inventory management software, free inventory software, StockFlow migration, Sortly competitor, best inventory software, StockFlow vs Sortly pricing, StockFlow vs Sortly features"
         url="https://www.stockflow.be/stockflow-vs-sortly"
         locale="en"
@@ -270,13 +270,13 @@ export default function StockFlowVsSortly() {
               <span className="text-blue-600">Compare Features, Pricing, and Migration</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-              Free plan vs $25/month • 5-7 day setup vs 30+ days • Save 90% costs • Free migration assistance
+              Completely free forever vs $25/month • 5-7 day setup vs 30+ days • Save 100% costs • Free migration assistance
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto mb-8 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
             <p className="text-xl font-bold text-gray-900 mb-4">
-              ⚡ Quick Winner: StockFlow offers FREE plan (100 SKUs) vs Sortly's $25/month. 5-7 day setup vs 30+ days. European hosting, 24/7 support. Save 90% costs!
+              ⚡ Quick Winner: StockFlow is completely FREE forever with unlimited everything vs Sortly's $25/month. 5-7 day setup vs 30+ days. European hosting, 24/7 support. Save 100% costs!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -290,15 +290,15 @@ export default function StockFlowVsSortly() {
                 to="/auth"
                 className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-lg"
               >
-                Start Free Trial
+                Get Started Free
               </Link>
             </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-3xl font-bold text-blue-600 mb-2">€0</div>
-              <div className="text-sm text-gray-600">Free Plan Available</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">$0</div>
+              <div className="text-sm text-gray-600">Free Forever</div>
               <div className="text-xs text-gray-500 mt-1">vs $25/month Sortly</div>
             </div>
             <div className="text-center bg-white p-6 rounded-lg shadow-sm">
@@ -368,7 +368,7 @@ export default function StockFlowVsSortly() {
               to="/auth"
               className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
             >
-              Start Free Trial
+              Get Started Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </div>
@@ -415,8 +415,8 @@ export default function StockFlowVsSortly() {
           <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
             <h3 className="text-xl font-bold text-gray-900 mb-3">Total First Year Savings</h3>
             <p className="text-lg text-gray-700">
-              Switching from Sortly to StockFlow can save you <strong className="text-green-600">$300-600+ in the first year</strong>, 
-              plus free setup and migration assistance (worth $500-1000). That's a total savings of <strong className="text-green-600">$800-1600+</strong> 
+              Switching from Sortly to StockFlow saves you <strong className="text-green-600">$300-1200+ per year</strong> since StockFlow is completely free forever, 
+              plus free setup and migration assistance (worth $500-1000). That's a total savings of <strong className="text-green-600">$800-2200+</strong> 
               compared to Sortly's paid plans and setup fees.
             </p>
           </div>
@@ -868,7 +868,7 @@ export default function StockFlowVsSortly() {
           "@id": "https://www.stockflow.be/stockflow-vs-sortly",
           "name": "StockFlow vs Sortly — Compare Features, Pricing, and Migration",
           "headline": "StockFlow vs Sortly: Free Plan vs $25/month, Better Features, 5-7 Day Setup",
-          "description": "Compare StockFlow vs Sortly: Free plan vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 90% costs. Free migration assistance. Start free trial - no credit card required.",
+          "description": "Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Start free - no credit card required.",
           "url": "https://www.stockflow.be/stockflow-vs-sortly",
           "inLanguage": "en",
           "isPartOf": {

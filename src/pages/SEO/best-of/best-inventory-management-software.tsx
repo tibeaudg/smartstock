@@ -57,8 +57,8 @@ export default function BestInventoryManagementSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Best Inventory Software 2025: FREE Plan, Save 35% Costs | StockFlow"
-        description="Best inventory management software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 35% costs & 15 hours/week. Trusted by 1,000+ businesses. Start free - no credit card required."
+        title="Best Inventory Software 2025: Completely Free Forever | StockFlow"
+        description="Best inventory management software 2025. Completely free forever - unlimited products, all features included. Real-time tracking, barcode scanning. Save 35% costs & 15 hours/week. Trusted by 1,000+ businesses. Start free - no credit card required."
         keywords="best inventory management software, best inventory software, top inventory management software, best inventory management software 2025, best inventory software for small business, inventory management software comparison, best inventory system, stockflow, stock flow"
         url="https://www.stockflow.be/best-inventory-management-software"
       />
@@ -96,7 +96,7 @@ export default function BestInventoryManagementSoftware() {
         </p>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
           <p className="text-sm text-green-800">
-            <strong>💡 Pro Tip:</strong> Start with a free plan to test features before committing. Most businesses see ROI within 30 days when choosing the right <strong>inventory management software</strong>.
+            <strong>💡 Pro Tip:</strong> StockFlow is completely free forever with all features included. No commitment needed - start using it immediately. Most businesses see ROI within 30 days.
           </p>
         </div>
 
@@ -107,14 +107,14 @@ export default function BestInventoryManagementSoftware() {
             rating: 4.9,
             ratingSource: 'G2',
             startingPrice: 'Free',
-            freeTrial: 'Free forever plan',
+            freeTrial: 'Completely free forever',
             forecasting: 'Yes',
             pros: [
-              'Free plan for up to 100 SKUs',
+              'Completely free forever - unlimited SKUs',
               'Offline-first mobile app',
               'Real-time multi-channel sync',
               'Fast setup (5-7 days)',
-              'Transparent pricing'
+              'Completely free forever'
             ],
             cons: [
               'Newer platform (less brand recognition)',
@@ -327,7 +327,7 @@ export default function BestInventoryManagementSoftware() {
                   </div>
                   <div className="flex flex-col gap-2 text-sm">
                     <div><strong>Starting Monthly Price:</strong> {software.startingPrice}</div>
-                    <div><strong>Free Trial:</strong> {software.freeTrial}</div>
+                    <div><strong>Pricing:</strong> {software.freeTrial === 'Free forever plan' ? 'Completely Free Forever' : software.freeTrial}</div>
                     <div><strong>Forecasting:</strong> {software.forecasting}</div>
                   </div>
                 </div>
@@ -394,8 +394,8 @@ export default function BestInventoryManagementSoftware() {
                 <td className="p-4 text-slate-600">$29/month</td>
               </tr>
               <tr>
-                <td className="p-4 font-medium text-slate-800">Free Trial</td>
-                <td className="p-4 text-green-700 font-bold">✓ Free Forever Plan</td>
+                <td className="p-4 font-medium text-slate-800">Pricing</td>
+                <td className="p-4 text-green-700 font-bold">✓ Completely Free Forever</td>
                 <td className="p-4 text-slate-600">15 days</td>
                 <td className="p-4 text-slate-600">14 days</td>
               </tr>

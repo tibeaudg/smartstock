@@ -275,7 +275,7 @@ export default function RetailInventoryManagement() {
     >
       <SEO
         title="Retail Inventory Management Software | StockFlow"
-        description="Retail inventory software for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. Free plan available."
+        description="Retail inventory software for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. StockFlow is completely free forever - all features included."
         keywords="retail inventory management, small retail shop software, retail stock management, shop inventory system, retail inventory tracking, small business inventory, retail POS integration, inventory management for retailers, retail stock control, shop management software, retail inventory software, small shop inventory, retail inventory solution, shop stock tracking, retail inventory app"
         url="https://www.stockflow.be/retail-inventory-management"
         structuredData={structuredData}
@@ -601,14 +601,14 @@ export default function RetailInventoryManagement() {
             Ready to Transform Your Retail Inventory?
           </h2>
           <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join hundreds of retail shops using StockFlow to manage their inventory more efficiently and profitably. Start with our free plan for up to 100 products.
+            Join hundreds of retail shops using StockFlow to manage their inventory more efficiently and profitably. StockFlow is completely free forever with unlimited products and all features included.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link
               to="/auth"
               className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
             >
-              Start Free Trial →
+              Get Started Free →
             </Link>
             <Link
               to="/solutions/inventory-management-software"
@@ -628,7 +628,7 @@ export default function RetailInventoryManagement() {
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 mr-2" />
-              Free plan available
+              Completely free forever
             </div>
           </div>
         </div>

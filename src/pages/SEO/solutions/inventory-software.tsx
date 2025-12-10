@@ -31,7 +31,7 @@ export default function InventorySoftware() {
     },
     {
       question: "How much does inventory software cost?",
-      answer: `Inventory software pricing varies, but StockFlow offers a free plan for small businesses with up to 30 products. Premium plans start at ${formatPrice(29)}/month for advanced features. Most solutions offer free trials to test the software before committing. Enterprise solutions may cost more but typically include advanced features and dedicated support.`
+      answer: `StockFlow is completely free forever with all features included - unlimited products, unlimited users, unlimited branches, and unlimited orders. No credit card required, no subscriptions, no hidden fees. All premium features are included at no cost.`
     },
     {
       question: "Can inventory software integrate with other systems?",
@@ -39,7 +39,7 @@ export default function InventorySoftware() {
     },
     {
       question: "Is inventory software suitable for small businesses?",
-      answer: "Absolutely! Inventory software is especially beneficial for small businesses as it helps automate processes, reduce errors, and provides insights that were previously only available to large enterprises. StockFlow is specifically designed for SMEs and growing businesses, with affordable pricing and easy setup."
+      answer: "Absolutely! Inventory software is especially beneficial for small businesses as it helps automate processes, reduce errors, and provides insights that were previously only available to large enterprises. StockFlow is completely free forever, making it perfect for SMEs and growing businesses of all sizes."
     },
     {
       question: "What features should I look for in inventory software?",
@@ -208,7 +208,7 @@ export default function InventorySoftware() {
     >
       <SEO
         title="Inventory Software 2025 - Save 30% Costs, 15 Hours/Week | StockFlow"
-        description="Best inventory software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. Free plan for up to 100 products. Start free today - no credit card required."
+        description="Best inventory software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. StockFlow is completely free forever - all features included, unlimited usage. Start free today - no credit card required."
         keywords="inventory software, stock management software, inventory tracking software, inventory management software, stock software, inventory control software, warehouse management software, inventory system software, stock tracking software, inventory software for small business, best inventory software, inventory software free, cloud inventory software, inventory software comparison, stockflow, stock flow"
         url="https://www.stockflow.be/solutions/inventory-software"
       />
@@ -588,53 +588,74 @@ export default function InventorySoftware() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4 bg-blue-50">
+      <section className="py-16 px-4 bg-green-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Simple, Transparent <span className="text-blue-600">Pricing</span>
+              Completely <span className="text-green-600">Free Forever</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Choose the plan that fits your business needs. No hidden fees, no surprises.
+              StockFlow is completely free forever. All features included. No credit card required, no subscriptions, no hidden fees.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold mb-4">Free Plan</h3>
-              <div className="text-4xl font-bold text-blue-600 mb-4">{formatPrice(0)}<span className="text-lg text-gray-500">/month</span></div>
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-green-200">
+              <h3 className="text-2xl font-bold mb-4">Everything Included</h3>
+              <div className="text-4xl font-bold text-green-600 mb-4">$0<span className="text-lg text-gray-500"> forever</span></div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Up to 30 products</span>
+                  <span>Unlimited products</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Basic inventory tracking</span>
+                  <span>Unlimited users</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Mobile access</span>
+                  <span>Unlimited branches</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Email support</span>
+                  <span>All premium features</span>
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                  <span>Barcode scanning</span>
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                  <span>Advanced analytics</span>
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                  <span>API access</span>
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                  <span>Priority support</span>
                 </li>
               </ul>
               <Link
                 to="/auth"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-center block hover:bg-blue-700 transition"
+                className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold text-center block hover:bg-green-700 transition"
               >
-                Start Free
+                Get Started Free
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
 
+      {/* Old pricing section - removed */}
+      {false && (
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-blue-600">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-2xl font-bold">Growth Plan</h3>
                 <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">Most Popular</span>
               </div>
-              <div className="text-4xl font-bold text-blue-600 mb-4">{formatPrice(29)}<span className="text-lg text-gray-500">/month</span></div>
+              <div className="text-4xl font-bold text-green-600 mb-4">$0<span className="text-lg text-gray-500"> forever</span></div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
@@ -657,12 +678,10 @@ export default function InventorySoftware() {
                 to="/auth"
                 className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-center block hover:bg-blue-700 transition"
               >
-                Start Free Trial
+                Get Started Free
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
+      )}
 
       {/* CTA Section */}
       <section className="bg-blue-600 text-white py-16 px-4">
@@ -678,7 +697,7 @@ export default function InventorySoftware() {
               to="/auth"
               className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
             >
-              Start Free Trial
+              Get Started Free
             </Link>
 
           </div>
@@ -693,7 +712,7 @@ export default function InventorySoftware() {
             </div>
             <div className="flex items-center">
               <CheckCircle className="w-4 h-4 mr-2" />
-              Free trial
+              Completely free forever
             </div>
           </div>
         </div>
@@ -725,7 +744,7 @@ export default function InventorySoftware() {
                     "@type": "Offer",
                     "price": "0",
                     "priceCurrency": "EUR",
-                    "description": "Free plan - Up to 30 products",
+                    "description": "Completely free forever - Unlimited products",
                     "availability": "https://schema.org/InStock"
                   },
                   {

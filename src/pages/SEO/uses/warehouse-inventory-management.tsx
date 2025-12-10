@@ -62,7 +62,7 @@ export default function WarehouseInventoryManagement() {
     },
     {
       question: "How much does warehouse inventory management software cost?",
-      answer: "Full warehouse management systems (WMS) range from €500-10,000+/month depending on warehouse size and complexity. StockFlow offers warehouse-ready inventory management starting at €0 for up to 100 products, with scalable pricing (€0.004 per product/month for products 101+), making it affordable for small to mid-sized warehouses."
+      answer: "Full warehouse management systems (WMS) range from €500-10,000+/month depending on warehouse size and complexity. StockFlow is completely free forever with unlimited products and all features included, making it perfect for warehouses of all sizes at no cost."
     },
     {
       question: "Can I track inventory by bin location within my warehouse?",
@@ -327,7 +327,7 @@ export default function WarehouseInventoryManagement() {
     >
       <SEO
         title="Warehouse Inventory Management Software | StockFlow"
-        description="Warehouse inventory software with bin location tracking, barcode scanning & pick optimization. Improve accuracy to 99%+, reduce costs 25%. Free plan available."
+        description="Warehouse inventory software with bin location tracking, barcode scanning & pick optimization. Improve accuracy to 99%+, reduce costs 25%. StockFlow is completely free forever - all features included."
         keywords="warehouse inventory management, warehouse management system, WMS, bin location tracking, barcode scanning, pick and pack, cycle counting, warehouse optimization, inventory accuracy, warehouse software"
         url="https://www.stockflow.be/warehouse-inventory-management"
       />
@@ -586,12 +586,12 @@ export default function WarehouseInventoryManagement() {
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-4xl font-bold mb-2">€0</div>
+              <div className="text-4xl font-bold mb-2">Completely Free</div>
               <div className="text-lg font-semibold mb-2">Start Free</div>
               <div className="text-sm opacity-90">Up to 100 products • Full features • No credit card</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-4xl font-bold mb-2">€0.004</div>
+              <div className="text-4xl font-bold mb-2">Forever</div>
               <div className="text-lg font-semibold mb-2">Per Product/Month</div>
               <div className="text-sm opacity-90">Scale affordably as your inventory grows</div>
             </div>

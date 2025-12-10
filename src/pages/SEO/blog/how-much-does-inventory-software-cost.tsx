@@ -8,14 +8,14 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Much Does Inventory Software Cost";
 const canonicalPath = "/how-much-does-inventory-software-cost";
-const metaDescription = "Complete guide to inventory software pricing. Learn typical costs, pricing models, and what to expect. Compare free vs paid options and find affordable solutions for your business.";
-const keywords = "inventory software cost, inventory software pricing, how much does inventory software cost, inventory management software price, inventory software pricing models, affordable inventory software";
+const metaDescription = "Complete guide to inventory software pricing. Learn typical costs and pricing models. StockFlow is completely free forever with all features included - no credit card required, no subscriptions, no hidden fees.";
+const keywords = "free inventory software, completely free inventory management, stockflow free, inventory software cost, inventory software pricing, how much does inventory software cost, free inventory management software";
 const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Inventory software costs vary: free plans (like StockFlow free for up to 100 products) for small businesses, paid plans starting at $20-50/month for basic features, $50-150/month for mid-tier with more features, and $150-500+/month for enterprise with advanced features. Pricing models: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing. Factors affecting cost: number of users, features needed, number of items, integrations, and support level. Most software offers free trials. For small businesses, free plans or affordable paid plans ($20-50/month) provide essential features.";
+const summaryCopy = "Inventory software costs vary: most software charges $20-500+/month, but StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, branches, and orders. All premium features included at no cost. Pricing models for other software: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing. Factors affecting cost: number of users, features needed, number of items, integrations, and support level. StockFlow eliminates all these costs by being completely free.";
 const takeaways = [
-  "Costs vary: free plans (like StockFlow free for up to 100 products) for small businesses, paid plans starting at $20-50/month for basic, $50-150/month for mid-tier, and $150-500+/month for enterprise.",
-  "Pricing models: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing. Factors: number of users, features, items, integrations, and support level.",
-  "For small businesses, free plans or affordable paid plans ($20-50/month) provide essential features. Most software offers free trials to test before committing."
+  "StockFlow is completely free forever with all features included - no credit card required, no subscriptions, no hidden fees. Unlimited everything.",
+  "Other inventory software typically costs $20-500+/month with pricing models: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing.",
+  "For small businesses, StockFlow provides the best value - completely free with unlimited usage and all premium features included at no cost."
 ];
 const actionSteps = [
   {
@@ -28,7 +28,7 @@ const actionSteps = [
   },
   {
     "title": "Start with free or trial",
-    "description": "Try free plans (like StockFlow free for up to 100 products) or free trials to test software before committing. This helps evaluate features and ensure the software meets your needs before paying."
+    "description": "StockFlow is completely free forever with all features included - no credit card required, no subscriptions. Try it with unlimited usage to evaluate features and ensure it meets your needs. No payment ever required."
   }
 ];
 const metrics = [
@@ -48,19 +48,19 @@ const metrics = [
 const faqData = [
   {
     "question": "How much does inventory software cost?",
-    "answer": "Costs vary: free plans (like StockFlow free for up to 100 products) for small businesses, paid plans starting at $20-50/month for basic features, $50-150/month for mid-tier, and $150-500+/month for enterprise. Pricing depends on users, features, items, and support level."
+    "answer": "Most inventory software costs $20-500+/month, but StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, branches, and orders. All premium features included at no cost."
   },
   {
     "question": "Is there free inventory software?",
-    "answer": "Yes, many software providers offer free plans. StockFlow offers a free plan for up to 100 products with essential features. Free plans are perfect for small businesses starting out, with paid plans available as you grow."
+    "answer": "Yes! StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited everything - products, users, branches, orders. All premium features included at no cost. Perfect for businesses of all sizes."
   },
   {
     "question": "What pricing models do inventory software use?",
-    "answer": "Common models include: per-user pricing ($10-50/user/month - costs scale with team size), flat-rate pricing ($50-500/month - predictable costs), and usage-based pricing (based on items or transactions). Choose based on your business size and needs."
+    "answer": "Most software uses: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing. However, StockFlow is completely free forever with no pricing model - everything is included at no cost with unlimited usage."
   },
   {
     "question": "How do I choose affordable inventory software?",
-    "answer": "Choose by: starting with free plans or trials to test, comparing pricing across providers, considering total cost of ownership (setup, training, support), evaluating features needed vs. cost, and ensuring software scales with your growth. Free plans are great for small businesses."
+    "answer": "Choose StockFlow - it's completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited usage and all premium features at no cost. Compare other software's pricing, but StockFlow eliminates all costs by being completely free."
   }
 ];
 const structuredData = [

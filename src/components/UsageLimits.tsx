@@ -1,115 +1,23 @@
 import React from 'react';
-import { AlertTriangle, Users, Package, Building, ShoppingCart, TrendingUp } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
+import { Check, Package, Users, Building, ShoppingCart } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useSubscription } from '@/hooks/useSubscription';
+import { Badge } from '@/components/ui/badge';
 
 interface UsageLimitsProps {
   compact?: boolean;
 }
 
 export const UsageLimits: React.FC<UsageLimitsProps> = ({ compact = false }) => {
-  const subscription = useSubscription();
-  const {
-    currentTier,
-    usageTracking,
-    isWithinLimits,
-    getRemainingLimit,
-    isTrialActive,
-    isSubscriptionActive,
-  } = subscription;
-
-  if (!currentTier) return null;
-
-  const liveProductCount = (subscription as any).productCount as number | undefined;
-  const currentProducts = liveProductCount ?? usageTracking?.current_products ?? 0;
-
-  const limits = [
-    {
-      type: 'products' as const,
-      icon: <Package className="h-4 w-4" />,
-      label: 'Products',
-      current: currentProducts,
-      max: currentTier.included_products,
-      color: 'text-blue-600',
-    },
-    {
-      type: 'users' as const,
-      icon: <Users className="h-4 w-4" />,
-      label: 'Users',
-      current: usageTracking?.current_users ?? 0,
-      max: currentTier.max_users,
-      color: 'text-green-600',
-    },
-    {
-      type: 'branches' as const,
-      icon: <Building className="h-4 w-4" />,
-      label: 'Branches',
-      current: usageTracking?.current_branches ?? 0,
-      max: currentTier.max_branches,
-      color: 'text-purple-600',
-    },
-    {
-      type: 'orders' as const,
-      icon: <ShoppingCart className="h-4 w-4" />,
-      label: 'Orders this month',
-      current: usageTracking?.orders_this_month ?? 0,
-      max: currentTier.max_orders_per_month,
-      color: 'text-orange-600',
-    },
-  ];
-
-  const getUsagePercentage = (current: number, max: number | null) => {
-    if (max === null) return 0;
-    return Math.min((current / max) * 100, 100);
-  };
-
-  const getUsageColor = (percentage: number) => {
-    if (percentage >= 90) return 'bg-red-500';
-    if (percentage >= 75) return 'bg-yellow-500';
-    return 'bg-green-500';
-  };
-
-  const getStatusBadge = () => {
-    if (isTrialActive) {
-      return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Trial Active</Badge>;
-    }
-    if (isSubscriptionActive) {
-      return <Badge variant="secondary" className="bg-green-100 text-green-800">Active</Badge>;
-    }
-    return <Badge variant="secondary" className="bg-gray-100 text-gray-800">{currentTier.display_name}</Badge>;
-  };
-
   if (compact) {
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-sm text-gray-900">Usage</h3>
-          {getStatusBadge()}
+          <Badge variant="secondary" className="bg-green-100 text-green-800">Free</Badge>
         </div>
-
-        {limits.map((limit) => {
-          const percentage = getUsagePercentage(limit.current, limit.max);
-
-          return (
-            <div key={limit.type} className="space-y-1">
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center space-x-2">
-                  <span className={limit.color}>{limit.icon}</span>
-                  <span className="text-gray-600">{limit.label}</span>
-                </div>
-                <span className="text-gray-900 font-medium">
-                  {limit.current} / {limit.max ?? '∞'}
-                </span>
-              </div>
-
-              {limit.max && (
-                <Progress value={percentage} className="h-2" />
-              )}
-            </div>
-          );
-        })}
+        <div className="text-sm text-gray-600">
+          <p>All features are free with unlimited usage.</p>
+        </div>
       </div>
     );
   }
@@ -120,105 +28,72 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({ compact = false }) => 
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-lg">Usage & Limits</CardTitle>
-            <CardDescription>Huidige {currentTier.display_name} plan</CardDescription>
+            <CardDescription>StockFlow is completely free - no limits</CardDescription>
           </div>
-          {getStatusBadge()}
+          <Badge variant="secondary" className="bg-green-100 text-green-800">Free Forever</Badge>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {limits.map((limit) => {
-          const percentage = getUsagePercentage(limit.current, limit.max);
-          const remaining = getRemainingLimit(limit.type);
-
-          return (
-            <div key={limit.type} className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <span className={limit.color}>{limit.icon}</span>
-                  <div>
-                    <h4 className="font-medium text-gray-900">{limit.label}</h4>
-                    <p className="text-sm text-gray-500">
-                      {limit.current} of {limit.max ?? 'unlimited'} used
-                    </p>
-                  </div>
-                </div>
-
-                {limit.max !== null && percentage >= 100 && (
-                  <Badge variant="destructive" className="bg-red-100 text-red-800">
-                    <AlertTriangle className="h-3 w-3 mr-1" />
-                    Limit reached
-                  </Badge>
-                )}
-                {limit.max !== null && percentage >= 75 && percentage < 100 && (
-                  <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                    <AlertTriangle className="h-3 w-3 mr-1" />
-                    Almost full
-                  </Badge>
-                )}
-              </div>
-
-              {limit.max && (
-                <div className="space-y-2">
-                  <Progress value={percentage} className="h-2" />
-                  <div className="flex justify-between text-xs text-gray-500">
-                    <span>{percentage.toFixed(0)}% used</span>
-                    {remaining !== null && (
-                      <span>{remaining} remaining</span>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        {(isTrialActive || isSubscriptionActive) && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-start space-x-3">
-              <TrendingUp className="h-5 w-5 text-blue-600 mt-0.5" />
-              <div>
-                <h4 className="font-medium text-blue-900">
-                  {isTrialActive ? 'Free trial active' : 'Active subscription'}
-                </h4>
-                <p className="text-sm text-blue-700 mt-1">
-                  {isTrialActive
-                    ? 'Your trial is still active. Upgrade to a paid plan to increase your limits.'
-                    : 'You have access to all premium features and higher limits.'}
-                </p>
-              </div>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <Check className="h-5 w-5 text-green-600 mt-0.5" />
+            <div>
+              <h4 className="font-medium text-green-900">Unlimited Everything</h4>
+              <p className="text-sm text-green-700 mt-1">
+                StockFlow is completely free with no usage limits. Use as many products, users, branches, and orders as you need.
+              </p>
             </div>
           </div>
-        )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center space-x-3">
+            <Package className="h-5 w-5 text-blue-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Products</p>
+              <p className="text-xs text-gray-500">Unlimited</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Users className="h-5 w-5 text-green-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Users</p>
+              <p className="text-xs text-gray-500">Unlimited</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Building className="h-5 w-5 text-purple-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Branches</p>
+              <p className="text-xs text-gray-500">Unlimited</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <ShoppingCart className="h-5 w-5 text-orange-600" />
+            <div>
+              <p className="text-sm font-medium text-gray-900">Orders</p>
+              <p className="text-xs text-gray-500">Unlimited</p>
+            </div>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
 };
 
-// Hook for checking specific limits
+// Hook for checking specific limits - all limits are unlimited now
 export const useUsageLimits = () => {
-  const { isWithinLimits, getRemainingLimit, currentTier, usageTracking } = useSubscription();
-
-  const canAddProduct = () => isWithinLimits('products');
-  const canAddUser = () => isWithinLimits('users');
-  const canAddBranch = () => isWithinLimits('branches');
-  const canAddOrder = () => isWithinLimits('orders');
-
-  const getProductsRemaining = () => getRemainingLimit('products');
-  const getUsersRemaining = () => getRemainingLimit('users');
-  const getBranchesRemaining = () => getRemainingLimit('branches');
-  const getOrdersRemaining = () => getRemainingLimit('orders');
-
   return {
-    canAddProduct,
-    canAddUser,
-    canAddBranch,
-    canAddOrder,
-    getProductsRemaining,
-    getUsersRemaining,
-    getBranchesRemaining,
-    getOrdersRemaining,
-    currentTier,
-    usageTracking
+    canAddProduct: () => true,
+    canAddUser: () => true,
+    canAddBranch: () => true,
+    canAddOrder: () => true,
+    getProductsRemaining: () => null,
+    getUsersRemaining: () => null,
+    getBranchesRemaining: () => null,
+    getOrdersRemaining: () => null,
+    currentTier: null,
+    usageTracking: null
   };
 };

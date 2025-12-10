@@ -55,7 +55,7 @@ export default function MedicalInventoryManagement() {
     },
     {
       question: "Is medical inventory software suitable for small medical practices?",
-      answer: "Absolutely! Medical inventory management is essential for practices of all sizes. Small practices often have limited resources, making automated tracking and compliance features even more valuable. StockFlow offers a free plan perfect for small medical practices."
+      answer: "Absolutely! Medical inventory management is essential for practices of all sizes. Small practices often have limited resources, making automated tracking and compliance features even more valuable. StockFlow is completely free forever with all features included, making it perfect for medical practices of all sizes."
     },
     {
       question: "How does medical inventory management improve patient safety?",

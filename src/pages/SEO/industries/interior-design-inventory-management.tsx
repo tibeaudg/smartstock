@@ -59,7 +59,7 @@ export default function InteriorDesignInventoryManagement() {
     },
     {
       question: "Is interior design inventory software suitable for small design firms?",
-      answer: "Absolutely! Interior design inventory software is beneficial for designers of all sizes. Small design firms often manage multiple client projects with limited resources, making inventory tracking even more critical. StockFlow offers a free plan perfect for small design firms getting started."
+      answer: "Absolutely! Interior design inventory software is beneficial for designers of all sizes. Small design firms often manage multiple client projects with limited resources, making inventory tracking even more critical. StockFlow is completely free forever with all features included, making it perfect for design firms of all sizes."
     }
   ];
 

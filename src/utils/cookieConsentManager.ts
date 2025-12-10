@@ -280,14 +280,5 @@ export const onConsentChange = (callback: (preferences: CookiePreferences) => vo
   };
 };
 
-/**
- * Stripe should only be loaded if functional cookies are allowed
- * This is called by the payment components
- */
-export const canLoadStripe = (): boolean => {
-  // Allow Stripe if no consent given yet (it's needed for core functionality)
-  // OR if functional cookies are explicitly allowed
-  if (!hasGivenConsent()) return true;
-  return canUseFunctional() || isCategoryAllowed('necessary');
-};
+// Stripe is no longer used - platform is completely free
 

@@ -295,7 +295,7 @@ export default function ContractorInventoryManagement() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Get Started Free
             </Link>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">

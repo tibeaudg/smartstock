@@ -34,11 +34,11 @@ const faqData = [
   },
   {
     question: "Can inventory management software fix these mistakes?",
-    answer: "Yes, inventory management software addresses most common mistakes: automates reordering to prevent stockouts, improves accuracy through barcode scanning (99%+ vs 60-80% manual), saves time (70% reduction), integrates with sales channels, provides real-time visibility, generates reports for data-driven decisions, and scales as your business grows. Software like StockFlow offers free plans for small businesses to get started."
+    answer: "Yes, inventory management software addresses most common mistakes: automates reordering to prevent stockouts, improves accuracy through barcode scanning (99%+ vs 60-80% manual), saves time (70% reduction), integrates with sales channels, provides real-time visibility, generates reports for data-driven decisions, and scales as your business grows. StockFlow is completely free forever with all features included, making it perfect for small businesses."
   },
   {
     question: "What mistakes do small businesses make when choosing inventory software?",
-    answer: "Common mistakes when choosing software include: selecting overly complex enterprise solutions, not testing with free trials, ignoring mobile access needs, choosing software that doesn't scale, not considering team training requirements, selecting based only on price, and not evaluating essential features. See our <Link to=\"/blog/how-to-choose-inventory-software-for-small-business\" className=\"text-blue-600 hover:underline\">buyer's guide for choosing inventory software</Link>."
+    answer: "Common mistakes when choosing software include: selecting overly complex enterprise solutions, ignoring mobile access needs, choosing software that doesn't scale, not considering team training requirements, and not evaluating essential features. StockFlow is completely free forever, so you can test it without any commitment. See our <Link to=\"/blog/how-to-choose-inventory-software-for-small-business\" className=\"text-blue-600 hover:underline\">buyer's guide for choosing inventory software</Link>."
   },
   {
     question: "How quickly can small businesses fix inventory management mistakes?",
@@ -161,7 +161,7 @@ export default function SmallBusinessInventoryManagementMistakesPage() {
                 <div className="bg-green-50 rounded-lg p-4">
                   <p className="text-sm font-semibold text-gray-900 mb-2">The Solution:</p>
                   <p className="text-sm text-gray-700 mb-2">
-                    Migrate to professional inventory management software before manual limitations hurt your business. Modern cloud-based solutions like StockFlow offer free plans for small businesses, making the transition affordable. See our guide on <Link to="/blog/migrating-from-excel-to-inventory-software" className="text-blue-600 hover:underline font-semibold">migrating from Excel to inventory software</Link> for step-by-step guidance.
+                    Migrate to professional inventory management software before manual limitations hurt your business. StockFlow is completely free forever with all features included, making the transition completely free. See our guide on <Link to="/blog/migrating-from-excel-to-inventory-software" className="text-blue-600 hover:underline font-semibold">migrating from Excel to inventory software</Link> for step-by-step guidance.
                   </p>
                 </div>
               </div>
@@ -319,7 +319,7 @@ export default function SmallBusinessInventoryManagementMistakesPage() {
           </div>
 
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            For guidance on selecting the right software, see our <Link to="/blog/how-to-choose-inventory-software-for-small-business" className="text-blue-600 hover:underline font-semibold">buyer's guide for choosing inventory software</Link>. Software like StockFlow offers free plans for small businesses, making it accessible to start without financial commitment.
+            For guidance on selecting the right software, see our <Link to="/blog/how-to-choose-inventory-software-for-small-business" className="text-blue-600 hover:underline font-semibold">buyer's guide for choosing inventory software</Link>. StockFlow is completely free forever with all features included, making it accessible to start without any financial commitment.
           </p>
         </div>
       </section>

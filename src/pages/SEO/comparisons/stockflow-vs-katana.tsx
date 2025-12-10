@@ -40,7 +40,7 @@ const comparisonRows = [
   },
   {
     title: 'Pricing',
-    stockflow: 'Free plan to start, predictable tiered pricing without user limits, designed for scaling SMEs.',
+    stockflow: 'Completely free forever - unlimited products, unlimited users, all features included at no cost.',
     competitor: 'Pricing increases with sales orders and shop-floor operators, which can become costly as production grows.'
   }
 ];
@@ -51,7 +51,7 @@ export default function StockflowVsKatana() {
   const faqData = [
     {
       question: "StockFlow vs Katana: Which is better for small to medium businesses?",
-      answer: "StockFlow is better for SMEs that need fast implementation, omnichannel inventory management, and e-commerce integrations. Katana is better for manufacturers requiring deep shop-floor control and production scheduling. StockFlow offers free plans and launches in days, while Katana requires more setup time and focuses on manufacturing workflows."
+      answer: "StockFlow is better for SMEs that need fast implementation, omnichannel inventory management, and e-commerce integrations. Katana is better for manufacturers requiring deep shop-floor control and production scheduling. StockFlow is completely free forever and launches in days, while Katana requires more setup time and focuses on manufacturing workflows."
     },
     {
       question: "What is the main difference between StockFlow and Katana?",
@@ -63,7 +63,7 @@ export default function StockflowVsKatana() {
     },
     {
       question: "How much does Katana cost compared to StockFlow?",
-      answer: "StockFlow offers a free plan for up to 30 products, then tiered pricing starting at €29/month. Katana pricing increases with sales orders and shop-floor operators, typically starting higher and becoming more expensive as production scales. StockFlow provides more predictable pricing for growing SMEs."
+      answer: "StockFlow is completely free forever with unlimited products and all features included. Katana pricing increases with sales orders and shop-floor operators, typically starting higher and becoming more expensive as production scales. StockFlow eliminates all costs for growing SMEs."
     },
     {
       question: "Which has faster implementation: StockFlow or Katana?",
@@ -84,7 +84,7 @@ export default function StockflowVsKatana() {
     >
       <SEO
         title="StockFlow vs Katana 2025 - Save 50% Costs, Faster Setup | StockFlow"
-        description="Compare StockFlow vs Katana 2025. StockFlow for e-commerce/distribution, Katana for manufacturing. Free plan vs paid, 5-7 day setup vs 30+ days. Save 50% costs, faster implementation. Start free trial - no credit card required."
+        description="Compare StockFlow vs Katana 2025. StockFlow for e-commerce/distribution, Katana for manufacturing. Completely free forever vs paid, 5-7 day setup vs 30+ days. Save 100% costs, faster implementation. Start free - no credit card required."
         keywords="stockflow vs katana, katana alternative, katana inventory comparison, stockflow comparison, katana vs stockflow, manufacturing inventory software, e-commerce inventory management, katana alternative for sme, stockflow vs katana pricing, inventory software comparison"
         url="https://www.stockflow.be/stockflow-vs-katana"
         publishedTime="2024-01-01T00:00:00Z"

@@ -60,7 +60,7 @@ export default function MedicalInventoryManagement() {
     },
     {
       question: "How much does medical inventory management software cost?",
-      answer: "Costs vary significantly. Basic systems start at €100-500/month. Enterprise healthcare-specific systems can cost €1,000-10,000+/month. StockFlow offers a scalable solution starting with a free plan for up to 100 products, with pay-as-you-grow pricing (€0.004 per product/month for products 101+), making it affordable for clinics, pharmacies, and small healthcare facilities."
+      answer: "Costs vary significantly. Basic systems start at €100-500/month. Enterprise healthcare-specific systems can cost €1,000-10,000+/month. StockFlow is completely free forever with unlimited products and all features included, making it perfect for clinics, pharmacies, and healthcare facilities of all sizes at no cost."
     },
     {
       question: "Does medical inventory software integrate with EMR/EHR systems?",
@@ -683,9 +683,9 @@ export default function MedicalInventoryManagement() {
               <div className="text-sm opacity-90">Up to 100 products • No credit card • Full features</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-4xl font-bold mb-2">€0.004</div>
-              <div className="text-lg font-semibold mb-2">Per Product/Month</div>
-              <div className="text-sm opacity-90">Scalable pricing for growing facilities</div>
+              <div className="text-4xl font-bold mb-2">$0</div>
+              <div className="text-lg font-semibold mb-2">Forever</div>
+              <div className="text-sm opacity-90">Completely free for facilities of all sizes</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
               <div className="text-4xl font-bold mb-2">24/7</div>

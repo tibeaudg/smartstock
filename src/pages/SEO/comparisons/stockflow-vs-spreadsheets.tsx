@@ -23,7 +23,7 @@ export default function StockFlowVsSpreadsheets() {
     { feature: 'Automated Reports', stockflow: true, competitor: 'Manual creation' },
     { feature: 'Audit Trail', stockflow: true, competitor: false },
     { feature: 'Low Stock Alerts', stockflow: true, competitor: false },
-    { feature: 'Cost', stockflow: 'Free plan available', competitor: 'Free (but time-consuming)' },
+    { feature: 'Cost', stockflow: 'Completely free forever', competitor: 'Free (but time-consuming)' },
     { feature: 'Setup Time', stockflow: '5-7 days', competitor: 'Ongoing maintenance' },
     { feature: 'Error Prevention', stockflow: 'Built-in validation', competitor: 'Manual errors common' },
   ];
@@ -47,7 +47,7 @@ export default function StockFlowVsSpreadsheets() {
     },
     {
       question: "Is StockFlow more expensive than using spreadsheets?",
-      answer: "While spreadsheets are technically 'free,' they have hidden costs: time spent on manual data entry (10-20 hours/week), errors leading to stockouts or overstocking, inability to scale, and lack of integration capabilities. StockFlow offers a free plan for up to 100 products, then transparent pricing starting at €0.004 per product/month. For most businesses, the time savings and error prevention make StockFlow more cost-effective than spreadsheets."
+      answer: "While spreadsheets are technically 'free,' they have hidden costs: time spent on manual data entry (10-20 hours/week), errors leading to stockouts or overstocking, inability to scale, and lack of integration capabilities. StockFlow is completely free forever with unlimited products and all features included. For most businesses, the time savings and error prevention make StockFlow far superior to spreadsheets at no cost."
     },
     {
       question: "What happens if I make a mistake in StockFlow vs spreadsheets?",
@@ -90,7 +90,7 @@ export default function StockFlowVsSpreadsheets() {
       "@id": "https://www.stockflow.be/stockflow-vs-spreadsheets",
       "name": "StockFlow vs Spreadsheets Comparison",
       "headline": "StockFlow vs Spreadsheets: Why Professional Inventory Software Beats Manual Tracking",
-      "description": "Compare StockFlow vs spreadsheets for inventory management. Real-time tracking, barcode scanning, automation, and integrations vs manual data entry. Save 10-20 hours/week. Start free trial.",
+      "description": "Compare StockFlow vs spreadsheets for inventory management. Real-time tracking, barcode scanning, automation, and integrations vs manual data entry. Save 10-20 hours/week. StockFlow is completely free forever - start free.",
       "url": "https://www.stockflow.be/stockflow-vs-spreadsheets",
       "inLanguage": "en",
       "isPartOf": {
@@ -150,7 +150,7 @@ export default function StockFlowVsSpreadsheets() {
     >
       <SEO
         title="StockFlow vs Spreadsheets 2025 - Save 10-20 Hours/Week | StockFlow"
-        description="Compare StockFlow vs spreadsheets for inventory management. Real-time tracking, barcode scanning, automation, and integrations vs manual data entry. Save 10-20 hours/week. Free plan available. Start free trial."
+        description="Compare StockFlow vs spreadsheets for inventory management. Real-time tracking, barcode scanning, automation, and integrations vs manual data entry. Save 10-20 hours/week. StockFlow is completely free forever - start free."
         keywords="stockflow vs spreadsheets, excel inventory management, google sheets inventory, inventory software vs excel, replace excel inventory, spreadsheet inventory management, inventory management software, barcode scanning inventory, real-time inventory tracking, automated inventory management, inventory software free, stockflow vs excel"
         url="https://www.stockflow.be/stockflow-vs-spreadsheets"
         structuredData={structuredData}
@@ -297,7 +297,7 @@ export default function StockFlowVsSpreadsheets() {
               <tbody className="divide-y divide-gray-200">
                 <tr>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">Software Cost</td>
-                  <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">Free plan (100 products)</td>
+                  <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">Completely free forever (unlimited)</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-600">Free (Excel/Sheets)</td>
                 </tr>
                 <tr className="bg-white">
@@ -330,7 +330,7 @@ export default function StockFlowVsSpreadsheets() {
           </div>
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
             <p className="text-sm text-gray-700">
-              <strong>Hidden Costs of Spreadsheets:</strong> At 15 hours/week × €25/hour × 52 weeks = <strong>€19,500/year in lost productivity</strong>. StockFlow eliminates most of this manual work, making it far more cost-effective despite the software cost.
+              <strong>Hidden Costs of Spreadsheets:</strong> At 15 hours/week × €25/hour × 52 weeks = <strong>€19,500/year in lost productivity</strong>. StockFlow eliminates most of this manual work and is completely free forever, making it far more cost-effective than spreadsheets.
             </p>
           </div>
         </div>

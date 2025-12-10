@@ -46,7 +46,7 @@ const faqData = [
   },
   {
     question: "How much does inventory software cost for contractors?",
-    answer: "Costs vary, but cloud-based solutions like StockFlow offer affordable options: free plans for small contractors, premium plans starting at €29/month, and pay-as-you-grow pricing. Consider that accurate inventory tracking improves job costing and bidding, often paying for itself through better project profitability. Most contractors see ROI within 3-6 months."
+    answer: "StockFlow is completely free forever with all features included - unlimited products, unlimited users, unlimited branches. No credit card required, no subscriptions, no hidden fees. Accurate inventory tracking improves job costing and bidding, and since StockFlow is free, you see ROI immediately. Most contractors see benefits within the first week."
   }
 ];
 

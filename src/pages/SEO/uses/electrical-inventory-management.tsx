@@ -58,7 +58,7 @@ export default function ElectricalInventoryManagement() {
     },
     {
       question: "How much does electrical inventory management software cost?",
-      answer: "Costs vary widely. Basic systems start at €0-50/month for small operations. Mid-tier solutions range from €100-500/month for growing contractors. StockFlow offers a free plan for up to 100 products, with pay-as-you-grow pricing (€0.004 per product/month for products 101+), making it affordable for electrical contractors of all sizes."
+      answer: "Costs vary widely. Basic systems start at €0-50/month for small operations. Mid-tier solutions range from €100-500/month for growing contractors. StockFlow is completely free forever with unlimited products and all features included, making it perfect for electrical contractors of all sizes at no cost."
     },
     {
       question: "Can I track inventory in service vehicles?",
@@ -631,9 +631,9 @@ export default function ElectricalInventoryManagement() {
               <div className="text-sm opacity-90">Up to 100 products • No credit card • Full features</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-4xl font-bold mb-2">€0.004</div>
-              <div className="text-lg font-semibold mb-2">Per Product/Month</div>
-              <div className="text-sm opacity-90">Pay only for products 101+ • No user fees</div>
+              <div className="text-4xl font-bold mb-2">$0</div>
+              <div className="text-lg font-semibold mb-2">Forever</div>
+              <div className="text-sm opacity-90">Completely free • Unlimited products • No fees ever</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
               <div className="text-4xl font-bold mb-2">24/7</div>

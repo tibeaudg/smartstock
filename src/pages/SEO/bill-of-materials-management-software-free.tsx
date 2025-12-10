@@ -29,19 +29,19 @@ export default function BillOfMaterialsManagementSoftwareFree() {
   const faqData = [
     {
       question: "What is bill of materials management software free?",
-      answer: "Bill of materials management software free is a cost-free solution that helps manufacturers create, manage, and track bills of materials (BOMs) for their products. Free BOM management software typically includes core features like multi-level BOM creation, component tracking, basic cost calculations, and material requirements planning. StockFlow offers a free plan with BOM management for up to 30 products, making it perfect for small manufacturers and startups."
+      answer: "Bill of materials management software free is a cost-free solution that helps manufacturers create, manage, and track bills of materials (BOMs) for their products. StockFlow is completely free forever and includes all core features like multi-level BOM creation, component tracking, advanced cost calculations, and material requirements planning. StockFlow has unlimited products, making it perfect for small manufacturers and large enterprises alike."
     },
     {
       question: "Is free bill of materials management software reliable?",
-      answer: `Yes, many free bill of materials management software solutions are reliable for small to medium manufacturing operations. StockFlow's free plan includes full BOM functionality with multi-level support, cost tracking, and material requirements calculation. While free plans may have limitations on the number of products or BOMs, they provide enough functionality for most small manufacturers. Premium plans starting at ${formatPrice(29)}/month offer unlimited products and advanced features.`
+      answer: `Yes, StockFlow is completely free forever and reliable for manufacturing operations of all sizes. StockFlow includes full BOM functionality with multi-level support, cost tracking, and material requirements calculation. StockFlow has no limitations - unlimited products, unlimited BOMs, and all advanced features included at no cost forever.`
     },
     {
       question: "What features does free bill of materials management software include?",
-      answer: "Free bill of materials management software typically includes: multi-level BOM creation and editing, component and quantity tracking, basic cost calculation, material requirements planning, BOM versioning, export capabilities, and basic reporting. While advanced features like automated MRP, unlimited BOMs, and priority support may require paid plans, free versions provide essential BOM management capabilities."
+      answer: "StockFlow is completely free forever and includes: multi-level BOM creation and editing, component and quantity tracking, advanced cost calculation, material requirements planning, BOM versioning, export capabilities, advanced reporting, automated MRP, unlimited BOMs, and priority support. All features are included at no cost forever."
     },
     {
       question: "Can I use free bill of materials management software for manufacturing?",
-      answer: "Absolutely! Free bill of materials management software is ideal for small manufacturers, startups, and businesses with limited production volumes. Many free solutions support essential manufacturing workflows including creating assembly BOMs, tracking component usage, calculating material costs, and managing production orders. StockFlow's free plan is perfect for manufacturers managing up to 30 products."
+      answer: "Absolutely! StockFlow is completely free forever and ideal for small manufacturers, startups, and businesses of all sizes. StockFlow supports all manufacturing workflows including creating assembly BOMs, tracking component usage, calculating material costs, and managing production orders. StockFlow has unlimited products, making it perfect for manufacturers of any size."
     },
     {
       question: "How does free bill of materials management software compare to paid versions?",
@@ -53,7 +53,7 @@ export default function BillOfMaterialsManagementSoftwareFree() {
     },
     {
       question: "Can free bill of materials management software integrate with inventory systems?",
-      answer: "Many free bill of materials management software solutions offer basic integration capabilities with inventory management systems, accounting software, and e-commerce platforms. StockFlow's free plan includes integration with popular accounting and e-commerce platforms, allowing you to sync BOM data with your existing business systems. Advanced integrations may require paid plans."
+      answer: "StockFlow is completely free forever and includes full integration capabilities with inventory management systems, accounting software, and e-commerce platforms. StockFlow includes integration with popular accounting and e-commerce platforms, allowing you to sync BOM data with your existing business systems. All integrations are included at no cost forever."
     },
     {
       question: "Is there open source bill of materials management software?",
@@ -104,7 +104,7 @@ export default function BillOfMaterialsManagementSoftwareFree() {
     >
       <SEO
         title="Free BOM Software 2025 | Bill of Materials Management | StockFlow"
-        description="Get free bill of materials management software for manufacturing. Create BOMs, track components, calculate material requirements, and optimize production. Free plan for up to 30 products. No credit card required."
+        description="Get free bill of materials management software for manufacturing. Create BOMs, track components, calculate material requirements, and optimize production. StockFlow is completely free forever with unlimited products. No credit card required."
         keywords="bill of materials management software free, free bill of materials management software, bom management software free, free bom software, bill of materials software free, free bill of materials software, bom software free download, free bom management, bill of materials free software, free bill of materials tool, free bom management software, stockflow, stock flow"
         url="https://www.stockflow.be/bill-of-materials-management-software-free"
       />
@@ -118,7 +118,7 @@ export default function BillOfMaterialsManagementSoftwareFree() {
             </h1>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              Get started with <strong>free bill of materials management software</strong> to create, manage, and track BOMs for your manufacturing operations. StockFlow offers a comprehensive free plan with full BOM functionality—no credit card required, no time limits. Perfect for small manufacturers who need professional <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">BOM management software</Link> without upfront costs. When combined with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, you get complete production control.
+              Get started with <strong>free bill of materials management software</strong> to create, manage, and track BOMs for your manufacturing operations. StockFlow is completely free forever with unlimited products and full BOM functionality—no credit card required, no time limits, no payments ever. Perfect for manufacturers of all sizes who need professional <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">BOM management software</Link> without any costs. When combined with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, you get complete production control.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
@@ -232,13 +232,13 @@ export default function BillOfMaterialsManagementSoftwareFree() {
           <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-8">
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Free Plan Features</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Completely Free Forever - All Features Included</h3>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-gray-900">Up to 30 Products</strong>
-                      <p className="text-gray-600 text-sm">Perfect for small manufacturers and startups</p>
+                      <strong className="text-gray-900">Unlimited Products</strong>
+                      <p className="text-gray-600 text-sm">Perfect for manufacturers of all sizes</p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
@@ -313,7 +313,7 @@ export default function BillOfMaterialsManagementSoftwareFree() {
 
                 <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
                   <p className="text-gray-800 leading-relaxed mb-4">
-                    <strong>Ready to get started?</strong> StockFlow's free plan gives you everything you need to start managing BOMs professionally. No credit card required, no time limits.
+                    <strong>Ready to get started?</strong> StockFlow is completely free forever and gives you everything you need to start managing BOMs professionally. No credit card required, no time limits, no payments ever.
                   </p>
                   <Link
                     to="/auth"
@@ -354,7 +354,7 @@ export default function BillOfMaterialsManagementSoftwareFree() {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "EUR",
-              "description": "Free plan - BOM management for up to 30 products",
+              "description": "Completely free forever - BOM management with unlimited products",
               "availability": "https://schema.org/InStock"
             }
           ],

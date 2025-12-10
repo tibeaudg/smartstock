@@ -27,7 +27,7 @@ const comparisonData = [
   {
     title: 'Pricing & Availability',
     stockflow:
-      'Affordable plans starting at €29/month with a free tier for smaller catalogues, hosted in the EU.',
+      'Completely free forever with unlimited products and all features included, hosted in the EU.',
     competitor:
       'TradeGecko pricing was tied to order volume and user seats. QuickBooks Commerce is no longer available in many regions.'
   },
@@ -70,7 +70,7 @@ export default function StockflowVsTradegecko() {
     },
     {
       question: "Is StockFlow more expensive than TradeGecko?",
-      answer: "StockFlow offers better value with a free plan for up to 30 products and paid plans starting at €29/month. TradeGecko pricing was tied to order volume and user seats, which could become expensive. StockFlow provides more predictable, affordable pricing for growing businesses."
+      answer: "StockFlow offers better value - it's completely free forever with unlimited products and all features included. TradeGecko pricing was tied to order volume and user seats, which could become expensive. StockFlow eliminates all costs for growing businesses."
     },
     {
       question: "Does StockFlow have the same features as TradeGecko?",
@@ -87,7 +87,7 @@ export default function StockflowVsTradegecko() {
     >
       <SEO
         title="StockFlow vs TradeGecko 2025 - Free Migration, Better Automation | StockFlow"
-        description="Compare StockFlow vs TradeGecko 2025 (QuickBooks Commerce). Modern alternative with better automation, EU hosting, free migration. Save costs, improve efficiency. Start free trial - no credit card required."
+        description="Compare StockFlow vs TradeGecko 2025 (QuickBooks Commerce). Modern alternative with better automation, EU hosting, free migration. Completely free forever. Save costs, improve efficiency. Start free - no credit card required."
         keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison, tradegecko migration, tradegecko alternative 2025, quickbooks commerce alternative, inventory software after tradegecko"
         url="https://www.stockflow.be/stockflow-vs-tradegecko"
         publishedTime="2024-01-01T00:00:00Z"
@@ -105,7 +105,7 @@ export default function StockflowVsTradegecko() {
                   to="/auth"
                   className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
                 >
-                  Start Free Trial
+                  Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link

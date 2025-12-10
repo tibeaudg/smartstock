@@ -25,7 +25,7 @@ export default function StockFlowVsZohoInventory() {
   } | null>(null);
 
   const comparisonFeatures: ComparisonFeature[] = [
-    { feature: 'Free Plan', stockflow: true, competitor: 'Trial only' },
+    { feature: 'Pricing', stockflow: 'Completely Free Forever', competitor: 'Trial only' },
     { feature: 'Mobile App', stockflow: true, competitor: true },
     { feature: 'Multi-channel Sales', stockflow: 'Via API', competitor: true },
     { feature: 'Barcode Scanning', stockflow: true, competitor: true },
@@ -33,17 +33,17 @@ export default function StockFlowVsZohoInventory() {
     { feature: 'European Data Hosting', stockflow: true, competitor: 'US/India only' },
     { feature: 'Ease of Use', stockflow: 'Very Easy', competitor: 'Moderate' },
     { feature: 'Customer Support', stockflow: 'Responsive', competitor: 'Variable' },
-    { feature: 'Starting Price', stockflow: 'Free', competitor: '$59/month' },
+    { feature: 'Starting Price', stockflow: 'Completely Free Forever', competitor: '$59/month' },
   ];
 
   const faqData = [
     {
       question: "StockFlow vs Zoho Inventory: Which is better for European businesses?",
-      answer: "StockFlow is better for European businesses due to GDPR-compliant EU data hosting, free plan for small businesses, and simpler interface. Zoho Inventory stores data in US/India servers and requires $59/month minimum. StockFlow offers better value for European SMEs with local data hosting and pricing in euros."
+      answer: "StockFlow is better for European businesses due to GDPR-compliant EU data hosting, completely free forever with all features included, and simpler interface. Zoho Inventory stores data in US/India servers and requires $59/month minimum. StockFlow offers better value for European SMEs with local data hosting and no costs ever."
     },
     {
       question: "What is the main difference between StockFlow and Zoho Inventory?",
-      answer: "StockFlow offers a free plan for up to 30 products, European data hosting, and a simpler interface focused on inventory management. Zoho Inventory requires $59/month minimum, stores data in US/India, and has a more complex interface with many features. StockFlow is better for small businesses, while Zoho suits larger operations already using Zoho's ecosystem."
+      answer: "StockFlow is completely free forever with unlimited products, European data hosting, and a simpler interface focused on inventory management. Zoho Inventory requires $59/month minimum, stores data in US/India, and has a more complex interface with many features. StockFlow is better for small businesses, while Zoho suits larger operations already using Zoho's ecosystem."
     },
     {
       question: "Is Zoho Inventory more feature-rich than StockFlow?",
@@ -72,7 +72,7 @@ export default function StockFlowVsZohoInventory() {
     >
       <SEO
         title="StockFlow vs Zoho Inventory 2025 - Save €600/Year, EU Hosting | StockFlow"
-        description="Compare StockFlow vs Zoho Inventory 2025. Free plan vs $59/month, save €600/year. European data hosting, GDPR compliance, simpler interface. Better for European SMEs. Start free trial - no credit card required."
+        description="Compare StockFlow vs Zoho Inventory 2025. Completely free forever vs $59/month, save 100% costs. European data hosting, GDPR compliance, simpler interface. Better for European SMEs. Start free - no credit card required."
         keywords="stockflow vs zoho inventory, zoho inventory alternative, inventory management software, cloud inventory, zoho inventory comparison, stockflow vs zoho, best zoho alternative, zoho inventory vs stockflow, european inventory software, gdpr compliant inventory"
         url="https://www.stockflow.be/stockflow-vs-zoho-inventory"
         publishedTime="2024-01-01T00:00:00Z"
@@ -136,7 +136,7 @@ export default function StockFlowVsZohoInventory() {
               <div className="border-l-4 border-blue-500 pl-6">
                 <h4 className="text-lg font-semibold text-gray-900 mb-2">Pricing & Value</h4>
                 <p className="text-gray-700 mb-2">
-                  <strong>StockFlow:</strong> Free plan for up to 100 products, then €0.004 per product/month. No setup fees, no hidden costs.
+                  <strong>StockFlow:</strong> Completely free forever - unlimited products, all features included. No setup fees, no hidden costs, no payments ever.
                 </p>
                 <p className="text-gray-700">
                   <strong>Zoho Inventory:</strong> $59/month minimum (approximately €54/month), totaling €648/year. Additional setup and integration costs may apply.
@@ -297,7 +297,7 @@ export default function StockFlowVsZohoInventory() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Start with StockFlow Today</h2>
           <p className="text-xl mb-8 opacity-90">Better pricing, European hosting, simpler to use. Start free now.</p>
           <Link to="/auth" className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg">
-            Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
+            Get Started Free <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </div>
       </section>

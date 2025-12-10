@@ -632,7 +632,7 @@ export const HomePage = () => {
   const faqData = [
     {
       question: "What is the best inventory management software?",
-      answer: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, multi-location support, and excellent customer service. With a free plan available and affordable pricing starting at €0/month, StockFlow provides enterprise-level features at a fraction of the cost of competitors like Exact Online or Visma.",
+      answer: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, multi-location support, and excellent customer service. StockFlow is completely free forever with all features included - no credit card required, no subscriptions, no hidden fees.",
       category: "General",
       benefit: "Best rated inventory management software"
     },
@@ -644,7 +644,7 @@ export const HomePage = () => {
     },
     {
       question: "Is inventory management software free?",
-      answer: "Yes! StockFlow offers a completely free inventory management plan with no credit card required. The free plan includes up to 100 products, real-time tracking, barcode scanning, low stock alerts, and basic reporting - everything you need to get started. Many small businesses find the free plan sufficient for their needs. When you're ready to scale, affordable paid plans start at just €29/month with no hidden fees.",
+      answer: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, unlimited users, unlimited branches, unlimited orders, real-time tracking, barcode scanning, low stock alerts, advanced reporting, API access, and priority support. Everything you need is included at no cost.",
       category: "Pricing",
       benefit: "Free plan available, no credit card required"
     },
@@ -662,7 +662,7 @@ export const HomePage = () => {
     },
     {
       question: "How many products (SKUs) can I track?",
-      answer: "Our Free plan supports up to 50 products — perfect for small shops getting started. Starter plan includes 1,000 products, and Business tier supports unlimited products with custom pricing. You can also track product variants (sizes, colors) as separate SKUs. Need more? Contact us for custom solutions.",
+      answer: "StockFlow is completely free with unlimited everything - unlimited products, unlimited users, unlimited branches, and unlimited orders. All features are included at no cost. You can track product variants (sizes, colors) as separate SKUs with no limits. No credit card required, no subscriptions, no hidden fees.",
       category: "Product Limits",
       benefit: "Free: 50 SKUs, Starter: 1,000, Business: unlimited"
     },
@@ -692,9 +692,9 @@ export const HomePage = () => {
     },
     {
       question: "Can I try it free? What if it doesn't work for my shop?",
-      answer: "Absolutely! Sign up for our free plan — no credit card required. You get 100 products forever, which is perfect for testing. Try it with your actual products for a week. If it doesn't fit your shop, you can export your data and cancel anytime. Most retailers know within 3 days if StockFlow works for them.",
-      category: "Free Trial",
-      benefit: "Free forever plan, no commitment"
+      answer: "Absolutely! StockFlow is completely free forever — no credit card required, no subscriptions, no hidden fees. All features are included with unlimited usage. Try it with your actual products - if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them.",
+      category: "Free Forever",
+      benefit: "Completely free forever, no commitment"
     }
   ];
 
@@ -1784,7 +1784,7 @@ export const HomePage = () => {
                   
                   {/* Subheadline */}
                   <p className="text-md pt-4 pb-8 text-blue-100 max-w-3xl mx-auto px-4 leading-relaxed">
-                    Start your free trial today and see how StockFlow saves you time and money.
+                    Get started free today - no credit card required, all features included forever.
                   </p>
                   
                   {/* CTA Buttons */}

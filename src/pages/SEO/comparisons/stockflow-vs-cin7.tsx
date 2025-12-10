@@ -25,7 +25,7 @@ export default function StockFlowVsCin7() {
   } | null>(null);
 
   const comparisonFeatures: ComparisonFeature[] = [
-    { feature: 'Free Plan', stockflow: true, competitor: '14-day trial only' },
+    { feature: 'Pricing', stockflow: 'Completely Free Forever', competitor: '14-day trial only' },
     { feature: 'Mobile App', stockflow: true, competitor: true },
     { feature: 'Multi-channel Sales', stockflow: true, competitor: true },
     { feature: 'Barcode Scanning', stockflow: true, competitor: true },
@@ -34,18 +34,18 @@ export default function StockFlowVsCin7() {
     { feature: 'Implementation Time', stockflow: '5-7 days', competitor: '45-90 days' },
     { feature: 'Ease of Use', stockflow: 'Very Easy', competitor: 'Complex' },
     { feature: 'Customer Support', stockflow: '24/7', competitor: 'Business hours' },
-    { feature: 'Starting Price', stockflow: 'Free', competitor: '$300/month' },
+    { feature: 'Starting Price', stockflow: 'Completely Free Forever', competitor: '$300/month' },
     { feature: 'Setup Cost', stockflow: 'Free', competitor: '$2,000-$5,000' },
   ];
 
   const faqData = [
     {
       question: "StockFlow vs Cin7: Which is better for small businesses?",
-      answer: "StockFlow is better for small businesses with its free plan for up to 100 SKUs, 5-7 day implementation, and transparent pricing starting at €0.004 per SKU/month. Cin7 requires $300/month minimum plus $2,000-$5,000 setup costs and 45-90 day implementations, making it better suited for larger enterprises with complex omnichannel needs."
+      answer: "StockFlow is better for small businesses - it's completely free forever with unlimited SKUs and all features included, 5-7 day implementation, and no payments ever required. Cin7 requires $300/month minimum plus $2,000-$5,000 setup costs and 45-90 day implementations, making it better suited for larger enterprises with complex omnichannel needs."
     },
     {
       question: "What is the main difference between StockFlow and Cin7?",
-      answer: "The main differences are: (1) Pricing - StockFlow offers free plans vs. Cin7's $300+/month minimum, (2) Implementation - StockFlow goes live in 5-7 days vs. Cin7's 45-90 days, (3) Setup costs - StockFlow is free vs. Cin7's $2,000-$5,000, (4) Data hosting - StockFlow uses European servers vs. Cin7's US/Australia hosting, (5) Support - StockFlow offers 24/7 support vs. Cin7's business hours only."
+      answer: "The main differences are: (1) Pricing - StockFlow is completely free forever vs. Cin7's $300+/month minimum, (2) Implementation - StockFlow goes live in 5-7 days vs. Cin7's 45-90 days, (3) Setup costs - StockFlow is free vs. Cin7's $2,000-$5,000, (4) Data hosting - StockFlow uses European servers vs. Cin7's US/Australia hosting, (5) Support - StockFlow offers 24/7 support vs. Cin7's business hours only."
     },
     {
       question: "Is Cin7 better than StockFlow for omnichannel retail?",
@@ -53,7 +53,7 @@ export default function StockFlowVsCin7() {
     },
     {
       question: "How much does Cin7 cost compared to StockFlow?",
-      answer: "Cin7 costs $300+/month plus $2,000-$5,000 setup fees, totaling $5,600-$8,600 in year 1. StockFlow offers a free plan for up to 100 SKUs, then €0.004 per SKU/month (€0.48/year per SKU). For 1,000 SKUs, StockFlow costs approximately €348/year vs. Cin7's $3,600+/year, representing 90%+ cost savings."
+      answer: "Cin7 costs $300+/month plus $2,000-$5,000 setup fees, totaling $5,600-$8,600 in year 1. StockFlow is completely free forever with unlimited SKUs and all features included. StockFlow saves you 100% of Cin7's costs ($5,600-$8,600+ in year 1)."
     },
     {
       question: "Which has better customer support: StockFlow or Cin7?",
@@ -84,7 +84,7 @@ export default function StockFlowVsCin7() {
       "@id": "https://www.stockflow.be/stockflow-vs-cin7",
       "name": "StockFlow vs Cin7 Comparison",
       "headline": "StockFlow vs Cin7: The Better Choice for Growing Businesses",
-      "description": "Compare StockFlow vs Cin7 2025. Free plan vs $300/month, 5-7 day setup vs 45-90 days, European hosting, better pricing. See detailed comparison and start free trial.",
+      "description": "Compare StockFlow vs Cin7 2025. Completely free forever vs $300/month, 5-7 day setup vs 45-90 days, European hosting. Save 100% costs. See detailed comparison and start free - no credit card required.",
       "url": "https://www.stockflow.be/stockflow-vs-cin7",
       "inLanguage": "en",
       "isPartOf": {
@@ -106,7 +106,7 @@ export default function StockFlowVsCin7() {
     >
       <SEO
         title="StockFlow vs Cin7 2025 - Save 90% Costs, 10x Faster Setup | StockFlow"
-        description="Compare StockFlow vs Cin7 2025. Free plan vs $300/month, 5-7 day setup vs 45-90 days, European hosting. Save 90% costs, 10x faster implementation. Start free trial - no credit card required."
+        description="Compare StockFlow vs Cin7 2025. Completely free forever vs $300/month, 5-7 day setup vs 45-90 days, European hosting. Save 100% costs, 10x faster implementation. Start free - no credit card required."
         keywords="stockflow vs cin7, cin7 alternative, cin7 vs stockflow, cin7 inventory management, stockflow vs cin7 comparison, cin7 pricing, best cin7 alternative, inventory management software comparison, omnichannel inventory software, cin7 competitor, stockflow inventory software, cin7 vs stockflow pricing, inventory management software for small business, best inventory software 2025"
         url="https://www.stockflow.be/stockflow-vs-cin7"
         structuredData={structuredData}

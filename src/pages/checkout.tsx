@@ -1,44 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Check, ArrowLeft, CreditCard, Shield, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { useSubscription } from '@/hooks/useSubscription';
-import { useAuth } from '@/hooks/useAuth';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+// Checkout page is no longer needed - redirect to signup
 export default function CheckoutPage() {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { pricingTiers, startTrial, isStartingTrial } = useSubscription();
-  
-  const tierParam = searchParams.get('tier');
-  const cycleParam = searchParams.get('cycle') as 'monthly' | 'yearly';
-  
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(cycleParam || 'monthly');
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const selectedTier = pricingTiers.find(tier => tier.name === tierParam);
   
   useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-    
-    if (!selectedTier) {
-      navigate('/pricing');
-      return;
-    }
-    
-    // Redirect business tier to contact page
-    if (selectedTier.name === 'business') {
-      navigate('/contact?subject=business-tier');
-      return;
-    }
-  }, [user, selectedTier, navigate]);
+    // Redirect to signup since platform is completely free
+    navigate('/auth?mode=register');
+  }, [navigate]);
+  
+  return null;
 
   if (!selectedTier) {
     return (

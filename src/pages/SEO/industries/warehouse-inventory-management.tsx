@@ -67,7 +67,7 @@ export default function WarehouseInventoryManagement() {
   const structuredData = generateComprehensiveStructuredData('software', {
     title: "Warehouse Inventory Management Software",
     url: "https://www.stockflow.be/warehouse-inventory-management",
-    description: "Warehouse inventory management software for distribution centers. Optimize picking, shipping integration, multi-zone management. Increase efficiency 40%, 99% order accuracy. Free plan available.",
+    description: "Warehouse inventory management software for distribution centers. Optimize picking, shipping integration, multi-zone management. Increase efficiency 40%, 99% order accuracy. StockFlow is completely free forever - all features included.",
     breadcrumbs: [
       { name: "Home", url: "https://www.stockflow.be/", position: 1 },
       { name: "Warehouse Inventory Management", url: "https://www.stockflow.be/warehouse-inventory-management", position: 2 }
@@ -265,7 +265,7 @@ export default function WarehouseInventoryManagement() {
     >
       <SEO
         title="Warehouse Inventory Management Software | StockFlow"
-        description="Warehouse inventory management for distribution centers. Optimize picking, shipping integration, multi-zone management. Increase efficiency 40%, 99% order accuracy. Free plan available."
+        description="Warehouse inventory management for distribution centers. Optimize picking, shipping integration, multi-zone management. Increase efficiency 40%, 99% order accuracy. StockFlow is completely free forever - all features included."
         keywords="warehouse inventory management, distribution center software, fulfillment center inventory, warehouse tracking software, warehouse management system, warehouse inventory software, distribution inventory management, warehouse operations software, fulfillment warehouse software, warehouse inventory system, distribution center inventory, warehouse stock management, warehouse inventory app, warehouse management solution, warehouse inventory tracking"
         url="https://www.stockflow.be/warehouse-inventory-management"
         structuredData={structuredData}

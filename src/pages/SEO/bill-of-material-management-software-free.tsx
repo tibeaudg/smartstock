@@ -40,7 +40,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
     },
     {
       question: "Is free BOM software reliable for manufacturing?",
-      answer: `Yes, many free BOM management software solutions are reliable for small to medium manufacturing operations. StockFlow offers a free plan that includes BOM functionality for up to 30 products, making it perfect for startups and small manufacturers. Free BOM software typically includes core features like multi-level BOM creation, material tracking, and basic reporting. However, for larger operations or advanced features like automated MRP (Material Requirements Planning), you may need to upgrade to a paid plan starting at ${formatPrice(29)}/month.`
+      answer: `Yes, StockFlow is completely free forever and reliable for manufacturing operations of all sizes. StockFlow includes full BOM functionality with unlimited products, making it perfect for startups and large manufacturers alike. StockFlow includes all features like multi-level BOM creation, material tracking, advanced reporting, and automated MRP (Material Requirements Planning) - all included at no cost.`
     },
     {
       question: "How does BOM software work with inventory management?",
@@ -60,7 +60,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
     },
     {
       question: "Are there free BOM software options for small business?",
-      answer: `Yes, there are several free BOM software options for small businesses. StockFlow offers a free plan specifically designed for small manufacturers, supporting up to 30 products with full BOM management capabilities. Other free options include open-source BOM tools, though these often require technical expertise to set up and maintain. When choosing free BOM software for small business, look for user-friendly interfaces, cloud-based access, and the ability to upgrade as you grow. Premium plans typically start around ${formatPrice(29)}/month for advanced features.`
+      answer: `StockFlow is completely free forever and perfect for small businesses. StockFlow supports unlimited products with full BOM management capabilities. When choosing BOM software for small business, look for user-friendly interfaces, cloud-based access, and unlimited scalability - all of which StockFlow provides at no cost forever.`
     },
     {
       question: "What are the limitations of free BOM management software?",
@@ -80,7 +80,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
     },
     {
       question: "What is the best free BOM software for manufacturing?",
-      answer: `StockFlow is among the best free BOM software options for manufacturing, offering a comprehensive free plan with BOM management, inventory tracking, and production planning features. The free plan supports up to 30 products, making it ideal for small manufacturers and startups. Key advantages include cloud-based access, user-friendly interface, integration capabilities, and the ability to upgrade seamlessly as your business grows. Premium plans start at ${formatPrice(29)}/month for unlimited products and advanced features.`
+      answer: `StockFlow is among the best BOM software options for manufacturing, offering comprehensive BOM management, inventory tracking, and production planning features - completely free forever. StockFlow supports unlimited products, making it ideal for small manufacturers and large enterprises alike. Key advantages include cloud-based access, user-friendly interface, integration capabilities, and unlimited scalability - all included at no cost forever.`
     },
     {
       question: "How does BOM software help with material requirements planning (MRP)?",
@@ -431,31 +431,31 @@ export default function BillOfMaterialManagementSoftwareFree() {
               </ul>
             </div>
 
-            <div className="bg-blue-50 border-2 border-blue-500 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-blue-800 mb-6 flex items-center gap-2">
+            <div className="bg-green-50 border-2 border-green-500 rounded-xl p-8">
+              <h3 className="text-2xl font-bold text-green-800 mb-6 flex items-center gap-2">
                 <Star className="h-6 w-6" />
-                Paid BOM Software
+                StockFlow - Completely Free Forever
               </h3>
               <ul className="space-y-4 text-gray-700">
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Monthly subscription</strong> - Starting from {formatPrice(29)}/month</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Completely free</strong> - No subscriptions, no payments, no hidden fees</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Advanced features</strong> - Automated MRP, complex routing</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>All advanced features</strong> - Automated MRP, complex routing, everything included</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <span><strong>Unlimited products</strong> - No restrictions on BOMs or items</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Advanced analytics</strong> - Custom reports, forecasting</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Advanced analytics</strong> - Custom reports, forecasting, all included</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Priority support</strong> - Dedicated account management</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Priority support</strong> - Dedicated support, all included</span>
                 </li>
               </ul>
             </div>

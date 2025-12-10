@@ -12,7 +12,7 @@ export default function StockFlowVsInFlow() {
   usePageRefresh();
 
   const comparisonFeatures: ComparisonFeature[] = [
-    { feature: 'Free Plan', stockflow: true, competitor: '14-day trial only' },
+    { feature: 'Pricing', stockflow: 'Completely Free Forever', competitor: '14-day trial only' },
     { feature: 'Mobile App', stockflow: true, competitor: true },
     { feature: 'Multi-channel Sales', stockflow: true, competitor: true },
     { feature: 'Barcode Scanning', stockflow: true, competitor: true },
@@ -22,7 +22,7 @@ export default function StockFlowVsInFlow() {
     { feature: 'Manufacturing Features', stockflow: 'Basic', competitor: 'Advanced' },
     { feature: 'Ease of Use', stockflow: 'Very Easy', competitor: 'Moderate' },
     { feature: 'Customer Support', stockflow: '24/7', competitor: 'Business hours' },
-    { feature: 'Starting Price', stockflow: 'Free', competitor: '$71/month' },
+    { feature: 'Starting Price', stockflow: 'Completely Free Forever', competitor: '$71/month' },
     { feature: 'Setup Cost', stockflow: 'Free', competitor: 'May charge extra' },
     { feature: 'Implementation Time', stockflow: '5-7 days', competitor: '30-60 days' },
   ];
@@ -30,19 +30,19 @@ export default function StockFlowVsInFlow() {
   const faqData = [
     {
       question: "StockFlow vs InFlow: Which is better for small businesses?",
-      answer: "StockFlow is better for small businesses with its free plan for up to 100 SKUs, 5-7 day implementation, and transparent pricing starting at €0.004 per SKU/month. InFlow requires $71/month minimum (approximately €65/month), totaling €780/year, and typically takes 30-60 days to implement. StockFlow offers better value and faster setup for growing businesses."
+      answer: "StockFlow is better for small businesses - it's completely free forever with unlimited SKUs and all features included, 5-7 day implementation, and no payments ever required. InFlow requires $71/month minimum (approximately €65/month), totaling €780/year, and typically takes 30-60 days to implement. StockFlow offers better value and faster setup for growing businesses."
     },
     {
       question: "What is the main difference between StockFlow and InFlow?",
-      answer: "The main differences are: (1) Pricing - StockFlow offers free plans vs. InFlow's $71/month minimum, (2) Implementation - StockFlow goes live in 5-7 days vs. InFlow's 30-60 days, (3) Data hosting - StockFlow uses European servers vs. InFlow's US/Canada hosting, (4) Support - StockFlow offers 24/7 support vs. InFlow's business hours, (5) Ease of use - StockFlow is designed for simplicity vs. InFlow's more complex interface focused on manufacturing."
+      answer: "The main differences are: (1) Pricing - StockFlow is completely free forever vs. InFlow's $71/month minimum, (2) Implementation - StockFlow goes live in 5-7 days vs. InFlow's 30-60 days, (3) Data hosting - StockFlow uses European servers vs. InFlow's US/Canada hosting, (4) Support - StockFlow offers 24/7 support vs. InFlow's business hours, (5) Ease of use - StockFlow is designed for simplicity vs. InFlow's more complex interface focused on manufacturing."
     },
     {
       question: "Is InFlow better than StockFlow for manufacturing businesses?",
-      answer: "InFlow has stronger manufacturing features with advanced BOM management and production workflows. However, StockFlow also supports BOM and basic manufacturing needs. For most businesses, StockFlow's free plan, faster implementation, European hosting, and 24/7 support make it the better choice. InFlow may be preferable only for businesses with complex manufacturing requirements and budgets exceeding $850/year."
+      answer: "InFlow has stronger manufacturing features with advanced BOM management and production workflows. However, StockFlow also supports BOM and basic manufacturing needs. For most businesses, StockFlow being completely free forever, faster implementation, European hosting, and 24/7 support make it the better choice. InFlow may be preferable only for businesses with complex manufacturing requirements and budgets exceeding $850/year."
     },
     {
       question: "How much does InFlow cost compared to StockFlow?",
-      answer: "InFlow costs $71/month minimum (approximately €65/month), totaling €780/year. StockFlow offers a free plan for up to 100 SKUs, then €0.004 per SKU/month. For 1,000 SKUs, StockFlow costs approximately €348/year vs. InFlow's €780/year, representing 55% cost savings. StockFlow also includes free setup and migration, while InFlow may charge extra."
+      answer: "InFlow costs $71/month minimum (approximately €65/month), totaling €780/year. StockFlow is completely free forever with unlimited SKUs and all features included. StockFlow saves you 100% of InFlow's costs (€780/year), plus includes free setup and migration, while InFlow may charge extra."
     },
     {
       question: "Which has better customer support: StockFlow or InFlow?",
@@ -89,7 +89,7 @@ export default function StockFlowVsInFlow() {
       "@id": "https://www.stockflow.be/stockflow-vs-inflow",
       "name": "StockFlow vs InFlow Comparison",
       "headline": "StockFlow vs InFlow: The Better Choice for Growing Businesses",
-      "description": "Compare StockFlow vs InFlow 2025. Free plan vs $71/month, 5-7 day setup vs 30-60 days, European hosting, better pricing. See detailed comparison and start free trial.",
+      "description": "Compare StockFlow vs InFlow 2025. Completely free forever vs $71/month, 5-7 day setup vs 30-60 days, European hosting. Save 100% costs. See detailed comparison and start free - no credit card required.",
       "url": "https://www.stockflow.be/stockflow-vs-inflow",
       "inLanguage": "en",
       "isPartOf": {
@@ -149,7 +149,7 @@ export default function StockFlowVsInFlow() {
     >
       <SEO
         title="StockFlow vs InFlow 2025 - Save 55% Costs, 10x Faster Setup | StockFlow"
-        description="Compare StockFlow vs InFlow 2025. Free plan vs $71/month, 5-7 day setup vs 30-60 days, European hosting, better pricing. Save 55% costs, 10x faster implementation. Start free trial - no credit card required."
+        description="Compare StockFlow vs InFlow 2025. Completely free forever vs $71/month, 5-7 day setup vs 30-60 days, European hosting. Save 100% costs, 10x faster implementation. Start free - no credit card required."
         keywords="stockflow vs inflow, inflow alternative, inflow vs stockflow, inflow inventory management, stockflow vs inflow comparison, inflow pricing, best inflow alternative, inventory management software comparison, manufacturing inventory software, inflow competitor, stockflow inventory software, inflow vs stockflow pricing, inventory management software for small business, best inventory software 2025"
         url="https://www.stockflow.be/stockflow-vs-inflow"
         structuredData={structuredData}
@@ -267,7 +267,7 @@ export default function StockFlowVsInFlow() {
               <div className="border-l-4 border-blue-500 pl-6">
                 <h4 className="text-lg font-semibold text-gray-900 mb-2">Pricing & Value</h4>
                 <p className="text-gray-700 mb-2">
-                  <strong>StockFlow:</strong> Free plan for up to 100 SKUs, then €0.004 per SKU/month. No setup fees, no hidden costs. Transparent pricing that scales with your business.
+                  <strong>StockFlow:</strong> Completely free forever - unlimited SKUs, all features included. No setup fees, no hidden costs, no payments ever.
                 </p>
                 <p className="text-gray-700">
                   <strong>InFlow:</strong> $71/month minimum (approximately €65/month), totaling €780/year. Additional setup and implementation costs may apply. Pricing can increase with additional features or users.

@@ -60,7 +60,7 @@ export default function EducationInventoryManagement() {
     },
     {
       question: "How much does school inventory management software cost?",
-      answer: "Costs vary from €100-1,000+/month depending on student population and features. StockFlow offers education-friendly pricing starting at €0 for up to 100 items, then pay-as-you-grow (€0.004 per item/month for items 101+), making it affordable even for small schools with limited budgets."
+      answer: "Costs vary from €100-1,000+/month depending on student population and features. StockFlow is completely free forever with unlimited items and all features included, making it perfect for schools of all sizes with no budget constraints."
     },
     {
       question: "How does inventory management help with annual audits?",
@@ -591,9 +591,9 @@ export default function EducationInventoryManagement() {
               <div className="text-sm opacity-90">Up to 100 items • Perfect for small schools</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-              <div className="text-4xl font-bold mb-2">€0.004</div>
-              <div className="text-lg font-semibold mb-2">Per Item/Month</div>
-              <div className="text-sm opacity-90">Budget-friendly for schools of all sizes</div>
+              <div className="text-4xl font-bold mb-2">$0</div>
+              <div className="text-lg font-semibold mb-2">Forever</div>
+              <div className="text-sm opacity-90">Completely free for schools of all sizes</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
               <div className="text-4xl font-bold mb-2">24/7</div>

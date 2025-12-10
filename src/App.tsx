@@ -1,7 +1,6 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { StripeProvider } from "@/components/providers/StripeProvider";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,6 @@ import { BranchManagement } from './components/settings/BranchManagement';
 import { UserManagement } from './components/settings/UserManagement';
 import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
-import { InvoiceList } from './components/payments/InvoiceList';
 import IntegrationsSettings from './components/settings/Integrations';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
@@ -51,7 +49,6 @@ import { ThemeProvider } from './hooks/useTheme';
 // (SEO pages are auto-imported via getSeoRoutes)
 
 // Import remaining synchronous pages
-import SubscriptionTestPage from './pages/subscription-test';
 import HelpCenterPage from "./pages/help-center";
 import CategorysPage from './pages/categories';
 import AdminPage from './pages/admin';
@@ -394,7 +391,6 @@ const AuthRoute = () => {
         >
           <Route index element={<Dashboard userRole="staff" />} />
           <Route path="barcoding" element={<Navigate to="/barcoding" replace />} />
-          <Route path="subscription-test" element={<SubscriptionTestPage />} />
           <Route path="stock" element={<Navigate to="/dashboard/categories" replace />} />
           <Route path="categories" element={<CategorysPage />} />
           <Route path="transactions" element={<StockMovements />} />
@@ -409,7 +405,6 @@ const AuthRoute = () => {
             <Route path="subscription" element={<SubscriptionManagement />} />
             <Route path="integrations" element={<IntegrationsSettings />} />
             <Route path="help-center" element={<HelpCenterPage />} />
-            <Route path="invoices" element={<InvoiceList />} />
             <Route path="license" element={<LicenseOverview />} />
             <Route path="invoicing" element={<InvoicingOverview />} />
           </Route>
@@ -474,21 +469,19 @@ export default function App() {
       {/* QueryClientProvider wordt nu beheerd in main.tsx */}
       <AuthProvider>
         <CurrencyProvider>
-          <StripeProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter
-                future={{
-                  v7_startTransition: true,
-                  v7_relativeSplatPath: true,
-                }}
-              >
-                <AppRouter />
-              </BrowserRouter>
-              <CookieConsent />
-            </TooltipProvider>
-          </StripeProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
+              <AppRouter />
+            </BrowserRouter>
+            <CookieConsent />
+          </TooltipProvider>
         </CurrencyProvider>
       </AuthProvider>
     </ErrorBoundary>
