@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           if (refreshed?.session && !error) {
             setSession(refreshed.session);
             setUser(refreshed.session.user);
-            const profile = await fetchUserProfile(refreshed.session.user.id);
+            const profile = await fetchUserProfile(refreshed.session.user.id, refreshed.session.user.email);
             setUserProfile(profile);
             console.log('[AuthProvider] Silent session refresh succeeded');
           } else {
@@ -92,14 +92,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (data.session) {
       setSession(data.session);
       setUser(data.session.user);
-      const profile = await fetchUserProfile(data.session.user.id);
+      const profile = await fetchUserProfile(data.session.user.id, data.session.user.email);
       setUserProfile(profile);
     }
   });
 
   // Fetch user profile from database
   const fetchUserProfile = async (
-    userId: string
+    userId: string,
+    userEmail?: string | null
   ): Promise<UserProfile | null> => {
     try {
       // Add timeout to prevent hanging requests
@@ -120,7 +121,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         // Return basic profile object as fallback instead of null
         return {
           id: userId,
-          email: '',
+          email: userEmail || '',
           first_name: null,
           last_name: null,
           role: 'staff' as const,
@@ -138,7 +139,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.log('No profile found for user, creating basic profile object');
         return {
           id: userId,
-          email: '',
+          email: userEmail || '',
           first_name: null,
           last_name: null,
           role: 'staff' as const,
@@ -151,13 +152,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         };
       }
       
-      return result.data as UserProfile;
+      // Use auth user's email as fallback if profile email is empty
+      const profile = result.data as UserProfile;
+      if (!profile.email && userEmail) {
+        profile.email = userEmail;
+      }
+      
+      return profile;
     } catch (err) {
       console.error('Unexpected error fetching user profile:', err);
       // Return basic profile object as fallback
       return {
         id: userId,
-        email: '',
+        email: userEmail || '',
         first_name: null,
         last_name: null,
         role: 'staff' as const,
@@ -219,7 +226,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
               // Fetch profile
               try {
-                const profile = await fetchUserProfile(sessionData.session.user.id);
+                const profile = await fetchUserProfile(sessionData.session.user.id, sessionData.session.user.email);
                 if (!cancelled.current) setUserProfile(profile);
               } catch (profileError) {
                 console.error('Error fetching profile:', profileError);
@@ -319,7 +326,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
           // Fetch profile with timeout protection
           try {
-            const profile = await fetchUserProfile(currentSession.user.id);
+            const profile = await fetchUserProfile(currentSession.user.id, currentSession.user.email);
             if (!cancelled.current) setUserProfile(profile);
           } catch (profileError) {
             console.error('Error fetching profile during init:', profileError);
@@ -440,7 +447,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             }
           }
           
-          const profile = await fetchUserProfile(newSession.user.id);
+          const profile = await fetchUserProfile(newSession.user.id, newSession.user.email);
           
           // If no profile exists and this is a sign-in event, create one
           if (!profile && event === 'SIGNED_IN' && newSession.user) {
@@ -473,7 +480,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 console.error('Error creating profile for Google user:', profileError);
               } else {
                 // Fetch the newly created profile
-                const newProfile = await fetchUserProfile(newSession.user.id);
+                const newProfile = await fetchUserProfile(newSession.user.id, newSession.user.email);
                 if (!cancelled.current) setUserProfile(newProfile);
               }
             } catch (error) {

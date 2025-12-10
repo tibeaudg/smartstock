@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw, Trash2 } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -425,10 +425,32 @@ async function blockUser(id: string, blocked: boolean) {
   if (error) throw new Error(error.message);
 }
 
+async function deleteUser(id: string) {
+  // 1. Delete from branch_users
+  const { error: branchUsersError } = await supabase
+    .from('branch_users')
+    .delete()
+    .eq('user_id', id);
+  if (branchUsersError) throw new Error(branchUsersError.message);
+
+  // 2. Delete from profiles
+  const { error: profilesError } = await supabase
+    .from('profiles')
+    .delete()
+    .eq('id', id);
+  if (profilesError) throw new Error(profilesError.message);
+
+  // 3. Delete from auth via edge function
+  const { error: authError } = await supabase.functions.invoke('delete-user', {
+    body: { user_id: id }
+  });
+  if (authError) throw new Error(authError.message);
+}
+
 
 
 export default function AdminPage() {
-  const { user, userProfile } = useAuth();
+  const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'subscription-management'>('users');
@@ -439,6 +461,7 @@ export default function AdminPage() {
   const [chartTimeRange, setChartTimeRange] = useState<'day' | 'week' | 'month' | 'year'>('month');
   const [sortColumn, setSortColumn] = useState<SortColumn>('created');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -454,6 +477,19 @@ export default function AdminPage() {
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteUser(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      toast.success('User deleted successfully');
+      setDeletingUserId(null);
+    },
+    onError: (error: Error) => {
+      toast.error('Failed to delete user: ' + error.message);
+      setDeletingUserId(null);
+    },
   });
 
 
@@ -650,7 +686,7 @@ export default function AdminPage() {
 
   // Real-time updates voor admin data
   useEffect(() => {
-    if (!user?.id) return;
+    if (!currentUser?.id) return;
 
     const adminChannel = supabase
       .channel('admin-changes')
@@ -672,7 +708,7 @@ export default function AdminPage() {
     return () => {
       supabase.removeChannel(adminChannel);
     };
-  }, [user?.id, queryClient, activeTab]);
+  }, [currentUser?.id, queryClient, activeTab]);
 
   const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'subscription-management'; label: string }[] = [
     { id: 'users', label: 'User Management' },
@@ -892,6 +928,50 @@ export default function AdminPage() {
                                     >
                                       {user.blocked ? 'Unblock' : 'Block'}
                                     </button>
+                                    {user.id !== currentUser?.id && (
+                                      <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                          <button
+                                            className="px-2 py-1 rounded text-xs bg-red-100 text-red-800 hover:bg-red-200 flex items-center gap-1"
+                                            onClick={e => e.stopPropagation()}
+                                            disabled={deletingUserId === user.id}
+                                          >
+                                            {deletingUserId === user.id ? (
+                                              <>
+                                                <Loader2 className="w-3 h-3 animate-spin" />
+                                                Deleting...
+                                              </>
+                                            ) : (
+                                              <>
+                                                <Trash2 className="w-3 h-3" />
+                                                Delete
+                                              </>
+                                            )}
+                                          </button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent onClick={e => e.stopPropagation()}>
+                                          <AlertDialogHeader>
+                                            <AlertDialogTitle>Delete User</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                              Are you sure you want to delete {user.email}? This action cannot be undone and will permanently delete the user profile and all associated data from the database.
+                                            </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                              className="bg-red-600 hover:bg-red-700"
+                                              onClick={e => {
+                                                e.stopPropagation();
+                                                setDeletingUserId(user.id);
+                                                deleteMutation.mutate(user.id);
+                                              }}
+                                            >
+                                              Delete
+                                            </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialog>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -1035,7 +1115,50 @@ export default function AdminPage() {
                                     >
                                       {user.blocked ? 'Unblock' : 'Block'}
                                     </button>
-                              
+                                    {user.id !== currentUser?.id && (
+                                      <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                          <button
+                                            className="px-2 py-1 rounded text-xs bg-red-100 text-red-800 hover:bg-red-200 flex items-center gap-1"
+                                            onClick={e => e.stopPropagation()}
+                                            disabled={deletingUserId === user.id}
+                                          >
+                                            {deletingUserId === user.id ? (
+                                              <>
+                                                <Loader2 className="w-3 h-3 animate-spin" />
+                                                Deleting...
+                                              </>
+                                            ) : (
+                                              <>
+                                                <Trash2 className="w-3 h-3" />
+                                                Delete
+                                              </>
+                                            )}
+                                          </button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent onClick={e => e.stopPropagation()}>
+                                          <AlertDialogHeader>
+                                            <AlertDialogTitle>Delete User</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                              Are you sure you want to delete {user.email}? This action cannot be undone and will permanently delete the user profile and all associated data from the database.
+                                            </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                              className="bg-red-600 hover:bg-red-700"
+                                              onClick={e => {
+                                                e.stopPropagation();
+                                                setDeletingUserId(user.id);
+                                                deleteMutation.mutate(user.id);
+                                              }}
+                                            >
+                                              Delete
+                                            </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialog>
+                                    )}
                                   </div>
                                 </td>
                               </tr>

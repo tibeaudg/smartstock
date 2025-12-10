@@ -9,7 +9,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { User, Key, CheckCircle, Check, LogOut } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { User, Key, CheckCircle, Check, LogOut, Trash2 } from 'lucide-react';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,6 +52,8 @@ export const ProfileSettings = () => {
   const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [isProfileSuccess, setIsProfileSuccess] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
   // Check if the user has a password set.
   const hasPassword = useMemo(() => 
@@ -116,15 +129,33 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
     }
 };
   
-  // SECURITY FIX: Account deletion must be handled via an Edge Function.
-  const handleDeleteAccount = () => {
-      toast.info('Delete Account', {
-          description: 'This action must be handled via a secure server-function. Implementation is required.',
-          action: { label: 'Ok', onClick: () => {} },
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+    
+    setIsDeletingAccount(true);
+    try {
+      // Delete account via edge function
+      // The edge function handles deletion from branch_users, profiles, and auth.users
+      const { data, error: authError } = await supabase.functions.invoke('delete-user', {
+        body: { user_id: user.id }
       });
-      // The old, INSECURE code is removed.
-      // Voorbeeld aanroep naar een Edge Function:
-      // await supabase.functions.invoke('delete-user-account');
+      
+      if (authError) {
+        throw new Error(authError.message || 'Failed to delete account');
+      }
+
+      toast.success('Account deleted successfully');
+      
+      // Sign out and navigate to auth page
+      await signOut();
+      navigate('/auth');
+    } catch (error: any) {
+      console.error('Error deleting account:', error);
+      toast.error('Error deleting account', { 
+        description: error?.message || 'Unknown error occurred. Please try again or contact support.' 
+      });
+      setIsDeletingAccount(false);
+    }
   };
 
   const handleSignOut = async () => {
@@ -205,6 +236,61 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
 
         </Card>
       </div>
+
+      {/* Delete Account Card */}
+      <Card className="border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/50">
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2 text-red-700 dark:text-red-400">
+            <Trash2 className="w-4 h-4" />
+            <span>Delete Account</span>
+          </CardTitle>
+          <CardDescription className="text-red-600 dark:text-red-400">
+            Permanently delete your account and all associated data. This action cannot be undone.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="destructive"
+                disabled={isDeletingAccount}
+                className="w-full sm:w-auto"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {isDeletingAccount ? 'Deleting...' : 'Delete Account'}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Account</AlertDialogTitle>
+                <AlertDialogDescription asChild>
+                  <div>
+                    <p>Are you sure you want to delete your account? This action cannot be undone and will permanently delete:</p>
+                    <ul className="list-disc list-inside mt-2 space-y-1">
+                      <li>Your profile information</li>
+                      <li>All your branch associations</li>
+                      <li>All your account data</li>
+                    </ul>
+                    <strong className="block mt-3 text-red-600 dark:text-red-400">
+                      This action is irreversible.
+                    </strong>
+                  </div>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isDeletingAccount}>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteAccount}
+                  disabled={isDeletingAccount}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  {isDeletingAccount ? 'Deleting...' : 'Delete Account'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </CardContent>
+      </Card>
 
       {/* Logout Section - Only visible on mobile */}
       {isMobile && (

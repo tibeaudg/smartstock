@@ -25,7 +25,6 @@ import {
   Filter,
   Database,
   Activity,
-  User,
   ShoppingBag,
   Moon,
   Sun
@@ -73,7 +72,7 @@ interface MenuItem {
 export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdownOpen: externalProfileDropdownOpen, onProfileDropdownChange }: SidebarProps) => {
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [supportOpen, setSupportOpen] = useState(false);
@@ -123,6 +122,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
   };
   
   const settingsSubItems = [
+    { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
     { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
     { id: 'subscription', label: 'Subscription', path: '/dashboard/settings/subscription' },
@@ -311,17 +311,17 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                   <div className="flex items-center gap-3">
                     <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center">
                       <span className="text-white font-semibold">
-                        {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                        {userProfile?.first_name?.[0] || userProfile?.email?.[0] || user?.email?.[0] || 'U'}
                       </span>
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-gray-100">
                         {userProfile?.first_name && userProfile?.last_name 
                           ? `${userProfile.first_name} ${userProfile.last_name}`
-                          : userProfile?.first_name || userProfile?.email?.split('@')[0] || 'User'}
+                          : userProfile?.first_name || userProfile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User'}
                       </div>
                       <div className="text-xs text-gray-500 dark:text-gray-400">
-                        {userProfile?.email || 'No email'}
+                        {userProfile?.email || user?.email || 'No email'}
                       </div>
                     </div>
                   </div>
@@ -353,16 +353,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                       Switch
                     </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      navigate('/dashboard/settings/profile');
-                      setProfileDropdownOpen(false);
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800 transition-colors"
-                  >
-                    <User className="w-5 h-5" />
-                    <span>Profile Settings</span>
-                  </button>
                   <button
                     onClick={() => {
                       handleSignOut();
@@ -576,7 +566,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
             >
               <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-semibold">
-                  {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                  {userProfile?.first_name?.[0] || userProfile?.email?.[0] || user?.email?.[0] || 'U'}
                 </span>
               </div>
               {isOpen && (
@@ -585,10 +575,10 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                     <div className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                       {userProfile?.first_name && userProfile?.last_name 
                         ? `${userProfile.first_name} ${userProfile.last_name}`
-                        : userProfile?.first_name || userProfile?.email?.split('@')[0] || 'User'}
+                        : userProfile?.first_name || userProfile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User'}
                     </div>
                     <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      {userProfile?.email || 'No email'}
+                      {userProfile?.email || user?.email || 'No email'}
                     </div>
                   </div>
                   <ChevronDown 
@@ -611,17 +601,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                 className="absolute bottom-16 left-4 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 min-w-[180px] transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button
-                  onClick={() => {
-                    navigate('/dashboard/settings/profile');
-                    setProfileDropdownOpen(false);
-                    if (isMobile) onToggle();
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <User className="w-4 h-4" />
-                  <span>Profile Settings</span>
-                </button>
                 <button
                   onClick={() => {
                     handleSignOut();

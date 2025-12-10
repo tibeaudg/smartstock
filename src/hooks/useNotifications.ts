@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useAuth } from './useAuth';
+import { useEffect, useState, useCallback, useContext } from 'react';
+import { AuthContext } from './useAuth';
 import { fetchNotifications, markAllNotificationsAsRead } from '../lib/notifications';
 
 export interface Notification {
@@ -13,7 +13,9 @@ export interface Notification {
 
 
 export function useNotifications() {
-  const { user } = useAuth();
+  // Use context directly to avoid hard failure if provider is not mounted yet
+  const auth = useContext(AuthContext);
+  const user = auth?.user || null;
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 

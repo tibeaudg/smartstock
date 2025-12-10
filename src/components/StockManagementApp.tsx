@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
-import { useAuth } from '@/hooks/useAuth';
+import { AuthContext } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
 
@@ -19,7 +19,10 @@ function isLocalStorageAvailable() {
 }
 
 export const StockManagementApp: React.FC = () => {
-  const { userProfile, loading } = useAuth();
+  // Use context directly to avoid hard failure if provider is not mounted yet
+  const auth = useContext(AuthContext);
+  const userProfile = auth?.userProfile || null;
+  const loading = auth?.loading ?? true;
   const { hasNoBranches, hasError } = useBranches();
   const location = useLocation();
 
