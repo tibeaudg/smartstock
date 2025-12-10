@@ -798,7 +798,7 @@ const ProductRow: React.FC<ProductRowProps> = ({
       {/* Product column */}
       {columnVisibility.product && (
         <td className={cn(
-          "w-1/3",
+          "w-1/4",
           compactMode ? "px-2 py-1" : "px-3 py-2"
         )}>
           <div className={cn(
@@ -834,33 +834,32 @@ const ProductRow: React.FC<ProductRowProps> = ({
               )}
             </div>
 
-            {/* Product image */}
-            <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+            {/* Product image - strict 40px x 40px */}
+            <div className="flex-shrink-0 w-10 h-10" onClick={(e) => e.stopPropagation()}>
               {product.image_url ? (
-                <div className={cn(
-                  "bg-gray-50 rounded border flex items-center justify-center overflow-hidden",
-                  compactMode ? "w-8 h-8" : "w-10 h-10"
-                )}>
+                <div className="w-10 h-10 bg-gray-50 rounded border flex items-center justify-center overflow-hidden">
                   <img
                     src={product.image_url}
                     alt={`${product.name} product image`}
-                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity "
+                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => onImagePreview(product.image_url!)}
                   />
                 </div>
               ) : (
-                <PhotoUploadPlaceholder
-                  productId={product.id}
-                  size={compactMode ? "small" : "medium"}
-                  onUploadSuccess={() => onImageUpload?.()}
-                />
+                <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+                  <PhotoUploadPlaceholder
+                    productId={product.id}
+                    size="small"
+                    onUploadSuccess={() => onImageUpload?.()}
+                  />
+                </div>
               )}
             </div>
 
             {/* Product info */}
             <div className="flex-1 min-w-0">
               <div className={cn(
-                "flex items-center",
+                "flex items-center flex-wrap",
                 compactMode ? "gap-1" : "gap-2"
               )}>
                 {onFieldUpdate ? (
@@ -871,15 +870,20 @@ const ProductRow: React.FC<ProductRowProps> = ({
                     }}
                     type="text"
                     compactMode={compactMode}
-                    className="font-medium text-gray-900 truncate flex-1"
+                    className="font-semibold text-gray-900 truncate flex-1"
                   />
                 ) : (
                   <h3 className={cn(
-                    "font-medium text-gray-900 truncate",
+                    "font-semibold text-gray-900 truncate",
                     compactMode ? "text-xs" : "text-sm"
                   )}>
                     {product.name}
                   </h3>
+                )}
+                {product.category_name && (
+                  <Badge className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full border-0">
+                    {product.category_name}
+                  </Badge>
                 )}
                 {isVariant && product.variant_name && (
                   <span className="text-gray-600 text-sm"> - {product.variant_name}</span>

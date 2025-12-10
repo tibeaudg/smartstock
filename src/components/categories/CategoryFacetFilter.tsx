@@ -3,7 +3,7 @@
  * A collapsible sidebar with multi-select checkboxes for filtering products by category
  */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
@@ -12,10 +12,13 @@ import {
   Filter, 
   ChevronLeft, 
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   X,
   CheckSquare,
   Square,
-  Plus
+  Plus,
+  Check
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { flattenCategoryTree } from '@/lib/categories/categoryUtils';
@@ -74,6 +77,14 @@ export const CategoryFacetFilter: React.FC<CategoryFacetFilterProps> = ({
 
   const allSelected = sortedCategories.length > 0 && selectedCategoryIds.length === sortedCategories.length;
   const someSelected = selectedCategoryIds.length > 0 && selectedCategoryIds.length < sortedCategories.length;
+
+  // Get top-level categories for Quick Filters
+  const topLevelCategories = useMemo(() => {
+    return sortedCategories.filter(cat => !cat.parent_category_id).slice(0, 8);
+  }, [sortedCategories]);
+
+  // State for Quick Filters collapse
+  const [isQuickFiltersExpanded, setIsQuickFiltersExpanded] = useState(true);
 
   // Collapsed state shows just a toggle button
   if (isCollapsed) {
@@ -173,6 +184,63 @@ export const CategoryFacetFilter: React.FC<CategoryFacetFilterProps> = ({
           </Button>
         )}
       </div>
+
+      {/* Quick Filters Section */}
+      {topLevelCategories.length > 0 && (
+        <div className="flex-shrink-0 border-b bg-white">
+          <button
+            onClick={() => setIsQuickFiltersExpanded(!isQuickFiltersExpanded)}
+            className="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-xs font-medium text-gray-700">Quick Filters</span>
+            {isQuickFiltersExpanded ? (
+              <ChevronUp className="w-3 h-3 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-3 h-3 text-gray-500" />
+            )}
+          </button>
+          {isQuickFiltersExpanded && (
+            <div className="px-4 py-2 space-y-2">
+              <div className="flex flex-wrap gap-1.5">
+                {topLevelCategories.map((category) => {
+                  const isSelected = selectedCategoryIds.includes(category.id);
+                  const count = productCounts?.get(category.id) ?? 0;
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => handleCategoryToggle(category.id)}
+                      className={cn(
+                        "inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium transition-colors",
+                        isSelected
+                          ? "bg-blue-600 text-white hover:bg-blue-700"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      )}
+                    >
+                      {isSelected && <Check className="w-3 h-3" />}
+                      <span>{category.name}</span>
+                      {count > 0 && (
+                        <Badge variant="secondary" className={cn(
+                          "h-3.5 px-1 text-[9px] ml-0.5",
+                          isSelected ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-600"
+                        )}>
+                          {count}
+                        </Badge>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+          {!isQuickFiltersExpanded && selectedCategoryIds.length > 0 && (
+            <div className="px-4 py-1.5 border-t bg-gray-50">
+              <div className="text-xs text-gray-600">
+                {selectedCategoryIds.length} filter{selectedCategoryIds.length !== 1 ? 's' : ''} active
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Category List */}
       <div className="flex-1 overflow-y-auto min-h-0">

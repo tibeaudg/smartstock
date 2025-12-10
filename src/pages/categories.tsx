@@ -3,7 +3,7 @@
  * Revamped with hierarchical categories, dual view modes, and enhanced features
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +20,7 @@ import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategor
 import { CategoryFacetFilter } from '@/components/categories/CategoryFacetFilter';
 import { CategoryCustomizationModal } from '@/components/categories/CategoryCustomizationModal';
 import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
+import { MultiIntentSearch } from '@/components/categories/MultiIntentSearch';
 import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -57,8 +58,6 @@ export default function CategorysPage() {
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   // Filter sidebar collapse state - default to collapsed
   const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
-  // Track if we should auto-collapse after next operation (when "Show All" is clicked)
-  const [shouldAutoCollapse, setShouldAutoCollapse] = useState(false);
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -77,6 +76,9 @@ export default function CategorysPage() {
   
   // Row selection state
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
+  
+  // Hover state for row actions
+  const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
   
   // Product modal states
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -374,42 +376,10 @@ export default function CategorysPage() {
     }
   };
 
-  // Handler for "Show All" button - uncollapse sidebar and set auto-collapse flag
-  const handleShowAll = () => {
-    setIsFilterCollapsed(false);
-    setShouldAutoCollapse(true);
-  };
-
-  // Handler for category chip toggle in Quick Filter
-  const handleQuickFilterToggle = (categoryId: string) => {
-    const newSelection = selectedCategoryIds.includes(categoryId)
-      ? selectedCategoryIds.filter(id => id !== categoryId)
-      : [...selectedCategoryIds, categoryId];
-    handleCategorySelectionChange(newSelection);
-  };
-
-  // Wrapper for category selection change to handle auto-collapse
+  // Category selection change handler
   const handleCategorySelectionChange = (categoryIds: string[]) => {
     setSelectedCategoryIds(categoryIds);
-    // Auto-collapse if flag is set and user has made a selection
-    if (shouldAutoCollapse && categoryIds.length > 0) {
-      setTimeout(() => {
-        setIsFilterCollapsed(true);
-        setShouldAutoCollapse(false);
-      }, 300);
-    }
   };
-
-  // Auto-collapse sidebar after category selection changes (when shouldAutoCollapse is true)
-  useEffect(() => {
-    if (shouldAutoCollapse && selectedCategoryIds.length > 0) {
-      const timer = setTimeout(() => {
-        setIsFilterCollapsed(true);
-        setShouldAutoCollapse(false);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedCategoryIds, shouldAutoCollapse]);
 
 
   const handleFavoriteToggle = async (productId: string, isFavorite: boolean) => {
@@ -451,6 +421,40 @@ export default function CategorysPage() {
     if (isMobile) {
       setSelectedProduct(product);
       setIsMobileProductDetailModalOpen(true);
+    }
+  };
+
+  // Handler for row click to toggle selection
+  const handleRowClick = (e: React.MouseEvent<HTMLTableRowElement>, product: any) => {
+    // Check if click target is an interactive element
+    const target = e.target as HTMLElement;
+    const isInteractive = 
+      target.closest('button') ||
+      target.closest('input') ||
+      target.closest('a') ||
+      target.closest('[role="button"]') ||
+      target.closest('[data-interactive]') ||
+      target.tagName === 'BUTTON' ||
+      target.tagName === 'INPUT' ||
+      target.tagName === 'A';
+
+    // If mobile, use existing mobile behavior
+    if (isMobile) {
+      if (!isInteractive) {
+        handleMobileRowClick(product);
+      }
+      return;
+    }
+
+    // On desktop, toggle selection if not clicking on interactive element
+    if (!isInteractive) {
+      const newSet = new Set(selectedProductIds);
+      if (newSet.has(product.id)) {
+        newSet.delete(product.id);
+      } else {
+        newSet.add(product.id);
+      }
+      setSelectedProductIds(newSet);
     }
   };
 
@@ -681,17 +685,6 @@ export default function CategorysPage() {
 
   // Handle search input with command palette functionality
   const handleSearchChange = (value: string) => {
-    // Check for "/add" command
-    if (value.toLowerCase().trim() === '/add') {
-      setSearchTerm('');
-      setScannedSKU('');
-      setPreFilledProductName('');
-      setIsAddModalOpen(true);
-      return;
-    }
-
-    // Check for barcode pattern (when user stops typing)
-    // We'll check on Enter key or when input looks complete
     setSearchTerm(value);
   };
 
@@ -704,15 +697,6 @@ export default function CategorysPage() {
       return;
     }
 
-    // Check for "/add" command
-    if (trimmed.toLowerCase() === '/add') {
-      setSearchTerm('');
-      setScannedSKU('');
-      setPreFilledProductName('');
-      setIsAddModalOpen(true);
-      return;
-    }
-
     // Check for barcode pattern
     if (isBarcodePattern(trimmed)) {
       handleBarcodeSearch(trimmed);
@@ -721,6 +705,57 @@ export default function CategorysPage() {
 
     // Otherwise, just set as normal search term
     setSearchTerm(trimmed);
+  };
+
+  // Handle product click from search results
+  const handleSearchProductClick = (product: any) => {
+    // If product has a category and it's not in the current filter, add it
+    if (product.category_id && !selectedCategoryIds.includes(product.category_id)) {
+      const flatCategories = flattenCategoryTree(tree);
+      const categoryIds = getCategoryIdsIncludingDescendants(product.category_id, flatCategories);
+      setSelectedCategoryIds([...selectedCategoryIds, ...categoryIds]);
+    }
+    
+    // Set search term to product name to highlight it
+    setSearchTerm(product.name);
+    
+    // Scroll to the product in the table after a short delay
+    setTimeout(() => {
+      const productElement = document.querySelector(`[data-product-id="${product.id}"]`);
+      if (productElement) {
+        productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const row = productElement as HTMLElement;
+        row.style.backgroundColor = '#dbeafe';
+        setTimeout(() => {
+          row.style.backgroundColor = '';
+        }, 2000);
+      }
+    }, 300);
+  };
+
+  // Handle category click from search results
+  const handleSearchCategoryClick = (categoryId: string) => {
+    const flatCategories = flattenCategoryTree(tree);
+    const categoryIds = getCategoryIdsIncludingDescendants(categoryId, flatCategories);
+    setSelectedCategoryIds([...categoryIds]);
+    setSearchTerm('');
+  };
+
+  // Handle supplier click from search results
+  const handleSearchSupplierClick = (supplierId: string) => {
+    // For now, just show a toast - could navigate to supplier page or filter by supplier
+    toast.info('Supplier search clicked - filtering by supplier not yet implemented');
+    setSearchTerm('');
+  };
+
+  // Handle create location action
+  const handleCreateLocation = () => {
+    const locationName = prompt('Enter location name:');
+    if (locationName && locationName.trim()) {
+      // Location creation is handled by setting product locations
+      // This is just a quick way to create a location reference
+      toast.success(`Location "${locationName}" can be used when adding products`);
+    }
   };
 
 
@@ -848,6 +883,35 @@ export default function CategorysPage() {
     }
   };
 
+  const handleBulkDeleteProducts = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    const confirmed = window.confirm(
+      `Delete ${selectedProductIds.size} selected product${selectedProductIds.size !== 1 ? 's' : ''}? This action cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .in('id', Array.from(selectedProductIds));
+
+      if (error) throw error;
+
+      toast.success(`Deleted ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''} successfully`);
+      setSelectedProductIds(new Set());
+      
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+    } catch (error) {
+      console.error('Error deleting products:', error);
+      toast.error('Failed to delete products');
+    }
+  };
+
   const handleCustomizationSave = async (icon: string | null, color: string | null) => {
     if (!selectedCategory) return;
 
@@ -901,63 +965,10 @@ export default function CategorysPage() {
           "flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative",
           isFilterCollapsed && "w-full"
         )}>
-          {/* Quick Filter Bar - Category Chips */}
-          {(() => {
-            const flatCategories = flattenCategoryTree(tree);
-            const topLevelCategories = flatCategories.filter(cat => !cat.parent_category_id);
-            const sortedTopLevel = [...topLevelCategories].sort((a, b) => a.name.localeCompare(b.name));
-            
-            if (sortedTopLevel.length === 0) return null;
-            
-            return (
-              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-white border-b border-gray-200">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-medium text-gray-500 mr-1">Quick Filter:</span>
-                  {sortedTopLevel.slice(0, 8).map((category) => {
-                    const isSelected = selectedCategoryIds.includes(category.id);
-                    const count = productCounts?.get(category.id) || 0;
-                    return (
-                      <button
-                        key={category.id}
-                        onClick={() => handleQuickFilterToggle(category.id)}
-                        className={cn(
-                          "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors",
-                          isSelected
-                            ? "bg-blue-600 text-white hover:bg-blue-700"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        )}
-                      >
-                        {isSelected && <Check className="w-3 h-3" />}
-                        <span>{category.name}</span>
-                        {count > 0 && (
-                          <Badge variant="secondary" className={cn(
-                            "h-4 px-1 text-[10px]",
-                            isSelected ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-600"
-                          )}>
-                            {count}
-                          </Badge>
-                        )}
-                      </button>
-                    );
-                  })}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleShowAll}
-                    className="h-7 px-2 text-xs ml-auto"
-                  >
-                    <Filter className="w-3 h-3 mr-1" />
-                    Show All
-                  </Button>
-                </div>
-              </div>
-            );
-          })()}
-          
           {(categoryProducts.length > 0 || productsLoading) ? (
             <>
               {/* Row A: Control Bar - Search Bar + Action Buttons */}
-              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-3 bg-white border-b flex items-center gap-3 transition-all duration-200">
+              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-white border-b flex items-center gap-3 transition-all duration-200">
                 {selectedProductIds.size > 0 ? (
                   // Bulk Action Bar
                   <div className="flex items-center justify-between w-full gap-3">
@@ -967,12 +978,12 @@ export default function CategorysPage() {
                       </span>
                       <div className="flex items-center gap-2">
                         <Button
-                          variant="outline"
+                          variant="destructive"
                           size="sm"
-                          onClick={handleBulkPrintLabels}
+                          onClick={handleBulkDeleteProducts}
                         >
-                          <Printer className="w-4 h-4 mr-2" />
-                          Print Labels
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
                         </Button>
                         <Button
                           variant="outline"
@@ -980,15 +991,7 @@ export default function CategorysPage() {
                           onClick={handleBulkTransferStock}
                         >
                           <Truck className="w-4 h-4 mr-2" />
-                          Transfer Stock
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleBulkChangeStatus}
-                        >
-                          <Tag className="w-4 h-4 mr-2" />
-                          Change Status
+                          Move
                         </Button>
                       </div>
                     </div>
@@ -1004,53 +1007,41 @@ export default function CategorysPage() {
                 ) : (
                   // Normal Header: Search Bar (left, expanded) + Action Buttons (right)
                   <>
-                    {/* Search Bar - Left, Expanded Width */}
-                    <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        type="text"
-                        placeholder="Search products… or type /add to create product"
-                        value={searchTerm}
-                        onChange={(e) => handleSearchChange(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            handleSearchSubmit(searchTerm);
-                          }
-                        }}
-                        onBlur={() => {
-                          // If the input looks like a barcode, process it
-                          if (searchTerm.trim() && isBarcodePattern(searchTerm.trim())) {
-                            handleSearchSubmit(searchTerm);
-                          }
-                        }}
-                        className="pl-10 pr-10 h-10 text-sm"
-                      />
-                      {searchTerm && (
-                        <button
-                          onClick={() => setSearchTerm('')}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors"
-                          aria-label="Clear search"
-                        >
-                          <X className="w-4 h-4 text-gray-400" />
-                        </button>
-                      )}
-                    </div>
+                    {/* Multi-Intent Search Bar - Left, Expanded Width */}
+                    <MultiIntentSearch
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      onSubmit={handleSearchSubmit}
+                      onProductClick={handleSearchProductClick}
+                      onCategoryClick={handleSearchCategoryClick}
+                      onSupplierClick={handleSearchSupplierClick}
+                      onCreateProduct={() => {
+                        setScannedSKU('');
+                        setPreFilledProductName('');
+                        setIsAddModalOpen(true);
+                      }}
+                      onCreateCategory={handleAddCategory}
+                      onCreateLocation={handleCreateLocation}
+                      placeholder="Search products, SKUs, categories, suppliers…"
+                    />
                     {/* Action Buttons - Right */}
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
                         onClick={() => {
                           setScannedSKU('');
                           setPreFilledProductName('');
                           setIsAddModalOpen(true);
+                        
                         }}
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         Add Product
                       </Button>
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
                         onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
                       >
@@ -1073,7 +1064,7 @@ export default function CategorysPage() {
               
               {/* Search Results Info - Show below search bar when searching */}
               {searchTerm && (
-                <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-gray-50 border-b">
+                <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-1 bg-gray-50 border-b">
                   <div className="text-xs text-gray-500">
                     {filteredProducts.length > 0 && (
                       <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found</span>
@@ -1129,7 +1120,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center w-12",
-                                compactMode ? "px-2 py-1.5" : "px-3 py-4"
+                                compactMode ? "px-2 py-1" : "px-3 py-4"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -1188,7 +1179,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell",
-                                compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                                compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
                               )}
                               onClick={() => handleSort('date_added')}
                             >
@@ -1200,7 +1191,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell",
-                                compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                                compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
                               )}
                               onClick={() => handleSort('purchase_price')}
                             >
@@ -1212,7 +1203,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell",
-                                compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                                compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
                               )}
                               onClick={() => handleSort('sale_price')}
                             >
@@ -1223,7 +1214,7 @@ export default function CategorysPage() {
                             </th>
                             <th className={cn(
                               "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell",
-                              compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-3 sm:py-4"
+                              compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
                             )}>
                               Actions
                             </th>
@@ -1238,21 +1229,24 @@ export default function CategorysPage() {
                               <tr
                                 key={product.id}
                                 data-product-id={product.id}
-                                onClick={() => handleMobileRowClick(product)}
+                                onClick={(e) => handleRowClick(e, product)}
+                                onMouseEnter={() => setHoveredRowId(product.id)}
+                                onMouseLeave={() => setHoveredRowId(null)}
                                 className={cn(
-                                  'hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
+                                  'group hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
                                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
-                                  isMobile && 'cursor-pointer',
-                                  compactMode && 'h-10'
+                                  'cursor-pointer',
+                                  compactMode && 'h-8'
                                 )}
                               >
                                 {/* Selection checkbox */}
                                 <td 
                                   className={cn(
                                     "text-center w-12",
-                                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
+                                    compactMode ? "px-2 py-1" : "px-3 py-3"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
+                                  data-interactive
                                 >
                                   <input
                                     type="checkbox"
@@ -1276,30 +1270,28 @@ export default function CategorysPage() {
                                 {/* SKU column */}
                                 <td className={cn(
                                   "text-left",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <span className={cn(
                                     "font-mono text-gray-900",
                                     compactMode ? "text-xs" : "text-xs sm:text-sm"
                                   )}>
-                                    {product.sku || '-'}
+                                    {product.sku || '---'}
                                   </span>
                                 </td>
                                 {/* Product column */}
                                 <td className={cn(
-                                  "w-1/3",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                  "w-1/4",
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
                                     "flex items-center",
                                     compactMode ? "gap-1.5" : "gap-2 sm:gap-3"
                                   )}>
-                                    <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-                                      {product.image_url ? (
-                                        <div className={cn(
-                                          "bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden",
-                                          compactMode ? "w-8 h-8" : "w-10 h-10 sm:w-12 sm:h-12"
-                                        )}>
+                                    {/* Product image - only show if image exists */}
+                                    {product.image_url && (
+                                      <div className={cn("flex-shrink-0", compactMode ? "w-8 h-8" : "w-10 h-10")} onClick={(e) => e.stopPropagation()} data-interactive>
+                                        <div className={cn("bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden", compactMode ? "w-8 h-8" : "w-10 h-10")}>
                                           <img
                                             src={product.image_url}
                                             alt={product.name}
@@ -1307,25 +1299,25 @@ export default function CategorysPage() {
                                             onClick={() => handleImagePreview(product.image_url)}
                                           />
                                         </div>
-                                      ) : (
-                                        <div className={cn(
-                                          "bg-gray-100 rounded-lg flex items-center justify-center",
-                                          compactMode ? "w-8 h-8" : "w-10 h-10 sm:w-12 sm:h-12"
-                                        )}>
-                                          <Package className={cn(
-                                            "text-gray-400",
-                                            compactMode ? "w-4 h-4" : "w-5 h-5 sm:w-6 sm:h-6"
-                                          )} />
-                                        </div>
-                                      )}
-                                    </div>
+                                      </div>
+                                    )}
                                     <div className="flex-1 min-w-0">
-                                      <h3 className={cn(
-                                        "font-medium text-gray-900 truncate",
-                                        compactMode ? "text-xs" : "text-sm"
+                                      <div className={cn(
+                                        "flex items-center flex-wrap",
+                                        compactMode ? "gap-1" : "gap-2"
                                       )}>
-                                        {product.name}
-                                      </h3>
+                                        <h3 className={cn(
+                                          "font-semibold text-gray-900 truncate",
+                                          compactMode ? "text-xs" : "text-sm"
+                                        )}>
+                                          {product.name}
+                                        </h3>
+                                        {product.category_name && (
+                                          <span className="text-xs text-gray-400 ml-1.5">
+                                            • {product.category_name}
+                                          </span>
+                                        )}
+                                      </div>
                                       {/* Barcode display - less prominent */}
                                       {product.barcode && (
                                         <p className={cn(
@@ -1347,7 +1339,7 @@ export default function CategorysPage() {
                                 {/* Location column */}
                                 <td className={cn(
                                   "text-center w-1/8 hidden md:table-cell",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className="flex items-center justify-center gap-1">
                                     <MapPin className={cn(
@@ -1364,14 +1356,18 @@ export default function CategorysPage() {
                                 </td>
 
                                 {/* Stock column */}
-                                <td className={cn(
-                                  "text-center w-1/8",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
-                                )} onClick={(e) => isMobile && e.stopPropagation()}>
+                                <td 
+                                  className={cn(
+                                    "text-center w-1/8",
+                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  )} 
+                                  onClick={(e) => isMobile && e.stopPropagation()}
+                                >
                                   <TooltipProvider delayDuration={150}>
                                     <Tooltip>
                                       <TooltipTrigger asChild>
                                         <div
+                                          data-interactive
                                           className={cn(
                                             compactMode ? "rounded-md p-0.5 transition-colors" : "space-y-1 rounded-md p-2 transition-colors",
                                             !isMobile && "cursor-pointer group hover:bg-blue-600"
@@ -1441,7 +1437,7 @@ export default function CategorysPage() {
                                 {/* Date Added column */}
                                 <td className={cn(
                                   "text-center w-1/8 hidden lg:table-cell",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <span className={cn(
                                     "text-gray-600",
@@ -1460,7 +1456,7 @@ export default function CategorysPage() {
                                 {/* Cost column */}
                                 <td className={cn(
                                   "text-center w-1/8 hidden sm:table-cell",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
                                     getPriceColor(product.purchase_price, 'text-gray-900'),
@@ -1474,22 +1470,43 @@ export default function CategorysPage() {
                                 {/* Price column */}
                                 <td className={cn(
                                   "text-center w-1/8 hidden sm:table-cell",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
+                                    "flex items-center justify-center gap-1.5",
                                     getPriceColor(product.sale_price, 'text-green-600'),
                                     "font-medium",
                                     compactMode ? "text-xs" : "text-sm"
                                   )}>
-                                    ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
+                                    <span>
+                                      ${product.sale_price ? Number(product.sale_price).toFixed(2) : '0.00'}
+                                    </span>
+                                    <button
+                                      data-interactive
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleProductEdit(product);
+                                      }}
+                                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-200 rounded flex items-center justify-center"
+                                      aria-label="Quick edit product"
+                                    >
+                                      <Edit className={cn(
+                                        "text-blue-600",
+                                        compactMode ? "w-3 h-3" : "w-3.5 h-3.5"
+                                      )} />
+                                    </button>
                                   </div>
                                 </td>
 
                                 {/* Actions column */}
-                                <td className={cn(
-                                  "text-center w-1/12 hidden md:table-cell",
-                                  compactMode ? "px-2 py-1.5" : "px-2 sm:px-4 py-4"
-                                )} onClick={(e) => e.stopPropagation()}>
+                                <td 
+                                  className={cn(
+                                    "text-center w-1/12 hidden md:table-cell",
+                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  )} 
+                                  onClick={(e) => e.stopPropagation()}
+                                  data-interactive
+                                >
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                       <Button variant="outline" size="sm" className={cn(
