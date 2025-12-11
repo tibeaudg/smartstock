@@ -52,15 +52,12 @@ export const DemoLayout: React.FC<DemoLayoutProps> = ({ sessionToken, children }
         <DemoBanner expiresAt={expiresAt} />
 
         <div className="h-[calc(100vh-80px)] flex flex-col">
-          {/* Header with sidebar toggle */}
+          {/* Header */}
           <Header 
             title="Demo Dashboard" 
             unreadCount={0} 
             onNotificationClick={() => {}}
-            sidebarOpen={sidebarOpen}
-            onSidebarToggle={() => setSidebarOpen(!sidebarOpen)}
             userProfile={mockUserProfile}
-            onProfileClick={() => navigate('/auth?mode=register')}
           />
           
           <div className="flex flex-1 overflow-hidden">

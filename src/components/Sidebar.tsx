@@ -3,10 +3,8 @@ import {
   Package, 
   ShoppingCart, 
   Settings, 
-  Menu,
   X,
   HelpCircle,
-  CircleUserRound, 
   Users,
   MessageSquare,
   Bell,
@@ -16,7 +14,6 @@ import {
   ChevronRight,
   FileText,
   Truck,
-  LogOut,
   Star,
   TrendingUp,
   Brain,
@@ -36,7 +33,6 @@ import { ChatModal } from './ChatModal';
 import { FloatingChatButton } from './FloatingChatButton';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Button } from '@/components/ui/button';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
@@ -52,8 +48,6 @@ interface SidebarProps {
   userProfile?: UserProfile;
   isOpen: boolean;
   onToggle: () => void;
-  profileDropdownOpen?: boolean;
-  onProfileDropdownChange?: (open: boolean) => void;
 }
 
 interface MenuItem {
@@ -69,25 +63,18 @@ interface MenuItem {
   }[];
 }
 
-export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdownOpen: externalProfileDropdownOpen, onProfileDropdownChange }: SidebarProps) => {
+export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [supportOpen, setSupportOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
-  const [internalProfileDropdownOpen, setInternalProfileDropdownOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
-  
-  // Use external state if provided, otherwise use internal state
-  const profileDropdownOpen = externalProfileDropdownOpen !== undefined ? externalProfileDropdownOpen : internalProfileDropdownOpen;
-  const setProfileDropdownOpen = onProfileDropdownChange 
-    ? (open: boolean) => onProfileDropdownChange(open)
-    : setInternalProfileDropdownOpen;
   
   // Check subscription-based feature access
   const { canUseFeature, currentTier } = useSubscription();
@@ -112,21 +99,10 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
     });
   };
   
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      navigate('/auth');
-    } catch (error) {
-      console.error('Error during sign out:', error);
-    }
-  };
-  
   const settingsSubItems = [
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
     { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
-    { id: 'subscription', label: 'Subscription', path: '/dashboard/settings/subscription' },
-    { id: 'integrations', label: 'Integrations', path: '/dashboard/settings/integrations' },
   ];
 
   const adminSubItems = [
@@ -302,72 +278,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
           );
         })()}
 
-        {/* Profile Modal for mobile */}
-        {profileDropdownOpen && (
-          <div className="fixed inset-0 bg-black/60 z-[60] md:hidden" onClick={() => setProfileDropdownOpen(false)}>
-            <div className="fixed bottom-20 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-xl shadow-lg transition-colors" onClick={(e) => e.stopPropagation()}>
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center">
-                      <span className="text-white font-semibold">
-                        {userProfile?.first_name?.[0] || userProfile?.email?.[0] || user?.email?.[0] || 'U'}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-gray-100">
-                        {userProfile?.first_name && userProfile?.last_name 
-                          ? `${userProfile.first_name} ${userProfile.last_name}`
-                          : userProfile?.first_name || userProfile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User'}
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        {userProfile?.email || user?.email || 'No email'}
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setProfileDropdownOpen(false)}
-                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors">
-                    <div className="flex items-center gap-2">
-                      {theme === 'dark' ? (
-                        <Moon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                      ) : (
-                        <Sun className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                      )}
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                        {theme === 'dark' ? 'Dark mode' : 'Light mode'}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        toggleTheme();
-                      }}
-                      className="text-xs font-medium text-blue-600 dark:text-blue-400"
-                    >
-                      Switch
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => {
-                      handleSignOut();
-                      setProfileDropdownOpen(false);
-                    }}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-500/20 transition-colors"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    <span>Logout</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </>
     );
   }
@@ -376,26 +286,18 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
   return (
     <>
       {/* Sidebar */}
-      <div className={`
-        fixed left-0 top-0 h-screen bg-white dark:bg-gray-950 transition-all border border-gray-200 dark:border-gray-800 duration-300 z-50 flex flex-col
-        ${isOpen ? 'w-64' : 'w-16'}
-        md:relative md:translate-x-0
-      `}>
+      <div className="fixed left-0 top-0 h-screen bg-white dark:bg-gray-950 transition-all border border-gray-200 dark:border-gray-800 duration-300 z-50 flex flex-col w-64 md:relative md:translate-x-0">
         <div className="flex items-center pl-3 sm:pl-5 space-x-2 sm:space-x-3 h-[60px] sm:h-[70px] flex-shrink-0">
           <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
-          {isOpen && <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">stockflow</h1>}
+          <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">stockflow</h1>
         </div>
 
-
-
-        {/* Branch Selector - Always show when sidebar is open */}
-        {isOpen && (
-          <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
-            <BranchSelector />
-          </div>
-        )}
+        {/* Branch Selector */}
+        <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
+          <BranchSelector />
+        </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm overflow-y-auto pb-4">
@@ -452,7 +354,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                           ? 'text-gray-600 dark:text-gray-300'
                           : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-blue-300' 
                       }
-                      ${!isOpen ? 'justify-center' : ''}
                       ${shouldAnimateProducts ? 'animate-pulse-glow-scale ring-2 ring-blue-400/50 dark:ring-blue-500/50' : ''}
                     `}
                   >
@@ -462,23 +363,21 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
                           ${isParentActive ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 group-hover:text-blue-700 dark:text-gray-400 dark:group-hover:text-blue-300'}
                         `}
                       />
-                      {isOpen && (
-                        <div className="flex items-center justify-between flex-1 ml-2 sm:ml-3">
-                          <span className={`text-xs sm:text-sm transition-colors ${isParentActive ? 'text-blue-700 dark:text-blue-300' : 'group-hover:text-blue-700 dark:group-hover:text-blue-300'}`}>   
-                            {label}
-                          </span>
-                          {hasSubItems && (
-                            <ChevronDown 
-                              className={`w-3 h-3 sm:w-4 sm:h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''} ${isParentActive ? 'text-blue-500 dark:text-blue-300' : 'text-gray-400 dark:text-gray-500'}`} 
-                            />
-                          )}
-                        </div>
-                      )}
+                      <div className="flex items-center justify-between flex-1 ml-2 sm:ml-3">
+                        <span className={`text-xs sm:text-sm transition-colors ${isParentActive ? 'text-blue-700 dark:text-blue-300' : 'group-hover:text-blue-700 dark:group-hover:text-blue-300'}`}>   
+                          {label}
+                        </span>
+                        {hasSubItems && (
+                          <ChevronDown 
+                            className={`w-3 h-3 sm:w-4 sm:h-4 transform transition-transform ${isSubmenuOpen ? 'rotate-180' : ''} ${isParentActive ? 'text-blue-500 dark:text-blue-300' : 'text-gray-400 dark:text-gray-500'}`} 
+                          />
+                        )}
+                      </div>
                     </div>
                   </NavLink>
 
                   {/* Submenu */}
-                  {isOpen && hasSubItems && isExpanded && (
+                  {hasSubItems && isExpanded && (
                     <ul className="ml-3 sm:ml-4 space-y-1 border-l-2 border-gray-200 dark:border-gray-700 pl-3">
                       {item.subItems.map((subItem) => (
                         <li key={subItem.id}>
@@ -519,7 +418,11 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
               );
             })}
           </ul>
-          <div className="mt-6 hidden md:block">
+        </nav>
+
+        {/* Fixed Bottom Section - Theme Toggle */}
+        <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800">
+          <div className="px-3 py-3">
             <div className="px-3 py-3 rounded-lg bg-gray-100 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 transition-colors">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
@@ -545,79 +448,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, profileDropdo
               </div>
             </div>
           </div>
-        </nav>
-
-
-        {/* Fixed Bottom Section */}
-        <div className="flex-shrink-0">
-
-
-
-        {/* Profile Component */}
-        <div className="border-t border-gray-200 dark:border-gray-800 relative">
-          <div className="px-3 py-2">
-            <button
-              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              className={`
-                w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors
-                hover:bg-gray-50 dark:hover:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-background
-                ${isOpen ? '' : 'justify-center'}
-              `}
-            >
-              <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-semibold">
-                  {userProfile?.first_name?.[0] || userProfile?.email?.[0] || user?.email?.[0] || 'U'}
-                </span>
-              </div>
-              {isOpen && (
-                <>
-                  <div className="flex-1 text-left min-w-0">
-                    <div className="font-semibold text-gray-900 dark:text-gray-100 truncate">
-                      {userProfile?.first_name && userProfile?.last_name 
-                        ? `${userProfile.first_name} ${userProfile.last_name}`
-                        : userProfile?.first_name || userProfile?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User'}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      {userProfile?.email || user?.email || 'No email'}
-                    </div>
-                  </div>
-                  <ChevronDown 
-                    className={`w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform ${
-                      profileDropdownOpen ? 'rotate-180' : ''
-                    }`} 
-                  />
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Profile Dropdown Menu */}
-          {profileDropdownOpen && createPortal(
-            <div 
-              className="fixed inset-0 z-40" 
-              onClick={() => setProfileDropdownOpen(false)}
-            >
-              <div 
-                className="absolute bottom-16 left-4 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 min-w-[180px] transition-colors"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => {
-                    handleSignOut();
-                    setProfileDropdownOpen(false);
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-500/20 transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
-                </button>
-              </div>
-            </div>,
-            document.body
-          )}
-        </div>
-
-
         </div>
       </div>
 

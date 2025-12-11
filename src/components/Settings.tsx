@@ -15,7 +15,6 @@ import {
 import { BranchManagement } from './settings/BranchManagement';
 import { ProfileSettings } from './settings/ProfileSettings';
 import { UserManagement } from './settings/UserManagement';
-import { SubscriptionManagement } from './settings/SubscriptionManagement';
 import { LicenseOverview } from './settings/LicenseOverview';
 import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';

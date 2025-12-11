@@ -1131,66 +1131,6 @@ const ProductRow: React.FC<ProductRowProps> = ({
         </td>
       )}
 
-      {/* Actions column */}
-      {columnVisibility.actions && (
-        <td className="px-3 py-2 text-center w-1/12" onClick={(e) => e.stopPropagation()}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                <MoreVertical className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              {/* Stock Actions - Only show for variants, not parent products */}
-              {!hasChildren && (
-                <DropdownMenuItem onClick={() => onStockAction(product, 'in')}>
-                  <Plus className="w-4 h-4 mr-2 text-green-600" />
-                  <span className="flex-1">Adjust Stock</span>
-                </DropdownMenuItem>
-              )}
-              
-              {hasChildren && onAddVariant && (
-                <DropdownMenuItem onClick={() => onAddVariant(product)}>
-                  <Plus className="w-4 h-4 mr-2 text-blue-600" />
-                  <span className="flex-1">Add Variant</span>
-                </DropdownMenuItem>
-              )}
-              
-              <DropdownMenuSeparator />
-              
-              {/* Primary Actions */}
-              <DropdownMenuItem onClick={() => onEdit(product)}>
-                <Edit className="w-4 h-4 mr-2 text-blue-600" />
-                <span className="flex-1">Edit</span>
-              </DropdownMenuItem>
-              
-              {onDuplicate && (
-                <DropdownMenuItem onClick={() => onDuplicate(product)}>
-                  <Copy className="w-4 h-4 mr-2 text-purple-600" />
-                  <span className="flex-1">Duplicate</span>
-                </DropdownMenuItem>
-              )}
-              
-              {onMoveToLocation && (
-                <DropdownMenuItem onClick={() => onMoveToLocation(product)}>
-                  <MapPin className="w-4 h-4 mr-2 text-orange-600" />
-                  <span className="flex-1">Move to Location</span>
-                </DropdownMenuItem>
-              )}
-              
-              <DropdownMenuSeparator />
-              
-              {/* Destructive Actions */}
-              {onDelete && (
-                <DropdownMenuItem onClick={() => onDelete(product)}>
-                  <Trash2 className="w-4 h-4 mr-2 text-gray-600" />
-                  <span className="flex-1">Delete</span>
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </td>
-      )}
     </tr>
   );
 };
@@ -1986,8 +1926,7 @@ export const StockList = () => {
     category: true,
     location: true,
     purchasePrice: true,
-    salePrice: true,
-    actions: true
+    salePrice: true
   });
 
   // Compact mode state - default to true
@@ -4225,14 +4164,6 @@ export const StockList = () => {
                     Price
                   </th>
                 )}
-                {columnVisibility.actions && (
-                  <th className={cn(
-                    "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12",
-                    compactMode ? "px-2 py-1.5" : "px-3 py-3"
-                  )}>
-                    Actions
-                  </th>
-                )}    
               </tr>
             </thead>
             <tbody className="bg-white">

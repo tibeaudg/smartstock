@@ -147,9 +147,7 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   const quickFilters = [
     { id: 'low-stock', label: 'Low Stock', icon: AlertCircle, color: 'text-orange-600' },
     { id: 'out-of-stock', label: 'Out of Stock', icon: AlertCircle, color: 'text-red-600' },
-    { id: 'recently-added', label: 'Recently Added', icon: Clock, color: 'text-blue-600' },
-    { id: 'high-value', label: 'High Value', icon: DollarSign, color: 'text-green-600' },
-  ];
+  ];  
 
   const selectedCategoryNames = allCategories
     .filter(cat => selectedCategoryIds.includes(cat.id))

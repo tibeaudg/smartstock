@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NotificationButton } from '../NotificationButton';
-import { Package, User, LogOut, Settings, Menu, X } from 'lucide-react';
+import { Package, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useMobile } from '@/hooks/use-mobile';
@@ -17,37 +17,37 @@ interface HeaderProps {
   title: string;
   unreadCount?: number;
   onNotificationClick?: () => void;
-  sidebarOpen?: boolean;
-  onSidebarToggle?: () => void;
   userProfile?: {
     first_name?: string;
     last_name?: string;
     email?: string;
   };
-  onProfileClick?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotificationClick, sidebarOpen, onSidebarToggle, userProfile, onProfileClick }) => {
+export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotificationClick, userProfile }) => {
   const navigate = useNavigate();
   const { signOut, user } = useAuth();
   const { isMobile } = useMobile();
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
+  };
+
   return (
     <>
 
       {/* Desktop Header */}
         <header className="hidden lg:flex fixed top-0 left-0 right-0 z-40 items-center justify-between px-8 h-[70px] bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 transition-colors">
-          {/* Left side - Sidebar toggle */}
+          {/* Left side - Notifications */}
         <div className="flex items-center">
-          {onSidebarToggle && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onSidebarToggle}
-              className="w-10 h-10 hover:bg-gray-100"
-              aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-            >
-              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+          {user && onNotificationClick && (
+            <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
           )}
         </div>
         
@@ -59,10 +59,37 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">stockflow</h1>
         </div>
         
-        {/* Right side - Notifications, language switcher and user menu */}
+        {/* Right side - User profile */}
         <div className="flex items-center space-x-4">
-          {user && (
-            <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+          {user && userProfile && (
+            <DropdownMenu open={profileDropdownOpen} onOpenChange={setProfileDropdownOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  aria-label="Profile"
+                >
+                  <div className="rounded-full bg-blue-600 w-8 h-8 flex items-center justify-center">
+                    <span className="text-white text-xs font-semibold">
+                      {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                    </span>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem
+                  onClick={() => {
+                    handleSignOut();
+                    setProfileDropdownOpen(false);
+                  }}
+                  className="text-red-600 focus:text-red-600"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  <span>Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </header>
@@ -70,7 +97,7 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white dark:bg-gray-950 shadow-sm transition-colors">
         <div className="flex items-center justify-between px-4 h-[60px] border-b border-gray-100 dark:border-gray-800">
-          {/* Left side - Notifications (moved from right) */}
+          {/* Left side - Notifications */}
           <div className="flex items-center">
             {user && onNotificationClick && (
               <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
@@ -85,22 +112,37 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
             <span className="text-base font-semibold text-gray-900 dark:text-gray-100">stockflow</span>
           </div>
           
-          {/* Right side - Profile button (moved from bottom navbar) */}
+          {/* Right side - Profile button */}
           <div className="flex items-center">
-            {user && onProfileClick && userProfile && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={onProfileClick}
-                className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-gray-800"
-                aria-label="Profile"
-              >
-                <div className="rounded-full bg-blue-600 w-8 h-8 flex items-center justify-center">
-                  <span className="text-white text-xs font-semibold">
-                    {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
-                  </span>
-                </div>
-              </Button>
+            {user && userProfile && (
+              <DropdownMenu open={profileDropdownOpen} onOpenChange={setProfileDropdownOpen}>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="w-10 h-10 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    aria-label="Profile"
+                  >
+                    <div className="rounded-full bg-blue-600 w-8 h-8 flex items-center justify-center">
+                      <span className="text-white text-xs font-semibold">
+                        {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                      </span>
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleSignOut();
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </div>

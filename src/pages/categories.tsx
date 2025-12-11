@@ -26,7 +26,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign, ShoppingCart, Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Archive, Download } from 'lucide-react';
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -97,6 +97,7 @@ export default function CategorysPage() {
   
   // Hover state for row actions
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
+  const [hoveredImageProductId, setHoveredImageProductId] = useState<string | null>(null);
   
   // Product modal states
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -1712,7 +1713,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center w-12 border-r border-gray-200",
-                                compactMode ? "px-2 py-1" : "px-3 py-4"
+                                compactMode ? "px-2 py-2" : "px-3 py-5"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -1738,7 +1739,7 @@ export default function CategorysPage() {
                             </th>
                             {isColumnVisible('sku') && (
                               <th 
-                                className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                className="px-2 sm:px-4 py-4 sm:py-5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
                                 onClick={() => handleSort('sku')}
                               >
                                 <div className="flex items-center">
@@ -1760,7 +1761,7 @@ export default function CategorysPage() {
                             )}
                             {isColumnVisible('category_name') && (
                               <th 
-                                className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                className="px-2 sm:px-4 py-4 sm:py-5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
                                 onClick={() => handleSort('name')}
                               >
                                 <div className="flex items-center">
@@ -1795,7 +1796,7 @@ export default function CategorysPage() {
                               <th 
                                 className={cn(
                                   "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
                                 )}
                                 onClick={() => handleSort('date_added')}
                               >
@@ -1809,7 +1810,7 @@ export default function CategorysPage() {
                               <th 
                                 className={cn(
                                   "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
                                 )}
                                 onClick={() => handleSort('purchase_price')}
                               >
@@ -1823,7 +1824,7 @@ export default function CategorysPage() {
                               <th 
                                 className={cn(
                                   "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
                                 )}
                                 onClick={() => handleSort('sale_price')}
                               >
@@ -1836,7 +1837,7 @@ export default function CategorysPage() {
                             {isColumnVisible('actions') && (
                               <th className={cn(
                                 "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell",
-                                compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
                               )}>
                                 Actions
                               </th>
@@ -1862,9 +1863,10 @@ export default function CategorysPage() {
                                 onMouseLeave={() => setHoveredRowId(null)}
                                 className={cn(
                                   'group hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100 relative',
+                                  hoveredImageProductId === product.id && 'z-50',
                                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
                                   'cursor-pointer',
-                                  compactMode && 'h-8'
+                                  compactMode && 'h-10'
                                 )}
                               >
                                 {/* Row Indicator Bar (left side) - Always shows stock status color */}
@@ -1880,7 +1882,7 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-12 relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-1" : "px-3 py-3"
+                                    compactMode ? "px-2 py-2" : "px-3 py-4"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -1909,7 +1911,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('sku') && (
                                   <td className={cn(
                                     "text-left relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                   )}>
                                     <div className="flex items-center gap-1.5">
                                       <span className={cn(
@@ -1937,8 +1939,8 @@ export default function CategorysPage() {
                                 {/* Product column */}
                                 {isColumnVisible('name') && (
                                   <td className={cn(
-                                    "w-1/4 relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                    "w-1/4 relative z-10 border-r border-gray-200 overflow-visible",
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                   )}>
                                     <div className={cn(
                                       "flex items-center",
@@ -1946,12 +1948,18 @@ export default function CategorysPage() {
                                     )}>
                                       {/* Product image - only show if image exists */}
                                       {product.image_url && (
-                                        <div className={cn("flex-shrink-0", compactMode ? "w-8 h-8" : "w-10 h-10")} onClick={(e) => e.stopPropagation()} data-interactive>
-                                          <div className={cn("bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden", compactMode ? "w-8 h-8" : "w-10 h-10")}>
+                                        <div 
+                                          className={cn("flex-shrink-0 relative group z-[9999]", compactMode ? "w-8 h-8" : "w-10 h-10")} 
+                                          onClick={(e) => e.stopPropagation()} 
+                                          onMouseEnter={() => setHoveredImageProductId(product.id)}
+                                          onMouseLeave={() => setHoveredImageProductId(null)}
+                                          data-interactive
+                                        >
+                                          <div className={cn("bg-gray-50 rounded-lg border flex items-center justify-center overflow-visible", compactMode ? "w-8 h-8" : "w-10 h-10")}>
                                             <img
                                               src={product.image_url}
                                               alt={product.name}
-                                              className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                                              className="max-w-full max-h-full object-contain cursor-pointer transition-transform duration-300 ease-in-out group-hover:scale-[4] relative group-hover:shadow-2xl"
                                               onClick={() => handleImagePreview(product.image_url)}
                                             />
                                           </div>
@@ -2024,7 +2032,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('category_name') && (
                                   <td className={cn(
                                     "text-left relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                   )}>
                                     <div className="flex items-center gap-1.5">
                                       <span className={cn(
@@ -2054,7 +2062,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('location') && (
                                   <td className={cn(
                                     "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                   )}>
                                     <div className="flex items-center justify-center gap-1">
                                       <MapPin className={cn(
@@ -2088,7 +2096,7 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-1/8 border-r border-gray-200",
-                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                   )} 
                                   onClick={(e) => isMobile && e.stopPropagation()}
                                 >
@@ -2168,7 +2176,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('date_added') && (
                                 <td className={cn(
                                   "text-center w-1/8 hidden lg:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                 )}>
                                   <span className={cn(
                                     "text-gray-600",
@@ -2189,7 +2197,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('purchase_price') && (
                                 <td className={cn(
                                   "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                 )}>
                                   <div className={cn(
                                     getPriceColor(product.purchase_price, 'text-gray-900'),
@@ -2205,7 +2213,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('sale_price') && (
                                 <td className={cn(
                                   "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                 )}>
                                   <div className={cn(
                                     "flex items-center justify-center gap-1.5",
@@ -2239,7 +2247,7 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-1/12 hidden md:table-cell",
-                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -2849,26 +2857,26 @@ export default function CategorysPage() {
                 </Button>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleBulkTransferStock}
-                  className="flex items-center gap-2"
-                >
-                  <MapPin className="w-4 h-4" />
-                  <span className="hidden sm:inline">Move to Location</span>
-                  <span className="sm:hidden">Move</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleBulkEditCategory}
-                  className="flex items-center gap-2"
-                >
-                  <FolderTree className="w-4 h-4" />
-                  <span className="hidden sm:inline">Edit Category</span>
-                  <span className="sm:hidden">Category</span>
-                </Button>
+                {/* Edit button - only enabled when exactly 1 product is selected */}
+                {selectedProductIds.size === 1 && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => {
+                      const selectedId = Array.from(selectedProductIds)[0];
+                      const product = sortedProducts.find((p: any) => p.id === selectedId);
+                      if (product) {
+                        handleProductEdit(product);
+                      }
+                    }}
+                    className="flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    <Edit className="w-4 h-4" />
+                    <span className="hidden sm:inline">Edit</span>
+                    <span className="sm:hidden">Edit</span>
+                  </Button>
+                )}
+              
                 <Button
                   variant="outline"
                   size="sm"
@@ -2879,16 +2887,7 @@ export default function CategorysPage() {
                   <span className="hidden sm:inline">Adjust Stock</span>
                   <span className="sm:hidden">Stock</span>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleBulkArchive}
-                  className="flex items-center gap-2"
-                >
-                  <Archive className="w-4 h-4" />
-                  <span className="hidden sm:inline">Archive</span>
-                  <span className="sm:hidden">Archive</span>
-                </Button>
+              
                 <Button
                   variant="outline"
                   size="sm"

@@ -19,7 +19,6 @@ import { BranchManagement } from './components/settings/BranchManagement';
 import { UserManagement } from './components/settings/UserManagement';
 import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
-import IntegrationsSettings from './components/settings/Integrations';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
@@ -58,7 +57,6 @@ import ResourcesPage from './pages/resources';
 import CustomersPage from './pages/customers';
 import CustomerDetailPage from './pages/customers/[id]';
 import ReportingPage from './pages/reporting';
-import { SubscriptionManagement } from './components/settings/SubscriptionManagement';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 import { AuthContext } from './hooks/useAuth';
 
@@ -402,8 +400,6 @@ const AuthRoute = () => {
             <Route path="profile" element={<ProfileSettings />} />
             <Route path="branches" element={<BranchManagement />} />
             <Route path="users" element={<UserManagement />} />
-            <Route path="subscription" element={<SubscriptionManagement />} />
-            <Route path="integrations" element={<IntegrationsSettings />} />
             <Route path="help-center" element={<HelpCenterPage />} />
             <Route path="license" element={<LicenseOverview />} />
             <Route path="invoicing" element={<InvoicingOverview />} />
