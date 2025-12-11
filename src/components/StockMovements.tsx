@@ -40,6 +40,9 @@ export const StockMovements = () => {
         'Unit Price': (Number(t.unit_price) || 0).toFixed(2),
         'Total Value': (Number(t.total_value) || (t.quantity * Number(t.unit_price))).toFixed(2),
         'Reference': t.reference_number || '',
+        'Source Type': t.source_type || '',
+        'Source ID': t.source_id || '',
+        'Adjustment Method': t.adjustment_method || '',
         'Notes': t.notes || '',
         'User': t.first_name || 'Onbekend'
       }));
@@ -109,15 +112,22 @@ export const StockMovements = () => {
           <div className="flex gap-2 items-center">
             <Select
               value={filters.transactionType}
-              onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as 'all' | 'incoming' | 'outgoing' }))}
+              onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as any }))}
             >
               <SelectTrigger className="flex-1">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="incoming">In</SelectItem>
-                <SelectItem value="outgoing">Out</SelectItem>
+                <SelectItem value="incoming">Incoming</SelectItem>
+                <SelectItem value="outgoing">Outgoing</SelectItem>
+                <SelectItem value="purchase_order">Purchase Order</SelectItem>
+                <SelectItem value="sales_order">Sales Order</SelectItem>
+                <SelectItem value="stock_transfer">Stock Transfer</SelectItem>
+                <SelectItem value="cycle_count">Cycle Count</SelectItem>
+                <SelectItem value="adjustment">Adjustment</SelectItem>
+                <SelectItem value="manual_adjustment">Manual Adjustment</SelectItem>
+                <SelectItem value="scan_adjustment">Scan Adjustment</SelectItem>
               </SelectContent>
             </Select>
             <Select
@@ -247,6 +257,12 @@ export const StockMovements = () => {
                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/2" : ""}`}>Product</th>
                  <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>User</th>
                  <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Type</th>
+                 {!isMobile && (
+                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                 )}
+                 {!isMobile && (
+                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
+                 )}
                  <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Quantity</th>
                  {!isMobile && (
                    <>
@@ -275,12 +291,42 @@ export const StockMovements = () => {
                    </td>
                    <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center`}>
                      <Badge
-                       variant={transaction.transaction_type === 'incoming' ? 'success' : 'destructive'}
-                       className={`${transaction.transaction_type === 'incoming' ? 'success' : ''} ${isMobile ? 'text-xs px-1 py-0' : ''}`}
+                       variant={transaction.transaction_type === 'incoming' || transaction.transaction_type === 'purchase_order' || transaction.transaction_type === 'cycle_count' ? 'success' : 'destructive'}
+                       className={`${isMobile ? 'text-xs px-1 py-0' : ''}`}
                      >
-                       {transaction.transaction_type === 'incoming' ? 'In' : 'Out'}
+                       {transaction.transaction_type === 'incoming' ? 'In' : 
+                        transaction.transaction_type === 'outgoing' ? 'Out' :
+                        transaction.transaction_type === 'purchase_order' ? 'PO' :
+                        transaction.transaction_type === 'sales_order' ? 'SO' :
+                        transaction.transaction_type === 'stock_transfer' ? 'Transfer' :
+                        transaction.transaction_type === 'cycle_count' ? 'Cycle' :
+                        transaction.transaction_type === 'manual_adjustment' ? 'Manual' :
+                        transaction.transaction_type === 'scan_adjustment' ? 'Scan' :
+                        transaction.transaction_type}
                      </Badge>
                    </td>
+                   {!isMobile && (
+                     <td className="px-4 py-2 text-center text-sm">
+                       {transaction.source_type ? (
+                         <span className="text-xs text-gray-500">
+                           {transaction.source_type.replace('_', ' ')}
+                         </span>
+                       ) : (
+                         <span className="text-xs text-gray-400">-</span>
+                       )}
+                     </td>
+                   )}
+                   {!isMobile && (
+                     <td className="px-4 py-2 text-center text-sm">
+                       {transaction.adjustment_method ? (
+                         <Badge variant="outline" className="text-xs">
+                           {transaction.adjustment_method}
+                         </Badge>
+                       ) : (
+                         <span className="text-xs text-gray-400">-</span>
+                       )}
+                     </td>
+                   )}
                    <td className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-sm font-medium`}>
                      {transaction.transaction_type === 'outgoing' ? (
                       <span className="text-red-600">- {transaction.quantity}</span>

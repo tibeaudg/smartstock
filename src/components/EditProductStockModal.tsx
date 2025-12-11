@@ -86,7 +86,7 @@ export const EditProductStockModal = ({
         .insert({
           product_id: product.id,
           product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
-          transaction_type: currentActionType === 'in' ? 'incoming' : 'outgoing',
+          transaction_type: currentActionType === 'in' ? 'manual_adjustment' : 'manual_adjustment',
           quantity: numericQuantity,
           unit_price: product.unit_price,
           reference_number: `STOCK_${currentActionType?.toUpperCase()}_${Date.now()}`,
@@ -95,7 +95,8 @@ export const EditProductStockModal = ({
           created_by: user.id, // Nieuwe kolom voor relaties
           branch_id: product.branch_id,
           variant_id: product.is_variant ? product.id : null,
-          variant_name: product.is_variant ? product.variant_name : null
+          variant_name: product.is_variant ? product.variant_name : null,
+          adjustment_method: 'manual'
         });
       if (transactionError) {
         throw new Error(`Error creating transaction: ${transactionError.message}`);

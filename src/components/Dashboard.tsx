@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
@@ -11,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
 import { useCategoryProducts } from '@/hooks/useCategories';
+import { Link } from 'react-router-dom';
 
 
 
@@ -407,6 +409,27 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </div>
         </div>
       </div>
+
+      {/* Quick Link to Advanced Analytics */}
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Advanced Analytics Available
+              </h3>
+              <p className="text-gray-600 text-sm">
+                Get detailed insights with Inventory Valuation (FIFO/LIFO/Average), Turnover Ratios, Dead Stock analysis, and Location Utilization reports.
+              </p>
+            </div>
+            <Button asChild variant="default" className="ml-4">
+              <Link to="/dashboard/analytics/advanced">
+                View Advanced Reports
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
       
     </div>
   );

@@ -36,6 +36,7 @@ import { Admin } from './components/Admin';
 import { AdminChatList } from './components/AdminChatList';
 import { CustomReports } from './components/analytics/CustomReports';
 import { ExportData } from './components/analytics/ExportData';
+import { AdvancedReports } from './components/analytics/AdvancedReports';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorTestComponent } from './components/ErrorTestComponent';
 import FeaturesPage from './components/FeaturesPage';
@@ -394,6 +395,7 @@ const AuthRoute = () => {
           <Route path="transactions" element={<StockMovements />} />
 
           <Route path="analytics/reports" element={<CustomReports />} />
+          <Route path="analytics/advanced" element={<AdvancedReports />} />
           <Route path="analytics/export" element={<ExportData />} />
           <Route path="settings" element={<Settings />}>
             <Route index element={<ProfileSettings />} />

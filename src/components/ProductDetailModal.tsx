@@ -75,6 +75,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [editingField, setEditingField] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   
+  // Variant editing state
+  const [editingVariantId, setEditingVariantId] = useState<string | null>(null);
+  const [variantForm, setVariantForm] = useState({
+    variant_name: '',
+    quantity_in_stock: 0,
+    minimum_stock_level: 0,
+    purchase_price: 0,
+    sale_price: 0,
+    variant_sku: '',
+    variant_barcode: '',
+    location: '',
+  });
+  
   // Form state
   const [form, setForm] = useState({
     name: product?.name || '',
@@ -190,6 +203,85 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     fetchVariants();
     queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
     queryClient.invalidateQueries({ queryKey: ['products'] });
+  };
+
+  // Handle variant editing
+  const handleEditVariant = (variant: any) => {
+    setEditingVariantId(variant.id);
+    setVariantForm({
+      variant_name: variant.variant_name || '',
+      quantity_in_stock: variant.quantity_in_stock || 0,
+      minimum_stock_level: variant.minimum_stock_level || 0,
+      purchase_price: variant.purchase_price || 0,
+      sale_price: variant.sale_price || 0,
+      variant_sku: variant.variant_sku || '',
+      variant_barcode: variant.variant_barcode || '',
+      location: variant.location || '',
+    });
+  };
+
+  const handleSaveVariant = async (variantId: string) => {
+    if (!user || !activeBranch) return;
+    
+    setLoading(true);
+    try {
+      const updateData: any = {
+        variant_name: variantForm.variant_name.trim(),
+        quantity_in_stock: Number(variantForm.quantity_in_stock),
+        minimum_stock_level: Number(variantForm.minimum_stock_level),
+        purchase_price: Number(variantForm.purchase_price) || null,
+        sale_price: Number(variantForm.sale_price) || null,
+        variant_sku: variantForm.variant_sku.trim() || null,
+        variant_barcode: variantForm.variant_barcode.trim() || null,
+        location: variantForm.location.trim() || null,
+        updated_at: new Date().toISOString(),
+      };
+
+      const { error: updateError } = await supabase
+        .from('products')
+        .update(updateData)
+        .eq('id', variantId);
+        
+      if (updateError) {
+        console.error('Error updating variant:', updateError);
+        toast.error('Error updating variant');
+        setLoading(false);
+        return;
+      }
+
+      // Refresh variants
+      await fetchVariants();
+
+      // Invalidate queries
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      
+      if (onProductUpdated) {
+        onProductUpdated();
+      }
+
+      toast.success('Variant updated successfully');
+      setEditingVariantId(null);
+    } catch (error) {
+      console.error('Error updating variant:', error);
+      toast.error('Unexpected error updating variant');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelVariantEdit = () => {
+    setEditingVariantId(null);
+    setVariantForm({
+      variant_name: '',
+      quantity_in_stock: 0,
+      minimum_stock_level: 0,
+      purchase_price: 0,
+      sale_price: 0,
+      variant_sku: '',
+      variant_barcode: '',
+      location: '',
+    });
   };
 
   // Handle barcode scanning
@@ -482,16 +574,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     return new Intl.NumberFormat('en-US').format(Number(qty) || 0);
   };
 
-  // Calculate total stock including variants
+  // Calculate total stock - only variant stock when variants exist, parent stock is ignored
   const totalStock = React.useMemo(() => {
     if (currentProduct.is_variant) {
       return Number(currentProduct.quantity_in_stock) || 0;
     }
-    const baseStock = Number(currentProduct.quantity_in_stock) || 0;
+    // If product has variants, use only variant stock (parent stock = 0)
+    // If no variants, use parent stock as normal
     const variantsStock = variants.reduce((sum, variant) => {
       return sum + (Number(variant.quantity_in_stock) || 0);
     }, 0);
-    return baseStock + variantsStock;
+    return variants.length > 0 ? variantsStock : (Number(currentProduct.quantity_in_stock) || 0);
   }, [currentProduct.quantity_in_stock, currentProduct.is_variant, variants]);
 
   const stockStatus = getStatus(totalStock, currentProduct.minimum_stock_level);
@@ -760,7 +853,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       {stockStatus}
                           {!currentProduct.is_variant && variants.length > 0 && (
                         <span className="ml-1 text-gray-400">
-                              ({formatQty(currentProduct.quantity_in_stock)} + {formatQty(totalStock - (Number(currentProduct.quantity_in_stock) || 0))} variants)
+                              ({formatQty(totalStock)} from {variants.length} variant{variants.length !== 1 ? 's' : ''})
                         </span>
                       )}
                     </div>
@@ -1197,70 +1290,203 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {variants.map((variant) => {
                     const variantStockStatus = getStatus(variant.quantity_in_stock, variant.minimum_stock_level);
                     const variantStockDotColor = getDotColor(variant.quantity_in_stock, variant.minimum_stock_level);
+                    const isEditing = editingVariantId === variant.id;
                     
                     return (
                       <div
                         key={variant.id}
                         className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
                       >
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h4 className="font-semibold text-gray-900">{variant.variant_name}</h4>
+                        {isEditing ? (
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <h4 className="font-semibold text-gray-900">Edit Variant</h4>
                               <Badge variant="secondary" className="text-xs">
                                 Variant
                               </Badge>
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            
+                            <div className="space-y-3">
                               <div>
-                                <span className="text-gray-600">Stock:</span>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <div
-                                    className={cn(
-                                      'w-2 h-2 rounded-full',
-                                      variantStockDotColor
-                                    )}
+                                <Label>Variant Name *</Label>
+                                <Input
+                                  value={variantForm.variant_name}
+                                  onChange={(e) => setVariantForm(prev => ({ ...prev, variant_name: e.target.value }))}
+                                  placeholder="e.g., Yellow, Green, Size M"
+                                  disabled={loading}
+                                />
+                              </div>
+                              
+                              <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                  <Label>Stock Quantity</Label>
+                                  <Input
+                                    type="number"
+                                    value={variantForm.quantity_in_stock}
+                                    onChange={(e) => setVariantForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
+                                    min={0}
+                                    disabled={loading}
                                   />
-                                  <span className="font-medium">{formatQty(variant.quantity_in_stock)}</span>
-                                  <span className="text-xs text-gray-500">({variantStockStatus})</span>
+                                </div>
+                                <div>
+                                  <Label>Minimum Level</Label>
+                                  <Input
+                                    type="number"
+                                    value={variantForm.minimum_stock_level}
+                                    onChange={(e) => setVariantForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
+                                    min={0}
+                                    disabled={loading}
+                                  />
                                 </div>
                               </div>
-                              {variant.variant_sku && (
+                              
+                              <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                  <span className="text-gray-600">SKU:</span>
-                                  <p className="font-mono text-xs mt-1">{variant.variant_sku}</p>
+                                  <Label>Purchase Price</Label>
+                                  <Input
+                                    type="number"
+                                    step="0.01"
+                                    value={variantForm.purchase_price}
+                                    onChange={(e) => setVariantForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
+                                    min={0}
+                                    disabled={loading}
+                                  />
                                 </div>
-                              )}
-                              {variant.location && (
                                 <div>
-                                  <span className="text-gray-600">Location:</span>
-                                  <p className="text-xs mt-1">{variant.location}</p>
+                                  <Label>Sale Price</Label>
+                                  <Input
+                                    type="number"
+                                    step="0.01"
+                                    value={variantForm.sale_price}
+                                    onChange={(e) => setVariantForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                                    min={0}
+                                    disabled={loading}
+                                  />
                                 </div>
-                              )}
-                              {(variant.purchase_price || variant.sale_price) && (
+                              </div>
+                              
+                              <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                  <span className="text-gray-600">Price:</span>
-                                  <p className="text-xs mt-1">
-                                    {variant.sale_price ? formatPrice(Number(variant.sale_price)) : '-'}
-                                  </p>
+                                  <Label>SKU</Label>
+                                  <Input
+                                    value={variantForm.variant_sku}
+                                    onChange={(e) => setVariantForm(prev => ({ ...prev, variant_sku: e.target.value }))}
+                                    placeholder="Variant SKU"
+                                    disabled={loading}
+                                  />
                                 </div>
-                              )}
+                                <div>
+                                  <Label>Barcode</Label>
+                                  <Input
+                                    value={variantForm.variant_barcode}
+                                    onChange={(e) => setVariantForm(prev => ({ ...prev, variant_barcode: e.target.value }))}
+                                    placeholder="Variant Barcode"
+                                    disabled={loading}
+                                  />
+                                </div>
+                              </div>
+                              
+                              <div>
+                                <Label>Location</Label>
+                                <Input
+                                  value={variantForm.location}
+                                  onChange={(e) => setVariantForm(prev => ({ ...prev, location: e.target.value }))}
+                                  placeholder="Storage location"
+                                  disabled={loading}
+                                />
+                              </div>
+                            </div>
+                            
+                            <div className="flex gap-2 pt-2">
+                              <Button
+                                size="sm"
+                                onClick={() => handleSaveVariant(variant.id)}
+                                disabled={loading || !variantForm.variant_name.trim()}
+                                className="flex-1"
+                              >
+                                <Save className="w-4 h-4 mr-2" />
+                                Save
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={handleCancelVariantEdit}
+                                disabled={loading}
+                                className="flex-1"
+                              >
+                                <X className="w-4 h-4 mr-2" />
+                                Cancel
+                              </Button>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2 ml-4">
-                            <Button
-                              onClick={() => {
-                                onClose();
-                                onAdjustStock(variant);
-                              }}
-                              variant="ghost"
-                              size="sm"
-                              className="h-8"
-                            >
-                              <Plus className="w-3 h-3" />
-                            </Button>
+                        ) : (
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <h4 className="font-semibold text-gray-900">{variant.variant_name}</h4>
+                                <Badge variant="secondary" className="text-xs">
+                                  Variant
+                                </Badge>
+                              </div>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                <div>
+                                  <span className="text-gray-600">Stock:</span>
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <div
+                                      className={cn(
+                                        'w-2 h-2 rounded-full',
+                                        variantStockDotColor
+                                      )}
+                                    />
+                                    <span className="font-medium">{formatQty(variant.quantity_in_stock)}</span>
+                                    <span className="text-xs text-gray-500">({variantStockStatus})</span>
+                                  </div>
+                                </div>
+                                {variant.variant_sku && (
+                                  <div>
+                                    <span className="text-gray-600">SKU:</span>
+                                    <p className="font-mono text-xs mt-1">{variant.variant_sku}</p>
+                                  </div>
+                                )}
+                                {variant.location && (
+                                  <div>
+                                    <span className="text-gray-600">Location:</span>
+                                    <p className="text-xs mt-1">{variant.location}</p>
+                                  </div>
+                                )}
+                                {(variant.purchase_price || variant.sale_price) && (
+                                  <div>
+                                    <span className="text-gray-600">Price:</span>
+                                    <p className="text-xs mt-1">
+                                      {variant.sale_price ? formatPrice(Number(variant.sale_price)) : '-'}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              <Button
+                                onClick={() => handleEditVariant(variant)}
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  onClose();
+                                  onAdjustStock(variant);
+                                }}
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                              >
+                                <Plus className="w-4 h-4" />
+                              </Button>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     );
                   })}

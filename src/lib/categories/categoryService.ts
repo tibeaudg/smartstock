@@ -497,11 +497,12 @@ export async function getCategoryProducts(
   const descendants = getCategoryDescendants(categoryId, allCategories as Category[]);
   const categoryIds = [categoryId, ...descendants.map(d => d.id)];
 
-  // Build query
+  // Build query (exclude variants - they should only be visible in parent product detail modal)
   let productsQuery = supabase
     .from('products')
     .select('*')
-    .in('category_id', categoryIds);
+    .in('category_id', categoryIds)
+    .or('is_variant.is.null,is_variant.eq.false');
 
   if (branchId) {
     productsQuery = productsQuery.eq('branch_id', branchId);
@@ -519,6 +520,45 @@ export async function getCategoryProducts(
     return [];
   }
 
+  // Fetch variants for all products to calculate total stock
+  const productIds = products.map(p => p.id);
+  let variants: Array<{
+    parent_product_id: string;
+    quantity_in_stock: number;
+  }> = [];
+  
+  if (productIds.length > 0) {
+    let variantsQuery = supabase
+      .from('products')
+      .select('parent_product_id, quantity_in_stock')
+      .eq('is_variant', true)
+      .in('parent_product_id', productIds);
+    
+    if (branchId) {
+      variantsQuery = variantsQuery.eq('branch_id', branchId);
+    }
+    
+    const { data: variantsData, error: variantsError } = await variantsQuery;
+    
+    if (!variantsError && variantsData) {
+      variants = variantsData as Array<{
+        parent_product_id: string;
+        quantity_in_stock: number;
+      }>;
+    }
+  }
+  
+  // Calculate total stock for each product (only variant stock, parent stock is ignored when variants exist)
+  const variantStockMap = new Map<string, number>();
+  const hasVariantsMap = new Map<string, boolean>();
+  
+  variants.forEach(variant => {
+    const parentId = variant.parent_product_id;
+    hasVariantsMap.set(parentId, true);
+    const current = variantStockMap.get(parentId) || 0;
+    variantStockMap.set(parentId, current + (Number(variant.quantity_in_stock) || 0));
+  });
+
   // Get category names
   const productCategoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
 
@@ -537,11 +577,21 @@ export async function getCategoryProducts(
     }
   }
 
-  // Add category names to products
-  const productsWithNames = products.map(product => ({
-    ...product,
-    category_name: product.category_id ? categories[product.category_id] || null : null
-  }));
+  // Add category names to products and update stock (only variant stock if variants exist)
+  const productsWithNames = products.map(product => {
+    const hasVariants = hasVariantsMap.get(product.id) || false;
+    const variantStock = variantStockMap.get(product.id) || 0;
+    
+    // If product has variants, use only variant stock (parent stock = 0)
+    // If no variants, use parent stock as normal
+    const totalStock = hasVariants ? variantStock : (Number(product.quantity_in_stock) || 0);
+    
+    return {
+      ...product,
+      category_name: product.category_id ? categories[product.category_id] || null : null,
+      quantity_in_stock: totalStock // Only variant stock if variants exist, otherwise parent stock
+    };
+  });
 
   return productsWithNames;
 }
@@ -553,10 +603,11 @@ export async function getAllProducts(
   userId: string,
   branchId?: string
 ): Promise<any[]> {
-  // Build query
+  // Build query (exclude variants - they should only be visible in parent product detail modal)
   let productsQuery = supabase
     .from('products')
-    .select('*');
+    .select('*')
+    .or('is_variant.is.null,is_variant.eq.false');
 
   if (branchId) {
     productsQuery = productsQuery.eq('branch_id', branchId);
@@ -574,6 +625,45 @@ export async function getAllProducts(
     return [];
   }
 
+  // Fetch variants for all products to calculate total stock
+  const productIds = products.map(p => p.id);
+  let variants: Array<{
+    parent_product_id: string;
+    quantity_in_stock: number;
+  }> = [];
+  
+  if (productIds.length > 0) {
+    let variantsQuery = supabase
+      .from('products')
+      .select('parent_product_id, quantity_in_stock')
+      .eq('is_variant', true)
+      .in('parent_product_id', productIds);
+    
+    if (branchId) {
+      variantsQuery = variantsQuery.eq('branch_id', branchId);
+    }
+    
+    const { data: variantsData, error: variantsError } = await variantsQuery;
+    
+    if (!variantsError && variantsData) {
+      variants = variantsData as Array<{
+        parent_product_id: string;
+        quantity_in_stock: number;
+      }>;
+    }
+  }
+  
+  // Calculate total stock for each product (only variant stock, parent stock is ignored when variants exist)
+  const variantStockMap = new Map<string, number>();
+  const hasVariantsMap = new Map<string, boolean>();
+  
+  variants.forEach(variant => {
+    const parentId = variant.parent_product_id;
+    hasVariantsMap.set(parentId, true);
+    const current = variantStockMap.get(parentId) || 0;
+    variantStockMap.set(parentId, current + (Number(variant.quantity_in_stock) || 0));
+  });
+
   // Get category names
   const productCategoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
 
@@ -592,11 +682,21 @@ export async function getAllProducts(
     }
   }
 
-  // Add category names to products
-  const productsWithNames = products.map(product => ({
-    ...product,
-    category_name: product.category_id ? categories[product.category_id] || null : null
-  }));
+  // Add category names to products and update stock (only variant stock if variants exist)
+  const productsWithNames = products.map(product => {
+    const hasVariants = hasVariantsMap.get(product.id) || false;
+    const variantStock = variantStockMap.get(product.id) || 0;
+    
+    // If product has variants, use only variant stock (parent stock = 0)
+    // If no variants, use parent stock as normal
+    const totalStock = hasVariants ? variantStock : (Number(product.quantity_in_stock) || 0);
+    
+    return {
+      ...product,
+      category_name: product.category_id ? categories[product.category_id] || null : null,
+      quantity_in_stock: totalStock // Only variant stock if variants exist, otherwise parent stock
+    };
+  });
 
   return productsWithNames;
 }
@@ -637,11 +737,12 @@ export async function getProductsByCategories(
 
   const categoryIdsArray = Array.from(allCategoryIds);
 
-  // Build query
+  // Build query - exclude variants (they should only be visible in parent product detail modal)
   let productsQuery = supabase
     .from('products')
     .select('*')
-    .in('category_id', categoryIdsArray);
+    .in('category_id', categoryIdsArray)
+    .or('is_variant.is.null,is_variant.eq.false');
 
   if (branchId) {
     productsQuery = productsQuery.eq('branch_id', branchId);
@@ -658,6 +759,45 @@ export async function getProductsByCategories(
   if (!products || products.length === 0) {
     return [];
   }
+
+  // Fetch variants for all products to calculate total stock
+  const productIds = products.map(p => p.id);
+  let variants: Array<{
+    parent_product_id: string;
+    quantity_in_stock: number;
+  }> = [];
+  
+  if (productIds.length > 0) {
+    let variantsQuery = supabase
+      .from('products')
+      .select('parent_product_id, quantity_in_stock')
+      .eq('is_variant', true)
+      .in('parent_product_id', productIds);
+    
+    if (branchId) {
+      variantsQuery = variantsQuery.eq('branch_id', branchId);
+    }
+    
+    const { data: variantsData, error: variantsError } = await variantsQuery;
+    
+    if (!variantsError && variantsData) {
+      variants = variantsData as Array<{
+        parent_product_id: string;
+        quantity_in_stock: number;
+      }>;
+    }
+  }
+  
+  // Calculate total stock for each product (only variant stock, parent stock is ignored when variants exist)
+  const variantStockMap = new Map<string, number>();
+  const hasVariantsMap = new Map<string, boolean>();
+  
+  variants.forEach(variant => {
+    const parentId = variant.parent_product_id;
+    hasVariantsMap.set(parentId, true);
+    const current = variantStockMap.get(parentId) || 0;
+    variantStockMap.set(parentId, current + (Number(variant.quantity_in_stock) || 0));
+  });
 
   // Get category names
   const productCategoryIds = [...new Set(products.map(p => p.category_id).filter(Boolean))];
@@ -677,11 +817,21 @@ export async function getProductsByCategories(
     }
   }
 
-  // Add category names to products
-  const productsWithNames = products.map(product => ({
-    ...product,
-    category_name: product.category_id ? categories[product.category_id] || null : null
-  }));
+  // Add category names to products and update stock (only variant stock if variants exist)
+  const productsWithNames = products.map(product => {
+    const hasVariants = hasVariantsMap.get(product.id) || false;
+    const variantStock = variantStockMap.get(product.id) || 0;
+    
+    // If product has variants, use only variant stock (parent stock = 0)
+    // If no variants, use parent stock as normal
+    const totalStock = hasVariants ? variantStock : (Number(product.quantity_in_stock) || 0);
+    
+    return {
+      ...product,
+      category_name: product.category_id ? categories[product.category_id] || null : null,
+      quantity_in_stock: totalStock // Only variant stock if variants exist, otherwise parent stock
+    };
+  });
 
   return productsWithNames;
 }

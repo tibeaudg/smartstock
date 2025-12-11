@@ -437,7 +437,7 @@ export default function ScanPage() {
       const stockTransactionData = {
         product_id: productId,
         product_name: productName,
-        transaction_type: transactionType === 'incoming' ? 'incoming' : 'outgoing',
+        transaction_type: transactionType === 'incoming' ? 'scan_adjustment' : 'scan_adjustment',
         quantity: dataToUse.quantityInStock,
         unit_price: transactionType === 'incoming' ? dataToUse.purchasePrice : dataToUse.salePrice,
         user_id: user.id, // Keep user_id for backward compatibility
@@ -446,7 +446,8 @@ export default function ScanPage() {
         reference_number: transactionType === 'incoming' ? 'SCANNED_PRODUCT' : 'SCANNED_OUTGOING',
         notes: transactionType === 'incoming' 
           ? `Product added via barcode scanner: ${dataToUse.barcode || 'no barcode'}`
-          : `Product removed via barcode scanner: ${dataToUse.barcode || 'no barcode'}`
+          : `Product removed via barcode scanner: ${dataToUse.barcode || 'no barcode'}`,
+        adjustment_method: 'scan'
       };
 
       const { error: transactionError } = await supabase

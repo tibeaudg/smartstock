@@ -595,6 +595,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
           notes: 'New product initial stock',
           variant_id: null,
           variant_name: null,
+          adjustment_method: 'system'
         };
         console.log('[AddProductModal] Inserting initial transaction for single product.');
 
@@ -660,6 +661,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
               notes: 'Product created',
               variant_id: null,
               variant_name: null,
+              adjustment_method: 'system'
             });
 
           if (parentTxError) {
@@ -723,6 +725,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
               notes: 'New variant initial stock',
               variant_id: vp.id,
               variant_name: vp.variant_name,
+              adjustment_method: 'system'
             }));
             
           console.log(`[AddProductModal] Preparing ${transactions.length} variant transactions.`);
@@ -1481,7 +1484,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
             <div className={`sticky bottom-0  bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
               <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row justify-end'}`}>
                 <Button 
-                  type="submit" 
+                  type="button"
+                  onClick={() => form.handleSubmit(handleSubmit)()}
                   disabled={loading || (duplicateName && !hasVariants)} 
                   className={isMobile ? 'w-full bg-blue-500 text-white' : 'w-auto bg-blue-500 text-white'}
                 >

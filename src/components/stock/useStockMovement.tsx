@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 interface Product {
@@ -26,6 +27,7 @@ export const useStockMovement = (
 ) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
   const [quantity, setQuantity] = useState('');
@@ -73,7 +75,7 @@ export const useStockMovement = (
       const transactionData = {
         product_id: product.id,
         product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
-        transaction_type: transactionType,
+        transaction_type: 'manual_adjustment' as const,
         quantity: quantityNum,
         unit_price: transactionType === 'incoming' ? product.purchase_price : product.sale_price,
         user_id: user.id, // Behoud user_id voor backward compatibility
@@ -82,7 +84,8 @@ export const useStockMovement = (
         reference_number: `MANUAL_${transactionType.toUpperCase()}`,
         notes: `Handmatige ${transactionType === 'incoming' ? 'toevoeging' : 'verwijdering'} van voorraad`,
         variant_id: product.is_variant ? product.id : null,
-        variant_name: product.is_variant ? product.variant_name : null
+        variant_name: product.is_variant ? product.variant_name : null,
+        adjustment_method: 'manual' as const
       };
 
       // Create the transaction

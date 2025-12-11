@@ -1694,13 +1694,14 @@ const fetchProducts = async (
   const expectedCount = options.expectedCount ?? 0;
   const performFetch = async (): Promise<Product[]> => {
     
-    // Haal eerst de producten op
+    // Haal eerst de producten op (exclude variants - they should only be visible in parent product detail modal)
     const from = Math.max(0, (page - 1) * perPage);
     const to = from + perPage - 1;
     const { data: products, error: productsError } = await supabase
       .from('products')
       .select('*')
       .eq('branch_id', branchId)
+      .or('is_variant.is.null,is_variant.eq.false')
       .order('name')
       .range(from, to);
     
@@ -1762,11 +1763,55 @@ const fetchProducts = async (
       }
     }
     
-    // Voeg de namen toe aan de producten
-    const transformedData = typedProducts.map(product => ({
+    // Fetch variants for all products to calculate total stock
+    const productIds = typedProducts.map(p => p.id);
+    let variants: Array<{
+      parent_product_id: string;
+      quantity_in_stock: number;
+    }> = [];
+    
+    if (productIds.length > 0) {
+      const { data: variantsData, error: variantsError } = await supabase
+        .from('products')
+        .select('parent_product_id, quantity_in_stock')
+        .eq('branch_id', branchId)
+        .eq('is_variant', true)
+        .in('parent_product_id', productIds);
+      
+      if (!variantsError && variantsData) {
+        variants = variantsData as Array<{
+          parent_product_id: string;
+          quantity_in_stock: number;
+        }>;
+      }
+    }
+    
+  // Calculate total stock for each product (only variant stock, parent stock is ignored when variants exist)
+  const variantStockMap = new Map<string, number>();
+  const hasVariantsMap = new Map<string, boolean>();
+  
+  variants.forEach(variant => {
+    const parentId = variant.parent_product_id;
+    hasVariantsMap.set(parentId, true);
+    const current = variantStockMap.get(parentId) || 0;
+    variantStockMap.set(parentId, current + (Number(variant.quantity_in_stock) || 0));
+  });
+  
+  // Voeg de namen toe aan de producten en update stock (only variant stock if variants exist)
+  const transformedData = typedProducts.map(product => {
+    const hasVariants = hasVariantsMap.get(product.id) || false;
+    const variantStock = variantStockMap.get(product.id) || 0;
+    
+    // If product has variants, use only variant stock (parent stock = 0)
+    // If no variants, use parent stock as normal
+    const totalStock = hasVariants ? variantStock : (Number(product.quantity_in_stock) || 0);
+    
+    return {
       ...product,
-      category_name: product.category_id ? categories[product.category_id] || null : null
-    }));
+      category_name: product.category_id ? categories[product.category_id] || null : null,
+      quantity_in_stock: totalStock // Only variant stock if variants exist, otherwise parent stock
+    };
+  });
     
     return transformedData;
   };
@@ -2188,7 +2233,7 @@ export const StockList = () => {
     placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
 
-  // Fetch total count for pagination
+  // Fetch total count for pagination (exclude variants)
   const { data: totalCount = 0 } = useQuery<number>({
     queryKey: ['products-total-count', activeBranch?.branch_id],
     queryFn: async () => {
@@ -2196,7 +2241,8 @@ export const StockList = () => {
       const { count, error } = await supabase
         .from('products')
         .select('*', { count: 'exact', head: true })
-        .eq('branch_id', activeBranch.branch_id);
+        .eq('branch_id', activeBranch.branch_id)
+        .or('is_variant.is.null,is_variant.eq.false');
       if (error) {
         console.error('Error fetching products count:', error);
         return 0;
@@ -2872,7 +2918,7 @@ export const StockList = () => {
       }
 
       // Create stock transaction
-      const transactionType = quantityDiff > 0 ? 'incoming' : 'outgoing';
+      const transactionType = quantityDiff > 0 ? 'manual_adjustment' : 'manual_adjustment';
       const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
@@ -2887,7 +2933,8 @@ export const StockList = () => {
           created_by: user.id,
           branch_id: activeBranch.branch_id,
           variant_id: product.is_variant ? productId : null,
-          variant_name: product.is_variant ? product.variant_name : null
+          variant_name: product.is_variant ? product.variant_name : null,
+          adjustment_method: 'manual'
         });
 
       if (transactionError) {

@@ -22,12 +22,29 @@ export type Product = {
   branch_id?: string | null;
 };
 
+export type TransactionType = 
+  | 'incoming' 
+  | 'outgoing' 
+  | 'purchase_order' 
+  | 'sales_order' 
+  | 'stock_transfer' 
+  | 'cycle_count' 
+  | 'adjustment' 
+  | 'damage' 
+  | 'return' 
+  | 'manual_adjustment' 
+  | 'scan_adjustment';
+
+export type AdjustmentMethod = 'manual' | 'scan' | 'system';
+
+export type SourceType = 'purchase_orders' | 'sales_orders' | 'stock_transfers' | 'cycle_counts' | null;
+
 export type StockTransaction = {
   id: string;
   created_at: string;
   product_id: string;
   product_name: string;
-  transaction_type: 'incoming' | 'outgoing';
+  transaction_type: TransactionType;
   quantity: number;
   unit_price: number | string; // Can be string from database
   total_value?: number | string; // Calculated field, can be string from database
@@ -37,6 +54,11 @@ export type StockTransaction = {
   created_by: string;
   variant_id?: string | null;
   variant_name?: string | null;
+  // New fields for enhanced tracking
+  source_type?: SourceType;
+  source_id?: string | null;
+  adjustment_method?: AdjustmentMethod;
+  audit_trail?: Record<string, unknown>;
   // Gebruikersinfo
   first_name?: string | null;
   last_name?: string | null;
@@ -45,10 +67,170 @@ export type StockTransaction = {
 
 export type TransactionFilters = {
   dateRange: 'all' | 'today' | 'week' | 'month' | 'custom';
-  transactionType: 'all' | 'incoming' | 'outgoing';
+  transactionType: 'all' | TransactionType;
+  sourceType?: 'all' | SourceType;
+  adjustmentMethod?: 'all' | AdjustmentMethod;
   searchQuery: string;
   startDate?: Date;
   endDate?: Date;
+  userId?: string | null;
+  productId?: string | null;
+};
+
+// Purchase Order types
+export type PurchaseOrderStatus = 'draft' | 'pending' | 'ordered' | 'received' | 'cancelled';
+
+export type PurchaseOrder = {
+  id: string;
+  po_number: string;
+  status: PurchaseOrderStatus;
+  vendor_id?: string | null;
+  vendor_name?: string | null;
+  order_date: string;
+  expected_delivery_date?: string | null;
+  total_amount: number;
+  branch_id: string;
+  user_id: string;
+  created_by?: string | null;
+  notes?: string | null;
+  tracking_number?: string | null;
+  shipping_carrier?: string | null;
+  created_at: string;
+  updated_at: string;
+  items?: PurchaseOrderItem[];
+};
+
+export type PurchaseOrderItem = {
+  id: string;
+  purchase_order_id: string;
+  product_id?: string | null;
+  variant_id?: string | null;
+  quantity_ordered: number;
+  quantity_received: number;
+  unit_price: number;
+  total_price: number;
+  received_at?: string | null;
+  notes?: string | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+};
+
+// Sales Order types
+export type SalesOrderStatus = 'draft' | 'pending' | 'fulfilled' | 'cancelled';
+
+export type SalesOrder = {
+  id: string;
+  so_number: string;
+  status: SalesOrderStatus;
+  customer_id?: string | null;
+  customer_name?: string | null;
+  order_date: string;
+  fulfillment_date?: string | null;
+  total_amount: number;
+  branch_id: string;
+  user_id: string;
+  created_by?: string | null;
+  notes?: string | null;
+  shipping_address?: string | null;
+  created_at: string;
+  updated_at: string;
+  items?: SalesOrderItem[];
+};
+
+export type SalesOrderItem = {
+  id: string;
+  sales_order_id: string;
+  product_id?: string | null;
+  variant_id?: string | null;
+  quantity_ordered: number;
+  quantity_fulfilled: number;
+  unit_price: number;
+  total_price: number;
+  fulfilled_at?: string | null;
+  notes?: string | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+};
+
+// Stock Transfer types
+export type StockTransferStatus = 'pending' | 'in_transit' | 'completed' | 'cancelled';
+
+export type StockTransfer = {
+  id: string;
+  transfer_number: string;
+  status: StockTransferStatus;
+  from_branch_id?: string | null;
+  to_branch_id?: string | null;
+  from_location?: string | null;
+  to_location?: string | null;
+  transfer_date: string;
+  completed_date?: string | null;
+  branch_id: string;
+  user_id: string;
+  created_by?: string | null;
+  notes?: string | null;
+  tracking_number?: string | null;
+  created_at: string;
+  updated_at: string;
+  items?: StockTransferItem[];
+  from_branch?: { id: string; name: string };
+  to_branch?: { id: string; name: string };
+};
+
+export type StockTransferItem = {
+  id: string;
+  stock_transfer_id: string;
+  product_id?: string | null;
+  variant_id?: string | null;
+  quantity_transferred: number;
+  unit_price: number;
+  notes?: string | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+};
+
+// Cycle Count types
+export type CycleCountStatus = 'draft' | 'in_progress' | 'completed' | 'approved';
+
+export type CycleCount = {
+  id: string;
+  count_number: string;
+  status: CycleCountStatus;
+  count_date: string;
+  completed_date?: string | null;
+  approved_date?: string | null;
+  approved_by?: string | null;
+  branch_id: string;
+  location_filter?: string | null;
+  user_id: string;
+  created_by?: string | null;
+  notes?: string | null;
+  discrepancy_count: number;
+  total_items_counted: number;
+  created_at: string;
+  updated_at: string;
+  items?: CycleCountItem[];
+};
+
+export type CycleCountItem = {
+  id: string;
+  cycle_count_id: string;
+  product_id?: string | null;
+  variant_id?: string | null;
+  expected_quantity: number;
+  counted_quantity: number;
+  variance: number; // counted - expected
+  variance_value: number;
+  notes?: string | null;
+  counted_by?: string | null;
+  counted_at?: string | null;
+  counting_method?: 'manual' | 'scan' | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
 };
 
 export type StockMovementStats = {

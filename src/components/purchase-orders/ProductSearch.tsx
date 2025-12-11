@@ -51,6 +51,7 @@ export const ProductSearch: React.FC<ProductSearchProps> = ({
         .from('products')
         .select('*')
         .eq('user_id', user.id)
+        .or('is_variant.is.null,is_variant.eq.false')
         .ilike('name', `%${searchTerm}%`)
         .limit(10);
 

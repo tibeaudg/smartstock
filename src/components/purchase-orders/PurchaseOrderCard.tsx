@@ -16,55 +16,25 @@ import {
 } from 'lucide-react';
 import { StatusProgressBar } from './StatusProgressBar';
 
-interface PurchaseOrder {
-  id: string;
-  po_number: string;
-  status: 'quote' | 'ordered' | 'packaging' | 'shipped' | 'received' | 'cancelled';
-  payment_status: 'unpaid' | 'paid' | 'partial';
-  order_date: string;
-  expected_delivery_date?: string;
-  total_amount: number;
-  vendor?: {
-    id: string;
-    name: string;
-    email?: string;
-    phone?: string;
-    address?: string;
-  };
-  items?: Array<{
-    id: string;
-    quantity: number;
-    product?: {
-      id: string;
-      name: string;
-      image_url?: string;
-    };
-  }>;
-  tracking_number?: string;
-  shipping_carrier?: string;
-}
+import { PurchaseOrder } from '@/types/stockTypes';
 
 interface PurchaseOrderCardProps {
   purchaseOrder: PurchaseOrder;
-  onEdit: () => void;
-  onDelete: () => void;
+  onClick: () => void;
 }
 
 export const PurchaseOrderCard: React.FC<PurchaseOrderCardProps> = ({
   purchaseOrder,
-  onEdit,
-  onDelete
+  onClick
 }) => {
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'quote':
-        return <Clock className="w-4 h-4 text-blue-500" />;
+      case 'draft':
+        return <Clock className="w-4 h-4 text-gray-500" />;
+      case 'pending':
+        return <Clock className="w-4 h-4 text-yellow-500" />;
       case 'ordered':
-        return <Package className="w-4 h-4 text-orange-500" />;
-      case 'packaging':
-        return <Package className="w-4 h-4 text-orange-500" />;
-      case 'shipped':
-        return <Truck className="w-4 h-4 text-blue-500" />;
+        return <Package className="w-4 h-4 text-blue-500" />;
       case 'received':
         return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'cancelled':
@@ -76,29 +46,15 @@ export const PurchaseOrderCard: React.FC<PurchaseOrderCardProps> = ({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'quote':
-        return 'bg-blue-100 text-blue-800';
+      case 'draft':
+        return 'bg-gray-100 text-gray-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
       case 'ordered':
-      case 'packaging':
-        return 'bg-orange-100 text-orange-800';
-      case 'shipped':
         return 'bg-blue-100 text-blue-800';
       case 'received':
         return 'bg-green-100 text-green-800';
       case 'cancelled':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getPaymentStatusColor = (paymentStatus: string) => {
-    switch (paymentStatus) {
-      case 'paid':
-        return 'bg-green-100 text-green-800';
-      case 'partial':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'unpaid':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -115,16 +71,14 @@ export const PurchaseOrderCard: React.FC<PurchaseOrderCardProps> = ({
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'quote':
-        return 'New Quote';
+      case 'draft':
+        return 'Draft';
+      case 'pending':
+        return 'Pending';
       case 'ordered':
         return 'Ordered';
-      case 'packaging':
-        return 'Product in packaging';
-      case 'shipped':
-        return 'Order is on shipping';
       case 'received':
-        return 'Package received';
+        return 'Received';
       case 'cancelled':
         return 'Cancelled';
       default:
@@ -132,26 +86,8 @@ export const PurchaseOrderCard: React.FC<PurchaseOrderCardProps> = ({
     }
   };
 
-  const getStatusDescription = (status: string, date: string) => {
-    const formattedDate = formatDate(date);
-    switch (status) {
-      case 'quote':
-        return `New Quote ${formattedDate}`;
-      case 'ordered':
-        return `Order placed ${formattedDate}`;
-      case 'packaging':
-        return `Product in packaging ${formattedDate}`;
-      case 'shipped':
-        return `Order is on shipping ${formattedDate}`;
-      case 'received':
-        return `Package received ${formattedDate}`;
-      default:
-        return `${status} ${formattedDate}`;
-    }
-  };
-
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={onClick}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -162,98 +98,45 @@ export const PurchaseOrderCard: React.FC<PurchaseOrderCardProps> = ({
             <Badge className={getStatusColor(purchaseOrder.status)}>
               {getStatusText(purchaseOrder.status)}
             </Badge>
-            <Badge className={getPaymentStatusColor(purchaseOrder.payment_status)}>
-              {purchaseOrder.payment_status === 'unpaid' ? 'Unpaid' : 
-               purchaseOrder.payment_status === 'paid' ? 'Paid' : 'Partial'}
-            </Badge>
           </div>
-          <Button variant="ghost" size="sm">
-            <MoreHorizontal className="w-4 h-4" />
-          </Button>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {/* Product Information */}
-        {purchaseOrder.items && purchaseOrder.items.length > 0 && (
-          <div className="space-y-2">
-            {purchaseOrder.items.slice(0, 2).map((item, index) => (
-              <div key={item.id} className="flex items-center gap-3">
-                {item.product?.image_url ? (
-                  <img 
-                    src={item.product.image_url} 
-                    alt={item.product.name}
-                    className="w-8 h-8 rounded object-cover"
-                  />
-                ) : (
-                  <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center">
-                    <Package className="w-4 h-4 text-gray-400" />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <p className="font-medium text-sm">{item.product?.name}</p>
-                  <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
-                </div>
-              </div>
-            ))}
-            {purchaseOrder.items.length > 2 && (
-              <p className="text-xs text-gray-500">
-                +{purchaseOrder.items.length - 2} more items
-              </p>
-            )}
-          </div>
-        )}
-
         {/* Vendor Information */}
-        {purchaseOrder.vendor && (
+        {purchaseOrder.vendor_name && (
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
               <span className="text-blue-600 font-semibold text-sm">
-                {purchaseOrder.vendor.name.charAt(0).toUpperCase()}
+                {purchaseOrder.vendor_name.charAt(0).toUpperCase()}
               </span>
             </div>
             <div className="flex-1">
-              <p className="font-medium text-sm">{purchaseOrder.vendor.name}</p>
-              <p className="text-xs text-gray-500">{purchaseOrder.vendor.address}</p>
+              <p className="font-medium text-sm">{purchaseOrder.vendor_name}</p>
             </div>
-            <Badge variant="outline" className="text-xs">
-              Billed
-            </Badge>
           </div>
         )}
 
-        {/* Status and Progress */}
+        {/* Items Summary */}
+        {purchaseOrder.items && purchaseOrder.items.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm font-medium">Items: {purchaseOrder.items.length}</p>
+            <p className="text-xs text-gray-500">
+              Total Qty: {purchaseOrder.items.reduce((sum, item) => sum + item.quantity_ordered, 0)}
+            </p>
+          </div>
+        )}
+
+        {/* Status and Amount */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">
-              {getStatusDescription(purchaseOrder.status, purchaseOrder.order_date)}
+              {formatDate(purchaseOrder.order_date)}
             </span>
             <span className="text-sm font-semibold">
               ${purchaseOrder.total_amount.toFixed(2)}
             </span>
           </div>
-          
-          <StatusProgressBar status={purchaseOrder.status} />
-          
-          {purchaseOrder.status === 'shipped' && (
-            <Button 
-              size="sm" 
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
-            >
-              Track shipment
-            </Button>
-          )}
-          
-          {purchaseOrder.status === 'received' && (
-            <Button 
-              size="sm" 
-              variant="outline"
-              className="w-full text-green-600 border-green-200"
-            >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Fulfilled
-            </Button>
-          )}
         </div>
 
         {/* Additional Info */}
@@ -270,12 +153,6 @@ export const PurchaseOrderCard: React.FC<PurchaseOrderCardProps> = ({
               </div>
             )}
           </div>
-          {purchaseOrder.tracking_number && (
-            <div className="flex items-center gap-1">
-              <Truck className="w-3 h-3" />
-              <span>{purchaseOrder.tracking_number}</span>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>

@@ -55,6 +55,10 @@ export const useStockMovements = (): {
           created_at,
           created_by,
           branch_id,
+          source_type,
+          source_id,
+          adjustment_method,
+          audit_trail,
           profiles:created_by (email, first_name, last_name)
         `)
         .eq('branch_id', activeBranch.branch_id)
@@ -62,6 +66,22 @@ export const useStockMovements = (): {
 
       if (filters.transactionType !== 'all') {
         query = query.eq('transaction_type', filters.transactionType);
+      }
+      
+      if (filters.sourceType && filters.sourceType !== 'all') {
+        query = query.eq('source_type', filters.sourceType);
+      }
+      
+      if (filters.adjustmentMethod && filters.adjustmentMethod !== 'all') {
+        query = query.eq('adjustment_method', filters.adjustmentMethod);
+      }
+      
+      if (filters.userId) {
+        query = query.eq('created_by', filters.userId);
+      }
+      
+      if (filters.productId) {
+        query = query.eq('product_id', filters.productId);
       }
 
       const getDateRange = () => {
@@ -104,6 +124,10 @@ export const useStockMovements = (): {
         email: row.profiles?.email ?? null,
         first_name: row.profiles?.first_name ?? null,
         last_name: row.profiles?.last_name ?? null,
+        source_type: row.source_type ?? null,
+        source_id: row.source_id ?? null,
+        adjustment_method: row.adjustment_method ?? null,
+        audit_trail: row.audit_trail ?? null,
       }));
       console.log('[useStockMovements] Fetched transaction count', mapped.length);
       return mapped;

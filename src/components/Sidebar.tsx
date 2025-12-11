@@ -111,6 +111,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
 
   const analyticsSubItems = [
     { id: 'reports', label: 'Reports', path: '/dashboard/analytics/reports' },
+    { id: 'advanced', label: 'Advanced Analytics', path: '/dashboard/analytics/advanced' },
     { id: 'export', label: 'Export', path: '/dashboard/analytics/export' },
   ];
 
@@ -135,7 +136,17 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           end: true
         },
         { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
-
+        ...(hasAnalytics
+          ? [
+              {
+                id: 'analytics',
+                label: 'Analytics',
+                icon: TrendingUp,
+                path: '/dashboard/analytics/reports',
+                subItems: analyticsSubItems
+              }
+            ]
+          : []),
         { 
           id: 'settings', 
           label: 'Settings', 

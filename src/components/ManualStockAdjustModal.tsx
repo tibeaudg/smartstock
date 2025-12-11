@@ -203,7 +203,7 @@ export const ManualStockAdjustModal = ({
           product_name: selectedProduct.is_variant && selectedProduct.variant_name 
             ? `${selectedProduct.name} - ${selectedProduct.variant_name}` 
             : selectedProduct.name,
-          transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
+          transaction_type: actionType === 'in' ? 'manual_adjustment' : 'manual_adjustment',
           quantity: numericQuantity,
           unit_price: selectedProduct.unit_price,
           reference_number: `MANUAL_${actionType.toUpperCase()}_${Date.now()}`,
@@ -212,7 +212,8 @@ export const ManualStockAdjustModal = ({
           created_by: currentUser.id,
           branch_id: selectedProduct.branch_id,
           variant_id: selectedProduct.is_variant ? selectedProduct.id : null,
-          variant_name: selectedProduct.is_variant ? selectedProduct.variant_name : null
+          variant_name: selectedProduct.is_variant ? selectedProduct.variant_name : null,
+          adjustment_method: 'manual'
         });
 
       if (transactionError) {

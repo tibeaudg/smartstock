@@ -22,6 +22,25 @@ interface LayoutProps {
 export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default' }: LayoutProps) => {
   const { isMobile } = useMobile();
   const { user } = useAuth();
+  // Ensure sidebar starts closed on mobile, open on desktop
+  // Use a more explicit check to handle any timing issues
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    // Default to closed on mobile, open on desktop
+    // This ensures proper initial state regardless of timing
+    return !isMobile;
+  });
+
+  // Only set initial state when mobile detection changes, don't override user actions
+  useEffect(() => {
+    // Only set initial state, don't continuously override user actions
+    if (isMobile) {
+      // On mobile, start with sidebar closed but allow user to open it
+      setSidebarOpen(false);
+    } else {
+      // On desktop, start with sidebar open
+      setSidebarOpen(true);
+    }
+  }, [isMobile]); // Remove sidebarOpen from dependencies to prevent loops
 
   const handleTabChange = (tab: string) => {
     onTabChange(tab);
@@ -33,19 +52,28 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
     setShowNotifications((prev) => !prev);
     if (unreadCount > 0) markAllAsRead();
   };
+  
+  // Profile modal state for mobile
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const handleProfileClick = () => {
+    setProfileDropdownOpen(!profileDropdownOpen);
+  };
 
   return (
     <div className="h-screen flex flex-col bg-background text-foreground transition-colors">
-      {/* Header */}
+      {/* Header with sidebar toggle */}
       <Header 
         title="Dashboard" 
         unreadCount={unreadCount} 
         onNotificationClick={handleNotificationClick}
+        sidebarOpen={sidebarOpen}
+        onSidebarToggle={() => setSidebarOpen(!sidebarOpen)}
         userProfile={userProfile}
+        onProfileClick={handleProfileClick}
       />
       
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - hidden on mobile, shown on desktop, always open */}
+        {/* Sidebar - hidden on mobile, shown on desktop */}
         {!isMobile && (
           <div className="fixed left-0 top-0 h-full z-20">
             <Sidebar
@@ -53,8 +81,8 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
               onTabChange={handleTabChange}
               userRole={userRole}
               userProfile={userProfile}
-              isOpen={true}
-              onToggle={() => {}}
+              isOpen={sidebarOpen}
+              onToggle={() => setSidebarOpen(!sidebarOpen)}
             />
           </div>
         )}
@@ -68,6 +96,8 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
             userProfile={userProfile}
             isOpen={false}
             onToggle={() => {}}
+            profileDropdownOpen={profileDropdownOpen}
+            onProfileDropdownChange={setProfileDropdownOpen}
           />
         )}
 
@@ -75,7 +105,9 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           className={`flex-1 main-content-surface ${variant === 'admin' ? 'pt-[70px] md:pt-[70px] md:pl-0 overflow-y-auto' : 'p-4 pt-8 md:pt-20 overflow-y-auto'} ${
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
-              : 'md:pl-64' // Always account for open sidebar on desktop
+              : sidebarOpen 
+                ? 'md:pl-64' 
+                : 'md:pl-16'
           } transition-colors`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'} transition-colors`}>

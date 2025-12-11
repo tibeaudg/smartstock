@@ -25,6 +25,7 @@ import {
   Play
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ReportTemplate {
   id: string;

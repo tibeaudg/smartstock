@@ -38,6 +38,7 @@ import { ImagePreviewModal } from '@/components/ImagePreviewModal';
 import { AddProductModal } from '@/components/AddProductModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { ProductDetailModal } from '@/components/ProductDetailModal';
+import { VariantSelectionModal } from '@/components/VariantSelectionModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
@@ -107,6 +108,11 @@ export default function CategorysPage() {
   const [isMobileProductDetailModalOpen, setIsMobileProductDetailModalOpen] = useState(false);
   const [isProductDetailModalOpen, setIsProductDetailModalOpen] = useState(false);
   const [detailProduct, setDetailProduct] = useState<any>(null);
+  
+  // Variant selection modal states
+  const [isVariantSelectionModalOpen, setIsVariantSelectionModalOpen] = useState(false);
+  const [productVariants, setProductVariants] = useState<any[]>([]);
+  const [selectedAction, setSelectedAction] = useState<'in' | 'out'>('in');
   
   // Add product modal states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -254,36 +260,65 @@ export default function CategorysPage() {
     return filtered;
   }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedStockStatus, dateRange, activeQuickFilter]);
 
+  // Fetch variants for all products to calculate variant counts
+  const productIds = React.useMemo(() => 
+    categoryProducts.filter(p => !p.is_variant && p.id).map(p => p.id),
+    [categoryProducts]
+  );
+
+  const { data: variantsData = [] } = useQuery({
+    queryKey: ['productVariants', productIds, activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!activeBranch?.branch_id || productIds.length === 0) return [];
+      
+      const { data, error } = await supabase
+        .from('products')
+        .select('parent_product_id')
+        .eq('is_variant', true)
+        .eq('branch_id', activeBranch.branch_id)
+        .in('parent_product_id', productIds);
+      
+      if (error) {
+        console.error('Error fetching variants:', error);
+        return [];
+      }
+      
+      return data || [];
+    },
+    enabled: !!activeBranch?.branch_id && productIds.length > 0,
+    staleTime: 1000 * 60, // 1 minute
+  });
+
   // Calculate variant counts and aggregated stock for each product
   const variantCounts = React.useMemo(() => {
     const counts = new Map<string, number>();
+    
+    // Initialize all products with 0 variants
     categoryProducts.forEach((product: any) => {
-      if (!product.is_variant && product.id) {
-        const count = categoryProducts.filter((p: any) => 
-          p.parent_product_id === product.id && p.is_variant
-        ).length;
-        counts.set(product.id, count);
+      if (product.id && !product.is_variant) {
+        counts.set(String(product.id), 0);
       }
     });
+    
+    // Count variants for each product
+    variantsData.forEach((variant: any) => {
+      if (variant.parent_product_id) {
+        const parentId = String(variant.parent_product_id);
+        const current = counts.get(parentId) || 0;
+        counts.set(parentId, current + 1);
+      }
+    });
+    
     return counts;
-  }, [categoryProducts]);
+  }, [categoryProducts, variantsData]);
 
   // Calculate total stock including variants for each parent product
+  // Note: quantity_in_stock now already includes variant stock from the service layer
   const productStockTotals = React.useMemo(() => {
     const totals = new Map<string, number>();
     categoryProducts.forEach((product: any) => {
-      if (!product.is_variant && product.id) {
-        const baseStock = Number(product.quantity_in_stock) || 0;
-        const variantsStock = categoryProducts
-          .filter((p: any) => p.parent_product_id === product.id && p.is_variant)
-          .reduce((sum: number, variant: any) => {
-            return sum + (Number(variant.quantity_in_stock) || 0);
-          }, 0);
-        totals.set(product.id, baseStock + variantsStock);
-      } else if (product.is_variant) {
-        // For variants, just use their own stock
-        totals.set(product.id, Number(product.quantity_in_stock) || 0);
-      }
+      // quantity_in_stock already includes variant stock, so just use it directly
+      totals.set(product.id, Number(product.quantity_in_stock) || 0);
     });
     return totals;
   }, [categoryProducts]);
@@ -615,8 +650,51 @@ export default function CategorysPage() {
     }
   };
 
-  const handleStockAction = (product: any, action: 'in' | 'out') => {
-    setSelectedProduct(product);
+  // Function to fetch product variants
+  const fetchProductVariants = async (productId: string): Promise<any[]> => {
+    try {
+      if (!activeBranch?.branch_id) return [];
+      
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('parent_product_id', productId)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('variant_name');
+      
+      if (error) {
+        console.error('Error fetching variants:', error);
+        return [];
+      }
+      
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching variants:', error);
+      return [];
+    }
+  };
+
+  const handleStockAction = async (product: any, action: 'in' | 'out') => {
+    // Check if product has variants
+    const variants = await fetchProductVariants(product.id);
+    
+    if (variants.length > 0) {
+      // Product has variants - show variant selection modal
+      setSelectedProduct(product);
+      setSelectedAction(action);
+      setProductVariants(variants);
+      setIsVariantSelectionModalOpen(true);
+    } else {
+      // No variants - go directly to stock adjustment modal
+      setSelectedProduct(product);
+      setIsStockAdjustModalOpen(true);
+    }
+  };
+  
+  const handleVariantSelected = (variant: any) => {
+    // Close variant selection modal and open stock adjustment modal with selected variant
+    setIsVariantSelectionModalOpen(false);
+    setSelectedProduct(variant);
     setIsStockAdjustModalOpen(true);
   };
 
@@ -2002,7 +2080,7 @@ export default function CategorysPage() {
                                           )}>
                                             {product.name}
                                           </h3>
-                                          {!product.is_variant && variantCounts.has(product.id) && variantCounts.get(product.id)! > 0 && (
+                                          {!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0 && (
                                             <Badge 
                                               variant="secondary" 
                                               className={cn(
@@ -2010,17 +2088,23 @@ export default function CategorysPage() {
                                                 compactMode && "text-[8px] px-1"
                                               )}
                                             >
-                                              {variantCounts.get(product.id)} variant{variantCounts.get(product.id)! !== 1 ? 's' : ''}
+                                              {variantCounts.get(String(product.id))} variant{(variantCounts.get(String(product.id)) ?? 0) !== 1 ? 's' : ''}
                                             </Badge>
                                           )}
                                           {product.category_name && !isColumnVisible('category_name') && (
-                                            <span className="text-xs text-gray-400 ml-1.5">
-                                              • {product.category_name}
-                                            </span>
+                                            <Badge 
+                                              variant="secondary" 
+                                              className={cn(
+                                                "text-[9px] px-1.5 py-0 h-4 border bg-gray-100 text-gray-700 border-gray-200",
+                                                compactMode && "text-[8px] px-1"
+                                              )}
+                                            >
+                                              {product.category_name}
+                                            </Badge>
                                           )}
                                           {/* Row indicator badges */}
                                           <div className="flex items-center gap-1 ml-1">
-                                            {rowIndicators.filter(i => ['recent', 'no-category', 'price-mismatch'].includes(i.type)).map((indicator, idx) => (
+                                            {rowIndicators.filter(i => ['price-mismatch'].includes(i.type)).map((indicator, idx) => (
                                               <TooltipProvider key={idx}>
                                                 <Tooltip>
                                                   <TooltipTrigger asChild>
@@ -2028,13 +2112,9 @@ export default function CategorysPage() {
                                                       variant="default" 
                                                       className={cn(
                                                         "text-[9px] px-1 py-0 h-4 border",
-                                                        indicator.type === 'recent' && "bg-green-50 text-green-700 border-green-200 hover:bg-green-50",
-                                                        indicator.type === 'no-category' && "bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-50",
                                                         indicator.type === 'price-mismatch' && "bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-50"
                                                       )}
                                                     >
-                                                      {indicator.type === 'recent' && 'New'}
-                                                      {indicator.type === 'no-category' && 'No Cat'}
                                                       {indicator.type === 'price-mismatch' && '⚠️'}
                                                     </Badge>
                                                   </TooltipTrigger>
@@ -2194,7 +2274,7 @@ export default function CategorysPage() {
                                           <p className="font-medium">
                                             {formatStockQuantity(displayStock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
                                           </p>
-                                          {!product.is_variant && variantCounts.get(product.id)! > 0 && (
+                                          {!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0 && (
                                             <p className="text-xs text-gray-400 mt-1">
                                               Base: {formatStockQuantity(product.quantity_in_stock)} + Variants: {formatStockQuantity(displayStock - (Number(product.quantity_in_stock) || 0))}
                                             </p>
@@ -2809,6 +2889,22 @@ export default function CategorysPage() {
           getStockStatus={getStockStatus}
           getStockStatusDotColor={getStockStatusDotColor}
           formatStockQuantity={formatStockQuantity}
+        />
+      )}
+
+      {/* Variant Selection Modal */}
+      {selectedProduct && (
+        <VariantSelectionModal
+          isOpen={isVariantSelectionModalOpen}
+          onClose={() => {
+            setIsVariantSelectionModalOpen(false);
+            setSelectedProduct(null);
+            setProductVariants([]);
+          }}
+          product={selectedProduct}
+          variants={productVariants}
+          actionType={selectedAction}
+          onVariantSelected={handleVariantSelected}
         />
       )}
 

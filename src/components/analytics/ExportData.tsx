@@ -26,6 +26,7 @@ import {
   Share2
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ExportJob {
   id: string;
@@ -126,6 +127,43 @@ export const ExportData = () => {
 
       if (jobsError) {
         console.error('Error fetching export jobs:', jobsError);
+        // If table doesn't exist, set empty arrays and continue
+        if (jobsError.code === '42P01' || jobsError.message?.includes('does not exist')) {
+          setExportJobs([]);
+          setTemplates([
+            {
+              id: '1',
+              name: 'Standard Products Export',
+              description: 'Basic products export with all important fields',
+              type: 'products',
+              format: 'excel',
+              columns: ['ID', 'Name', 'Category', 'Inventory', 'Price'],
+              filters: { dateRange: '30d' },
+              isDefault: true
+            },
+            {
+              id: '2',
+              name: 'Monthly Transactions Overview',
+              description: 'Monthly transactions for financial analysis',
+              type: 'transactions',
+              format: 'csv',
+              columns: ['Date', 'Type', 'Product', 'Quantity', 'Price', 'Total'],
+              filters: { dateRange: '30d' },
+              isDefault: false
+            },
+            {
+              id: '3',
+              name: 'Inventory Audit',
+              description: 'Complete inventory status for auditing',
+              type: 'inventory',
+              format: 'pdf',
+              columns: ['Product', 'Inventory', 'Min. Inventory', 'Status', 'Locations'],
+              filters: { dateRange: '7d' },
+              isDefault: false
+            }
+          ]);
+          return;
+        }
         return;
       }
 
