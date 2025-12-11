@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { shouldDisableTracking, isAdminUser } from '@/config/tracking';
 import { canUseAnalytics } from '@/utils/cookieConsentManager';
+import { useAuth } from '@/hooks/useAuth';
 
 interface TrackingEvent {
   event_type: string;
@@ -12,11 +13,13 @@ interface TrackingEvent {
   user_agent?: string;
   referrer?: string;
   session_id: string;
+  user_id?: string;
   metadata?: any;
 }
 
 export const useWebsiteTracking = () => {
   const location = useLocation();
+  const { user } = useAuth();
   const sessionId = useRef<string>(generateSessionId());
   const lastPageView = useRef<number>(0);
   const pageStartTime = useRef<number>(Date.now());
@@ -30,27 +33,32 @@ export const useWebsiteTracking = () => {
   const shouldTrack = useCallback(async () => {
     // Check cookie consent first
     if (!canUseAnalytics()) {
+      console.log('[Tracking] Disabled: Cookie consent not given');
       return false;
     }
 
     // Check basic conditions first (synchronous)
     if (shouldDisableTracking()) {
+      console.log('[Tracking] Disabled: shouldDisableTracking returned true');
       return false;
     }
 
     // Check if user is admin (asynchronous)
+    // NOTE: We now allow tracking for all users including admins
     try {
       const isAdmin = await isAdminUser();
       if (isAdmin) {
+        console.log('[Tracking] Disabled: User is admin (but this should not happen with current config)');
         return false;
       }
     } catch (error) {
-      console.warn('Error checking admin status:', error);
+      console.warn('[Tracking] Error checking admin status:', error);
       // Continue with tracking if we can't determine admin status
     }
 
+    console.log('[Tracking] Enabled for user:', user?.id);
     return true;
-  }, []);
+  }, [user?.id]);
 
   // Track page view
   const trackPageView = useCallback(async (url?: string) => {
@@ -62,6 +70,11 @@ export const useWebsiteTracking = () => {
     // Don't track if it's the same page within 1 second
     if (now - lastPageView.current < 1000) return;
     
+    // Calculate time spent on previous page if we have a previous page view
+    const timeOnPreviousPage = lastPageView.current > 0 
+      ? Math.round((now - lastPageView.current) / 1000) 
+      : 0;
+    
     lastPageView.current = now;
     pageStartTime.current = now;
 
@@ -71,42 +84,82 @@ export const useWebsiteTracking = () => {
       user_agent: navigator.userAgent,
       referrer: document.referrer,
       session_id: sessionId.current,
+      user_id: user?.id,
       metadata: {
         timestamp: now,
         pathname: location.pathname,
         search: location.search,
-        hash: location.hash
+        hash: location.hash,
+        timeOnPreviousPage: timeOnPreviousPage // Time spent on previous page in seconds
       }
     };
 
     try {
-      await supabase.from('website_events').insert([event]);
+      const { error: insertError } = await supabase.from('website_events').insert([event]);
+      if (insertError) {
+        console.error('Error tracking page view:', insertError);
+      } else {
+        console.log('[Tracking] Page view tracked:', { url: pageUrl, userId: user?.id });
+      }
     } catch (error) {
       console.error('Error tracking page view:', error);
     }
-  }, [location.pathname, location.search, location.hash, shouldTrack]);
+  }, [location.pathname, location.search, location.hash, shouldTrack, user?.id]);
 
   // Track click events
   const trackClick = useCallback(async (element: HTMLElement, event?: MouseEvent) => {
     if (!(await shouldTrack())) return;
     
-    const elementId = element.id || element.getAttribute('data-analytics-id') || element.className;
-    const elementText = element.textContent?.trim().substring(0, 100) || '';
+    // Get element identifier
+    const elementId = element.id || element.getAttribute('data-analytics-id') || element.getAttribute('aria-label') || element.className;
+    
+    // Get button/link text - prioritize visible text
+    let elementText = '';
+    if (element.tagName === 'BUTTON' || element.tagName === 'A') {
+      // For buttons and links, get the text content
+      elementText = element.textContent?.trim().substring(0, 200) || '';
+      // Also check for aria-label or title
+      if (!elementText) {
+        elementText = element.getAttribute('aria-label') || element.getAttribute('title') || '';
+      }
+    } else {
+      // For other elements, get text content
+      elementText = element.textContent?.trim().substring(0, 200) || '';
+    }
+    
+    // Get parent button/link if clicked element is inside one
+    let parentButton: HTMLElement | null = null;
+    let parentText = '';
+    if (element.tagName !== 'BUTTON' && element.tagName !== 'A') {
+      parentButton = element.closest('button, a') as HTMLElement;
+      if (parentButton) {
+        parentText = parentButton.textContent?.trim().substring(0, 200) || '';
+        if (!parentText) {
+          parentText = parentButton.getAttribute('aria-label') || parentButton.getAttribute('title') || '';
+        }
+      }
+    }
     
     const trackingEvent: TrackingEvent = {
       event_type: 'click',
       page_url: window.location.href,
       element_id: elementId,
-      element_text: elementText,
+      element_text: parentText || elementText || 'Unknown element',
       user_agent: navigator.userAgent,
       referrer: document.referrer,
       session_id: sessionId.current,
+      user_id: user?.id,
       metadata: {
         timestamp: Date.now(),
         x: event?.clientX,
         y: event?.clientY,
         tagName: element.tagName,
-        className: element.className
+        className: element.className,
+        elementText: elementText,
+        parentText: parentText,
+        parentTagName: parentButton?.tagName,
+        href: (element as HTMLAnchorElement).href || (parentButton as HTMLAnchorElement)?.href,
+        buttonText: element.tagName === 'BUTTON' ? elementText : (parentButton?.tagName === 'BUTTON' ? parentText : '')
       }
     };
 
@@ -115,7 +168,7 @@ export const useWebsiteTracking = () => {
     } catch (error) {
       console.error('Error tracking click:', error);
     }
-  }, [shouldTrack]);
+  }, [shouldTrack, user?.id]);
 
   // Track form abandonment
   const trackFormAbandonment = useCallback(async (formElement: HTMLFormElement, reason: string) => {
@@ -131,6 +184,7 @@ export const useWebsiteTracking = () => {
       user_agent: navigator.userAgent,
       referrer: document.referrer,
       session_id: sessionId.current,
+      user_id: user?.id,
       metadata: {
         timestamp: Date.now(),
         reason,
@@ -147,7 +201,7 @@ export const useWebsiteTracking = () => {
     } catch (error) {
       console.error('Error tracking form abandonment:', error);
     }
-  }, [shouldTrack]);
+  }, [shouldTrack, user?.id]);
 
   // Track page exit
   const trackPageExit = useCallback(async (element?: HTMLElement) => {
@@ -163,6 +217,7 @@ export const useWebsiteTracking = () => {
       user_agent: navigator.userAgent,
       referrer: document.referrer,
       session_id: sessionId.current,
+      user_id: user?.id,
       metadata: {
         timestamp: Date.now(),
         timeOnPage,
@@ -188,6 +243,7 @@ export const useWebsiteTracking = () => {
       user_agent: navigator.userAgent,
       referrer: document.referrer,
       session_id: sessionId.current,
+      user_id: user?.id,
       metadata: {
         timestamp: Date.now(),
         scrollDepth: depth,
@@ -212,6 +268,7 @@ export const useWebsiteTracking = () => {
       user_agent: navigator.userAgent,
       referrer: document.referrer,
       session_id: sessionId.current,
+      user_id: user?.id,
       metadata: {
         timestamp: Date.now(),
         timeSpent
@@ -338,13 +395,57 @@ export const useWebsiteTracking = () => {
     return () => clearInterval(interval);
   }, [trackTimeOnPage]);
 
-  // Setup beforeunload tracking
+  // Setup beforeunload tracking (site exit)
   useEffect(() => {
     const handleBeforeUnload = () => {
       const timeSpent = Date.now() - pageStartTime.current;
-      trackTimeOnPage(timeSpent);
       
-      // Track page exit
+      // Track site exit event synchronously (beforeunload doesn't wait for async)
+      shouldTrack().then((canTrack) => {
+        if (canTrack) {
+          const exitEvent: TrackingEvent = {
+            event_type: 'site_exit',
+            page_url: window.location.href,
+            user_agent: navigator.userAgent,
+            referrer: document.referrer,
+            session_id: sessionId.current,
+            user_id: user?.id,
+            metadata: {
+              timestamp: Date.now(),
+              timeOnPage: timeSpent,
+              pathname: location.pathname
+            }
+          };
+          
+          // Use sendBeacon for reliable tracking on page unload
+          if (navigator.sendBeacon) {
+            try {
+              const data = JSON.stringify(exitEvent);
+              const blob = new Blob([data], { type: 'application/json' });
+              // Store in sessionStorage as fallback
+              sessionStorage.setItem('pending_site_exit', data);
+              // Try to send via fetch with keepalive (more reliable than sendBeacon for Supabase)
+              fetch(`${window.location.origin}`, {
+                method: 'POST',
+                body: JSON.stringify({ type: 'site_exit', event: exitEvent }),
+                keepalive: true
+              }).catch(() => {
+                // Ignore errors - we have sessionStorage fallback
+              });
+            } catch (error) {
+              console.error('Error preparing site exit tracking:', error);
+            }
+          }
+          
+          // Also try direct insert (may not complete but worth trying)
+          supabase.from('website_events').insert([exitEvent]).catch(() => {
+            // Ignore - we'll catch it on next page load
+          });
+        }
+      });
+      
+      // Track time and exit asynchronously (may not complete)
+      trackTimeOnPage(timeSpent);
       trackPageExit();
     };
 
@@ -353,10 +454,26 @@ export const useWebsiteTracking = () => {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [trackTimeOnPage, trackPageExit]);
+  }, [trackTimeOnPage, trackPageExit, shouldTrack, user?.id, location.pathname]);
 
   // Track page view on route change
   useEffect(() => {
+    // Check for pending site exit from previous session
+    const pendingExit = sessionStorage.getItem('pending_site_exit');
+    if (pendingExit) {
+      try {
+        const exitEvent = JSON.parse(pendingExit);
+        supabase.from('website_events').insert([exitEvent]).then(() => {
+          sessionStorage.removeItem('pending_site_exit');
+        }).catch((error) => {
+          console.error('Error tracking pending site exit:', error);
+        });
+      } catch (error) {
+        console.error('Error parsing pending site exit:', error);
+        sessionStorage.removeItem('pending_site_exit');
+      }
+    }
+    
     trackPageView();
   }, [location.pathname, trackPageView]);
 

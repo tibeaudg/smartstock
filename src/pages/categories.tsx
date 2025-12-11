@@ -39,6 +39,7 @@ import { AddProductModal } from '@/components/AddProductModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { ProductDetailModal } from '@/components/ProductDetailModal';
 import { VariantSelectionModal } from '@/components/VariantSelectionModal';
+import { BulkImportModal } from '@/components/BulkImportModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
@@ -119,6 +120,9 @@ export default function CategorysPage() {
   const [isBarcodeScannerOpen, setIsBarcodeScannerOpen] = useState(false);
   const [scannedSKU, setScannedSKU] = useState<string>('');
   const [preFilledProductName, setPreFilledProductName] = useState<string>('');
+  
+  // Bulk import modal state
+  const [isBulkImportModalOpen, setIsBulkImportModalOpen] = useState(false);
   
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
@@ -1468,6 +1472,68 @@ export default function CategorysPage() {
     }
   };
 
+  // Export all products (not just selected ones)
+  const handleExportAll = async () => {
+    try {
+      // Use the products from the current view (respecting category filters)
+      const productsToExport = searchTerm.trim() ? filteredProducts : categoryProducts;
+      
+      if (productsToExport.length === 0) {
+        toast.error('No products to export');
+        return;
+      }
+      
+      // Create CSV data
+      const csvHeaders = ['Name', 'SKU', 'Barcode', 'Category', 'Location', 'Stock', 'Cost', 'Price', 'Description'];
+      const csvData = productsToExport.map((product: any) => [
+        product.name || '',
+        product.sku || '',
+        product.barcode || '',
+        product.category_name || '',
+        product.location || '',
+        product.quantity_in_stock || 0,
+        product.purchase_price || 0,
+        product.sale_price || 0,
+        product.description || ''
+      ]);
+
+      const csvContent = [csvHeaders, ...csvData]
+        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `products_export_all_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success(`Exported ${productsToExport.length} product${productsToExport.length !== 1 ? 's' : ''} to CSV`);
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      toast.error('Failed to export products');
+    }
+  };
+
+  // Handle import button click
+  const handleImportClick = () => {
+    setIsBulkImportModalOpen(true);
+  };
+
+  // Handle import completion
+  const handleImportComplete = async () => {
+    // Invalidate all relevant queries to refresh the product list
+    await queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+    await queryClient.invalidateQueries({ queryKey: ['products'] });
+    await queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+    await queryClient.invalidateQueries({ queryKey: ['categoryAnalytics'] });
+    await queryClient.invalidateQueries({ queryKey: ['allProductsAnalyticsWeekAgo'] });
+  };
+
   const handleCustomizationSave = async (icon: string | null, color: string | null) => {
     if (!selectedCategory) return;
 
@@ -1660,8 +1726,8 @@ export default function CategorysPage() {
         onLocationChange={setSelectedLocation}
         onQuickFilterChange={setActiveQuickFilter}
         activeQuickFilter={activeQuickFilter}
-        lowStockCount={dashboardMetrics.lowStockCount}
-        outOfStockCount={dashboardMetrics.outOfStockCount}
+        onImportClick={handleImportClick}
+        onExportClick={handleExportAll}
       />
 
       {/* Main Layout with Product Table */}
@@ -2913,6 +2979,13 @@ export default function CategorysPage() {
         open={isCommandPaletteOpen}
         onOpenChange={setCommandPaletteOpen}
         actions={commandPaletteActions}
+      />
+
+      {/* Bulk Import Modal */}
+      <BulkImportModal
+        isOpen={isBulkImportModalOpen}
+        onClose={() => setIsBulkImportModalOpen(false)}
+        onImportComplete={handleImportComplete}
       />
 
       {/* Fixed Bottom Bulk Action Bar */}

@@ -50,44 +50,55 @@ export const getUserIP = async (): Promise<string | null> => {
 };
 
 // Function to check if tracking should be disabled
+// NOTE: For user activity tracking, we want to track even in development
+// This function can be used to disable general analytics, but user activity
+// tracking should work everywhere
 export const shouldDisableTracking = (): boolean => {
-  // Check environment
-  if (TRACKING_CONFIG.disabledEnvironments.includes(process.env.NODE_ENV || '')) {
-    return true;
-  }
+  // For user activity tracking, we allow tracking in all environments
+  // Uncomment below if you want to disable tracking in development
+  // if (TRACKING_CONFIG.disabledEnvironments.includes(process.env.NODE_ENV || '')) {
+  //   return true;
+  // }
   
-  // Check hostname
-  if (TRACKING_CONFIG.disabledHostnames.includes(window.location.hostname)) {
-    return true;
-  }
+  // Check hostname (but allow localhost for testing)
+  // if (TRACKING_CONFIG.disabledHostnames.includes(window.location.hostname)) {
+  //   return true;
+  // }
   
-  // Check if hostname contains localhost
-  if (window.location.hostname.includes('localhost')) {
-    return true;
-  }
+  // Allow localhost for user activity tracking
+  // if (window.location.hostname.includes('localhost')) {
+  //   return true;
+  // }
   
   return false;
 };
 
 // Function to check if user is admin (async version with IP check)
+// NOTE: This function is used to EXCLUDE admins from tracking
+// For user activity tracking, we want to track ALL users including admins
+// So this should return false to allow tracking
 export const isAdminUser = async (): Promise<boolean> => {
+  // For user activity tracking purposes, we want to track all users
+  // including admins, so we return false here
+  // If you want to exclude admins from tracking, uncomment the checks below
+  
   // Check user agent patterns
-  const userAgent = navigator.userAgent;
-  for (const pattern of TRACKING_CONFIG.adminUserAgents) {
-    if (userAgent.includes(pattern)) {
-      return true;
-    }
-  }
+  // const userAgent = navigator.userAgent;
+  // for (const pattern of TRACKING_CONFIG.adminUserAgents) {
+  //   if (userAgent.includes(pattern)) {
+  //     return true;
+  //   }
+  // }
   
   // Check IP address (async)
-  try {
-    const userIP = await getUserIP();
-    if (userIP && TRACKING_CONFIG.adminIPs.includes(userIP)) {
-      return true;
-    }
-  } catch (error) {
-    console.warn('Could not check admin IP:', error);
-  }
+  // try {
+  //   const userIP = await getUserIP();
+  //   if (userIP && TRACKING_CONFIG.adminIPs.includes(userIP)) {
+  //     return true;
+  //   }
+  // } catch (error) {
+  //   console.warn('Could not check admin IP:', error);
+  // }
   
-  return false;
+  return false; // Allow tracking for all users including admins
 };

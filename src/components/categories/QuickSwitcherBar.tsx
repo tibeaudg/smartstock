@@ -16,7 +16,9 @@ import {
   X,
   ChevronDown,
   Plus,
-  Search
+  Search,
+  Upload,
+  Download
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBranches } from '@/hooks/useBranches';
@@ -37,8 +39,8 @@ interface QuickSwitcherBarProps {
   onQuickFilterChange?: (filter: string | null) => void;
   activeQuickFilter?: string | null;
   className?: string;
-  lowStockCount?: number;
-  outOfStockCount?: number;
+  onImportClick?: () => void;
+  onExportClick?: () => void;
 }
 
 export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
@@ -50,8 +52,8 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   onQuickFilterChange,
   activeQuickFilter,
   className,
-  lowStockCount,
-  outOfStockCount,
+  onImportClick,
+  onExportClick,
 }) => {
   const { activeBranch } = useBranches();
   const { user } = useAuth();
@@ -144,9 +146,9 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
     category.name.toLowerCase().includes(categorySearchQuery.toLowerCase())
   );
 
-  const quickFilters = [
-    { id: 'low-stock', label: 'Low Stock', icon: AlertCircle, color: 'text-orange-600' },
-    { id: 'out-of-stock', label: 'Out of Stock', icon: AlertCircle, color: 'text-red-600' },
+  const actionButtons = [
+    { id: 'import', label: 'Import', icon: Upload, color: 'text-blue-600', onClick: onImportClick },
+    { id: 'export', label: 'Export', icon: Download, color: 'text-green-600', onClick: onExportClick },
   ];  
 
   const selectedCategoryNames = allCategories
@@ -320,37 +322,25 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
         </Popover>
       )}
 
-      {/* Quick Filter Buttons */}
+      {/* Import/Export Action Buttons */}
       <div className="flex items-center gap-1.5 ml-auto">
-        {quickFilters.map((filter) => {
-          const Icon = filter.icon;
-          const isActive = activeQuickFilter === filter.id;
-          
-          // Get count for low stock and out of stock filters
-          let displayLabel = filter.label;
-          if (filter.id === 'low-stock' && lowStockCount !== undefined && lowStockCount > 0) {
-            displayLabel = `Low Stock (${lowStockCount})`;
-          } else if (filter.id === 'out-of-stock' && outOfStockCount !== undefined && outOfStockCount > 0) {
-            displayLabel = `Out of Stock (${outOfStockCount})`;
-          }
+        {actionButtons.map((button) => {
+          const Icon = button.icon;
           
           return (
             <Button
-              key={filter.id}
-              variant={isActive ? "default" : "outline"}
+              key={button.id}
+              variant="outline"
               size="sm"
               className={cn(
                 "h-8 text-xs",
-                isActive && "bg-blue-600 hover:bg-blue-700 text-white"
+                button.id === 'import' && "border-blue-600 text-blue-600 hover:bg-blue-50",
+                button.id === 'export' && "border-green-600 text-green-600 hover:bg-green-50"
               )}
-              onClick={() => {
-                if (onQuickFilterChange) {
-                  onQuickFilterChange(isActive ? null : filter.id);
-                }
-              }}
+              onClick={button.onClick}
             >
-              <Icon className={cn("w-3 h-3 mr-1.5", isActive ? "text-white" : filter.color)} />
-              {displayLabel}
+              <Icon className={cn("w-3 h-3 mr-1.5", button.color)} />
+              {button.label}
             </Button>
           );
         })}

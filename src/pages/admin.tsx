@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { UserActivityView } from '@/components/admin/UserActivityView';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
@@ -1182,11 +1184,25 @@ export default function AdminPage() {
               <AdminSubscriptionManagement />
             )}
 
-
-
-
           </div>
         </div>
+
+        {/* User Activity Dialog */}
+        <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
+          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                User Activity: {selectedUser?.email}
+              </DialogTitle>
+            </DialogHeader>
+            {selectedUser && (
+              <UserActivityView 
+                userId={selectedUser.id} 
+                userEmail={selectedUser.email}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </Layout>
     </BranchProvider>
   );
