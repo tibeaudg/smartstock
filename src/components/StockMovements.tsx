@@ -16,6 +16,7 @@ import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 
 export const StockMovements = () => {
+  console.log('[StockMovements] Component rendering');
   const { isMobile } = useMobile();
   const {
     transactions,
@@ -26,6 +27,8 @@ export const StockMovements = () => {
     setFilters,
     refresh
   } = useStockMovements();
+  
+  console.log('[StockMovements] State:', { loading, error: error?.message, transactionsCount: transactions.length });
 
   const handleExport = () => {
     try {
@@ -65,6 +68,19 @@ export const StockMovements = () => {
           </div>
         </CardContent>
       </Card>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-center p-12">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading transactions...</p>
+          </div>
+        </div>
+      </div>
     );
   }
 

@@ -134,7 +134,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/categories',
           end: true
         },
-        { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions' },
+        { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
 
         { 
           id: 'settings', 

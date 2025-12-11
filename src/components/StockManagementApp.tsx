@@ -88,7 +88,7 @@ export const StockManagementApp: React.FC = () => {
           variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') ? 'admin' : 'default'}
         >
           {/* Main scrollable content - Layout already handles overflow */}
-          <Outlet />
+          <Outlet key={location.pathname} />
         </Layout>
 
         <CreateBranchModal

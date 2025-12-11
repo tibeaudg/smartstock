@@ -189,21 +189,25 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
     }
   }, [preFilledCategoryId, isOpen, form, categories]);
 
-  // Cleanup object URLs on unmount or modal close
+  // Cleanup object URLs on unmount
   useEffect(() => {
     return () => {
       uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
     };
-  }, [uploadedImages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Reset uploaded images when modal closes
   useEffect(() => {
     if (!isOpen) {
+      // Cleanup all image previews when modal closes
       uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
       setUploadedImages([]);
       setIsDragging(false);
     }
-  }, [isOpen, uploadedImages]);
+    // Only depend on isOpen, not uploadedImages to avoid infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   // Fallback: if name was persisted in localStorage by the opener, use it once
   useEffect(() => {
