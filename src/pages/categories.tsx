@@ -3,7 +3,7 @@
  * Revamped with hierarchical categories, dual view modes, and enhanced features
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,6 +18,7 @@ import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory, useCategoryRealtime, useProductsByCategories } from '@/hooks/useCategories';
 import { CategoryFacetFilter } from '@/components/categories/CategoryFacetFilter';
+import { QuickSwitcherBar } from '@/components/categories/QuickSwitcherBar';
 import { CategoryCustomizationModal } from '@/components/categories/CategoryCustomizationModal';
 import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 import { MultiIntentSearch } from '@/components/categories/MultiIntentSearch';
@@ -25,7 +26,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag } from 'lucide-react';
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign, ShoppingCart, Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Archive, Download } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -40,6 +41,7 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
+import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/components/CommandPalette';
 
 export default function CategorysPage() {
   const { user } = useAuth();
@@ -56,8 +58,13 @@ export default function CategorysPage() {
   const [showCustomizationModal, setShowCustomizationModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryTree | null>(null);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
-  // Filter sidebar collapse state - default to collapsed
-  const [isFilterCollapsed, setIsFilterCollapsed] = useState(true);
+  
+  // Advanced filter states
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedStockStatus, setSelectedStockStatus] = useState<string[]>([]);
+  const [dateRange, setDateRange] = useState<'all' | 'today' | 'week' | 'month' | 'year'>('all');
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(null);
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -74,8 +81,19 @@ export default function CategorysPage() {
   // Compact mode state - default to true
   const [compactMode, setCompactMode] = useState(true);
   
+  // Table view mode - default to Operational
+  type TableView = 'operational' | 'financial' | 'catalog' | 'supply-chain';
+  const [tableView, setTableView] = useState<TableView>('operational');
+  
+  // SKU column visibility
+  const [showSKUColumn, setShowSKUColumn] = useState(true);
+  
   // Row selection state
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 100;
   
   // Hover state for row actions
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
@@ -95,6 +113,9 @@ export default function CategorysPage() {
   const [preFilledProductName, setPreFilledProductName] = useState<string>('');
   
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
+  
+  // Command palette
+  const { open: isCommandPaletteOpen, setOpen: setCommandPaletteOpen } = useCommandPalette();
   
   // Form state
   const [formData, setFormData] = useState({
@@ -133,21 +154,103 @@ export default function CategorysPage() {
 
   // Removed filterCategoryTree and filteredTree - no longer needed with facet filter approach
 
-  // Filter products based on search
+  // Filter products based on search and all filters
   const filteredProducts = React.useMemo(() => {
-    if (!searchTerm.trim()) return categoryProducts;
+    let filtered = categoryProducts;
 
-    const term = searchTerm.toLowerCase();
-    return categoryProducts.filter((product: any) => {
-      return (
-        product.name?.toLowerCase().includes(term) ||
-        product.description?.toLowerCase().includes(term) ||
-        product.sku?.toLowerCase().includes(term) ||
-        product.location?.toLowerCase().includes(term) ||
-        product.category_name?.toLowerCase().includes(term)
+    // Search filter
+    if (searchTerm.trim()) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter((product: any) => {
+        return (
+          product.name?.toLowerCase().includes(term) ||
+          product.description?.toLowerCase().includes(term) ||
+          product.sku?.toLowerCase().includes(term) ||
+          product.location?.toLowerCase().includes(term) ||
+          product.category_name?.toLowerCase().includes(term)
+        );
+      });
+    }
+
+    // Location filter (from sidebar)
+    if (selectedLocations.length > 0) {
+      filtered = filtered.filter((product: any) => 
+        product.location && selectedLocations.includes(product.location)
       );
-    });
-  }, [categoryProducts, searchTerm]);
+    }
+
+    // Location filter (from quick switcher)
+    if (selectedLocation) {
+      filtered = filtered.filter((product: any) => 
+        product.location === selectedLocation
+      );
+    }
+
+    // Stock status filter
+    if (selectedStockStatus.length > 0) {
+      filtered = filtered.filter((product: any) => {
+        const status = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
+        return selectedStockStatus.some(filterStatus => {
+          if (filterStatus === 'in-stock') return status === 'In Stock';
+          if (filterStatus === 'low-stock') return status === 'Low Stock';
+          if (filterStatus === 'out-of-stock') return status === 'Out of Stock';
+          return false;
+        });
+      });
+    }
+
+    // Date range filter
+    if (dateRange !== 'all') {
+      const now = Date.now();
+      let cutoffDate = 0;
+      switch (dateRange) {
+        case 'today':
+          cutoffDate = now - (24 * 60 * 60 * 1000);
+          break;
+        case 'week':
+          cutoffDate = now - (7 * 24 * 60 * 60 * 1000);
+          break;
+        case 'month':
+          cutoffDate = now - (30 * 24 * 60 * 60 * 1000);
+          break;
+        case 'year':
+          cutoffDate = now - (365 * 24 * 60 * 60 * 1000);
+          break;
+      }
+      filtered = filtered.filter((product: any) => {
+        if (!product.created_at) return false;
+        return new Date(product.created_at).getTime() >= cutoffDate;
+      });
+    }
+
+    // Quick filters
+    if (activeQuickFilter) {
+      filtered = filtered.filter((product: any) => {
+        const qty = Number(product.quantity_in_stock) || 0;
+        const minLevel = Number(product.minimum_stock_level) || 0;
+        const cost = Number(product.purchase_price) || 0;
+        const price = Number(product.sale_price) || 0;
+        const value = qty * price;
+        const createdDate = product.created_at ? new Date(product.created_at).getTime() : 0;
+        const daysSinceAdded = (Date.now() - createdDate) / (1000 * 60 * 60 * 24);
+
+        switch (activeQuickFilter) {
+          case 'low-stock':
+            return qty > 0 && qty <= minLevel;
+          case 'out-of-stock':
+            return qty === 0;
+          case 'recently-added':
+            return daysSinceAdded <= 7;
+          case 'high-value':
+            return value >= 1000; // Products with total value >= $1000
+          default:
+            return true;
+        }
+      });
+    }
+
+    return filtered;
+  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedStockStatus, dateRange, activeQuickFilter]);
 
   // Use filtered products for sorting
   const sortedProducts = React.useMemo(() => {
@@ -207,6 +310,18 @@ export default function CategorysPage() {
     });
   }, [filteredProducts, categoryProducts, searchTerm, sortColumn, sortDirection]);
 
+  // Pagination calculations
+  const totalProducts = sortedProducts.length;
+  const totalPages = Math.ceil(totalProducts / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters/search change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedLocations, selectedLocation, selectedStockStatus, dateRange, activeQuickFilter, selectedCategoryIds, sortColumn, sortDirection]);
+
   // Detect repetitive locations (appearing in >70% of rows)
   const repetitiveLocations = React.useMemo(() => {
     if (sortedProducts.length === 0) return new Set<string>();
@@ -228,6 +343,61 @@ export default function CategorysPage() {
     
     return repetitive;
   }, [sortedProducts]);
+
+  // Dashboard insights metrics
+  const dashboardMetrics = React.useMemo(() => {
+    const products = searchTerm.trim() ? filteredProducts : categoryProducts;
+    
+    const totalProducts = products.length;
+    
+    let lowStockCount = 0;
+    let outOfStockCount = 0;
+    let newlyAddedThisMonth = 0;
+    let highValueCount = 0;
+    let totalInventoryValue = 0;
+    
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    products.forEach((product: any) => {
+      const qty = Number(product.quantity_in_stock) || 0;
+      const minLevel = Number(product.minimum_stock_level) || 0;
+      const cost = Number(product.purchase_price) || 0;
+      
+      // Stock status
+      if (qty === 0) {
+        outOfStockCount++;
+      } else if (qty > 0 && qty <= minLevel) {
+        lowStockCount++;
+      }
+      
+      // Newly added this month
+      if (product.created_at) {
+        const createdDate = new Date(product.created_at);
+        if (createdDate >= startOfMonth) {
+          newlyAddedThisMonth++;
+        }
+      }
+      
+      // High-value products (cost >= $100 or sale_price >= $100)
+      const salePrice = Number(product.sale_price) || 0;
+      if (cost >= 100 || salePrice >= 100) {
+        highValueCount++;
+      }
+      
+      // Total inventory value (cost * quantity)
+      totalInventoryValue += cost * qty;
+    });
+    
+    return {
+      totalProducts,
+      lowStockCount,
+      outOfStockCount,
+      newlyAddedThisMonth,
+      highValueCount,
+      totalInventoryValue,
+    };
+  }, [categoryProducts, filteredProducts, searchTerm]);
 
   // Helper function to get price color
   const getPriceColor = (value: number | null | undefined, positiveColor: string): string => {
@@ -379,6 +549,13 @@ export default function CategorysPage() {
   // Category selection change handler
   const handleCategorySelectionChange = (categoryIds: string[]) => {
     setSelectedCategoryIds(categoryIds);
+  };
+
+  // Filter change handler
+  const handleFiltersChange = (filters: any) => {
+    setSelectedLocations(filters.locations || []);
+    setSelectedStockStatus(filters.stockStatus || []);
+    setDateRange(filters.dateRange || 'all');
   };
 
 
@@ -559,6 +736,107 @@ export default function CategorysPage() {
     return new Intl.NumberFormat('en-US').format(Number(quantity) || 0);
   };
 
+  // Row indicator helpers
+  const getRowIndicators = (product: any) => {
+    const indicators: Array<{ type: string; color: string; label: string }> = [];
+    
+    const qty = Number(product.quantity_in_stock) || 0;
+    const minLevel = Number(product.minimum_stock_level) || 0;
+    
+    // Low stock indicator
+    if (qty === 0) {
+      indicators.push({ type: 'out-of-stock', color: 'bg-red-500', label: 'Out of Stock' });
+    } else if (qty > 0 && qty <= minLevel) {
+      indicators.push({ type: 'low-stock', color: 'bg-orange-500', label: 'Low Stock' });
+    }
+    
+    // Missing SKU
+    if (!product.sku || product.sku === '---') {
+      indicators.push({ type: 'missing-sku', color: 'bg-yellow-500', label: 'Missing SKU' });
+    }
+    
+    // Unassigned category
+    if (!product.category_id || !product.category_name) {
+      indicators.push({ type: 'no-category', color: 'bg-purple-500', label: 'No Category' });
+    }
+    
+    // No location
+    if (!product.location) {
+      indicators.push({ type: 'no-location', color: 'bg-blue-500', label: 'No Location' });
+    }
+    
+    // Recently added (within last 7 days)
+    if (product.created_at) {
+      const daysSinceAdded = (Date.now() - new Date(product.created_at).getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSinceAdded <= 7) {
+        indicators.push({ type: 'recent', color: 'bg-green-500', label: 'Recently Added' });
+      }
+    }
+    
+    // Price mismatch (cost >= price)
+    const cost = Number(product.purchase_price) || 0;
+    const price = Number(product.sale_price) || 0;
+    if (cost > 0 && price > 0 && cost >= price) {
+      indicators.push({ type: 'price-mismatch', color: 'bg-pink-500', label: 'Price Issue' });
+    }
+    
+    return indicators;
+  };
+
+  // View configurations
+  const viewConfigs: Record<TableView, { 
+    name: string; 
+    icon: React.ReactNode; 
+    columns: string[];
+    columnGroups: Array<{ name: string; columns: string[] }>;
+  }> = {
+    operational: {
+      name: 'Operational',
+      icon: <Warehouse className="w-4 h-4" />,
+      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'date_added', 'actions'] : ['name', 'location', 'stock', 'date_added', 'actions'],
+      columnGroups: [
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Inventory', columns: ['location', 'stock'] },
+        { name: 'Operational', columns: ['date_added', 'actions'] },
+      ],
+    },
+    financial: {
+      name: 'Financial',
+      icon: <DollarSign className="w-4 h-4" />,
+      columns: showSKUColumn ? ['sku', 'name', 'purchase_price', 'sale_price', 'stock', 'actions'] : ['name', 'purchase_price', 'sale_price', 'stock', 'actions'],
+      columnGroups: [
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Financial', columns: ['purchase_price', 'sale_price'] },
+        { name: 'Inventory', columns: ['stock', 'actions'] },
+      ],
+    },
+    catalog: {
+      name: 'Catalog',
+      icon: <Package2 className="w-4 h-4" />,
+      columns: showSKUColumn ? ['sku', 'name', 'category_name', 'date_added', 'actions'] : ['name', 'category_name', 'date_added', 'actions'],
+      columnGroups: [
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Catalog', columns: ['category_name', 'date_added', 'actions'] },
+      ],
+    },
+    'supply-chain': {
+      name: 'Supply Chain',
+      icon: <Truck className="w-4 h-4" />,
+      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'purchase_price', 'actions'] : ['name', 'location', 'stock', 'purchase_price', 'actions'],
+      columnGroups: [
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Supply Chain', columns: ['location', 'stock', 'purchase_price', 'actions'] },
+      ],
+    },
+  };
+
+  const currentViewConfig = viewConfigs[tableView];
+
+  // Helper to check if column should be visible
+  const isColumnVisible = (column: string): boolean => {
+    return currentViewConfig.columns.includes(column);
+  };
+
   // Handler for barcode detection (when adding products)
   const handleBarcodeDetected = async (barcode: string) => {
     try {
@@ -603,7 +881,7 @@ export default function CategorysPage() {
   };
 
   // Handler for barcode search from search bar (navigate to product in table)
-  const handleBarcodeSearch = async (barcode: string) => {
+  const handleBarcodeSearch = useCallback(async (barcode: string) => {
     try {
       if (!activeBranch) {
         toast.error('No active branch selected');
@@ -666,7 +944,7 @@ export default function CategorysPage() {
       console.error('Error processing barcode search:', error);
       toast.error('Error processing barcode search');
     }
-  };
+  }, [activeBranch, selectedCategoryIds, tree, setSearchTerm, setScannedSKU, setPreFilledProductName, setIsAddModalOpen, setSelectedCategoryIds]);
 
   // Detect if input looks like a barcode (numeric, 8-13 digits or alphanumeric)
   const isBarcodePattern = (input: string): boolean => {
@@ -912,6 +1190,173 @@ export default function CategorysPage() {
     }
   };
 
+  const handleBulkEditCategory = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    // Get flat categories for selection
+    const flatCategories = flattenCategoryTree(tree);
+    
+    // Show a simple selection dialog - in a real app, you might want a proper modal
+    const categoryOptions = flatCategories.map(cat => {
+      const path = getCategoryPath(cat.id, flatCategories);
+      return { id: cat.id, name: path };
+    });
+
+    const categoryList = categoryOptions.map((cat, idx) => `${idx + 1}. ${cat.name}`).join('\n');
+    const selected = prompt(
+      `Select category for ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}:\n\n${categoryList}\n\nEnter category number or leave empty to uncategorize:`,
+      ''
+    );
+
+    if (selected === null) return;
+
+    let categoryId: string | null = null;
+    if (selected.trim()) {
+      const index = parseInt(selected.trim()) - 1;
+      if (index >= 0 && index < categoryOptions.length) {
+        categoryId = categoryOptions[index].id;
+      } else {
+        toast.error('Invalid category selection');
+        return;
+      }
+    }
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ category_id: categoryId })
+        .in('id', Array.from(selectedProductIds));
+
+      if (error) throw error;
+
+      toast.success(`Updated category for ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}`);
+      setSelectedProductIds(new Set());
+      
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+    } catch (error) {
+      console.error('Error updating category:', error);
+      toast.error('Failed to update product categories');
+    }
+  };
+
+  const handleBulkAdjustStock = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    const adjustment = prompt(
+      `Adjust stock for ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}:\n\nEnter adjustment amount (positive to add, negative to subtract, e.g., +10 or -5):`,
+      '+0'
+    );
+
+    if (adjustment === null) return;
+
+    const adjustmentValue = parseInt(adjustment.trim());
+    if (isNaN(adjustmentValue)) {
+      toast.error('Invalid adjustment amount');
+      return;
+    }
+
+    try {
+      const selectedProducts = sortedProducts.filter((p: any) => selectedProductIds.has(p.id));
+      
+      // Update each product individually to handle current stock
+      const updates = selectedProducts.map(async (product: any) => {
+        const currentStock = Number(product.quantity_in_stock) || 0;
+        const newStock = Math.max(0, currentStock + adjustmentValue);
+
+        const { error } = await supabase
+          .from('products')
+          .update({ quantity_in_stock: newStock })
+          .eq('id', product.id);
+
+        if (error) throw error;
+      });
+
+      await Promise.all(updates);
+
+      toast.success(`Adjusted stock for ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}`);
+      setSelectedProductIds(new Set());
+      
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    } catch (error) {
+      console.error('Error adjusting stock:', error);
+      toast.error('Failed to adjust stock');
+    }
+  };
+
+  const handleBulkArchive = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    const confirmed = window.confirm(
+      `Archive ${selectedProductIds.size} selected product${selectedProductIds.size !== 1 ? 's' : ''}? Archived products will be hidden from normal views.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({ status: 'archived' })
+        .in('id', Array.from(selectedProductIds));
+
+      if (error) throw error;
+
+      toast.success(`Archived ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''}`);
+      setSelectedProductIds(new Set());
+      
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+    } catch (error) {
+      console.error('Error archiving products:', error);
+      toast.error('Failed to archive products');
+    }
+  };
+
+  const handleBulkExport = async () => {
+    if (selectedProductIds.size === 0) return;
+
+    try {
+      const selectedProducts = sortedProducts.filter((p: any) => selectedProductIds.has(p.id));
+      
+      // Create CSV data
+      const csvHeaders = ['Name', 'SKU', 'Barcode', 'Category', 'Location', 'Stock', 'Cost', 'Price', 'Description'];
+      const csvData = selectedProducts.map((product: any) => [
+        product.name || '',
+        product.sku || '',
+        product.barcode || '',
+        product.category_name || '',
+        product.location || '',
+        product.quantity_in_stock || 0,
+        product.purchase_price || 0,
+        product.sale_price || 0,
+        product.description || ''
+      ]);
+
+      const csvContent = [csvHeaders, ...csvData]
+        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `products_export_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success(`Exported ${selectedProductIds.size} product${selectedProductIds.size !== 1 ? 's' : ''} to CSV`);
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      toast.error('Failed to export products');
+    }
+  };
+
   const handleCustomizationSave = async (icon: string | null, color: string | null) => {
     if (!selectedCategory) return;
 
@@ -930,6 +1375,154 @@ export default function CategorysPage() {
     }
   };
 
+  // Command palette actions
+  const commandPaletteActions: CommandPaletteAction[] = React.useMemo(() => {
+    const actions: CommandPaletteAction[] = [
+      {
+        id: 'add-product',
+        label: 'Add Product',
+        icon: <Plus className="w-4 h-4" />,
+        shortcut: '⌘N',
+        keywords: ['create', 'new', 'product', 'add'],
+        group: 'Products',
+        action: () => {
+          setScannedSKU('');
+          setPreFilledProductName('');
+          setIsAddModalOpen(true);
+        },
+      },
+      {
+        id: 'adjust-stock',
+        label: 'Adjust Stock',
+        icon: <TrendingUp className="w-4 h-4" />,
+        keywords: ['stock', 'inventory', 'quantity', 'adjust', 'update'],
+        group: 'Inventory',
+        action: () => {
+          if (selectedProductIds.size > 0) {
+            // If products are selected, show bulk stock adjustment
+            const firstProduct = sortedProducts.find((p: any) => selectedProductIds.has(p.id));
+            if (firstProduct) {
+              setSelectedProduct(firstProduct);
+              setIsStockAdjustModalOpen(true);
+            }
+          } else {
+            // Open barcode scanner or prompt for SKU
+            const sku = prompt('Enter product SKU to adjust stock:');
+            if (sku) {
+              handleBarcodeSearch(sku);
+            }
+          }
+        },
+      },
+      {
+        id: 'transfer-items',
+        label: 'Transfer Items',
+        icon: <ArrowRightLeft className="w-4 h-4" />,
+        keywords: ['transfer', 'move', 'location', 'relocate'],
+        group: 'Inventory',
+        action: () => {
+          if (selectedProductIds.size > 0) {
+            handleBulkTransferStock();
+          } else {
+            toast.info('Select products first, or use this command after selecting items');
+          }
+        },
+      },
+      {
+        id: 'view-categories',
+        label: 'View Categories',
+        icon: <FolderTree className="w-4 h-4" />,
+        keywords: ['category', 'categories', 'filter', 'view'],
+        group: 'Navigation',
+        action: () => {
+          // Focus on category filter
+          setTimeout(() => {
+            const filterElement = document.querySelector('[data-category-filter]');
+            if (filterElement) {
+              (filterElement as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 100);
+        },
+      },
+      {
+        id: 'go-to-location',
+        label: 'Go to Location',
+        icon: <MapPin className="w-4 h-4" />,
+        keywords: ['location', 'warehouse', 'shelf', 'find'],
+        group: 'Navigation',
+        action: () => {
+          const location = prompt('Enter location to search for:');
+          if (location && location.trim()) {
+            setSearchTerm(location.trim());
+            // Filter products by location
+            const locationProducts = categoryProducts.filter((p: any) =>
+              p.location?.toLowerCase().includes(location.toLowerCase())
+            );
+            if (locationProducts.length === 0) {
+              toast.info(`No products found at location "${location}"`);
+            } else {
+              toast.success(`Found ${locationProducts.length} product(s) at "${location}"`);
+            }
+          }
+        },
+      },
+      {
+        id: 'search-by-sku',
+        label: 'Search by SKU',
+        icon: <Search className="w-4 h-4" />,
+        shortcut: '⌘F',
+        keywords: ['sku', 'barcode', 'search', 'find', 'lookup'],
+        group: 'Search',
+        action: () => {
+          const sku = prompt('Enter SKU or barcode to search:');
+          if (sku && sku.trim()) {
+            handleBarcodeSearch(sku.trim());
+          }
+        },
+      },
+      {
+        id: 'open-scanner',
+        label: 'Open Barcode Scanner',
+        icon: <Scan className="w-4 h-4" />,
+        keywords: ['scanner', 'barcode', 'scan', 'camera'],
+        group: 'Tools',
+        action: () => {
+          setIsBarcodeScannerOpen(true);
+        },
+      },
+      {
+        id: 'toggle-view',
+        label: productViewMode === 'table' ? 'Switch to Grid View' : 'Switch to Table View',
+        icon: productViewMode === 'table' ? <Grid3x3 className="w-4 h-4" /> : <Table2 className="w-4 h-4" />,
+        keywords: ['view', 'grid', 'table', 'toggle'],
+        group: 'View',
+        action: () => {
+          setProductViewMode(productViewMode === 'table' ? 'grid' : 'table');
+        },
+      },
+      {
+        id: 'add-category',
+        label: 'Add Category',
+        icon: <FolderTree className="w-4 h-4" />,
+        keywords: ['category', 'create', 'new', 'add'],
+        group: 'Categories',
+        action: () => {
+          handleAddCategory();
+        },
+      },
+    ];
+
+    return actions;
+  }, [
+    selectedProductIds,
+    sortedProducts,
+    categoryProducts,
+    productViewMode,
+    handleBarcodeSearch,
+    handleBulkTransferStock,
+    handleAddCategory,
+  ]);
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -947,137 +1540,133 @@ export default function CategorysPage() {
 
   return (
     <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
-      {/* Main Layout with Filter Sidebar and Product Table */}
-      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
-        {/* Left Sidebar - Category Facet Filter */}
-        <CategoryFacetFilter
-          tree={tree}
-          selectedCategoryIds={selectedCategoryIds}
-          onSelectionChange={handleCategorySelectionChange}
-          productCounts={productCounts}
-          isCollapsed={isFilterCollapsed}
-          onToggleCollapse={() => setIsFilterCollapsed(!isFilterCollapsed)}
-          onAddCategory={handleAddCategory}
-        />
+      {/* Quick Switcher Bar */}
+      <QuickSwitcherBar
+        tree={tree}
+        selectedCategoryIds={selectedCategoryIds}
+        onCategorySelectionChange={handleCategorySelectionChange}
+        selectedLocation={selectedLocation}
+        onLocationChange={setSelectedLocation}
+        onQuickFilterChange={setActiveQuickFilter}
+        activeQuickFilter={activeQuickFilter}
+        lowStockCount={dashboardMetrics.lowStockCount}
+        outOfStockCount={dashboardMetrics.outOfStockCount}
+      />
 
-        {/* Main Content - Products Table (100% width when filter collapsed) */}
-        <div className={cn(
-          "flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative",
-          isFilterCollapsed && "w-full"
-        )}>
+      {/* Main Layout with Product Table */}
+      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
+        {/* Main Content - Products Table */}
+        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
+          {/* Search Results Info - Above all other elements */}
+          {searchTerm && (
+            <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-blue-50 border-b border-blue-200 flex items-center justify-between gap-3 relative z-50">
+              <div className="text-sm font-medium text-blue-900">
+                {filteredProducts.length > 0 && (
+                  <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found</span>
+                )}
+                {filteredProducts.length === 0 && (
+                  <span className="text-red-600">No results found</span>
+                )}
+              </div>
+              {productViewMode === 'table' && (
+                <div className="flex items-center gap-2 ml-auto">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2"
+                          onClick={() => setShowSKUColumn(!showSKUColumn)}
+                        >
+                          <Tag className={cn("w-4 h-4", showSKUColumn && "text-blue-600")} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{showSKUColumn ? 'Hide' : 'Show'} SKU Column</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
+            </div>
+          )}
+
           {(categoryProducts.length > 0 || productsLoading) ? (
             <>
               {/* Row A: Control Bar - Search Bar + Action Buttons */}
               <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-white border-b flex items-center gap-3 transition-all duration-200">
-                {selectedProductIds.size > 0 ? (
-                  // Bulk Action Bar
-                  <div className="flex items-center justify-between w-full gap-3">
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm font-medium text-gray-900">
-                        {selectedProductIds.size} product{selectedProductIds.size !== 1 ? 's' : ''} selected
+                {/* Normal Header: Search Bar (left, expanded) + Action Buttons (right) */}
+                <>
+                  {/* Multi-Intent Search Bar - Left, Expanded Width */}
+                  <MultiIntentSearch
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    onSubmit={handleSearchSubmit}
+                    onProductClick={handleSearchProductClick}
+                    onCategoryClick={handleSearchCategoryClick}
+                    onSupplierClick={handleSearchSupplierClick}
+                    onCreateProduct={() => {
+                      setScannedSKU('');
+                      setPreFilledProductName('');
+                      setIsAddModalOpen(true);
+                    }}
+                    onCreateCategory={handleAddCategory}
+                    onCreateLocation={handleCreateLocation}
+                    placeholder="Search products, SKUs, categories, suppliers…"
+                    className="bg-gray-50"
+                  />
+                  {/* Action Buttons - Right */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {selectedProductIds.size > 0 && (
+                      <span className="text-sm font-medium text-gray-600 hidden sm:inline">
+                        {selectedProductIds.size} selected
                       </span>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={handleBulkDeleteProducts}
-                        >
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={handleBulkTransferStock}
-                        >
-                          <Truck className="w-4 h-4 mr-2" />
-                          Move
-                        </Button>
-                      </div>
-                    </div>
+                    )}
                     <Button
-                      variant="ghost"
+                      variant="default"
                       size="sm"
-                      onClick={() => setSelectedProductIds(new Set())}
-                    >
-                      <X className="w-4 h-4 mr-2" />
-                      Clear Selection
-                    </Button>
-                  </div>
-                ) : (
-                  // Normal Header: Search Bar (left, expanded) + Action Buttons (right)
-                  <>
-                    {/* Multi-Intent Search Bar - Left, Expanded Width */}
-                    <MultiIntentSearch
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      onSubmit={handleSearchSubmit}
-                      onProductClick={handleSearchProductClick}
-                      onCategoryClick={handleSearchCategoryClick}
-                      onSupplierClick={handleSearchSupplierClick}
-                      onCreateProduct={() => {
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => {
                         setScannedSKU('');
                         setPreFilledProductName('');
                         setIsAddModalOpen(true);
+                      
                       }}
-                      onCreateCategory={handleAddCategory}
-                      onCreateLocation={handleCreateLocation}
-                      placeholder="Search products, SKUs, categories, suppliers…"
-                    />
-                    {/* Action Buttons - Right */}
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <Button
-                        variant="default"
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                        onClick={() => {
-                          setScannedSKU('');
-                          setPreFilledProductName('');
-                          setIsAddModalOpen(true);
-                        
-                        }}
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add Product
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
-                      >
-                        {productViewMode === 'table' ? (
-                          <>
-                            <Grid3x3 className="w-4 h-4 mr-2" />
-                            Grid
-                          </>
-                        ) : (
-                          <>
-                            <Table2 className="w-4 h-4 mr-2" />
-                            Table
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </>
-                )}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Product
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="hidden"
+                      size="sm"
+                      onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
+                    >
+                      {productViewMode === 'table' ? (
+                        <>
+                          <Grid3x3 className="w-4 h-4 mr-2" />
+                          Grid
+                        </>
+                      ) : (
+                        <>
+                          <Table2 className="w-4 h-4 mr-2" />
+                          Table
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </>
               </div>
               
-              {/* Search Results Info - Show below search bar when searching */}
-              {searchTerm && (
-                <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-1 bg-gray-50 border-b">
-                  <div className="text-xs text-gray-500">
-                    {filteredProducts.length > 0 && (
-                      <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found</span>
-                    )}
-                    {filteredProducts.length === 0 && (
-                      <span>No results found</span>
-                    )}
-                  </div>
-                </div>
-              )}
-
               {/* Products Section - Scrollable */}
-              <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div 
+                className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" 
+                style={{ 
+                  WebkitOverflowScrolling: 'touch',
+                  paddingBottom: selectedProductIds.size > 0 ? '80px' : '0'
+                }}
+              >
                 <div className="">
                 {productsLoading ? (
                   <div className="flex items-center justify-center py-12">
@@ -1115,23 +1704,30 @@ export default function CategorysPage() {
                   <div className="bg-white rounded-lg border border-gray-200 overflow-visible shadow-sm">
                     <div className="overflow-x-auto overflow-y-visible scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                       <table className={cn("w-full divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
-                        <thead className="bg-gray-50/80 backdrop-blur-sm sticky top-0 z-10">
-                          <tr>
+                        <thead className="bg-gray-50/80 backdrop-blur-sm sticky top-0 z-10 border-b-2 border-gray-300">
+                          {/* Column Headers */}
+                          <tr className="border-b border-gray-200">
+                            {/* Empty header cell for row indicator bar alignment */}
+                            <th className="w-1"></th>
                             <th 
                               className={cn(
-                                "text-center w-12",
+                                "text-center w-12 border-r border-gray-200",
                                 compactMode ? "px-2 py-1" : "px-3 py-4"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
                               <input
                                 type="checkbox"
-                                checked={selectedProductIds.size > 0 && selectedProductIds.size === sortedProducts.length}
+                                checked={paginatedProducts.length > 0 && paginatedProducts.every((p: any) => selectedProductIds.has(p.id))}
                                 onChange={(e) => {
                                   if (e.target.checked) {
-                                    setSelectedProductIds(new Set(sortedProducts.map((p: any) => p.id)));
+                                    const newSet = new Set(selectedProductIds);
+                                    paginatedProducts.forEach((p: any) => newSet.add(p.id));
+                                    setSelectedProductIds(newSet);
                                   } else {
-                                    setSelectedProductIds(new Set());
+                                    const newSet = new Set(selectedProductIds);
+                                    paginatedProducts.forEach((p: any) => newSet.delete(p.id));
+                                    setSelectedProductIds(newSet);
                                   }
                                 }}
                                 className={cn(
@@ -1140,90 +1736,122 @@ export default function CategorysPage() {
                                 )}
                               />
                             </th>
-                            <th 
-                              className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors"
-                              onClick={() => handleSort('sku')}
-                            >
-                              <div className="flex items-center">
-                                SKU
-                                {getSortIcon('sku')}
-                              </div>
-                            </th>
-                            <th 
-                              className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors"
-                              onClick={() => handleSort('name')}
-                            >
-                              <div className="flex items-center">
-                                Product
-                                {getSortIcon('name')}
-                              </div>
-                            </th>
-                            <th 
-                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell"
-                              onClick={() => handleSort('location')}
-                            >
-                              <div className="flex items-center justify-center">
-                                Location
-                                {getSortIcon('location')}
-                              </div>
-                            </th>
-                            <th 
-                              className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors"
-                              onClick={() => handleSort('stock')}
-                            >
-                              <div className="flex items-center justify-center">
-                                Stock
-                                {getSortIcon('stock')}
-                              </div>
-                            </th>
-                            <th 
-                              className={cn(
-                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell",
+                            {isColumnVisible('sku') && (
+                              <th 
+                                className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                onClick={() => handleSort('sku')}
+                              >
+                                <div className="flex items-center">
+                                  SKU
+                                  {getSortIcon('sku')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('name') && (
+                              <th 
+                                className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                onClick={() => handleSort('name')}
+                              >
+                                <div className="flex items-center">
+                                  Product
+                                  {getSortIcon('name')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('category_name') && (
+                              <th 
+                                className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                onClick={() => handleSort('name')}
+                              >
+                                <div className="flex items-center">
+                                  Category
+                                  {getSortIcon('name')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('location') && (
+                              <th 
+                                className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell border-r border-gray-200"
+                                onClick={() => handleSort('location')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Location
+                                  {getSortIcon('location')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('stock') && (
+                              <th 
+                                className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                onClick={() => handleSort('stock')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Stock
+                                  {getSortIcon('stock')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('date_added') && (
+                              <th 
+                                className={cn(
+                                  "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell border-r border-gray-200",
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                )}
+                                onClick={() => handleSort('date_added')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Date Added
+                                  {getSortIcon('date_added')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('purchase_price') && (
+                              <th 
+                                className={cn(
+                                  "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell border-r border-gray-200",
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                )}
+                                onClick={() => handleSort('purchase_price')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Cost
+                                  {getSortIcon('purchase_price')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('sale_price') && (
+                              <th 
+                                className={cn(
+                                  "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell border-r border-gray-200",
+                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
+                                )}
+                                onClick={() => handleSort('sale_price')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Price
+                                  {getSortIcon('sale_price')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('actions') && (
+                              <th className={cn(
+                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell",
                                 compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
-                              )}
-                              onClick={() => handleSort('date_added')}
-                            >
-                              <div className="flex items-center justify-center">
-                                Date Added
-                                {getSortIcon('date_added')}
-                              </div>
-                            </th>
-                            <th 
-                              className={cn(
-                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell",
-                                compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
-                              )}
-                              onClick={() => handleSort('purchase_price')}
-                            >
-                              <div className="flex items-center justify-center">
-                                Cost
-                                {getSortIcon('purchase_price')}
-                              </div>
-                            </th>
-                            <th 
-                              className={cn(
-                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell",
-                                compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
-                              )}
-                              onClick={() => handleSort('sale_price')}
-                            >
-                              <div className="flex items-center justify-center">
-                                Price
-                                {getSortIcon('sale_price')}
-                              </div>
-                            </th>
-                            <th className={cn(
-                              "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell",
-                              compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-3 sm:py-4"
-                            )}>
-                              Actions
-                            </th>
+                              )}>
+                                Actions
+                              </th>
+                            )}
                           </tr>
                         </thead>
                         <tbody className="bg-white">
-                          {sortedProducts.map((product: any, index: number) => {
+                          {paginatedProducts.map((product: any, index: number) => {
                             const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
                             const stockDotColor = getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level);
+                            const rowIndicators = getRowIndicators(product);
+                            const primaryIndicator = rowIndicators[0]; // Use first indicator for left border
+                            
+                            // Always use stock status color for the border (red/orange/green)
+                            const stockBorderColor = getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level);
                             
                             return (
                               <tr
@@ -1233,16 +1861,25 @@ export default function CategorysPage() {
                                 onMouseEnter={() => setHoveredRowId(product.id)}
                                 onMouseLeave={() => setHoveredRowId(null)}
                                 className={cn(
-                                  'group hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100',
+                                  'group hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100 relative',
                                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
                                   'cursor-pointer',
                                   compactMode && 'h-8'
                                 )}
                               >
+                                {/* Row Indicator Bar (left side) - Always shows stock status color */}
+                                <td 
+                                  className={cn(
+                                    "absolute left-0 top-0 bottom-0 w-1",
+                                    stockBorderColor
+                                  )}
+                                  style={{ zIndex: 1 }}
+                                />
+                                
                                 {/* Selection checkbox */}
                                 <td 
                                   className={cn(
-                                    "text-center w-12",
+                                    "text-center w-12 relative z-10 border-r border-gray-200",
                                     compactMode ? "px-2 py-1" : "px-3 py-3"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
@@ -1267,98 +1904,190 @@ export default function CategorysPage() {
                                     )}
                                   />
                                 </td>
+                                
                                 {/* SKU column */}
-                                <td className={cn(
-                                  "text-left",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
-                                )}>
-                                  <span className={cn(
-                                    "font-mono text-gray-900",
-                                    compactMode ? "text-xs" : "text-xs sm:text-sm"
+                                {isColumnVisible('sku') && (
+                                  <td className={cn(
+                                    "text-left relative z-10 border-r border-gray-200",
+                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                   )}>
-                                    {product.sku || '---'}
-                                  </span>
-                                </td>
-                                {/* Product column */}
-                                <td className={cn(
-                                  "w-1/4",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
-                                )}>
-                                  <div className={cn(
-                                    "flex items-center",
-                                    compactMode ? "gap-1.5" : "gap-2 sm:gap-3"
-                                  )}>
-                                    {/* Product image - only show if image exists */}
-                                    {product.image_url && (
-                                      <div className={cn("flex-shrink-0", compactMode ? "w-8 h-8" : "w-10 h-10")} onClick={(e) => e.stopPropagation()} data-interactive>
-                                        <div className={cn("bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden", compactMode ? "w-8 h-8" : "w-10 h-10")}>
-                                          <img
-                                            src={product.image_url}
-                                            alt={product.name}
-                                            className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
-                                            onClick={() => handleImagePreview(product.image_url)}
-                                          />
-                                        </div>
-                                      </div>
-                                    )}
-                                    <div className="flex-1 min-w-0">
-                                      <div className={cn(
-                                        "flex items-center flex-wrap",
-                                        compactMode ? "gap-1" : "gap-2"
+                                    <div className="flex items-center gap-1.5">
+                                      <span className={cn(
+                                        "font-mono",
+                                        !product.sku || product.sku === '---' ? "text-gray-400" : "text-gray-900",
+                                        compactMode ? "text-xs" : "text-xs sm:text-sm"
                                       )}>
-                                        <h3 className={cn(
-                                          "font-semibold text-gray-900 truncate",
-                                          compactMode ? "text-xs" : "text-sm"
-                                        )}>
-                                          {product.name}
-                                        </h3>
-                                        {product.category_name && (
-                                          <span className="text-xs text-gray-400 ml-1.5">
-                                            • {product.category_name}
-                                          </span>
-                                        )}
-                                      </div>
-                                      {/* Barcode display - less prominent */}
-                                      {product.barcode && (
-                                        <p className={cn(
-                                          "text-gray-500 font-mono",
-                                          compactMode ? "text-[9px] mt-0.5" : "text-[10px] mt-0.5"
-                                        )}>
-                                          {product.barcode}
-                                        </p>
-                                      )}
-                                      {product.description && !compactMode && (
-                                        <p className="text-xs text-gray-500 truncate max-w-xs mt-1 hidden sm:block">
-                                          {product.description}
-                                        </p>
+                                        {product.sku || '---'}
+                                      </span>
+                                      {rowIndicators.find(i => i.type === 'missing-sku') && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <AlertCircle className="w-3 h-3 text-yellow-500" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>Missing SKU</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
                                       )}
                                     </div>
-                                  </div>
-                                </td>
+                                  </td>
+                                )}
+                                {/* Product column */}
+                                {isColumnVisible('name') && (
+                                  <td className={cn(
+                                    "w-1/4 relative z-10 border-r border-gray-200",
+                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  )}>
+                                    <div className={cn(
+                                      "flex items-center",
+                                      compactMode ? "gap-1.5" : "gap-2 sm:gap-3"
+                                    )}>
+                                      {/* Product image - only show if image exists */}
+                                      {product.image_url && (
+                                        <div className={cn("flex-shrink-0", compactMode ? "w-8 h-8" : "w-10 h-10")} onClick={(e) => e.stopPropagation()} data-interactive>
+                                          <div className={cn("bg-gray-50 rounded-lg border flex items-center justify-center overflow-hidden", compactMode ? "w-8 h-8" : "w-10 h-10")}>
+                                            <img
+                                              src={product.image_url}
+                                              alt={product.name}
+                                              className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                                              onClick={() => handleImagePreview(product.image_url)}
+                                            />
+                                          </div>
+                                        </div>
+                                      )}
+                                      <div className="flex-1 min-w-0">
+                                        <div className={cn(
+                                          "flex items-center flex-wrap",
+                                          compactMode ? "gap-1" : "gap-2"
+                                        )}>
+                                          <h3 className={cn(
+                                            "font-semibold text-gray-900 truncate",
+                                            compactMode ? "text-xs" : "text-sm"
+                                          )}>
+                                            {product.name}
+                                          </h3>
+                                          {product.category_name && !isColumnVisible('category_name') && (
+                                            <span className="text-xs text-gray-400 ml-1.5">
+                                              • {product.category_name}
+                                            </span>
+                                          )}
+                                          {/* Row indicator badges */}
+                                          <div className="flex items-center gap-1 ml-1">
+                                            {rowIndicators.filter(i => ['recent', 'no-category', 'price-mismatch'].includes(i.type)).map((indicator, idx) => (
+                                              <TooltipProvider key={idx}>
+                                                <Tooltip>
+                                                  <TooltipTrigger asChild>
+                                                    <Badge 
+                                                      variant="default" 
+                                                      className={cn(
+                                                        "text-[9px] px-1 py-0 h-4 border",
+                                                        indicator.type === 'recent' && "bg-green-50 text-green-700 border-green-200 hover:bg-green-50",
+                                                        indicator.type === 'no-category' && "bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-50",
+                                                        indicator.type === 'price-mismatch' && "bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-50"
+                                                      )}
+                                                    >
+                                                      {indicator.type === 'recent' && 'New'}
+                                                      {indicator.type === 'no-category' && 'No Cat'}
+                                                      {indicator.type === 'price-mismatch' && '⚠️'}
+                                                    </Badge>
+                                                  </TooltipTrigger>
+                                                  <TooltipContent>
+                                                    <p>{indicator.label}</p>
+                                                  </TooltipContent>
+                                                </Tooltip>
+                                              </TooltipProvider>
+                                            ))}
+                                          </div>
+                                        </div>
+                                        {/* Barcode display - less prominent */}
+                                        {product.barcode && (
+                                          <p className={cn(
+                                            "text-gray-500 font-mono",
+                                            compactMode ? "text-[9px] mt-0.5" : "text-[10px] mt-0.5"
+                                          )}>
+                                            {product.barcode}
+                                          </p>
+                                        )}
+                                        {product.description && !compactMode && (
+                                          <p className="text-xs text-gray-500 truncate max-w-xs mt-1 hidden sm:block">
+                                            {product.description}
+                                          </p>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </td>
+                                )}
+
+                                {/* Category column */}
+                                {isColumnVisible('category_name') && (
+                                  <td className={cn(
+                                    "text-left relative z-10 border-r border-gray-200",
+                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  )}>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className={cn(
+                                        "text-gray-600",
+                                        !product.category_name && "text-gray-400 italic",
+                                        compactMode ? "text-xs" : "text-sm"
+                                      )}>
+                                        {product.category_name || 'Uncategorized'}
+                                      </span>
+                                      {rowIndicators.find(i => i.type === 'no-category') && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <AlertCircle className="w-3 h-3 text-purple-500" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>No Category Assigned</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+                                    </div>
+                                  </td>
+                                )}
 
                                 {/* Location column */}
-                                <td className={cn(
-                                  "text-center w-1/8 hidden md:table-cell",
-                                  compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
-                                )}>
-                                  <div className="flex items-center justify-center gap-1">
-                                    <MapPin className={cn(
-                                      "text-gray-400",
-                                      compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
-                                    )} />
-                                    <span className={cn(
-                                      repetitiveLocations.has(product.location || '') ? "text-gray-400" : "text-gray-600",
-                                      compactMode ? "text-xs" : "text-sm"
-                                    )}>
-                                      {product.location || '-'}
-                                    </span>
-                                  </div>
-                                </td>
+                                {isColumnVisible('location') && (
+                                  <td className={cn(
+                                    "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200",
+                                    compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
+                                  )}>
+                                    <div className="flex items-center justify-center gap-1">
+                                      <MapPin className={cn(
+                                        repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-400",
+                                        compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                                      )} />
+                                      <span className={cn(
+                                        !product.location ? "text-gray-400 italic" : repetitiveLocations.has(product.location || '') ? "text-gray-400" : "text-gray-600",
+                                        compactMode ? "text-xs" : "text-sm"
+                                      )}>
+                                        {product.location || 'No Location'}
+                                      </span>
+                                      {rowIndicators.find(i => i.type === 'no-location') && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <AlertCircle className="w-3 h-3 text-blue-500" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>No Location Assigned</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+                                    </div>
+                                  </td>
+                                )}
 
                                 {/* Stock column */}
+                                {isColumnVisible('stock') && (
                                 <td 
                                   className={cn(
-                                    "text-center w-1/8",
+                                    "text-center w-1/8 border-r border-gray-200",
                                     compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                   )} 
                                   onClick={(e) => isMobile && e.stopPropagation()}
@@ -1381,7 +2110,7 @@ export default function CategorysPage() {
                                         >
                                           <div className={cn(
                                             "flex items-center justify-center",
-                                            compactMode ? "gap-1" : "gap-2"
+                                            compactMode ? "gap-1 ml-2" : "gap-2 ml-3"
                                           )}>
                                             <div
                                               className={cn(
@@ -1433,10 +2162,12 @@ export default function CategorysPage() {
                                     </Tooltip>
                                   </TooltipProvider>
                                 </td>
+                                )}
 
                                 {/* Date Added column */}
+                                {isColumnVisible('date_added') && (
                                 <td className={cn(
-                                  "text-center w-1/8 hidden lg:table-cell",
+                                  "text-center w-1/8 hidden lg:table-cell border-r border-gray-200",
                                   compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <span className={cn(
@@ -1452,10 +2183,12 @@ export default function CategorysPage() {
                                       : '-'}
                                   </span>
                                 </td>
+                                )}
 
                                 {/* Cost column */}
+                                {isColumnVisible('purchase_price') && (
                                 <td className={cn(
-                                  "text-center w-1/8 hidden sm:table-cell",
+                                  "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
                                   compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
@@ -1466,10 +2199,12 @@ export default function CategorysPage() {
                                     ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '0.00'}
                                   </div>
                                 </td>
+                                )}
 
                                 {/* Price column */}
+                                {isColumnVisible('sale_price') && (
                                 <td className={cn(
-                                  "text-center w-1/8 hidden sm:table-cell",
+                                  "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
                                   compactMode ? "px-2 py-1" : "px-2 sm:px-4 py-4"
                                 )}>
                                   <div className={cn(
@@ -1497,8 +2232,10 @@ export default function CategorysPage() {
                                     </button>
                                   </div>
                                 </td>
+                                )}
 
                                 {/* Actions column */}
+                                {isColumnVisible('actions') && (
                                 <td 
                                   className={cn(
                                     "text-center w-1/12 hidden md:table-cell",
@@ -1559,12 +2296,97 @@ export default function CategorysPage() {
                                     </DropdownMenuContent>
                                   </DropdownMenu>
                                 </td>
+                                )}
                               </tr>
                             );
                           })}
                         </tbody>
                       </table>
                     </div>
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t border-gray-200">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-700">
+                            Showing {startIndex + 1} to {Math.min(endIndex, totalProducts)} of {totalProducts} products
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(1)}
+                            disabled={currentPage === 1}
+                            className="h-8 px-3"
+                            title="First page"
+                          >
+                            <ChevronLeft className="w-4 h-4 mr-1" />
+                            <ChevronLeft className="w-4 h-4 -ml-1" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                            disabled={currentPage === 1}
+                            className="h-8 px-3"
+                            title="Previous page"
+                          >
+                            <ChevronLeft className="w-4 h-4 mr-1" />
+                            <span className="hidden sm:inline">Previous</span>
+                          </Button>
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                              let pageNum: number;
+                              if (totalPages <= 5) {
+                                pageNum = i + 1;
+                              } else if (currentPage <= 3) {
+                                pageNum = i + 1;
+                              } else if (currentPage >= totalPages - 2) {
+                                pageNum = totalPages - 4 + i;
+                              } else {
+                                pageNum = currentPage - 2 + i;
+                              }
+                              return (
+                                <Button
+                                  key={pageNum}
+                                  variant={currentPage === pageNum ? "default" : "outline"}
+                                  size="sm"
+                                  onClick={() => setCurrentPage(pageNum)}
+                                  className={cn(
+                                    "h-8 min-w-[2rem]",
+                                    currentPage === pageNum && "bg-blue-600 hover:bg-blue-700 text-white"
+                                  )}
+                                >
+                                  {pageNum}
+                                </Button>
+                              );
+                            })}
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                            disabled={currentPage === totalPages}
+                            className="h-8 px-3"
+                            title="Next page"
+                          >
+                            <span className="hidden sm:inline">Next</span>
+                            <ChevronRight className="w-4 h-4 ml-1" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(totalPages)}
+                            disabled={currentPage === totalPages}
+                            className="h-8 px-3"
+                            title="Last page"
+                          >
+                            <ChevronRight className="w-4 h-4 ml-1" />
+                            <ChevronRight className="w-4 h-4 -mr-1" />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : null}
                 </div>
@@ -1998,6 +2820,99 @@ export default function CategorysPage() {
             </div>
           </DialogContent>
         </Dialog>
+      )}
+
+      {/* Command Palette */}
+      <CommandPalette
+        open={isCommandPaletteOpen}
+        onOpenChange={setCommandPaletteOpen}
+        actions={commandPaletteActions}
+      />
+
+      {/* Fixed Bottom Bulk Action Bar */}
+      {selectedProductIds.size > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
+          <div className="max-w-full mx-auto px-4 py-3">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-semibold text-gray-900">
+                  {selectedProductIds.size} product{selectedProductIds.size !== 1 ? 's' : ''} selected
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSelectedProductIds(new Set())}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Clear
+                </Button>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkTransferStock}
+                  className="flex items-center gap-2"
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span className="hidden sm:inline">Move to Location</span>
+                  <span className="sm:hidden">Move</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkEditCategory}
+                  className="flex items-center gap-2"
+                >
+                  <FolderTree className="w-4 h-4" />
+                  <span className="hidden sm:inline">Edit Category</span>
+                  <span className="sm:hidden">Category</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkAdjustStock}
+                  className="flex items-center gap-2"
+                >
+                  <TrendingUp className="w-4 h-4" />
+                  <span className="hidden sm:inline">Adjust Stock</span>
+                  <span className="sm:hidden">Stock</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkArchive}
+                  className="flex items-center gap-2"
+                >
+                  <Archive className="w-4 h-4" />
+                  <span className="hidden sm:inline">Archive</span>
+                  <span className="sm:hidden">Archive</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleBulkExport}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Export</span>
+                  <span className="sm:hidden">Export</span>
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleBulkDeleteProducts}
+                  className="flex items-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Delete</span>
+                  <span className="sm:hidden">Delete</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

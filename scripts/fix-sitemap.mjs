@@ -117,3 +117,5 @@ console.log(`   - Removed ${urls.length - uniqueUrls.length} duplicate URLs`);
 console.log(`   - Added metadata to ${filteredUrls.length} URLs`);
 console.log(`   - Total URLs in sitemap: ${filteredUrls.length}`);
 
+
+

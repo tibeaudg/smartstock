@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { Search, Package, Tag, Building2, Plus, X, ChevronRight, MapPin } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -54,8 +55,10 @@ export function MultiIntentSearch({
   const { categories: flatCategories } = useCategoryTree();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'results' | 'create'>('results');
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number; width: number } | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Search query
   const searchQuery = useQuery({
@@ -159,17 +162,90 @@ export function MultiIntentSearch({
     return groups;
   }, [searchResults]);
 
+  // Calculate dropdown position based on input position
+  useEffect(() => {
+    const updatePosition = () => {
+      if (inputRef.current && isOpen) {
+        const rect = inputRef.current.getBoundingClientRect();
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const scrollX = window.scrollX || document.documentElement.scrollLeft;
+        
+        // Calculate position with viewport bounds checking
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        const dropdownMaxHeight = 500; // max-h-[500px]
+        const gap = 4; // mt-1 equivalent
+        
+        // Check if there's enough space below, otherwise show above
+        const spaceBelow = viewportHeight - rect.bottom;
+        const spaceAbove = rect.top;
+        const showBelow = spaceBelow >= dropdownMaxHeight || spaceBelow >= spaceAbove;
+        
+        let top: number;
+        if (showBelow) {
+          top = rect.bottom + scrollY + gap;
+        } else {
+          // Show above the input
+          top = rect.top + scrollY - dropdownMaxHeight - gap;
+          // Ensure it doesn't go above viewport
+          if (top < scrollY) {
+            top = scrollY + gap;
+          }
+        }
+        
+        // Ensure dropdown doesn't go off the right edge
+        let left = rect.left + scrollX;
+        const maxLeft = viewportWidth + scrollX - rect.width;
+        if (left > maxLeft) {
+          left = maxLeft;
+        }
+        // Ensure it doesn't go off the left edge
+        if (left < scrollX) {
+          left = scrollX;
+        }
+        
+        setDropdownPosition({
+          top,
+          left,
+          width: rect.width,
+        });
+      } else {
+        setDropdownPosition(null);
+      }
+    };
+
+    if (isOpen) {
+      updatePosition();
+      
+      // Update position on scroll and resize
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
+      
+      return () => {
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+      };
+    }
+  }, [isOpen, value]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        searchRef.current && 
+        !searchRef.current.contains(target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      // Use capture phase to catch clicks before they bubble
+      document.addEventListener('mousedown', handleClickOutside, true);
+      return () => document.removeEventListener('mousedown', handleClickOutside, true);
     }
   }, [isOpen]);
 
@@ -264,7 +340,7 @@ export function MultiIntentSearch({
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleKeyDown}
-          className="pl-10 pr-10 h-9 text-sm"
+          className="pl-10 pr-10 h-9 text-sm bg-gray-50"
         />
         {value && (
           <button
@@ -280,8 +356,16 @@ export function MultiIntentSearch({
         )}
       </div>
 
-      {showDropdown && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-[500px] overflow-hidden">
+      {showDropdown && dropdownPosition && typeof document !== 'undefined' && createPortal(
+        <div
+          ref={dropdownRef}
+          className="fixed z-[9999] bg-white border border-gray-200 rounded-lg shadow-lg max-h-[500px] overflow-hidden"
+          style={{
+            top: `${dropdownPosition.top}px`,
+            left: `${dropdownPosition.left}px`,
+            width: `${dropdownPosition.width}px`,
+          }}
+        >
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'results' | 'create')} className="w-full">
             <TabsList className="w-full rounded-none border-b bg-gray-50">
               <TabsTrigger value="results" className="flex-1">
@@ -478,7 +562,8 @@ export function MultiIntentSearch({
               </div>
             </TabsContent>
           </Tabs>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

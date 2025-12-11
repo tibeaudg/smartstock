@@ -69,3 +69,5 @@ sitemap = sitemap.replace(/<loc>\s+(https:\/\/[^<]+)\s+<\/loc>/g, '<loc>$1</loc>
 writeFileSync(sitemapPath, sitemap, 'utf-8');
 console.log('✅ Added metadata to sitemap URLs');
 
+
+

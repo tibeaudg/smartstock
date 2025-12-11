@@ -332,10 +332,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         </Card>
       </div>
 
-      {/* Category Overview Analytics */}
-      <div className="mt-4 sm:mt-6">
-        <AllProductsAnalytics products={allProducts} />
-      </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
 
