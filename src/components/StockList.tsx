@@ -49,7 +49,7 @@ import {
 } from 'lucide-react';
 import { ProductActionModal } from './ProductActionModal';
 import { EditProductModal } from './EditProductModal';
-import { EditProductInfoModal } from './EditProductInfoModal';
+import { ProductDetailModal } from './ProductDetailModal';
 import { StockMovementForm } from './stock/StockMovementForm';
 import { ProductFilters } from './ProductFilters';
 import { EnhancedProductFilters } from './EnhancedProductFilters';
@@ -1866,7 +1866,7 @@ export const StockList = () => {
 
   // State voor modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
+  const [isProductDetailModalOpen, setIsProductDetailModalOpen] = useState(false);
   const [isProductActionModalOpen, setIsProductActionModalOpen] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   const [isVariantSelectionModalOpen, setIsVariantSelectionModalOpen] = useState(false);
@@ -3054,7 +3054,7 @@ export const StockList = () => {
 
   const handleMobileEdit = () => {
     setIsProductActionModalOpen(false);
-    setIsEditInfoModalOpen(true);
+    setIsProductDetailModalOpen(true);
   };
 
   // Handler for adding new variant to parent product
@@ -3073,7 +3073,7 @@ export const StockList = () => {
   // Back navigation handlers
   const handleBackToActionModal = () => {
     setIsEditModalOpen(false);
-    setIsEditInfoModalOpen(false);
+    setIsProductDetailModalOpen(false);
     setIsProductActionModalOpen(true);
   };
 
@@ -3471,7 +3471,7 @@ export const StockList = () => {
                     onStockAction={handleStockAction}
                     onEdit={(product) => {
                       setSelectedProduct(product);
-                      setIsEditInfoModalOpen(true);
+                      setIsProductDetailModalOpen(true);
                     }}
                     onImagePreview={(url) => {
                       setPreviewImageUrl(url);
@@ -3552,7 +3552,7 @@ export const StockList = () => {
                             onStockAction={handleStockAction}
                             onEdit={(product) => {
                               setSelectedProduct(product);
-                              setIsEditInfoModalOpen(true);
+                              setIsProductDetailModalOpen(true);
                             }}
                             onAddVariant={handleAddVariant}
                             onImagePreview={(url) => {
@@ -3582,7 +3582,7 @@ export const StockList = () => {
                                   onStockAction={handleStockAction}
                                   onEdit={(product) => {
                                     setSelectedProduct(product);
-                                    setIsEditInfoModalOpen(true);
+                                    setIsProductDetailModalOpen(true);
                                   }}
                                   onImagePreview={(url) => {
                                     setPreviewImageUrl(url);
@@ -3739,12 +3739,13 @@ export const StockList = () => {
           />
         )}
         {selectedProduct && (
-          <EditProductInfoModal
-            isOpen={isEditInfoModalOpen}
+          <ProductDetailModal
+            isOpen={isProductDetailModalOpen}
             onClose={() => {
-              setIsEditInfoModalOpen(false);
+              setIsProductDetailModalOpen(false);
               setSelectedProduct(null);
             }}
+            product={selectedProduct}
             onProductUpdated={() => {
               // Clear filters when product is updated to show all products
               clearAllFilters();
@@ -3752,11 +3753,11 @@ export const StockList = () => {
               // Force refetch to get updated data
               queryClient.invalidateQueries({ queryKey: ['products'] });
               refetch();
-              setIsEditInfoModalOpen(false);
+              setIsProductDetailModalOpen(false);
               setSelectedProduct(null);
             }}
-            product={selectedProduct}
-            onBack={handleBackToActionModal}
+            onAdjustStock={(product) => handleStockAction(product, 'in')}
+            onDelete={(product) => handleDeleteProduct(product)}
           />
         )}
         <AddProductModal
@@ -4076,7 +4077,7 @@ export const StockList = () => {
               onStockAction={handleStockAction}
               onEdit={(product) => {
                 setSelectedProduct(product);
-                setIsEditInfoModalOpen(true);
+                setIsProductDetailModalOpen(true);
               }}
               onImagePreview={(url) => {
                 setPreviewImageUrl(url);
@@ -4248,7 +4249,7 @@ export const StockList = () => {
                         onStockAction={handleStockAction}
                         onEdit={(product) => {
                           setSelectedProduct(product);
-                          setIsEditInfoModalOpen(true);
+                          setIsProductDetailModalOpen(true);
                         }}
                         onAddVariant={handleAddVariant}
                         onImagePreview={(url) => {
@@ -4393,18 +4394,20 @@ export const StockList = () => {
       )}
 
       {selectedProduct && (
-        <EditProductInfoModal
-          isOpen={isEditInfoModalOpen}
+        <ProductDetailModal
+          isOpen={isProductDetailModalOpen}
           onClose={() => {
-            setIsEditInfoModalOpen(false);
-            setSelectedProduct(null);
-          }}
-          onProductUpdated={() => {
-            refetch();
-            setIsEditInfoModalOpen(false);
+            setIsProductDetailModalOpen(false);
             setSelectedProduct(null);
           }}
           product={selectedProduct}
+          onProductUpdated={() => {
+            refetch();
+            setIsProductDetailModalOpen(false);
+            setSelectedProduct(null);
+          }}
+          onAdjustStock={(product) => handleStockAction(product, 'in')}
+          onDelete={(product) => handleDeleteProduct(product)}
         />
       )}
       <AddProductModal

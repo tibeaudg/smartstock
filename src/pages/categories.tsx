@@ -32,12 +32,12 @@ import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
 import { getCategoryPath, getCategoryIdsIncludingDescendants, flattenCategoryTree } from '@/lib/categories/categoryUtils';
 import { cn } from '@/lib/utils';
-import { EditProductInfoModal } from '@/components/EditProductInfoModal';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
 import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
 import { ImagePreviewModal } from '@/components/ImagePreviewModal';
 import { AddProductModal } from '@/components/AddProductModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
+import { ProductDetailModal } from '@/components/ProductDetailModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
@@ -101,11 +101,12 @@ export default function CategorysPage() {
   
   // Product modal states
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [isEditInfoModalOpen, setIsEditInfoModalOpen] = useState(false);
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
   const [isMobileProductDetailModalOpen, setIsMobileProductDetailModalOpen] = useState(false);
+  const [isProductDetailModalOpen, setIsProductDetailModalOpen] = useState(false);
+  const [detailProduct, setDetailProduct] = useState<any>(null);
   
   // Add product modal states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -252,6 +253,40 @@ export default function CategorysPage() {
 
     return filtered;
   }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedStockStatus, dateRange, activeQuickFilter]);
+
+  // Calculate variant counts and aggregated stock for each product
+  const variantCounts = React.useMemo(() => {
+    const counts = new Map<string, number>();
+    categoryProducts.forEach((product: any) => {
+      if (!product.is_variant && product.id) {
+        const count = categoryProducts.filter((p: any) => 
+          p.parent_product_id === product.id && p.is_variant
+        ).length;
+        counts.set(product.id, count);
+      }
+    });
+    return counts;
+  }, [categoryProducts]);
+
+  // Calculate total stock including variants for each parent product
+  const productStockTotals = React.useMemo(() => {
+    const totals = new Map<string, number>();
+    categoryProducts.forEach((product: any) => {
+      if (!product.is_variant && product.id) {
+        const baseStock = Number(product.quantity_in_stock) || 0;
+        const variantsStock = categoryProducts
+          .filter((p: any) => p.parent_product_id === product.id && p.is_variant)
+          .reduce((sum: number, variant: any) => {
+            return sum + (Number(variant.quantity_in_stock) || 0);
+          }, 0);
+        totals.set(product.id, baseStock + variantsStock);
+      } else if (product.is_variant) {
+        // For variants, just use their own stock
+        totals.set(product.id, Number(product.quantity_in_stock) || 0);
+      }
+    });
+    return totals;
+  }, [categoryProducts]);
 
   // Use filtered products for sorting
   const sortedProducts = React.useMemo(() => {
@@ -586,8 +621,9 @@ export default function CategorysPage() {
   };
 
   const handleProductEdit = (product: any) => {
-    setSelectedProduct(product);
-    setIsEditInfoModalOpen(true);
+    // Product editing is now handled inline in ProductDetailModal
+    setDetailProduct(product);
+    setIsProductDetailModalOpen(true);
   };
 
   const handleImagePreview = (url: string) => {
@@ -602,7 +638,7 @@ export default function CategorysPage() {
     }
   };
 
-  // Handler for row click to toggle selection
+  // Handler for row click to open product detail modal
   const handleRowClick = (e: React.MouseEvent<HTMLTableRowElement>, product: any) => {
     // Check if click target is an interactive element
     const target = e.target as HTMLElement;
@@ -624,15 +660,11 @@ export default function CategorysPage() {
       return;
     }
 
-    // On desktop, toggle selection if not clicking on interactive element
+    // On desktop, open product detail modal if not clicking on interactive element
+    // Note: Checkbox clicks are already prevented by stopPropagation on the td element and data-interactive attribute
     if (!isInteractive) {
-      const newSet = new Set(selectedProductIds);
-      if (newSet.has(product.id)) {
-        newSet.delete(product.id);
-      } else {
-        newSet.add(product.id);
-      }
-      setSelectedProductIds(newSet);
+      setDetailProduct(product);
+      setIsProductDetailModalOpen(true);
     }
   };
 
@@ -794,39 +826,39 @@ export default function CategorysPage() {
     operational: {
       name: 'Operational',
       icon: <Warehouse className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'date_added', 'actions'] : ['name', 'location', 'stock', 'date_added', 'actions'],
+      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'date_added'] : ['name', 'location', 'stock', 'date_added'],
       columnGroups: [
         { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
         { name: 'Inventory', columns: ['location', 'stock'] },
-        { name: 'Operational', columns: ['date_added', 'actions'] },
+        { name: 'Operational', columns: ['date_added'] },
       ],
     },
     financial: {
       name: 'Financial',
       icon: <DollarSign className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'purchase_price', 'sale_price', 'stock', 'actions'] : ['name', 'purchase_price', 'sale_price', 'stock', 'actions'],
+      columns: showSKUColumn ? ['sku', 'name', 'purchase_price', 'sale_price', 'stock'] : ['name', 'purchase_price', 'sale_price', 'stock'],
       columnGroups: [
         { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
         { name: 'Financial', columns: ['purchase_price', 'sale_price'] },
-        { name: 'Inventory', columns: ['stock', 'actions'] },
+        { name: 'Inventory', columns: ['stock'] },
       ],
     },
     catalog: {
       name: 'Catalog',
       icon: <Package2 className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'category_name', 'date_added', 'actions'] : ['name', 'category_name', 'date_added', 'actions'],
+      columns: showSKUColumn ? ['sku', 'name', 'category_name', 'date_added'] : ['name', 'category_name', 'date_added'],
       columnGroups: [
         { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
-        { name: 'Catalog', columns: ['category_name', 'date_added', 'actions'] },
+        { name: 'Catalog', columns: ['category_name', 'date_added'] },
       ],
     },
     'supply-chain': {
       name: 'Supply Chain',
       icon: <Truck className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'purchase_price', 'actions'] : ['name', 'location', 'stock', 'purchase_price', 'actions'],
+      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'purchase_price'] : ['name', 'location', 'stock', 'purchase_price'],
       columnGroups: [
         { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
-        { name: 'Supply Chain', columns: ['location', 'stock', 'purchase_price', 'actions'] },
+        { name: 'Supply Chain', columns: ['location', 'stock', 'purchase_price'] },
       ],
     },
   };
@@ -1834,25 +1866,19 @@ export default function CategorysPage() {
                                 </div>
                               </th>
                             )}
-                            {isColumnVisible('actions') && (
-                              <th className={cn(
-                                "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/12 hidden md:table-cell",
-                                compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
-                              )}>
-                                Actions
-                              </th>
-                            )}
                           </tr>
                         </thead>
                         <tbody className="bg-white">
                           {paginatedProducts.map((product: any, index: number) => {
-                            const stockStatus = getStockStatus(product.quantity_in_stock, product.minimum_stock_level);
-                            const stockDotColor = getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level);
+                            // Use aggregated stock if available, otherwise use product's own stock
+                            const displayStock = productStockTotals.get(product.id) ?? (Number(product.quantity_in_stock) || 0);
+                            const stockStatus = getStockStatus(displayStock, product.minimum_stock_level);
+                            const stockDotColor = getStockStatusDotColor(displayStock, product.minimum_stock_level);
                             const rowIndicators = getRowIndicators(product);
                             const primaryIndicator = rowIndicators[0]; // Use first indicator for left border
                             
                             // Always use stock status color for the border (red/orange/green)
-                            const stockBorderColor = getStockStatusDotColor(product.quantity_in_stock, product.minimum_stock_level);
+                            const stockBorderColor = getStockStatusDotColor(displayStock, product.minimum_stock_level);
                             
                             return (
                               <tr
@@ -1976,6 +2002,17 @@ export default function CategorysPage() {
                                           )}>
                                             {product.name}
                                           </h3>
+                                          {!product.is_variant && variantCounts.has(product.id) && variantCounts.get(product.id)! > 0 && (
+                                            <Badge 
+                                              variant="secondary" 
+                                              className={cn(
+                                                "text-[9px] px-1.5 py-0 h-4 border bg-blue-50 text-blue-700 border-blue-200",
+                                                compactMode && "text-[8px] px-1"
+                                              )}
+                                            >
+                                              {variantCounts.get(product.id)} variant{variantCounts.get(product.id)! !== 1 ? 's' : ''}
+                                            </Badge>
+                                          )}
                                           {product.category_name && !isColumnVisible('category_name') && (
                                             <span className="text-xs text-gray-400 ml-1.5">
                                               • {product.category_name}
@@ -2124,21 +2161,21 @@ export default function CategorysPage() {
                                               className={cn(
                                                 'rounded-full',
                                                 stockDotColor,
-                                                Number(product.quantity_in_stock) === 0 ? 'animate-pulse' : '',
+                                                displayStock === 0 ? 'animate-pulse' : '',
                                                 compactMode ? 'w-1.5 h-1.5' : 'w-2 h-2'
                                               )}
                                             />
                                             <span
                                               className={cn(
                                                 'font-semibold transition-colors',
-                                                Number(product.quantity_in_stock) === 0
+                                                displayStock === 0
                                                   ? 'animate-pulse text-red-600'
                                                   : 'text-gray-900',
                                                 !isMobile && 'group-hover:text-white',
                                                 compactMode ? 'text-xs' : 'text-sm'
                                               )}
                                             >
-                                              {formatStockQuantity(product.quantity_in_stock)}
+                                              {formatStockQuantity(displayStock)}
                                             </span>
                                           </div>
                                           {/* Status label - only show in non-compact mode */}
@@ -2155,13 +2192,18 @@ export default function CategorysPage() {
                                       {!isMobile && (
                                         <TooltipContent side="top" align="center" sideOffset={8} className="z-[200000] max-w-xs shadow-lg">
                                           <p className="font-medium">
-                                            {formatStockQuantity(product.quantity_in_stock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
+                                            {formatStockQuantity(displayStock)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level)}
                                           </p>
+                                          {!product.is_variant && variantCounts.get(product.id)! > 0 && (
+                                            <p className="text-xs text-gray-400 mt-1">
+                                              Base: {formatStockQuantity(product.quantity_in_stock)} + Variants: {formatStockQuantity(displayStock - (Number(product.quantity_in_stock) || 0))}
+                                            </p>
+                                          )}
                                           <p className="text-xs text-gray-500 mt-1">Status: {stockStatus}</p>
-                                          {Number(product.quantity_in_stock) === 0 && (
+                                          {displayStock === 0 && (
                                             <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
                                           )}
-                                          {Number(product.quantity_in_stock) > 0 && Number(product.quantity_in_stock) <= Number(product.minimum_stock_level) && (
+                                          {displayStock > 0 && displayStock <= Number(product.minimum_stock_level) && (
                                             <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
                                           )}
                                           <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
@@ -2239,70 +2281,6 @@ export default function CategorysPage() {
                                       )} />
                                     </button>
                                   </div>
-                                </td>
-                                )}
-
-                                {/* Actions column */}
-                                {isColumnVisible('actions') && (
-                                <td 
-                                  className={cn(
-                                    "text-center w-1/12 hidden md:table-cell",
-                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
-                                  )} 
-                                  onClick={(e) => e.stopPropagation()}
-                                  data-interactive
-                                >
-                                  <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                      <Button variant="outline" size="sm" className={cn(
-                                        "p-0",
-                                        compactMode ? "h-6 w-6" : "h-8 w-8"
-                                      )}>
-                                        <MoreVertical className={compactMode ? "w-3 h-3" : "w-4 h-4"} />
-                                      </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56">
-                                      <DropdownMenuItem onClick={() => {
-                                        if (isMobile) {
-                                          setIsMobileProductDetailModalOpen(false);
-                                        }
-                                        handleStockAction(product, 'in');
-                                      }}>
-                                        <Plus className="w-4 h-4 mr-2 text-green-600" />
-                                        <span className="flex-1">Adjust Stock</span>
-                                      </DropdownMenuItem>
-                                      <DropdownMenuSeparator />
-                                      <DropdownMenuItem onClick={() => {
-                                        if (isMobile) {
-                                          setIsMobileProductDetailModalOpen(false);
-                                        }
-                                        handleProductEdit(product);
-                                      }}>
-                                        <Edit className="w-4 h-4 mr-2 text-blue-600" />
-                                        <span className="flex-1">Edit</span>
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem onClick={() => {
-                                        if (isMobile) {
-                                          setIsMobileProductDetailModalOpen(false);
-                                        }
-                                        handleDuplicateProduct(product);
-                                      }}>
-                                        <Copy className="w-4 h-4 mr-2 text-purple-600" />
-                                        <span className="flex-1">Duplicate</span>
-                                      </DropdownMenuItem>
-                                    
-                                      <DropdownMenuSeparator />
-                                      <DropdownMenuItem onClick={() => {
-                                        if (isMobile) {
-                                          setIsMobileProductDetailModalOpen(false);
-                                        }
-                                        handleDeleteProduct(product);
-                                      }}>
-                                        <Trash2 className="w-4 h-4 mr-2 text-gray-600" />
-                                        <span className="flex-1">Delete</span>
-                                      </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
                                 </td>
                                 )}
                               </tr>
@@ -2644,24 +2622,6 @@ export default function CategorysPage() {
         />
       )}
 
-      {/* Product Modals */}
-      {selectedProduct && (
-        <>
-          <EditProductInfoModal
-            isOpen={isEditInfoModalOpen}
-            onClose={() => {
-              setIsEditInfoModalOpen(false);
-              setSelectedProduct(null);
-            }}
-            product={selectedProduct}
-            onProductUpdated={() => {
-      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
-            }}
-          />
-        </>
-      )}
 
       {selectedProduct && (
         <EditProductStockModal
@@ -2828,6 +2788,28 @@ export default function CategorysPage() {
             </div>
           </DialogContent>
         </Dialog>
+      )}
+
+      {/* Desktop Product Detail Modal */}
+      {detailProduct && (
+        <ProductDetailModal
+          isOpen={isProductDetailModalOpen}
+          onClose={() => {
+            setIsProductDetailModalOpen(false);
+            setDetailProduct(null);
+          }}
+          product={detailProduct}
+          onAdjustStock={(product) => handleStockAction(product, 'in')}
+          onDelete={handleDeleteProduct}
+          onProductUpdated={() => {
+            queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+          }}
+          getStockStatus={getStockStatus}
+          getStockStatusDotColor={getStockStatusDotColor}
+          formatStockQuantity={formatStockQuantity}
+        />
       )}
 
       {/* Command Palette */}

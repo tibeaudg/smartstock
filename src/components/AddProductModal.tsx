@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
-import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info } from 'lucide-react';
+import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
@@ -87,6 +87,16 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
   const [duplicateName, setDuplicateName] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // Enhanced image upload state
+  const [uploadedImages, setUploadedImages] = useState<Array<{
+    file: File;
+    preview: string;
+    size: number;
+    uploading?: boolean;
+    progress?: number;
+    uploadSpeed?: number;
+  }>>([]);
+  const [isDragging, setIsDragging] = useState(false);
   // Re-added for completeness, assuming original code intended to use this state
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false); 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
@@ -178,6 +188,22 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       }
     }
   }, [preFilledCategoryId, isOpen, form, categories]);
+
+  // Cleanup object URLs on unmount or modal close
+  useEffect(() => {
+    return () => {
+      uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
+    };
+  }, [uploadedImages]);
+
+  // Reset uploaded images when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
+      setUploadedImages([]);
+      setIsDragging(false);
+    }
+  }, [isOpen, uploadedImages]);
 
   // Fallback: if name was persisted in localStorage by the opener, use it once
   useEffect(() => {
@@ -276,17 +302,84 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
 
   // Handle image change for preview and upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setProductImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
-      reader.readAsDataURL(file);
-      console.log(`[AddProductModal] Image selected: ${file.name}, size: ${file.size}`);
-    } else {
-      setImagePreview(null);
-      console.log('[AddProductModal] Image selection cleared.');
+    const files = Array.from(e.target.files || []);
+    handleFiles(files);
+  };
+
+  // Handle multiple files
+  const handleFiles = (files: File[]) => {
+    const newImages = files.map(file => {
+      const preview = URL.createObjectURL(file);
+      return {
+        file,
+        preview,
+        size: file.size,
+        uploading: false,
+        progress: 0,
+        uploadSpeed: 0
+      };
+    });
+    setUploadedImages(prev => [...prev, ...newImages]);
+    // Keep first image for backward compatibility
+    if (newImages.length > 0) {
+      setProductImage(newImages[0].file);
+      setImagePreview(newImages[0].preview);
     }
+  };
+
+  // Drag and drop handlers
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    const files = Array.from(e.dataTransfer.files).filter(file => 
+      file.type.startsWith('image/')
+    );
+    if (files.length > 0) {
+      handleFiles(files);
+    }
+  };
+
+  // Remove image
+  const removeImage = (index: number) => {
+    setUploadedImages(prev => {
+      const newImages = prev.filter((_, i) => i !== index);
+      if (newImages.length > 0) {
+        setProductImage(newImages[0].file);
+        setImagePreview(newImages[0].preview);
+      } else {
+        setProductImage(null);
+        setImagePreview(null);
+      }
+      return newImages;
+    });
+  };
+
+  // Format file size
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   };
 
   // Handle barcode scanning result
@@ -409,23 +502,24 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
         console.log(`[AddProductModal] Product count before adding: ${count}. Was first product: ${wasFirstProduct}`);
       }
 
-      // 2. Handle Image Upload
+      // 2. Handle Image Upload (use first uploaded image)
       let imageUrl: string | null = null;
-      if (productImage) {
+      const imageToUpload = uploadedImages.length > 0 ? uploadedImages[0].file : productImage;
+      if (imageToUpload) {
         console.log('[AddProductModal] Image upload initiated.');
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        if (!allowedTypes.includes(productImage.type) || productImage.size > 5 * 1024 * 1024) {
+        if (!allowedTypes.includes(imageToUpload.type) || imageToUpload.size > 5 * 1024 * 1024) {
           toast.error('Image upload failed: Invalid format (JPEG, PNG, WebP) or size (>5MB).');
           setLoading(false);
           return;
         }
 
-        const fileExt = productImage.name.split('.').pop()?.toLowerCase();
+        const fileExt = imageToUpload.name.split('.').pop()?.toLowerCase();
         const fileName = `${user.id}/${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
         
         const { error: uploadError } = await supabase.storage
           .from('product-images')
-          .upload(fileName, productImage, { upsert: false, contentType: productImage.type });
+          .upload(fileName, imageToUpload, { upsert: false, contentType: imageToUpload.type });
           
         if (uploadError) {
           console.error('Error uploading image:', uploadError);
@@ -698,6 +792,9 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       setHasVariants(false);
       setImagePreview(null);
       setProductImage(null);
+      // Clean up uploaded images and revoke object URLs
+      uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
+      setUploadedImages([]);
       
       if (wasFirstProduct && onFirstProductAdded) {
         console.log('[AddProductModal] Triggering first product callback.');
@@ -748,17 +845,353 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       
       {/* 1. Main AddProductModal Dialog */}
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className={`w-full max-w-full mx-auto p-0 ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:p-6 md:rounded-lg'}`}>
-          <DialogHeader className={`${isMobile ? 'p-4 border-b' : ''}`}>
+        <DialogContent className={`w-full max-w-full mx-auto p-0 flex flex-col ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:rounded-lg'}`}>
+          <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-6 border-b'}`}>
             <DialogTitle>Add Product</DialogTitle>
           </DialogHeader>
 
-          <div className={`${isMobile ? 'flex-1 overflow-y-auto p-4' : 'max-h-[calc(90vh-120px)] overflow-y-auto'}`}>
+          <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'}`}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                
-                {/* Basis Informatie Sectie */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                {/* Two-Column Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Left Column: Image Upload */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Add Images</h3>
+                    
+                    {/* Drag and Drop Area */}
+                    <div
+                      onDragEnter={handleDragEnter}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                      className={cn(
+                        "border-2 border-dashed rounded-lg p-12 min-h-[200px] text-center transition-colors flex items-center justify-center",
+                        isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                      )}
+                    >
+                      <div className="flex flex-col items-center justify-center space-y-4">
+                        <div className="flex items-center space-x-2">
+                          <ImageIcon className="w-12 h-12 text-gray-400" />
+                          <ImageIcon className="w-12 h-12 text-gray-400 -ml-4" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1">
+                            Drop your files here. or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
+                          </p>
+                          <input
+                            id="image-upload"
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleImageChange}
+                            disabled={loading}
+                            className="hidden"
+                          />
+                          <Upload className="w-5 h-5 text-gray-400 mx-auto mt-2" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Uploaded Images List */}
+                    {uploadedImages.length > 0 && (
+                      <div className="space-y-2">
+                        {uploadedImages.map((image, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg"
+                          >
+                            <img
+                              src={image.preview}
+                              alt={`Preview ${index + 1}`}
+                              className="w-16 h-16 object-cover rounded"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">
+                                {image.file.name}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {formatFileSize(image.size)}
+                              </p>
+                              {image.uploading && (
+                                <div className="mt-1">
+                                  <div className="w-full bg-gray-200 rounded-full h-1.5">
+                                    <div
+                                      className="bg-green-600 h-1.5 rounded-full transition-all"
+                                      style={{ width: `${image.progress || 0}%` }}
+                                    />
+                                  </div>
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    {image.progress || 0}% done
+                                    {image.uploadSpeed && ` • ${formatFileSize(image.uploadSpeed)}/sec`}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeImage(index)}
+                              disabled={loading}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+     
+
+                    {/* Variant Input Section - Always visible */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                        Product Variants
+                      </h4>
+                      <div className="space-y-4">
+                        {(variants.length === 0 ? [{
+                          variantName: '',
+                          quantityInStock: 0,
+                          minimumStockLevel: 0,
+                          purchasePrice: 0,
+                          salePrice: 0,
+                          sku: '',
+                          barcode: '',
+                          location: ''
+                        }] : variants).map((variant, index) => {
+                          const displayVariants = variants.length === 0 ? [{
+                            variantName: '',
+                            quantityInStock: 0,
+                            minimumStockLevel: 0,
+                            purchasePrice: 0,
+                            salePrice: 0,
+                            sku: '',
+                            barcode: '',
+                            location: ''
+                          }] : variants;
+                          
+                          return (
+                            <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center justify-between mb-3">
+                                <h5 className="text-sm font-medium text-gray-700">Variant {index + 1}</h5>
+                                {displayVariants.length > 1 && (
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      const newVariants = variants.filter((_, i) => i !== index);
+                                      setVariants(newVariants.length > 0 ? newVariants : []);
+                                    }}
+                                    className="text-red-600 hover:text-red-700"
+                                  >
+                                    Remove
+                                  </Button>
+                                )}
+                              </div>
+                              
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
+                                    Variant name *
+                                  </Label>
+                                  <Input 
+                                    id={`variant-name-${index}`}
+                                    value={variant.variantName}
+                                    onChange={(e) => {
+                                      const currentVariants = variants.length === 0 ? [{
+                                        variantName: '',
+                                        quantityInStock: 0,
+                                        minimumStockLevel: 0,
+                                        purchasePrice: 0,
+                                        salePrice: 0,
+                                        sku: '',
+                                        barcode: '',
+                                        location: ''
+                                      }] : [...variants];
+                                      currentVariants[index].variantName = e.target.value;
+                                      setVariants(currentVariants);
+                                    }}
+                                    placeholder="e.g. Yellow, Green, Size M"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-sku-${index}`} className="text-sm font-medium text-gray-700">
+                                    SKU
+                                  </Label>
+                                  <Input
+                                    id={`variant-sku-${index}`}
+                                    value={variant.sku || ''}
+                                    onChange={(e) => {
+                                      const currentVariants = variants.length === 0 ? [{
+                                        variantName: '',
+                                        quantityInStock: 0,
+                                        minimumStockLevel: 0,
+                                        purchasePrice: 0,
+                                        salePrice: 0,
+                                        sku: '',
+                                        barcode: '',
+                                        location: ''
+                                      }] : [...variants];
+                                      currentVariants[index].sku = e.target.value;
+                                      setVariants(currentVariants);
+                                    }}
+                                    placeholder="Variant SKU"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-barcode-${index}`} className="text-sm font-medium text-gray-700">
+                                    Barcode
+                                  </Label>
+                                  <Input
+                                    id={`variant-barcode-${index}`}
+                                    value={variant.barcode || ''}
+                                    onChange={(e) => {
+                                      const currentVariants = variants.length === 0 ? [{
+                                        variantName: '',
+                                        quantityInStock: 0,
+                                        minimumStockLevel: 0,
+                                        purchasePrice: 0,
+                                        salePrice: 0,
+                                        sku: '',
+                                        barcode: '',
+                                        location: ''
+                                      }] : [...variants];
+                                      currentVariants[index].barcode = e.target.value;
+                                      setVariants(currentVariants);
+                                    }}
+                                    placeholder="Variant barcode"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
+                                    Locations
+                                  </Label>
+                                  <Input
+                                    id={`variant-location-${index}`}
+                                    value={variant.location || ''}
+                                    onChange={(e) => {
+                                      const currentVariants = variants.length === 0 ? [{
+                                        variantName: '',
+                                        quantityInStock: 0,
+                                        minimumStockLevel: 0,
+                                        purchasePrice: 0,
+                                        salePrice: 0,
+                                        sku: '',
+                                        barcode: '',
+                                        location: ''
+                                      }] : [...variants];
+                                      currentVariants[index].location = e.target.value;
+                                      setVariants(currentVariants);
+                                    }}
+                                    placeholder="e.g. A1, Shelf 3"
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
+                                    Stock *
+                                  </Label>
+                                  <Input
+                                    id={`variant-stock-${index}`}
+                                    type="number" 
+                                    min="0"
+                                    value={variant.quantityInStock.toString()}
+                                    onChange={(e) => {
+                                      const currentVariants = variants.length === 0 ? [{
+                                        variantName: '',
+                                        quantityInStock: 0,
+                                        minimumStockLevel: 0,
+                                        purchasePrice: 0,
+                                        salePrice: 0,
+                                        sku: '',
+                                        barcode: '',
+                                        location: ''
+                                      }] : [...variants];
+                                      currentVariants[index].quantityInStock = parseInt(e.target.value, 10) || 0;
+                                      setVariants(currentVariants);
+                                    }}
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                                
+                                <div>
+                                  <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
+                                    Minimum stock
+                                  </Label>
+                                  <Input
+                                    id={`variant-min-stock-${index}`}
+                                    type="number"
+                                    min="0"
+                                    value={variant.minimumStockLevel.toString()}
+                                    onChange={(e) => {
+                                      const currentVariants = variants.length === 0 ? [{
+                                        variantName: '',
+                                        quantityInStock: 0,
+                                        minimumStockLevel: 0,
+                                        purchasePrice: 0,
+                                        salePrice: 0,
+                                        sku: '',
+                                        barcode: '',
+                                        location: ''
+                                      }] : [...variants];
+                                      currentVariants[index].minimumStockLevel = parseInt(e.target.value, 10) || 0;
+                                      setVariants(currentVariants);
+                                    }}
+                                    className="mt-1"
+                                    disabled={loading}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            const currentVariants = variants.length === 0 ? [] : [...variants];
+                            setVariants([...currentVariants, {
+                              variantName: '',
+                              quantityInStock: 0,
+                              minimumStockLevel: 0,
+                              purchasePrice: 0,
+                              salePrice: 0,
+                              sku: '',
+                              barcode: '',
+                              location: ''
+                            }]);
+                          }}
+                          className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400"
+                          disabled={loading}
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Add variant
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Product Details */}
+                  <div className="space-y-6">
+                    {/* Basis Informatie Sectie */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
                     <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
                     Basic Information
@@ -881,461 +1314,180 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                   </div>
                 </div>
 
-                {/* Geavanceerde Opties Sectie */}
-                <div className="space-y-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
-                    className="w-full justify-between text-gray-600 hover:text-gray-800 border-gray-300"
-                  >
-                    <span className="flex items-center">
-                      <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                      Advanced Options
-                    </span>
-                    <ChevronsUpDown className={`w-4 h-4 transition-transform ${showAdvancedOptions ? 'rotate-180' : ''}`} />
-                  </Button>
+                {/* Advanced Options - Always visible, no toggle */}
+                <div className="space-y-6">
+                  {/* Product Details Sectie */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Product Details
+                    </h4>
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700">Description</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                {...field} 
+                                placeholder="Enter product description" 
+                                disabled={loading}
+                                className="resize-none py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                                rows={3}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
 
-                  {showAdvancedOptions && (
-                    <div className="space-y-6 border border-gray-200 rounded-lg p-4 bg-gray-100">
-                      
-                      {/* Product Details Sectie */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                          <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                          Product Details
-                        </h4>
-                        <div className="space-y-4">
-                          <FormField
-                            control={form.control}
-                            name="description"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-700">Description</FormLabel>
-                                <FormControl>
-                                  <Textarea 
-                                    {...field} 
-                                    placeholder="Enter product description" 
-                                    disabled={loading}
-                                    className="resize-none py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                    rows={3}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-
-                          <FormField
-                            control={form.control}
-                            name="location"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-700">Location</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    {...field} 
-                                    placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
-                                    disabled={loading}
-                                    className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Category en Leverancier Sectie */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                          <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                          Category
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <FormField
-                            control={form.control}
-                            name="categoryId"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-700">Category</FormLabel>
-                                <FormControl>
-                                  <HierarchicalCategorySelector
-                                    value={field.value || null}
-                                    onValueChange={(categoryId, categoryName) => {
-                                      field.onChange(categoryId || '');
-                                      form.setValue('categoryName', categoryName || '');
-                                      console.log(`[AddProductModal] Selected category: ${categoryName}, ID: ${categoryId}`);
-                                    }}
-                                    placeholder="Select category..."
-                                    allowCreate={true}
-                                    showPath={true}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                        </div>
-                      </div>
-
-                      {/* Prijzen Sectie - Show only if no variants */}
-                      {!hasVariants && (
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                          <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                          Prices
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <FormField
-                            control={form.control}
-                            name="purchasePrice"
-                            rules={{ 
-                              min: { value: 0, message: 'Must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-700">Purchase Price</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    step="0.01"
-                                    min="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
-                                    className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          <FormField
-                            control={form.control}
-                            name="salePrice"
-                            rules={{ 
-                              min: { value: 0, message: 'Must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel className="text-gray-700">Sale Price</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    step="0.01"
-                                    min="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
-                                    className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      )}
-
-                      {/* Afbeelding Sectie */}
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                          <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                          Product Photo
-                        </h4>
-                        <div className="space-y-2">
-                          <Input 
-                            type="file" 
-                            accept="image/*" 
-                            onChange={handleImageChange} 
-                            disabled={loading} 
-                            className="py-2 border-gray-200 focus:border-gray-400" 
-                          />
-                          {imagePreview && (
-                            <img 
-                              src={imagePreview} 
-                              alt="Preview" 
-                              className="mt-2 w-24 h-24 max-w-full object-cover rounded border mx-auto" 
-                            />
-                          )}
-                        </div>
-                      </div>
-
-                    </div>
-                  )}
-                </div>
-
-                {/* Variant Toggle - Helemaal onderaan */}
-                <div className="space-y-4">
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-700">Has variants?</h4>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Enable this to add multiple variants of this product (e.g. different colors, sizes)
-                        </p>
-                      </div>
-                      <Switch
-                        checked={hasVariants}
-                        onCheckedChange={(checked) => {
-                          setHasVariants(checked);
-                          if (checked && variants.length === 0) {
-                            setVariants([{
-                              variantName: '',
-                              quantityInStock: 0,
-                              minimumStockLevel: 0,
-                              purchasePrice: 0,
-                              salePrice: 0,
-                              sku: '',
-                              barcode: '',
-                              location: ''
-                            }]);
-                          } else if (!checked) {
-                            setVariants([]);
-                          }
-                        }}
-                        disabled={loading}
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700">Location</FormLabel>
+                            <FormControl>
+                              <Input 
+                                {...field} 
+                                placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
+                                disabled={loading}
+                                className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
                   </div>
 
-                  {/* Variant Sectie */}
-                  {hasVariants && (
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                        Product Varianten
-                      </h4>
-                      <div className="space-y-4">
-                        {variants.map((variant, index) => (
-                          <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                            <div className="flex items-center justify-between mb-3">
-                              <h5 className="text-sm font-medium text-gray-700">Variant {index + 1}</h5>
-                              {variants.length > 1 && (
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    const newVariants = variants.filter((_, i) => i !== index);
-                                    setVariants(newVariants);
-                                  }}
-                                  className="text-red-600 hover:text-red-700"
-                                >
-                                  Remove
-                                </Button>
-                              )}
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div>
-                                <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
-                                  Variant name *
-                                </Label>
-                                <Input 
-                                  id={`variant-name-${index}`}
-                                  value={variant.variantName}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].variantName = e.target.value;
-                                    setVariants(newVariants);
-                                  }}
-                                  placeholder="e.g. Yellow, Green, Size M"
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-sku-${index}`} className="text-sm font-medium text-gray-700">
-                                  SKU
-                                </Label>
-                                <Input
-                                  id={`variant-sku-${index}`}
-                                  value={variant.sku || ''}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].sku = e.target.value;
-                                    setVariants(newVariants);
-                                  }}
-                                  placeholder="Variant SKU"
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-barcode-${index}`} className="text-sm font-medium text-gray-700">
-                                  Barcode
-                                </Label>
-                                <Input
-                                  id={`variant-barcode-${index}`}
-                                  value={variant.barcode || ''}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].barcode = e.target.value;
-                                    setVariants(newVariants);
-                                  }}
-                                  placeholder="Variant barcode"
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
-                                  Locations
-                                </Label>
-                                <Input
-                                  id={`variant-location-${index}`}
-                                  value={variant.location || ''}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].location = e.target.value;
-                                    setVariants(newVariants);
-                                  }}
-                                  placeholder="e.g. A1, Shelf 3"
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
-                                  Stock *
-                                </Label>
-                                <Input
-                                  id={`variant-stock-${index}`}
-                                  type="number" 
-                                  min="0"
-                                  value={variant.quantityInStock.toString()}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].quantityInStock = parseInt(e.target.value, 10) || 0;
-                                    setVariants(newVariants);
-                                  }}
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
-                                  Minimum stock
-                                </Label>
-                                <Input
-                                  id={`variant-min-stock-${index}`}
-                                  type="number"
-                                  min="0"
-                                  value={variant.minimumStockLevel.toString()}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].minimumStockLevel = parseInt(e.target.value, 10) || 0;
-                                    setVariants(newVariants);
-                                  }}
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
-                                  Purchase price
-                                </Label>
-                                <Input
-                                  id={`variant-purchase-${index}`}
-                                  type="number"
-                                  step="0.01"
-                                  min="0"
-                                  value={variant.purchasePrice.toString()}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].purchasePrice = parseFloat(e.target.value) || 0;
-                                    setVariants(newVariants);
-                                  }}
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div>
-                                <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
-                                  Sale price
-                                </Label>
-                                <Input 
-                                  id={`variant-sale-${index}`}
-                                  type="number" 
-                                  step="0.01"
-                                  min="0"
-                                  value={variant.salePrice.toString()}
-                                  onChange={(e) => {
-                                    const newVariants = [...variants];
-                                    newVariants[index].salePrice = parseFloat(e.target.value) || 0;
-                                    setVariants(newVariants);
-                                  }}
-                                  className="mt-1"
-                                  disabled={loading}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                        
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => {
-                            setVariants([...variants, {
-                              variantName: '',
-                              quantityInStock: 0,
-                              minimumStockLevel: 0,
-                              purchasePrice: 0,
-                              salePrice: 0,
-                              sku: '',
-                              barcode: '',
-                              location: ''
-                            }]);
-                          }}
-                          className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400"
-                          disabled={loading}
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add variant
-                        </Button>
-                      </div>
+                  {/* Category Sectie */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Category
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="categoryId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <HierarchicalCategorySelector
+                                value={field.value || null}
+                                onValueChange={(categoryId, categoryName) => {
+                                  field.onChange(categoryId || '');
+                                  form.setValue('categoryName', categoryName || '');
+                                  console.log(`[AddProductModal] Selected category: ${categoryName}, ID: ${categoryId}`);
+                                }}
+                                placeholder="Select category..."
+                                allowCreate={true}
+                                showPath={true}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
+                  </div>
+
+                  {/* Prijzen Sectie - Show only if no variants */}
+                  {!hasVariants && (
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
+                      Prices
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="purchasePrice"
+                        rules={{ 
+                          min: { value: 0, message: 'Must be 0 or more' }
+                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700">Purchase Price</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                step="0.01"
+                                min="0"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                value={field.value.toString()}
+                                className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="salePrice"
+                        rules={{ 
+                          min: { value: 0, message: 'Must be 0 or more' }
+                        }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700">Sale Price</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                step="0.01"
+                                min="0"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                value={field.value.toString()}
+                                className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
                   )}
                 </div>
-
-                <div className={`${isMobile ? 'p-4 border-t bg-gray-50' : 'pt-4'}`}>
-                  <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2'}`}>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={onClose} 
-                      disabled={loading} 
-                      className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
-                    >
-                      Cancel
-                    </Button>
-                    <Button 
-                      type="submit" 
-                      disabled={loading || (duplicateName && !hasVariants)} 
-                      className={isMobile ? 'w-full' : 'w-full sm:w-auto'}
-                    >
-                      {loading ? 'Adding...' : (hasVariants ? 'Add Product with Variants' : 'Add Product')}
-                    </Button>
                   </div>
                 </div>
+
+
+
               </form>
+
+
+
             </Form>
+
+
+            
           </div>
+
+
+            {/* Action Buttons - Sticky Footer */}
+            <div className={`sticky bottom-0  bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
+              <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row justify-end'}`}>
+                <Button 
+                  type="submit" 
+                  disabled={loading || (duplicateName && !hasVariants)} 
+                  className={isMobile ? 'w-full bg-blue-500 text-white' : 'w-auto bg-blue-500 text-white'}
+                >
+                  {loading ? 'Adding...' : (hasVariants ? 'Add Product with Variants' : 'Publish Product')}
+                </Button>
+              </div>
+            </div>
+
+
+            
         </DialogContent>
       </Dialog>
       
