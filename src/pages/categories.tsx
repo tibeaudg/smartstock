@@ -44,6 +44,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/components/CommandPalette';
+import { useColumnPreferences } from '@/hooks/useColumnPreferences';
+import { ColumnVisibilityModal } from '@/components/products/ColumnVisibilityModal';
+import { getColumnById } from '@/lib/products/columnFieldMapping';
 
 export default function CategorysPage() {
   const { user } = useAuth();
@@ -89,6 +92,12 @@ export default function CategorysPage() {
   
   // SKU column visibility
   const [showSKUColumn, setShowSKUColumn] = useState(true);
+  
+  // Column visibility modal state
+  const [isColumnVisibilityModalOpen, setIsColumnVisibilityModalOpen] = useState(false);
+  
+  // Column preferences
+  const { visibleColumns, setVisibleColumns, resetToDefaults } = useColumnPreferences();
   
   // Row selection state
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
@@ -345,6 +354,14 @@ export default function CategorysPage() {
           aValue = (a.sku || '').toLowerCase();
           bValue = (b.sku || '').toLowerCase();
           break;
+        case 'barcode':
+          aValue = (a.barcode || '').toLowerCase();
+          bValue = (b.barcode || '').toLowerCase();
+          break;
+        case 'description':
+          aValue = (a.description || '').toLowerCase();
+          bValue = (b.description || '').toLowerCase();
+          break;
         case 'location':
           aValue = (a.location || '').toLowerCase();
           bValue = (b.location || '').toLowerCase();
@@ -352,6 +369,10 @@ export default function CategorysPage() {
         case 'stock':
           aValue = Number(a.quantity_in_stock) || 0;
           bValue = Number(b.quantity_in_stock) || 0;
+          break;
+        case 'minimum_stock_level':
+          aValue = Number(a.minimum_stock_level) || 0;
+          bValue = Number(b.minimum_stock_level) || 0;
           break;
         case 'date_added':
           aValue = a.created_at ? new Date(a.created_at).getTime() : 0;
@@ -364,6 +385,10 @@ export default function CategorysPage() {
         case 'sale_price':
           aValue = Number(a.sale_price) || 0;
           bValue = Number(b.sale_price) || 0;
+          break;
+        case 'unit_price':
+          aValue = Number(a.unit_price) || 0;
+          bValue = Number(b.unit_price) || 0;
           break;
         default:
           return 0;
@@ -898,58 +923,14 @@ export default function CategorysPage() {
     return indicators;
   };
 
-  // View configurations
-  const viewConfigs: Record<TableView, { 
-    name: string; 
-    icon: React.ReactNode; 
-    columns: string[];
-    columnGroups: Array<{ name: string; columns: string[] }>;
-  }> = {
-    operational: {
-      name: 'Operational',
-      icon: <Warehouse className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'location', 'stock', 'date_added'] : ['category_name', 'name', 'location', 'stock', 'date_added'],
-      columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
-        { name: 'Inventory', columns: ['location', 'stock'] },
-        { name: 'Operational', columns: ['date_added'] },
-      ],
-    },
-    financial: {
-      name: 'Financial',
-      icon: <DollarSign className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'purchase_price', 'sale_price', 'stock'] : ['category_name', 'name', 'purchase_price', 'sale_price', 'stock'],
-      columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
-        { name: 'Financial', columns: ['purchase_price', 'sale_price'] },
-        { name: 'Inventory', columns: ['stock'] },
-      ],
-    },
-    catalog: {
-      name: 'Catalog',
-      icon: <Package2 className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'date_added'] : ['category_name', 'name', 'date_added'],
-      columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
-        { name: 'Catalog', columns: ['date_added'] },
-      ],
-    },
-    'supply-chain': {
-      name: 'Supply Chain',
-      icon: <Truck className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'location', 'stock', 'purchase_price'] : ['category_name', 'name', 'location', 'stock', 'purchase_price'],
-      columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
-        { name: 'Supply Chain', columns: ['location', 'stock', 'purchase_price'] },
-      ],
-    },
-  };
-
-  const currentViewConfig = viewConfigs[tableView];
-
   // Helper to check if column should be visible
+  // Now uses user preferences instead of view configs
   const isColumnVisible = (column: string): boolean => {
-    return currentViewConfig.columns.includes(column);
+    // Special handling for SKU column - respect showSKUColumn state
+    if (column === 'sku' && !showSKUColumn) {
+      return false;
+    }
+    return visibleColumns.includes(column);
   };
 
   // Handler for barcode detection (when adding products)
@@ -1814,6 +1795,24 @@ export default function CategorysPage() {
                       <Plus className="w-4 h-4 mr-2" />
                       Add Product
                     </Button>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setIsColumnVisibilityModalOpen(true)}
+                            className="gap-2"
+                          >
+                            <Settings className="w-4 h-4" />
+                            <span className="hidden sm:inline">Columns</span>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Customize visible columns</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                     <Button
                       variant="ghost"
                       className="hidden"
@@ -1927,6 +1926,30 @@ export default function CategorysPage() {
                                 </div>
                               </th>
                             )}
+                            {isColumnVisible('barcode') && (
+                              <th 
+                                className={cn(
+                                  "px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200 hidden md:table-cell",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
+                              >
+                                <div className="flex items-center">
+                                  Barcode
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('description') && (
+                              <th 
+                                className={cn(
+                                  "px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap border-r border-gray-200 hidden lg:table-cell",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
+                              >
+                                <div className="flex items-center">
+                                  Description
+                                </div>
+                              </th>
+                            )}
                             {isColumnVisible('category_name') && (
                               <th 
                                 className={cn(
@@ -1983,6 +2006,20 @@ export default function CategorysPage() {
                                 </div>
                               </th>
                             )}
+                            {isColumnVisible('minimum_stock_level') && (
+                              <th 
+                                className={cn(
+                                  "px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200 hidden sm:table-cell",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
+                                onClick={() => handleSort('minimum_stock_level')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Min. Level
+                                  {getSortIcon('minimum_stock_level')}
+                                </div>
+                              </th>
+                            )}
                             {isColumnVisible('date_added') && (
                               <th 
                                 className={cn(
@@ -2022,6 +2059,20 @@ export default function CategorysPage() {
                                 <div className="flex items-center justify-center">
                                   Price
                                   {getSortIcon('sale_price')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('unit_price') && (
+                              <th 
+                                className={cn(
+                                  "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell border-r border-gray-200",
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                )}
+                                onClick={() => handleSort('unit_price')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Unit Price
+                                  {getSortIcon('unit_price')}
                                 </div>
                               </th>
                             )}
@@ -2119,6 +2170,36 @@ export default function CategorysPage() {
                                         </TooltipProvider>
                                       )}
                                     </div>
+                                  </td>
+                                )}
+                                {/* Barcode column */}
+                                {isColumnVisible('barcode') && (
+                                  <td className={cn(
+                                    "text-left relative z-10 border-r border-gray-200 hidden md:table-cell",
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                  )}>
+                                    <span className={cn(
+                                      "font-mono",
+                                      !product.barcode ? "text-gray-400 italic" : "text-gray-900",
+                                      compactMode ? "text-xs" : "text-sm"
+                                    )}>
+                                      {product.barcode || 'Not set'}
+                                    </span>
+                                  </td>
+                                )}
+                                {/* Description column */}
+                                {isColumnVisible('description') && (
+                                  <td className={cn(
+                                    "text-left relative z-10 border-r border-gray-200 hidden lg:table-cell",
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                  )}>
+                                    <span className={cn(
+                                      "text-gray-600 truncate max-w-xs block",
+                                      !product.description && "text-gray-400 italic",
+                                      compactMode ? "text-xs" : "text-sm"
+                                    )}>
+                                      {product.description || 'No description'}
+                                    </span>
                                   </td>
                                 )}
                                 {/* Category column */}
@@ -2305,6 +2386,20 @@ export default function CategorysPage() {
                                   </td>
                                 )}
 
+                                {/* Minimum Stock Level column */}
+                                {isColumnVisible('minimum_stock_level') && (
+                                  <td className={cn(
+                                    "text-center border-r border-gray-200 hidden sm:table-cell",
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                  )}>
+                                    <span className={cn(
+                                      "text-gray-600",
+                                      compactMode ? "text-xs" : "text-sm"
+                                    )}>
+                                      {formatStockQuantity(product.minimum_stock_level)}
+                                    </span>
+                                  </td>
+                                )}
                                 {/* Stock column */}
                                 {isColumnVisible('stock') && (
                                 <td 
@@ -2459,6 +2554,21 @@ export default function CategorysPage() {
                                     </button>
                                   </div>
                                 </td>
+                                )}
+                                {/* Unit Price column */}
+                                {isColumnVisible('unit_price') && (
+                                  <td className={cn(
+                                    "text-center hidden lg:table-cell border-r border-gray-200",
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                  )}>
+                                    <div className={cn(
+                                      getPriceColor(product.unit_price, 'text-gray-900'),
+                                      "font-medium",
+                                      compactMode ? "text-xs" : "text-sm"
+                                    )}>
+                                      ${product.unit_price ? Number(product.unit_price).toFixed(2) : '0.00'}
+                                    </div>
+                                  </td>
                                 )}
                               </tr>
                             );
@@ -3017,6 +3127,15 @@ export default function CategorysPage() {
         isOpen={isBulkImportModalOpen}
         onClose={() => setIsBulkImportModalOpen(false)}
         onImportComplete={handleImportComplete}
+      />
+
+      {/* Column Visibility Modal */}
+      <ColumnVisibilityModal
+        isOpen={isColumnVisibilityModalOpen}
+        onClose={() => setIsColumnVisibilityModalOpen(false)}
+        visibleColumns={visibleColumns}
+        onSave={setVisibleColumns}
+        onReset={resetToDefaults}
       />
 
       {/* Fixed Bottom Bulk Action Bar */}
