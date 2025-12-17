@@ -27,8 +27,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useWarehouses } from '@/hooks/useWarehouses';
 import type { CategoryTree } from '@/types/categoryTypes';
 import { flattenCategoryTree } from '@/lib/categories/categoryUtils';
+import { Warehouse } from 'lucide-react';
 
 interface QuickSwitcherBarProps {
   tree: CategoryTree[];
@@ -36,6 +38,8 @@ interface QuickSwitcherBarProps {
   onCategorySelectionChange: (categoryIds: string[]) => void;
   selectedLocation?: string | null;
   onLocationChange?: (location: string | null) => void;
+  selectedWarehouse?: string | null;
+  onWarehouseChange?: (warehouse: string | null) => void;
   onQuickFilterChange?: (filter: string | null) => void;
   activeQuickFilter?: string | null;
   className?: string;
@@ -49,6 +53,8 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   onCategorySelectionChange,
   selectedLocation,
   onLocationChange,
+  selectedWarehouse,
+  onWarehouseChange,
   onQuickFilterChange,
   activeQuickFilter,
   className,
@@ -57,11 +63,14 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
 }) => {
   const { activeBranch } = useBranches();
   const { user } = useAuth();
+  const { data: warehouses = [] } = useWarehouses();
   const [locations, setLocations] = useState<string[]>([]);
   const [isCategoryPopoverOpen, setIsCategoryPopoverOpen] = useState(false);
   const [isLocationPopoverOpen, setIsLocationPopoverOpen] = useState(false);
+  const [isWarehousePopoverOpen, setIsWarehousePopoverOpen] = useState(false);
   const [locationSearchQuery, setLocationSearchQuery] = useState('');
   const [categorySearchQuery, setCategorySearchQuery] = useState('');
+  const [warehouseSearchQuery, setWarehouseSearchQuery] = useState('');
 
   // Flatten categories for quick selection
   const allCategories = React.useMemo(() => {
@@ -109,6 +118,12 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
     }
   }, [isCategoryPopoverOpen]);
 
+  useEffect(() => {
+    if (!isWarehousePopoverOpen) {
+      setWarehouseSearchQuery('');
+    }
+  }, [isWarehousePopoverOpen]);
+
   const handleCategoryToggle = (categoryId: string) => {
     if (selectedCategoryIds.includes(categoryId)) {
       onCategorySelectionChange(selectedCategoryIds.filter(id => id !== categoryId));
@@ -122,6 +137,13 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
       onLocationChange(location);
     }
     setIsLocationPopoverOpen(false);
+  };
+
+  const handleWarehouseSelect = (warehouse: string | null) => {
+    if (onWarehouseChange) {
+      onWarehouseChange(warehouse);
+    }
+    setIsWarehousePopoverOpen(false);
   };
 
   const handleCreateLocation = () => {
@@ -144,6 +166,11 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   // Filter categories based on search query
   const filteredCategories = allCategories.filter(category =>
     category.name.toLowerCase().includes(categorySearchQuery.toLowerCase())
+  );
+
+  // Filter warehouses based on search query
+  const filteredWarehouses = warehouses.filter(warehouse =>
+    warehouse.name.toLowerCase().includes(warehouseSearchQuery.toLowerCase())
   );
 
   const actionButtons = [
@@ -178,15 +205,7 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
         </PopoverTrigger>
         <PopoverContent className="w-64 p-2" align="start">
           <div className="space-y-1">
-            <Button
-              onClick={handleCreateCategory}
-              variant="outline"
-              size="sm"
-              className="w-full h-8 text-xs mb-2"
-            >
-              <Plus className="w-3 h-3 mr-1.5" />
-              Create new category
-            </Button>
+      
             
             <div className="relative mb-2">
               <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" />
@@ -251,76 +270,83 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
         </PopoverContent>
       </Popover>
 
-      {/* Location Quick Selector */}
-      {locations.length > 0 && (
-        <Popover open={isLocationPopoverOpen} onOpenChange={setIsLocationPopoverOpen}>
+      {/* Warehouse Quick Selector */}
+      {warehouses.length > 0 && (
+        <Popover open={isWarehousePopoverOpen} onOpenChange={setIsWarehousePopoverOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               size="sm"
               className="h-8 text-xs"
             >
-              <MapPin className="w-3 h-3 mr-1.5" />
-              {selectedLocation || 'All Locations'}
+              <Warehouse className="w-3 h-3 mr-1.5" />
+              {selectedWarehouse || 'All Warehouses'}
               <ChevronDown className="w-3 h-3 ml-1.5" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-48 p-2" align="start">
             <div className="space-y-1">
-              <Button
-                onClick={handleCreateLocation}
-                variant="outline"
-                size="sm"
-                className="w-full h-8 text-xs mb-2"
-              >
-                <Plus className="w-3 h-3 mr-1.5" />
-                Create new location
-              </Button>
-              
               <div className="relative mb-2">
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search locations..."
-                  value={locationSearchQuery}
-                  onChange={(e) => setLocationSearchQuery(e.target.value)}
+                  placeholder="Search warehouses..."
+                  value={warehouseSearchQuery}
+                  onChange={(e) => setWarehouseSearchQuery(e.target.value)}
                   className="h-7 pl-7 text-xs"
                 />
               </div>
               
               <div className="max-h-[200px] overflow-y-auto space-y-1">
                 <button
-                  onClick={() => handleLocationSelect(null)}
+                  onClick={() => handleWarehouseSelect(null)}
                   className={cn(
                     "w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
-                    !selectedLocation && "bg-blue-50 font-medium text-blue-900"
+                    !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
                   )}
                 >
-                  All Locations
+                  All Warehouses
                 </button>
-                {filteredLocations.length > 0 ? (
-                  filteredLocations.map((location) => (
+                {filteredWarehouses.length > 0 ? (
+                  filteredWarehouses.map((warehouse) => (
                     <button
-                      key={location}
-                      onClick={() => handleLocationSelect(location)}
+                      key={warehouse.id}
+                      onClick={() => handleWarehouseSelect(warehouse.name)}
                       className={cn(
                         "w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
-                        selectedLocation === location && "bg-blue-50 font-medium text-blue-900"
+                        selectedWarehouse === warehouse.name && "bg-blue-50 font-medium text-blue-900"
                       )}
                     >
-                      {location}
+                      {warehouse.name}
                     </button>
                   ))
                 ) : (
                   <div className="px-2 py-1.5 text-xs text-gray-500 text-center">
-                    No locations found
+                    No warehouses found
                   </div>
                 )}
               </div>
+              {selectedWarehouse && (
+                <div className="pt-1 border-t mt-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      handleWarehouseSelect(null);
+                    }}
+                    className="w-full h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <X className="w-3 h-3 mr-1" />
+                    Clear Selection
+                  </Button>
+                </div>
+              )}
             </div>
           </PopoverContent>
         </Popover>
       )}
+
+  
 
       {/* Import/Export Action Buttons */}
       <div className="flex items-center gap-1.5 ml-auto">

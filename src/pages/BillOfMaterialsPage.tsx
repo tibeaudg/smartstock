@@ -199,7 +199,7 @@ export default function BillOfMaterialsPage() {
                 Manage product components and buildable quantities
               </p>
             </div>
-            <Button onClick={() => setIsCreateDialogOpen(true)}>
+            <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
               <Plus className="w-4 h-4 mr-2" />
               Create BOM
             </Button>
@@ -243,7 +243,7 @@ export default function BillOfMaterialsPage() {
                     : 'Create your first Bill of Materials to get started'}
                 </p>
                 {!searchQuery && (
-                  <Button onClick={() => setIsCreateDialogOpen(true)}>
+                  <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
                     <Plus className="w-4 h-4 mr-2" />
                     Create BOM
                   </Button>

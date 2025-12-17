@@ -1018,6 +1018,44 @@ export type Database = {
           }
         ]
       }
+      warehouses: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          branch_id: string | null
+          user_id: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          branch_id?: string | null
+          user_id: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          branch_id?: string | null
+          user_id?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warehouses_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       suppliers: {
         Row: {
           address: string | null

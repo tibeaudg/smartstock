@@ -51,6 +51,7 @@ import { ThemeProvider } from './hooks/useTheme';
 // Import remaining synchronous pages
 import HelpCenterPage from "./pages/help-center";
 import CategorysPage from './pages/products';
+import CategoriesPage from './pages/CategoriesPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import AddProductPage from './pages/AddProductPage';
 import BillOfMaterialsPage from './pages/BillOfMaterialsPage';
@@ -63,6 +64,7 @@ import CustomerDetailPage from './pages/customers/[id]';
 import ReportingPage from './pages/reporting';
 import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 import { AuthContext } from './hooks/useAuth';
+import WarehousePage from "./pages/WarehousePage";
 
 // Loading Screen Component
 const LoadingScreen = () => (
@@ -395,8 +397,10 @@ const AuthRoute = () => {
           <Route path="barcoding" element={<Navigate to="/barcoding" replace />} />
           <Route path="stock" element={<Navigate to="/dashboard/categories" replace />} />
           <Route path="categories" element={<CategorysPage />} />
+          <Route path="categories-management" element={<CategoriesPage />} />
           <Route path="products/new" element={<AddProductPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
+          <Route path="warehouses" element={<WarehousePage />} />
           <Route path="bom" element={<BillOfMaterialsPage />} />
           <Route path="transactions" element={<StockMovements />} />
 

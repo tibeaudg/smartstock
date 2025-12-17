@@ -166,6 +166,8 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
                       </Button>
                     )}
                   </div>
+
+                  
                 </div>
 
                 {/* Stock Status Filter */}

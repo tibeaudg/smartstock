@@ -17,6 +17,7 @@ import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory, useCategoryRealtime, useProductsByCategories } from '@/hooks/useCategories';
+import { useWarehouses } from '@/hooks/useWarehouses';
 import { CategoryFacetFilter } from '@/components/categories/CategoryFacetFilter';
 import { QuickSwitcherBar } from '@/components/categories/QuickSwitcherBar';
 import { CategoryCustomizationModal } from '@/components/categories/CategoryCustomizationModal';
@@ -39,6 +40,7 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { VariantSelectionModal } from '@/components/VariantSelectionModal';
 import { BulkImportModal } from '@/components/BulkImportModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/components/CommandPalette';
@@ -67,6 +69,7 @@ export default function CategorysPage() {
   const [selectedStockStatus, setSelectedStockStatus] = useState<string[]>([]);
   const [dateRange, setDateRange] = useState<'all' | 'today' | 'week' | 'month' | 'year'>('all');
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState<string | null>(null);
   const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(null);
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
@@ -156,8 +159,33 @@ export default function CategorysPage() {
   const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
   const { data: categoryProducts = [], isLoading: productsLoading, refetch: refetchProducts } = useProductsByCategories(selectedCategoryIds);
+  const { data: warehouses = [] } = useWarehouses();
   const queryClient = useQueryClient();
   useCategoryRealtime();
+
+  // Map product locations to warehouse names
+  const locationToWarehouseMap = React.useMemo(() => {
+    const map = new Map<string, string>();
+    warehouses.forEach(warehouse => {
+      map.set(warehouse.name, warehouse.name);
+    });
+    return map;
+  }, [warehouses]);
+
+  // Get warehouse name for a product based on its location
+  const getWarehouseName = React.useCallback((location: string | null | undefined): string | null => {
+    if (!location) return null;
+    return locationToWarehouseMap.get(location) || null;
+  }, [locationToWarehouseMap]);
+  
+  // Handle URL parameter for warehouse filter
+  React.useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const warehouseParam = searchParams.get('warehouse');
+    if (warehouseParam) {
+      setSelectedWarehouse(decodeURIComponent(warehouseParam));
+    }
+  }, [location.search]);
   
   // Refetch products when returning to categories page (e.g., after adding a product)
   const prevLocationRef = React.useRef(location.pathname);
@@ -218,6 +246,13 @@ export default function CategorysPage() {
     if (selectedLocation) {
       filtered = filtered.filter((product: any) => 
         product.location === selectedLocation
+      );
+    }
+
+    // Warehouse filter (from warehouse dropdown)
+    if (selectedWarehouse) {
+      filtered = filtered.filter((product: any) => 
+        product.location === selectedWarehouse
       );
     }
 
@@ -285,7 +320,7 @@ export default function CategorysPage() {
     }
 
     return filtered;
-  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedStockStatus, dateRange, activeQuickFilter]);
+  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedWarehouse, selectedStockStatus, dateRange, activeQuickFilter]);
 
   // Fetch variants for all products to calculate variant counts
   const productIds = React.useMemo(() => 
@@ -380,6 +415,13 @@ export default function CategorysPage() {
           aValue = (a.location || '').toLowerCase();
           bValue = (b.location || '').toLowerCase();
           break;
+        case 'warehouses':
+          // Sort by warehouse name (if location matches a warehouse)
+          const aWarehouse = locationToWarehouseMap.get(a.location || '') || '';
+          const bWarehouse = locationToWarehouseMap.get(b.location || '') || '';
+          aValue = aWarehouse.toLowerCase();
+          bValue = bWarehouse.toLowerCase();
+          break;
         case 'stock':
           aValue = Number(a.quantity_in_stock) || 0;
           bValue = Number(b.quantity_in_stock) || 0;
@@ -422,7 +464,7 @@ export default function CategorysPage() {
         }
       }
     });
-  }, [filteredProducts, categoryProducts, searchTerm, sortColumn, sortDirection]);
+  }, [filteredProducts, categoryProducts, searchTerm, sortColumn, sortDirection, locationToWarehouseMap]);
 
   // Pagination calculations
   const totalProducts = sortedProducts.length;
@@ -1711,17 +1753,21 @@ export default function CategorysPage() {
   return (
     <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
       {/* Quick Switcher Bar */}
-      <QuickSwitcherBar
-        tree={tree}
-        selectedCategoryIds={selectedCategoryIds}
-        onCategorySelectionChange={handleCategorySelectionChange}
-        selectedLocation={selectedLocation}
-        onLocationChange={setSelectedLocation}
-        onQuickFilterChange={setActiveQuickFilter}
-        activeQuickFilter={activeQuickFilter}
-        onImportClick={handleImportClick}
-        onExportClick={handleExportAll}
-      />
+      <div className="flex-shrink-0 border-b border-gray-200 bg-white">
+        <QuickSwitcherBar
+          tree={tree}
+          selectedCategoryIds={selectedCategoryIds}
+          onCategorySelectionChange={handleCategorySelectionChange}
+          selectedLocation={selectedLocation}
+          onLocationChange={setSelectedLocation}
+          selectedWarehouse={selectedWarehouse}
+          onWarehouseChange={setSelectedWarehouse}
+          onQuickFilterChange={setActiveQuickFilter}
+          activeQuickFilter={activeQuickFilter}
+          onImportClick={handleImportClick}
+          onExportClick={handleExportAll}
+        />
+      </div>
 
       {/* Main Layout with Product Table */}
       <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
@@ -2001,6 +2047,20 @@ export default function CategorysPage() {
                                 <div className="flex items-center justify-center">
                                   Location
                                   {getSortIcon('location')}
+                                </div>
+                              </th>
+                            )}
+                            {isColumnVisible('warehouses') && (
+                              <th 
+                                className={cn(
+                                  "px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell border-r border-gray-200",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
+                                onClick={() => handleSort('warehouses')}
+                              >
+                                <div className="flex items-center justify-center">
+                                  Warehouses
+                                  {getSortIcon('warehouses')}
                                 </div>
                               </th>
                             )}
@@ -2397,6 +2457,30 @@ export default function CategorysPage() {
                                     </div>
                                   </td>
                                 )}
+
+                                {/* Warehouses column */}
+                                {isColumnVisible('warehouses') && (() => {
+                                  const warehouseName = getWarehouseName(product.location);
+                                  return (
+                                    <td className={cn(
+                                      "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200",
+                                      compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                    )}>
+                                      <div className="flex items-center justify-center gap-1">
+                                        <Warehouse className={cn(
+                                          warehouseName ? "text-gray-400" : "text-gray-300 opacity-50",
+                                          compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                                        )} />
+                                        <span className={cn(
+                                          !warehouseName ? "text-gray-400 italic" : "text-gray-600",
+                                          compactMode ? "text-xs" : "text-sm"
+                                        )}>
+                                          {warehouseName || 'Not assigned'}
+                                        </span>
+                                      </div>
+                                    </td>
+                                  );
+                                })()}
 
                                 {/* Minimum Stock Level column */}
                                 {isColumnVisible('minimum_stock_level') && (

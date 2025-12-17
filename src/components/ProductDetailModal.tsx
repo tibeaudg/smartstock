@@ -39,8 +39,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
 import { InventorySegmentation } from '@/components/product/InventorySegmentation';
 import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
+import { WarehouseTransferModal } from '@/components/WarehouseTransferModal';
+import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { format } from 'date-fns';
-import { Archive, QrCode, ArrowRightLeft } from 'lucide-react';
+import { Archive, QrCode, ArrowRightLeft, MapPin, Tag } from 'lucide-react';
 
 interface ProductDetailModalProps {
   isOpen: boolean;
@@ -600,8 +602,67 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     onAdjustStock(currentProduct);
   };
 
-  const handleTransfer = () => {
-    toast.info('Transfer functionality coming soon');
+  const handleSetWarehouse = () => {
+    if (!currentProduct) return;
+    setIsWarehouseModalOpen(true);
+  };
+
+  const handleSetCategory = () => {
+    if (!currentProduct) return;
+    setIsCategoryModalOpen(true);
+  };
+
+  const handleWarehouseSetComplete = async () => {
+    // Refetch product data
+    if (currentProduct?.id && activeBranch) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', currentProduct.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .single();
+
+      if (!error && data) {
+        setCurrentProduct(data);
+        setForm(prev => ({
+          ...prev,
+          location: data.location || '',
+        }));
+      }
+    }
+    
+    if (onProductUpdated) {
+      onProductUpdated();
+    }
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+  };
+
+  const handleCategorySetComplete = async () => {
+    // Refetch product data
+    if (currentProduct?.id && activeBranch) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', currentProduct.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .single();
+
+      if (!error && data) {
+        setCurrentProduct(data);
+        setForm(prev => ({
+          ...prev,
+          category_id: data.category_id || '',
+          category_name: data.category_name || '',
+        }));
+      }
+    }
+    
+    if (onProductUpdated) {
+      onProductUpdated();
+    }
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
   };
 
   const handleGenerateBarcode = () => {
@@ -672,13 +733,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 Adjust
               </Button>
               <Button
-                onClick={handleTransfer}
+                onClick={handleSetWarehouse}
                 variant="outline"
                 size="sm"
                 className="gap-2 text-xs"
               >
-                <ArrowRightLeft className="w-3 h-3" />
-                Transfer
+                <MapPin className="w-3 h-3" />
+                {currentProduct?.location || 'Set Warehouse'}
+              </Button>
+              <Button
+                onClick={handleSetCategory}
+                variant="outline"
+                size="sm"
+                className="gap-2 text-xs"
+              >
+                <Tag className="w-3 h-3" />
+                {currentProduct?.category_name || 'Set Category'}
               </Button>
               <Button
                 onClick={handleGenerateBarcode}
@@ -1616,6 +1686,35 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           onClose={() => setShowScanner(false)}
           onScanSuccess={onScanSuccess}
           settings={scannerSettings}
+        />
+      )}
+
+      {/* Warehouse Transfer Modal */}
+      {isWarehouseModalOpen && currentProduct && (
+        <WarehouseTransferModal
+          isOpen={isWarehouseModalOpen}
+          onClose={() => setIsWarehouseModalOpen(false)}
+          product={{
+            id: currentProduct.id,
+            name: currentProduct.name,
+            location: currentProduct.location,
+          }}
+          onTransferComplete={handleWarehouseSetComplete}
+        />
+      )}
+
+      {/* Category Selection Modal */}
+      {isCategoryModalOpen && currentProduct && (
+        <CategorySelectionModal
+          isOpen={isCategoryModalOpen}
+          onClose={() => setIsCategoryModalOpen(false)}
+          product={{
+            id: currentProduct.id,
+            name: currentProduct.name,
+            category_id: currentProduct.category_id,
+            category_name: currentProduct.category_name,
+          }}
+          onCategorySet={handleCategorySetComplete}
         />
       )}
     </Dialog>

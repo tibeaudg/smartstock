@@ -280,26 +280,7 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
                       </Select>
                     </div>
 
-                    {/* Location Filter */}
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium">Location</Label>
-                      <Select value={filters.locationFilter} onValueChange={(value) => updateFilter('locationFilter', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="All locations" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All Locations</SelectItem>
-                          {locations.map((location) => (
-                            <SelectItem key={location} value={location}>
-                              <div className="flex items-center gap-2">
-                                <MapPin className="h-3 w-3" />
-                                {location}
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+              
                   </div>
                 </CollapsibleContent>
               </Collapsible>

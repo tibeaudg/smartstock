@@ -42,7 +42,9 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
 import { InventorySegmentation } from '@/components/product/InventorySegmentation';
-import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
+import { EditProductStockModal } from '@/components/EditProductStockModal';
+import { WarehouseTransferModal } from '@/components/WarehouseTransferModal';
+import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { format } from 'date-fns';
 
 export default function ProductDetailPage() {
@@ -113,6 +115,7 @@ export default function ProductDetailPage() {
   // Modal states
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
 
   // Fetch product data
@@ -559,10 +562,63 @@ export default function ProductDetailPage() {
     setIsStockAdjustModalOpen(true);
   };
 
-  const handleTransfer = () => {
+  const handleSetWarehouse = () => {
+    if (!currentProduct) return;
     setIsTransferModalOpen(true);
-    // TODO: Implement transfer modal
-    toast.info('Transfer functionality coming soon');
+  };
+
+  const handleSetCategory = () => {
+    if (!currentProduct) return;
+    setIsCategoryModalOpen(true);
+  };
+
+  const handleTransferComplete = async () => {
+    // Refetch product data to get updated location
+    if (id && activeBranch) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .eq('branch_id', activeBranch.branch_id)
+        .single();
+
+      if (!error && data) {
+        setCurrentProduct(data);
+        setForm(prev => ({
+          ...prev,
+          location: data.location || '',
+        }));
+      }
+    }
+    
+    // Invalidate queries to refresh data
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+  };
+
+  const handleCategorySetComplete = async () => {
+    // Refetch product data to get updated category
+    if (id && activeBranch) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .eq('branch_id', activeBranch.branch_id)
+        .single();
+
+      if (!error && data) {
+        setCurrentProduct(data);
+        setForm(prev => ({
+          ...prev,
+          category_id: data.category_id || '',
+          category_name: data.category_name || '',
+        }));
+      }
+    }
+    
+    // Invalidate queries to refresh data
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
   };
 
   const handleGenerateBarcode = () => {
@@ -608,7 +664,11 @@ export default function ProductDetailPage() {
             break;
           case 't':
             e.preventDefault();
-            handleTransfer();
+            handleSetWarehouse();
+            break;
+          case 'c':
+            e.preventDefault();
+            handleSetCategory();
             break;
           case 'b':
             e.preventDefault();
@@ -715,7 +775,7 @@ export default function ProductDetailPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-medium text-gray-600 uppercase">Product Image</h3>
-                {editingField !== 'image' && (
+                {editingField !== 'image' && currentProduct.image_url && (
                   <Button
                     size="sm"
                     variant="ghost"
@@ -727,7 +787,7 @@ export default function ProductDetailPage() {
                 )}
               </div>
               
-              {editingField === 'image' ? (
+              {editingField === 'image' || !currentProduct.image_url ? (
                 <div className="space-y-2">
                   {(currentProduct.image_url || uploadedImages.length > 0) && (
                     <div className="bg-white rounded border border-gray-200 p-2 flex items-center justify-center">
@@ -786,19 +846,13 @@ export default function ProductDetailPage() {
                   )}
                 </div>
               ) : (
-                currentProduct.image_url ? (
-                  <div className="bg-white rounded border border-gray-200 p-2 flex items-center justify-center">
-                    <img
-                      src={currentProduct.image_url}
-                      alt={currentProduct.name}
-                      className="max-w-full max-h-48 object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div className="bg-white rounded border border-gray-200 p-8 flex items-center justify-center">
-                    <Package className="w-12 h-12 text-gray-400" />
-                  </div>
-                )
+                <div className="bg-white rounded border border-gray-200 p-2 flex items-center justify-center">
+                  <img
+                    src={currentProduct.image_url}
+                    alt={currentProduct.name}
+                    className="max-w-full max-h-48 object-contain"
+                  />
+                </div>
               )}
             </div>
 
@@ -832,34 +886,11 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {/* Category */}
-              <div>
-                <div className="text-xs font-medium text-gray-500 mb-1">Category</div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-900">
-                    {currentProduct.category_name || 'Not set'}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('category')}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Edit className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
+        
 
-              {/* Status */}
-              <div>
-                <div className="text-xs font-medium text-gray-500 mb-1">Status</div>
-                <Badge variant={productStatus.variant} className="text-xs">
-                  {productStatus.label}
-                </Badge>
-              </div>
+           
             </div>
 
-            <Separator />
 
             {/* Quick Metadata */}
             <div className="space-y-2 text-xs">
@@ -875,27 +906,14 @@ export default function ProductDetailPage() {
                   {currentProduct.updated_at ? format(new Date(currentProduct.updated_at), 'MMM dd, yyyy') : 'N/A'}
                 </span>
               </div>
-              {activeBranch && (
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Branch:</span>
-                  <span className="text-gray-900">{activeBranch.branch_name}</span>
-                </div>
-              )}
+             
             </div>
 
             <Separator />
 
             {/* Compact Action Buttons */}
             <div className="space-y-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-start text-xs h-8"
-                onClick={() => setEditingField('name')}
-              >
-                <Edit className="w-3 h-3 mr-2" />
-                Edit Product
-              </Button>
+           
               <Button
                 variant="outline"
                 size="sm"
@@ -948,7 +966,18 @@ export default function ProductDetailPage() {
                   </Button>
                 </div>
               ) : (
-                <h1 className="text-xl font-bold">{currentProduct.name}</h1>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-xl font-bold">{currentProduct.name}</h1>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setEditingField('name')}
+                    className="h-6 w-6 p-0"
+                    title="Edit product name"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                </div>
               )}
               
               <div className="flex items-center gap-2">
@@ -963,24 +992,24 @@ export default function ProductDetailPage() {
                   Adjust
                 </Button>
                 <Button
-                  onClick={handleTransfer}
+                  onClick={handleSetWarehouse}
                   variant="outline"
                   size="sm"
                   className="gap-2 text-xs"
-                  title="Transfer (T)"
+                  title="Set Warehouse (T)"
                 >
-                  <ArrowRightLeft className="w-3 h-3" />
-                  Transfer
+                  <MapPin className="w-3 h-3" />
+                  {currentProduct?.location || 'Set Warehouse'}
                 </Button>
                 <Button
-                  onClick={handleGenerateBarcode}
+                  onClick={handleSetCategory}
                   variant="outline"
                   size="sm"
                   className="gap-2 text-xs"
-                  title="Generate Barcode (B)"
+                  title="Set Category (C)"
                 >
-                  <QrCode className="w-3 h-3" />
-                  Barcode
+                  <Tag className="w-3 h-3" />
+                  {currentProduct?.category_name || 'Set Category'}
                 </Button>
                 <Button
                   onClick={handleDelete}
@@ -1212,8 +1241,8 @@ export default function ProductDetailPage() {
 
       {/* Modals */}
       {/* Stock Adjustment Modal */}
-      {isStockAdjustModalOpen && (
-        <ManualStockAdjustModal
+      {isStockAdjustModalOpen && currentProduct && (
+        <EditProductStockModal
           isOpen={isStockAdjustModalOpen}
           onClose={() => setIsStockAdjustModalOpen(false)}
           onProductUpdated={() => {
@@ -1251,7 +1280,11 @@ export default function ProductDetailPage() {
             queryClient.invalidateQueries({ queryKey: ['productTransactions', id] });
             queryClient.invalidateQueries({ queryKey: ['productValuation', id] });
             queryClient.invalidateQueries({ queryKey: ['productLeadTime', id] });
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
           }}
+          product={currentProduct}
+          actionType="in"
         />
       )}
 
@@ -1272,6 +1305,35 @@ export default function ProductDetailPage() {
           onClose={() => setShowScanner(false)}
           onScanSuccess={onScanSuccess}
           settings={scannerSettings}
+        />
+      )}
+
+      {/* Warehouse Transfer Modal */}
+      {isTransferModalOpen && currentProduct && (
+        <WarehouseTransferModal
+          isOpen={isTransferModalOpen}
+          onClose={() => setIsTransferModalOpen(false)}
+          product={{
+            id: currentProduct.id,
+            name: currentProduct.name,
+            location: currentProduct.location,
+          }}
+          onTransferComplete={handleTransferComplete}
+        />
+      )}
+
+      {/* Category Selection Modal */}
+      {isCategoryModalOpen && currentProduct && (
+        <CategorySelectionModal
+          isOpen={isCategoryModalOpen}
+          onClose={() => setIsCategoryModalOpen(false)}
+          product={{
+            id: currentProduct.id,
+            name: currentProduct.name,
+            category_id: currentProduct.category_id,
+            category_name: currentProduct.category_name,
+          }}
+          onCategorySet={handleCategorySetComplete}
         />
       )}
     </div>

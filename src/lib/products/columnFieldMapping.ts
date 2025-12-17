@@ -101,6 +101,15 @@ export const AVAILABLE_COLUMNS: ColumnDefinition[] = [
     dataKey: 'location',
     description: 'Storage location',
   },
+  {
+    id: 'warehouses',
+    label: 'Warehouses',
+    category: 'inventory',
+    sortable: true,
+    defaultVisible: false,
+    dataKey: 'location',
+    description: 'Warehouse name',
+  },
   
   // Pricing Information
   {
