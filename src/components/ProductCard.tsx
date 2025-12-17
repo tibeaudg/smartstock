@@ -8,7 +8,6 @@ import {
   Palette,
   Edit
 } from 'lucide-react';
-import { PhotoUploadPlaceholder } from './StockList';
 
 interface Product {
   id: string;

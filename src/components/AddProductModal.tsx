@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
-import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon } from 'lucide-react';
+import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
@@ -35,6 +35,12 @@ interface AddProductModalProps {
   preFilledSKU?: string;
   preFilledName?: string;
   preFilledCategoryId?: string;
+  // Edit mode props
+  editMode?: boolean;
+  existingProduct?: any;
+  onProductUpdated?: () => void;
+  onAdjustStock?: (product: any) => void;
+  onDelete?: (product: any) => void;
 }
 
 interface VariantData {
@@ -76,8 +82,21 @@ const productSchema = z.object({
 });
 
 
-export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProductAdded, preFilledSKU, preFilledName, preFilledCategoryId }: AddProductModalProps) => {
-  console.log('[AddProductModal] Initialization: Component mounted with props.');
+export const AddProductModal = ({ 
+  isOpen, 
+  onClose, 
+  onProductAdded, 
+  onFirstProductAdded, 
+  preFilledSKU, 
+  preFilledName, 
+  preFilledCategoryId,
+  editMode = false,
+  existingProduct,
+  onProductUpdated,
+  onAdjustStock,
+  onDelete
+}: AddProductModalProps) => {
+  console.log('[AddProductModal] Initialization: Component mounted with props.', { editMode, existingProduct: !!existingProduct });
 
   // --- Hooks and State ---
   const { user } = useAuth();
@@ -136,8 +155,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
   
   const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const [hasVariants, setHasVariants] = useState(false);
   const [variants, setVariants] = useState<VariantData[]>([]);
+  const [showVariantsSection, setShowVariantsSection] = useState(false);
+  
+  // Compute hasVariants based on whether any variant has a name
+  const hasVariants = variants.some(v => v.variantName.trim().length > 0);
   
   usePageRefresh();
 
@@ -157,6 +179,87 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       sku: '',
     },
   });
+
+  // Load existing product data when in edit mode
+  useEffect(() => {
+    if (editMode && existingProduct && isOpen) {
+      console.log('[AddProductModal] Loading existing product data for edit mode');
+      form.reset({
+        name: existingProduct.name || '',
+        description: existingProduct.description || '',
+        categoryId: existingProduct.category_id || '',
+        categoryName: existingProduct.category_name || '',
+        quantityInStock: existingProduct.quantity_in_stock || 0,
+        minimumStockLevel: existingProduct.minimum_stock_level || 10,
+        purchasePrice: existingProduct.purchase_price || 0,
+        salePrice: existingProduct.sale_price || 0,
+        location: existingProduct.location || '',
+        sku: existingProduct.sku || '',
+      });
+      
+      // Load existing image if available
+      if (existingProduct.image_url) {
+        // Note: We can't directly set a File from URL, so we'll handle this in the UI
+        setImagePreview(existingProduct.image_url);
+      }
+      
+      // Load variants if this is a parent product
+      if (!existingProduct.is_variant) {
+        fetchExistingVariants();
+      }
+    } else if (!editMode && isOpen) {
+      // Reset form for new product
+      form.reset({
+        name: '',
+        description: '',
+        categoryId: '',
+        categoryName: '',
+        quantityInStock: 0,
+        minimumStockLevel: 10,
+        purchasePrice: 0,
+        salePrice: 0,
+        location: '',
+        sku: '',
+      });
+      setVariants([]);
+      setShowVariantsSection(false);
+      setImagePreview(null);
+      setUploadedImages([]);
+    }
+  }, [editMode, existingProduct, isOpen, form]);
+
+  // Fetch existing variants for edit mode
+  const fetchExistingVariants = async () => {
+    if (!existingProduct?.id || !activeBranch) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('parent_product_id', existingProduct.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('variant_name');
+
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        const loadedVariants: VariantData[] = data.map(v => ({
+          variantName: v.variant_name || '',
+          quantityInStock: v.quantity_in_stock || 0,
+          minimumStockLevel: v.minimum_stock_level || 0,
+          purchasePrice: v.purchase_price || 0,
+          salePrice: v.sale_price || 0,
+          sku: v.variant_sku || '',
+          barcode: v.variant_barcode || '',
+          location: v.location || '',
+        }));
+        setVariants(loadedVariants);
+        setShowVariantsSection(true);
+      }
+    } catch (error) {
+      console.error('Error fetching variants:', error);
+    }
+  };
 
   // --- Effects ---
 
@@ -197,13 +300,14 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Reset uploaded images when modal closes
+  // Reset uploaded images and variants section when modal closes
   useEffect(() => {
     if (!isOpen) {
       // Cleanup all image previews when modal closes
       uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
       setUploadedImages([]);
       setIsDragging(false);
+      setShowVariantsSection(false);
     }
     // Only depend on isOpen, not uploadedImages to avoid infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -451,9 +555,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
   // --- Main Submission Logic ---
 
   const handleSubmit = async (data: FormData) => {
-    console.log('[AddProductModal] Submission started. Data:', data);
+    console.log('[AddProductModal] Submission started. Mode:', editMode ? 'EDIT' : 'CREATE', 'Data:', data);
     
-    if (duplicateName && !hasVariants) {
+    // Only check for duplicate name in create mode
+    if (!editMode && duplicateName && !hasVariants) {
       toast.error('Product name already exists for a main product in this branch.');
       console.error('[AddProductModal] Submission aborted: Duplicate name detected.');
       return;
@@ -462,6 +567,11 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
     if (!user || branchLoading || !activeBranch) {
       console.error('[AddProductModal] Submission aborted: Auth/Branch check failed.', { user: !!user, branchLoading, activeBranch: !!activeBranch });
       toast.error('Authentication or branch loading failed. Cannot proceed.');
+      return;
+    }
+
+    if (editMode && !existingProduct?.id) {
+      toast.error('Product ID is required for editing.');
       return;
     }
 
@@ -545,104 +655,178 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       let insertedProduct: any = null;
       
       if (!hasVariants) {
-        // --- Single Product Insertion ---
-        const productData = {
-          name: validatedData.name,
-          description: validatedData.description || null,
-          quantity_in_stock: validatedData.quantityInStock,
-          minimum_stock_level: validatedData.minimumStockLevel,
-          unit_price: validatedData.purchasePrice,
-          purchase_price: validatedData.purchasePrice,
-          sale_price: validatedData.salePrice,
-          branch_id: activeBranch.branch_id,
-          image_url: imageUrl,
-          user_id: user.id,
-          category_id: categoryId,
-          location: validatedData.location.trim() || null,
-          sku: validatedData.sku.trim() || null,
-          is_variant: false,
-          parent_product_id: null,
-          variant_name: null,
-        };
-        console.log('[AddProductModal] Inserting single product data:', productData);
-        
-        const { data: product, error: productError } = await supabase
-          .from('products')
-          .insert(productData)
-          .select()
-          .single();
+        if (editMode && existingProduct) {
+          // --- Update Single Product ---
+          const updateData = {
+            name: validatedData.name,
+            description: validatedData.description || null,
+            quantity_in_stock: validatedData.quantityInStock,
+            minimum_stock_level: validatedData.minimumStockLevel,
+            unit_price: validatedData.purchasePrice,
+            purchase_price: validatedData.purchasePrice,
+            sale_price: validatedData.salePrice,
+            category_id: categoryId,
+            location: validatedData.location.trim() || null,
+            sku: validatedData.sku.trim() || null,
+            updated_at: new Date().toISOString(),
+            ...(imageUrl && { image_url: imageUrl }),
+          };
+          console.log('[AddProductModal] Updating single product data:', updateData);
           
-        if (productError) {
-          console.error('Error adding single product:', productError);
-          toast.error(`Error adding product: ${productError.message}`);
-          setLoading(false);
-          return;
-        }
-        insertedProduct = product;
-        console.log(`[AddProductModal] Single product inserted: ID ${insertedProduct.id}`);
+          const { data: product, error: productError } = await supabase
+            .from('products')
+            .update(updateData)
+            .eq('id', existingProduct.id)
+            .select()
+            .single();
+            
+          if (productError) {
+            console.error('Error updating single product:', productError);
+            toast.error(`Error updating product: ${productError.message}`);
+            setLoading(false);
+            return;
+          }
+          insertedProduct = product;
+          console.log(`[AddProductModal] Single product updated: ID ${insertedProduct.id}`);
+        } else {
+          // --- Single Product Insertion ---
+          const productData = {
+            name: validatedData.name,
+            description: validatedData.description || null,
+            quantity_in_stock: validatedData.quantityInStock,
+            minimum_stock_level: validatedData.minimumStockLevel,
+            unit_price: validatedData.purchasePrice,
+            purchase_price: validatedData.purchasePrice,
+            sale_price: validatedData.salePrice,
+            branch_id: activeBranch.branch_id,
+            image_url: imageUrl,
+            user_id: user.id,
+            category_id: categoryId,
+            location: validatedData.location.trim() || null,
+            sku: validatedData.sku.trim() || null,
+            is_variant: false,
+            parent_product_id: null,
+            variant_name: null,
+          };
+          console.log('[AddProductModal] Inserting single product data:', productData);
+          
+          const { data: product, error: productError } = await supabase
+            .from('products')
+            .insert(productData)
+            .select()
+            .single();
+            
+          if (productError) {
+            console.error('Error adding single product:', productError);
+            toast.error(`Error adding product: ${productError.message}`);
+            setLoading(false);
+            return;
+          }
+          insertedProduct = product;
+          console.log(`[AddProductModal] Single product inserted: ID ${insertedProduct.id}`);
 
-        // Initial Stock Transaction for Single Product
-        const stockTransactionData = {
-          product_id: insertedProduct.id,
-          product_name: validatedData.name,
-          transaction_type: 'incoming' as const,
-          quantity: validatedData.quantityInStock,
-          unit_price: validatedData.purchasePrice,
-          user_id: user.id,
-          created_by: user.id,
-          branch_id: activeBranch.branch_id,
-          reference_number: 'INITIAL_STOCK',
-          notes: 'New product initial stock',
-          variant_id: null,
-          variant_name: null,
-          adjustment_method: 'system'
-        };
-        console.log('[AddProductModal] Inserting initial transaction for single product.');
+          // Initial Stock Transaction for Single Product
+          const stockTransactionData = {
+            product_id: insertedProduct.id,
+            product_name: validatedData.name,
+            transaction_type: 'incoming' as const,
+            quantity: validatedData.quantityInStock,
+            unit_price: validatedData.purchasePrice,
+            user_id: user.id,
+            created_by: user.id,
+            branch_id: activeBranch.branch_id,
+            reference_number: 'INITIAL_STOCK',
+            notes: 'New product initial stock',
+            variant_id: null,
+            variant_name: null,
+            adjustment_method: 'system'
+          };
+          console.log('[AddProductModal] Inserting initial transaction for single product.');
 
-        const { error: transactionError } = await supabase
-          .from('stock_transactions')
-          .insert(stockTransactionData);
+          const { error: transactionError } = await supabase
+            .from('stock_transactions')
+            .insert(stockTransactionData);
 
-        if (transactionError) {
-          console.error('Error creating initial stock transaction:', transactionError);
-          toast.warning(`Product created but stock transaction failed: ${transactionError.message}`);
+          if (transactionError) {
+            console.error('Error creating initial stock transaction:', transactionError);
+            toast.warning(`Product created but stock transaction failed: ${transactionError.message}`);
+          }
         }
       } else {
-        // --- Product with Variants Insertion ---
-        // 4. Create Parent Product
-        const parentData = {
-          name: validatedData.name,
-          description: validatedData.description || null,
-          quantity_in_stock: 0,
-          minimum_stock_level: validatedData.minimumStockLevel,
-          unit_price: validatedData.purchasePrice,
-          purchase_price: validatedData.purchasePrice,
-          sale_price: validatedData.salePrice,
-          branch_id: activeBranch.branch_id,
-          image_url: imageUrl,
-          user_id: user.id,
-          category_id: categoryId,
-          location: validatedData.location.trim() || null,
-          is_variant: false,
-          parent_product_id: null,
-          variant_name: null,
-        };
-        console.log('[AddProductModal] Inserting parent product data:', parentData);
+        // --- Product with Variants ---
+        if (editMode && existingProduct) {
+          // Update Parent Product
+          const parentUpdateData = {
+            name: validatedData.name,
+            description: validatedData.description || null,
+            minimum_stock_level: validatedData.minimumStockLevel,
+            unit_price: validatedData.purchasePrice,
+            purchase_price: validatedData.purchasePrice,
+            sale_price: validatedData.salePrice,
+            category_id: categoryId,
+            location: validatedData.location.trim() || null,
+            updated_at: new Date().toISOString(),
+            ...(imageUrl && { image_url: imageUrl }),
+          };
+          console.log('[AddProductModal] Updating parent product data:', parentUpdateData);
 
-        const { data: parent, error: parentError } = await supabase
-          .from('products')
-          .insert(parentData)
-          .select()
-          .single();
+          const { data: parent, error: parentError } = await supabase
+            .from('products')
+            .update(parentUpdateData)
+            .eq('id', existingProduct.id)
+            .select()
+            .single();
 
-        if (parentError || !parent) {
-          console.error('Error creating parent product:', parentError);
-          toast.error('Error creating main product.');
-          setLoading(false);
-          return;
+          if (parentError || !parent) {
+            console.error('Error updating parent product:', parentError);
+            toast.error('Error updating main product.');
+            setLoading(false);
+            return;
+          }
+          console.log(`[AddProductModal] Parent product updated: ID ${parent.id}`);
+          insertedProduct = parent;
+          
+          // Note: Variant updates in edit mode require more complex logic (delete old, update/create new)
+          // For now, variants are preserved as-is. Full variant editing would require tracking variant IDs.
+          toast.info('Parent product updated. Variant changes require separate management.');
+        } else {
+          // 4. Create Parent Product
+          const parentData = {
+            name: validatedData.name,
+            description: validatedData.description || null,
+            quantity_in_stock: 0,
+            minimum_stock_level: validatedData.minimumStockLevel,
+            unit_price: validatedData.purchasePrice,
+            purchase_price: validatedData.purchasePrice,
+            sale_price: validatedData.salePrice,
+            branch_id: activeBranch.branch_id,
+            image_url: imageUrl,
+            user_id: user.id,
+            category_id: categoryId,
+            location: validatedData.location.trim() || null,
+            is_variant: false,
+            parent_product_id: null,
+            variant_name: null,
+          };
+          console.log('[AddProductModal] Inserting parent product data:', parentData);
+
+          const { data: parent, error: parentError } = await supabase
+            .from('products')
+            .insert(parentData)
+            .select()
+            .single();
+
+          if (parentError || !parent) {
+            console.error('Error creating parent product:', parentError);
+            toast.error('Error creating main product.');
+            setLoading(false);
+            return;
+          }
+          console.log(`[AddProductModal] Parent product inserted: ID ${parent.id}`);
         }
-        console.log(`[AddProductModal] Parent product inserted: ID ${parent.id}`);
 
+        // Create variants only in create mode (edit mode variant updates handled separately above)
+        if (!editMode && insertedProduct) {
         // 5a. Log product creation in history (quantity 0 so stats aren't affected)
         try {
           const { error: parentTxError } = await supabase
@@ -792,24 +976,36 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
         type: 'active',
       });
       
-      toast.success(hasVariants ? 'Product and variants added.' : 'Product successfully added.');
+      toast.success(editMode 
+        ? (hasVariants ? 'Product and variants updated.' : 'Product successfully updated.')
+        : (hasVariants ? 'Product and variants added.' : 'Product successfully added.')
+      );
       
-      form.reset();
-      setVariants([]);
-      setHasVariants(false);
-      setImagePreview(null);
-      setProductImage(null);
-      // Clean up uploaded images and revoke object URLs
-      uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
-      setUploadedImages([]);
-      
-      if (wasFirstProduct && onFirstProductAdded) {
-        console.log('[AddProductModal] Triggering first product callback.');
-        onFirstProductAdded();
+      // Only reset if not in edit mode (edit mode keeps data for potential further edits)
+      if (!editMode) {
+        form.reset();
+        setVariants([]);
+        setShowVariantsSection(false);
+        setImagePreview(null);
+        setProductImage(null);
+        // Clean up uploaded images and revoke object URLs
+        uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
+        setUploadedImages([]);
+        
+        if (wasFirstProduct && onFirstProductAdded) {
+          console.log('[AddProductModal] Triggering first product callback.');
+          onFirstProductAdded();
+        }
+        
+        onProductAdded();
+        onClose();
+      } else {
+        // In edit mode, just close and trigger update callback
+        if (onProductUpdated) {
+          onProductUpdated();
+        }
+        onClose();
       }
-      
-      onProductAdded();
-      onClose();
     } catch (error) {
       console.error('Unexpected error during product submission:', error);
       toast.error('Unexpected error during product addition.');
@@ -852,39 +1048,304 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
       
       {/* 1. Main AddProductModal Dialog */}
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className={`w-full max-w-full mx-auto p-0 flex flex-col ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-4xl md:max-h-[90vh] md:rounded-lg'}`}>
+        <DialogContent className={`w-full max-w-full mx-auto p-0 flex flex-col ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-5xl md:max-h-[95vh] md:rounded-lg'}`}>
           <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-6 border-b'}`}>
-            <DialogTitle>Add Product</DialogTitle>
+            <DialogTitle>{editMode ? 'Edit Product' : 'Add Product'}</DialogTitle>
           </DialogHeader>
 
           <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'}`}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                {/* Two-Column Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left Column: Image Upload */}
+                {/* Top Section: Basic Information - Always visible first */}
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-5">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Add Images</h3>
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      rules={{ required: 'Product name is mandatory' }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Product Name *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="Enter product name" 
+                              disabled={loading} 
+                              className="border-gray-300 focus:border-gray-500" 
+                            />
+                          </FormControl>
+                          {duplicateName && !hasVariants && (
+                            <div className="flex items-center text-sm text-red-600 mt-1">
+                              <AlertCircle className="w-4 h-4 mr-1" />
+                              This product name already exists for a main product in this branch.
+                            </div>
+                          )}
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="sku"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">SKU {hasVariants && '(Parent)'}</FormLabel>
+                            <FormControl>
+                              <div className="flex gap-2">
+                                <Input 
+                                  {...field} 
+                                  placeholder="Enter SKU or scan barcode" 
+                                  disabled={loading || hasVariants}
+                                  className="border-gray-300 focus:border-gray-500 flex-1" 
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  onClick={() => setShowScanner(true)}
+                                  disabled={loading || hasVariants}
+                                  className="px-4"
+                                >
+                                  <Scan className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </FormControl>
+                            {hasVariants && (
+                              <p className="text-xs text-gray-500 mt-1">SKU is set per variant when using variants</p>
+                            )}
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="categoryId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Category</FormLabel>
+                            <FormControl>
+                              <HierarchicalCategorySelector
+                                value={field.value || null}
+                                onValueChange={(categoryId, categoryName) => {
+                                  field.onChange(categoryId || '');
+                                  form.setValue('categoryName', categoryName || '');
+                                }}
+                                placeholder="Select category..."
+                                allowCreate={true}
+                                showPath={true}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    {/* Stock Fields - Show only if no variants */}
+                    {!hasVariants && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="quantityInStock"
+                          rules={{ 
+                            required: 'Stock is mandatory',
+                            min: { value: 0, message: 'Stock must be 0 or more' }
+                          }}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-700 font-medium">Stock *</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  min="0"
+                                  placeholder="0"
+                                  disabled={loading}
+                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                  value={field.value === 0 ? '' : field.value.toString()} 
+                                  className="border-gray-300 focus:border-gray-500"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="minimumStockLevel"
+                          rules={{ 
+                            required: 'Minimum level is mandatory',
+                            min: { value: 0, message: 'Minimum level must be 0 or more' }
+                          }}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-700 font-medium">Min. Level *</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  min="0"
+                                  placeholder="10"
+                                  disabled={loading}
+                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                  value={field.value.toString()}
+                                  className="border-gray-300 focus:border-gray-500"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
+
+                    {/* Prices - Show only if no variants */}
+                    {!hasVariants && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="purchasePrice"
+                          rules={{ 
+                            min: { value: 0, message: 'Must be 0 or more' }
+                          }}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-700 font-medium">Purchase Price</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  step="0.01"
+                                  min="0"
+                                  disabled={loading}
+                                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                  value={field.value.toString()}
+                                  className="border-gray-300 focus:border-gray-500"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="salePrice"
+                          rules={{ 
+                            min: { value: 0, message: 'Must be 0 or more' }
+                          }}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-700 font-medium">Sale Price</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  step="0.01"
+                                  min="0"
+                                  disabled={loading}
+                                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                  value={field.value.toString()}
+                                  className="border-gray-300 focus:border-gray-500"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
+
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-700 font-medium">Description</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              {...field} 
+                              placeholder="Enter product description" 
+                              disabled={loading}
+                              className="resize-none border-gray-300 focus:border-gray-500"
+                              rows={3}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Location - Only show if no variants (variants have their own locations) */}
+                    {!hasVariants && (
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-700 font-medium">Location</FormLabel>
+                            <FormControl>
+                              <Input 
+                                {...field} 
+                                placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
+                                disabled={loading}
+                                className="border-gray-300 focus:border-gray-500"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Two-Column Layout for Image and Variants */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Left Column: Compact Image Upload */}
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Product Image</h3>
                     
-                    {/* Drag and Drop Area */}
+                    {/* Show existing image in edit mode if no new image uploaded */}
+                    {editMode && existingProduct?.image_url && !uploadedImages.length && imagePreview && imagePreview === existingProduct.image_url && (
+                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-center">
+                        <img
+                          src={existingProduct.image_url}
+                          alt={existingProduct.name || 'Product'}
+                          className="max-w-full max-h-48 object-contain rounded"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Show preview of newly uploaded image */}
+                    {imagePreview && imagePreview !== existingProduct?.image_url && (
+                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-center">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="max-w-full max-h-48 object-contain rounded"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Compact Drag and Drop Area */}
                     <div
                       onDragEnter={handleDragEnter}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                       className={cn(
-                        "border-2 border-dashed rounded-lg p-12 min-h-[200px] text-center transition-colors flex items-center justify-center",
-                        isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                        "border-2 border-dashed rounded-lg p-6 text-center transition-colors",
+                        isDragging ? "border-gray-500 bg-gray-100" : "border-gray-300 bg-gray-50 hover:border-gray-400"
                       )}
                     >
-                      <div className="flex flex-col items-center justify-center space-y-4">
-                        <div className="flex items-center space-x-2">
-                          <ImageIcon className="w-12 h-12 text-gray-400" />
-                          <ImageIcon className="w-12 h-12 text-gray-400 -ml-4" />
-                        </div>
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <ImageIcon className="w-8 h-8 text-gray-400" />
                         <div>
-                          <p className="text-sm text-gray-600 mb-1">
-                            Drop your files here. or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
+                          <p className="text-sm text-gray-600">
+                            <label htmlFor="image-upload" className="text-gray-700 hover:text-gray-900 cursor-pointer underline font-medium">
+                              {editMode ? 'Click to change image' : 'Click to upload'}
+                            </label> or drag and drop
                           </p>
                           <input
                             id="image-upload"
@@ -895,23 +1356,23 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                             disabled={loading}
                             className="hidden"
                           />
-                          <Upload className="w-5 h-5 text-gray-400 mx-auto mt-2" />
+                          <p className="text-xs text-gray-500 mt-1">PNG, JPG, WEBP up to 5MB</p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Uploaded Images List */}
+                    {/* Uploaded Images List - Compact */}
                     {uploadedImages.length > 0 && (
                       <div className="space-y-2">
                         {uploadedImages.map((image, index) => (
                           <div
                             key={index}
-                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg"
+                            className="flex items-center gap-3 p-2 bg-white border border-gray-200 rounded-lg"
                           >
                             <img
                               src={image.preview}
                               alt={`Preview ${index + 1}`}
-                              className="w-16 h-16 object-cover rounded"
+                              className="w-12 h-12 object-cover rounded"
                             />
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium text-gray-900 truncate">
@@ -920,20 +1381,6 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                               <p className="text-xs text-gray-500">
                                 {formatFileSize(image.size)}
                               </p>
-                              {image.uploading && (
-                                <div className="mt-1">
-                                  <div className="w-full bg-gray-200 rounded-full h-1.5">
-                                    <div
-                                      className="bg-green-600 h-1.5 rounded-full transition-all"
-                                      style={{ width: `${image.progress || 0}%` }}
-                                    />
-                                  </div>
-                                  <p className="text-xs text-gray-500 mt-1">
-                                    {image.progress || 0}% done
-                                    {image.uploadSpeed && ` • ${formatFileSize(image.uploadSpeed)}/sec`}
-                                  </p>
-                                </div>
-                              )}
                             </div>
                             <Button
                               type="button"
@@ -941,7 +1388,7 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                               size="sm"
                               onClick={() => removeImage(index)}
                               disabled={loading}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 w-8 p-0"
                             >
                               <X className="w-4 h-4" />
                             </Button>
@@ -949,16 +1396,59 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                         ))}
                       </div>
                     )}
+                  </div>
 
-     
-
-                    {/* Variant Input Section - Always visible */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                        Product Variants
-                      </h4>
+                  {/* Right Column: Variants */}
                       <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Product Variants {hasVariants && <span className="text-sm font-normal text-gray-500">(Active)</span>}
+                      </h3>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setShowVariantsSection(!showVariantsSection);
+                          // If opening and no variants exist, add an empty variant
+                          if (!showVariantsSection && variants.length === 0) {
+                            setVariants([{
+                              variantName: '',
+                              quantityInStock: 0,
+                              minimumStockLevel: 0,
+                              purchasePrice: 0,
+                              salePrice: 0,
+                              sku: '',
+                              barcode: '',
+                              location: ''
+                            }]);
+                          }
+                        }}
+                        className="flex items-center gap-2"
+                      >
+                        {showVariantsSection ? (
+                          <>
+                            <ChevronUp className="w-4 h-4" />
+                            Hide
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="w-4 h-4" />
+                            Add Variants
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    {hasVariants && showVariantsSection && (
+                      <p className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded p-2">
+                        Variants are enabled. Stock, prices, and location are managed per variant below.
+                      </p>
+                    )}
+                    
+                    {/* Variant Input Section - Only show when toggled */}
+                    {showVariantsSection && (
+                      <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-4">
+                      <div className="space-y-3">
                         {(variants.length === 0 ? [{
                           variantName: '',
                           quantityInStock: 0,
@@ -981,26 +1471,27 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                           }] : variants;
                           
                           return (
-                            <div key={index} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                              <div className="flex items-center justify-between mb-3">
+                            <div key={index} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                              <div className="flex items-center justify-between mb-2">
                                 <h5 className="text-sm font-medium text-gray-700">Variant {index + 1}</h5>
                                 {displayVariants.length > 1 && (
                                   <Button
                                     type="button"
-                                    variant="outline"
+                                    variant="ghost"
                                     size="sm"
                                     onClick={() => {
                                       const newVariants = variants.filter((_, i) => i !== index);
                                       setVariants(newVariants.length > 0 ? newVariants : []);
                                     }}
-                                    className="text-red-600 hover:text-red-700"
+                                    className="text-red-600 hover:text-red-700 h-7 px-2 text-xs"
                                   >
                                     Remove
                                   </Button>
                                 )}
                               </div>
                               
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-3">
+                                <div className="grid grid-cols-1 gap-2">
                                 <div>
                                   <Label htmlFor={`variant-name-${index}`} className="text-sm font-medium text-gray-700">
                                     Variant name *
@@ -1026,8 +1517,10 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                                     className="mt-1"
                                     disabled={loading}
                                   />
+                                  </div>
                                 </div>
                                 
+                                <div className="grid grid-cols-2 gap-2">
                                 <div>
                                   <Label htmlFor={`variant-sku-${index}`} className="text-sm font-medium text-gray-700">
                                     SKU
@@ -1049,8 +1542,8 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                                       currentVariants[index].sku = e.target.value;
                                       setVariants(currentVariants);
                                     }}
-                                    placeholder="Variant SKU"
-                                    className="mt-1"
+                                      placeholder="SKU"
+                                      className="mt-1 text-sm"
                                     disabled={loading}
                                   />
                                 </div>
@@ -1076,15 +1569,16 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                                       currentVariants[index].barcode = e.target.value;
                                       setVariants(currentVariants);
                                     }}
-                                    placeholder="Variant barcode"
-                                    className="mt-1"
+                                      placeholder="Barcode"
+                                      className="mt-1 text-sm"
                                     disabled={loading}
                                   />
+                                  </div>
                                 </div>
                                 
                                 <div>
                                   <Label htmlFor={`variant-location-${index}`} className="text-sm font-medium text-gray-700">
-                                    Locations
+                                    Location
                                   </Label>
                                   <Input
                                     id={`variant-location-${index}`}
@@ -1104,11 +1598,12 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                                       setVariants(currentVariants);
                                     }}
                                     placeholder="e.g. A1, Shelf 3"
-                                    className="mt-1"
+                                    className="mt-1 text-sm"
                                     disabled={loading}
                                   />
                                 </div>
                                 
+                                <div className="grid grid-cols-2 gap-2">
                                 <div>
                                   <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
                                     Stock *
@@ -1132,14 +1627,14 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                                       currentVariants[index].quantityInStock = parseInt(e.target.value, 10) || 0;
                                       setVariants(currentVariants);
                                     }}
-                                    className="mt-1"
+                                      className="mt-1 text-sm"
                                     disabled={loading}
                                   />
                                 </div>
                                 
                                 <div>
                                   <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
-                                    Minimum stock
+                                      Min. stock
                                   </Label>
                                   <Input
                                     id={`variant-min-stock-${index}`}
@@ -1160,12 +1655,73 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                                       currentVariants[index].minimumStockLevel = parseInt(e.target.value, 10) || 0;
                                       setVariants(currentVariants);
                                     }}
-                                    className="mt-1"
+                                      className="mt-1 text-sm"
                                     disabled={loading}
                                   />
                                 </div>
                               </div>
+                                
+                                <div className="grid grid-cols-2 gap-2">
+                                  <div>
+                                    <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
+                                      Purchase Price
+                                    </Label>
+                                    <Input
+                                      id={`variant-purchase-${index}`}
+                                      type="number"
+                                      step="0.01"
+                                      min="0"
+                                      value={variant.purchasePrice.toString()}
+                                      onChange={(e) => {
+                                        const currentVariants = variants.length === 0 ? [{
+                              variantName: '',
+                              quantityInStock: 0,
+                              minimumStockLevel: 0,
+                              purchasePrice: 0,
+                              salePrice: 0,
+                              sku: '',
+                              barcode: '',
+                              location: ''
+                                        }] : [...variants];
+                                        currentVariants[index].purchasePrice = parseFloat(e.target.value) || 0;
+                                        setVariants(currentVariants);
+                          }}
+                                      className="mt-1 text-sm"
+                          disabled={loading}
+                                    />
                             </div>
+                                  
+                                  <div>
+                                    <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
+                                      Sale Price
+                                    </Label>
+                              <Input 
+                                      id={`variant-sale-${index}`}
+                                type="number" 
+                                      step="0.01"
+                                min="0"
+                                      value={variant.salePrice.toString()}
+                                      onChange={(e) => {
+                                        const currentVariants = variants.length === 0 ? [{
+                                          variantName: '',
+                                          quantityInStock: 0,
+                                          minimumStockLevel: 0,
+                                          purchasePrice: 0,
+                                          salePrice: 0,
+                                          sku: '',
+                                          barcode: '',
+                                          location: ''
+                                        }] : [...variants];
+                                        currentVariants[index].salePrice = parseFloat(e.target.value) || 0;
+                                        setVariants(currentVariants);
+                                      }}
+                                      className="mt-1 text-sm"
+                                disabled={loading}
+                      />
+                    </div>
+                  </div>
+                </div>
+                    </div>
                           );
                         })}
                         
@@ -1185,285 +1741,15 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
                               location: ''
                             }]);
                           }}
-                          className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400"
-                          disabled={loading}
+                          className="w-full border-dashed border-2 border-gray-300 hover:border-gray-400 text-sm"
+                                disabled={loading}
                         >
                           <Plus className="w-4 h-4 mr-2" />
                           Add variant
                         </Button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Product Details */}
-                  <div className="space-y-6">
-                    {/* Basis Informatie Sectie */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                    Basic Information
-                  </h3>
-                  <div className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      rules={{ required: 'Product name is mandatory' }}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-blue-700 font-medium">Product Name *</FormLabel>
-                          <FormControl>
-                            <Input 
-                              {...field} 
-                              placeholder="Enter product name" 
-                              disabled={loading} 
-                              className="py-3 px-3 text-base border-blue-200 focus:border-blue-500" 
-                            />
-                          </FormControl>
-                          {duplicateName && !hasVariants && (
-                            <div className="flex items-center text-sm text-red-600 mt-1">
-                              <AlertCircle className="w-4 h-4 mr-1" />
-                              This product name already exists for a main product in this branch.
-                            </div>
-                          )}
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* SKU Field */}
-                    <FormField
-                      control={form.control}
-                      name="sku"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-blue-700 font-medium">SKU</FormLabel>
-                          <FormControl>
-                            <div className="flex gap-2">
-                              <Input 
-                                {...field} 
-                                placeholder="Enter SKU or scan barcode" 
-                                disabled={loading} 
-                                className="py-3 px-3 text-base border-blue-200 focus:border-blue-500 flex-1" 
-                              />
-                              <Button
-                                type="button"
-                                variant="default"
-                                onClick={() => setShowScanner(true)}
-                                disabled={loading}
-                                className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium whitespace-nowrap"
-                              >
-                                <Scan className="w-5 h-5 mr-2" />
-                                Scan Barcode
-                              </Button>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Stock Fields - Show only if no variants */}
-                    {!hasVariants && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="quantityInStock"
-                        rules={{ 
-                          required: 'Stock is mandatory',
-                          min: { value: 0, message: 'Stock must be 0 or more' }
-                        }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-blue-700 font-medium">Stock *</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                min="0"
-                                placeholder=""
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                value={field.value === 0 ? '' : field.value.toString()} 
-                                className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="minimumStockLevel"
-                        rules={{ 
-                          required: 'Minimum level is mandatory',
-                          min: { value: 0, message: 'Minimum level must be 0 or more' }
-                        }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-blue-700 font-medium">Min. Level *</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                min="0"
-                                placeholder="10"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                value={field.value.toString()}
-                                className="py-3 px-3 text-base border-blue-200 focus:border-blue-500"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Advanced Options - Always visible, no toggle */}
-                <div className="space-y-6">
-                  {/* Product Details Sectie */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                      Product Details
-                    </h4>
-                    <div className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700">Description</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                {...field} 
-                                placeholder="Enter product description" 
-                                disabled={loading}
-                                className="resize-none py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                                rows={3}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="location"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700">Location</FormLabel>
-                            <FormControl>
-                              <Input 
-                                {...field} 
-                                placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
-                                disabled={loading}
-                                className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Category Sectie */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                      Category
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="categoryId"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <HierarchicalCategorySelector
-                                value={field.value || null}
-                                onValueChange={(categoryId, categoryName) => {
-                                  field.onChange(categoryId || '');
-                                  form.setValue('categoryName', categoryName || '');
-                                  console.log(`[AddProductModal] Selected category: ${categoryName}, ID: ${categoryId}`);
-                                }}
-                                placeholder="Select category..."
-                                allowCreate={true}
-                                showPath={true}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Prijzen Sectie - Show only if no variants */}
-                  {!hasVariants && (
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <h4 className="text-md font-semibold text-gray-700 mb-3 flex items-center">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-2"></div>
-                      Prices
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="purchasePrice"
-                        rules={{ 
-                          min: { value: 0, message: 'Must be 0 or more' }
-                        }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700">Purchase Price</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                step="0.01"
-                                min="0"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                value={field.value.toString()}
-                                className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="salePrice"
-                        rules={{ 
-                          min: { value: 0, message: 'Must be 0 or more' }
-                        }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700">Sale Price</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                step="0.01"
-                                min="0"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                value={field.value.toString()}
-                                className="py-3 px-3 text-base border-gray-200 focus:border-gray-400"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
                     </div>
                   </div>
                   )}
-                </div>
                   </div>
                 </div>
 
@@ -1481,15 +1767,45 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
 
 
             {/* Action Buttons - Sticky Footer */}
-            <div className={`sticky bottom-0  bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
+            <div className={`sticky bottom-0 bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
               <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row justify-end'}`}>
+                {editMode && onDelete && (
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      if (onDelete && existingProduct) {
+                        onDelete(existingProduct);
+                        onClose();
+                      }
+                    }}
+                    className={isMobile ? 'w-full text-red-600 hover:text-red-700 hover:bg-red-50' : 'text-red-600 hover:text-red-700 hover:bg-red-50'}
+                  >
+                    Delete
+                  </Button>
+                )}
+                {editMode && onAdjustStock && (
+                  <Button 
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      if (onAdjustStock && existingProduct) {
+                        onClose();
+                        onAdjustStock(existingProduct);
+                      }
+                    }}
+                    className={isMobile ? 'w-full' : ''}
+                  >
+                    Adjust Stock
+                  </Button>
+                )}
                 <Button 
                   type="button"
                   onClick={() => form.handleSubmit(handleSubmit)()}
-                  disabled={loading || (duplicateName && !hasVariants)} 
-                  className={isMobile ? 'w-full bg-blue-500 text-white' : 'w-auto bg-blue-500 text-white'}
+                  disabled={loading || (!editMode && duplicateName && !hasVariants)} 
+                  className={isMobile ? 'w-full' : 'w-auto'}
                 >
-                  {loading ? 'Adding...' : (hasVariants ? 'Add Product with Variants' : 'Publish Product')}
+                  {loading ? (editMode ? 'Updating...' : 'Adding...') : (editMode ? 'Update Product' : 'Add Product')}
                 </Button>
               </div>
             </div>
@@ -1535,5 +1851,38 @@ export const AddProductModal = ({ isOpen, onClose, onProductAdded, onFirstProduc
         />
       )}
     </> // End React Fragment
+  );
+};
+
+// Wrapper component for backward compatibility - uses AddProductModal in edit mode
+export const ProductDetailModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  product: any;
+  onAdjustStock?: (product: any) => void;
+  onDelete?: (product: any) => void;
+  onProductUpdated?: () => void;
+  getStockStatus?: (quantity: number, minLevel: number) => string;
+  getStockStatusDotColor?: (quantity: number, minLevel: number) => string;
+  formatStockQuantity?: (quantity: number) => string;
+}> = ({
+  isOpen,
+  onClose,
+  product,
+  onAdjustStock,
+  onDelete,
+  onProductUpdated,
+}) => {
+  return (
+    <AddProductModal
+      isOpen={isOpen}
+      onClose={onClose}
+      editMode={true}
+      existingProduct={product}
+      onProductAdded={() => {}} // Not used in edit mode
+      onProductUpdated={onProductUpdated}
+      onAdjustStock={onAdjustStock}
+      onDelete={onDelete}
+    />
   );
 };

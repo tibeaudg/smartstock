@@ -50,7 +50,9 @@ import { ThemeProvider } from './hooks/useTheme';
 
 // Import remaining synchronous pages
 import HelpCenterPage from "./pages/help-center";
-import CategorysPage from './pages/categories';
+import CategorysPage from './pages/products';
+import ProductDetailPage from './pages/ProductDetailPage';
+import AddProductPage from './pages/AddProductPage';
 import AdminPage from './pages/admin';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
@@ -392,6 +394,8 @@ const AuthRoute = () => {
           <Route path="barcoding" element={<Navigate to="/barcoding" replace />} />
           <Route path="stock" element={<Navigate to="/dashboard/categories" replace />} />
           <Route path="categories" element={<CategorysPage />} />
+          <Route path="products/new" element={<AddProductPage />} />
+          <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="transactions" element={<StockMovements />} />
 
           <Route path="analytics/reports" element={<CustomReports />} />

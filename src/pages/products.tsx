@@ -35,9 +35,7 @@ import { cn } from '@/lib/utils';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
 import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
 import { ImagePreviewModal } from '@/components/ImagePreviewModal';
-import { AddProductModal } from '@/components/AddProductModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
-import { ProductDetailModal } from '@/components/ProductDetailModal';
 import { VariantSelectionModal } from '@/components/VariantSelectionModal';
 import { BulkImportModal } from '@/components/BulkImportModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
@@ -157,9 +155,25 @@ export default function CategorysPage() {
   const createCategory = useCreateCategory();
   const updateCategory = useUpdateCategory();
   const deleteCategory = useDeleteCategory();
-  const { data: categoryProducts = [], isLoading: productsLoading } = useProductsByCategories(selectedCategoryIds);
+  const { data: categoryProducts = [], isLoading: productsLoading, refetch: refetchProducts } = useProductsByCategories(selectedCategoryIds);
   const queryClient = useQueryClient();
   useCategoryRealtime();
+  
+  // Refetch products when returning to categories page (e.g., after adding a product)
+  const prevLocationRef = React.useRef(location.pathname);
+  React.useEffect(() => {
+    // If we just navigated to the categories page (from another page)
+    if (location.pathname === '/dashboard/categories' && 
+        prevLocationRef.current !== location.pathname &&
+        activeBranch?.branch_id) {
+      // Invalidate and refetch product queries
+      queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProducts'] });
+      queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+      refetchProducts();
+    }
+    prevLocationRef.current = location.pathname;
+  }, [location.pathname, activeBranch?.branch_id, queryClient, refetchProducts]);
   
   // Get product counts for categories
   const { data: productCounts } = useQuery({
@@ -604,7 +618,7 @@ export default function CategorysPage() {
 
   const handleAddCategory = () => {
     setFormData({ name: '', description: '', parentCategoryId: null });
-    setShowAddModal(true);
+    navigate('/dashboard/products/new');
   };
 
   const handleSubmitCategory = async () => {
@@ -728,9 +742,8 @@ export default function CategorysPage() {
   };
 
   const handleProductEdit = (product: any) => {
-    // Product editing is now handled inline in ProductDetailModal
-    setDetailProduct(product);
-    setIsProductDetailModalOpen(true);
+    // Navigate to product detail page
+    navigate(`/dashboard/products/${product.id}`);
   };
 
   const handleImagePreview = (url: string) => {
@@ -767,11 +780,10 @@ export default function CategorysPage() {
       return;
     }
 
-    // On desktop, open product detail modal if not clicking on interactive element
+    // On desktop, navigate to product detail page if not clicking on interactive element
     // Note: Checkbox clicks are already prevented by stopPropagation on the td element and data-interactive attribute
     if (!isInteractive) {
-      setDetailProduct(product);
-      setIsProductDetailModalOpen(true);
+      navigate(`/dashboard/products/${product.id}`);
     }
   };
 
@@ -967,7 +979,7 @@ export default function CategorysPage() {
         setScannedSKU(barcode);
         setPreFilledProductName('');
         setIsBarcodeScannerOpen(false);
-        setIsAddModalOpen(true);
+        navigate('/dashboard/products/new');
         toast.info('Product not found - will create new product');
       }
     } catch (error) {
@@ -1033,7 +1045,7 @@ export default function CategorysPage() {
         setSearchTerm('');
         setScannedSKU(barcode);
         setPreFilledProductName('');
-        setIsAddModalOpen(true);
+        navigate('/dashboard/products/new');
         toast.info('Product not found - will create new product');
       }
     } catch (error) {
@@ -1546,7 +1558,7 @@ export default function CategorysPage() {
         action: () => {
           setScannedSKU('');
           setPreFilledProductName('');
-          setIsAddModalOpen(true);
+          navigate('/dashboard/products/new');
         },
       },
       {
@@ -1767,7 +1779,7 @@ export default function CategorysPage() {
                     onCreateProduct={() => {
                       setScannedSKU('');
                       setPreFilledProductName('');
-                      setIsAddModalOpen(true);
+                      navigate('/dashboard/products/new');
                     }}
                     onCreateCategory={handleAddCategory}
                     onCreateLocation={handleCreateLocation}
@@ -1788,7 +1800,7 @@ export default function CategorysPage() {
                       onClick={() => {
                         setScannedSKU('');
                         setPreFilledProductName('');
-                        setIsAddModalOpen(true);
+                        navigate('/dashboard/products/new');
                       
                       }}
                     >
@@ -2680,7 +2692,7 @@ export default function CategorysPage() {
                     onClick={() => {
                       setScannedSKU('');
                       setPreFilledProductName('');
-                      setIsAddModalOpen(true);
+                      navigate('/dashboard/products/new');
                     }}
                     className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6"
                   >
@@ -2939,49 +2951,6 @@ export default function CategorysPage() {
         />
       )}
 
-      {/* Add Product Modals */}
-      <AddProductModal
-        isOpen={isAddModalOpen}
-        onClose={() => {
-          setIsAddModalOpen(false);
-          setPreFilledProductName('');
-          setScannedSKU('');
-        }}
-        onProductAdded={async () => {
-          // Invalidate all categoryProducts queries to ensure all category views refresh
-          await queryClient.invalidateQueries({ 
-            queryKey: ['categoryProducts'],
-            refetchType: 'active',
-          });
-          // Invalidate category analytics to refresh stats
-          await queryClient.invalidateQueries({ 
-            queryKey: ['categoryAnalytics'],
-            refetchType: 'active',
-          });
-          // Invalidate product counts
-          await queryClient.invalidateQueries({ 
-            queryKey: ['categoryProductCounts'],
-            refetchType: 'active',
-          });
-          // Invalidate all products analytics
-          await queryClient.invalidateQueries({ 
-            queryKey: ['allProductsAnalyticsWeekAgo'],
-            refetchType: 'active',
-          });
-          await queryClient.invalidateQueries({ queryKey: ['products'] });
-          // Invalidate products by categories queries
-          await queryClient.invalidateQueries({ 
-            queryKey: ['productsByCategories'],
-            refetchType: 'active',
-          });
-          setIsAddModalOpen(false);
-          setPreFilledProductName('');
-          setScannedSKU('');
-        }}
-        preFilledSKU={scannedSKU}
-        preFilledName={preFilledProductName}
-        preFilledCategoryId={selectedCategoryIds.length === 1 ? selectedCategoryIds[0] : undefined}
-      />
 
       {isBarcodeScannerOpen && (
         <BarcodeScanner
@@ -3038,7 +3007,7 @@ export default function CategorysPage() {
                 <Button
                   onClick={() => {
                     setIsMobileProductDetailModalOpen(false);
-                    handleProductEdit(selectedProduct);
+                    navigate(`/dashboard/products/${selectedProduct.id}`);
                   }}
                   className="w-full justify-start"
                   variant="outline"

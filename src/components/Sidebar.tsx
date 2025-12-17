@@ -82,7 +82,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   // Check specific feature access based on subscription tier
   const hasDeliveryNotes = canUseFeature('delivery-notes');
   const hasScanner = true; // Scanner is now available for all users
-  const hasAnalytics = true; // Analytics is now available for all users
+  const hasAnalytics = false; // Analytics is now available for all users
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
