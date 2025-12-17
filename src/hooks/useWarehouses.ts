@@ -86,7 +86,7 @@ export function useWarehouseProductCount(warehouseName: string | null) {
         .select('*', { count: 'exact', head: true })
         .eq('user_id', user.id)
         .eq('branch_id', activeBranch.branch_id)
-        .eq('location', warehouseName);
+        .eq('warehouse_name', warehouseName);
       
       if (error) {
         console.error('Error counting warehouse products:', error);
@@ -162,13 +162,13 @@ export function useUpdateWarehouse() {
           // Update products that reference the old warehouse name
           const { error: updateError } = await supabase
             .from('products')
-            .update({ location: data.name.trim() })
-            .eq('location', oldWarehouse.name)
+            .update({ warehouse_name: data.name.trim() })
+            .eq('warehouse_name', oldWarehouse.name)
             .eq('branch_id', oldWarehouse.branch_id)
             .eq('user_id', user.id);
           
           if (updateError) {
-            console.error('Error updating product locations:', updateError);
+            console.error('Error updating product warehouse names:', updateError);
             // Continue with warehouse update even if product update fails
           }
         }

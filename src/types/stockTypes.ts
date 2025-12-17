@@ -12,6 +12,8 @@ export type Product = {
   status: string | null;
   image_url?: string | null;
   sku?: string | null;
+  location?: string | null;
+  warehouse_name?: string | null;
   // Variants support
   is_variant?: boolean;
   parent_product_id?: string | null;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,9 +10,7 @@ import {
   Edit, 
   Plus, 
   Trash2, 
-  MapPin, 
   Package, 
-  Tag, 
   DollarSign,
   AlertCircle,
   Calendar,
@@ -23,7 +21,8 @@ import {
   Image as ImageIcon,
   ChevronsUpDown,
   Save,
-  Warehouse
+  Warehouse,
+  TrendingUp
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -38,6 +37,7 @@ import { BarcodeScanner } from './BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
 import { InventorySegmentation } from '@/components/product/InventorySegmentation';
 import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
@@ -85,16 +85,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     return map;
   }, [warehouses]);
 
-  // Get warehouse name for a product based on its location
-  const getWarehouseName = React.useCallback((location: string | null | undefined): string | null => {
-    if (!location) return null;
-    return locationToWarehouseMap.get(location) || null;
-  }, [locationToWarehouseMap]);
+  // Get warehouse name for a product based on its warehouse_name
+  const getWarehouseName = React.useCallback((warehouseName: string | null | undefined): string | null => {
+    if (!warehouseName) return null;
+    return warehouseName;
+  }, []);
   
   // Variants state
   const [variants, setVariants] = useState<any[]>([]);
   const [isLoadingVariants, setIsLoadingVariants] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
+  
+  // Tab state
+  const [activeTab, setActiveTab] = useState<string>('overview');
+  
+  // Variant selection for bulk actions
+  const [selectedVariantIds, setSelectedVariantIds] = useState<Set<string>>(new Set());
+  
+  // Modal states
+  const [isWarehouseModalOpen, setIsWarehouseModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   
   // Editing states for each section
   const [editingField, setEditingField] = useState<string | null>(null);
@@ -165,23 +175,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     }
   }, [product]);
 
-  // Fetch variants when modal opens and product changes
-  useEffect(() => {
-    if (isOpen && currentProduct && !currentProduct.is_variant && activeBranch) {
-      fetchVariants();
-    } else {
-      setVariants([]);
-    }
-  }, [isOpen, currentProduct?.id, activeBranch?.branch_id]);
-
-  // Fetch categories
-  useEffect(() => {
-    if (user && isOpen) {
-      fetchCategories();
-    }
-  }, [user, isOpen]);
-
-  const fetchVariants = async () => {
+  const fetchVariants = useCallback(async () => {
     if (!currentProduct || !activeBranch) return;
     
     setIsLoadingVariants(true);
@@ -201,7 +195,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     } finally {
       setIsLoadingVariants(false);
     }
-  };
+  }, [currentProduct?.id, activeBranch?.branch_id]);
+
+  // Fetch variants when modal opens and product changes
+  useEffect(() => {
+    if (isOpen && currentProduct && !currentProduct.is_variant && activeBranch) {
+      fetchVariants();
+    } else {
+      setVariants([]);
+    }
+  }, [isOpen, currentProduct?.id, activeBranch?.branch_id, fetchVariants]);
+
+  // Fetch categories
+  useEffect(() => {
+    if (user && isOpen) {
+      fetchCategories();
+    }
+  }, [user, isOpen]);
 
   const fetchCategories = async () => {
     if (!user) return;
@@ -737,9 +747,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+        <div className="flex-1 overflow-y-auto px-6 py-6">
           {/* Sticky Header Actions */}
-          <div className="sticky top-0 z-10 bg-white border-b pb-3 -mx-6 px-6 -mt-6 pt-6">
+          <div className="sticky top-0 z-10 bg-white border-b pb-3 -mx-6 px-6 -mt-6 pt-6 mb-4">
             <div className="flex items-center justify-end gap-2">
               <Button
                 onClick={() => onAdjustStock(currentProduct)}
@@ -757,7 +767,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 className="gap-2 text-xs"
               >
                 <MapPin className="w-3 h-3" />
-                {currentProduct?.location || 'Set Location'}
+                {currentProduct?.warehouse_name || 'Set Warehouse'}
               </Button>
               <Button
                 onClick={handleSetCategory}
@@ -779,6 +789,29 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </Button>
             </div>
           </div>
+
+          {/* Tabs */}
+          {currentProduct && (
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className={cn(
+                "grid w-full mb-6",
+                currentProduct.is_variant ? "grid-cols-1" : "grid-cols-2"
+              )}>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                {!currentProduct.is_variant && (
+                  <TabsTrigger value="variants">
+                    Variants
+                    {variants.length > 0 && (
+                      <Badge variant="secondary" className="ml-2 text-xs">
+                        {variants.length}
+                      </Badge>
+                    )}
+                  </TabsTrigger>
+                )}
+              </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6 mt-0">
 
           {/* Vitals Bar */}
           {currentProduct && (
@@ -1173,56 +1206,59 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </div>
                 
                 {/* Location */}
-                {editingField === 'location' ? (
-                  <div className="space-y-2">
-                    <Label>Location</Label>
-                    <Input
-                      value={form.location}
-                      onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
-                      placeholder="Enter location (e.g. A1, Shelf 3)"
-                      disabled={loading}
-                    />
-                    <div className="flex gap-2">
+                <div>
+                  {editingField === 'location' ? (
+                    <div className="space-y-2">
+                      <Label>Location</Label>
+                      <Input
+                        value={form.location}
+                        onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
+                        placeholder="Enter location (e.g. row6 box 4)"
+                        disabled={loading}
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleSave('location')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleCancel('location')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between text-sm">
+                      <div>
+                        <span className="text-gray-600">Location:</span>
+                        <span className="ml-2 text-gray-900">
+                          {currentProduct.location || 'Not set'}
+                        </span>
+                      </div>
                       <Button
                         size="sm"
-                        onClick={() => handleSave('location')}
-                        disabled={loading}
-                        className="flex-1"
+                        variant="ghost"
+                        onClick={() => setEditingField('location')}
+                        className="h-8 w-8 p-0"
                       >
-                        Save
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleCancel('location')}
-                        disabled={loading}
-                        className="flex-1"
-                      >
-                        Cancel
+                        <Edit className="w-4 h-4" />
                       </Button>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-600">Location:</span>
-                      <span className="text-gray-900">{currentProduct.location || 'Not set'}</span>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setEditingField('location')}
-                      className="h-8 w-8 p-0"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {/* Warehouse */}
                 {(() => {
-                  const warehouseName = getWarehouseName(currentProduct.location);
+                  const warehouseName = getWarehouseName(currentProduct.warehouse_name);
                   return (
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2">
@@ -1420,278 +1456,304 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           )}
           </div>
 
-          <Separator />
-
-          {/* Product Variants Section */}
-          {!currentProduct.is_variant && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Product Variants</h3>
-                <Button
-                  onClick={() => setIsAddVariantModalOpen(true)}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Create New Variant
-                </Button>
-              </div>
-
-              {isLoadingVariants ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="text-sm text-gray-500">Loading variants...</div>
-                </div>
-              ) : variants.length === 0 ? (
-                <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
-                  <Package className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500">No variants found</p>
-                  <p className="text-xs text-gray-400 mt-1">Create your first variant to get started</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {variants.map((variant) => {
-                    const variantStockStatus = getStatus(variant.quantity_in_stock, variant.minimum_stock_level);
-                    const variantStockDotColor = getDotColor(variant.quantity_in_stock, variant.minimum_stock_level);
-                    const isEditing = editingVariantId === variant.id;
-                    
-                    return (
-                      <div
-                        key={variant.id}
-                        className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
-                      >
-                        {isEditing ? (
-                          <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                              <h4 className="font-semibold text-gray-900">Edit Variant</h4>
-                              <Badge variant="secondary" className="text-xs">
-                                Variant
-                              </Badge>
-                            </div>
-                            
-                            <div className="space-y-3">
-                              <div>
-                                <Label>Variant Name *</Label>
-                                <Input
-                                  value={variantForm.variant_name}
-                                  onChange={(e) => setVariantForm(prev => ({ ...prev, variant_name: e.target.value }))}
-                                  placeholder="e.g., Yellow, Green, Size M"
-                                  disabled={loading}
-                                />
-                              </div>
-                              
-                              <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                  <Label>Stock Quantity</Label>
-                                  <Input
-                                    type="number"
-                                    value={variantForm.quantity_in_stock}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
-                                    min={0}
-                                    disabled={loading}
-                                  />
-                                </div>
-                                <div>
-                                  <Label>Minimum Level</Label>
-                                  <Input
-                                    type="number"
-                                    value={variantForm.minimum_stock_level}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
-                                    min={0}
-                                    disabled={loading}
-                                  />
-                                </div>
-                              </div>
-                              
-                              <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                  <Label>Purchase Price</Label>
-                                  <Input
-                                    type="number"
-                                    step="0.01"
-                                    value={variantForm.purchase_price}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
-                                    min={0}
-                                    disabled={loading}
-                                  />
-                                </div>
-                                <div>
-                                  <Label>Sale Price</Label>
-                                  <Input
-                                    type="number"
-                                    step="0.01"
-                                    value={variantForm.sale_price}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
-                                    min={0}
-                                    disabled={loading}
-                                  />
-                                </div>
-                              </div>
-                              
-                              <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                  <Label>SKU</Label>
-                                  <Input
-                                    value={variantForm.variant_sku}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, variant_sku: e.target.value }))}
-                                    placeholder="Variant SKU"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                <div>
-                                  <Label>Barcode</Label>
-                                  <Input
-                                    value={variantForm.variant_barcode}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, variant_barcode: e.target.value }))}
-                                    placeholder="Variant Barcode"
-                                    disabled={loading}
-                                  />
-                                </div>
-                              </div>
-                              
-                              <div>
-                                <Label>Location</Label>
-                                <Input
-                                  value={variantForm.location}
-                                  onChange={(e) => setVariantForm(prev => ({ ...prev, location: e.target.value }))}
-                                  placeholder="Storage location"
-                                  disabled={loading}
-                                />
-                              </div>
-                            </div>
-                            
-                            <div className="flex gap-2 pt-2">
-                              <Button
-                                size="sm"
-                                onClick={() => handleSaveVariant(variant.id)}
-                                disabled={loading || !variantForm.variant_name.trim()}
-                                className="flex-1"
-                              >
-                                <Save className="w-4 h-4 mr-2" />
-                                Save
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={handleCancelVariantEdit}
-                                disabled={loading}
-                                className="flex-1"
-                              >
-                                <X className="w-4 h-4 mr-2" />
-                                Cancel
-                              </Button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <h4 className="font-semibold text-gray-900">{variant.variant_name}</h4>
-                                <Badge variant="secondary" className="text-xs">
-                                  Variant
-                                </Badge>
-                              </div>
-                              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                                <div>
-                                  <span className="text-gray-600">Stock:</span>
-                                  <div className="flex items-center gap-2 mt-1">
-                                    <div
-                                      className={cn(
-                                        'w-2 h-2 rounded-full',
-                                        variantStockDotColor
-                                      )}
-                                    />
-                                    <span className="font-medium">{formatQty(variant.quantity_in_stock)}</span>
-                                    <span className="text-xs text-gray-500">({variantStockStatus})</span>
-                                  </div>
-                                </div>
-                                {variant.variant_sku && (
-                                  <div>
-                                    <span className="text-gray-600">SKU:</span>
-                                    <p className="font-mono text-xs mt-1">{variant.variant_sku}</p>
-                                  </div>
-                                )}
-                                {variant.location && (
-                                  <>
-                                    <div>
-                                      <span className="text-gray-600">Location:</span>
-                                      <p className="text-xs mt-1">{variant.location}</p>
-                                    </div>
-                                    {(() => {
-                                      const variantWarehouseName = getWarehouseName(variant.location);
-                                      if (variantWarehouseName) {
-                                        return (
-                                          <div>
-                                            <span className="text-gray-600">Warehouse:</span>
-                                            <p className="text-xs mt-1">{variantWarehouseName}</p>
-                                          </div>
-                                        );
-                                      }
-                                      return null;
-                                    })()}
-                                  </>
-                                )}
-                                {(variant.purchase_price || variant.sale_price) && (
-                                  <div>
-                                    <span className="text-gray-600">Price:</span>
-                                    <p className="text-xs mt-1">
-                                      {variant.sale_price ? formatPrice(Number(variant.sale_price)) : '-'}
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 ml-4">
-                              <Button
-                                onClick={() => handleEditVariant(variant)}
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                              >
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  onClose();
-                                  onAdjustStock(variant);
-                                }}
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                              >
-                                <Plus className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+              {/* Show variant info if this is a variant */}
+              {currentProduct.is_variant && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">Variant Information</h3>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="text-sm text-blue-900">
+                      This is a variant of a parent product. To manage variants, open the parent product.
+                    </p>
+                  </div>
                 </div>
               )}
-            </div>
-          )}
 
-          {/* Show variant info if this is a variant */}
-          {currentProduct.is_variant && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900">Variant Information</h3>
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-900">
-                  This is a variant of a parent product. To manage variants, open the parent product.
-                </p>
-              </div>
-            </div>
-          )}
+              {/* Inventory Segmentation */}
+              {currentProduct && (
+                <InventorySegmentation
+                  productId={currentProduct.id}
+                  currentStock={totalStock}
+                  reorderPoint={currentProduct.minimum_stock_level || 0}
+                  onAddLocation={() => setEditingField('location')}
+                />
+              )}
+            </TabsContent>
 
-          {/* Inventory Segmentation */}
-          {currentProduct && (
-            <InventorySegmentation
-              productId={currentProduct.id}
-              currentStock={totalStock}
-              reorderPoint={currentProduct.minimum_stock_level || 0}
-              onAddLocation={() => setEditingField('location')}
-            />
+            {/* Variants Tab */}
+            {!currentProduct.is_variant && (
+              <TabsContent value="variants" className="mt-0 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900">Product Variants</h3>
+                  <div className="flex items-center gap-2">
+                    {selectedVariantIds.size > 0 && (
+                      <>
+                        <span className="text-sm text-gray-600">{selectedVariantIds.size} selected</span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            // Bulk adjust stock
+                            if (selectedVariantIds.size > 0) {
+                              const selectedVariants = variants.filter(v => selectedVariantIds.has(v.id));
+                              if (selectedVariants.length > 0) {
+                                onAdjustStock(selectedVariants[0]); // Adjust first selected for now
+                              }
+                            }
+                          }}
+                        >
+                          <TrendingUp className="w-4 h-4 mr-2" />
+                          Adjust Stock
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={async () => {
+                            if (selectedVariantIds.size > 0 && window.confirm(`Delete ${selectedVariantIds.size} variant(s)?`)) {
+                              try {
+                                const { error } = await supabase
+                                  .from('products')
+                                  .delete()
+                                  .in('id', Array.from(selectedVariantIds));
+                                
+                                if (error) throw error;
+                                
+                                toast.success(`Deleted ${selectedVariantIds.size} variant(s)`);
+                                setSelectedVariantIds(new Set());
+                                handleVariantAdded();
+                              } catch (error) {
+                                console.error('Error deleting variants:', error);
+                                toast.error('Failed to delete variants');
+                              }
+                            }
+                          }}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedVariantIds(new Set())}
+                        >
+                          Clear
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      onClick={() => setIsAddVariantModalOpen(true)}
+                      variant="outline"
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Create New Variant
+                    </Button>
+                  </div>
+                </div>
+
+                {isLoadingVariants ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-sm text-gray-500">Loading variants...</div>
+                  </div>
+                ) : variants.length === 0 ? (
+                  <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+                    <Package className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-sm text-gray-500">No variants found</p>
+                    <p className="text-xs text-gray-400 mt-1">Create your first variant to get started</p>
+                  </div>
+                ) : (
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-4 py-3 text-left">
+                              <input
+                                type="checkbox"
+                                checked={variants.length > 0 && variants.every(v => selectedVariantIds.has(v.id))}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedVariantIds(new Set(variants.map(v => v.id)));
+                                  } else {
+                                    setSelectedVariantIds(new Set());
+                                  }
+                                }}
+                                className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                              />
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Variant Name</th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                            <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                            <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {variants.map((variant) => {
+                            const variantStockStatus = getStatus(variant.quantity_in_stock, variant.minimum_stock_level);
+                            const variantStockDotColor = getDotColor(variant.quantity_in_stock, variant.minimum_stock_level);
+                            const isEditing = editingVariantId === variant.id;
+                            
+                            return (
+                              <tr key={variant.id} className="hover:bg-gray-50">
+                                <td className="px-4 py-3">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedVariantIds.has(variant.id)}
+                                    onChange={(e) => {
+                                      const newSet = new Set(selectedVariantIds);
+                                      if (e.target.checked) {
+                                        newSet.add(variant.id);
+                                      } else {
+                                        newSet.delete(variant.id);
+                                      }
+                                      setSelectedVariantIds(newSet);
+                                    }}
+                                    className="w-4 h-4 text-blue-600 rounded border-gray-300"
+                                  />
+                                </td>
+                                <td className="px-4 py-3">
+                                  {isEditing ? (
+                                    <Input
+                                      value={variantForm.variant_name}
+                                      onChange={(e) => setVariantForm(prev => ({ ...prev, variant_name: e.target.value }))}
+                                      className="text-sm"
+                                      disabled={loading}
+                                    />
+                                  ) : (
+                                    <span className="text-sm font-medium text-gray-900">{variant.variant_name}</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3">
+                                  {isEditing ? (
+                                    <Input
+                                      value={variantForm.variant_sku}
+                                      onChange={(e) => setVariantForm(prev => ({ ...prev, variant_sku: e.target.value }))}
+                                      className="text-sm font-mono"
+                                      disabled={loading}
+                                    />
+                                  ) : (
+                                    <span className="text-sm font-mono text-gray-600">{variant.variant_sku || variant.sku || '-'}</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3">
+                                  {isEditing ? (
+                                    <Input
+                                      value={variantForm.location}
+                                      onChange={(e) => setVariantForm(prev => ({ ...prev, location: e.target.value }))}
+                                      className="text-sm"
+                                      disabled={loading}
+                                    />
+                                  ) : (
+                                    <span className="text-sm text-gray-600">{variant.location || '-'}</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3 text-center">
+                                  {isEditing ? (
+                                    <Input
+                                      type="number"
+                                      value={variantForm.quantity_in_stock}
+                                      onChange={(e) => setVariantForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
+                                      className="text-sm w-24"
+                                      disabled={loading}
+                                    />
+                                  ) : (
+                                    <div className="flex items-center justify-center gap-2">
+                                      <div className={cn('w-2 h-2 rounded-full', variantStockDotColor)} />
+                                      <span className="text-sm font-medium text-gray-900">{formatQty(variant.quantity_in_stock)}</span>
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3 text-center">
+                                  {isEditing ? (
+                                    <Input
+                                      type="number"
+                                      step="0.01"
+                                      value={variantForm.sale_price}
+                                      onChange={(e) => setVariantForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                                      className="text-sm w-24"
+                                      disabled={loading}
+                                    />
+                                  ) : (
+                                    <span className="text-sm text-gray-900">{formatPrice(Number(variant.sale_price) || 0)}</span>
+                                  )}
+                                </td>
+                                <td className="px-4 py-3 text-right">
+                                  {isEditing ? (
+                                    <div className="flex items-center justify-end gap-2">
+                                      <Button
+                                        size="sm"
+                                        onClick={() => handleSaveVariant(variant.id)}
+                                        disabled={loading || !variantForm.variant_name.trim()}
+                                      >
+                                        <Save className="w-4 h-4" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={handleCancelVariantEdit}
+                                        disabled={loading}
+                                      >
+                                        <X className="w-4 h-4" />
+                                      </Button>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center justify-end gap-2">
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => handleEditVariant(variant)}
+                                      >
+                                        <Edit className="w-4 h-4" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => onAdjustStock(variant)}
+                                      >
+                                        <TrendingUp className="w-4 h-4" />
+                                      </Button>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={async () => {
+                                          if (window.confirm(`Delete variant "${variant.variant_name}"?`)) {
+                                            try {
+                                              const { error } = await supabase
+                                                .from('products')
+                                                .delete()
+                                                .eq('id', variant.id);
+                                              
+                                              if (error) throw error;
+                                              
+                                              toast.success('Variant deleted');
+                                              handleVariantAdded();
+                                            } catch (error) {
+                                              console.error('Error deleting variant:', error);
+                                              toast.error('Failed to delete variant');
+                                            }
+                                          }
+                                        }}
+                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                      >
+                                        <Trash2 className="w-4 h-4" />
+                                      </Button>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+            )}
+            </Tabs>
           )}
         </div>
 
@@ -1748,7 +1810,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           product={{
             id: currentProduct.id,
             name: currentProduct.name,
-            location: currentProduct.location,
+            warehouse_name: currentProduct.warehouse_name,
           }}
           onTransferComplete={handleWarehouseSetComplete}
         />

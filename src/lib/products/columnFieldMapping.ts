@@ -142,15 +142,6 @@ export const AVAILABLE_COLUMNS: ColumnDefinition[] = [
   
   // Metadata
   {
-    id: 'date_added',
-    label: 'Date Added',
-    category: 'metadata',
-    sortable: true,
-    defaultVisible: true,
-    dataKey: 'created_at',
-    description: 'Date when product was added',
-  },
-  {
     id: 'image_url',
     label: 'Image',
     category: 'metadata',
@@ -196,6 +187,28 @@ export function getDefaultVisibleColumns(): string[] {
   return AVAILABLE_COLUMNS
     .filter(col => col.defaultVisible)
     .map(col => col.id);
+}
+
+/**
+ * Get default column order
+ * This represents the current hardcoded order in the products table
+ */
+export function getDefaultColumnOrder(): string[] {
+  // This matches the current hardcoded order in products.tsx
+  return [
+    'sku',
+    'barcode',
+    'description',
+    'category_name',
+    'name',
+    'location',
+    'warehouses',
+    'stock',
+    'minimum_stock_level',
+    'purchase_price',
+    'sale_price',
+    'unit_price',
+  ];
 }
 
 /**

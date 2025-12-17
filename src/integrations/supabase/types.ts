@@ -723,6 +723,7 @@ export type Database = {
           variant_barcode: string | null
           image_url: string | null
           location: string | null
+          warehouse_name: string | null
           is_favorite: boolean | null
         }
         Insert: {
@@ -751,6 +752,7 @@ export type Database = {
           variant_barcode?: string | null
           image_url?: string | null
           location?: string | null
+          warehouse_name?: string | null
           is_favorite?: boolean | null
         }
         Update: {
@@ -779,6 +781,7 @@ export type Database = {
           variant_barcode?: string | null
           image_url?: string | null
           location?: string | null
+          warehouse_name?: string | null
           is_favorite?: boolean | null
         }
         Relationships: [

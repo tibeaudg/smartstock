@@ -172,7 +172,7 @@ export default function CategoriesPage() {
             Manage your product categories
           </p>
         </div>
-        <Button onClick={handleAddCategory} className="flex items-center gap-2">
+        <Button onClick={handleAddCategory} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Add Category</span>
           <span className="sm:hidden">Add</span>

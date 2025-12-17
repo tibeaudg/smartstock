@@ -11,8 +11,10 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronDown, ChevronRight, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronDown, ChevronRight, Eye, Filter } from 'lucide-react';
 import { toast } from 'sonner';
 import { useProductBOM } from '@/hooks/useProductBOM';
 import { BillOfMaterials } from '@/components/product/BillOfMaterials';
@@ -27,7 +29,14 @@ interface BOMListItem {
   buildable_quantity: number;
   created_at: string;
   versions?: Array<{ version_number: string; status: string; component_count: number }>;
-  components?: Array<{ name: string; quantity: number; unit: string }>;
+  components?: Array<{ 
+    name: string; 
+    quantity: number; 
+    unit: string;
+    component_id?: string;
+    unit_cost?: number;
+    current_stock?: number;
+  }>;
 }
 
 export default function BillOfMaterialsPage() {
@@ -41,6 +50,9 @@ export default function BillOfMaterialsPage() {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [viewingBOM, setViewingBOM] = useState<string | null>(null);
   const [editingBOMProductId, setEditingBOMProductId] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedBOMs, setSelectedBOMs] = useState<Set<string>>(new Set());
+  const [editingQuantities, setEditingQuantities] = useState<Map<string, { bomItemId: string; value: string }>>(new Map());
 
   // Fetch all products with BOMs (either with components or with versions)
   const { data: bomList, isLoading, refetch } = useQuery<BOMListItem[]>({
@@ -129,7 +141,7 @@ export default function BillOfMaterialsPage() {
           const componentIds = activeBomItems.map(item => item.component_product_id);
           const { data: componentProducts } = await supabase
             .from('products')
-            .select('id, name, quantity_in_stock')
+            .select('id, name, quantity_in_stock, purchase_price, unit_price')
             .in('id', componentIds)
             .eq('branch_id', activeBranch.branch_id);
 
@@ -150,13 +162,17 @@ export default function BillOfMaterialsPage() {
             );
           }
 
-          // Build component preview list
+          // Build component preview list with enhanced data
           const componentsPreview = activeBomItems.slice(0, 3).map(item => {
             const component = componentMap.get(item.component_product_id);
+            const unitCost = component?.purchase_price || component?.unit_price || 0;
             return {
               name: component?.name || 'Unknown',
               quantity: parseFloat(item.quantity_required?.toString() || '0'),
               unit: item.unit_of_measure || 'unit',
+              component_id: item.component_product_id,
+              unit_cost: unitCost,
+              current_stock: component?.quantity_in_stock || 0,
             };
           });
 
@@ -214,12 +230,22 @@ export default function BillOfMaterialsPage() {
   });
 
   const filteredBOMList = bomList?.filter((item) => {
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      item.parent_product_name.toLowerCase().includes(query) ||
-      (item.parent_product_sku && item.parent_product_sku.toLowerCase().includes(query))
-    );
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch = 
+        item.parent_product_name.toLowerCase().includes(query) ||
+        (item.parent_product_sku && item.parent_product_sku.toLowerCase().includes(query));
+      if (!matchesSearch) return false;
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      const hasMatchingStatus = item.versions?.some(v => v.status === statusFilter);
+      if (!hasMatchingStatus) return false;
+    }
+
+    return true;
   }) || [];
 
   const handleCreateBOM = () => {
@@ -232,18 +258,33 @@ export default function BillOfMaterialsPage() {
   };
 
   const handleDeleteBOM = async (productId: string) => {
-    if (!confirm('Are you sure you want to delete the BOM for this product? This will remove all components.')) {
+    if (!confirm('Are you sure you want to delete the BOM for this product? This will remove all components and versions.')) {
+      return;
+    }
+
+    if (!activeBranch) {
+      toast.error('No active branch selected');
       return;
     }
 
     try {
-      const { error } = await supabase
+      // Delete BOM components first (they reference bom_versions)
+      const { error: bomError } = await supabase
         .from('product_bom')
         .delete()
         .eq('parent_product_id', productId)
-        .eq('branch_id', activeBranch?.branch_id);
+        .eq('branch_id', activeBranch.branch_id);
 
-      if (error) throw error;
+      if (bomError) throw bomError;
+
+      // Delete BOM versions
+      const { error: versionsError } = await supabase
+        .from('bom_versions')
+        .delete()
+        .eq('parent_product_id', productId)
+        .eq('branch_id', activeBranch.branch_id);
+
+      if (versionsError) throw versionsError;
 
       toast.success('BOM deleted successfully');
       refetch();
@@ -284,6 +325,20 @@ export default function BillOfMaterialsPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter className="w-4 h-4 text-gray-400" />
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -329,13 +384,84 @@ export default function BillOfMaterialsPage() {
             </Card>
           ) : (
             <Card className="p-4">
+              {/* Bulk Actions Toolbar */}
+              {selectedBOMs.size > 0 && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-blue-900">
+                      {selectedBOMs.size} BOM{selectedBOMs.size > 1 ? 's' : ''} selected
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={async () => {
+                        if (!confirm(`Are you sure you want to delete ${selectedBOMs.size} BOM(s)? This will remove all components and versions.`)) return;
+                        if (!activeBranch) {
+                          toast.error('No active branch selected');
+                          return;
+                        }
+                        try {
+                          for (const bomId of selectedBOMs) {
+                            // Delete BOM components first
+                            const { error: bomError } = await supabase
+                              .from('product_bom')
+                              .delete()
+                              .eq('parent_product_id', bomId)
+                              .eq('branch_id', activeBranch.branch_id);
+                            
+                            if (bomError) throw bomError;
+
+                            // Delete BOM versions
+                            const { error: versionsError } = await supabase
+                              .from('bom_versions')
+                              .delete()
+                              .eq('parent_product_id', bomId)
+                              .eq('branch_id', activeBranch.branch_id);
+                            
+                            if (versionsError) throw versionsError;
+                          }
+                          toast.success(`${selectedBOMs.size} BOM(s) deleted successfully`);
+                          setSelectedBOMs(new Set());
+                          refetch();
+                        } catch (error: any) {
+                          toast.error(`Failed to delete BOMs: ${error.message}`);
+                        }
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Selected
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedBOMs(new Set())}
+                    >
+                      Clear Selection
+                    </Button>
+                  </div>
+                </div>
+              )}
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-12">
+                      <Checkbox
+                        checked={selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedBOMs(new Set(filteredBOMList.map(item => item.id)));
+                          } else {
+                            setSelectedBOMs(new Set());
+                          }
+                        }}
+                      />
+                    </TableHead>
                     <TableHead>Product</TableHead>
                     <TableHead>SKU</TableHead>
-                    <TableHead className="text-center">Components</TableHead>
-                    <TableHead className="text-center">Buildable Qty</TableHead>
+                    <TableHead className="text-right">Components</TableHead>
+                    <TableHead className="text-right">Buildable Qty</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -351,8 +477,12 @@ export default function BillOfMaterialsPage() {
                             target.closest('button') ||
                             target.closest('a') ||
                             target.closest('[role="button"]') ||
+                            target.closest('input') ||
+                            target.closest('label') ||
                             target.tagName === 'BUTTON' ||
-                            target.tagName === 'A';
+                            target.tagName === 'A' ||
+                            target.tagName === 'INPUT' ||
+                            target.tagName === 'LABEL';
                           
                           if (isInteractive) {
                             return;
@@ -366,6 +496,20 @@ export default function BillOfMaterialsPage() {
                           }
                           setExpandedRows(newExpanded);
                         }}>
+                          <TableCell onClick={(e) => e.stopPropagation()}>
+                            <Checkbox
+                              checked={selectedBOMs.has(item.id)}
+                              onCheckedChange={(checked) => {
+                                const newSelected = new Set(selectedBOMs);
+                                if (checked) {
+                                  newSelected.add(item.id);
+                                } else {
+                                  newSelected.delete(item.id);
+                                }
+                                setSelectedBOMs(newSelected);
+                              }}
+                            />
+                          </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
                               {isExpanded ? (
@@ -373,19 +517,43 @@ export default function BillOfMaterialsPage() {
                               ) : (
                                 <ChevronRight className="w-4 h-4 text-gray-400" />
                               )}
-                              <div>
-                                <div className="font-medium">{item.parent_product_name}</div>
+                              <div className="flex-1 min-w-0">
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <div className="font-medium truncate">{item.parent_product_name}</div>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>{item.parent_product_name}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                                 {item.versions && item.versions.length > 0 && (
-                                  <div className="flex items-center gap-2 mt-1">
-                                    {item.versions.slice(0, 2).map((v, idx) => (
-                                      <Badge 
-                                        key={idx} 
-                                        variant={v.status === 'active' ? 'default' : 'secondary'}
-                                        className="text-xs"
-                                      >
-                                        v{v.version_number} ({v.status})
-                                      </Badge>
-                                    ))}
+                                  <div className="flex items-center gap-2 mt-1 flex-wrap">
+                                    {item.versions.slice(0, 2).map((v, idx) => {
+                                      const statusColors = {
+                                        active: 'bg-green-100 text-green-800 border-green-300',
+                                        draft: 'bg-yellow-100 text-yellow-800 border-yellow-300',
+                                        archived: 'bg-gray-100 text-gray-800 border-gray-300',
+                                      };
+                                      const statusColor = statusColors[v.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800 border-gray-300';
+                                      return (
+                                        <TooltipProvider key={idx}>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <Badge 
+                                                className={`text-xs border ${statusColor}`}
+                                              >
+                                                v{v.version_number}
+                                              </Badge>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>Version {v.version_number} - {v.status} ({v.component_count} components)</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      );
+                                    })}
                                     {item.versions.length > 2 && (
                                       <span className="text-xs text-gray-500">
                                         +{item.versions.length - 2} more
@@ -401,38 +569,53 @@ export default function BillOfMaterialsPage() {
                               {item.parent_product_sku || 'N/A'}
                             </span>
                           </TableCell>
-                          <TableCell className="text-center">
+                          <TableCell className="text-right">
                             <Badge variant="secondary">{item.component_count}</Badge>
                           </TableCell>
-                          <TableCell className="text-center">
+                          <TableCell className="text-right">
                             <Badge
-                              variant={item.buildable_quantity > 0 ? 'default' : 'destructive'}
+                              variant={
+                                item.component_count === 0 
+                                  ? 'secondary'
+                                  : item.buildable_quantity === 0 
+                                    ? 'destructive'
+                                    : item.buildable_quantity < 5
+                                      ? 'destructive'
+                                      : 'default'
+                              }
                             >
                               {item.buildable_quantity.toLocaleString()}
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center justify-end gap-2">
-                         
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDeleteBOM(item.id);
-                                }}
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                title="Delete BOM"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteBOM(item.id);
+                                      }}
+                                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Delete BOM</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             </div>
                           </TableCell>
                         </TableRow>
                         {isExpanded && (
                           <TableRow>
                             <TableCell 
-                              colSpan={5} 
+                              colSpan={6} 
                               className="bg-gray-50 p-4" 
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -443,26 +626,6 @@ export default function BillOfMaterialsPage() {
                               }}
                             >
                               <div className="space-y-4">
-                                {/* Versions Section */}
-                                {item.versions && item.versions.length > 0 && (
-                                  <div>
-                                    <h4 className="text-sm font-semibold text-gray-700 mb-2">BOM Versions</h4>
-                                    <div className="flex flex-wrap gap-2">
-                                      {item.versions.map((v, idx) => (
-                                        <div key={idx} className="bg-white border rounded-lg p-2">
-                                          <div className="flex items-center gap-2">
-                                            <Badge variant={v.status === 'active' ? 'default' : 'secondary'}>
-                                              v{v.version_number}
-                                            </Badge>
-                                            <span className="text-xs text-gray-600 capitalize">{v.status}</span>
-                                            <span className="text-xs text-gray-500">• {v.component_count} components</span>
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-
                                 {/* Components Preview */}
                                 {item.components && item.components.length > 0 ? (
                                   <div>
@@ -471,14 +634,116 @@ export default function BillOfMaterialsPage() {
                                     </h4>
                                     <div className="bg-white border rounded-lg p-3">
                                       <div className="space-y-2">
-                                        {item.components.map((comp, idx) => (
-                                          <div key={idx} className="flex items-center justify-between text-sm">
-                                            <span className="text-gray-900">{comp.name}</span>
-                                            <span className="text-gray-600 font-mono">
-                                              {comp.quantity} {comp.unit}
-                                            </span>
-                                          </div>
-                                        ))}
+                                        {item.components.map((comp, idx) => {
+                                          const editingKey = `${item.id}-${comp.component_id || idx}`;
+                                          const isEditing = editingQuantities.has(editingKey);
+                                          const editValue = editingQuantities.get(editingKey)?.value || comp.quantity.toString();
+                                          
+                                          return (
+                                            <div key={idx} className="flex items-center justify-between text-sm hover:bg-gray-50 p-2 rounded group">
+                                              <div className="flex-1 min-w-0">
+                                                <span className="text-gray-900 font-medium">{comp.name}</span>
+                                                <div className="flex items-center gap-4 mt-1 text-xs text-gray-600">
+                                                  {comp.unit_cost !== undefined && comp.unit_cost > 0 && (
+                                                    <span>Unit Cost: ${comp.unit_cost.toFixed(2)}</span>
+                                                  )}
+                                                  {comp.current_stock !== undefined && (
+                                                    <span>Stock: {comp.current_stock.toLocaleString()}</span>
+                                                  )}
+                                                </div>
+                                              </div>
+                                              <div className="flex items-center gap-2">
+                                                {isEditing ? (
+                                                  <>
+                                                    <Input
+                                                      type="number"
+                                                      min="0.001"
+                                                      step="0.001"
+                                                      value={editValue}
+                                                      onChange={(e) => {
+                                                        const newMap = new Map(editingQuantities);
+                                                        newMap.set(editingKey, { bomItemId: comp.component_id || '', value: e.target.value });
+                                                        setEditingQuantities(newMap);
+                                                      }}
+                                                      onBlur={async () => {
+                                                        const value = parseFloat(editValue);
+                                                        if (value > 0 && comp.component_id && activeBranch) {
+                                                          try {
+                                                            // First find the BOM item ID
+                                                            const { data: bomItems, error: findError } = await supabase
+                                                              .from('product_bom')
+                                                              .select('id')
+                                                              .eq('component_product_id', comp.component_id)
+                                                              .eq('parent_product_id', item.id)
+                                                              .eq('branch_id', activeBranch.branch_id)
+                                                              .limit(1)
+                                                              .maybeSingle() as { data: { id: string } | null; error: any };
+                                                            
+                                                            if (findError) {
+                                                              throw findError;
+                                                            }
+                                                            
+                                                            if (!bomItems || !bomItems.id) {
+                                                              throw new Error('BOM item not found');
+                                                            }
+                                                            
+                                                            const { error: updateError } = await (supabase
+                                                              .from('product_bom') as any)
+                                                              .update({ quantity_required: value })
+                                                              .eq('id', bomItems.id);
+                                                            
+                                                            if (updateError) throw updateError;
+                                                            
+                                                            toast.success('Quantity updated');
+                                                            refetch();
+                                                          } catch (error: any) {
+                                                            toast.error(`Failed to update: ${error.message}`);
+                                                          }
+                                                        }
+                                                        const newMap = new Map(editingQuantities);
+                                                        newMap.delete(editingKey);
+                                                        setEditingQuantities(newMap);
+                                                      }}
+                                                      onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                          e.currentTarget.blur();
+                                                        }
+                                                        if (e.key === 'Escape') {
+                                                          const newMap = new Map(editingQuantities);
+                                                          newMap.delete(editingKey);
+                                                          setEditingQuantities(newMap);
+                                                        }
+                                                      }}
+                                                      className="w-20 h-7 text-sm"
+                                                      autoFocus
+                                                      onClick={(e) => e.stopPropagation()}
+                                                    />
+                                                    <span className="text-gray-600 text-xs">{comp.unit}</span>
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    <span className="text-gray-600 font-mono">
+                                                      {comp.quantity} {comp.unit}
+                                                    </span>
+                                                    <Button
+                                                      variant="ghost"
+                                                      size="sm"
+                                                      className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                      onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        const newMap = new Map(editingQuantities);
+                                                        newMap.set(editingKey, { bomItemId: comp.component_id || '', value: comp.quantity.toString() });
+                                                        setEditingQuantities(newMap);
+                                                      }}
+                                                    >
+                                                      <Edit className="w-3 h-3" />
+                                                    </Button>
+                                                  </>
+                                                )}
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
                                         {item.component_count > item.components.length && (
                                           <div className="text-xs text-gray-500 pt-2 border-t">
                                             +{item.component_count - item.components.length} more components
@@ -489,16 +754,27 @@ export default function BillOfMaterialsPage() {
                                   </div>
                                 ) : (
                                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                                    <p className="text-sm text-yellow-800">
-                                      No components defined yet. Use the buttons below to add components to this BOM.
+                                    <p className="text-sm text-yellow-800 mb-3">
+                                      No components defined yet.
                                     </p>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setEditingBOMProductId(item.id);
+                                      }}
+                                    >
+                                      <Plus className="w-4 h-4 mr-2" />
+                                      Add Components
+                                    </Button>
                                   </div>
                                 )}
 
                                 {/* Buildable Quantity Info */}
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                                   <p className="text-sm text-blue-900">
-                                    <strong>Buildable Quantity:</strong> You can build <strong>{item.buildable_quantity}</strong> units of this product with current component stock.
+                                    <strong>Buildable Qty:</strong> You can build <strong>{item.buildable_quantity}</strong> units of this product with current component stock.
                                     {item.buildable_quantity === 0 && item.component_count > 0 && (
                                       <span className="block mt-1 text-blue-800">
                                         Check component stock levels to identify shortages.

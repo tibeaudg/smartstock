@@ -21,7 +21,7 @@ interface WarehouseTransferModalProps {
   product: {
     id: string;
     name: string;
-    location: string | null;
+    warehouse_name: string | null;
   };
   onTransferComplete: () => void;
 }
@@ -40,9 +40,9 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
 
   // Set initial warehouse selection when modal opens
   React.useEffect(() => {
-    if (isOpen && product.location) {
+    if (isOpen && product.warehouse_name) {
       // Find warehouse by name
-      const matchingWarehouse = warehouses.find(w => w.name === product.location);
+      const matchingWarehouse = warehouses.find(w => w.name === product.warehouse_name);
       if (matchingWarehouse) {
         setSelectedWarehouse(matchingWarehouse.name);
       } else {
@@ -51,7 +51,7 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
     } else if (isOpen) {
       setSelectedWarehouse('__none__');
     }
-  }, [isOpen, product.location, warehouses]);
+  }, [isOpen, product.warehouse_name, warehouses]);
 
   const handleTransfer = async () => {
     if (!user || !activeBranch) {
@@ -64,8 +64,8 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
       return;
     }
 
-    // If the selected warehouse is the same as current location, just close
-    if (selectedWarehouse === product.location) {
+    // If the selected warehouse is the same as current warehouse, just close
+    if (selectedWarehouse === product.warehouse_name) {
       toast.info('Product is already in this warehouse');
       onClose();
       return;
@@ -77,7 +77,7 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
       const { error } = await supabase
         .from('products')
         .update({ 
-          location: selectedWarehouse,
+          warehouse_name: selectedWarehouse,
           updated_at: new Date().toISOString()
         })
         .eq('id', product.id)
@@ -113,7 +113,7 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
       const { error } = await supabase
         .from('products')
         .update({ 
-          location: null,
+          warehouse_name: null,
           updated_at: new Date().toISOString()
         })
         .eq('id', product.id)
@@ -121,17 +121,17 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
         .eq('user_id', user.id);
 
       if (error) {
-        console.error('Error removing location:', error);
-        toast.error(`Failed to remove location: ${error.message}`);
+        console.error('Error removing warehouse:', error);
+        toast.error(`Failed to remove warehouse: ${error.message}`);
         return;
       }
 
-      toast.success('Location removed from product');
+      toast.success('Warehouse removed from product');
       onTransferComplete();
       onClose();
     } catch (error) {
-      console.error('Error removing location:', error);
-      toast.error('Failed to remove location');
+      console.error('Error removing warehouse:', error);
+      toast.error('Failed to remove warehouse');
     } finally {
       setIsTransferring(false);
     }
@@ -152,16 +152,16 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
           <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Product</div>
             <div className="font-semibold text-gray-900 dark:text-gray-100">{product.name}</div>
-            {product.location && (
+            {product.warehouse_name && (
               <div className="mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <MapPin className="w-4 h-4" />
-                <span>Current location: <span className="font-medium">{product.location}</span></span>
+                <span>Current warehouse: <span className="font-medium">{product.warehouse_name}</span></span>
               </div>
             )}
-            {!product.location && (
+            {!product.warehouse_name && (
               <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500">
                 <MapPin className="w-4 h-4" />
-                <span>No location assigned</span>
+                <span>No warehouse assigned</span>
               </div>
             )}
           </div>
@@ -201,14 +201,14 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
 
         <DialogFooter className="flex items-center justify-between">
           <div>
-            {product.location && (
+            {product.warehouse_name && (
               <Button
                 variant="outline"
                 onClick={handleRemoveLocation}
                 disabled={isTransferring}
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
-                Remove Location
+                Remove Warehouse
               </Button>
             )}
           </div>
