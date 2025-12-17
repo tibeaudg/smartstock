@@ -308,12 +308,21 @@ export default function ElectricalInventoryManagement() {
     { id: 'faq', title: 'FAQ', level: 1 }
   ]);
 
+  // Calculate reading time (approximate - based on content length)
+  const estimatedReadingTime = React.useMemo(() => {
+    const contentLength = faqData.reduce((acc, faq) => acc + faq.question.length + faq.answer.length, 0) + 5000; // Add base content estimate
+    return Math.ceil(contentLength / 200); // ~200 words per minute
+  }, [faqData]);
+
   return (
     <SeoPageLayout 
       title="Electrical Inventory Management"
       heroTitle="Electrical Inventory Management"
       updatedDate="3/12/2025"
       faqData={faqData}
+      tableOfContents={sidebarContent.tableOfContents}
+      showTOC={true}
+      readingTime={estimatedReadingTime}
     >
       <SEO
         title="Inventory Software for Electrical Contractors | StockFlow"

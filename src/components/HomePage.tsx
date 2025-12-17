@@ -1746,7 +1746,18 @@ export const HomePage = () => {
                 Still have questions? We're here to help!
               </p>
               <Button
-                onClick={() => navigate('/contact')}
+                data-analytics-id="homepage-cta-contact"
+                onClick={() => {
+                  // Track contact CTA click
+                  if (window.gtag) {
+                    window.gtag('event', 'click', {
+                      'event_category': 'CTA',
+                      'event_label': 'Contact Support',
+                      'value': 0
+                    });
+                  }
+                  navigate('/contact');
+                }}
                 className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-700
                 px-10 py-5 sm:px-12 sm:py-6 md:px-14 md:py-7
                 text-lg sm:text-xl md:text-2xl
@@ -1791,6 +1802,19 @@ export const HomePage = () => {
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-stretch sm:items-center mb-6 sm:mb-8 px-4">
                   <ScrollTriggeredButton
                     as="button"
+                    data-analytics-id="homepage-cta-primary"
+                    data-conversion-tracking="true"
+                    onClick={() => {
+                      // Track conversion event
+                      if (window.gtag) {
+                        window.gtag('event', 'conversion', {
+                          'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
+                          'value': 0,
+                          'currency': 'EUR'
+                        });
+                      }
+                      navigate('/auth');
+                    }}
                     className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50
                       px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 lg:px-12
                       text-base sm:text-lg md:text-xl lg:text-2xl
@@ -1799,7 +1823,6 @@ export const HomePage = () => {
                       shadow-2xl hover:shadow-3xl
                       ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
                       min-h-[48px] sm:min-h-[56px] touch-manipulation"
-                    onClick={() => navigate('/pricing')}
               >
                 Create a Free Account
                 </ScrollTriggeredButton>

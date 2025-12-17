@@ -6,6 +6,8 @@ import Footer from './Footer';
 import VideoModal from './VideoModal';
 import { getBreadcrumbPath, getAllSeoPages, getRelatedPages, findClusterForPage } from '@/config/topicClusters';
 import { InternalLinkingWidget } from '@/components/seo/InternalLinkingWidget';
+import { TableOfContents } from '@/components/seo/TableOfContents';
+import { ReadingTime } from '@/components/seo/ReadingTime';
 import { detectPageLanguage } from '@/utils/seoPageHelpers';
 import { getStableRelatedArticles } from '@/utils/linkAlgo';
 import { 
@@ -47,6 +49,9 @@ interface SeoPageLayoutProps {
   heroTitle?: string;
   updatedDate?: string;
   maxRelatedArticles?: number;
+  tableOfContents?: Array<{ id: string; title: string; level: number }>;
+  showTOC?: boolean;
+  readingTime?: number;
 }
 
 // --- Static Data ---
@@ -146,8 +151,9 @@ const HeroSection = memo<{
   heroTitle?: string;
   title: string;
   updatedDate?: string;
-}>(({ heroTitle, title, updatedDate }) => {
-  if (!heroTitle && !updatedDate) return null;
+  readingTime?: number;
+}>(({ heroTitle, title, updatedDate, readingTime }) => {
+  if (!heroTitle && !updatedDate && !readingTime) return null;
 
   return (
     <section className="max-w-full rounded-b-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 text-center space-y-8" aria-labelledby="hero-title">
@@ -158,9 +164,12 @@ const HeroSection = memo<{
       </h1>
 
       <div className="flex items-center justify-center gap-6 text-sm text-slate-500 mb-8 flex-wrap">
+        {readingTime && (
+          <ReadingTime content={String(readingTime)} />
+        )}
         {updatedDate && (
-          <time dateTime={updatedDate}>
-            <strong>Updated on:</strong> {updatedDate}
+          <time dateTime={updatedDate} className="flex items-center gap-2">
+            <strong>Updated:</strong> {updatedDate}
           </time>
         )}
       </div>
@@ -541,6 +550,9 @@ const RecentArticlesSection = memo<{
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                       decoding="async"
+                      fetchPriority="low"
+                      width={400}
+                      height={300}
                     />
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-tr from-slate-200 to-slate-100 group-hover:scale-105 transition-transform duration-500" aria-hidden="true" />
@@ -637,6 +649,9 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   heroTitle,
   updatedDate,
   maxRelatedArticles,
+  tableOfContents = [],
+  showTOC = true,
+  readingTime,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -687,11 +702,57 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": canonicalUrl
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "StockFlow",
+          "url": "https://www.stockflow.be"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "StockFlow",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.stockflow.be/Inventory-Management.png"
+          }
+        },
+        "inLanguage": pageLanguage === 'nl' ? 'nl-BE' : 'en-US'
+      },
+      {
+        "@type": "WebSite",
+        "name": "StockFlow",
+        "url": "https://www.stockflow.be",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.stockflow.be/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "url": "https://www.stockflow.be",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.stockflow.be/Inventory-Management.png",
+          "width": 512,
+          "height": 512
+        },
+        "sameAs": [
+          "https://www.facebook.com/profile.php?id=61578067034898",
+          "https://twitter.com/stockflow",
+          "https://www.linkedin.com/company/stockflow"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "email": "support@stockflow.be",
+          "availableLanguage": ["English", "Dutch", "French"]
         }
       }
       // FAQPage is handled by individual pages via StructuredData component to avoid duplication
     ]
-  }), [breadcrumbItems, title, description, publishDate, updatedDate, canonicalUrl]);
+  }), [breadcrumbItems, title, description, publishDate, updatedDate, canonicalUrl, pageLanguage]);
 
   const handleLoginClick = useMemo(() => () => navigate('/auth'), [navigate]);
 
@@ -709,6 +770,16 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         <title>{title}</title>
         {description && <meta name="description" content={description} />}
         <link rel="canonical" href={canonicalUrl} />
+        {/* Performance optimizations */}
+        <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" />
+        <link rel="dns-prefetch" href="https://sszuxnqhbxauvershuys.supabase.co" />
+        {/* Preload critical resources */}
+        <link rel="preload" as="image" href="/aza.png" />
+        {/* Additional SEO meta tags */}
+        <meta name="article:author" content="StockFlow" />
+        <meta name="article:publisher" content="StockFlow" />
+        {publishDate && <meta name="article:published_time" content={publishDate} />}
+        {updatedDate && <meta name="article:modified_time" content={updatedDate} />}
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 
@@ -730,6 +801,7 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
           heroTitle={heroTitle}
           title={title}
           updatedDate={updatedDate}
+          readingTime={readingTime}
         />
       </div>
 
@@ -737,14 +809,37 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
       <main>
         <article className="relative pt-16 pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg prose-slate max-w-none 
-              prose-headings:font-bold prose-headings:text-slate-900 
-              prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-              prose-img:rounded-xl prose-img:shadow-lg
-              prose-strong:text-slate-900
-              leading-relaxed">
-              {children}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Table of Contents - Desktop */}
+              {showTOC && tableOfContents.length > 0 && (
+                <aside className="hidden lg:block lg:col-span-1">
+                  <TableOfContents items={tableOfContents} sticky={true} />
+                </aside>
+              )}
+              
+              {/* Main Content */}
+              <div className={`prose prose-lg prose-slate max-w-none 
+                prose-headings:font-bold prose-headings:text-slate-900 
+                prose-headings:scroll-mt-24
+                prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                prose-a:font-medium
+                prose-img:rounded-xl prose-img:shadow-lg
+                prose-img:loading-lazy
+                prose-strong:text-slate-900
+                prose-ul:list-disc prose-ul:pl-6
+                prose-ol:list-decimal prose-ol:pl-6
+                prose-li:my-2
+                leading-relaxed ${showTOC && tableOfContents.length > 0 ? 'lg:col-span-3' : 'lg:col-span-4'}`}>
+                {children}
+              </div>
             </div>
+            
+            {/* Table of Contents - Mobile (sticky at top when scrolling) */}
+            {showTOC && tableOfContents.length > 0 && (
+              <div className="lg:hidden mt-8">
+                <TableOfContents items={tableOfContents} sticky={false} />
+              </div>
+            )}
 
             {/* Product/Pricing CTAs for Pillar Pages */}
             {isPillarPage && (

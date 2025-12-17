@@ -13,7 +13,7 @@ interface TrackingEvent {
   user_agent?: string;
   referrer?: string;
   session_id: string;
-  user_id?: string;
+  user_id?: string | null; // null for anonymous users - this is valid and expected
   metadata?: any;
 }
 
@@ -95,14 +95,21 @@ export const useWebsiteTracking = () => {
     };
 
     try {
+      // user_id can be undefined/null for anonymous users - this is valid and expected
       const { error: insertError } = await supabase.from('website_events').insert([event]);
       if (insertError) {
-        console.error('Error tracking page view:', insertError);
+        console.error('[Tracking] Error tracking page view:', insertError);
+        // Don't throw - tracking failures shouldn't break the app
       } else {
-        console.log('[Tracking] Page view tracked:', { url: pageUrl, userId: user?.id });
+        console.log('[Tracking] Page view tracked:', { 
+          url: pageUrl, 
+          userId: user?.id || 'anonymous',
+          sessionId: sessionId.current 
+        });
       }
     } catch (error) {
-      console.error('Error tracking page view:', error);
+      console.error('[Tracking] Error tracking page view:', error);
+      // Don't throw - tracking failures shouldn't break the app
     }
   }, [location.pathname, location.search, location.hash, shouldTrack, user?.id]);
 
@@ -164,9 +171,14 @@ export const useWebsiteTracking = () => {
     };
 
     try {
-      await supabase.from('website_events').insert([trackingEvent]);
+      // user_id can be undefined/null for anonymous users - this is valid and expected
+      const { error } = await supabase.from('website_events').insert([trackingEvent]);
+      if (error) {
+        console.error('[Tracking] Error tracking click:', error);
+      }
     } catch (error) {
-      console.error('Error tracking click:', error);
+      console.error('[Tracking] Error tracking click:', error);
+      // Don't throw - tracking failures shouldn't break the app
     }
   }, [shouldTrack, user?.id]);
 
@@ -197,9 +209,14 @@ export const useWebsiteTracking = () => {
     };
 
     try {
-      await supabase.from('website_events').insert([trackingEvent]);
+      // user_id can be undefined/null for anonymous users - this is valid and expected
+      const { error } = await supabase.from('website_events').insert([trackingEvent]);
+      if (error) {
+        console.error('[Tracking] Error tracking form abandonment:', error);
+      }
     } catch (error) {
-      console.error('Error tracking form abandonment:', error);
+      console.error('[Tracking] Error tracking form abandonment:', error);
+      // Don't throw - tracking failures shouldn't break the app
     }
   }, [shouldTrack, user?.id]);
 
@@ -227,9 +244,14 @@ export const useWebsiteTracking = () => {
     };
 
     try {
-      await supabase.from('website_events').insert([trackingEvent]);
+      // user_id can be undefined/null for anonymous users - this is valid and expected
+      const { error } = await supabase.from('website_events').insert([trackingEvent]);
+      if (error) {
+        console.error('[Tracking] Error tracking page exit:', error);
+      }
     } catch (error) {
-      console.error('Error tracking page exit:', error);
+      console.error('[Tracking] Error tracking page exit:', error);
+      // Don't throw - tracking failures shouldn't break the app
     }
   }, [shouldTrack]);
 
@@ -252,9 +274,14 @@ export const useWebsiteTracking = () => {
     };
 
     try {
-      await supabase.from('website_events').insert([trackingEvent]);
+      // user_id can be undefined/null for anonymous users - this is valid and expected
+      const { error } = await supabase.from('website_events').insert([trackingEvent]);
+      if (error) {
+        console.error('[Tracking] Error tracking scroll depth:', error);
+      }
     } catch (error) {
-      console.error('Error tracking scroll depth:', error);
+      console.error('[Tracking] Error tracking scroll depth:', error);
+      // Don't throw - tracking failures shouldn't break the app
     }
   }, [shouldTrack]);
 
@@ -276,9 +303,14 @@ export const useWebsiteTracking = () => {
     };
 
     try {
-      await supabase.from('website_events').insert([trackingEvent]);
+      // user_id can be undefined/null for anonymous users - this is valid and expected
+      const { error } = await supabase.from('website_events').insert([trackingEvent]);
+      if (error) {
+        console.error('[Tracking] Error tracking time on page:', error);
+      }
     } catch (error) {
-      console.error('Error tracking time on page:', error);
+      console.error('[Tracking] Error tracking time on page:', error);
+      // Don't throw - tracking failures shouldn't break the app
     }
   }, [shouldTrack]);
 
