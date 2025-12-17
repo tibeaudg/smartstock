@@ -36,6 +36,11 @@ import { BarcodeScanner } from './BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
+import { InventorySegmentation } from '@/components/product/InventorySegmentation';
+import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
+import { format } from 'date-fns';
+import { Archive, QrCode, ArrowRightLeft } from 'lucide-react';
 
 interface ProductDetailModalProps {
   isOpen: boolean;
@@ -595,6 +600,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     onAdjustStock(currentProduct);
   };
 
+  const handleTransfer = () => {
+    toast.info('Transfer functionality coming soon');
+  };
+
+  const handleGenerateBarcode = () => {
+    toast.info('Barcode generation coming soon');
+  };
+
   const handleDelete = () => {
     onClose();
     onDelete(currentProduct);
@@ -646,6 +659,49 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+          {/* Sticky Header Actions */}
+          <div className="sticky top-0 z-10 bg-white border-b pb-3 -mx-6 px-6 -mt-6 pt-6">
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                onClick={() => onAdjustStock(currentProduct)}
+                variant="outline"
+                size="sm"
+                className="gap-2 text-xs"
+              >
+                <Plus className="w-3 h-3" />
+                Adjust
+              </Button>
+              <Button
+                onClick={handleTransfer}
+                variant="outline"
+                size="sm"
+                className="gap-2 text-xs"
+              >
+                <ArrowRightLeft className="w-3 h-3" />
+                Transfer
+              </Button>
+              <Button
+                onClick={handleGenerateBarcode}
+                variant="outline"
+                size="sm"
+                className="gap-2 text-xs"
+              >
+                <QrCode className="w-3 h-3" />
+                Barcode
+              </Button>
+            </div>
+          </div>
+
+          {/* Vitals Bar */}
+          {currentProduct && (
+            <ProductVitalsBar
+              productId={currentProduct.id}
+              quantityInStock={totalStock}
+              minimumStockLevel={currentProduct.minimum_stock_level || 0}
+              valuationMethod="Average"
+            />
+          )}
+
           {/* Product Image and Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left Column - Image */}
@@ -1505,6 +1561,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </p>
               </div>
             </div>
+          )}
+
+          {/* Inventory Segmentation */}
+          {currentProduct && (
+            <InventorySegmentation
+              productId={currentProduct.id}
+              currentStock={totalStock}
+              reorderPoint={currentProduct.minimum_stock_level || 0}
+              onAddLocation={() => setEditingField('location')}
+            />
           )}
         </div>
 

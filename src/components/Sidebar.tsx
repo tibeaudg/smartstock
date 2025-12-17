@@ -24,7 +24,8 @@ import {
   Activity,
   ShoppingBag,
   Moon,
-  Sun
+  Sun,
+  Layers
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -135,6 +136,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           path: '/dashboard/categories',
           end: true
         },
+        { id: 'bom', label: 'Bill of Materials', icon: Layers, path: '/dashboard/bom', end: true },
         { id: 'transactions', label: 'History', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
         ...(hasAnalytics
           ? [

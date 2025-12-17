@@ -23,7 +23,10 @@ import {
   Image as ImageIcon,
   ChevronsUpDown,
   Save,
-  ArrowLeft
+  ArrowLeft,
+  Archive,
+  QrCode,
+  ArrowRightLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -37,6 +40,10 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
+import { InventorySegmentation } from '@/components/product/InventorySegmentation';
+import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
+import { format } from 'date-fns';
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -102,6 +109,11 @@ export default function ProductDetailPage() {
   // Categories state
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
+
+  // Modal states
+  const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+  const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
 
   // Fetch product data
   useEffect(() => {
@@ -544,14 +556,71 @@ export default function ProductDetailPage() {
   };
 
   const handleAdjustStock = () => {
-    // Navigate to stock adjustment - you may need to adjust this based on your routing
-    navigate('/dashboard/categories', { state: { adjustStockProduct: currentProduct } });
+    setIsStockAdjustModalOpen(true);
+  };
+
+  const handleTransfer = () => {
+    setIsTransferModalOpen(true);
+    // TODO: Implement transfer modal
+    toast.info('Transfer functionality coming soon');
+  };
+
+  const handleGenerateBarcode = () => {
+    setShowBarcodeGenerator(true);
+    // TODO: Implement barcode generation
+    toast.info('Barcode generation coming soon');
+  };
+
+  const handleArchive = () => {
+    if (confirm('Are you sure you want to archive this product?')) {
+      // TODO: Implement archive functionality
+      toast.info('Archive functionality coming soon');
+    }
   };
 
   const handleDelete = () => {
-    // Navigate back and let the parent handle deletion
-    navigate('/dashboard/categories');
+    if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+      // Navigate back and let the parent handle deletion
+      navigate('/dashboard/categories');
+    }
   };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts when typing in inputs
+      if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') {
+        return;
+      }
+
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === 's') {
+          e.preventDefault();
+          if (editingField) {
+            handleSave(editingField);
+          }
+        }
+      } else {
+        switch (e.key.toLowerCase()) {
+          case 'a':
+            e.preventDefault();
+            handleAdjustStock();
+            break;
+          case 't':
+            e.preventDefault();
+            handleTransfer();
+            break;
+          case 'b':
+            e.preventDefault();
+            handleGenerateBarcode();
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [editingField, currentProduct]);
 
   // Helper functions with defaults
   const getStatus = (qty: number, min: number) => {
@@ -613,590 +682,59 @@ export default function ProductDetailPage() {
   const stockStatus = getStatus(totalStock, currentProduct.minimum_stock_level);
   const stockDotColor = getDotColor(totalStock, currentProduct.minimum_stock_level);
 
+  // Get product status badge
+  const getProductStatus = () => {
+    if (currentProduct.status === 'inactive') return { label: 'Inactive', variant: 'secondary' as const };
+    if (currentProduct.status === 'discontinued') return { label: 'Discontinued', variant: 'destructive' as const };
+    return { label: 'Active', variant: 'default' as const };
+  };
+
+  const productStatus = getProductStatus();
+
   return (
     <div className="h-full flex flex-col bg-white">
-      {/* Header */}
-      <div className="border-b px-6 py-4 bg-white">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/dashboard/categories')}
-              className="gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </Button>
-            {editingField === 'name' ? (
-              <div className="flex-1 flex items-center gap-2">
-                <Input
-                  value={form.name}
-                  onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
-                  className="text-2xl font-bold"
-                  disabled={loading}
-                />
-                <Button
-                  size="sm"
-                  onClick={() => handleSave('name')}
-                  disabled={loading || !form.name.trim()}
-                >
-                  <Save className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleCancel('name')}
-                  disabled={loading}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold">{currentProduct.name}</h1>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setEditingField('name')}
-                  className="h-8 w-8 p-0"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={handleAdjustStock}
-              variant="outline"
-              size="sm"
-              className="gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Adjust Stock
-            </Button>
-            <Button
-              onClick={handleDelete}
-              variant="outline"
-              size="sm"
-              className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-            >
-              <Trash2 className="w-4 h-4" />
-              Delete
-            </Button>
-          </div>
-        </div>
+      {/* Top Header with Back Button */}
+      <div className="border-b px-6 py-3 bg-white">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate('/dashboard/categories')}
+          className="gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </Button>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Column - Basic Information */}
-          <div className="space-y-6">
-            {/* Stock Information */}
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-sm font-medium text-gray-600">Stock</div>
-                {editingField !== 'stock' && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('stock')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                )}
-              </div>
-              
-              {editingField === 'stock' ? (
-                <div className="space-y-3">
-                  <div>
-                    <Label>Stock Quantity</Label>
-                    <Input
-                      type="number"
-                      value={form.quantity_in_stock}
-                      onChange={(e) => setForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
-                      min={0}
-                      disabled={loading}
-                    />
-                  </div>
-                  <div>
-                    <Label>Minimum Level</Label>
-                    <Input
-                      type="number"
-                      value={form.minimum_stock_level}
-                      onChange={(e) => setForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
-                      min={0}
-                      disabled={loading}
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleSave('stock')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleCancel('stock')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className={cn(
-                        'w-4 h-4 rounded-full',
-                        stockDotColor,
-                        totalStock === 0 ? 'animate-pulse' : ''
-                      )}
-                    />
-                    <div className="flex-1">
-                      <div className="text-3xl font-bold text-gray-900">
-                        {formatQty(totalStock)}
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        {stockStatus}
-                        {!currentProduct.is_variant && variants.length > 0 && (
-                          <span className="ml-1 text-gray-400">
-                            ({formatQty(totalStock)} from {variants.length} variant{variants.length !== 1 ? 's' : ''})
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {currentProduct.minimum_stock_level && (
-                    <div className="text-xs text-gray-500 mt-2">
-                      Minimum Level: {formatQty(currentProduct.minimum_stock_level)}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-
-            {/* Pricing Information */}
-            {(currentProduct.purchase_price || currentProduct.sale_price || currentProduct.unit_price) && (
-              <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-sm font-medium text-gray-600">Pricing</div>
-                  {editingField !== 'pricing' && (
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setEditingField('pricing')}
-                      className="h-8 w-8 p-0"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                  )}
-                </div>
-                
-                {editingField === 'pricing' ? (
-                  <div className="space-y-3">
-                    <div>
-                      <Label>Purchase Price</Label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        value={form.purchase_price}
-                        onChange={(e) => setForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
-                        min={0}
-                        disabled={loading}
-                      />
-                    </div>
-                    <div>
-                      <Label>Sale Price</Label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        value={form.sale_price}
-                        onChange={(e) => setForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
-                        min={0}
-                        disabled={loading}
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => handleSave('pricing')}
-                        disabled={loading}
-                        className="flex-1"
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleCancel('pricing')}
-                        disabled={loading}
-                        className="flex-1"
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-1 text-sm">
-                    {currentProduct.purchase_price && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Purchase Price:</span>
-                        <span className="font-medium text-red-600">
-                          {formatPrice(Number(currentProduct.purchase_price))}
-                        </span>
-                      </div>
-                    )}
-                    {currentProduct.sale_price && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Sale Price:</span>
-                        <span className="font-medium text-green-600">
-                          {formatPrice(Number(currentProduct.sale_price))}
-                        </span>
-                      </div>
-                    )}
-                    {currentProduct.unit_price && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Unit Price:</span>
-                        <span className="font-medium text-gray-900">
-                          {formatPrice(Number(currentProduct.unit_price))}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Additional Information */}
-            <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="text-sm font-medium text-gray-600 mb-2">Additional Information</div>
-              </div>
-              
-              {/* SKU */}
-              <div>
-                {editingField === 'sku' ? (
-                  <div className="space-y-2">
-                    <Label>SKU</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        value={form.sku}
-                        onChange={(e) => setForm(prev => ({ ...prev, sku: e.target.value }))}
-                        placeholder="Enter SKU or scan barcode"
-                        disabled={loading}
-                        className="flex-1"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setShowScanner(true)}
-                        disabled={loading}
-                      >
-                        <Scan className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => handleSave('sku')}
-                        disabled={loading}
-                        className="flex-1"
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleCancel('sku')}
-                        disabled={loading}
-                        className="flex-1"
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm">
-                      <span className="text-gray-600">SKU:</span>
-                      <span className="font-mono ml-2 text-gray-900">
-                        {currentProduct.sku || 'Not set'}
-                      </span>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setEditingField('sku')}
-                      className="h-8 w-8 p-0"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )}
-              </div>
-              
-              {/* Location */}
-              {editingField === 'location' ? (
-                <div className="space-y-2">
-                  <Label>Location</Label>
-                  <Input
-                    value={form.location}
-                    onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
-                    placeholder="Enter location (e.g. A1, Shelf 3)"
-                    disabled={loading}
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleSave('location')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleCancel('location')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-600">Location:</span>
-                    <span className="text-gray-900">{currentProduct.location || 'Not set'}</span>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('location')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                </div>
-              )}
-              
-              {/* Category */}
-              {editingField === 'category' ? (
-                <div className="space-y-2">
-                  <Label>Category</Label>
-                  <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={categoryOpen}
-                        className="w-full justify-between"
-                        disabled={loading}
-                      >
-                        {form.category_name || "Select category..."}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput 
-                          placeholder="Search category..." 
-                          value={form.category_name}
-                          onValueChange={(value) => handleCategoryChange(value)}
-                        />
-                        <CommandList>
-                          <CommandEmpty>
-                            <div className="p-2 text-center">
-                              <p className="text-sm text-gray-500 mb-2">No category found</p>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={async () => {
-                                  if (form.category_name.trim() && user) {
-                                    try {
-                                      const { data: newCategory, error } = await supabase
-                                        .from('categories')
-                                        .insert({ name: form.category_name.trim(), user_id: user.id })
-                                        .select('id, name')
-                                        .single();
-                                      
-                                      if (error || !newCategory) {
-                                        toast.error('Error creating category');
-                                        return;
-                                      }
-                                      
-                                      setCategories(prev => [...prev, newCategory]);
-                                      setForm(prev => ({ ...prev, category_id: newCategory.id }));
-                                      setCategoryOpen(false);
-                                      toast.success('New category added!');
-                                    } catch (error) {
-                                      toast.error('Error creating category');
-                                    }
-                                  }
-                                }}
-                                className="w-full"
-                              >
-                                <Plus className="w-4 h-4 mr-2" />
-                                Add "{form.category_name}"
-                              </Button>
-                            </div>
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {categories.map((category) => (
-                              <CommandItem
-                                key={category.id}
-                                value={category.name}
-                                onSelect={() => {
-                                  handleCategoryChange(category.name);
-                                  setCategoryOpen(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    form.category_name === category.name ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                                {category.name}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleSave('category')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleCancel('category')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-600">Category:</span>
-                    <span className="text-gray-900">{currentProduct.category_name || 'Not set'}</span>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('category')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {/* Description Section */}
+      {/* Dual-Pane Layout */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Sidebar - Fixed (320px) */}
+        <div className="w-80 border-r bg-gray-50 flex flex-col overflow-y-auto">
+          <div className="p-4 space-y-4">
+            {/* Product Image */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">Description</h3>
-                {editingField !== 'description' && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('description')}
-                    className="h-8"
-                  >
-                    <Edit className="w-4 h-4 mr-2" />
-                    Edit
-                  </Button>
-                )}
-              </div>
-            
-              {editingField === 'description' ? (
-                <div className="space-y-3">
-                  <Textarea
-                    value={form.description}
-                    onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
-                    disabled={loading}
-                    rows={4}
-                    className="resize-none"
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleSave('description')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleCancel('description')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap">
-                    {currentProduct.description || 'No description'}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Column - Product Image and Variants */}
-          <div className="space-y-6">
-            {/* Product Image */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-gray-600">Product Image</h3>
+                <h3 className="text-xs font-medium text-gray-600 uppercase">Product Image</h3>
                 {editingField !== 'image' && (
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => setEditingField('image')}
-                    className="h-8"
+                    className="h-6 w-6 p-0"
                   >
-                    <Edit className="w-4 h-4" />
+                    <Edit className="w-3 h-3" />
                   </Button>
                 )}
               </div>
               
               {editingField === 'image' ? (
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {(currentProduct.image_url || uploadedImages.length > 0) && (
-                    <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-center">
+                    <div className="bg-white rounded border border-gray-200 p-2 flex items-center justify-center">
                       <img
                         src={uploadedImages.length > 0 ? uploadedImages[0].preview : currentProduct.image_url}
                         alt={currentProduct.name}
-                        className="max-w-full max-h-64 object-contain"
+                        className="max-w-full max-h-48 object-contain"
                       />
                     </div>
                   )}
@@ -1207,346 +745,515 @@ export default function ProductDetailPage() {
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     className={cn(
-                      "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
-                      isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                      "border-2 border-dashed rounded p-4 text-center transition-colors text-xs",
+                      isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white hover:border-gray-400"
                     )}
                   >
-                    <div className="flex flex-col items-center justify-center space-y-4">
-                      <ImageIcon className="w-12 h-12 text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1">
-                          Drop your file here or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
-                        </p>
-                        <input
-                          id="image-upload"
-                          type="file"
-                          accept="image/*"
-                          multiple
-                          onChange={handleImageChange}
-                          disabled={loading}
-                          className="hidden"
-                        />
-                      </div>
-                    </div>
+                    <ImageIcon className="w-6 h-6 text-gray-400 mx-auto mb-2" />
+                    <label htmlFor="image-upload-sidebar" className="text-blue-600 hover:text-blue-700 cursor-pointer underline text-xs">
+                      Upload Image
+                    </label>
+                    <input
+                      id="image-upload-sidebar"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      disabled={loading}
+                      className="hidden"
+                    />
                   </div>
                   
                   {uploadedImages.length > 0 && (
-                    <div className="space-y-2">
-                      {uploadedImages.map((image, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg"
-                        >
-                          <img
-                            src={image.preview}
-                            alt={`Preview ${index + 1}`}
-                            className="w-16 h-16 object-cover rounded"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
-                              {image.file.name}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {(image.size / 1024).toFixed(2)} KB
-                            </p>
-                          </div>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeImage(index)}
-                            disabled={loading}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      ))}
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => handleSave('image')}
+                        disabled={loading || uploadedImages.length === 0}
+                        className="flex-1 text-xs h-7"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleCancel('image')}
+                        disabled={loading}
+                        className="flex-1 text-xs h-7"
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   )}
-                  
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => handleSave('image')}
-                      disabled={loading || uploadedImages.length === 0}
-                      className="flex-1"
-                    >
-                      {loading ? 'Saving...' : 'Save'}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleCancel('image')}
-                      disabled={loading}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
                 </div>
               ) : (
                 currentProduct.image_url ? (
-                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-center">
+                  <div className="bg-white rounded border border-gray-200 p-2 flex items-center justify-center">
                     <img
                       src={currentProduct.image_url}
                       alt={currentProduct.name}
-                      className="max-w-full max-h-64 object-contain"
+                      className="max-w-full max-h-48 object-contain"
                     />
                   </div>
                 ) : (
-                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-12 flex items-center justify-center">
-                    <Package className="w-16 h-16 text-gray-400" />
+                  <div className="bg-white rounded border border-gray-200 p-8 flex items-center justify-center">
+                    <Package className="w-12 h-12 text-gray-400" />
                   </div>
                 )
               )}
             </div>
 
-            {/* Product Variants Section */}
-            {!currentProduct.is_variant && (
-              <div className="space-y-4">
+            <Separator />
+
+            {/* Product Metadata */}
+            <div className="space-y-3">
+              {/* SKU */}
+              <div>
+                <div className="text-xs font-medium text-gray-500 mb-1">SKU</div>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">Product Variants</h3>
+                  <span className="font-mono text-sm text-gray-900">
+                    {currentProduct.sku || 'Not set'}
+                  </span>
                   <Button
-                    onClick={() => setIsAddVariantModalOpen(true)}
-                    variant="outline"
                     size="sm"
-                    className="gap-2"
+                    variant="ghost"
+                    onClick={() => setEditingField('sku')}
+                    className="h-6 w-6 p-0"
                   >
-                    <Plus className="w-4 h-4" />
-                    Create New Variant
+                    <Edit className="w-3 h-3" />
                   </Button>
                 </div>
-
-                {isLoadingVariants ? (
-                  <div className="flex items-center justify-center py-8">
-                    <div className="text-sm text-gray-500">Loading variants...</div>
-                  </div>
-                ) : variants.length === 0 ? (
-                  <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
-                    <Package className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500">No variants found</p>
-                    <p className="text-xs text-gray-400 mt-1">Create your first variant to get started</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {variants.map((variant) => {
-                      const variantStockStatus = getStatus(variant.quantity_in_stock, variant.minimum_stock_level);
-                      const variantStockDotColor = getDotColor(variant.quantity_in_stock, variant.minimum_stock_level);
-                      const isEditing = editingVariantId === variant.id;
-                      
-                      return (
-                        <div
-                          key={variant.id}
-                          className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
-                        >
-                          {isEditing ? (
-                            <div className="space-y-4">
-                              <div className="flex items-center justify-between">
-                                <h4 className="font-semibold text-gray-900">Edit Variant</h4>
-                                <Badge variant="secondary" className="text-xs">
-                                  Variant
-                                </Badge>
-                              </div>
-                              
-                              <div className="space-y-3">
-                                <div>
-                                  <Label>Variant Name *</Label>
-                                  <Input
-                                    value={variantForm.variant_name}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, variant_name: e.target.value }))}
-                                    placeholder="e.g., Yellow, Green, Size M"
-                                    disabled={loading}
-                                  />
-                                </div>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                  <div>
-                                    <Label>Stock Quantity</Label>
-                                    <Input
-                                      type="number"
-                                      value={variantForm.quantity_in_stock}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
-                                      min={0}
-                                      disabled={loading}
-                                    />
-                                  </div>
-                                  <div>
-                                    <Label>Minimum Level</Label>
-                                    <Input
-                                      type="number"
-                                      value={variantForm.minimum_stock_level}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
-                                      min={0}
-                                      disabled={loading}
-                                    />
-                                  </div>
-                                </div>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                  <div>
-                                    <Label>Purchase Price</Label>
-                                    <Input
-                                      type="number"
-                                      step="0.01"
-                                      value={variantForm.purchase_price}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
-                                      min={0}
-                                      disabled={loading}
-                                    />
-                                  </div>
-                                  <div>
-                                    <Label>Sale Price</Label>
-                                    <Input
-                                      type="number"
-                                      step="0.01"
-                                      value={variantForm.sale_price}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
-                                      min={0}
-                                      disabled={loading}
-                                    />
-                                  </div>
-                                </div>
-                                
-                                <div className="grid grid-cols-2 gap-3">
-                                  <div>
-                                    <Label>SKU</Label>
-                                    <Input
-                                      value={variantForm.variant_sku}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, variant_sku: e.target.value }))}
-                                      placeholder="Variant SKU"
-                                      disabled={loading}
-                                    />
-                                  </div>
-                                  <div>
-                                    <Label>Barcode</Label>
-                                    <Input
-                                      value={variantForm.variant_barcode}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, variant_barcode: e.target.value }))}
-                                      placeholder="Variant Barcode"
-                                      disabled={loading}
-                                    />
-                                  </div>
-                                </div>
-                                
-                                <div>
-                                  <Label>Location</Label>
-                                  <Input
-                                    value={variantForm.location}
-                                    onChange={(e) => setVariantForm(prev => ({ ...prev, location: e.target.value }))}
-                                    placeholder="Storage location"
-                                    disabled={loading}
-                                  />
-                                </div>
-                              </div>
-                              
-                              <div className="flex gap-2 pt-2">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleSaveVariant(variant.id)}
-                                  disabled={loading || !variantForm.variant_name.trim()}
-                                  className="flex-1"
-                                >
-                                  <Save className="w-4 h-4 mr-2" />
-                                  Save
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={handleCancelVariantEdit}
-                                  disabled={loading}
-                                  className="flex-1"
-                                >
-                                  <X className="w-4 h-4 mr-2" />
-                                  Cancel
-                                </Button>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <h4 className="font-semibold text-gray-900">{variant.variant_name}</h4>
-                                  <Badge variant="secondary" className="text-xs">
-                                    Variant
-                                  </Badge>
-                                </div>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                                  <div>
-                                    <span className="text-gray-600">Stock:</span>
-                                    <div className="flex items-center gap-2 mt-1">
-                                      <div
-                                        className={cn(
-                                          'w-2 h-2 rounded-full',
-                                          variantStockDotColor
-                                        )}
-                                      />
-                                      <span className="font-medium">{formatQty(variant.quantity_in_stock)}</span>
-                                      <span className="text-xs text-gray-500">({variantStockStatus})</span>
-                                    </div>
-                                  </div>
-                                  {variant.variant_sku && (
-                                    <div>
-                                      <span className="text-gray-600">SKU:</span>
-                                      <p className="font-mono text-xs mt-1">{variant.variant_sku}</p>
-                                    </div>
-                                  )}
-                                  {variant.location && (
-                                    <div>
-                                      <span className="text-gray-600">Location:</span>
-                                      <p className="text-xs mt-1">{variant.location}</p>
-                                    </div>
-                                  )}
-                                  {(variant.purchase_price || variant.sale_price) && (
-                                    <div>
-                                      <span className="text-gray-600">Price:</span>
-                                      <p className="text-xs mt-1">
-                                        {variant.sale_price ? formatPrice(Number(variant.sale_price)) : '-'}
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2 ml-4">
-                                <Button
-                                  onClick={() => handleEditVariant(variant)}
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0"
-                                >
-                                  <Edit className="w-4 h-4" />
-                                </Button>
-                                <Button
-                                  onClick={() => navigate(`/dashboard/products/${variant.id}`)}
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-8 w-8 p-0"
-                                >
-                                  <Plus className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
               </div>
-            )}
 
-            {/* Show variant info if this is a variant */}
-            {currentProduct.is_variant && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Variant Information</h3>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-900">
-                    This is a variant of a parent product. To manage variants, open the parent product.
-                  </p>
+              {/* UPC/Barcode */}
+              {currentProduct.barcode && (
+                <div>
+                  <div className="text-xs font-medium text-gray-500 mb-1">UPC/Barcode</div>
+                  <span className="font-mono text-sm text-gray-900">{currentProduct.barcode}</span>
+                </div>
+              )}
+
+              {/* Category */}
+              <div>
+                <div className="text-xs font-medium text-gray-500 mb-1">Category</div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-900">
+                    {currentProduct.category_name || 'Not set'}
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setEditingField('category')}
+                    className="h-6 w-6 p-0"
+                  >
+                    <Edit className="w-3 h-3" />
+                  </Button>
                 </div>
               </div>
-            )}
+
+              {/* Status */}
+              <div>
+                <div className="text-xs font-medium text-gray-500 mb-1">Status</div>
+                <Badge variant={productStatus.variant} className="text-xs">
+                  {productStatus.label}
+                </Badge>
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* Quick Metadata */}
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Created:</span>
+                <span className="text-gray-900">
+                  {currentProduct.created_at ? format(new Date(currentProduct.created_at), 'MMM dd, yyyy') : 'N/A'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Last Updated:</span>
+                <span className="text-gray-900">
+                  {currentProduct.updated_at ? format(new Date(currentProduct.updated_at), 'MMM dd, yyyy') : 'N/A'}
+                </span>
+              </div>
+              {activeBranch && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Branch:</span>
+                  <span className="text-gray-900">{activeBranch.branch_name}</span>
+                </div>
+              )}
+            </div>
+
+            <Separator />
+
+            {/* Compact Action Buttons */}
+            <div className="space-y-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start text-xs h-8"
+                onClick={() => setEditingField('name')}
+              >
+                <Edit className="w-3 h-3 mr-2" />
+                Edit Product
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start text-xs h-8"
+                onClick={handleGenerateBarcode}
+              >
+                <QrCode className="w-3 h-3 mr-2" />
+                Generate Barcode
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full justify-start text-xs h-8 text-orange-600 hover:text-orange-700"
+                onClick={handleArchive}
+              >
+                <Archive className="w-3 h-3 mr-2" />
+                Archive
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Pane - Scrollable */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Sticky Header Actions */}
+          <div className="sticky top-0 z-10 bg-white border-b px-6 py-3">
+            <div className="flex items-center justify-between">
+              {editingField === 'name' ? (
+                <div className="flex-1 flex items-center gap-2">
+                  <Input
+                    value={form.name}
+                    onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
+                    className="text-xl font-bold"
+                    disabled={loading}
+                  />
+                  <Button
+                    size="sm"
+                    onClick={() => handleSave('name')}
+                    disabled={loading || !form.name.trim()}
+                  >
+                    <Save className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleCancel('name')}
+                    disabled={loading}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <h1 className="text-xl font-bold">{currentProduct.name}</h1>
+              )}
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={handleAdjustStock}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs"
+                  title="Adjust Stock (A)"
+                >
+                  <Plus className="w-3 h-3" />
+                  Adjust
+                </Button>
+                <Button
+                  onClick={handleTransfer}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs"
+                  title="Transfer (T)"
+                >
+                  <ArrowRightLeft className="w-3 h-3" />
+                  Transfer
+                </Button>
+                <Button
+                  onClick={handleGenerateBarcode}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs"
+                  title="Generate Barcode (B)"
+                >
+                  <QrCode className="w-3 h-3" />
+                  Barcode
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  Delete
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="p-6 space-y-6">
+              {/* Vitals Bar */}
+              <ProductVitalsBar
+                productId={currentProduct.id}
+                quantityInStock={totalStock}
+                minimumStockLevel={currentProduct.minimum_stock_level || 0}
+                valuationMethod="Average"
+              />
+
+              {/* Inventory Segmentation */}
+              <InventorySegmentation
+                productId={currentProduct.id}
+                currentStock={totalStock}
+                reorderPoint={currentProduct.minimum_stock_level || 0}
+                onAddLocation={() => setEditingField('location')}
+              />
+
+              {/* Inline Editing Modals for SKU, Location, Category */}
+              {editingField === 'sku' && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg p-4 w-full max-w-md">
+                    <div className="space-y-2">
+                      <Label>SKU</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value={form.sku}
+                          onChange={(e) => setForm(prev => ({ ...prev, sku: e.target.value }))}
+                          placeholder="Enter SKU or scan barcode"
+                          disabled={loading}
+                          className="flex-1"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setShowScanner(true)}
+                          disabled={loading}
+                        >
+                          <Scan className="w-4 h-4" />
+                        </Button>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleSave('sku')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleCancel('sku')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {editingField === 'location' && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg p-4 w-full max-w-md">
+                    <div className="space-y-2">
+                      <Label>Location</Label>
+                      <Input
+                        value={form.location}
+                        onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
+                        placeholder="Enter location (e.g. A1, Shelf 3)"
+                        disabled={loading}
+                      />
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleSave('location')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleCancel('location')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {editingField === 'category' && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg p-4 w-full max-w-md">
+                    <div className="space-y-2">
+                      <Label>Category</Label>
+                      <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={categoryOpen}
+                            className="w-full justify-between"
+                            disabled={loading}
+                          >
+                            {form.category_name || "Select category..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command>
+                            <CommandInput 
+                              placeholder="Search category..." 
+                              value={form.category_name}
+                              onValueChange={(value) => handleCategoryChange(value)}
+                            />
+                            <CommandList>
+                              <CommandEmpty>
+                                <div className="p-2 text-center">
+                                  <p className="text-sm text-gray-500 mb-2">No category found</p>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={async () => {
+                                      if (form.category_name.trim() && user) {
+                                        try {
+                                          const { data: newCategory, error } = await supabase
+                                            .from('categories')
+                                            .insert({ name: form.category_name.trim(), user_id: user.id })
+                                            .select('id, name')
+                                            .single();
+                                          
+                                          if (error || !newCategory) {
+                                            toast.error('Error creating category');
+                                            return;
+                                          }
+                                          
+                                          setCategories(prev => [...prev, newCategory]);
+                                          setForm(prev => ({ ...prev, category_id: newCategory.id }));
+                                          setCategoryOpen(false);
+                                          toast.success('New category added!');
+                                        } catch (error) {
+                                          toast.error('Error creating category');
+                                        }
+                                      }
+                                    }}
+                                    className="w-full"
+                                  >
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    Add "{form.category_name}"
+                                  </Button>
+                                </div>
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {categories.map((category) => (
+                                  <CommandItem
+                                    key={category.id}
+                                    value={category.name}
+                                    onSelect={() => {
+                                      handleCategoryChange(category.name);
+                                      setCategoryOpen(false);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        form.category_name === category.name ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                    {category.name}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => handleSave('category')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleCancel('category')}
+                          disabled={loading}
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {/* Stock Adjustment Modal */}
+      {isStockAdjustModalOpen && (
+        <ManualStockAdjustModal
+          isOpen={isStockAdjustModalOpen}
+          onClose={() => setIsStockAdjustModalOpen(false)}
+          onProductUpdated={() => {
+            // Refresh product data
+            const fetchProduct = async () => {
+              if (!id || !activeBranch) return;
+              try {
+                const { data, error } = await supabase
+                  .from('products')
+                  .select('*')
+                  .eq('id', id)
+                  .eq('branch_id', activeBranch.branch_id)
+                  .single();
+
+                if (!error && data) {
+                  setCurrentProduct(data);
+                  setForm({
+                    name: data.name || '',
+                    description: data.description || '',
+                    quantity_in_stock: data.quantity_in_stock || 0,
+                    minimum_stock_level: data.minimum_stock_level || 0,
+                    purchase_price: data.purchase_price || 0,
+                    sale_price: data.sale_price || 0,
+                    sku: data.sku || '',
+                    location: data.location || '',
+                    category_id: data.category_id || '',
+                    category_name: data.category_name || '',
+                  });
+                }
+              } catch (error) {
+                console.error('Error refreshing product:', error);
+              }
+            };
+            fetchProduct();
+            queryClient.invalidateQueries({ queryKey: ['productTransactions', id] });
+            queryClient.invalidateQueries({ queryKey: ['productValuation', id] });
+            queryClient.invalidateQueries({ queryKey: ['productLeadTime', id] });
+          }}
+        />
+      )}
 
       {/* Add Variant Modal */}
       {currentProduct && !currentProduct.is_variant && (

@@ -23,6 +23,7 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 // --- Data Interfaces ---
 
@@ -49,6 +50,8 @@ interface FormData {
   salePrice: number;
   location: string;
   sku: string;
+  taxRate: number;
+  taxInclusive: boolean;
 }
 
 // --- Zod Schema for Robust Validation ---
@@ -63,6 +66,8 @@ const productSchema = z.object({
   salePrice: z.number().min(0, 'Sale price must be 0 or more.').default(0),
   location: z.string().optional(),
   sku: z.string().optional(),
+  taxRate: z.number().min(0, 'Tax rate must be 0 or more.').max(100, 'Tax rate cannot exceed 100%.').default(0),
+  taxInclusive: z.boolean().default(false),
 });
 
 
@@ -152,6 +157,8 @@ export default function AddProductPage() {
       salePrice: 0,
       location: '',
       sku: '',
+      taxRate: 0,
+      taxInclusive: false,
     },
   });
 
@@ -169,6 +176,8 @@ export default function AddProductPage() {
       salePrice: 0,
       location: '',
       sku: '',
+      taxRate: 0,
+      taxInclusive: false,
     });
     setVariants([]);
     setShowVariantsSection(false);
@@ -403,6 +412,19 @@ export default function AddProductPage() {
     }
   };
 
+  // Generate SKU
+  const generateSKU = () => {
+    const sku = Math.random().toString(36).substring(2, 10).toUpperCase();
+    form.setValue('sku', sku);
+    toast.success(`SKU generated: ${sku}`);
+  };
+
+  // Calculate margin/markup
+  const purchasePrice = form.watch('purchasePrice');
+  const salePrice = form.watch('salePrice');
+  const marginAmount = salePrice - purchasePrice;
+  const marginPercent = purchasePrice > 0 ? (marginAmount / purchasePrice) * 100 : 0;
+
   // Generic function to handle Category creation or fetching
   const handleAssociation = useCallback(async (
     nameKey: keyof FormData,
@@ -500,6 +522,8 @@ export default function AddProductPage() {
       minimumStockLevel: Number(data.minimumStockLevel) || 0,
       purchasePrice: Number(data.purchasePrice) || 0,
       salePrice: Number(data.salePrice) || 0,
+      taxRate: Number(data.taxRate) || 0,
+      taxInclusive: data.taxInclusive || false,
     };
     
     setLoading(true);
@@ -891,210 +915,146 @@ export default function AddProductPage() {
                   />
                 </div>
 
-                {/* Two-Column Layout: Image (Left) and Stock/Pricing/Additional Info (Right) */}
+                {/* Two-Column Layout: Image/Description/Additional Info (Left) and Stock/Pricing (Right) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left Column - Image */}
+                  {/* Left Column - Image, Description, Additional Information */}
                   <div className="space-y-4">
-                    <h3 className="text-sm font-medium text-gray-600">Product Image</h3>
-                    
-                    {uploadedImages.length > 0 ? (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-center">
-                        <img
-                          src={uploadedImages[0].preview}
-                          alt="Product preview"
-                          className="max-w-full max-h-64 object-contain"
-                        />
-                      </div>
-                    ) : (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-12 flex items-center justify-center">
-                        <Package className="w-16 h-16 text-gray-400" />
-                      </div>
-                    )}
-                    
-                    <div
-                      onDragEnter={handleDragEnter}
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      className={cn(
-                        "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
-                        isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                    {/* Product Image Section - Optimized with thumbnail grid */}
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-medium text-gray-600">Product Image</h3>
+                      
+                      {/* Main image preview or thumbnail grid - only show when images are uploaded */}
+                      {uploadedImages.length > 0 && (
+                        <div className="space-y-3">
+                          {/* First image as main preview */}
+                          <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 flex items-center justify-center">
+                            <img
+                              src={uploadedImages[0].preview}
+                              alt="Product preview"
+                              className="max-w-full max-h-48 object-contain"
+                            />
+                          </div>
+                          {/* Remaining images as compact thumbnails */}
+                          {uploadedImages.length > 1 && (
+                            <div className="grid grid-cols-4 gap-2">
+                              {uploadedImages.slice(1).map((image, index) => (
+                                <div
+                                  key={index + 1}
+                                  className="relative group"
+                                >
+                                  <img
+                                    src={image.preview}
+                                    alt={`Thumbnail ${index + 2}`}
+                                    className="w-full h-20 object-cover rounded border border-gray-200"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeImage(index + 1)}
+                                    disabled={loading}
+                                    className="absolute top-0 right-0 p-1 h-6 w-6 text-red-600 hover:text-red-700 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {/* Image list with remove buttons */}
+                          <div className="space-y-1">
+                            {uploadedImages.map((image, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center gap-2 p-2 bg-white border border-gray-200 rounded text-xs"
+                              >
+                                <img
+                                  src={image.preview}
+                                  alt={`Preview ${index + 1}`}
+                                  className="w-10 h-10 object-cover rounded"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium text-gray-900 truncate">
+                                    {image.file.name}
+                                  </p>
+                                  <p className="text-gray-500">
+                                    {formatFileSize(image.size)}
+                                  </p>
+                                </div>
+                                {index === 0 && uploadedImages.length > 1 && (
+                                  <span className="text-xs text-gray-500">Main</span>
+                                )}
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removeImage(index)}
+                                  disabled={loading}
+                                  className="text-red-600 hover:text-red-700 hover:bg-red-50 h-6 px-2"
+                                >
+                                  <X className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
                       )}
-                    >
-                      <div className="flex flex-col items-center justify-center space-y-4">
-                        <ImageIcon className="w-12 h-12 text-gray-400" />
-                        <div>
-                          <p className="text-sm text-gray-600 mb-1">
-                            Drop your file here or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
-                          </p>
-                          <input
-                            id="image-upload"
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={handleImageChange}
-                            disabled={loading}
-                            className="hidden"
-                          />
+                      
+                      {/* Upload area - more compact */}
+                      <div
+                        onDragEnter={handleDragEnter}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        className={cn(
+                          "border-2 border-dashed rounded-lg p-4 text-center transition-colors",
+                          isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                        )}
+                      >
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                          <ImageIcon className="w-8 h-8 text-gray-400" />
+                          <div>
+                            <p className="text-xs text-gray-600">
+                              Drop images here or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
+                            </p>
+                            <input
+                              id="image-upload"
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={handleImageChange}
+                              disabled={loading}
+                              className="hidden"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                    
-                    {uploadedImages.length > 0 && (
-                      <div className="space-y-2">
-                        {uploadedImages.map((image, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg"
-                          >
-                            <img
-                              src={image.preview}
-                              alt={`Preview ${index + 1}`}
-                              className="w-16 h-16 object-cover rounded"
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate">
-                                {image.file.name}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {formatFileSize(image.size)}
-                              </p>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeImage(index)}
-                              disabled={loading}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            >
-                              <X className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
 
-                  {/* Right Column - Stock, Pricing, Additional Information */}
-                  <div className="space-y-4">
-                    {/* Stock Information */}
-                    {!hasVariants && (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                        <div className="text-sm font-medium text-gray-600 mb-3">Stock</div>
-                        <div className="space-y-3">
-                          <FormField
-                            control={form.control}
-                            name="quantityInStock"
-                            rules={{ 
-                              required: 'Stock is mandatory',
-                              min: { value: 0, message: 'Stock must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Stock Quantity</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    min="0"
-                                    placeholder="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                    value={field.value === 0 ? '' : field.value.toString()} 
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="minimumStockLevel"
-                            rules={{ 
-                              required: 'Minimum level is mandatory',
-                              min: { value: 0, message: 'Minimum level must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Minimum Level</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    min="0"
-                                    placeholder="10"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                    value={field.value.toString()}
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                    )}
+                    {/* Description Section - Moved to left column */}
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-gray-600">Description</h3>
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Textarea 
+                                {...field} 
+                                placeholder="Enter product description" 
+                                disabled={loading}
+                                className="resize-none border-gray-300 focus:border-gray-500"
+                                rows={4}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-                    {/* Pricing Information */}
-                    {!hasVariants && (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                        <div className="text-sm font-medium text-gray-600 mb-2">Pricing</div>
-                        <div className="space-y-3">
-                          <FormField
-                            control={form.control}
-                            name="purchasePrice"
-                            rules={{ 
-                              min: { value: 0, message: 'Must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Purchase Price</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    step="0.01"
-                                    min="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name="salePrice"
-                            rules={{ 
-                              min: { value: 0, message: 'Must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Sale Price</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    step="0.01"
-                                    min="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Additional Information */}
+                    {/* Additional Information - Moved to left column */}
                     <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
                       <div className="text-sm font-medium text-gray-600 mb-2">Additional Information</div>
                       
@@ -1116,8 +1076,20 @@ export default function AddProductPage() {
                                 <Button
                                   type="button"
                                   variant="outline"
+                                  size="sm"
+                                  onClick={generateSKU}
+                                  disabled={loading || hasVariants}
+                                  title="Generate SKU"
+                                >
+                                  <Package className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
                                   onClick={() => setShowScanner(true)}
                                   disabled={loading || hasVariants}
+                                  title="Scan barcode"
                                 >
                                   <Scan className="w-4 h-4" />
                                 </Button>
@@ -1178,29 +1150,261 @@ export default function AddProductPage() {
                       />
                     </div>
                   </div>
-                </div>
 
-                {/* Description Section */}
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">Description</h3>
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Textarea 
-                            {...field} 
-                            placeholder="Enter product description" 
-                            disabled={loading}
-                            className="resize-none border-gray-300 focus:border-gray-500"
-                            rows={4}
+                  {/* Right Column - Stock and Pricing */}
+                  <div className="space-y-4">
+                    {/* Stock Information */}
+                    {!hasVariants && (
+                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                        <div className="text-sm font-medium text-gray-600 mb-3">Stock</div>
+                        <div className="space-y-3">
+                          <FormField
+                            control={form.control}
+                            name="quantityInStock"
+                            rules={{ 
+                              required: 'Stock is mandatory',
+                              min: { value: 0, message: 'Stock must be 0 or more' }
+                            }}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Stock Quantity</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    inputMode="numeric"
+                                    min="0"
+                                    placeholder="0"
+                                    disabled={loading}
+                                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                    value={field.value === 0 ? '' : field.value.toString()} 
+                                    className="border-gray-300 focus:border-gray-500"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                          <FormField
+                            control={form.control}
+                            name="minimumStockLevel"
+                            rules={{ 
+                              required: 'Minimum level is mandatory',
+                              min: { value: 0, message: 'Minimum level must be 0 or more' }
+                            }}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="flex items-center gap-2">
+                                  Minimum Level
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Info className="h-4 w-4 text-gray-400 cursor-help" />
+                                      </TooltipTrigger>
+                                      <TooltipContent className="max-w-xs">
+                                        <p>The minimum stock level triggers low-stock alerts when inventory falls below this threshold</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                </FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    inputMode="numeric"
+                                    min="0"
+                                    placeholder="10"
+                                    disabled={loading}
+                                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                    value={field.value.toString()}
+                                    className="border-gray-300 focus:border-gray-500"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
                     )}
-                  />
+
+                    {/* Pricing Information with Margin Calculation and Tax */}
+                    {!hasVariants && (
+                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                        <div className="text-sm font-medium text-gray-600 mb-3">Pricing</div>
+                        <div className="space-y-3">
+                          <FormField
+                            control={form.control}
+                            name="purchasePrice"
+                            rules={{ 
+                              min: { value: 0, message: 'Must be 0 or more' }
+                            }}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Purchase Price</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    inputMode="decimal"
+                                    step="0.01"
+                                    min="0"
+                                    disabled={loading}
+                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                    value={field.value.toString()}
+                                    className="border-gray-300 focus:border-gray-500"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          {/* Margin/Markup Display */}
+                          {purchasePrice > 0 && salePrice > 0 && (
+                            <div className={`p-3 rounded-lg border ${marginAmount >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                              <div className="space-y-1 text-sm">
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">Margin Amount:</span>
+                                  <span className={`font-semibold ${marginAmount >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                    {marginAmount >= 0 ? '+' : ''}{marginAmount.toFixed(2)}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">Margin %:</span>
+                                  <span className={`font-semibold ${marginPercent >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                    {marginPercent >= 0 ? '+' : ''}{marginPercent.toFixed(2)}%
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          <FormField
+                            control={form.control}
+                            name="salePrice"
+                            rules={{ 
+                              min: { value: 0, message: 'Must be 0 or more' }
+                            }}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Sale Price</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    inputMode="decimal"
+                                    step="0.01"
+                                    min="0"
+                                    disabled={loading}
+                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                    value={field.value.toString()}
+                                    className="border-gray-300 focus:border-gray-500"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          {/* Tax Configuration */}
+                          <div className="space-y-3 pt-2 border-t border-gray-200">
+                            <div className="flex items-center justify-between">
+                              <Label className="text-sm font-medium">Tax Configuration</Label>
+                            </div>
+                            
+                            <FormField
+                              control={form.control}
+                              name="taxRate"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="text-sm">Tax Rate (%)</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      type="number" 
+                                      inputMode="decimal"
+                                      step="0.01"
+                                      min="0"
+                                      max="100"
+                                      placeholder="0"
+                                      disabled={loading}
+                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                      value={field.value.toString()}
+                                      className="border-gray-300 focus:border-gray-500"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name="taxInclusive"
+                              render={({ field }) => (
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg border border-gray-200 p-3 bg-white">
+                                  <div className="space-y-0.5">
+                                    <FormLabel className="text-sm">Tax Inclusive</FormLabel>
+                                    <p className="text-xs text-gray-500">Sale price includes tax</p>
+                                  </div>
+                                  <FormControl>
+                                    <Switch
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                      disabled={loading}
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                              )}
+                            />
+
+                            {/* Tax Calculation Display */}
+                            {form.watch('taxRate') > 0 && salePrice > 0 && (
+                              <div className="p-3 rounded-lg border bg-blue-50 border-blue-200">
+                                <div className="space-y-1 text-sm">
+                                  {form.watch('taxInclusive') ? (
+                                    <>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Sale Price (incl. tax):</span>
+                                        <span className="font-semibold text-gray-900">{salePrice.toFixed(2)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Tax Amount:</span>
+                                        <span className="font-semibold text-gray-900">
+                                          {(salePrice - (salePrice / (1 + form.watch('taxRate') / 100))).toFixed(2)}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Price (excl. tax):</span>
+                                        <span className="font-semibold text-gray-900">
+                                          {(salePrice / (1 + form.watch('taxRate') / 100)).toFixed(2)}
+                                        </span>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Sale Price (excl. tax):</span>
+                                        <span className="font-semibold text-gray-900">{salePrice.toFixed(2)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Tax Amount:</span>
+                                        <span className="font-semibold text-gray-900">
+                                          {(salePrice * (form.watch('taxRate') / 100)).toFixed(2)}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-gray-600">Final Price (incl. tax):</span>
+                                        <span className="font-semibold text-blue-700">
+                                          {(salePrice * (1 + form.watch('taxRate') / 100)).toFixed(2)}
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Variants Section */}
@@ -1415,7 +1619,8 @@ export default function AddProductPage() {
                                     </Label>
                                     <Input
                                       id={`variant-stock-${index}`}
-                                      type="number" 
+                                      type="number"
+                                      inputMode="numeric"
                                       min="0"
                                       value={variant.quantityInStock.toString()}
                                       onChange={(e) => {
@@ -1444,6 +1649,7 @@ export default function AddProductPage() {
                                     <Input
                                       id={`variant-min-stock-${index}`}
                                       type="number"
+                                      inputMode="numeric"
                                       min="0"
                                       value={variant.minimumStockLevel.toString()}
                                       onChange={(e) => {
@@ -1474,6 +1680,7 @@ export default function AddProductPage() {
                                     <Input
                                       id={`variant-purchase-${index}`}
                                       type="number"
+                                      inputMode="decimal"
                                       step="0.01"
                                       min="0"
                                       value={variant.purchasePrice.toString()}
@@ -1502,7 +1709,8 @@ export default function AddProductPage() {
                                     </Label>
                                     <Input 
                                       id={`variant-sale-${index}`}
-                                      type="number" 
+                                      type="number"
+                                      inputMode="decimal"
                                       step="0.01"
                                       min="0"
                                       value={variant.salePrice.toString()}
