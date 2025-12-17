@@ -27,7 +27,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Download } from 'lucide-react';
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Download, GitBranch } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -114,6 +114,8 @@ export default function CategorysPage() {
   // Hover state for row actions
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
   const [hoveredImageProductId, setHoveredImageProductId] = useState<string | null>(null);
+  // Group hover state - tracks parent product ID when hovering over parent or any variant
+  const [hoveredProductGroupId, setHoveredProductGroupId] = useState<string | null>(null);
   
   // Product modal states
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -957,6 +959,26 @@ export default function CategorysPage() {
     return 'In Stock';
   };
 
+  // Format variant label from attributes or fall back to variant_name
+  const formatVariantLabel = (variant: any): string => {
+    if (variant.variant_attributes) {
+      try {
+        const attrs = typeof variant.variant_attributes === 'string' 
+          ? JSON.parse(variant.variant_attributes)
+          : variant.variant_attributes;
+        
+        if (attrs && typeof attrs === 'object' && Object.keys(attrs).length > 0) {
+          return Object.entries(attrs)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(', ');
+        }
+      } catch (e) {
+        console.error('Error parsing variant attributes:', e);
+      }
+    }
+    return variant.variant_name || 'Unnamed variant';
+  };
+
   const getStockStatusDotColor = (quantity: number, minLevel: number) => {
     const qty = Number(quantity);
     const min = Number(minLevel);
@@ -1114,8 +1136,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left relative z-10 border-r border-gray-200",
-              isVariant && "pl-8",
-              "px-2 sm:px-3 py-2"
+              "pl-12 px-2 sm:px-3 py-2"
             )}>
               <span className={cn(
                 "font-mono",
@@ -1164,11 +1185,12 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 hidden md:table-cell border-r border-gray-200 align-middle",
+            isVariant ? "pl-12" : "",
             "px-2 sm:px-3 py-2"
           )}>
             <span className={cn(
               "font-mono",
-              !(isVariant ? (product.variant_barcode || product.barcode) : product.barcode) ? "text-gray-400 italic" : "text-gray-900",
+              !(isVariant ? (product.variant_barcode || product.barcode) : product.barcode) ? "text-gray-400 italic" : isVariant ? "text-gray-600" : "text-gray-900",
               compactMode ? "text-xs" : "text-sm"
             )}>
               {isVariant ? (product.variant_barcode || product.barcode || 'Not set') : (product.barcode || 'Not set')}
@@ -1195,54 +1217,54 @@ export default function CategorysPage() {
         );
 
       case 'category_name':
+        // Hide category column for variants (they inherit from parent)
+        if (isVariant) return null;
         return (
           <td className={cn(
               "text-left relative z-10 border-r border-gray-200 align-middle",
             "px-2 sm:px-3 py-2"
           )}>
-            {!isVariant && (
-              <div className="flex items-center gap-1.5">
-                <span className={cn(
-                  "text-gray-600",
-                  !product.category_name && "text-gray-400 italic",
-                  compactMode ? "text-xs" : "text-sm"
-                )}>
-                  {product.category_name || 'Uncategorized'}
-                </span>
-                {rowIndicators.find(i => i.type === 'no-category') && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <AlertCircle className="w-3 h-3 text-purple-500 cursor-pointer hover:scale-110 transition-transform" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>No Category Assigned</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-              </div>
-            )}
+            <div className="flex items-center gap-1.5">
+              <span className={cn(
+                "text-gray-600",
+                !product.category_name && "text-gray-400 italic",
+                compactMode ? "text-xs" : "text-sm"
+              )}>
+                {product.category_name || 'Uncategorized'}
+              </span>
+              {rowIndicators.find(i => i.type === 'no-category') && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertCircle className="w-3 h-3 text-purple-500 cursor-pointer hover:scale-110 transition-transform" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>No Category Assigned</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </div>
           </td>
         );
 
       case 'name':
         if (isVariant) {
+          const variantLabel = formatVariantLabel(product);
           return (
             <td className={cn(
               "w-1/4 relative z-10 border-r border-gray-200 align-middle",
-              isVariant && "pl-8",
-              "px-2 sm:px-3 py-2"
+              "pl-12 px-2 sm:px-3 py-2"
             )}>
               <div className={cn(
                 "flex items-center",
                 compactMode ? "gap-1.5" : "gap-2 sm:gap-3"
               )}>
                 <h3 className={cn(
-                  "font-medium text-gray-700",
+                  "font-normal text-gray-500",
                   compactMode ? "text-xs" : "text-sm"
                 )}>
-                  {product.variant_name || 'Unnamed variant'}
+                  {variantLabel}
                 </h3>
               </div>
             </td>
@@ -1367,6 +1389,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200 align-middle",
+            isVariant ? "pl-12" : "",
             "px-2 sm:px-3 py-2"
           )}>
             <div className="flex items-center justify-center gap-1">
@@ -1401,6 +1424,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200 align-middle",
+            isVariant ? "pl-12" : "",
             "px-2 sm:px-3 py-2"
           )}>
             <div className="flex items-center justify-center gap-1">
@@ -1422,6 +1446,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-center hidden sm:table-cell border-r border-gray-200",
+            isVariant ? "pl-12" : "",
             "px-2 sm:px-3 py-2 align-middle"
           )}>
             <div className="flex items-center justify-center">
@@ -1443,6 +1468,7 @@ export default function CategorysPage() {
           <td 
             className={cn(
               "text-center w-1/8 border-r border-gray-200 align-middle",
+              isVariant ? "pl-12" : "",
               "px-2 sm:px-3 py-2"
             )} 
             onClick={(e) => isMobile && e.stopPropagation()}
@@ -1477,7 +1503,8 @@ export default function CategorysPage() {
                       />
                       <span
                         className={cn(
-                          'font-semibold transition-colors',
+                          isVariant ? 'font-medium' : 'font-bold',
+                          'transition-colors',
                           stockValue === 0
                             ? 'animate-pulse text-red-600'
                             : 'text-gray-900',
@@ -1527,6 +1554,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
+            isVariant ? "pl-12" : "",
             "px-2 sm:px-3 py-2 align-middle"
           )}>
             <div className={cn(
@@ -1545,7 +1573,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-center w-1/8 hidden sm:table-cell border-r border-gray-200 align-middle",
-              "px-2 sm:px-3 py-2"
+              "pl-12 px-2 sm:px-3 py-2"
             )}>
               <div className={cn(
                 "flex items-center justify-center gap-1.5",
@@ -1610,6 +1638,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-center hidden lg:table-cell border-r border-gray-200 align-middle",
+            isVariant ? "pl-12" : "",
             "px-2 sm:px-3 py-2"
           )}>
             <div className={cn(
@@ -2674,12 +2703,19 @@ export default function CategorysPage() {
                               <tr
                                 data-product-id={product.id}
                                 onClick={(e) => handleRowClick(e, product)}
-                                onMouseEnter={() => setHoveredRowId(product.id)}
-                                onMouseLeave={() => setHoveredRowId(null)}
+                                onMouseEnter={() => {
+                                  setHoveredRowId(product.id);
+                                  setHoveredProductGroupId(product.id);
+                                }}
+                                onMouseLeave={() => {
+                                  setHoveredRowId(null);
+                                  setHoveredProductGroupId(null);
+                                }}
                                 className={cn(
                                   'group hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b-2 border-gray-100 relative',
                                   hoveredImageProductId === product.id && 'z-50',
-                                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50',
+                                  hoveredProductGroupId === product.id && 'bg-blue-50',
+                                  index % 2 === 0 && hoveredProductGroupId !== product.id ? 'bg-white' : hoveredProductGroupId !== product.id ? 'bg-gray-50' : '',
                                   'cursor-pointer',
                                   compactMode ? 'h-10' : 'h-12'
                                 )}
@@ -2768,17 +2804,26 @@ export default function CategorysPage() {
                                       const variantStock = Number(variant.quantity_in_stock) || 0;
                                       const variantStockStatus = getStockStatus(variantStock, variant.minimum_stock_level || 0);
                                       const variantStockDotColor = getStockStatusDotColor(variantStock, variant.minimum_stock_level || 0);
+                                      const isLastVariant = variantIndex === productVariants.length - 1;
                                       
                                       return (
                                         <tr
                                           key={variant.id}
                                           data-product-id={variant.id}
                                           data-variant-id={variant.id}
+                                          data-parent-product-id={product.id}
                                           onClick={(e) => handleRowClick(e, variant)}
-                                          onMouseEnter={() => setHoveredRowId(variant.id)}
-                                          onMouseLeave={() => setHoveredRowId(null)}
+                                          onMouseEnter={() => {
+                                            setHoveredRowId(variant.id);
+                                            setHoveredProductGroupId(product.id);
+                                          }}
+                                          onMouseLeave={() => {
+                                            setHoveredRowId(null);
+                                            setHoveredProductGroupId(null);
+                                          }}
                                           className={cn(
-                                            'group hover:bg-gray-50 hover:shadow-sm transition-all duration-200 border-b border-gray-100 relative bg-gray-50/50',
+                                            'group hover:bg-gray-100 hover:shadow-sm transition-all duration-200 border-b border-gray-100 relative',
+                                            hoveredProductGroupId === product.id ? 'bg-blue-50' : 'bg-blue-50/30',
                                             'cursor-pointer'
                                           )}
                                         >
@@ -2791,11 +2836,45 @@ export default function CategorysPage() {
                                             style={{ zIndex: 1 }}
                                           />
                                           
-                                          {/* Empty chevron cell for alignment */}
-                                          <td className={cn("w-8 border-r border-gray-200", "px-2 py-2")} />
+                                          {/* Vertical connector line from parent to variant - Tree branch style */}
+                                          <td 
+                                            className={cn(
+                                              "w-8 border-r border-gray-200 relative",
+                                              "px-2 py-2"
+                                            )}
+                                          >
+                                            {/* Vertical line extending down from parent - only show if not last variant */}
+                                            {!isLastVariant && (
+                                              <div 
+                                                className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-300 -translate-x-1/2"
+                                                style={{ zIndex: 0 }}
+                                              />
+                                            )}
+                                            {/* Horizontal line connecting to variant row (└─ style) */}
+                                            <div 
+                                              className="absolute left-1/2 top-1/2 w-3 h-0.5 bg-gray-300 -translate-x-1/2 -translate-y-1/2"
+                                              style={{ zIndex: 0 }}
+                                            />
+                                            {/* Vertical line from parent to branch point */}
+                                            <div 
+                                              className="absolute left-1/2 top-0 h-1/2 w-0.5 bg-gray-300 -translate-x-1/2"
+                                              style={{ zIndex: 0 }}
+                                            />
+                                            {/* Branch point indicator (small circle or dot) */}
+                                            <div 
+                                              className="absolute left-1/2 top-1/2 w-1.5 h-1.5 bg-gray-400 rounded-full -translate-x-1/2 -translate-y-1/2"
+                                              style={{ zIndex: 1 }}
+                                            />
+                                          </td>
                                           
-                                          {/* Empty checkbox cell for alignment */}
-                                          <td className={cn("w-12 border-r border-gray-200", "px-2 sm:px-3 py-2")} />
+                                          {/* Empty checkbox cell for alignment - visually hidden for variants */}
+                                          <td 
+                                            className={cn(
+                                              "w-12 border-r border-gray-200",
+                                              "px-2 sm:px-3 py-2"
+                                            )}
+                                            style={{ visibility: 'hidden' }}
+                                          />
                                           
                                           {/* Render columns in order for variants */}
                                           {getOrderedVisibleColumns.map(columnId => 
