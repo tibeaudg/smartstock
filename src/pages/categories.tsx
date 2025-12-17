@@ -908,9 +908,9 @@ export default function CategorysPage() {
     operational: {
       name: 'Operational',
       icon: <Warehouse className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'date_added'] : ['name', 'location', 'stock', 'date_added'],
+      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'location', 'stock', 'date_added'] : ['category_name', 'name', 'location', 'stock', 'date_added'],
       columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
         { name: 'Inventory', columns: ['location', 'stock'] },
         { name: 'Operational', columns: ['date_added'] },
       ],
@@ -918,9 +918,9 @@ export default function CategorysPage() {
     financial: {
       name: 'Financial',
       icon: <DollarSign className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'purchase_price', 'sale_price', 'stock'] : ['name', 'purchase_price', 'sale_price', 'stock'],
+      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'purchase_price', 'sale_price', 'stock'] : ['category_name', 'name', 'purchase_price', 'sale_price', 'stock'],
       columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
         { name: 'Financial', columns: ['purchase_price', 'sale_price'] },
         { name: 'Inventory', columns: ['stock'] },
       ],
@@ -928,18 +928,18 @@ export default function CategorysPage() {
     catalog: {
       name: 'Catalog',
       icon: <Package2 className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'category_name', 'date_added'] : ['name', 'category_name', 'date_added'],
+      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'date_added'] : ['category_name', 'name', 'date_added'],
       columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
-        { name: 'Catalog', columns: ['category_name', 'date_added'] },
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
+        { name: 'Catalog', columns: ['date_added'] },
       ],
     },
     'supply-chain': {
       name: 'Supply Chain',
       icon: <Truck className="w-4 h-4" />,
-      columns: showSKUColumn ? ['sku', 'name', 'location', 'stock', 'purchase_price'] : ['name', 'location', 'stock', 'purchase_price'],
+      columns: showSKUColumn ? ['sku', 'category_name', 'name', 'location', 'stock', 'purchase_price'] : ['category_name', 'name', 'location', 'stock', 'purchase_price'],
       columnGroups: [
-        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'name'] : ['name'] },
+        { name: 'Product Info', columns: showSKUColumn ? ['sku', 'category_name', 'name'] : ['category_name', 'name'] },
         { name: 'Supply Chain', columns: ['location', 'stock', 'purchase_price'] },
       ],
     },
@@ -1889,7 +1889,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center w-12 border-r border-gray-200",
-                                compactMode ? "px-2 py-2" : "px-3 py-5"
+                                compactMode ? "px-2 py-2" : "px-3 py-1.5"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -1915,7 +1915,10 @@ export default function CategorysPage() {
                             </th>
                             {isColumnVisible('sku') && (
                               <th 
-                                className="px-2 sm:px-4 py-4 sm:py-5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                className={cn(
+                                  "px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
                                 onClick={() => handleSort('sku')}
                               >
                                 <div className="flex items-center">
@@ -1924,20 +1927,12 @@ export default function CategorysPage() {
                                 </div>
                               </th>
                             )}
-                            {isColumnVisible('name') && (
-                              <th 
-                                className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
-                                onClick={() => handleSort('name')}
-                              >
-                                <div className="flex items-center">
-                                  Product
-                                  {getSortIcon('name')}
-                                </div>
-                              </th>
-                            )}
                             {isColumnVisible('category_name') && (
                               <th 
-                                className="px-2 sm:px-4 py-4 sm:py-5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                className={cn(
+                                  "px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
                                 onClick={() => handleSort('name')}
                               >
                                 <div className="flex items-center">
@@ -1946,9 +1941,26 @@ export default function CategorysPage() {
                                 </div>
                               </th>
                             )}
+                            {isColumnVisible('name') && (
+                              <th 
+                                className={cn(
+                                  "px-2 sm:px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/3 cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
+                                onClick={() => handleSort('name')}
+                              >
+                                <div className="flex items-center">
+                                  Product
+                                  {getSortIcon('name')}
+                                </div>
+                              </th>
+                            )}
                             {isColumnVisible('location') && (
                               <th 
-                                className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell border-r border-gray-200"
+                                className={cn(
+                                  "px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden md:table-cell border-r border-gray-200",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
                                 onClick={() => handleSort('location')}
                               >
                                 <div className="flex items-center justify-center">
@@ -1959,7 +1971,10 @@ export default function CategorysPage() {
                             )}
                             {isColumnVisible('stock') && (
                               <th 
-                                className="px-2 sm:px-4 py-3 sm:py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200"
+                                className={cn(
+                                  "px-2 sm:px-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors border-r border-gray-200",
+                                  compactMode ? "py-2" : "py-1.5"
+                                )}
                                 onClick={() => handleSort('stock')}
                               >
                                 <div className="flex items-center justify-center">
@@ -1972,7 +1987,7 @@ export default function CategorysPage() {
                               <th 
                                 className={cn(
                                   "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden lg:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                 )}
                                 onClick={() => handleSort('date_added')}
                               >
@@ -1986,7 +2001,7 @@ export default function CategorysPage() {
                               <th 
                                 className={cn(
                                   "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                 )}
                                 onClick={() => handleSort('purchase_price')}
                               >
@@ -2000,7 +2015,7 @@ export default function CategorysPage() {
                               <th 
                                 className={cn(
                                   "text-center text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap w-1/8 cursor-pointer hover:bg-gray-100 transition-colors hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-4 sm:py-5"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                 )}
                                 onClick={() => handleSort('sale_price')}
                               >
@@ -2052,7 +2067,7 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-12 relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-2" : "px-3 py-4"
+                                    compactMode ? "px-2 py-2" : "px-3 py-1.5"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -2081,24 +2096,53 @@ export default function CategorysPage() {
                                 {isColumnVisible('sku') && (
                                   <td className={cn(
                                     "text-left relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                   )}>
                                     <div className="flex items-center gap-1.5">
                                       <span className={cn(
                                         "font-mono",
-                                        !product.sku || product.sku === '---' ? "text-gray-400" : "text-gray-900",
+                                        !product.sku || product.sku === '---' ? "text-gray-400 italic" : "text-gray-900",
                                         compactMode ? "text-xs" : "text-xs sm:text-sm"
                                       )}>
-                                        {product.sku || '---'}
+                                        {product.sku || 'Not set'}
                                       </span>
                                       {rowIndicators.find(i => i.type === 'missing-sku') && (
                                         <TooltipProvider>
                                           <Tooltip>
                                             <TooltipTrigger asChild>
-                                              <AlertCircle className="w-3 h-3 text-yellow-500" />
+                                              <AlertCircle className="w-3 h-3 text-yellow-500 cursor-pointer hover:scale-110 transition-transform" />
                                             </TooltipTrigger>
                                             <TooltipContent>
                                               <p>Missing SKU</p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+                                    </div>
+                                  </td>
+                                )}
+                                {/* Category column */}
+                                {isColumnVisible('category_name') && (
+                                  <td className={cn(
+                                    "text-left relative z-10 border-r border-gray-200",
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
+                                  )}>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className={cn(
+                                        "text-gray-600",
+                                        !product.category_name && "text-gray-400 italic",
+                                        compactMode ? "text-xs" : "text-sm"
+                                      )}>
+                                        {product.category_name || 'Uncategorized'}
+                                      </span>
+                                      {rowIndicators.find(i => i.type === 'no-category') && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <AlertCircle className="w-3 h-3 text-purple-500 cursor-pointer hover:scale-110 transition-transform" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>No Category Assigned</p>
                                             </TooltipContent>
                                           </Tooltip>
                                         </TooltipProvider>
@@ -2110,7 +2154,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('name') && (
                                   <td className={cn(
                                     "w-1/4 relative z-10 border-r border-gray-200 overflow-visible",
-                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                   )}>
                                     <div className={cn(
                                       "flex items-center",
@@ -2147,15 +2191,32 @@ export default function CategorysPage() {
                                             {product.name}
                                           </h3>
                                           {!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0 && (
-                                            <Badge 
-                                              variant="secondary" 
-                                              className={cn(
-                                                "text-[9px] px-1.5 py-0 h-4 border bg-blue-50 text-blue-700 border-blue-200",
-                                                compactMode && "text-[8px] px-1"
-                                              )}
-                                            >
-                                              {variantCounts.get(String(product.id))} variant{(variantCounts.get(String(product.id)) ?? 0) !== 1 ? 's' : ''}
-                                            </Badge>
+                                            <TooltipProvider delayDuration={150}>
+                                              <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                  <Badge 
+                                                    variant="secondary" 
+                                                    className={cn(
+                                                      "text-[9px] px-1.5 py-0 h-4 border bg-blue-50 text-blue-700 border-blue-200 cursor-pointer hover:bg-blue-200 hover:border-blue-300 transition-colors",
+                                                      compactMode && "text-[8px] px-1"
+                                                    )}
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      // Expand/collapse variants - you may need to add this handler
+                                                      const productElement = document.querySelector(`[data-product-id="${product.id}"]`);
+                                                      if (productElement) {
+                                                        productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                                      }
+                                                    }}
+                                                  >
+                                                    {variantCounts.get(String(product.id))} variant{(variantCounts.get(String(product.id)) ?? 0) !== 1 ? 's' : ''}
+                                                  </Badge>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="top" align="center" sideOffset={4}>
+                                                  <p className="text-xs">Click to view variants</p>
+                                                </TooltipContent>
+                                              </Tooltip>
+                                            </TooltipProvider>
                                           )}
                                           {product.category_name && !isColumnVisible('category_name') && (
                                             <Badge 
@@ -2211,58 +2272,28 @@ export default function CategorysPage() {
                                   </td>
                                 )}
 
-                                {/* Category column */}
-                                {isColumnVisible('category_name') && (
-                                  <td className={cn(
-                                    "text-left relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
-                                  )}>
-                                    <div className="flex items-center gap-1.5">
-                                      <span className={cn(
-                                        "text-gray-600",
-                                        !product.category_name && "text-gray-400 italic",
-                                        compactMode ? "text-xs" : "text-sm"
-                                      )}>
-                                        {product.category_name || 'Uncategorized'}
-                                      </span>
-                                      {rowIndicators.find(i => i.type === 'no-category') && (
-                                        <TooltipProvider>
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <AlertCircle className="w-3 h-3 text-purple-500" />
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                              <p>No Category Assigned</p>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </TooltipProvider>
-                                      )}
-                                    </div>
-                                  </td>
-                                )}
-
                                 {/* Location column */}
                                 {isColumnVisible('location') && (
                                   <td className={cn(
                                     "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200",
-                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                   )}>
                                     <div className="flex items-center justify-center gap-1">
                                       <MapPin className={cn(
-                                        repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-400",
+                                        product.location ? (repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-400") : "text-gray-300 opacity-50",
                                         compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
                                       )} />
                                       <span className={cn(
                                         !product.location ? "text-gray-400 italic" : repetitiveLocations.has(product.location || '') ? "text-gray-400" : "text-gray-600",
                                         compactMode ? "text-xs" : "text-sm"
                                       )}>
-                                        {product.location || 'No Location'}
+                                        {product.location || 'Not assigned'}
                                       </span>
                                       {rowIndicators.find(i => i.type === 'no-location') && (
                                         <TooltipProvider>
                                           <Tooltip>
                                             <TooltipTrigger asChild>
-                                              <AlertCircle className="w-3 h-3 text-blue-500" />
+                                              <AlertCircle className="w-3 h-3 text-blue-500 cursor-pointer hover:scale-110 transition-transform" />
                                             </TooltipTrigger>
                                             <TooltipContent>
                                               <p>No Location Assigned</p>
@@ -2279,7 +2310,7 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-1/8 border-r border-gray-200",
-                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                    compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                   )} 
                                   onClick={(e) => isMobile && e.stopPropagation()}
                                 >
@@ -2364,7 +2395,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('date_added') && (
                                 <td className={cn(
                                   "text-center w-1/8 hidden lg:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                 )}>
                                   <span className={cn(
                                     "text-gray-600",
@@ -2385,7 +2416,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('purchase_price') && (
                                 <td className={cn(
                                   "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                 )}>
                                   <div className={cn(
                                     getPriceColor(product.purchase_price, 'text-gray-900'),
@@ -2401,7 +2432,7 @@ export default function CategorysPage() {
                                 {isColumnVisible('sale_price') && (
                                 <td className={cn(
                                   "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
-                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-5"
+                                  compactMode ? "px-2 py-2" : "px-2 sm:px-4 py-1.5"
                                 )}>
                                   <div className={cn(
                                     "flex items-center justify-center gap-1.5",
