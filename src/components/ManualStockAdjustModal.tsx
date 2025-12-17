@@ -203,7 +203,7 @@ export const ManualStockAdjustModal = ({
           product_name: selectedProduct.is_variant && selectedProduct.variant_name 
             ? `${selectedProduct.name} - ${selectedProduct.variant_name}` 
             : selectedProduct.name,
-          transaction_type: actionType === 'in' ? 'manual_adjustment' : 'manual_adjustment',
+          transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
           quantity: numericQuantity,
           unit_price: selectedProduct.unit_price,
           reference_number: `MANUAL_${actionType.toUpperCase()}_${Date.now()}`,

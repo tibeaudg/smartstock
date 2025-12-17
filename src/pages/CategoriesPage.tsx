@@ -70,8 +70,8 @@ export default function CategoriesPage() {
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 
-  // Filter to show only root categories (no parent)
-  const rootCategories = categories.filter(cat => !cat.parent_category_id);
+  // Show all categories (not just root categories)
+  const displayedCategories = categories;
 
   const handleAddCategory = () => {
     setFormData({ name: '', description: '' });
@@ -180,7 +180,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Categories Grid */}
-      {rootCategories.length === 0 ? (
+      {displayedCategories.length === 0 ? (
         <Card>
           <CardContent className="p-12 text-center">
             <Tags className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -196,7 +196,7 @@ export default function CategoriesPage() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {rootCategories.map((category) => (
+          {displayedCategories.map((category) => (
             <CategoryCard
               key={category.id}
               category={category}

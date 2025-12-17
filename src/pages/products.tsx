@@ -245,14 +245,14 @@ export default function CategorysPage() {
     // Location filter (from quick switcher)
     if (selectedLocation) {
       filtered = filtered.filter((product: any) => 
-        product.location === selectedLocation
+        product.location && product.location.toLowerCase() === selectedLocation.toLowerCase()
       );
     }
 
     // Warehouse filter (from warehouse dropdown)
     if (selectedWarehouse) {
       filtered = filtered.filter((product: any) => 
-        product.location === selectedWarehouse
+        product.location && product.location.toLowerCase() === selectedWarehouse.toLowerCase()
       );
     }
 
@@ -322,10 +322,10 @@ export default function CategorysPage() {
     return filtered;
   }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedWarehouse, selectedStockStatus, dateRange, activeQuickFilter]);
 
-  // Fetch variants for all products to calculate variant counts
+  // Fetch variants for all products to calculate variant counts (use filteredProducts to respect filters)
   const productIds = React.useMemo(() => 
-    categoryProducts.filter(p => !p.is_variant && p.id).map(p => p.id),
-    [categoryProducts]
+    filteredProducts.filter(p => !p.is_variant && p.id).map(p => p.id),
+    [filteredProducts]
   );
 
   const { data: variantsData = [] } = useQuery({
@@ -385,9 +385,9 @@ export default function CategorysPage() {
     return totals;
   }, [categoryProducts]);
 
-  // Use filtered products for sorting
+  // Use filtered products for sorting (always use filteredProducts to include all filters)
   const sortedProducts = React.useMemo(() => {
-    const productsToSort = searchTerm.trim() ? filteredProducts : categoryProducts;
+    const productsToSort = filteredProducts;
     if (!sortColumn) return productsToSort;
 
     return [...productsToSort].sort((a, b) => {
@@ -464,7 +464,7 @@ export default function CategorysPage() {
         }
       }
     });
-  }, [filteredProducts, categoryProducts, searchTerm, sortColumn, sortDirection, locationToWarehouseMap]);
+  }, [filteredProducts, sortColumn, sortDirection, locationToWarehouseMap]);
 
   // Pagination calculations
   const totalProducts = sortedProducts.length;
@@ -502,7 +502,7 @@ export default function CategorysPage() {
 
   // Dashboard insights metrics
   const dashboardMetrics = React.useMemo(() => {
-    const products = searchTerm.trim() ? filteredProducts : categoryProducts;
+    const products = filteredProducts;
     
     const totalProducts = products.length;
     
@@ -553,7 +553,7 @@ export default function CategorysPage() {
       highValueCount,
       totalInventoryValue,
     };
-  }, [categoryProducts, filteredProducts, searchTerm]);
+  }, [filteredProducts]);
 
   // Helper function to get price color
   const getPriceColor = (value: number | null | undefined, positiveColor: string): string => {
@@ -1510,8 +1510,8 @@ export default function CategorysPage() {
   // Export all products (not just selected ones)
   const handleExportAll = async () => {
     try {
-      // Use the products from the current view (respecting category filters)
-      const productsToExport = searchTerm.trim() ? filteredProducts : categoryProducts;
+      // Use the products from the current view (respecting all filters)
+      const productsToExport = filteredProducts;
       
       if (productsToExport.length === 0) {
         toast.error('No products to export');
@@ -1909,7 +1909,7 @@ export default function CategorysPage() {
                       <p className="text-gray-600">Loading products...</p>
                     </div>
                   </div>
-                ) : (searchTerm.trim() ? filteredProducts : categoryProducts).length === 0 ? (
+                ) : filteredProducts.length === 0 ? (
                   <Card>
                     <CardContent className="p-12 text-center">
                       <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,8 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, X } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useCategories } from '@/hooks/useCategories';
 import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 
 interface ProductFiltersProps {
@@ -49,58 +49,9 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
 }) => {
   const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
-
-  // Fetch categories and suppliers when component mounts and user is available
-  useEffect(() => {
-    if (user) {
-      fetchCategorys();
-    }
-  }, [user]);
-
-
-
-  const fetchCategorys = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      
-      setCategorys(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
-
-  const fetchSuppliers = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('suppliers')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching suppliers:', error);
-        return;
-      }
-      
-      setSuppliers(data || []);
-    } catch (error) {
-      console.error('Error fetching suppliers:', error);
-    }
-  };
+  
+  // Use the shared categories hook for automatic sync with CategoriesPage
+  const { data: categories = [] } = useCategories();
 
   return (
     <div className="space-y-4">

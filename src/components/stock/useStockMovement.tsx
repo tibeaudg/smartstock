@@ -75,7 +75,7 @@ export const useStockMovement = (
       const transactionData = {
         product_id: product.id,
         product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
-        transaction_type: 'manual_adjustment' as const,
+        transaction_type: transactionType,
         quantity: quantityNum,
         unit_price: transactionType === 'incoming' ? product.purchase_price : product.sale_price,
         user_id: user.id, // Behoud user_id voor backward compatibility

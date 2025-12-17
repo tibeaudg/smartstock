@@ -13,6 +13,11 @@ export interface BOMItem {
   component_stock?: number;
   quantity_required: number;
   unit_of_measure: string;
+  component_uom?: string;
+  conversion_factor?: number;
+  scrap_factor?: number;
+  sequence_number?: number;
+  bom_version_id?: string | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -21,30 +26,47 @@ export interface BOMItem {
 export interface BOMWithBuildable extends BOMItem {
   buildableQuantity: number;
   componentAvailable: number;
+  effectiveQuantity: number; // quantity after scrap factor
 }
 
 export interface CreateBOMItem {
   component_product_id: string;
   quantity_required: number;
   unit_of_measure?: string;
+  component_uom?: string;
+  conversion_factor?: number;
+  scrap_factor?: number;
+  sequence_number?: number;
+  bom_version_id?: string | null;
   notes?: string;
 }
 
-export const useProductBOM = (productId: string | null) => {
+export const useProductBOM = (productId: string | null, bomVersionId?: string | null) => {
   const { activeBranch } = useBranches();
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery<BOMItem[]>({
-    queryKey: ['productBOM', productId, activeBranch?.branch_id],
+    queryKey: ['productBOM', productId, activeBranch?.branch_id, bomVersionId],
     queryFn: async () => {
       if (!productId || !activeBranch) return [];
 
-      const { data: bomData, error: bomError } = await supabase
+      let query = supabase
         .from('product_bom')
         .select('*')
         .eq('parent_product_id', productId)
-        .eq('branch_id', activeBranch.branch_id)
+        .eq('branch_id', activeBranch.branch_id);
+
+      // Filter by version if provided, otherwise get items without version (backward compatibility)
+      if (bomVersionId !== undefined) {
+        if (bomVersionId === null) {
+          query = query.is('bom_version_id', null);
+        } else {
+          query = query.eq('bom_version_id', bomVersionId);
+        }
+      }
+
+      const { data: bomData, error: bomError } = await query.order('sequence_number', { ascending: true, nullsFirst: false })
         .order('created_at', { ascending: true });
 
       if (bomError) {
@@ -76,27 +98,36 @@ export const useProductBOM = (productId: string | null) => {
         component_product_sku: componentsMap.get(item.component_product_id)?.sku,
         component_stock: componentsMap.get(item.component_product_id)?.quantity_in_stock || 0,
         quantity_required: parseFloat(item.quantity_required.toString()),
+        scrap_factor: item.scrap_factor ? parseFloat(item.scrap_factor.toString()) : 0,
+        conversion_factor: item.conversion_factor ? parseFloat(item.conversion_factor.toString()) : 1.0,
+        sequence_number: item.sequence_number || 0,
       }));
     },
     enabled: !!productId && !!activeBranch,
     staleTime: 30000,
   });
 
-  // Calculate buildable quantity
+  // Calculate buildable quantity (accounting for scrap factor)
   const bomWithBuildable = useQuery<BOMWithBuildable[]>({
     queryKey: ['productBOMBuildable', productId, activeBranch?.branch_id, data],
     queryFn: () => {
       if (!data || data.length === 0) return [];
 
       return data.map((item) => {
-        const buildableQuantity = item.component_stock
-          ? Math.floor(item.component_stock / item.quantity_required)
+        // Calculate effective quantity (base quantity * (1 + scrap factor) * conversion factor)
+        const effectiveQuantity = item.quantity_required * 
+          (1 + (item.scrap_factor || 0)) * 
+          (item.conversion_factor || 1.0);
+        
+        const buildableQuantity = item.component_stock && effectiveQuantity > 0
+          ? Math.floor(item.component_stock / effectiveQuantity)
           : 0;
 
         return {
           ...item,
           buildableQuantity,
           componentAvailable: item.component_stock || 0,
+          effectiveQuantity,
         };
       });
     },
@@ -113,6 +144,20 @@ export const useProductBOM = (productId: string | null) => {
         throw new Error('Missing required data');
       }
 
+      // Get max sequence number for this BOM to set default
+      const { data: existingItems } = await supabase
+        .from('product_bom')
+        .select('sequence_number')
+        .eq('parent_product_id', productId)
+        .eq('branch_id', activeBranch.branch_id)
+        .eq('bom_version_id', item.bom_version_id || null)
+        .order('sequence_number', { ascending: false })
+        .limit(1);
+
+      const maxSequence = existingItems && existingItems.length > 0 
+        ? (existingItems[0].sequence_number || 0) 
+        : 0;
+
       const { data: newItem, error: createError } = await supabase
         .from('product_bom')
         .insert({
@@ -120,6 +165,11 @@ export const useProductBOM = (productId: string | null) => {
           component_product_id: item.component_product_id,
           quantity_required: item.quantity_required,
           unit_of_measure: item.unit_of_measure || 'unit',
+          component_uom: item.component_uom || item.unit_of_measure || 'unit',
+          conversion_factor: item.conversion_factor || 1.0,
+          scrap_factor: item.scrap_factor || 0,
+          sequence_number: item.sequence_number !== undefined ? item.sequence_number : maxSequence + 1,
+          bom_version_id: item.bom_version_id || null,
           notes: item.notes || null,
           branch_id: activeBranch.branch_id,
           created_by: user.id,
@@ -151,9 +201,19 @@ export const useProductBOM = (productId: string | null) => {
       id: string;
       updates: Partial<CreateBOMItem>;
     }) => {
+      // Clean up updates to remove undefined values
+      const cleanUpdates: any = {};
+      if (updates.quantity_required !== undefined) cleanUpdates.quantity_required = updates.quantity_required;
+      if (updates.unit_of_measure !== undefined) cleanUpdates.unit_of_measure = updates.unit_of_measure;
+      if (updates.component_uom !== undefined) cleanUpdates.component_uom = updates.component_uom;
+      if (updates.conversion_factor !== undefined) cleanUpdates.conversion_factor = updates.conversion_factor;
+      if (updates.scrap_factor !== undefined) cleanUpdates.scrap_factor = updates.scrap_factor;
+      if (updates.sequence_number !== undefined) cleanUpdates.sequence_number = updates.sequence_number;
+      if (updates.notes !== undefined) cleanUpdates.notes = updates.notes || null;
+
       const { data: updatedItem, error: updateError } = await supabase
         .from('product_bom')
-        .update(updates)
+        .update(cleanUpdates)
         .eq('id', id)
         .select()
         .single();
@@ -195,6 +255,40 @@ export const useProductBOM = (productId: string | null) => {
     },
   });
 
+  // Reorder BOM items by sequence number
+  const reorderBOMItems = useMutation({
+    mutationFn: async (itemIds: string[]) => {
+      if (!activeBranch) {
+        throw new Error('No active branch');
+      }
+
+      // Update sequence numbers for all items
+      const updates = itemIds.map((id, index) => ({
+        id,
+        sequence_number: index + 1,
+      }));
+
+      for (const update of updates) {
+        const { error } = await supabase
+          .from('product_bom')
+          .update({ sequence_number: update.sequence_number })
+          .eq('id', update.id);
+
+        if (error) {
+          console.error('Error reordering BOM items:', error);
+          throw error;
+        }
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['productBOM', productId] });
+      toast.success('BOM items reordered');
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to reorder items: ${error.message}`);
+    },
+  });
+
   return {
     bom: data || [],
     bomWithBuildable: bomWithBuildable.data || [],
@@ -204,9 +298,11 @@ export const useProductBOM = (productId: string | null) => {
     createBOMItem: createBOMItem.mutate,
     updateBOMItem: updateBOMItem.mutate,
     deleteBOMItem: deleteBOMItem.mutate,
+    reorderBOMItems: reorderBOMItems.mutate,
     isCreating: createBOMItem.isPending,
     isUpdating: updateBOMItem.isPending,
     isDeleting: deleteBOMItem.isPending,
+    isReordering: reorderBOMItems.isPending,
   };
 };
 

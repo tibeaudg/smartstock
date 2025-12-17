@@ -11,6 +11,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useCategories } from '@/hooks/useCategories';
 
 interface FilterState {
   searchTerm: string;
@@ -41,7 +42,10 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
 }) => {
   const { user } = useAuth();
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  
+  // Use the shared categories hook for automatic sync with CategoriesPage
+  const { data: categories = [] } = useCategories();
+  
   const [locations, setLocations] = useState<string[]>([]);
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
@@ -54,32 +58,10 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
   // Fetch filter options when component mounts
   useEffect(() => {
     if (user) {
-      fetchCategories();
       fetchLocations();
       fetchAttributes();
     }
   }, [user]);
-
-  const fetchCategories = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      
-      setCategories(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
 
 
   const fetchLocations = async () => {

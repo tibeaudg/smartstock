@@ -26,13 +26,15 @@ import {
   ArrowLeft,
   Archive,
   QrCode,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Warehouse
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/useCurrency';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { useWarehouses } from '@/hooks/useWarehouses';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -55,6 +57,22 @@ export default function ProductDetailPage() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
+  const { data: warehouses = [] } = useWarehouses();
+
+  // Map product locations to warehouse names
+  const locationToWarehouseMap = React.useMemo(() => {
+    const map = new Map<string, string>();
+    warehouses.forEach(warehouse => {
+      map.set(warehouse.name, warehouse.name);
+    });
+    return map;
+  }, [warehouses]);
+
+  // Get warehouse name for a product based on its location
+  const getWarehouseName = React.useCallback((location: string | null | undefined): string | null => {
+    if (!location) return null;
+    return locationToWarehouseMap.get(location) || null;
+  }, [locationToWarehouseMap]);
   
   // Variants state
   const [variants, setVariants] = useState<any[]>([]);
@@ -996,10 +1014,10 @@ export default function ProductDetailPage() {
                   variant="outline"
                   size="sm"
                   className="gap-2 text-xs"
-                  title="Set Warehouse (T)"
+                  title="Set Location (T)"
                 >
                   <MapPin className="w-3 h-3" />
-                  {currentProduct?.location || 'Set Warehouse'}
+                  {currentProduct?.location || 'Set Location'}
                 </Button>
                 <Button
                   onClick={handleSetCategory}

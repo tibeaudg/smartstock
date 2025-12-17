@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TransactionLedger } from './TransactionLedger';
 import { WarehouseDistribution } from './WarehouseDistribution';
@@ -19,8 +20,21 @@ export const InventorySegmentation: React.FC<InventorySegmentationProps> = ({
   reorderPoint,
   onAddLocation,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'warehouse';
+  
+  const handleTabChange = (value: string) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    if (value === 'warehouse') {
+      newSearchParams.delete('tab');
+    } else {
+      newSearchParams.set('tab', value);
+    }
+    setSearchParams(newSearchParams, { replace: true });
+  };
+  
   return (
-    <Tabs defaultValue="warehouse" className="w-full">
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
       <TabsList className="grid w-full grid-cols-4">
         <TabsTrigger value="warehouse" className="flex items-center gap-2">
           <Warehouse className="w-4 h-4" />

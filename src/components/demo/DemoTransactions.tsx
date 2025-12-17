@@ -246,7 +246,13 @@ export const DemoTransactions: React.FC<DemoTransactionsProps> = ({ sessionToken
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {filteredTransactions.map((transaction, index) => {
-                  const isIncoming = transaction.transaction_type === 'in' || transaction.transaction_type === 'incoming';
+                  // Determine if transaction is incoming or outgoing
+                  const isIncoming = transaction.transaction_type === 'in' || 
+                                   transaction.transaction_type === 'incoming' ||
+                                   transaction.transaction_type === 'purchase_order' ||
+                                   transaction.transaction_type === 'cycle_count' ||
+                                   (transaction.transaction_type === 'manual_adjustment' && 
+                                    transaction.reference_number?.includes('_IN'));
                   
                   return (
                     <tr 

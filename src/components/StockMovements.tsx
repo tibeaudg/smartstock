@@ -257,12 +257,6 @@ export const StockMovements = () => {
                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/2" : ""}`}>Product</th>
                  <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>User</th>
                  <th className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Type</th>
-                 {!isMobile && (
-                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
-                 )}
-                 {!isMobile && (
-                   <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
-                 )}
                  <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/6" : ""}`}>Quantity</th>
                  {!isMobile && (
                    <>
@@ -290,49 +284,50 @@ export const StockMovements = () => {
                      <div className="break-words">{transaction.first_name || 'Unknown'}</div>
                    </td>
                    <td className={`${isMobile ? "px-1 py-2" : "px-4 py-2"} text-center`}>
-                     <Badge
-                       variant={transaction.transaction_type === 'incoming' || transaction.transaction_type === 'purchase_order' || transaction.transaction_type === 'cycle_count' ? 'success' : 'destructive'}
-                       className={`${isMobile ? 'text-xs px-1 py-0' : ''}`}
-                     >
-                       {transaction.transaction_type === 'incoming' ? 'In' : 
-                        transaction.transaction_type === 'outgoing' ? 'Out' :
-                        transaction.transaction_type === 'purchase_order' ? 'PO' :
-                        transaction.transaction_type === 'sales_order' ? 'SO' :
-                        transaction.transaction_type === 'stock_transfer' ? 'Transfer' :
-                        transaction.transaction_type === 'cycle_count' ? 'Cycle' :
-                        transaction.transaction_type === 'manual_adjustment' ? 'Manual' :
-                        transaction.transaction_type === 'scan_adjustment' ? 'Scan' :
-                        transaction.transaction_type}
-                     </Badge>
-                   </td>
-                   {!isMobile && (
-                     <td className="px-4 py-2 text-center text-sm">
-                       {transaction.source_type ? (
-                         <span className="text-xs text-gray-500">
-                           {transaction.source_type.replace('_', ' ')}
-                         </span>
-                       ) : (
-                         <span className="text-xs text-gray-400">-</span>
-                       )}
-                     </td>
-                   )}
-                   {!isMobile && (
-                     <td className="px-4 py-2 text-center text-sm">
-                       {transaction.adjustment_method ? (
-                         <Badge variant="outline" className="text-xs">
-                           {transaction.adjustment_method}
+                     {(() => {
+                       // Determine if transaction is incoming or outgoing
+                       const isOutgoing = transaction.transaction_type === 'outgoing' || 
+                                         transaction.transaction_type === 'sales_order' ||
+                                         (transaction.transaction_type === 'manual_adjustment' && 
+                                          transaction.reference_number?.includes('_OUT'));
+                       const isIncoming = transaction.transaction_type === 'incoming' || 
+                                         transaction.transaction_type === 'purchase_order' || 
+                                         transaction.transaction_type === 'cycle_count' ||
+                                         (transaction.transaction_type === 'manual_adjustment' && 
+                                          transaction.reference_number?.includes('_IN'));
+                       
+                       return (
+                         <Badge
+                           variant={isIncoming ? 'success' : 'destructive'}
+                           className={`${isMobile ? 'text-xs px-1 py-0' : ''}`}
+                         >
+                           {transaction.transaction_type === 'incoming' ? 'In' : 
+                            transaction.transaction_type === 'outgoing' ? 'Out' :
+                            transaction.transaction_type === 'purchase_order' ? 'PO' :
+                            transaction.transaction_type === 'sales_order' ? 'SO' :
+                            transaction.transaction_type === 'stock_transfer' ? 'Transfer' :
+                            transaction.transaction_type === 'cycle_count' ? 'Cycle' :
+                            transaction.transaction_type === 'manual_adjustment' ? (isOutgoing ? 'Out' : 'In') :
+                            transaction.transaction_type === 'scan_adjustment' ? 'Scan' :
+                            transaction.transaction_type}
                          </Badge>
-                       ) : (
-                         <span className="text-xs text-gray-400">-</span>
-                       )}
-                     </td>
-                   )}
+                       );
+                     })()}
+                   </td>
                    <td className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-right text-sm font-medium`}>
-                     {transaction.transaction_type === 'outgoing' ? (
-                      <span className="text-red-600">- {transaction.quantity}</span>
-                     ) : (
-                       <span className="text-green-600">+ {transaction.quantity}</span>
-                     )}
+                     {(() => {
+                       // Determine if transaction is outgoing (for quantity display)
+                       const isOutgoing = transaction.transaction_type === 'outgoing' || 
+                                         transaction.transaction_type === 'sales_order' ||
+                                         (transaction.transaction_type === 'manual_adjustment' && 
+                                          transaction.reference_number?.includes('_OUT'));
+                       
+                       return isOutgoing ? (
+                         <span className="text-red-600">- {transaction.quantity}</span>
+                       ) : (
+                         <span className="text-green-600">+ {transaction.quantity}</span>
+                       );
+                     })()}
                    </td>
                   {!isMobile && (
                     <>
@@ -340,11 +335,19 @@ export const StockMovements = () => {
                         ${(Number(transaction.unit_price) || 0).toFixed(2)}
                       </td>
                       <td className="px-4 py-2 text-right text-sm">
-                        {transaction.transaction_type === 'outgoing' ? (
-                          <span className="text-green-600">+ ${(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
-                        ) : (
-                          <span className="text-red-600">- ${(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
-                        )}
+                        {(() => {
+                          // Determine if transaction is outgoing (for total value display)
+                          const isOutgoing = transaction.transaction_type === 'outgoing' || 
+                                            transaction.transaction_type === 'sales_order' ||
+                                            (transaction.transaction_type === 'manual_adjustment' && 
+                                             transaction.reference_number?.includes('_OUT'));
+                          
+                          return isOutgoing ? (
+                            <span className="text-green-600">+ ${(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
+                          ) : (
+                            <span className="text-red-600">- ${(Number(transaction.total_value) || (transaction.quantity * Number(transaction.unit_price))).toFixed(2)}</span>
+                          );
+                        })()}
                       </td>
                     </>
                   )}

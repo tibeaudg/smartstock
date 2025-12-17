@@ -22,13 +22,15 @@ import {
   Upload,
   Image as ImageIcon,
   ChevronsUpDown,
-  Save
+  Save,
+  Warehouse
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCurrency } from '@/hooks/useCurrency';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { useWarehouses } from '@/hooks/useWarehouses';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -72,6 +74,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
+  const { data: warehouses = [] } = useWarehouses();
+
+  // Map product locations to warehouse names
+  const locationToWarehouseMap = React.useMemo(() => {
+    const map = new Map<string, string>();
+    warehouses.forEach(warehouse => {
+      map.set(warehouse.name, warehouse.name);
+    });
+    return map;
+  }, [warehouses]);
+
+  // Get warehouse name for a product based on its location
+  const getWarehouseName = React.useCallback((location: string | null | undefined): string | null => {
+    if (!location) return null;
+    return locationToWarehouseMap.get(location) || null;
+  }, [locationToWarehouseMap]);
   
   // Variants state
   const [variants, setVariants] = useState<any[]>([]);
@@ -739,7 +757,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 className="gap-2 text-xs"
               >
                 <MapPin className="w-3 h-3" />
-                {currentProduct?.location || 'Set Warehouse'}
+                {currentProduct?.location || 'Set Location'}
               </Button>
               <Button
                 onClick={handleSetCategory}
@@ -1201,6 +1219,25 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </Button>
                   </div>
                 )}
+
+                {/* Warehouse */}
+                {(() => {
+                  const warehouseName = getWarehouseName(currentProduct.location);
+                  return (
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-2">
+                        <Warehouse className="w-4 h-4 text-gray-400" />
+                        <span className="text-gray-600">Warehouse:</span>
+                        <span className={cn(
+                          "text-gray-900",
+                          !warehouseName && "text-gray-400 italic"
+                        )}>
+                          {warehouseName || 'Not assigned'}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
                 
                 {/* Category */}
                 {editingField === 'category' ? (
@@ -1575,10 +1612,24 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                   </div>
                                 )}
                                 {variant.location && (
-                                  <div>
-                                    <span className="text-gray-600">Location:</span>
-                                    <p className="text-xs mt-1">{variant.location}</p>
-                                  </div>
+                                  <>
+                                    <div>
+                                      <span className="text-gray-600">Location:</span>
+                                      <p className="text-xs mt-1">{variant.location}</p>
+                                    </div>
+                                    {(() => {
+                                      const variantWarehouseName = getWarehouseName(variant.location);
+                                      if (variantWarehouseName) {
+                                        return (
+                                          <div>
+                                            <span className="text-gray-600">Warehouse:</span>
+                                            <p className="text-xs mt-1">{variantWarehouseName}</p>
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    })()}
+                                  </>
                                 )}
                                 {(variant.purchase_price || variant.sale_price) && (
                                   <div>
