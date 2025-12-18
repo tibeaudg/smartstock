@@ -28,6 +28,7 @@ interface MultiIntentSearchProps {
   onCreateCategory?: () => void;
   onCreateLocation?: () => void;
   placeholder?: string;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
 interface SearchResult {
@@ -38,7 +39,7 @@ interface SearchResult {
   data?: any;
 }
 
-export function MultiIntentSearch({
+export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentSearchProps>(({
   value,
   onChange,
   onSubmit,
@@ -49,7 +50,8 @@ export function MultiIntentSearch({
   onCreateCategory,
   onCreateLocation,
   placeholder = "Search products, SKUs, categories, suppliers…",
-}: MultiIntentSearchProps) {
+  inputRef: externalInputRef,
+}, ref) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const { categories: flatCategories } = useCategoryTree();
@@ -57,8 +59,25 @@ export function MultiIntentSearch({
   const [activeTab, setActiveTab] = useState<'results' | 'create'>('results');
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number; width: number } | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const internalInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  // Callback ref to merge external and internal refs
+  const setInputRef = React.useCallback((node: HTMLInputElement | null) => {
+    internalInputRef.current = node;
+    if (typeof ref === 'function') {
+      ref(node);
+    } else if (ref && 'current' in ref) {
+      (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
+    }
+    if (typeof externalInputRef === 'function') {
+      externalInputRef(node);
+    } else if (externalInputRef && 'current' in externalInputRef) {
+      (externalInputRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+    }
+  }, [ref, externalInputRef]);
+  
+  const inputRef = internalInputRef;
 
   // Search query
   const searchQuery = useQuery({
@@ -333,7 +352,7 @@ export function MultiIntentSearch({
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
         <Input
-          ref={inputRef}
+          ref={setInputRef}
           type="text"
           placeholder={placeholder}
           value={value}
@@ -567,5 +586,7 @@ export function MultiIntentSearch({
       )}
     </div>
   );
-}
+});
+
+MultiIntentSearch.displayName = 'MultiIntentSearch';
 

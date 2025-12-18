@@ -106,7 +106,7 @@ export const AVAILABLE_COLUMNS: ColumnDefinition[] = [
     label: 'Warehouses',
     category: 'inventory',
     sortable: true,
-    defaultVisible: false,
+    defaultVisible: true,
     dataKey: 'location',
     description: 'Warehouse name',
   },
@@ -191,19 +191,20 @@ export function getDefaultVisibleColumns(): string[] {
 
 /**
  * Get default column order
- * This represents the current hardcoded order in the products table
+ * Decision-first order: Product | Stock Status | Available | Location(s) | SKU | Category | Warehouses
  */
 export function getDefaultColumnOrder(): string[] {
-  // This matches the current hardcoded order in products.tsx
+  // Recommended decision-first order
   return [
-    'sku',
+    'name',           // Product
+    'stock',          // Stock Status & Available (shows both status indicator and quantity)
+    'location',       // Location(s)
+    'sku',            // SKU
+    'category_name',  // Category
+    'warehouses',     // Warehouses
+    // Additional columns (not in default visible set)
     'barcode',
     'description',
-    'category_name',
-    'name',
-    'location',
-    'warehouses',
-    'stock',
     'minimum_stock_level',
     'purchase_price',
     'sale_price',
