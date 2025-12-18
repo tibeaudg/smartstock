@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 interface CustomerLogosProps {
   logos?: CustomerLogo[];
-  variant?: 'grid' | 'carousel' | 'marquee';
+  variant?: 'grid' | 'carousel' | 'marquee' | 'hero-ticker';
   heading?: string;
   showHeading?: boolean;
   className?: string;
@@ -15,8 +15,8 @@ interface CustomerLogosProps {
 export const CustomerLogos: React.FC<CustomerLogosProps> = ({
   logos = customerLogos,
   variant = 'grid',
-  heading = "Trusted by leading businesses",
-  showHeading = true,
+  heading = "",
+  showHeading = false,
   className = '',
   logoClassName = '',
   maxLogos,
@@ -101,6 +101,60 @@ export const CustomerLogos: React.FC<CustomerLogosProps> = ({
       <div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
     </div>
   );
+
+  const renderHeroTicker = () => (
+    <div 
+      className={cn("relative overflow-hidden py-4", className)}
+      style={{
+        maskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
+      }}
+    >
+      <div className="flex animate-scroll gap-12 md:gap-16 items-center">
+        {[...displayLogos, ...displayLogos, ...displayLogos].map((logo, index) => (
+          <div
+            key={`${logo.name}-${index}`}
+            className={cn(
+              "flex-shrink-0 flex items-center justify-center",
+              logoClassName
+            )}
+          >
+            <img
+              src={logo.logo}
+              alt={`${logo.name} logo`}
+              className="h-6 md:h-8 lg:h-10 w-auto object-contain"
+              style={{ 
+                filter: 'brightness(0) invert(1) opacity(0.5)',
+              }}
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  // Hero ticker variant doesn't need section wrapper or container background
+  if (variant === 'hero-ticker') {
+    return (
+      <>
+        {renderHeroTicker()}
+        <style>{`
+          @keyframes scroll-logos {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-33.333%);
+            }
+          }
+          .animate-scroll {
+            animation: scroll-logos 40s linear infinite;
+          }
+        `}</style>
+      </>
+    );
+  }
 
   return (
     <section className="py-8 md:py-12 bg-white">
