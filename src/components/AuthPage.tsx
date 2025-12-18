@@ -73,8 +73,15 @@ export const AuthPage = () => {
               ? 'Invalid email address or password'
               : error?.message || 'Login failed'
           );
+          setIsSubmitting(false);
           return;
         }
+
+        // After successful login, wait a moment for auth state to update, then redirect
+        // This is a fallback in case AuthRoute doesn't catch it immediately
+        setTimeout(() => {
+          navigate('/dashboard', { replace: true });
+        }, 500);
       } else if (mode === 'register') {
         if (!firstName.trim()) {
           toast.error('First name is required');

@@ -149,3 +149,4 @@ CREATE TRIGGER update_cycle_count_items_updated_at
 GRANT ALL ON public.cycle_counts TO authenticated;
 GRANT ALL ON public.cycle_count_items TO authenticated;
 
+

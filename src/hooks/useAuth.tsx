@@ -412,25 +412,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
-        // Clear loading state when we get a session from hash tokens (email verification, OAuth)
-        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && newSession && !cancelled.current) {
-          // If this is from hash tokens, mark as processed and clear loading
-          if (hasAuthTokensInHash && !hashTokenProcessed.current) {
-            hashTokenProcessed.current = true;
-            waitingForHashTokens.current = false;
-            console.log('[AuthProvider] Hash tokens processed via', event, 'event');
-          }
-          
-          setLoading(false);
-          
-          // Clear the hash after successful sign-in from URL tokens (email verification, OAuth)
-          if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
-            const newUrl = window.location.pathname + window.location.search;
-            window.history.replaceState({}, '', newUrl);
-            console.log('[AuthProvider] Cleared auth tokens from URL hash after', event, 'event');
-          }
-        }
-
         if (newSession?.user) {
           // Update last_login for any sign-in event
           if (event === 'SIGNED_IN') {
@@ -447,7 +428,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             }
           }
           
-          const profile = await fetchUserProfile(newSession.user.id, newSession.user.email);
+          // Fetch profile BEFORE clearing loading state to ensure AuthRoute has all data
+          let profile = await fetchUserProfile(newSession.user.id, newSession.user.email);
           
           // If no profile exists and this is a sign-in event, create one
           if (!profile && event === 'SIGNED_IN' && newSession.user) {
@@ -489,8 +471,32 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           } else {
             if (!cancelled.current) setUserProfile(profile);
           }
+
+          // Clear loading state AFTER profile is fetched (for SIGNED_IN events)
+          // This ensures AuthRoute has both user and userProfile when it checks
+          if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && newSession && !cancelled.current) {
+            // If this is from hash tokens, mark as processed and clear loading
+            if (hasAuthTokensInHash && !hashTokenProcessed.current) {
+              hashTokenProcessed.current = true;
+              waitingForHashTokens.current = false;
+              console.log('[AuthProvider] Hash tokens processed via', event, 'event');
+            }
+            
+            setLoading(false);
+            
+            // Clear the hash after successful sign-in from URL tokens (email verification, OAuth)
+            if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+              const newUrl = window.location.pathname + window.location.search;
+              window.history.replaceState({}, '', newUrl);
+              console.log('[AuthProvider] Cleared auth tokens from URL hash after', event, 'event');
+            }
+          }
         } else {
           setUserProfile(null);
+          // If no session, clear loading
+          if (event === 'SIGNED_OUT' && !cancelled.current) {
+            setLoading(false);
+          }
         }
       }
     );

@@ -145,3 +145,4 @@ CREATE TRIGGER update_stock_transfer_items_updated_at
 GRANT ALL ON public.stock_transfers TO authenticated;
 GRANT ALL ON public.stock_transfer_items TO authenticated;
 
+

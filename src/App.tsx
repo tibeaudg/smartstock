@@ -322,21 +322,32 @@ const AppRouter = () => {
   };
 
   // Auth Route Component
-const AuthRoute = () => {
-  const authCtx = React.useContext(AuthContext);
-  const user = authCtx?.user || null;
-
-    const loading = authCtx?.loading ?? true;
-    const userProfile = authCtx?.userProfile || null;
+  const AuthRoute = () => {
+    const { user, userProfile, loading } = useAuth();
     const location = useLocation();
     const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/dashboard";
+
+    // Check for explicit login intent via query parameters (for switching accounts)
+    const urlParams = new URLSearchParams(location.search);
+    const force = urlParams.get('force');
+    const explicitLoginIntent = force === 'true';
+
+    // Debug logging
+    console.debug('[AuthRoute] user:', !!user, 'userProfile:', !!userProfile, 'loading:', loading, 'explicitLoginIntent:', explicitLoginIntent);
 
     if (loading) {
       return <LoadingScreen />;
     }
 
+    // If user is fully authenticated (has both user and profile), redirect to dashboard
+    // UNLESS they explicitly want to login (force=true parameter)
     if (user && userProfile) {
-      return <Navigate to={from} replace />;
+      if (!explicitLoginIntent) {
+        console.debug('[AuthRoute] User authenticated, redirecting to:', from);
+        return <Navigate to={from} replace />;
+      } else {
+        console.debug('[AuthRoute] User authenticated but explicit login intent, showing auth page');
+      }
     }
 
     return <AuthPage />;

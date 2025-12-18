@@ -7,7 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Building2} from 'lucide-react';
+import { Building2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   branchName: string;
@@ -19,8 +20,9 @@ interface FirstBranchSetupProps {
 }
 
 export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCreated, inline = false }) => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { setActiveBranch, refreshBranches } = useBranches();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     branchName: '',
@@ -87,6 +89,16 @@ export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCrea
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/auth?mode=login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+      toast.error('Failed to logout. Please try again.');
+    }
+  };
+
   const formContent = (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
@@ -111,6 +123,16 @@ export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCrea
       >
         {loading ? 'Creating...' : 'Create branch'}
       </Button>
+      
+      <div className="mt-4 text-center">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="text-sm text-gray-500 hover:text-gray-700 underline transition-colors"
+        >
+          Not your account? Logout
+        </button>
+      </div>
     </form>
   );
 

@@ -232,3 +232,4 @@ export function getCategoryDisplayName(category: string): string {
   return names[category] || category;
 }
 
+

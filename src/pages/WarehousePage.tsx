@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Warehouse as WarehouseIcon, Edit, Trash2, Package, MapPin, ArrowRight } from 'lucide-react';
+import { Plus, Warehouse as WarehouseIcon, Edit, Trash2, Package, MapPin, ArrowRight, Search, Filter } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -139,19 +139,33 @@ export default function WarehousePage() {
     );
   }
 
+  function setSearchWarehouseQuery(value: string): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div className="space-y-6 p-4 sm:p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">Warehouses</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            Manage your warehouse locations
-          </p>
+
+      {/* Search and Filters */}
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 max-w-md">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            type="text"
+            placeholder="Search"
+            value={setSearchWarehouseQuery}
+            onChange={(e) => setSearchWarehouseQuery(e.target.value)}
+            className="pl-10"
+          />
         </div>
+        <Button variant="outline" className="flex items-center gap-2">
+          <Filter className="w-4 h-4" />
+          Filters
+        </Button>
+
         <Button onClick={handleAddWarehouse} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
           <Plus className="w-4 h-4" />
-          <span className="hidden sm:inline">Add Location</span>
+          <span className="hidden sm:inline">Add Warehouse</span>
           <span className="sm:hidden">Add</span>
         </Button>
       </div>
