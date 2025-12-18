@@ -72,6 +72,14 @@ export default function CategorysPage() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState<string | null>(null);
   const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(null);
+  // Quick filter pills - supports multiple active filters
+  const [activeQuickFilters, setActiveQuickFilters] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('inventory-quick-filters');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -144,6 +152,33 @@ export default function CategorysPage() {
   
   // Command palette
   const { open: isCommandPaletteOpen, setOpen: setCommandPaletteOpen } = useCommandPalette();
+  
+  // Search input ref for keyboard shortcut
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+  
+  // Keyboard shortcut: "/" to focus search
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only trigger if not typing in an input/textarea and not in command palette
+      if (
+        e.key === '/' &&
+        !isCommandPaletteOpen &&
+        document.activeElement?.tagName !== 'INPUT' &&
+        document.activeElement?.tagName !== 'TEXTAREA'
+      ) {
+        e.preventDefault();
+        // Focus the search input - we'll need to expose a focus method from MultiIntentSearch
+        // For now, try to find and focus the input directly
+        const searchInput = document.querySelector('input[placeholder*="Search products"]') as HTMLInputElement;
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCommandPaletteOpen]);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -320,7 +355,7 @@ export default function CategorysPage() {
       });
     }
 
-    // Quick filters
+    // Quick filters (legacy single filter - keep for backward compatibility)
     if (activeQuickFilter) {
       filtered = filtered.filter((product: any) => {
         const qty = Number(product.quantity_in_stock) || 0;
@@ -346,8 +381,34 @@ export default function CategorysPage() {
       });
     }
 
+    // Quick filter pills (multiple filters)
+    // Note: has-variants filter will be applied after variantCounts is calculated
+    if (activeQuickFilters.length > 0) {
+      const filtersToApply = activeQuickFilters.filter(f => f !== 'has-variants');
+      if (filtersToApply.length > 0) {
+        filtered = filtered.filter((product: any) => {
+          const qty = Number(product.quantity_in_stock) || 0;
+          const minLevel = Number(product.minimum_stock_level) || 0;
+          
+          // Product matches if it matches ANY of the active filters (OR logic)
+          return filtersToApply.some(filterType => {
+            switch (filterType) {
+              case 'out-of-stock':
+                return qty === 0;
+              case 'low-stock':
+                return qty > 0 && qty <= minLevel;
+              case 'no-location':
+                return !product.location || product.location.trim() === '';
+              default:
+                return false;
+            }
+          });
+        });
+      }
+    }
+
     return filtered;
-  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedWarehouse, selectedStockStatus, dateRange, activeQuickFilter]);
+  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedWarehouse, selectedStockStatus, dateRange, activeQuickFilter, activeQuickFilters]);
 
   // Fetch variants for all products to calculate variant counts (use filteredProducts to respect filters)
   const productIds = React.useMemo(() => 
@@ -453,9 +514,65 @@ export default function CategorysPage() {
     return totals;
   }, [categoryProducts]);
 
-  // Use filtered products for sorting (always use filteredProducts to include all filters)
+  // Apply has-variants filter after variantCounts is available
+  const filteredProductsWithVariants = React.useMemo(() => {
+    let filtered = filteredProducts;
+    
+    // Apply has-variants filter if it's in activeQuickFilters
+    if (activeQuickFilters.includes('has-variants')) {
+      filtered = filtered.filter((product: any) => {
+        return !product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
+      });
+    }
+    
+    return filtered;
+  }, [filteredProducts, activeQuickFilters, variantCounts]);
+
+  // Calculate quick filter counts (for display in pills)
+  const quickFilterCounts = React.useMemo(() => {
+    const counts = {
+      'out-of-stock': 0,
+      'low-stock': 0,
+      'no-location': 0,
+      'has-variants': 0,
+    };
+    
+    categoryProducts.forEach((product: any) => {
+      const qty = Number(product.quantity_in_stock) || 0;
+      const minLevel = Number(product.minimum_stock_level) || 0;
+      
+      if (qty === 0) counts['out-of-stock']++;
+      if (qty > 0 && qty <= minLevel) counts['low-stock']++;
+      if (!product.location || product.location.trim() === '') counts['no-location']++;
+      if (!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0) {
+        counts['has-variants']++;
+      }
+    });
+    
+    return counts;
+  }, [categoryProducts, variantCounts]);
+
+  // Persist quick filters to localStorage
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('inventory-quick-filters', JSON.stringify(activeQuickFilters));
+    }
+  }, [activeQuickFilters]);
+
+  // Toggle quick filter
+  const toggleQuickFilter = (filterType: string) => {
+    setActiveQuickFilters(prev => {
+      if (prev.includes(filterType)) {
+        return prev.filter(f => f !== filterType);
+      } else {
+        return [...prev, filterType];
+      }
+    });
+  };
+
+  // Use filtered products for sorting (always use filteredProductsWithVariants to include all filters)
   const sortedProducts = React.useMemo(() => {
-    const productsToSort = filteredProducts;
+    const productsToSort = filteredProductsWithVariants;
     if (!sortColumn) return productsToSort;
 
     return [...productsToSort].sort((a, b) => {
@@ -989,6 +1106,75 @@ export default function CategorysPage() {
     return 'In Stock';
   };
 
+  // Enhanced stock status details with actionability information
+  const getStockStatusDetails = (quantity: number, minLevel: number, updatedAt?: string | null) => {
+    const qty = Number(quantity);
+    const min = Number(minLevel);
+    
+    let status: 'out' | 'low' | 'healthy';
+    let label: string;
+    let actionText: string | null = null;
+    let dotColor: string;
+    let bgColor: string;
+    let borderColor: string;
+    let textColor: string;
+    
+    if (qty === 0) {
+      status = 'out';
+      label = 'Out of Stock';
+      dotColor = 'bg-red-500';
+      bgColor = 'bg-red-50';
+      borderColor = 'border-red-200';
+      textColor = 'text-red-700';
+      
+      // Calculate days since last update
+      if (updatedAt) {
+        const daysSince = Math.floor((Date.now() - new Date(updatedAt).getTime()) / (1000 * 60 * 60 * 24));
+        if (daysSince > 0) {
+          actionText = `Last stocked ${daysSince} day${daysSince !== 1 ? 's' : ''} ago`;
+        } else {
+          actionText = 'Last stocked today';
+        }
+      } else {
+        actionText = 'No recent stock activity';
+      }
+    } else if (qty > 0 && qty <= min) {
+      status = 'low';
+      label = 'Low Stock';
+      dotColor = 'bg-orange-500';
+      bgColor = 'bg-orange-50';
+      borderColor = 'border-orange-200';
+      textColor = 'text-orange-700';
+      
+      // Estimate days until reorder (simple calculation: assume 10% daily consumption)
+      const daysUntilReorder = Math.ceil(qty / Math.max(min * 0.1, 1));
+      if (daysUntilReorder <= 7) {
+        actionText = `Reorder in ~${daysUntilReorder} day${daysUntilReorder !== 1 ? 's' : ''}`;
+      } else {
+        actionText = `Reorder soon (${qty} units remaining)`;
+      }
+    } else {
+      status = 'healthy';
+      label = 'Healthy';
+      dotColor = 'bg-green-500';
+      bgColor = '';
+      borderColor = '';
+      textColor = 'text-gray-700';
+      actionText = null;
+    }
+    
+    return {
+      status,
+      label,
+      actionText,
+      dotColor,
+      bgColor,
+      borderColor,
+      textColor,
+      isUrgent: status === 'out' || status === 'low',
+    };
+  };
+
   // Format variant label from attributes or fall back to variant_name
   const formatVariantLabel = (variant: any): string => {
     if (variant.variant_attributes) {
@@ -1017,8 +1203,57 @@ export default function CategorysPage() {
     return 'bg-green-500';
   };
 
+  // Get variant health summary for a product
+  const getVariantHealthSummary = (productId: string): { total: number; low: number; out: number; healthy: number } => {
+    const variants = variantsByParentId.get(productId) || [];
+    const summary = {
+      total: variants.length,
+      low: 0,
+      out: 0,
+      healthy: 0,
+    };
+    
+    variants.forEach((variant: any) => {
+      const qty = Number(variant.quantity_in_stock) || 0;
+      const minLevel = Number(variant.minimum_stock_level) || 0;
+      
+      if (qty === 0) {
+        summary.out++;
+      } else if (qty > 0 && qty <= minLevel) {
+        summary.low++;
+      } else {
+        summary.healthy++;
+      }
+    });
+    
+    return summary;
+  };
+
   const formatStockQuantity = (quantity: number) => {
     return new Intl.NumberFormat('en-US').format(Number(quantity) || 0);
+  };
+
+  // Format time ago (e.g., "2h ago", "3d ago")
+  const formatTimeAgo = (dateString: string | null | undefined): string | null => {
+    if (!dateString) return null;
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    
+    const diffWeeks = Math.floor(diffDays / 7);
+    if (diffWeeks < 4) return `${diffWeeks}w ago`;
+    
+    const diffMonths = Math.floor(diffDays / 30);
+    return `${diffMonths}mo ago`;
   };
 
   // Row indicator helpers
@@ -1068,6 +1303,42 @@ export default function CategorysPage() {
     return indicators;
   };
 
+  // Shared column configuration
+  // Product name has no width constraint (flexible, widest)
+  // Other columns have fixed small widths that fit their content
+  const columnConfigs: Record<string, { label: string; sortKey?: string; align?: 'left' | 'center' | 'right'; responsive?: string; width?: string }> = React.useMemo(() => ({
+    'sku': { label: 'SKU', sortKey: 'sku', align: 'left', width: 'w-24' },
+    'barcode': { label: 'Barcode', align: 'left', responsive: 'hidden md:table-cell', width: 'w-28' },
+    'description': { label: 'Description', align: 'left', responsive: 'hidden lg:table-cell', width: 'w-40' },
+    'category_name': { label: 'Category', sortKey: 'name', align: 'left', width: 'w-32' },
+    'name': { label: 'Product', sortKey: 'name', align: 'left', width: undefined }, // No width - flexible, takes remaining space
+    'location': { label: 'Location', sortKey: 'location', align: 'center', responsive: 'hidden md:table-cell', width: 'w-24' },
+    'warehouses': { label: 'Warehouses', sortKey: 'warehouses', align: 'center', responsive: 'hidden md:table-cell', width: 'w-28' },
+    'stock': { label: 'Stock', sortKey: 'stock', align: 'right', width: 'w-32' },
+    'minimum_stock_level': { label: 'Min. Level', sortKey: 'minimum_stock_level', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
+    'purchase_price': { label: 'Cost', sortKey: 'purchase_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
+    'sale_price': { label: 'Price', sortKey: 'sale_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
+    'unit_price': { label: 'Unit Price', sortKey: 'unit_price', align: 'right', responsive: 'hidden lg:table-cell', width: 'w-28' },
+  }), []);
+
+  // Helper to get column classes (width, responsive, align)
+  const getColumnClasses = (columnId: string, includeAlign: boolean = true): string => {
+    const config = columnConfigs[columnId];
+    if (!config) return '';
+    
+    const classes: string[] = [];
+    if (includeAlign) {
+      if (config.align === 'center') classes.push('text-center');
+      else if (config.align === 'right') classes.push('text-right');
+      else classes.push('text-left');
+    }
+    // Only add width if it's defined (product name has undefined width for flexibility)
+    if (config.width) classes.push(config.width);
+    if (config.responsive) classes.push(config.responsive);
+    
+    return classes.join(' ');
+  };
+
   // Helper to check if column should be visible
   // Now uses user preferences instead of view configs
   const isColumnVisible = (column: string): boolean => {
@@ -1103,21 +1374,6 @@ export default function CategorysPage() {
 
   // Helper to render column header
   const renderColumnHeader = (columnId: string) => {
-    const columnConfigs: Record<string, { label: string; sortKey?: string; align?: 'left' | 'center' | 'right'; responsive?: string; width?: string }> = {
-      'sku': { label: 'SKU', sortKey: 'sku', align: 'left' },
-      'barcode': { label: 'Barcode', align: 'left', responsive: 'hidden md:table-cell' },
-      'description': { label: 'Description', align: 'left', responsive: 'hidden lg:table-cell' },
-      'category_name': { label: 'Category', sortKey: 'name', align: 'left' },
-      'name': { label: 'Product', sortKey: 'name', align: 'left', width: 'w-1/3' },
-      'location': { label: 'Location', sortKey: 'location', align: 'center', responsive: 'hidden md:table-cell', width: 'w-1/8' },
-      'warehouses': { label: 'Warehouses', sortKey: 'warehouses', align: 'center', responsive: 'hidden md:table-cell', width: 'w-1/8' },
-      'stock': { label: 'Stock', sortKey: 'stock', align: 'right', width: 'w-1/8' },
-      'minimum_stock_level': { label: 'Min. Level', sortKey: 'minimum_stock_level', align: 'right', responsive: 'hidden sm:table-cell' },
-      'purchase_price': { label: 'Cost', sortKey: 'purchase_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-1/8' },
-      'sale_price': { label: 'Price', sortKey: 'sale_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-1/8' },
-      'unit_price': { label: 'Unit Price', sortKey: 'unit_price', align: 'right', responsive: 'hidden lg:table-cell' },
-    };
-
     const config = columnConfigs[columnId];
     if (!config) return null;
 
@@ -1128,11 +1384,11 @@ export default function CategorysPage() {
       <th
         key={columnId}
         className={cn(
-          config.align === 'center' ? 'text-center' : config.align === 'right' ? 'text-right' : 'text-left',
-          config.width || '',
-          config.responsive || '',
-          "px-4 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap",
-          isSortable && "cursor-pointer hover:bg-gray-100 transition-colors"
+          getColumnClasses(columnId),
+          "px-3 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-gray-300",
+          isSortable && "cursor-pointer hover:bg-gray-100 transition-colors",
+          // Product name column should take remaining space (no width constraint)
+          !config.width && columnId === 'name' && "w-auto"
         )}
         onClick={isSortable ? () => handleSort(sortKey) : undefined}
       >
@@ -1146,6 +1402,30 @@ export default function CategorysPage() {
         </div>
       </th>
     );
+  };
+
+  // Helper to render empty state with tooltip
+  const renderEmptyState = (message: string, tooltipText?: string) => {
+    const content = (
+      <span className="text-gray-400 italic text-xs">Not set</span>
+    );
+    
+    if (tooltipText) {
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {content}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">{tooltipText}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+    
+    return content;
   };
 
   // Helper to render column cell
@@ -1172,15 +1452,16 @@ export default function CategorysPage() {
           const showDash = (!hasVariantSKU && !hasParentSKU) || variantMatchesParent;
           return (
             <td className={cn(
-              "text-left relative z-10 bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               <span className={cn(
                 "font-mono",
                 showDash ? "text-gray-300" : (!hasVariantSKU ? "text-gray-300 opacity-50" : "text-gray-600"),
                 compactMode ? "text-xs" : "text-xs sm:text-sm"
               )}>
-                {showDash ? '—' : (product.variant_sku || product.sku || <span className="opacity-40">—</span>)}
+                {showDash ? renderEmptyState('SKU', 'Variant inherits SKU from parent') : (product.variant_sku || product.sku || renderEmptyState('SKU', 'No SKU assigned. This may affect inventory tracking.'))}
               </span>
             </td>
           );
@@ -1191,8 +1472,9 @@ export default function CategorysPage() {
           new Set(productVariants.map((v: any) => v.variant_sku || v.sku).filter(Boolean)).size > 1;
         return (
           <td className={cn(
-              "text-left relative z-10 align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className="flex items-center gap-1.5">
               <span className={cn(
@@ -1200,7 +1482,7 @@ export default function CategorysPage() {
                 !product.sku || product.sku === '---' ? "text-gray-300 opacity-50" : "text-gray-900",
                 compactMode ? "text-xs" : "text-xs sm:text-sm"
               )}>
-                {productHasVariants && hasDifferentSKUs ? 'Multiple' : (product.sku || <span className="opacity-40">—</span>)}
+                {productHasVariants && hasDifferentSKUs ? 'Multiple' : (product.sku || renderEmptyState('SKU', 'No SKU assigned. This may affect inventory tracking.'))}
               </span>
               {!productHasVariants && rowIndicators.find(i => i.type === 'missing-sku') && (
                 <TooltipProvider>
@@ -1227,30 +1509,32 @@ export default function CategorysPage() {
           const showDash = (!hasVariantBarcode && !hasParentBarcode) || variantMatchesParent;
           return (
             <td className={cn(
-              "text-left relative z-10 hidden md:table-cell align-middle bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               <span className={cn(
                 "font-mono",
                 showDash ? "text-gray-300" : (!hasVariantBarcode ? "text-gray-300 opacity-50" : "text-gray-600"),
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {showDash ? '—' : (product.variant_barcode || product.barcode || <span className="opacity-40">—</span>)}
+                {showDash ? renderEmptyState('Barcode', 'Variant inherits barcode from parent') : (product.variant_barcode || product.barcode || renderEmptyState('Barcode', 'No barcode assigned.'))}
               </span>
             </td>
           );
         }
         return (
           <td className={cn(
-            "text-left relative z-10 hidden md:table-cell align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <span className={cn(
               "font-mono",
               !product.barcode ? "text-gray-300 opacity-50" : "text-gray-900",
               compactMode ? "text-xs" : "text-sm"
             )}>
-              {product.barcode || <span className="opacity-40">—</span>}
+              {product.barcode || renderEmptyState('Barcode', 'No barcode assigned.')}
             </span>
           </td>
         );
@@ -1258,8 +1542,9 @@ export default function CategorysPage() {
       case 'description':
         return (
           <td className={cn(
-            "text-left relative z-10 hidden lg:table-cell align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             {!isVariant && (
               <span className={cn(
@@ -1281,18 +1566,19 @@ export default function CategorysPage() {
           const matchesParent = variantCategory === parentCategory;
           return (
             <td className={cn(
-              "text-left relative z-10 align-middle bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               {matchesParent ? (
-                <span className="text-gray-300 text-xs">—</span>
+                renderEmptyState('Category', 'Variant inherits category from parent')
               ) : (
                 <span className={cn(
                   "text-gray-500",
                   !variantCategory && "text-gray-300 opacity-50",
                   compactMode ? "text-xs" : "text-sm"
                 )}>
-                  {variantCategory || <span className="opacity-40">—</span>}
+                  {variantCategory || renderEmptyState('Category', 'Variant inherits category from parent')}
                 </span>
               )}
             </td>
@@ -1300,8 +1586,9 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
-              "text-left relative z-10 align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className="flex items-center gap-1.5">
               <span className={cn(
@@ -1309,7 +1596,7 @@ export default function CategorysPage() {
                 !product.category_name && "text-gray-300 opacity-50",
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {product.category_name || <span className="opacity-40">—</span>}
+                {product.category_name || renderEmptyState('Category', 'No category assigned. Products without categories may be harder to organize.')}
               </span>
               {rowIndicators.find(i => i.type === 'no-category') && (
                 <TooltipProvider>
@@ -1332,8 +1619,9 @@ export default function CategorysPage() {
           const variantLabel = formatVariantLabel(product);
           return (
             <td className={cn(
-              "w-1/4 relative z-10 align-middle bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               <div className="flex items-center">
                 {/* Continuous vertical line connector */}
@@ -1351,14 +1639,16 @@ export default function CategorysPage() {
         // For parent products, check if they have variants
         const productHasVariants = hasVariants !== undefined ? hasVariants : (!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0);
         const productVariantCount = variantCount !== undefined ? variantCount : (productHasVariants ? (variantCounts.get(String(product.id)) ?? 0) : 0);
+        const isProductExpanded = productHasVariants && expandedProductIds.has(product.id);
         return (
           <td className={cn(
-            "w-1/4 relative z-10 overflow-visible align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 overflow-visible align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className={cn(
               "flex items-center",
-              compactMode ? "gap-1.5" : "gap-2 sm:gap-3"
+              compactMode ? "gap-1" : "gap-1.5"
             )}>
               {product.image_url && (
                 <div 
@@ -1381,20 +1671,65 @@ export default function CategorysPage() {
               <div className="flex-1 min-w-0">
                 <div className={cn(
                   "flex items-center flex-wrap",
-                  compactMode ? "gap-1.5" : "gap-2"
+                  compactMode ? "gap-1" : "gap-1.5"
                 )}>
+                  {/* Chevron for expandable products */}
+                  {productHasVariants && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleProductExpansion(product.id);
+                      }}
+                      className="flex items-center justify-center w-5 h-5 rounded hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0"
+                      data-interactive
+                    >
+                      {isProductExpanded ? (
+                        <ChevronDown className="w-4 h-4 text-gray-600" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-gray-600" />
+                      )}
+                    </button>
+                  )}
                   {/* Parent text - bolder and larger, with embedded variant badge */}
                   <h3 className={cn(
                     productHasVariants ? "font-bold" : "font-semibold",
-                    productHasVariants ? (compactMode ? "text-sm" : "text-base") : (compactMode ? "text-xs" : "text-sm"),
-                    "text-gray-900 truncate"
+                    productHasVariants ? (compactMode ? "text-xs" : "text-sm") : (compactMode ? "text-[10px]" : "text-xs"),
+                    "text-gray-900 truncate leading-tight"
                   )}>
                     {product.name}
-                    {productHasVariants && productVariantCount > 0 && (
-                      <span className="ml-2 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-                        {productVariantCount} variant{productVariantCount !== 1 ? 's' : ''}
-                      </span>
-                    )}
+                    {productHasVariants && productVariantCount > 0 && (() => {
+                      const healthSummary = getVariantHealthSummary(String(product.id));
+                      const healthParts: string[] = [];
+                      if (healthSummary.out > 0) healthParts.push(`${healthSummary.out} out`);
+                      if (healthSummary.low > 0) healthParts.push(`${healthSummary.low} low`);
+                      if (healthSummary.healthy > 0) healthParts.push(`${healthSummary.healthy} healthy`);
+                      
+                      return (
+                        <TooltipProvider delayDuration={150}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span 
+                                className="ml-1.5 text-[9px] font-medium text-blue-600 bg-blue-50 px-1 py-0.5 rounded border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors leading-tight"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  expandProductAndScroll(product.id);
+                                }}
+                                data-interactive
+                              >
+                                Variants: {productVariantCount} {healthParts.length > 0 && `(${healthParts.join(', ')})`}
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" align="center" sideOffset={4}>
+                              <p className="text-xs font-medium mb-1">Variant Health Summary</p>
+                              {healthSummary.out > 0 && <p className="text-xs text-red-600">Out of stock: {healthSummary.out}</p>}
+                              {healthSummary.low > 0 && <p className="text-xs text-orange-600">Low stock: {healthSummary.low}</p>}
+                              {healthSummary.healthy > 0 && <p className="text-xs text-green-600">Healthy: {healthSummary.healthy}</p>}
+                              <p className="text-xs text-gray-400 mt-1">Click to expand/collapse variants</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      );
+                    })()}
                   </h3>
                   {product.category_name && !isColumnVisible('category_name') && (
                     <Badge 
@@ -1432,14 +1767,14 @@ export default function CategorysPage() {
                 </div>
                 {product.barcode && (
                   <p className={cn(
-                    "text-gray-500 font-mono",
-                    compactMode ? "text-[9px] mt-0.5" : "text-[10px] mt-0.5"
+                    "text-gray-500 font-mono leading-tight",
+                    compactMode ? "text-[8px]" : "text-[9px]"
                   )}>
                     {product.barcode}
                   </p>
                 )}
                 {product.description && !compactMode && (
-                  <p className="text-xs text-gray-500 truncate max-w-xs mt-1 hidden sm:block">
+                  <p className="text-[10px] text-gray-500 truncate max-w-xs leading-tight hidden sm:block">
                     {product.description}
                   </p>
                 )}
@@ -1457,12 +1792,13 @@ export default function CategorysPage() {
           const showDash = (!hasVariantLocation && !hasParentLocation) || variantMatchesParent;
           return (
             <td className={cn(
-              "text-center w-1/8 hidden md:table-cell relative z-10 align-middle bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               <div className="flex items-center justify-center gap-1">
                 {showDash ? (
-                  <span className="text-gray-300 text-xs">—</span>
+                  renderEmptyState('Location', 'Variant inherits location from parent')
                 ) : (
                   <>
                     <MapPin className={cn(
@@ -1483,8 +1819,9 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
-            "text-center w-1/8 hidden md:table-cell relative z-10 align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className="flex items-center justify-center gap-1">
               <MapPin className={cn(
@@ -1495,7 +1832,7 @@ export default function CategorysPage() {
                 !product.location ? "text-gray-300 opacity-50" : repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-600",
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {product.location || <span className="opacity-40">—</span>}
+                {product.location || renderEmptyState('Location', 'No location assigned. Products without locations may be harder to find in the warehouse.')}
               </span>
               {rowIndicators.find(i => i.type === 'no-location') && (
                 <TooltipProvider>
@@ -1521,11 +1858,12 @@ export default function CategorysPage() {
           const matchesParent = variantWarehouse === parentWarehouse;
           return (
             <td className={cn(
-              "text-center w-1/8 hidden md:table-cell relative z-10 align-middle bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               {matchesParent ? (
-                <span className="text-gray-300 text-xs">—</span>
+                renderEmptyState('Category', 'Variant inherits category from parent')
               ) : (
                 <div className="flex items-center justify-center gap-1">
                   <Warehouse className={cn(
@@ -1536,7 +1874,7 @@ export default function CategorysPage() {
                     !variantWarehouse ? "text-gray-300 opacity-50" : "text-gray-500",
                     compactMode ? "text-xs" : "text-sm"
                   )}>
-                    {variantWarehouse || <span className="opacity-40">—</span>}
+                    {variantWarehouse || renderEmptyState('Warehouse', 'Variant inherits warehouse from parent')}
                   </span>
                 </div>
               )}
@@ -1545,8 +1883,9 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
-            "text-center w-1/8 hidden md:table-cell relative z-10 align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className="flex items-center justify-center gap-1">
               <Warehouse className={cn(
@@ -1557,7 +1896,7 @@ export default function CategorysPage() {
                 !warehouseName ? "text-gray-300 opacity-50" : "text-gray-600",
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {warehouseName || <span className="opacity-40">—</span>}
+                {warehouseName || renderEmptyState('Warehouse', 'No warehouse assigned.')}
               </span>
             </div>
           </td>
@@ -1566,8 +1905,8 @@ export default function CategorysPage() {
       case 'minimum_stock_level':
         return (
           <td className={cn(
-            "text-right hidden sm:table-cell",
-            "px-4 py-2 align-middle"
+            getColumnClasses(columnId),
+            "px-3 py-2 align-middle border-r border-gray-300"
           )}>
             <div className="flex items-center justify-end">
               <span className={cn(
@@ -1586,12 +1925,22 @@ export default function CategorysPage() {
         const stockDotColorValue = isVariant ? getStockStatusDotColor(Number(product.quantity_in_stock) || 0, product.minimum_stock_level || 0) : stockDotColor;
         const productHasVariantsForStock = !isVariant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
         const isAggregatedTotal = productHasVariantsForStock && displayStock !== (Number(product.quantity_in_stock) || 0);
+        
+        // Get enhanced stock status details
+        const statusDetails = getStockStatusDetails(
+          stockValue,
+          product.minimum_stock_level || 0,
+          product.updated_at
+        );
+        
         return (
           <td 
             className={cn(
-              "text-right w-1/8 align-middle",
-              isVariant ? "bg-blue-50/20" : "",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "align-middle border-r border-gray-300",
+              isVariant ? "" : "",
+              "py-1",
+              "px-3"
             )} 
             onClick={(e) => isMobile && e.stopPropagation()}
           >
@@ -1601,7 +1950,8 @@ export default function CategorysPage() {
                   <div
                     data-interactive
                     className={cn(
-                      compactMode ? "rounded-lg p-1 transition-all" : "space-y-1 rounded-lg p-1.5 transition-all",
+                      "rounded-lg transition-all text-right",
+                      compactMode ? "p-0.5" : "p-1",
                       !isMobile && "cursor-pointer group hover:bg-blue-600 hover:shadow-md",
                       isAggregatedTotal && "bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/60 shadow-sm"
                     )}
@@ -1614,14 +1964,14 @@ export default function CategorysPage() {
                   >
                     <div className={cn(
                       "flex items-center justify-end",
-                      compactMode ? "gap-1.5" : "gap-2"
+                      compactMode ? "gap-1" : "gap-1.5"
                     )}>
                       <div
                         className={cn(
                           'rounded-full shadow-sm',
-                          stockDotColorValue,
+                          statusDetails.dotColor,
                           stockValue === 0 ? 'animate-pulse' : '',
-                          compactMode ? 'w-1.5 h-1.5' : 'w-2 h-2'
+                          compactMode ? 'w-1.5 h-1.5' : 'w-1.5 h-1.5'
                         )}
                       />
                       <span
@@ -1630,23 +1980,34 @@ export default function CategorysPage() {
                           'transition-colors font-mono',
                           stockValue === 0
                             ? 'animate-pulse text-red-600'
-                            : isAggregatedTotal ? 'text-blue-700' : 'text-gray-900',
+                            : isAggregatedTotal ? 'text-blue-700' : statusDetails.textColor,
                           !isMobile && 'group-hover:text-white',
-                          compactMode ? 'text-xs' : 'text-sm'
+                          compactMode ? 'text-[10px]' : 'text-xs'
                         )}
                       >
-                        {formatStockQuantity(stockValue)}
+                        {formatStockQuantity(stockValue)} units
                       </span>
                       {isAggregatedTotal && (
                         <span className="text-[9px] text-blue-600 font-bold ml-1 bg-blue-200/50 px-1 py-0.5 rounded">Σ</span>
                       )}
                     </div>
-                    {!compactMode && (
+                    {/* Status label - always show */}
+                    <div className={cn(
+                      "text-[10px] font-medium transition-colors",
+                      statusDetails.textColor,
+                      !isMobile && "group-hover:text-white/90",
+                      compactMode && "text-[9px]"
+                    )}>
+                      {statusDetails.label}
+                    </div>
+                    {/* Actionability text - show for urgent items or when not compact */}
+                    {statusDetails.actionText && (statusDetails.isUrgent || !compactMode) && (
                       <div className={cn(
-                        "text-xs font-medium transition-colors text-right",
-                        isMobile ? "text-gray-600" : "text-gray-600 group-hover:text-white/90"
+                        "text-[9px] transition-colors leading-tight",
+                        isMobile ? "text-gray-500" : "text-gray-500 group-hover:text-white/80",
+                        compactMode && "text-[8px]"
                       )}>
-                        {stockStatusValue}
+                        {statusDetails.actionText}
                       </div>
                     )}
                   </div>
@@ -1663,6 +2024,9 @@ export default function CategorysPage() {
                       </p>
                     )}
                     <p className="text-xs text-gray-500 mt-1">Status: {stockStatusValue}</p>
+                    {statusDetails.actionText && (
+                      <p className="text-xs text-gray-400 mt-1">{statusDetails.actionText}</p>
+                    )}
                     {stockValue === 0 && (
                       <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
                     )}
@@ -1680,8 +2044,8 @@ export default function CategorysPage() {
       case 'purchase_price':
         return (
           <td className={cn(
-            "text-right w-1/8 hidden sm:table-cell",
-            "px-4 py-2 align-middle"
+            getColumnClasses(columnId),
+            "px-3 py-2 align-middle border-r border-gray-300"
           )}>
             <div className={cn(
               "flex items-center justify-end",
@@ -1698,8 +2062,9 @@ export default function CategorysPage() {
         if (isVariant) {
           return (
             <td className={cn(
-              "text-right w-1/8 hidden sm:table-cell align-middle bg-blue-50/20",
-              "px-4 py-2"
+              getColumnClasses(columnId),
+              "align-middle border-r border-gray-300",
+              "px-3 py-1"
             )}>
               <div className={cn(
                 "flex items-center justify-end gap-1.5",
@@ -1730,8 +2095,9 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
-            "text-right w-1/8 hidden sm:table-cell align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className={cn(
               "flex items-center justify-end gap-1.5",
@@ -1763,8 +2129,9 @@ export default function CategorysPage() {
       case 'unit_price':
         return (
           <td className={cn(
-            "text-right hidden lg:table-cell align-middle",
-            "px-4 py-2"
+            getColumnClasses(columnId),
+            "align-middle border-r border-gray-300",
+            "px-3 py-2"
           )}>
             <div className={cn(
               "flex items-center justify-end",
@@ -2586,29 +2953,173 @@ export default function CategorysPage() {
   // Removed localStorage loading and saving to ensure compact mode is always the default
 
   return (
-    <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
-      {/* Quick Switcher Bar */}
-      <div className="flex-shrink-0 border-b border-gray-200 bg-white">
-        <QuickSwitcherBar
-          tree={tree}
-          selectedCategoryIds={selectedCategoryIds}
-          onCategorySelectionChange={handleCategorySelectionChange}
-          selectedLocation={selectedLocation}
-          onLocationChange={setSelectedLocation}
-          selectedWarehouse={selectedWarehouse}
-          onWarehouseChange={setSelectedWarehouse}
-          onQuickFilterChange={setActiveQuickFilter}
-          activeQuickFilter={activeQuickFilter}
-          onImportClick={handleImportClick}
-          onExportClick={handleExportAll}
-        />
-      </div>
+    <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} flex flex-col gap-4 overflow-hidden overscroll-none`} style={{ touchAction: 'pan-y' }}>
+      {/* Header Section - Separate Card */}
+      <Card className="flex-shrink-0">
+        <CardContent className="p-0">
+          {/* Quick Switcher Bar */}
+          <div className="border-b border-gray-200 bg-white">
+            <QuickSwitcherBar
+              tree={tree}
+              selectedCategoryIds={selectedCategoryIds}
+              onCategorySelectionChange={handleCategorySelectionChange}
+              selectedLocation={selectedLocation}
+              onLocationChange={setSelectedLocation}
+              selectedWarehouse={selectedWarehouse}
+              onWarehouseChange={setSelectedWarehouse}
+              onQuickFilterChange={setActiveQuickFilter}
+              activeQuickFilter={activeQuickFilter}
+              onImportClick={handleImportClick}
+              onExportClick={handleExportAll}
+            />
+          </div>
 
-      {/* Main Layout with Product Table */}
-      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
-        {/* Main Content - Products Table */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
-          {/* Search Results Info - Above all other elements */}
+          {/* Quick Filter Pills */}
+          <div className="px-3 md:px-4 lg:px-6 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-medium text-gray-500 mr-1">Quick filters:</span>
+            <button
+              onClick={() => toggleQuickFilter('out-of-stock')}
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                activeQuickFilters.includes('out-of-stock')
+                  ? "bg-red-100 text-red-700 border border-red-300 shadow-sm"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              )}
+            >
+              Out of stock ({quickFilterCounts['out-of-stock']})
+            </button>
+            <button
+              onClick={() => toggleQuickFilter('low-stock')}
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                activeQuickFilters.includes('low-stock')
+                  ? "bg-orange-100 text-orange-700 border border-orange-300 shadow-sm"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              )}
+            >
+              Low stock ({quickFilterCounts['low-stock']})
+            </button>
+            <button
+              onClick={() => toggleQuickFilter('no-location')}
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                activeQuickFilters.includes('no-location')
+                  ? "bg-blue-100 text-blue-700 border border-blue-300 shadow-sm"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              )}
+            >
+              No location ({quickFilterCounts['no-location']})
+            </button>
+            <button
+              onClick={() => toggleQuickFilter('has-variants')}
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                activeQuickFilters.includes('has-variants')
+                  ? "bg-purple-100 text-purple-700 border border-purple-300 shadow-sm"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              )}
+            >
+              Has variants ({quickFilterCounts['has-variants']})
+            </button>
+            {activeQuickFilters.length > 0 && (
+              <button
+                onClick={() => setActiveQuickFilters([])}
+                className="px-2 py-1 text-xs text-gray-500 hover:text-gray-700 underline"
+              >
+                Clear all
+              </button>
+            )}
+          </div>
+
+          {/* Search Bar + Action Buttons */}
+          <div className="px-3 md:px-4 lg:px-6 py-2 bg-white flex items-center gap-3 transition-all duration-200">
+            {/* Multi-Intent Search Bar - Left, Expanded Width */}
+            <div className="flex-1">
+              <MultiIntentSearch
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onSubmit={handleSearchSubmit}
+                onProductClick={handleSearchProductClick}
+                onCategoryClick={handleSearchCategoryClick}
+                onSupplierClick={handleSearchSupplierClick}
+                onCreateProduct={() => {
+                  setScannedSKU('');
+                  setPreFilledProductName('');
+                  navigate('/dashboard/products/new');
+                }}
+                onCreateCategory={handleAddCategory}
+                onCreateLocation={handleCreateLocation}
+                placeholder="Search products, SKUs, categories, suppliers…"
+              />
+            </div>
+            {/* Action Buttons - Right */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {selectedProductIds.size > 0 && (
+                <span className="text-sm font-medium text-gray-600 hidden sm:inline">
+                  {selectedProductIds.size} selected
+                </span>
+              )}
+              <Button
+                variant={categoryProducts.length === 0 ? "default" : "outline"}
+                size="sm"
+                className={categoryProducts.length === 0 
+                  ? "bg-blue-600 hover:bg-blue-700 text-white" 
+                  : "border-gray-300 hover:bg-gray-50"}
+                onClick={() => {
+                  setScannedSKU('');
+                  setPreFilledProductName('');
+                  navigate('/dashboard/products/new');
+                
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Product
+              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsColumnVisibilityModalOpen(true)}
+                      className="gap-2"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span className="hidden sm:inline">Columns</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Customize visible columns</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <Button
+                variant="ghost"
+                className="hidden"
+                size="sm"
+                onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
+              >
+                {productViewMode === 'table' ? (
+                  <>
+                    <Grid3x3 className="w-4 h-4 mr-2" />
+                    Grid
+                  </>
+                ) : (
+                  <>
+                    <Table2 className="w-4 h-4 mr-2" />
+                    Table
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Main Table Section - Separate Card */}
+      <Card className="flex-1 flex flex-col overflow-hidden min-h-0">
+        <CardContent className="p-0 flex-1 flex flex-col overflow-hidden min-h-0">
+          {/* Search Results Info */}
           {searchTerm && (
             <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-blue-50 border-b border-blue-200 flex items-center justify-between gap-3 relative z-50">
               <div className="text-sm font-medium text-blue-900">
@@ -2645,90 +3156,6 @@ export default function CategorysPage() {
 
           {(categoryProducts.length > 0 || productsLoading) ? (
             <>
-              {/* Row A: Control Bar - Search Bar + Action Buttons */}
-              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-white border-b flex items-center gap-3 transition-all duration-200">
-                {/* Normal Header: Search Bar (left, expanded) + Action Buttons (right) */}
-                <>
-                  {/* Multi-Intent Search Bar - Left, Expanded Width */}
-                  <div className="flex-1">
-                    <MultiIntentSearch
-                      value={searchTerm}
-                      onChange={handleSearchChange}
-                      onSubmit={handleSearchSubmit}
-                      onProductClick={handleSearchProductClick}
-                      onCategoryClick={handleSearchCategoryClick}
-                      onSupplierClick={handleSearchSupplierClick}
-                      onCreateProduct={() => {
-                        setScannedSKU('');
-                        setPreFilledProductName('');
-                        navigate('/dashboard/products/new');
-                      }}
-                      onCreateCategory={handleAddCategory}
-                      onCreateLocation={handleCreateLocation}
-                      placeholder="Search products, SKUs, categories, suppliers…"
-                    />
-                  </div>
-                  {/* Action Buttons - Right */}
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    {selectedProductIds.size > 0 && (
-                      <span className="text-sm font-medium text-gray-600 hidden sm:inline">
-                        {selectedProductIds.size} selected
-                      </span>
-                    )}
-                    <Button
-                      variant="default"
-                      size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                      onClick={() => {
-                        setScannedSKU('');
-                        setPreFilledProductName('');
-                        navigate('/dashboard/products/new');
-                      
-                      }}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add Product
-                    </Button>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setIsColumnVisibilityModalOpen(true)}
-                            className="gap-2"
-                          >
-                            <Settings className="w-4 h-4" />
-                            <span className="hidden sm:inline">Columns</span>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Customize visible columns</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <Button
-                      variant="ghost"
-                      className="hidden"
-                      size="sm"
-                      onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
-                    >
-                      {productViewMode === 'table' ? (
-                        <>
-                          <Grid3x3 className="w-4 h-4 mr-2" />
-                          Grid
-                        </>
-                      ) : (
-                        <>
-                          <Table2 className="w-4 h-4 mr-2" />
-                          Table
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </>
-              </div>
-              
               {/* Products Section - Scrollable */}
               <div 
                 className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" 
@@ -2773,18 +3200,14 @@ export default function CategorysPage() {
                 ) : productViewMode === 'table' ? (
                   <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
                     <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                      <table className={cn("w-full divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
-                        <thead className="bg-gray-50 sticky top-0 z-10">
+                      <table className={cn("w-full table-auto border-collapse", !isMobile && "min-w-[640px]")}>
+                        <thead className="bg-gray-50 sticky top-0 z-10 border-b border-gray-300">
                           {/* Column Headers */}
                           <tr>
-                            {/* Empty header cell for row indicator bar alignment */}
-                            <th className="w-1 px-4 py-3"></th>
-                            {/* Expansion chevron column - moved to left */}
-                            <th className="w-8 px-4 py-3"></th>
                             <th 
                               className={cn(
-                                "text-center w-12",
-                                "px-4 py-3"
+                                "text-center w-12 border-r border-gray-300",
+                                "px-3 py-3"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -2830,6 +3253,9 @@ export default function CategorysPage() {
                             const productVariants = hasVariants ? (variantsByParentId.get(product.id) || []) : [];
                             const variantCount = hasVariants ? (variantCounts.get(String(product.id)) ?? 0) : 0;
                             
+                            // Determine row visual emphasis based on stock status
+                            const stockStatusDetails = getStockStatusDetails(displayStock, product.minimum_stock_level, product.updated_at);
+                            
                             return (
                               <React.Fragment key={product.id}>
                               <tr
@@ -2844,58 +3270,18 @@ export default function CategorysPage() {
                                   setHoveredProductGroupId(null);
                                 }}
                                 className={cn(
-                                  'group hover:bg-gray-50 transition-all duration-200 relative',
+                                  'group transition-all duration-200 relative bg-white',
                                   hoveredImageProductId === product.id && 'z-50',
                                   hoveredProductGroupId === product.id && 'bg-gray-50',
-                                  // Parent row background - light blue when expanded with children, subtle when collapsed
-                                  isExpanded && 'bg-blue-50/20',
-                                  !isExpanded && hasVariants && 'bg-blue-50/10',
-                                  'cursor-pointer',
-                                  'h-7'
+                                  'hover:bg-gray-50',
+                                  'cursor-pointer'
                                 )}
                               >
-                                {/* Row Indicator Bar (left side) - Always shows stock status color */}
-                                <td 
-                                  className={cn(
-                                    "absolute left-0 top-0 bottom-0 w-1.5 rounded-r-sm",
-                                    stockBorderColor,
-                                    "shadow-sm"
-                                  )}
-                                  style={{ zIndex: 1 }}
-                                />
-                                
-                                {/* Expansion chevron - moved to absolute left */}
-                                <td 
-                                  className={cn(
-                                    "w-8 px-2 relative z-10",
-                                    "text-center"
-                                  )}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (hasVariants) {
-                                      toggleProductExpansion(product.id);
-                                    }
-                                  }}
-                                  data-interactive
-                                >
-                                  {hasVariants && (
-                                    <div className="flex items-center justify-center">
-                                      <div className="flex items-center justify-center w-5 h-5 rounded-md bg-blue-50 border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 transition-colors cursor-pointer">
-                                        {isExpanded ? (
-                                          <ChevronDown className="w-3.5 h-3.5 text-blue-600" />
-                                        ) : (
-                                          <ChevronRight className="w-3.5 h-3.5 text-blue-600" />
-                                        )}
-                                      </div>
-                                    </div>
-                                  )}
-                                </td>
-                                
                                 {/* Selection checkbox */}
                                 <td 
                                   className={cn(
-                                    "text-center w-12 relative z-10",
-                                    "px-4 py-2"
+                                    "text-center w-12 relative z-10 border-r border-gray-300",
+                                    "px-3 py-2"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -2956,12 +3342,10 @@ export default function CategorysPage() {
                                             setHoveredProductGroupId(null);
                                           }}
                                           className={cn(
-                                            'group hover:bg-gray-50 transition-all duration-200 relative',
-                                            // Always use light blue background when parent is expanded
-                                            'bg-blue-50/20',
+                                            'group transition-all duration-200 relative bg-white',
                                             hoveredProductGroupId === product.id && 'bg-gray-50',
-                                            'cursor-pointer',
-                                            'h-7'
+                                            'hover:bg-gray-50',
+                                            'cursor-pointer'
                                           )}
                                         >
                                           {/* Continuous vertical line - connects parent to last child */}
@@ -2972,14 +3356,14 @@ export default function CategorysPage() {
                                           
                                           {/* Empty chevron cell for alignment */}
                                           <td 
-                                            className="w-8 px-2 bg-blue-50/20"
+                                            className="w-8 px-2 border-r border-gray-300"
                                           />
                                           
                                           {/* Empty checkbox cell for alignment */}
                                           <td 
                                             className={cn(
-                                              "w-12 bg-blue-50/20",
-                                              "px-4 py-2"
+                                              "w-12 border-r border-gray-300",
+                                              "px-3 py-2"
                                             )}
                                           />
                                           
@@ -3116,8 +3500,8 @@ export default function CategorysPage() {
               </div>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Add Category Modal */}
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
@@ -3523,23 +3907,26 @@ export default function CategorysPage() {
         onReset={resetToDefaults}
       />
 
-      {/* Fixed Bottom Bulk Action Bar */}
+      {/* Fixed Bottom Bulk Action Bar - Enhanced */}
       {selectedProductIds.size > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg">
-          <div className="max-w-full mx-auto px-4 py-3">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-50 to-indigo-50 border-t-2 border-blue-300 shadow-2xl animate-in slide-in-from-bottom duration-300">
+          <div className="max-w-full mx-auto px-4 py-4">
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-semibold text-gray-900">
-                  {selectedProductIds.size} product{selectedProductIds.size !== 1 ? 's' : ''} selected
-                </span>
+                <div className="flex items-center gap-2 bg-blue-600 text-white px-3 py-1.5 rounded-lg shadow-md">
+                  <Check className="w-4 h-4" />
+                  <span className="text-sm font-bold">
+                    {selectedProductIds.size} product{selectedProductIds.size !== 1 ? 's' : ''} selected
+                  </span>
+                </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedProductIds(new Set())}
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-gray-700 hover:text-gray-900 hover:bg-white/50"
                 >
                   <X className="w-4 h-4 mr-1" />
-                  Clear
+                  Clear selection
                 </Button>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
@@ -3564,31 +3951,42 @@ export default function CategorysPage() {
                 )}
               
                 <Button
-                  variant="outline"
+                  variant="default"
                   size="sm"
                   onClick={handleBulkAdjustStock}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 shadow-md"
                 >
                   <TrendingUp className="w-4 h-4" />
-                  <span className="hidden sm:inline">Adjust Stock</span>
+                  <span className="hidden sm:inline">Update Stock</span>
                   <span className="sm:hidden">Stock</span>
                 </Button>
               
                 <Button
                   variant="outline"
                   size="sm"
+                  onClick={handleBulkTransferStock}
+                  className="flex items-center gap-2 border-blue-300 hover:bg-blue-50"
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span className="hidden sm:inline">Move Location</span>
+                  <span className="sm:hidden">Move</span>
+                </Button>
+              
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={handleBulkExport}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-gray-300 hover:bg-gray-50"
                 >
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">Export</span>
                   <span className="sm:hidden">Export</span>
                 </Button>
                 <Button
-                  variant="destructive"
+                  variant="outline"
                   size="sm"
                   onClick={handleBulkDeleteProducts}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-300"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span className="hidden sm:inline">Delete</span>

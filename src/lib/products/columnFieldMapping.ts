@@ -191,23 +191,23 @@ export function getDefaultVisibleColumns(): string[] {
 
 /**
  * Get default column order
- * This represents the current hardcoded order in the products table
+ * Decision-first order: Product | Stock Status | Available | Location(s) | SKU | Category | Warehouses
  */
 export function getDefaultColumnOrder(): string[] {
-  // This matches the current hardcoded order in products.tsx
+  // Decision-first order prioritizing actionable information
   return [
-    'sku',
-    'barcode',
-    'description',
-    'category_name',
-    'name',
-    'location',
-    'warehouses',
-    'stock',
-    'minimum_stock_level',
-    'purchase_price',
-    'sale_price',
-    'unit_price',
+    'name',           // Product (visual anchor)
+    'stock',          // Stock Status (decision-critical)
+    'minimum_stock_level', // Available/Min level (context for stock status)
+    'location',       // Location(s) (operational)
+    'sku',            // SKU (secondary identifier)
+    'category_name',  // Category (filtering/grouping)
+    'warehouses',     // Warehouses (secondary filter)
+    'barcode',        // Barcode (metadata)
+    'description',    // Description (metadata)
+    'purchase_price', // Cost (financial)
+    'sale_price',    // Price (financial)
+    'unit_price',    // Unit Price (financial)
   ];
 }
 
