@@ -48,6 +48,12 @@ import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/
 import { useColumnPreferences } from '@/hooks/useColumnPreferences';
 import { ColumnVisibilityModal } from '@/components/products/ColumnVisibilityModal';
 import { getColumnById } from '@/lib/products/columnFieldMapping';
+import { StockBadge, type StockStatus } from '@/components/products/StockBadge';
+import { InlineReorderButton } from '@/components/products/InlineReorderButton';
+import { calculateDaysOfCover, velocityToDailyConsumption } from '@/utils/daysOfCover';
+import { EmptyStateCTA } from '@/components/products/EmptyStateCTA';
+import { BulkActionBar } from '@/components/products/BulkActionBar';
+import { BulkSKUModal } from '@/components/products/BulkSKUModal';
 
 export default function CategorysPage() {
   const { user } = useAuth();
@@ -399,6 +405,8 @@ export default function CategorysPage() {
                 return qty > 0 && qty <= minLevel;
               case 'no-location':
                 return !product.location || product.location.trim() === '';
+              case 'missing-sku':
+                return !product.is_variant && (!product.sku || product.sku === '---' || product.sku.trim() === '');
               default:
                 return false;
             }
@@ -535,6 +543,7 @@ export default function CategorysPage() {
       'low-stock': 0,
       'no-location': 0,
       'has-variants': 0,
+      'missing-sku': 0,
     };
     
     categoryProducts.forEach((product: any) => {
@@ -546,6 +555,9 @@ export default function CategorysPage() {
       if (!product.location || product.location.trim() === '') counts['no-location']++;
       if (!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0) {
         counts['has-variants']++;
+      }
+      if (!product.is_variant && (!product.sku || product.sku === '---' || product.sku.trim() === '')) {
+        counts['missing-sku']++;
       }
     });
     
@@ -1112,6 +1124,7 @@ export default function CategorysPage() {
     const min = Number(minLevel);
     
     let status: 'out' | 'low' | 'healthy';
+    let stockStatus: StockStatus;
     let label: string;
     let actionText: string | null = null;
     let dotColor: string;
@@ -1121,6 +1134,7 @@ export default function CategorysPage() {
     
     if (qty === 0) {
       status = 'out';
+      stockStatus = 'critical';
       label = 'Out of Stock';
       dotColor = 'bg-red-500';
       bgColor = 'bg-red-50';
@@ -1140,6 +1154,7 @@ export default function CategorysPage() {
       }
     } else if (qty > 0 && qty <= min) {
       status = 'low';
+      stockStatus = 'at-risk';
       label = 'Low Stock';
       dotColor = 'bg-orange-500';
       bgColor = 'bg-orange-50';
@@ -1155,6 +1170,7 @@ export default function CategorysPage() {
       }
     } else {
       status = 'healthy';
+      stockStatus = 'healthy';
       label = 'Healthy';
       dotColor = 'bg-green-500';
       bgColor = '';
@@ -1165,6 +1181,7 @@ export default function CategorysPage() {
     
     return {
       status,
+      stockStatus,
       label,
       actionText,
       dotColor,
@@ -1173,6 +1190,21 @@ export default function CategorysPage() {
       textColor,
       isUrgent: status === 'out' || status === 'low',
     };
+  };
+
+  // Calculate days of cover using a simple estimate
+  // Uses minimum stock level as a proxy for average daily consumption
+  // If min level represents ~7 days of stock, then daily consumption ≈ min / 7
+  const calculateDaysOfCoverSimple = (quantity: number, minLevel: number): number | null => {
+    if (quantity <= 0) return 0;
+    if (minLevel <= 0) return null; // Can't calculate without reorder point
+    
+    // Estimate daily consumption: assume min level covers ~7-14 days typically
+    // Use a conservative estimate of minLevel / 10 for daily consumption
+    const estimatedDailyConsumption = minLevel / 10;
+    if (estimatedDailyConsumption <= 0) return null;
+    
+    return quantity / estimatedDailyConsumption;
   };
 
   // Format variant label from attributes or fall back to variant_name
@@ -1314,7 +1346,7 @@ export default function CategorysPage() {
     'name': { label: 'Product', sortKey: 'name', align: 'left', width: undefined }, // No width - flexible, takes remaining space
     'location': { label: 'Location', sortKey: 'location', align: 'center', responsive: 'hidden md:table-cell', width: 'w-24' },
     'warehouses': { label: 'Warehouses', sortKey: 'warehouses', align: 'center', responsive: 'hidden md:table-cell', width: 'w-28' },
-    'stock': { label: 'Stock', sortKey: 'stock', align: 'right', width: 'w-32' },
+    'stock': { label: 'Stock', sortKey: 'stock', align: 'center', width: 'w-32' },
     'minimum_stock_level': { label: 'Min. Level', sortKey: 'minimum_stock_level', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
     'purchase_price': { label: 'Cost', sortKey: 'purchase_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
     'sale_price': { label: 'Price', sortKey: 'sale_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
@@ -1456,13 +1488,36 @@ export default function CategorysPage() {
               "relative z-10 align-middle border-r border-gray-300",
               "px-3 py-1"
             )}>
-              <span className={cn(
-                "font-mono",
-                showDash ? "text-gray-300" : (!hasVariantSKU ? "text-gray-300 opacity-50" : "text-gray-600"),
-                compactMode ? "text-xs" : "text-xs sm:text-sm"
-              )}>
-                {showDash ? renderEmptyState('SKU', 'Variant inherits SKU from parent') : (product.variant_sku || product.sku || renderEmptyState('SKU', 'No SKU assigned. This may affect inventory tracking.'))}
-              </span>
+              {showDash ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertCircle className="w-3.5 h-3.5 text-gray-400 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs">Variant inherits SKU from parent</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : product.variant_sku || product.sku ? (
+                <span className={cn(
+                  "font-mono text-gray-600",
+                  compactMode ? "text-xs" : "text-xs sm:text-sm"
+                )}>
+                  {product.variant_sku || product.sku}
+                </span>
+              ) : (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertCircle className="w-3.5 h-3.5 text-yellow-500 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs">SKU required for tracking & exports</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
             </td>
           );
         }
@@ -1470,6 +1525,8 @@ export default function CategorysPage() {
         const productVariants = productHasVariants ? (variantsByParentId.get(product.id) || []) : [];
         const hasDifferentSKUs = productHasVariants && productVariants.length > 0 && 
           new Set(productVariants.map((v: any) => v.variant_sku || v.sku).filter(Boolean)).size > 1;
+        const hasSKU = product.sku && product.sku !== '---';
+        
         return (
           <td className={cn(
             getColumnClasses(columnId),
@@ -1477,21 +1534,28 @@ export default function CategorysPage() {
             "px-3 py-2"
           )}>
             <div className="flex items-center gap-1.5">
-              <span className={cn(
-                productHasVariants && hasDifferentSKUs ? "" : "font-mono",
-                !product.sku || product.sku === '---' ? "text-gray-300 opacity-50" : "text-gray-900",
-                compactMode ? "text-xs" : "text-xs sm:text-sm"
-              )}>
-                {productHasVariants && hasDifferentSKUs ? 'Multiple' : (product.sku || renderEmptyState('SKU', 'No SKU assigned. This may affect inventory tracking.'))}
-              </span>
-              {!productHasVariants && rowIndicators.find(i => i.type === 'missing-sku') && (
+              {productHasVariants && hasDifferentSKUs ? (
+                <span className={cn(
+                  "text-gray-600",
+                  compactMode ? "text-xs" : "text-xs sm:text-sm"
+                )}>
+                  Multiple
+                </span>
+              ) : hasSKU ? (
+                <span className={cn(
+                  "font-mono text-gray-900",
+                  compactMode ? "text-xs" : "text-xs sm:text-sm"
+                )}>
+                  {product.sku}
+                </span>
+              ) : (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <AlertCircle className="w-3 h-3 text-yellow-500 cursor-pointer hover:scale-110 transition-transform" />
+                      <AlertCircle className="w-3.5 h-3.5 text-yellow-500 cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Missing SKU</p>
+                      <p className="text-xs">SKU required for tracking & exports</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -1624,11 +1688,11 @@ export default function CategorysPage() {
               "px-3 py-1"
             )}>
               <div className="flex items-center">
-                {/* Continuous vertical line connector */}
-                <div className="w-4 h-px bg-gray-300 mr-2"></div>
+                {/* Very minimal connector line with no right margin to align text */}
+                <div className="w-2 h-px bg-gray-300 mr-0.5"></div>
                 <h3 className={cn(
                   "font-normal text-gray-600",
-                  compactMode ? "text-xs" : "text-sm"
+                  compactMode ? "text-sm" : "text-base"
                 )}>
                   {variantLabel}
                 </h3>
@@ -1690,47 +1754,61 @@ export default function CategorysPage() {
                       )}
                     </button>
                   )}
-                  {/* Parent text - bolder and larger, with embedded variant badge */}
+                  {/* Product name - Line 1: Bold */}
                   <h3 className={cn(
-                    productHasVariants ? "font-bold" : "font-semibold",
-                    productHasVariants ? (compactMode ? "text-xs" : "text-sm") : (compactMode ? "text-[10px]" : "text-xs"),
-                    "text-gray-900 truncate leading-tight"
+                    "font-bold text-gray-900 truncate leading-tight",
+                    compactMode ? "text-sm" : "text-base"
                   )}>
                     {product.name}
-                    {productHasVariants && productVariantCount > 0 && (() => {
-                      const healthSummary = getVariantHealthSummary(String(product.id));
-                      const healthParts: string[] = [];
-                      if (healthSummary.out > 0) healthParts.push(`${healthSummary.out} out`);
-                      if (healthSummary.low > 0) healthParts.push(`${healthSummary.low} low`);
-                      if (healthSummary.healthy > 0) healthParts.push(`${healthSummary.healthy} healthy`);
-                      
-                      return (
-                        <TooltipProvider delayDuration={150}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span 
-                                className="ml-1.5 text-[9px] font-medium text-blue-600 bg-blue-50 px-1 py-0.5 rounded border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors leading-tight"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  expandProductAndScroll(product.id);
-                                }}
-                                data-interactive
-                              >
-                                Variants: {productVariantCount} {healthParts.length > 0 && `(${healthParts.join(', ')})`}
-                              </span>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" align="center" sideOffset={4}>
-                              <p className="text-xs font-medium mb-1">Variant Health Summary</p>
-                              {healthSummary.out > 0 && <p className="text-xs text-red-600">Out of stock: {healthSummary.out}</p>}
-                              {healthSummary.low > 0 && <p className="text-xs text-orange-600">Low stock: {healthSummary.low}</p>}
-                              {healthSummary.healthy > 0 && <p className="text-xs text-green-600">Healthy: {healthSummary.healthy}</p>}
-                              <p className="text-xs text-gray-400 mt-1">Click to expand/collapse variants</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      );
-                    })()}
                   </h3>
+                  {/* Variant badge - New format */}
+                  {productHasVariants && productVariantCount > 0 && (() => {
+                    const healthSummary = getVariantHealthSummary(String(product.id));
+                    const allHealthy = healthSummary.out === 0 && healthSummary.low === 0 && healthSummary.healthy === healthSummary.total;
+                    const allOut = healthSummary.healthy === 0 && healthSummary.low === 0;
+                    const someLow = healthSummary.low > 0;
+                    
+                    let healthText = '';
+                    if (allHealthy) {
+                      healthText = 'All healthy';
+                    } else if (allOut) {
+                      healthText = 'All out';
+                    } else if (someLow) {
+                      healthText = `${healthSummary.low} low`;
+                    } else {
+                      healthText = `${healthSummary.healthy} healthy`;
+                    }
+                    
+                    return (
+                      <TooltipProvider delayDuration={150}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span 
+                              className={cn(
+                                "inline-flex items-center gap-0.5 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors",
+                                compactMode && "text-[9px] px-1"
+                              )}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                expandProductAndScroll(product.id);
+                              }}
+                              data-interactive
+                            >
+                              <ChevronRight className={cn(compactMode ? "w-2.5 h-2.5" : "w-3 h-3")} />
+                              {productVariantCount} variants · {healthText}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center" sideOffset={4}>
+                            <p className="text-xs font-medium mb-1">Variant Health Summary</p>
+                            {healthSummary.out > 0 && <p className="text-xs text-red-600">Out of stock: {healthSummary.out}</p>}
+                            {healthSummary.low > 0 && <p className="text-xs text-orange-600">Low stock: {healthSummary.low}</p>}
+                            {healthSummary.healthy > 0 && <p className="text-xs text-green-600">Healthy: {healthSummary.healthy}</p>}
+                            <p className="text-xs text-gray-400 mt-1">Click to expand/collapse variants</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    );
+                  })()}
                   {product.category_name && !isColumnVisible('category_name') && (
                     <Badge 
                       variant="secondary" 
@@ -1765,16 +1843,27 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 </div>
-                {product.barcode && (
-                  <p className={cn(
-                    "text-gray-500 font-mono leading-tight",
-                    compactMode ? "text-[8px]" : "text-[9px]"
-                  )}>
-                    {product.barcode}
-                  </p>
-                )}
+                {/* Line 2: SKU • Category • Supplier (muted) */}
+                <div className={cn(
+                  "flex items-center gap-1.5 text-gray-500 mt-0.5",
+                  compactMode ? "text-[9px]" : "text-[10px]"
+                )}>
+                  {product.sku && product.sku !== '---' && (
+                    <>
+                      <span className="font-mono">{product.sku}</span>
+                      <span className="text-gray-400">•</span>
+                    </>
+                  )}
+                  {product.category_name && (
+                    <>
+                      <span>{product.category_name}</span>
+                      {(product.sku && product.sku !== '---') && <span className="text-gray-400">•</span>}
+                    </>
+                  )}
+                  {/* Supplier could go here if available */}
+                </div>
                 {product.description && !compactMode && (
-                  <p className="text-[10px] text-gray-500 truncate max-w-xs leading-tight hidden sm:block">
+                  <p className="text-[10px] text-gray-500 truncate max-w-xs leading-tight hidden sm:block mt-0.5">
                     {product.description}
                   </p>
                 )}
@@ -1933,111 +2022,43 @@ export default function CategorysPage() {
           product.updated_at
         );
         
+        // Only show badge for critical or at-risk, not for healthy
+        const shouldShowBadge = statusDetails.stockStatus === 'critical' || statusDetails.stockStatus === 'at-risk';
+        
         return (
           <td 
             className={cn(
               getColumnClasses(columnId),
-              "align-middle border-r border-gray-300",
-              isVariant ? "" : "",
+              "align-middle border-r border-t border-b border-gray-300",
               "py-1",
               "px-3"
             )} 
             onClick={(e) => isMobile && e.stopPropagation()}
           >
-            <TooltipProvider delayDuration={150}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div
-                    data-interactive
-                    className={cn(
-                      "rounded-lg transition-all text-right",
-                      compactMode ? "p-0.5" : "p-1",
-                      !isMobile && "cursor-pointer group hover:bg-blue-600 hover:shadow-md",
-                      isAggregatedTotal && "bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/60 shadow-sm"
-                    )}
-                    onClick={(e) => {
-                      if (!isMobile) {
-                        e.stopPropagation();
-                        handleStockAction(product, 'in');
-                      }
-                    }}
-                  >
-                    <div className={cn(
-                      "flex items-center justify-end",
-                      compactMode ? "gap-1" : "gap-1.5"
-                    )}>
-                      <div
-                        className={cn(
-                          'rounded-full shadow-sm',
-                          statusDetails.dotColor,
-                          stockValue === 0 ? 'animate-pulse' : '',
-                          compactMode ? 'w-1.5 h-1.5' : 'w-1.5 h-1.5'
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          isVariant ? 'font-medium' : (isAggregatedTotal ? 'font-bold text-blue-700' : 'font-semibold'),
-                          'transition-colors font-mono',
-                          stockValue === 0
-                            ? 'animate-pulse text-red-600'
-                            : isAggregatedTotal ? 'text-blue-700' : statusDetails.textColor,
-                          !isMobile && 'group-hover:text-white',
-                          compactMode ? 'text-[10px]' : 'text-xs'
-                        )}
-                      >
-                        {formatStockQuantity(stockValue)} units
-                      </span>
-                      {isAggregatedTotal && (
-                        <span className="text-[9px] text-blue-600 font-bold ml-1 bg-blue-200/50 px-1 py-0.5 rounded">Σ</span>
-                      )}
-                    </div>
-                    {/* Status label - always show */}
-                    <div className={cn(
-                      "text-[10px] font-medium transition-colors",
-                      statusDetails.textColor,
-                      !isMobile && "group-hover:text-white/90",
-                      compactMode && "text-[9px]"
-                    )}>
-                      {statusDetails.label}
-                    </div>
-                    {/* Actionability text - show for urgent items or when not compact */}
-                    {statusDetails.actionText && (statusDetails.isUrgent || !compactMode) && (
-                      <div className={cn(
-                        "text-[9px] transition-colors leading-tight",
-                        isMobile ? "text-gray-500" : "text-gray-500 group-hover:text-white/80",
-                        compactMode && "text-[8px]"
-                      )}>
-                        {statusDetails.actionText}
-                      </div>
-                    )}
-                  </div>
-                </TooltipTrigger>
-                {!isMobile && (
-                  <TooltipContent side="top" align="center" sideOffset={8} className="z-[200000] max-w-xs shadow-lg">
-                    <p className="font-medium">
-                      {formatStockQuantity(stockValue)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level || 0)}
-                      {isAggregatedTotal && <span className="text-xs text-gray-500 ml-1">(Total)</span>}
-                    </p>
-                    {productHasVariantsForStock && (
-                      <p className="text-xs text-gray-400 mt-1">
-                        Base: {formatStockQuantity(product.quantity_in_stock)} + Variants: {formatStockQuantity(displayStock - (Number(product.quantity_in_stock) || 0))}
-                      </p>
-                    )}
-                    <p className="text-xs text-gray-500 mt-1">Status: {stockStatusValue}</p>
-                    {statusDetails.actionText && (
-                      <p className="text-xs text-gray-400 mt-1">{statusDetails.actionText}</p>
-                    )}
-                    {stockValue === 0 && (
-                      <p className="text-xs text-red-400 mt-1">⚠️ Out of stock!</p>
-                    )}
-                    {stockValue > 0 && stockValue <= (product.minimum_stock_level || 0) && (
-                      <p className="text-xs text-orange-400 mt-1">⚠️ Low stock alert</p>
-                    )}
-                    <p className="text-xs text-gray-400 mt-1">Click to adjust stock</p>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
+            <div className="flex items-center justify-center gap-2">
+              {/* Stock Badge - only show for critical/at-risk */}
+              {shouldShowBadge && (
+                <StockBadge
+                  status={statusDetails.stockStatus}
+                  quantity={stockValue}
+                  daysOfCover={null}
+                  compact={compactMode}
+                />
+              )}
+              
+              {/* Unit count - always visible, more prominent, green for healthy */}
+              <span className={cn(
+                "font-mono font-semibold",
+                shouldShowBadge ? "text-gray-700" : "text-green-600",
+                compactMode ? "text-xs" : "text-sm"
+              )}>
+                {formatStockQuantity(stockValue)}
+              </span>
+              
+              {isAggregatedTotal && (
+                <span className="text-[9px] text-blue-600 font-bold bg-blue-200/50 px-1 py-0.5 rounded">Σ</span>
+              )}
+            </div>
           </td>
         );
 
@@ -2974,9 +2995,9 @@ export default function CategorysPage() {
             />
           </div>
 
-          {/* Quick Filter Pills */}
+          {/* Needs Attention Filters */}
           <div className="px-3 md:px-4 lg:px-6 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-medium text-gray-500 mr-1">Quick filters:</span>
+            <span className="text-xs font-medium text-gray-600 mr-1">Needs attention:</span>
             <button
               onClick={() => toggleQuickFilter('out-of-stock')}
               className={cn(
@@ -3009,6 +3030,17 @@ export default function CategorysPage() {
               )}
             >
               No location ({quickFilterCounts['no-location']})
+            </button>
+            <button
+              onClick={() => toggleQuickFilter('missing-sku')}
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium transition-all",
+                activeQuickFilters.includes('missing-sku')
+                  ? "bg-yellow-100 text-yellow-700 border border-yellow-300 shadow-sm"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              )}
+            >
+              Missing SKU ({quickFilterCounts['missing-sku']})
             </button>
             <button
               onClick={() => toggleQuickFilter('has-variants')}
@@ -3199,15 +3231,40 @@ export default function CategorysPage() {
                   </div>
                 ) : productViewMode === 'table' ? (
                   <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                    {/* Bulk Action Bar */}
+                    <BulkActionBar
+                      selectedCount={selectedProductIds.size}
+                      onUpdateStock={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkAdjustStock();
+                        }
+                      }}
+                      onAssignLocation={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkTransferStock();
+                        }
+                      }}
+                      onExport={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkExport();
+                        }
+                      }}
+                      onArchive={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkArchive();
+                        }
+                      }}
+                      onClearSelection={() => setSelectedProductIds(new Set())}
+                    />
                     <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                      <table className={cn("w-full table-auto border-collapse", !isMobile && "min-w-[640px]")}>
+                      <table className={cn("w-full table-fixed border-collapse", !isMobile && "min-w-[640px]")}>
                         <thead className="bg-gray-50 sticky top-0 z-10 border-b border-gray-300">
                           {/* Column Headers */}
                           <tr>
                             <th 
                               className={cn(
-                                "text-center w-12 border-r border-gray-300",
-                                "px-3 py-3"
+                                "text-center w-12 border-r border-gray-300 sticky left-0 z-20 bg-gray-50",
+                                compactMode ? "px-2 py-1.5" : "px-3 py-2"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -3270,18 +3327,18 @@ export default function CategorysPage() {
                                   setHoveredProductGroupId(null);
                                 }}
                                 className={cn(
-                                  'group transition-all duration-200 relative bg-white',
+                                  'group transition-all duration-200 relative cursor-pointer',
+                                  index % 2 === 0 ? "bg-white" : "bg-gray-50/50",
                                   hoveredImageProductId === product.id && 'z-50',
-                                  hoveredProductGroupId === product.id && 'bg-gray-50',
-                                  'hover:bg-gray-50',
-                                  'cursor-pointer'
+                                  hoveredProductGroupId === product.id && 'bg-blue-50/50',
+                                  'hover:bg-blue-50/50'
                                 )}
                               >
-                                {/* Selection checkbox */}
+                                {/* Selection checkbox - sticky */}
                                 <td 
                                   className={cn(
-                                    "text-center w-12 relative z-10 border-r border-gray-300",
-                                    "px-3 py-2"
+                                    "text-center w-12 relative z-10 border-r border-gray-300 sticky left-0 bg-inherit",
+                                    compactMode ? "px-2 py-1" : "px-3 py-1.5"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -3347,25 +3404,23 @@ export default function CategorysPage() {
                                             'hover:bg-gray-50',
                                             'cursor-pointer'
                                           )}
+                                          style={{
+                                            backgroundImage: 'linear-gradient(to right, rgb(209, 213, 219) 0px, rgb(209, 213, 219) 1px, transparent 1px)',
+                                            backgroundPosition: 'left center',
+                                            backgroundSize: '1px 100%',
+                                            backgroundRepeat: 'no-repeat'
+                                          }}
                                         >
-                                          {/* Continuous vertical line - connects parent to last child */}
-                                          <td 
-                                            className="absolute left-8 top-0 bottom-0 w-px bg-gray-300"
-                                            style={{ zIndex: 0 }}
-                                          />
-                                          
-                                          {/* Empty chevron cell for alignment */}
-                                          <td 
-                                            className="w-8 px-2 border-r border-gray-300"
-                                          />
-                                          
-                                          {/* Empty checkbox cell for alignment */}
+                                          {/* Render checkbox cell - empty for variants but must be present for column alignment */}
                                           <td 
                                             className={cn(
-                                              "w-12 border-r border-gray-300",
+                                              "text-center w-12 relative z-10 border-r border-gray-300",
                                               "px-3 py-2"
                                             )}
-                                          />
+                                          >
+                                            {/* Non-breaking space to ensure cell maintains width */}
+                                            &nbsp;
+                                          </td>
                                           
                                           {/* Render columns in order for variants */}
                                           {getOrderedVisibleColumns.map(columnId => 
