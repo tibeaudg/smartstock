@@ -340,7 +340,7 @@ export function MultiIntentSearch({
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onKeyDown={handleKeyDown}
-          className="pl-10 pr-10 h-9 text-sm bg-gray-50"
+          className="pl-10 pr-10 h-10 sm:h-9 text-sm bg-gray-50 min-h-[44px] sm:min-h-0 touch-manipulation"
         />
         {value && (
           <button
