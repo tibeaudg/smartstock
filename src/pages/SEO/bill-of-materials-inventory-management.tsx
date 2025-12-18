@@ -21,11 +21,24 @@ import {
   Database
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function BillOfMaterialsInventoryManagement() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
+  // Get real customer data for BOM inventory management
+  const relevantCaseStudies = getRelevantCaseStudies('BOM inventory');
+  const relevantTestimonials = getRelevantTestimonials('BOM');
+  const metrics = getProprietaryMetrics('BOM inventory');
 
   const faqData = [
     {
@@ -103,8 +116,28 @@ export default function BillOfMaterialsInventoryManagement() {
         title="BOM Inventory Management 2025 | Integrated System | StockFlow"
         description="Integrated bill of materials inventory management tracks components and finished goods in one system. Calculate material requirements automatically, prevent production delays, and optimize purchasing. Free plan available."
         keywords="bill of materials inventory management, bom inventory management, inventory management with bill of materials, bom and inventory management, bill of materials stock management, manufacturing inventory with bom, production inventory management, assembly inventory with bom, integrated bom inventory, stockflow, stock flow"
-        url="https://www.stockflow.be/bill-of-materials-inventory-management"
+        url="https://www.stockflowsystems.com/bill-of-materials-inventory-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "8 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in production delays",
+          keyMetric: "Integrated BOM and inventory",
+          feature: "BOM Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Hero Section */}
       <section className="py-16 px-4 bg-white">
@@ -275,7 +308,7 @@ export default function BillOfMaterialsInventoryManagement() {
           ],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/bill-of-materials-inventory-management"
+            "@id": "https://www.stockflowsystems.com/bill-of-materials-inventory-management"
           }
         },
         {
@@ -292,14 +325,14 @@ export default function BillOfMaterialsInventoryManagement() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/bill-of-materials-inventory-management"
+            "@id": "https://www.stockflowsystems.com/bill-of-materials-inventory-management"
           }
         }
       ]} />

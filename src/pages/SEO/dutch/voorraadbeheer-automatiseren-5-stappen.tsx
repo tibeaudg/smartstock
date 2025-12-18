@@ -131,7 +131,7 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
       "@type": "Article",
       "headline": "Voorraadbeheer Automatiseren in 5 Stappen 2025",
       "description": "Leer hoe je voorraadbeheer automatiseert in 5 eenvoudige stappen. Complete gids met praktische tips. Bespaar 70% tijd, 25% kosten.",
-      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "image": "https://www.stockflowsystems.com/Inventory-Management.png",
       "author": {
         "@type": "Organization",
         "name": "StockFlow"
@@ -141,14 +141,14 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
+          "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
       "datePublished": "2024-01-01",
       "dateModified": new Date().toISOString().split('T')[0],
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
+        "@id": "https://www.stockflowsystems.com/voorraadbeheer-automatiseren-5-stappen"
       },
       "inLanguage": "nl"
     },
@@ -172,13 +172,13 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://www.stockflow.be"
+          "item": "https://www.stockflowsystems.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Voorraadbeheer Automatiseren",
-          "item": "https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
+          "item": "https://www.stockflowsystems.com/voorraadbeheer-automatiseren-5-stappen"
         }
       ]
     }
@@ -195,7 +195,7 @@ export default function VoorraadbeheerAutomatiseren5Stappen() {
         title="Voorraadbeheer Automatiseren in 5 Stappen 2025 | StockFlow"
         description="Leer hoe je voorraadbeheer automatiseert in 5 eenvoudige stappen. Complete gids met praktische tips. Bespaar 70% tijd, 25% kosten. Start gratis vandaag - geen creditcard vereist."
         keywords="voorraadbeheer automatiseren, voorraad automatiseren stappen, voorraad software workflow, stockflow automatisering"
-        url="https://www.stockflow.be/voorraadbeheer-automatiseren-5-stappen"
+        url="https://www.stockflowsystems.com/voorraadbeheer-automatiseren-5-stappen"
         locale="nl"
         structuredData={structuredData}
       />

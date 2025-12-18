@@ -1,0 +1,5 @@
+Directive,Rule
+Language,Every new page component must include a language check. No mixing NL/EN strings.
+Hierarchy,Reject any commit missing a unique H1 or containing multiple H1s.
+Metadata,Every page export must include a metadata object with SEO-optimized titles (< 60 chars) and descriptions (< 160 chars).
+Schema,All feature pages must trigger a check for the existence of SoftwareApplication JSON-LD.

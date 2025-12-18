@@ -4,9 +4,22 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateFAQSchema, generateSoftwareApplicationSchema } from '@/lib/structuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const BarcodeScanningInventory = () => {
   usePageRefresh();
+  
+  // Get real customer data for barcode scanning feature
+  const relevantCaseStudies = getRelevantCaseStudies('barcode scanning');
+  const relevantTestimonials = getRelevantTestimonials('barcode');
+  const metrics = getProprietaryMetrics('barcode scanning');
   
   const publishedTime = '2024-01-15T00:00:00Z';
   const modifiedTime = new Date().toISOString();
@@ -109,7 +122,7 @@ const BarcodeScanningInventory = () => {
         'Multi-location Support'
       ],
       image: '/dashboard.png',
-      url: 'https://www.stockflow.be/barcode-scanning-inventory',
+      url: 'https://www.stockflowsystems.com/barcode-scanning-inventory',
       rating: {
         value: '4.8',
         count: '200'
@@ -128,7 +141,7 @@ const BarcodeScanningInventory = () => {
         title="Barcode Scanning Inventory 2025 - 99.9% Accuracy, 10x Faster | StockFlow"
         description="Barcode scanning for inventory management 2025. Mobile scanner app works with smartphone cameras. 99.9% accuracy, 10x faster than manual entry. Real-time updates. Free plan available. Start free trial - no credit card required."
         keywords={expandedKeywords}
-        url="https://www.stockflow.be/barcode-scanning-inventory"
+        url="https://www.stockflowsystems.com/barcode-scanning-inventory"
         locale="en"
         category="Features"
         publishedTime={publishedTime}
@@ -136,6 +149,26 @@ const BarcodeScanningInventory = () => {
       />
 
       <StructuredData data={structuredData} />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "90% reduction in errors",
+          keyMetric: "99.9% accuracy",
+          feature: "Barcode Scanning"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none">
@@ -185,6 +218,14 @@ const BarcodeScanningInventory = () => {
           </section>
         </article>
       </div>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 };

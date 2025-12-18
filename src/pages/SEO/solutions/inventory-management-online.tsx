@@ -20,10 +20,24 @@ import {
 
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function InventoryManagementOnline() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('online inventory');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('online inventory');
   
   const faqData = [
     {
@@ -212,8 +226,28 @@ export default function InventoryManagementOnline() {
         title="Inventory Management Online 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management online, online inventory management, cloud inventory management, web-based inventory, online inventory system, inventory management online software, online inventory tracking, cloud inventory software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-online"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-online"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "Cloud-based real-time tracking",
+          feature: "Online Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* What is Inventory Management Online Section */}
       <section id="what-is" className="py-16 px-4 bg-white">
@@ -667,7 +701,7 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
           "@type": "Article",
           "headline": "Inventory Management Online - Complete Guide 2025",
           "description": "Complete guide to online inventory management. Learn how cloud-based software tracks stock levels, manages orders, and streamlines operations in real-time. Discover multi-channel integration and automation capabilities.",
-          "image": "https://www.stockflow.be/inventory-management-online.png",
+          "image": "https://www.stockflowsystems.com/inventory-management-online.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -677,14 +711,14 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-06",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-online"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-management-online"
           },
           "keywords": "online inventory management, cloud inventory management, inventory management online"
         },
@@ -703,15 +737,15 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/solutions/inventory-management-online", 
+          "@id": "https://www.stockflowsystems.com/solutions/inventory-management-online", 
           "name": "Inventory Management Online",
           "description": "Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE now - no credit card required!",
-          "url": "https://www.stockflow.be/inventory-management-online",
+          "url": "https://www.stockflowsystems.com/inventory-management-online",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
@@ -722,13 +756,13 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Inventory Management Online",
-                "item": "https://www.stockflow.be/inventory-management-online"
+                "item": "https://www.stockflowsystems.com/inventory-management-online"
               }
             ]
           }
@@ -775,21 +809,21 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+          "screenshot": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-online"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-management-online"
           },
           "featureList": [
             "Real-time inventory tracking online",
@@ -800,10 +834,10 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
             "Mobile app",
             "Reporting and analytics"
           ],
-          "downloadUrl": "https://www.stockflow.be/auth",
+          "downloadUrl": "https://www.stockflowsystems.com/auth",
           "softwareHelp": {
             "@type": "CreativeWork",
-            "url": "https://www.stockflow.be/contact"
+            "url": "https://www.stockflowsystems.com/contact"
           }
         },
         ...testimonials.map((testimonial) => ({
@@ -827,6 +861,13 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
         }))
       ]} />
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

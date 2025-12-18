@@ -20,11 +20,24 @@ import {
   DollarSign
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryManagementSoftwareCloudBased() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('cloud inventory');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('cloud inventory');
 
   const faqData = [
     {
@@ -149,7 +162,7 @@ export default function InventoryManagementSoftwareCloudBased() {
         title="Cloud-Based Inventory Management Software 2025 | StockFlow"
         description="Discover cloud-based inventory management software. Access your inventory from anywhere, real-time synchronization, automatic backups, and mobile access. Free plan for up to 100 products. Start free trial."
         keywords="cloud-based inventory management software, cloud inventory management, cloud inventory software, cloud inventory system, online inventory management software, web-based inventory software, cloud stock management, saas inventory management, cloud inventory solution, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-software-cloud-based"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-software-cloud-based"
       />
 
       {/* Hero Section */}

@@ -68,7 +68,7 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
       ];
       config.industries = [
         '/industries/contractor-inventory-management',
-        '/industries/warehouse-inventory-management',
+        '/warehouse-inventory-management',
         '/industries/retail-inventory-management',
       ];
       break;
@@ -80,7 +80,7 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
       ];
       config.industries = [
         '/industries/contractor-inventory-management',
-        '/industries/warehouse-inventory-management',
+        '/warehouse-inventory-management',
         '/industries/medical-inventory-management',
         '/industries/education-inventory-management',
       ];
@@ -92,7 +92,7 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
       ];
       config.industries = [
         '/industries/contractor-inventory-management',
-        '/industries/warehouse-inventory-management',
+        '/warehouse-inventory-management',
       ];
       break;
     

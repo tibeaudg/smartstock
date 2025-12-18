@@ -23,6 +23,14 @@ import {
   Truck
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const features = [
   {
@@ -211,13 +219,18 @@ const faqData = [
 ];
 
 export default function BarcodingPage() {
+  // Get real customer data for barcoding feature
+  const relevantCaseStudies = getRelevantCaseStudies('barcoding');
+  const relevantTestimonials = getRelevantTestimonials('barcode');
+  const metrics = getProprietaryMetrics('barcoding');
+  
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'StockFlow Barcoding',
     description:
       'StockFlow Barcoding is a browser-based barcode scanning solution for real-time inventory control, omni-channel fulfillment, and warehouse accuracy.',
-    url: 'https://www.stockflow.be/barcoding',
+    url: 'https://www.stockflowsystems.com/barcoding',
     applicationCategory: 'BusinessApplication',
     operatingSystem: ['iOS', 'Android', 'Windows', 'macOS'],
     featureList: features.map((feature) => feature.title),
@@ -231,7 +244,7 @@ export default function BarcodingPage() {
       '@type': 'UseAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://app.stockflow.be/barcoding'
+        urlTemplate: 'https://app.stockflowsystems.com/barcoding'
       }
     }
   };
@@ -247,7 +260,7 @@ export default function BarcodingPage() {
         title="Barcoding for Inventory Management 2025 - 99.7% Accuracy, 5x Faster | StockFlow"
         description="Implement barcoding for inventory management 2025. Generate, print, scan barcodes with smartphone. Achieve 99.7% accuracy, 5x faster than manual entry. Free plan available. Start free trial - no credit card required."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
-        url="https://www.stockflow.be/barcoding"
+        url="https://www.stockflowsystems.com/barcoding"
         structuredData={structuredData}
       />
       <StructuredData data={[structuredData, {
@@ -490,7 +503,7 @@ export default function BarcodingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-indigo-700 hover:bg-indigo-100" asChild>
-              <a href="https://app.stockflow.be/barcoding" target="_blank" rel="noopener noreferrer">
+              <a href="https://app.stockflowsystems.com/barcoding" target="_blank" rel="noopener noreferrer">
                 Start Scanning Now
               </a>
             </Button>
@@ -500,7 +513,7 @@ export default function BarcodingPage() {
               className="border-white text-white hover:bg-white/10"
               asChild
             >
-              <a href="https://www.stockflow.be/contact" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.stockflowsystems.com/contact" target="_blank" rel="noopener noreferrer">
                 Book a Demo
               </a>
             </Button>
@@ -508,6 +521,13 @@ export default function BarcodingPage() {
         </div>
       </div>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

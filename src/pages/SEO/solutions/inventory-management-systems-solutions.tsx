@@ -240,7 +240,7 @@ export default function InventoryManagementSystemsSolutions() {
         title="Inventory Management Systems Solutions 2025 | Complete Systems | StockFlow"
         description="Get complete inventory management systems solutions. Real-time tracking, multi-location support, barcode scanning, automated alerts. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management systems solutions, inventory systems solutions, inventory management system, inventory management solutions, inventory system software, stock management systems, inventory tracking systems, inventory management software solutions, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-systems-solutions"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-systems-solutions"
       />
 
 
@@ -634,21 +634,21 @@ export default function InventoryManagementSystemsSolutions() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/solutions/inventory-management-systems-solutions",
+          "@id": "https://www.stockflowsystems.com/solutions/inventory-management-systems-solutions",
           "name": "Inventory Management Systems Solutions",
-          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
-          "url": "https://www.stockflow.be/inventory-management-systems-solutions",
+          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
+          "url": "https://www.stockflowsystems.com/inventory-management-systems-solutions",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -657,13 +657,13 @@ export default function InventoryManagementSystemsSolutions() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Inventory Management Systems Solutions",
-                "item": "https://www.stockflow.be/inventory-management-systems-solutions"
+                "item": "https://www.stockflowsystems.com/inventory-management-systems-solutions"
               }
             ]
           }
@@ -713,21 +713,21 @@ export default function InventoryManagementSystemsSolutions() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+          "screenshot": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-systems-solutions"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-management-systems-solutions"
           },
           "award": [
             "Best Inventory Software 2024",
@@ -743,10 +743,10 @@ export default function InventoryManagementSystemsSolutions() {
             "Multi-user collaboration",
             "Enterprise security"
           ],
-          "downloadUrl": "https://www.stockflow.be/auth",
+          "downloadUrl": "https://www.stockflowsystems.com/auth",
           "softwareHelp": {
             "@type": "CreativeWork",
-            "url": "https://www.stockflow.be/contact"
+            "url": "https://www.stockflowsystems.com/contact"
           }
         },
         ...testimonials.map((testimonial) => ({

@@ -24,7 +24,7 @@ const actionSteps = [
   },
   {
     "title": "Reduce waste",
-    "description": "Commit to reducing waste: track expiration dates (prevent expired items), optimize stock levels (prevent overstocking), and monitor usage patterns (identify waste sources). Target 20-30% reduction in waste."
+    "description": "Commit to reducing waste: track expiration dates (prevent expired items), optimize stock levels (prevent overstocking), and monitor usage patterns (identify waste sources). Target  in waste."
   },
   {
     "title": "Automate processes",
@@ -38,7 +38,7 @@ const metrics = [
   },
   {
     "label": "Waste reduction",
-    "detail": "Monitor reduction in waste. Target 20-30% reduction in waste through expiration tracking, optimized stock levels, and better planning. Track waste monthly."
+    "detail": "Monitor reduction in waste. Target  in waste through expiration tracking, optimized stock levels, and better planning. Track waste monthly."
   },
   {
     "label": "Automation progress",
@@ -56,7 +56,7 @@ const faqData = [
   },
   {
     "question": "How do I reduce inventory waste?",
-    "answer": "Reduce by: tracking expiration dates (prevent expired items), optimizing stock levels (prevent overstocking), monitoring usage patterns (identify waste sources), and improving forecasting. Target 20-30% reduction in waste."
+    "answer": "Reduce by: tracking expiration dates (prevent expired items), optimizing stock levels (prevent overstocking), monitoring usage patterns (identify waste sources), and improving forecasting. Target  in waste."
   },
   {
     "question": "What inventory processes should I automate?",
@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-09",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/3-best-inventory-new-years-resolutions"
+      "@id": "https://www.stockflowsystems.com/3-best-inventory-new-years-resolutions"
     }
   }
 ];
@@ -112,7 +112,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
         title={`3 Best Inventory New Year's Resolutions 2025 - Practical Goals | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -129,13 +129,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
               distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
               departments, and secure measurable results without adding administrative overhead.
             </p>
-            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
-              <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
-              </p>
-            </div>
+            
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (
@@ -209,45 +203,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so 3 best inventory new years resolutions decisions never rely on outdated spreadsheets.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when 3 best inventory new years resolutions KPIs drift from plan.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for 3 best inventory new years resolutions progress.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

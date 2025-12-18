@@ -112,7 +112,7 @@ export default function ResourcesPage() {
     "@type": "CollectionPage",
     "name": "Resources - StockFlow",
     "description": "Access all StockFlow resources including blog articles, case studies, ROI calculator, knowledge base, product demos, and software comparisons.",
-    "url": "https://www.stockflow.be/resources",
+    "url": "https://www.stockflowsystems.com/resources",
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": [
@@ -120,37 +120,37 @@ export default function ResourcesPage() {
           "@type": "ListItem",
           "position": 1,
           "name": "Blog",
-          "url": "https://www.stockflow.be/blog"
+          "url": "https://www.stockflowsystems.com/blog"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Case Studies",
-          "url": "https://www.stockflow.be/case-studies"
+          "url": "https://www.stockflowsystems.com/case-studies"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "ROI Calculator",
-          "url": "https://www.stockflow.be/resources#roi-calculator"
+          "url": "https://www.stockflowsystems.com/resources#roi-calculator"
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "Knowledge Base",
-          "url": "https://www.stockflow.be/help-center"
+          "url": "https://www.stockflowsystems.com/help-center"
         },
         {
           "@type": "ListItem",
           "position": 5,
           "name": "Product Demo Videos",
-          "url": "https://www.stockflow.be/resources#demo-videos"
+          "url": "https://www.stockflowsystems.com/resources#demo-videos"
         },
         {
           "@type": "ListItem",
           "position": 6,
           "name": "Comparison Pages",
-          "url": "https://www.stockflow.be/compare-inventory-software"
+          "url": "https://www.stockflowsystems.com/compare-inventory-software"
         }
       ]
     }
@@ -162,7 +162,7 @@ export default function ResourcesPage() {
         title="Resources - StockFlow | Blog, Case Studies, ROI Calculator & More"
         description="Access all StockFlow resources including blog articles, case studies, ROI calculator, knowledge base, product demo videos, and software comparisons."
         keywords="resources, blog, case studies, ROI calculator, knowledge base, demo videos, comparisons, inventory management resources"
-        url="https://www.stockflow.be/resources"
+        url="https://www.stockflowsystems.com/resources"
         structuredData={structuredData}
       />
       <Header 
@@ -641,7 +641,7 @@ export default function ResourcesPage() {
                 Contractors
               </Link>
               <Link 
-                to="/industries/warehouse-inventory-management"
+                to="/warehouse-inventory-management"
                 className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 hover:text-blue-600 transition-colors text-sm font-medium"
               >
                 Warehouses

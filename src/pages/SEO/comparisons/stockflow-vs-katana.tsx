@@ -16,6 +16,14 @@ import {
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const comparisonRows = [
   {
@@ -47,6 +55,11 @@ const comparisonRows = [
 
 export default function StockflowVsKatana() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
 
   const faqData = [
     {
@@ -86,7 +99,7 @@ export default function StockflowVsKatana() {
         title="StockFlow vs Katana 2025 - Save 50% Costs, Faster Setup | StockFlow"
         description="Compare StockFlow vs Katana 2025. StockFlow for e-commerce/distribution, Katana for manufacturing. Completely free forever vs paid, 5-7 day setup vs 30+ days. Save 100% costs, faster implementation. Start free - no credit card required."
         keywords="stockflow vs katana, katana alternative, katana inventory comparison, stockflow comparison, katana vs stockflow, manufacturing inventory software, e-commerce inventory management, katana alternative for sme, stockflow vs katana pricing, inventory software comparison"
-        url="https://www.stockflow.be/stockflow-vs-katana"
+        url="https://www.stockflowsystems.com/stockflow-vs-katana"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
@@ -134,6 +147,27 @@ export default function StockflowVsKatana() {
           </div>
         </div>
       </section>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+        variant="compact"
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -239,6 +273,13 @@ export default function StockflowVsKatana() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
 
       {/* Structured Data */}
       <StructuredData data={[
@@ -257,16 +298,16 @@ export default function StockflowVsKatana() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/stockflow-vs-katana",
+          "@id": "https://www.stockflowsystems.com/stockflow-vs-katana",
           "name": "StockFlow vs Katana Comparison",
           "headline": "StockFlow vs Katana: Which Supports Your Expansion?",
           "description": "Compare StockFlow vs Katana: Free plan vs paid, 2-3 week setup vs longer, e-commerce focus vs manufacturing. See which fits your business.",
-          "url": "https://www.stockflow.be/stockflow-vs-katana",
+          "url": "https://www.stockflowsystems.com/stockflow-vs-katana",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split("T")[0]

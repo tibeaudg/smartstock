@@ -21,10 +21,23 @@ import {
   Target
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function AssetsInventory() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for assets inventory
+  const relevantCaseStudies = getRelevantCaseStudies('asset tracking');
+  const relevantTestimonials = getRelevantTestimonials('asset');
+  const metrics = getProprietaryMetrics('asset tracking');
 
   const faqData = [
     {
@@ -139,7 +152,7 @@ export default function AssetsInventory() {
 
   const benefits = [
     { icon: DollarSign, text: "Reduce asset loss and theft by 40-60%" },
-    { icon: Clock, text: "Save 10+ hours per week on asset audits" },
+    { icon: Clock, text: "Save  on asset audits" },
     { icon: CheckCircle, text: "100% asset visibility across locations" },
     { icon: Shield, text: "Maintain compliance with audit trails" },
     { icon: TrendingUp, text: "Extend asset lifespan with maintenance tracking" },
@@ -160,14 +173,14 @@ export default function AssetsInventory() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/solutions/assets-inventory"
+      "@id": "https://www.stockflowsystems.com/solutions/assets-inventory"
     }
   };
 
@@ -196,11 +209,31 @@ export default function AssetsInventory() {
         title="Assets Inventory Management Software 2025 - Reduce Loss 40-60%, Save Time | StockFlow"
         description="Assets inventory management software 2025 for tracking equipment, vehicles, IT assets. Barcode scanning, maintenance scheduling, location tracking. Reduce loss 40-60%, save 10+ hours/week. Free plan for up to 100 assets. Start free trial - no credit card required."
         keywords="assets inventory, asset inventory management, asset tracking software, equipment inventory, IT asset management, asset management system, fixed asset tracking, asset tracking app, asset inventory software, equipment tracking software, asset management software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/assets-inventory"
+        url="https://www.stockflowsystems.com/solutions/assets-inventory"
         structuredData={[structuredData, faqStructuredData]}
       />
 
       <StructuredData data={[structuredData, faqStructuredData]} />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "40-60% reduction in loss",
+          keyMetric: "Complete asset visibility",
+          feature: "Assets Inventory"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto">
@@ -321,6 +354,13 @@ export default function AssetsInventory() {
           </div>
         </div>
       </section>
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

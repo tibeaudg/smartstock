@@ -243,7 +243,7 @@ export default function InventoryManagementSoftwareOnline() {
         title="Online Inventory Management Software 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Get online inventory management software 2025 with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management software online, online inventory management software, cloud inventory software, web-based inventory software, online inventory system, inventory software online, cloud inventory management, online inventory tracking, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-software-online"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-software-online"
       />
 
 
@@ -566,21 +566,21 @@ export default function InventoryManagementSoftwareOnline() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/solutions/inventory-management-software-online",
+          "@id": "https://www.stockflowsystems.com/solutions/inventory-management-software-online",
           "name": "Online Inventory Management Software 2025",
           "description": "Get online inventory management software with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Free plan for up to 100 products.",
-          "url": "https://www.stockflow.be/solutions/inventory-management-software-online",
+          "url": "https://www.stockflowsystems.com/solutions/inventory-management-software-online",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -589,13 +589,13 @@ export default function InventoryManagementSoftwareOnline() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Online Inventory Management Software",
-                "item": "https://www.stockflow.be/solutions/inventory-management-software-online"
+                "item": "https://www.stockflowsystems.com/solutions/inventory-management-software-online"
               }
             ]
           }
@@ -637,21 +637,21 @@ export default function InventoryManagementSoftwareOnline() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+          "screenshot": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-software-online"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-management-software-online"
           },
           "award": [
             "Best Inventory Software 2024",
@@ -669,10 +669,10 @@ export default function InventoryManagementSoftwareOnline() {
             "Cloud-based access",
             "Mobile app support"
           ],
-          "downloadUrl": "https://www.stockflow.be/auth",
+          "downloadUrl": "https://www.stockflowsystems.com/auth",
           "softwareHelp": {
             "@type": "CreativeWork",
-            "url": "https://www.stockflow.be/contact"
+            "url": "https://www.stockflowsystems.com/contact"
           }
         },
         ...testimonials.map((testimonial) => ({

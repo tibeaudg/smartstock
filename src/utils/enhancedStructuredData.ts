@@ -28,7 +28,7 @@ export interface ListItem {
 /**
  * Generate comprehensive Organization schema
  */
-export function generateOrganizationSchema(baseUrl: string = 'https://www.stockflow.be') {
+export function generateOrganizationSchema(baseUrl: string = 'https://www.stockflowsystems.com') {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -51,13 +51,13 @@ export function generateOrganizationSchema(baseUrl: string = 'https://www.stockf
       {
         "@type": "ContactPoint",
         "contactType": "customer service",
-        "email": "support@stockflow.be",
+        "email": "support@stockflowsystems.com",
         "availableLanguage": ["English", "Dutch", "French"]
       },
       {
         "@type": "ContactPoint",
         "contactType": "sales",
-        "email": "sales@stockflow.be",
+        "email": "sales@stockflowsystems.com",
         "availableLanguage": ["English", "Dutch"]
       }
     ],
@@ -80,7 +80,7 @@ export function generateOrganizationSchema(baseUrl: string = 'https://www.stockf
 /**
  * Generate WebSite schema with SearchAction
  */
-export function generateWebSiteSchema(baseUrl: string = 'https://www.stockflow.be', language: string = 'en') {
+export function generateWebSiteSchema(baseUrl: string = 'https://www.stockflowsystems.com', language: string = 'en') {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -110,7 +110,7 @@ export function generateWebSiteSchema(baseUrl: string = 'https://www.stockflow.b
 /**
  * Generate ImageObject schema for better image SEO
  */
-export function generateImageObjectSchema(image: ImageData, baseUrl: string = 'https://www.stockflow.be') {
+export function generateImageObjectSchema(image: ImageData, baseUrl: string = 'https://www.stockflowsystems.com') {
   const fullUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
   
   return {
@@ -132,7 +132,7 @@ export function generateItemListSchema(
   items: ListItem[],
   name: string,
   description: string,
-  baseUrl: string = 'https://www.stockflow.be',
+  baseUrl: string = 'https://www.stockflowsystems.com',
   pageUrl?: string
 ) {
   return {
@@ -166,7 +166,7 @@ export function generateHowToSchema(
   name: string,
   description: string,
   image?: string,
-  baseUrl: string = 'https://www.stockflow.be',
+  baseUrl: string = 'https://www.stockflowsystems.com',
   pageUrl?: string
 ) {
   return {
@@ -208,7 +208,7 @@ export function generateEnhancedArticleSchema(
   author: string = 'StockFlow',
   datePublished: string,
   dateModified: string,
-  baseUrl: string = 'https://www.stockflow.be',
+  baseUrl: string = 'https://www.stockflowsystems.com',
   pageUrl?: string,
   keywords?: string[]
 ) {
@@ -261,7 +261,7 @@ export function generateServiceSchema(
   name: string,
   description: string,
   areaServed: string = 'Worldwide',
-  baseUrl: string = 'https://www.stockflow.be',
+  baseUrl: string = 'https://www.stockflowsystems.com',
   pageUrl?: string
 ) {
   return {
@@ -307,7 +307,7 @@ export function generateEnhancedSoftwareSchema(
     priceCurrency: string;
     description: string;
   },
-  baseUrl: string = 'https://www.stockflow.be',
+  baseUrl: string = 'https://www.stockflowsystems.com',
   pageUrl?: string,
   screenshot?: string,
   featureList?: string[]
@@ -380,7 +380,7 @@ export function generateComprehensivePageSchema(options: {
   customSchemas?: object[];
 }) {
   const {
-    baseUrl = 'https://www.stockflow.be',
+    baseUrl = 'https://www.stockflowsystems.com',
     pageUrl,
     pageType,
     title,

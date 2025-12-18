@@ -316,7 +316,7 @@ export default function SeoBlogIndexPage() {
     "@type": "CollectionPage",
     "name": "Articles Overview - StockFlow",
     "description": "Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.",
-    "url": "https://www.stockflow.be",
+    "url": "https://www.stockflowsystems.com",
     "mainEntity": {
       "@type": "ItemList",
       "name": "StockFlow Articles",
@@ -325,7 +325,7 @@ export default function SeoBlogIndexPage() {
         "@type": "ListItem",
         "position": index + 1,
         "name": page.title,
-        "url": `https://www.stockflow.be${page.path}`
+        "url": `https://www.stockflowsystems.com${page.path}`
       }))
     }
   };
@@ -340,7 +340,7 @@ export default function SeoBlogIndexPage() {
         title="Articles Overview - StockFlow | Inventory Management Blog"
         description="Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights."
         keywords="inventory management articles, inventory blog, stock management guides, inventory software articles, warehouse management resources"
-        url="https://www.stockflow.be"
+        url="https://www.stockflowsystems.com"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />

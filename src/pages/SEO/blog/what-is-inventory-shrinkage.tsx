@@ -86,13 +86,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-10-29",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/what-is-inventory-shrinkage"
+      "@id": "https://www.stockflowsystems.com/what-is-inventory-shrinkage"
     }
   }
 ];
@@ -118,7 +118,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
         title={`What Is Inventory Shrinkage? Complete Guide 2025 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -234,44 +234,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">How StockFlow Helps Prevent Inventory Shrinkage</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  StockFlow's inventory management software provides the tools and visibility you need to detect, prevent, and reduce shrinkage. Real-time tracking, automated audits, and comprehensive reporting help you maintain accurate inventory records and quickly identify discrepancies.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Shrinkage Prevention
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Real-time tracking</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Track every inventory movement in real-time with <Link to="/barcode-scanning-inventory" className="text-blue-200 hover:text-white underline">barcode scanning</Link> and automated updates. Eliminate manual entry errors that cause shrinkage.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated cycle counts</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Schedule and track <Link to="/cycle-count" className="text-blue-200 hover:text-white underline">cycle counts</Link> automatically. Get alerts when discrepancies are detected so you can investigate immediately.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Complete audit trails</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Every inventory transaction is logged with user, timestamp, and details. Track who accessed what inventory and when, making it easy to identify and prevent theft or errors.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
     </SeoPageLayout>
   );

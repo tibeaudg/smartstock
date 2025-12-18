@@ -160,7 +160,7 @@ export default function InventoryManagementSoftwareWithBillOfMaterials() {
         title="Inventory Management Software with Bill of Materials 2025 | BOM Integration | StockFlow"
         description="Get inventory management software with bill of materials (BOM) integration. Track finished goods and components, calculate material requirements automatically, and manage production planning. Free plan for up to 100 products. Start free trial."
         keywords="inventory management software with bill of materials, inventory management with bom, bom inventory management, inventory software with bill of materials, inventory management system with bom, stock management with bom, inventory tracking with bill of materials, manufacturing inventory software with bom, assembly inventory management, production inventory software, bom inventory management software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-software-with-bill-of-materials"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-software-with-bill-of-materials"
       />
 
       {/* Hero Section */}
@@ -426,14 +426,14 @@ export default function InventoryManagementSoftwareWithBillOfMaterials() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-software-with-bill-of-materials"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-management-software-with-bill-of-materials"
           }
         },
         {

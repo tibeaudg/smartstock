@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/manual-vs-automated-inventory-management"
+      "@id": "https://www.stockflowsystems.com/manual-vs-automated-inventory-management"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoManualVsAutomatedInventoryManagementPage() {
         title={`Manual vs Automated Inventory Management 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -212,45 +212,7 @@ export default function SeoManualVsAutomatedInventoryManagementPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated tracking & scanning</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  StockFlow automates inventory tracking with barcode scanning, real-time updates, and automated alerts. Eliminate manual entry errors and reduce time spent on inventory tasks by 50-70%."
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated reordering</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Set automated reorder points and get instant alerts when inventory reaches critical levels. StockFlow automatically calculates optimal reorder points and prevents stockouts without manual intervention."
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Real-time visibility</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Get instant visibility into inventory levels, movements, and trends. StockFlow provides comprehensive dashboards and real-time data that manual methods can't match, enabling better decision-making."
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

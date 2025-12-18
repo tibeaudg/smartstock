@@ -8,15 +8,11 @@ export interface SidebarContent {
 
 /**
  * Detect page language based on pathname
+ * Only pages in /dutch/ or /nl/ folders should be detected as Dutch
  */
 export function detectPageLanguage(pathname: string): 'nl' | 'en' {
-  // Dutch pages typically contain Dutch words or are in /nl/ routes
-  if (pathname.includes('/nl/') || 
-      pathname.includes('voorraadbeheer') || 
-      pathname.includes('voorraad') ||
-      pathname.includes('stockbeheer') ||
-      pathname.includes('magazijnbeheer') ||
-      pathname.includes('software') && !pathname.includes('best-inventory') && !pathname.includes('inventory-management')) {
+  // Dutch pages are only those explicitly in /dutch/ or /nl/ routes
+  if (pathname.includes('/dutch/') || pathname.includes('/nl/')) {
     return 'nl';
   }
   return 'en';

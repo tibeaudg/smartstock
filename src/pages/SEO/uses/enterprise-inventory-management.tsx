@@ -4,9 +4,22 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
 import { Building, Shield, Zap, TrendingUp, CheckCircle } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function EnterpriseInventoryManagement() {
   usePageRefresh();
+  
+  // Get real customer data for enterprise use case
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management');
   
   const faqData = [
     {
@@ -108,8 +121,28 @@ export default function EnterpriseInventoryManagement() {
         title="Enterprise Inventory Management Software 2025 | Multi-Location Solutions"
         description="Enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, API access, and scalability. Affordable enterprise solution starting at �0.004/product/month."
         keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, multi-location inventory, enterprise inventory features, stockflow, stock flow"
-        url="https://www.stockflow.be/enterprise-inventory-management"
+        url="https://www.stockflowsystems.com/enterprise-inventory-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "30-40% reduction in carrying costs",
+          keyMetric: "Enterprise scalability",
+          feature: "Enterprise Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -197,6 +230,13 @@ export default function EnterpriseInventoryManagement() {
           }))
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

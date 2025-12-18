@@ -24,6 +24,14 @@ import {
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const features = [
   {
@@ -208,13 +216,18 @@ const faqData = [
 ];
 
 export default function AlertsPage() {
+  // Get real customer data for alerts feature
+  const relevantCaseStudies = getRelevantCaseStudies('inventory alerts');
+  const relevantTestimonials = getRelevantTestimonials('alerts');
+  const metrics = getProprietaryMetrics('inventory alerts');
+  
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: 'StockFlow Alerts',
     description:
       'StockFlow Alerts is a browser-based alert solution for real-time inventory control, omni-channel fulfillment, and warehouse accuracy.',
-    url: 'https://www.stockflow.be/alerts',
+    url: 'https://www.stockflowsystems.com/alerts',
     applicationCategory: 'BusinessApplication',
     operatingSystem: ['iOS', 'Android', 'Windows', 'macOS'],
     featureList: features.map((feature) => feature.title),
@@ -228,7 +241,7 @@ export default function AlertsPage() {
       '@type': 'UseAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://app.stockflow.be/alerts'
+        urlTemplate: 'https://app.stockflowsystems.com/alerts'
       }
     }
   };
@@ -244,7 +257,7 @@ export default function AlertsPage() {
         title="Inventory Alerts 2025 - Prevent Stockouts, Save 25% Costs | StockFlow"
         description="Automated inventory alerts 2025 notify you of low stock, reorder points, stockouts. Prevent stockouts, save 25% costs. Real-time notifications via email, SMS, in-app. Free plan available. Start free trial - no credit card required."
         keywords="inventory alerts, stock alerts, low stock alerts, reorder alerts, inventory notifications, stock level alerts, inventory management alerts, automated inventory alerts, stockout alerts, inventory alert system, stockflow"
-        url="https://www.stockflow.be/alerts"
+        url="https://www.stockflowsystems.com/alerts"
         structuredData={structuredData}
       />
       <StructuredData data={[structuredData, {
@@ -259,6 +272,26 @@ export default function AlertsPage() {
           }
         }))
       }]} />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "5 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in stockouts",
+          keyMetric: "99%+ stockout prevention",
+          feature: "Inventory Alerts"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -448,7 +481,7 @@ export default function AlertsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-indigo-700 hover:bg-indigo-100" asChild>
-              <a href="https://app.stockflow.be/scan" target="_blank" rel="noopener noreferrer">
+              <a href="https://app.stockflowsystems.com/scan" target="_blank" rel="noopener noreferrer">
                 Start Scanning Now
               </a>
             </Button>
@@ -458,13 +491,21 @@ export default function AlertsPage() {
               className="border-white text-white hover:bg-white/10"
               asChild
             >
-              <a href="https://www.stockflow.be/contact" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.stockflowsystems.com/contact" target="_blank" rel="noopener noreferrer">
                 Book a Demo
               </a>
             </Button>
           </div>
         </div>
       </div>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

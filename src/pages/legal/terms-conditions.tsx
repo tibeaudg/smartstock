@@ -10,11 +10,11 @@ export default function TermsConditions() {
     "@type": "WebPage",
     "name": "Terms and Conditions - StockFlow",
     "description": "Terms and Conditions for StockFlow inventory management software. Read our terms of service and user agreement.",
-    "url": "https://www.stockflow.be/terms-conditions",
+    "url": "https://www.stockflowsystems.com/terms-conditions",
     "mainEntity": {
       "@type": "Organization",
       "name": "StockFlow",
-      "url": "https://www.stockflow.be"
+      "url": "https://www.stockflowsystems.com"
     }
   };
 
@@ -24,7 +24,7 @@ export default function TermsConditions() {
         title="Terms Conditions 2025 - Terms Conditions 2025"
         description="Find out how terms conditions to optimize your inventory management. Read the guide terms conditions to optimize your inventory management.. Start free today."
         keywords="terms and conditions, terms of service, user agreement, service terms, legal terms, terms of use, user conditions, service agreement, terms of service inventory management, stock management terms, warehouse management terms, inventory software terms, stock software terms, warehouse software terms, business software terms, inventory management agreement, stock management agreement, warehouse management agreement, inventory software agreement, stock software agreement, warehouse software agreement, business software agreement, terms of service business software, user agreement business software, service terms business software, legal terms business software, terms of use business software, user conditions business software, service agreement business software"
-        url="https://www.stockflow.be/terms-conditions"
+        url="https://www.stockflowsystems.com/terms-conditions"
         structuredData={structuredData}
       />
 
@@ -174,9 +174,9 @@ export default function TermsConditions() {
               If you have questions about these terms, please contact us:
             </p>
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
-              <p className="text-gray-700 mb-2"><strong>Email:</strong> legal@stockflow.be</p>
+              <p className="text-gray-700 mb-2"><strong>Email:</strong> legal@stockflowsystems.com</p>
               <p className="text-gray-700 mb-2"><strong>Address:</strong> StockFlow, Belgium</p>
-              <p className="text-gray-700"><strong>Support:</strong> support@stockflow.be</p>
+              <p className="text-gray-700"><strong>Support:</strong> support@stockflowsystems.com</p>
             </div>
 
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mt-8">

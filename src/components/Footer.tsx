@@ -9,10 +9,10 @@ const Footer = () => {
     "@type": "Organization",
     "name": "StockFlow",
     "alternateName": "stockflow",
-    "url": "https://www.stockflow.be",
+    "url": "https://www.stockflowsystems.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://www.stockflow.be/logo.png",
+      "url": "https://www.stockflowsystems.com/logo.png",
       "width": 200,
       "height": 60
     },
@@ -28,13 +28,13 @@ const Footer = () => {
       {
         "@type": "ContactPoint",
         "contactType": "customer service",
-        "email": "support@stockflow.be",
+        "email": "support@stockflowsystems.com",
         "availableLanguage": ["English", "Dutch", "French", "German"]
       },
       {
         "@type": "ContactPoint",
         "contactType": "sales",
-        "email": "sales@stockflow.be",
+        "email": "sales@stockflowsystems.com",
         "availableLanguage": ["English", "Dutch"]
       }
     ],
@@ -148,7 +148,7 @@ const Footer = () => {
 
       {/* Solutions (Dutch) */}
       <div>
-        <h3 className="text-lg font-semibold mb-4">Oplossingen</h3>
+        <h3 className="text-lg font-semibold mb-4">Solutions</h3>
         <div className="space-y-2">
           <Link to="/voorraadbeheer-software" className="block text-gray-400 hover:text-white underline">
             Voorraadbeheer Software
@@ -300,7 +300,7 @@ const Footer = () => {
 
       {/* Dutch Resources */}
       <div>
-        <h3 className="text-lg font-semibold mb-4">Nederlandse Resources</h3>
+        <h3 className="text-lg font-semibold mb-4">Dutch Resources</h3>
         <div className="space-y-2">
           <Link to="/voorraadbeheer-tips" className="block text-gray-400 hover:text-white underline text-sm">
             Voorraadbeheer Tips

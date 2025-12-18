@@ -42,7 +42,7 @@ export default function InventoryOptimization() {
     },
     {
       question: 'What are the benefits of inventory optimization?',
-      answer: 'Benefits include reduced carrying costs, improved cash flow, fewer stockouts, less waste from obsolescence, better customer service, increased profitability, freed warehouse space, and better capital allocation. Optimized inventory also enables businesses to respond more quickly to market changes and customer demands. Studies show that businesses with optimized inventory see 20-30% reduction in carrying costs and 15-25% improvement in cash flow.',
+      answer: 'Benefits include reduced carrying costs, improved cash flow, fewer stockouts, less waste from obsolescence, better customer service, increased profitability, freed warehouse space, and better capital allocation. Optimized inventory also enables businesses to respond more quickly to market changes and customer demands. Studies show that businesses with optimized inventory see  in carrying costs and 15-25% improvement in cash flow.',
     },
     {
       question: 'What tools help with inventory optimization?',
@@ -123,7 +123,7 @@ export default function InventoryOptimization() {
     {
       icon: DollarSign,
       title: 'Reduced Carrying Costs',
-      description: 'Lower inventory levels mean reduced storage, insurance, and financing costs. Businesses typically see 20-30% reduction in carrying costs with optimized inventory.',
+      description: 'Lower inventory levels mean reduced storage, insurance, and financing costs. Businesses typically see  in carrying costs with optimized inventory.',
       stat: '20-30% cost reduction'
     },
     {
@@ -229,7 +229,7 @@ export default function InventoryOptimization() {
         title="Inventory Optimization 2025 - Save 30% Costs, 15-25% Cash Flow | StockFlow"
         description="Master inventory optimization 2025. Reduce costs by 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI-powered tools, best practices. Free plan available. Start free trial - no credit card required."
         keywords="inventory optimization, optimal inventory, stock optimization, inventory balance, inventory efficiency, stock level optimization, inventory management optimization, inventory cost optimization, ABC analysis, demand forecasting, reorder points, safety stock, EOQ, inventory turnover"
-        url="https://www.stockflow.be/glossary/inventory-optimization"
+        url="https://www.stockflowsystems.com/glossary/inventory-optimization"
         publishedTime={pageMetadata.published}
         modifiedTime={pageMetadata.updated}
       />
@@ -241,8 +241,8 @@ export default function InventoryOptimization() {
             '@type': 'DefinedTerm',
             name: 'Inventory Optimization',
             description: 'The process of maintaining optimal inventory levels to balance customer demand satisfaction with cost minimization, avoiding both stockouts and overstock.',
-            inDefinedTermSet: 'https://www.stockflow.be/glossary',
-            url: 'https://www.stockflow.be/glossary/inventory-optimization',
+            inDefinedTermSet: 'https://www.stockflowsystems.com/glossary',
+            url: 'https://www.stockflowsystems.com/glossary/inventory-optimization',
           },
           {
             '@context': 'https://schema.org',
@@ -255,7 +255,7 @@ export default function InventoryOptimization() {
             },
             datePublished: pageMetadata.published,
             dateModified: pageMetadata.updated,
-            image: 'https://www.stockflow.be/Inventory-Management.png',
+            image: 'https://www.stockflowsystems.com/Inventory-Management.png',
             keywords: [
               'inventory optimization',
               'optimal inventory',
@@ -271,12 +271,12 @@ export default function InventoryOptimization() {
               name: 'StockFlow',
               logo: {
                 '@type': 'ImageObject',
-                url: 'https://www.stockflow.be/logo.png'
+                url: 'https://www.stockflowsystems.com/logo.png'
               }
             },
             mainEntityOfPage: {
               '@type': 'WebPage',
-              '@id': 'https://www.stockflow.be/glossary/inventory-optimization'
+              '@id': 'https://www.stockflowsystems.com/glossary/inventory-optimization'
             }
           },
           {
@@ -369,7 +369,7 @@ export default function InventoryOptimization() {
             <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg">
               <h3 className="text-lg font-semibold text-green-900 mb-3">Benefits of Optimization</h3>
               <ul className="space-y-2 text-gray-700">
-                <li>• 20-30% reduction in carrying costs</li>
+                <li>•  in carrying costs</li>
                 <li>• 15-25% improvement in cash flow</li>
                 <li>• 95%+ service level achievement</li>
                 <li>• 30-40% reduction in obsolescence</li>

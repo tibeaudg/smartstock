@@ -1,11 +1,19 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 
 export default function SoftwareStockbeheer() {
   usePageRefresh();
+  const location = useLocation();
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   
   const faqData = [
     {
@@ -62,26 +70,19 @@ export default function SoftwareStockbeheer() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Gratis Software Stockbeheer voor KMO's | StockFlow",
-    url: "https://www.stockflow.be/software-stockbeheer",
-    description: "Eenvoudig software stockbeheer voor kleine bedrijven. Beheer voorraad, leveringen en producten in Ã©Ã©n online dashboard. Gratis te proberen.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Software Stockbeheer", url: "https://www.stockflow.be/software-stockbeheer", position: 2 }
-    ],
-    faqData: faqData,
+    description: "Eenvoudig software stockbeheer voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Gratis te proberen.",
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow Software Stockbeheer",
       description: "Eenvoudig software stockbeheer voor kleine bedrijven. Beheer je voorraad online met real-time inzicht.",
       category: "BusinessApplication",
-      operatingSystem: "Web, iOS, Android",
+      operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "127"
-      },
       features: [
         "Real-time voorraad tracking",
         "Barcode scanning",
@@ -92,8 +93,10 @@ export default function SoftwareStockbeheer() {
         "Mobiele app toegang"
       ],
       image: "https://www.stockflow.be/Inventory-Management.png",
-      url: "https://www.stockflow.be/software-stockbeheer"
-    }
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   return (
@@ -107,7 +110,7 @@ export default function SoftwareStockbeheer() {
         title="Software Stockbeheer 2025 - Gratis Voorraadbeheer Software | StockFlow"
         description="Eenvoudig software stockbeheer voor kleine bedrijven. Real-time tracking, barcode scanning, automatische meldingen. Gratis plan voor tot 100 producten. Start gratis proefperiode."
         keywords="software stockbeheer, stockbeheer software, gratis stockbeheer, voorraadbeheer software, magazijnbeheer software, inventarisatie software, KMO software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/software-stockbeheer"
+        url="https://www.stockflowsystems.com/software-stockbeheer"
         structuredData={structuredData}
       />
 
@@ -324,6 +327,7 @@ export default function SoftwareStockbeheer() {
     </SeoPageLayout>
   );
 }
+
 
 
 

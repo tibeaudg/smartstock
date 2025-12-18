@@ -62,7 +62,7 @@ export default function VendorManagedStock() {
     {
       icon: TrendingUp,
       title: "Reduced Inventory Costs",
-      description: "Vendor managed stock typically reduces inventory carrying costs by 20-30% through optimized stock levels and better turnover."
+      description: "Vendor managed stock reduces inventory carrying costs through optimized stock levels and better turnover."
     },
     {
       icon: Clock,
@@ -123,10 +123,10 @@ export default function VendorManagedStock() {
       faqData={faqData}
     >
       <SEO
-        title="Vendor Managed Stock 2025 - Reduce Costs 20-30%, Save Time | StockFlow"
-        description="Discover vendor managed stock (VMS) inventory management 2025. Learn how vendor managed stock works, benefits, implementation strategies. Reduce costs 20-30%, save time. Start free trial - no credit card required."
+        title="Vendor Managed Stock 2025 - Complete Guide | StockFlow"
+        description="Discover vendor managed stock (VMS) inventory management 2025. Learn how vendor managed stock works, benefits, implementation strategies. Start free trial - no credit card required."
         keywords="vendor managed stock, vms inventory, vendor managed stock meaning, vendor managed inventory, vms system, vendor managed stock benefits, vendor managed stock implementation, vendor stock management, stockflow, stock flow"
-        url="https://www.stockflow.be/glossary/vendor-managed-stock"
+        url="https://www.stockflowsystems.com/glossary/vendor-managed-stock"
       />
 
       {/* Hero Section */}
@@ -316,7 +316,7 @@ export default function VendorManagedStock() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",

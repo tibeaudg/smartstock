@@ -736,7 +736,7 @@ export default function AdminPage() {
         title="Admin Dashboard | stockflow"
         description="Beheer gebruikers en instellingen in het admin dashboard van stockflow."
         keywords="admin dashboard, voorraadbeheer admin, gebruikersbeheer, stockflow"
-        url="https://www.stockflow.be/admin"
+        url="https://www.stockflowsystems.com/admin"
       />
       <Layout 
         currentTab="admin"

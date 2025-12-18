@@ -162,7 +162,7 @@ export default function WatIsVoorraadbeheerSoftware() {
         title="Wat Is Voorraadbeheer Software 2025: Complete Gids | StockFlow"
         description="Ontdek wat voorraadbeheer software is en hoe het werkt. Complete gids met uitleg. Bespaar 70% tijd, 25% kosten. GRATIS plan beschikbaar. Start gratis - geen creditcard vereist."
         keywords="wat is voorraadbeheer software, voorraadbeheer software uitleg, hoe werkt voorraadbeheer, wat is voorraadbeheer, stockbeheer software, stockbeheer programma, programma stockbeheer, digitaal voorraadbeheer, automatisch voorraadbeheer, geautomatiseerd voorraadbeheer, voorraadbeheer bijhouden, werken met voorraadbeheer, voorraadbeheer software kiezen, voorraadbeheer belangrijk, stockbeheer betekenis, stockbeheer definitie, voorraadbeheer programma, software stockbeheer, voorraadbeheer in kleinhandel, stock beheer, stock programma, voorraadbeheer software gratis, software voor voorraadbeheer, voorraadbeheer voorbeeld, voorraadbeheer webshop, inventory management software, voorraad software, voorraadbeheer systeem"
-        url="https://www.stockflow.be/wat-is-voorraadbeheer-software"
+        url="https://www.stockflowsystems.com/wat-is-voorraadbeheer-software"
       />
 
       {/* Introduction */}
@@ -990,14 +990,14 @@ export default function WatIsVoorraadbeheerSoftware() {
             "name": "stockflow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/wat-is-voorraadbeheer-software"
+            "@id": "https://www.stockflowsystems.com/wat-is-voorraadbeheer-software"
           }
         }
       ]} />

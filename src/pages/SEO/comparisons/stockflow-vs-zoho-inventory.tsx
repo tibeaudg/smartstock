@@ -7,9 +7,22 @@ import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsZohoInventory() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
   const [roiInputs, setRoiInputs] = useState({
     inventoryValue: '',
     hoursPerWeek: '',
@@ -74,7 +87,7 @@ export default function StockFlowVsZohoInventory() {
         title="StockFlow vs Zoho Inventory 2025 - Save €600/Year, EU Hosting | StockFlow"
         description="Compare StockFlow vs Zoho Inventory 2025. Completely free forever vs $59/month, save 100% costs. European data hosting, GDPR compliance, simpler interface. Better for European SMEs. Start free - no credit card required."
         keywords="stockflow vs zoho inventory, zoho inventory alternative, inventory management software, cloud inventory, zoho inventory comparison, stockflow vs zoho, best zoho alternative, zoho inventory vs stockflow, european inventory software, gdpr compliant inventory"
-        url="https://www.stockflow.be/stockflow-vs-zoho-inventory"
+        url="https://www.stockflowsystems.com/stockflow-vs-zoho-inventory"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
@@ -98,6 +111,27 @@ export default function StockFlowVsZohoInventory() {
           </div>
         </div>
       </section>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+        variant="compact"
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -302,6 +336,14 @@ export default function StockFlowVsZohoInventory() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
+
       {/* Structured Data */}
       <StructuredData data={[
         {
@@ -319,16 +361,16 @@ export default function StockFlowVsZohoInventory() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/stockflow-vs-zoho-inventory",
+          "@id": "https://www.stockflowsystems.com/stockflow-vs-zoho-inventory",
           "name": "StockFlow vs Zoho Inventory Comparison",
           "headline": "StockFlow vs Zoho Inventory: The Better Choice for European SMEs",
           "description": "Compare StockFlow vs Zoho Inventory: Free plan vs $59/month, European hosting, simpler interface. See detailed comparison.",
-          "url": "https://www.stockflow.be/stockflow-vs-zoho-inventory",
+          "url": "https://www.stockflowsystems.com/stockflow-vs-zoho-inventory",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split("T")[0]

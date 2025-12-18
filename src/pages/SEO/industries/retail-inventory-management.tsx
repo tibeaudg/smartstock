@@ -2,7 +2,9 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   BarChart3,
   CheckCircle,
@@ -17,10 +19,32 @@ import {
   AlertTriangle,
   Smartphone
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function RetailInventoryManagement() {
   // Use the page refresh hook
   usePageRefresh();
+  const location = useLocation();
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
+
+  // Get real customer data for retail industry
+  const relevantCaseStudies = getRelevantCaseStudies('retail inventory', 'Retail');
+  const relevantTestimonials = getRelevantTestimonials('retail');
+  const metrics = getProprietaryMetrics('retail inventory');
+  const benchmarks = getIndustryBenchmarks('Retail');
 
   const faqData = [
     {
@@ -46,15 +70,12 @@ export default function RetailInventoryManagement() {
   ];
 
   // Generate structured data
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Retail Inventory Management Software for Small Shops",
-    url: "https://www.stockflow.be/retail-inventory-management",
     description: "Complete retail inventory management solution for small shops. Track stock, prevent stockouts, and boost profits with real-time inventory control.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Retail Inventory Management", url: "https://www.stockflow.be/retail-inventory-management", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Retail Inventory Management",
       description: "Complete retail inventory management solution for small shops. Track stock, prevent stockouts, and boost profits with real-time inventory control.",
@@ -62,10 +83,6 @@ export default function RetailInventoryManagement() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "200"
-      },
       features: [
         "Real-time stock tracking",
         "Barcode scanning",
@@ -74,9 +91,11 @@ export default function RetailInventoryManagement() {
         "Supplier management",
         "Mobile access"
       ],
-      image: "https://www.stockflow.be/Inventory-Management.png",
-      url: "https://www.stockflow.be/retail-inventory-management"
-    }
+      image: "https://www.stockflowsystems.com/Inventory-Management.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -118,7 +137,7 @@ export default function RetailInventoryManagement() {
     "Eliminate manual counting errors",
     "Improve cash flow management",
     "Increase customer satisfaction",
-    "Save 10+ hours per week on inventory tasks",
+    "Save  on inventory tasks",
     "Make data-driven purchasing decisions",
     "Scale your business efficiently"
   ];
@@ -182,7 +201,7 @@ export default function RetailInventoryManagement() {
       title: "Seasonal Demand Management",
       description: "Track historical sales data to predict seasonal demand patterns. Prepare for busy periods by optimizing stock levels and identifying trending products.",
       icon: TrendingUp,
-      metrics: "35% reduction in stockouts during peak seasons"
+      metrics: " in stockouts during peak seasons"
     },
     {
       title: "POS Integration",
@@ -200,7 +219,7 @@ export default function RetailInventoryManagement() {
       title: "E-commerce Integration",
       description: "Sync inventory with online stores and marketplaces. Prevent overselling and ensure accurate stock availability across all sales channels.",
       icon: Package,
-      metrics: "95% reduction in overselling incidents"
+      metrics: " in overselling incidents"
     },
     {
       title: "Inventory Audits",
@@ -210,7 +229,7 @@ export default function RetailInventoryManagement() {
     }
   ];
 
-  const metrics = [
+  const metricsData = [
     {
       value: "35%",
       label: "Reduction in Stockouts",
@@ -277,9 +296,35 @@ export default function RetailInventoryManagement() {
         title="Retail Inventory Management Software | StockFlow"
         description="Retail inventory software for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. StockFlow is completely free forever - all features included."
         keywords="retail inventory management, small retail shop software, retail stock management, shop inventory system, retail inventory tracking, small business inventory, retail POS integration, inventory management for retailers, retail stock control, shop management software, retail inventory software, small shop inventory, retail inventory solution, shop stock tracking, retail inventory app"
-        url="https://www.stockflow.be/retail-inventory-management"
+        url="https://www.stockflowsystems.com/retail-inventory-management"
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Retail"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "6 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Retail Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -307,7 +352,7 @@ export default function RetailInventoryManagement() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metrics.map((metric, index) => (
+            {metricsData.map((metric, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>

@@ -31,12 +31,12 @@ import { Link } from 'react-router-dom';
 
 const structuredData = generateComprehensiveStructuredData('software', {
   title: 'StockFlow - Completely Free Inventory Management',
-  url: 'https://www.stockflow.be/pricing',
+  url: 'https://www.stockflowsystems.com/pricing',
   description:
     'StockFlow is completely free forever. All features included - unlimited products, users, branches, and orders. No credit card required, no subscriptions, no hidden fees.',
   breadcrumbs: [
-    { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
-    { name: 'Pricing', url: 'https://www.stockflow.be/pricing', position: 2 }
+    { name: 'Home', url: 'https://www.stockflowsystems.com', position: 1 },
+    { name: 'Pricing', url: 'https://www.stockflowsystems.com/pricing', position: 2 }
   ],
   softwareData: {
     name: 'StockFlow - Inventory Management',
@@ -58,7 +58,7 @@ const structuredData = generateComprehensiveStructuredData('software', {
       'Multi-location support',
       'Unlimited everything'
     ],
-    url: 'https://www.stockflow.be/pricing'
+    url: 'https://www.stockflowsystems.com/pricing'
   }
 });
 
@@ -124,7 +124,7 @@ export default function PricingPage() {
         title="Completely Free Inventory Software | StockFlow"
         description="StockFlow is completely free forever. All features included - unlimited products, users, branches, and orders. No credit card required, no subscriptions, no hidden fees. Start free today!"
         keywords="free inventory software, free inventory management, stockflow free, completely free inventory software, no cost inventory management"
-        url="https://www.stockflow.be/pricing"
+        url="https://www.stockflowsystems.com/pricing"
         structuredData={structuredData}
       />
       <Header 

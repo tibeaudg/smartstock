@@ -2,10 +2,31 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function OnlineInventoryManagement() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data for online inventory management
+  const relevantCaseStudies = getRelevantCaseStudies('online inventory');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('online inventory');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   
   const faqData = [
     {
@@ -46,7 +67,7 @@ export default function OnlineInventoryManagement() {
     },
     {
       question: "How does online inventory management reduce manual work?",
-      answer: "Online inventory management reduces manual work by: automating reorder points and alerts, real-time updates eliminating manual data entry, barcode scanning for instant updates, automatic synchronization between systems, and automated reporting. Businesses typically save 10-15 hours per week on inventory tasks."
+      answer: "Online inventory management reduces manual work by: automating reorder points and alerts, real-time updates eliminating manual data entry, barcode scanning for instant updates, automatic synchronization between systems, and automated reporting. Businesses typically save 10- on inventory tasks."
     },
     {
       question: "Can I access online inventory management from my mobile phone?",
@@ -66,26 +87,19 @@ export default function OnlineInventoryManagement() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Best Inventory Management Online for Small Businesses | StockFlow",
-    url: "https://www.stockflow.be/online-inventory-management",
     description: "Simple inventory management online for small businesses. Manage stock, suppliers, and inventory in one web app. Free to try.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Inventory Management Online", url: "https://www.stockflow.be/online-inventory-management", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow Online Inventory Management",
       description: "Simple inventory management online for small businesses. Manage stock in one web app.",
       category: "BusinessApplication",
-      operatingSystem: "Web, iOS, Android",
+      operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "127"
-      },
       features: [
         "Real-time inventory tracking online",
         "Barcode scanning",
@@ -95,9 +109,11 @@ export default function OnlineInventoryManagement() {
         "Mobile app",
         "Reporting and analytics"
       ],
-      image: "https://www.stockflow.be/Inventory-Management.png",
-      url: "https://www.stockflow.be/online-inventory-management"
-    }
+      image: "https://www.stockflowsystems.com/Inventory-Management.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   return (
@@ -111,9 +127,29 @@ export default function OnlineInventoryManagement() {
         title="Online Inventory Management 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management online, online inventory management, inventory management software online, online inventory management software, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system, cloud inventory software, online inventory system, web inventory management, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/online-inventory-management"
+        url="https://www.stockflowsystems.com/solutions/online-inventory-management"
         structuredData={structuredData}
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "Cloud-based real-time tracking",
+          feature: "Online Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -293,6 +329,13 @@ export default function OnlineInventoryManagement() {
 
 
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

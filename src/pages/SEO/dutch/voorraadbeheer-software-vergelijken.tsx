@@ -114,7 +114,7 @@ export default function VoorraadbeheerSoftwareVergelijken() {
         title="Voorraadbeheer Software Vergelijken 2025 - Kies de Beste | StockFlow"
         description="Vergelijk voorraadbeheer software 2025. Onafhankelijke vergelijking met prijzen, features en reviews. StockFlow vs Exact vs Visma. Kies de beste voor jouw bedrijf. Start gratis vandaag - geen creditcard vereist."
         keywords="voorraadbeheer software vergelijken, software stockbeheer vergelijken, beste voorraadbeheer software, stockbeheer software vergelijken, voorraadbeheer software kiezen, voorraadbeheer software 2025, software voor voorraadbeheer, voorraadbeheersoftware vergelijking, bedrijfssoftware vergelijken, voorraadbeheer app vergelijken, programma voorraadbeheer, software stockbeheer, stockbeheer programma, voorraad app, app voorraadbeheer, beste voorraadbeheer app, voorraadbeheer programma, software stockbeheer 2025, voorraadbeheer software gratis, StockFlow vs Exact, StockFlow vs Visma"
-        url="https://www.stockflow.be/voorraadbeheer-software-vergelijken"
+        url="https://www.stockflowsystems.com/voorraadbeheer-software-vergelijken"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -422,23 +422,23 @@ export default function VoorraadbeheerSoftwareVergelijken() {
           "author": { 
             "@type": "Organization", 
             "name": "stockflow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": { 
             "@type": "Organization", 
             "name": "stockflow", 
             "logo": { 
               "@type": "ImageObject", 
-              "url": "https://www.stockflow.be/logo.png" 
+              "url": "https://www.stockflowsystems.com/logo.png" 
             } 
           },
           "mainEntityOfPage": { 
             "@type": "WebPage", 
-            "@id": "https://www.stockflow.be/voorraadbeheer-software-vergelijken" 
+            "@id": "https://www.stockflowsystems.com/voorraadbeheer-software-vergelijken" 
           },
           "datePublished": "2024-01-15",
           "dateModified": new Date().toISOString().split('T')[0],
-          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
           "articleSection": "Voorraadbeheer",
           "keywords": "voorraadbeheer software vergelijken, software stockbeheer vergelijken, beste voorraadbeheer software, stockbeheer software vergelijken, voorraadbeheer software kiezen, voorraadbeheer software 2025"
         }

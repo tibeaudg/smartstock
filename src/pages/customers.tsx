@@ -29,7 +29,7 @@ export default function CustomersPage() {
     {
       title: 'StockFlow Customer Success Stories',
       description: 'See how Belgian businesses use StockFlow to optimize their inventory management',
-      url: 'https://www.stockflow.be/customers',
+      url: 'https://www.stockflowsystems.com/customers',
       breadcrumbs: breadcrumbs
     }
   );
@@ -146,7 +146,7 @@ export default function CustomersPage() {
         title="StockFlow Customers - Success Stories & Case Studies"
         description="Discover how 500+ Belgian businesses use StockFlow to optimize inventory, reduce waste, and save money. Real customer stories and case studies."
         keywords="stockflow customers, inventory management success stories, Belgian businesses, case studies, testimonials"
-        url="https://www.stockflow.be/customers"
+        url="https://www.stockflowsystems.com/customers"
         structuredData={structuredData}
       />
       

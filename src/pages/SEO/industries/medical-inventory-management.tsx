@@ -2,7 +2,9 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   Stethoscope,
   Shield,
@@ -20,9 +22,31 @@ import {
   FileText,
   Search
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function MedicalInventoryManagement() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data for medical industry
+  const relevantCaseStudies = getRelevantCaseStudies('medical inventory', 'Healthcare');
+  const relevantTestimonials = getRelevantTestimonials('medical');
+  const metrics = getProprietaryMetrics('medical inventory');
+  const benchmarks = getIndustryBenchmarks('Healthcare');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
 
   const faqData = [
     {
@@ -43,7 +67,7 @@ export default function MedicalInventoryManagement() {
     },
     {
       question: "How does medical inventory management reduce expired inventory waste?",
-      answer: "By tracking expiration dates and sending automated alerts, medical inventory software helps facilities use items before they expire. First-in-first-out (FIFO) workflows ensure older items are used first. Facilities typically see 25% reduction in expired inventory waste."
+      answer: "By tracking expiration dates and sending automated alerts, medical inventory software helps facilities use items before they expire. First-in-first-out (FIFO) workflows ensure older items are used first, reducing expired inventory waste."
     },
     {
       question: "What features are essential for medical inventory management?",
@@ -63,15 +87,12 @@ export default function MedicalInventoryManagement() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Medical Inventory Management Software for Healthcare",
-    url: "https://www.stockflow.be/medical-inventory-management",
-    description: "Medical inventory management software for healthcare facilities. Track medical supplies with expiration dates, lot/serial numbers, and FDA compliance. Reduce expired inventory 25%, 99.5% compliance rate.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Medical Inventory Management", url: "https://www.stockflow.be/medical-inventory-management", position: 2 }
-    ],
-    faqData: faqData,
+    description: "Medical inventory management software for healthcare facilities. Track medical supplies with expiration dates, lot/serial numbers, and FDA compliance.",
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Medical Inventory Management",
       description: "Medical inventory management software for healthcare facilities. Track medical supplies with expiration dates, lot/serial numbers, and FDA compliance.",
@@ -79,10 +100,6 @@ export default function MedicalInventoryManagement() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.9",
-        count: "220"
-      },
       features: [
         "Expiration date tracking",
         "Lot/serial number tracing",
@@ -91,9 +108,11 @@ export default function MedicalInventoryManagement() {
         "Temperature monitoring",
         "Regulatory compliance"
       ],
-      image: "https://www.stockflow.be/HealthcareInventory.png",
-      url: "https://www.stockflow.be/medical-inventory-management"
-    }
+      image: "https://www.stockflowsystems.com/HealthcareInventory.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -144,25 +163,25 @@ export default function MedicalInventoryManagement() {
       title: "Medical Device Tracking",
       description: "Track medical devices with full FDA traceability. Monitor device usage, maintenance schedules, and compliance requirements across all departments.",
       icon: Stethoscope,
-      metrics: "99.5% compliance rate with FDA requirements"
+      metrics: "Maintain compliance with FDA requirements"
     },
     {
       title: "Expiration Date Management",
       description: "Prevent expired inventory waste by tracking expiration dates and sending automated alerts. Use FIFO workflows to ensure older items are used first.",
       icon: Calendar,
-      metrics: "25% reduction in expired inventory waste"
+      metrics: "Reduce expired inventory waste"
     },
     {
       title: "Lot/Serial Number Tracing",
       description: "Track lot and serial numbers for complete traceability. Quickly identify and manage recalled items, ensuring patient safety and compliance.",
       icon: Search,
-      metrics: "100% traceability for all medical devices"
+      metrics: "Full traceability for all medical devices"
     },
     {
       title: "Regulatory Compliance",
       description: "Maintain compliance with FDA, HIPAA, and other healthcare regulations. Generate compliance reports and maintain audit-ready documentation.",
       icon: Shield,
-      metrics: "99.5% compliance rate maintained"
+      metrics: "Compliance rate maintained"
     },
     {
       title: "Multi-Location Management",
@@ -178,38 +197,6 @@ export default function MedicalInventoryManagement() {
     }
   ];
 
-  const metrics = [
-    {
-      value: "99.5%",
-      label: "Compliance Rate",
-      description: "Maintain FDA and regulatory compliance"
-    },
-    {
-      value: "25%",
-      label: "Reduction in Expired Inventory",
-      description: "Prevent waste from expired medical supplies"
-    },
-    {
-      value: "100%",
-      label: "Traceability",
-      description: "Full lot/serial number tracking for all devices"
-    },
-    {
-      value: "95%",
-      label: "Faster Recall Response",
-      description: "Instantly identify and track recalled items"
-    },
-    {
-      value: "30%",
-      label: "Time Savings",
-      description: "Automate compliance reporting and tracking"
-    },
-    {
-      value: "99%",
-      label: "Inventory Accuracy",
-      description: "Real-time tracking ensures accurate records"
-    }
-  ];
 
   const testimonials = [
     {
@@ -264,16 +251,42 @@ export default function MedicalInventoryManagement() {
     >
       <SEO
         title="Medical Inventory Management Software | StockFlow"
-        description="Medical inventory management for healthcare. Track medical supplies with expiration dates, lot/serial numbers, FDA compliance. Reduce expired inventory 25%, 99.5% compliance rate."
+        description="Medical inventory management for healthcare. Track medical supplies with expiration dates, lot/serial numbers, FDA compliance."
         keywords="medical inventory management, healthcare inventory software, medical device tracking, hospital inventory management, medical supply tracking, healthcare inventory system, medical inventory software, hospital supply management, medical device inventory, healthcare inventory tracking, medical inventory app, hospital inventory software, medical supply inventory, healthcare inventory solution, medical inventory system"
-        url="https://www.stockflow.be/medical-inventory-management"
+        url="https://www.stockflowsystems.com/medical-inventory-management"
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Healthcare"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "6 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Medical Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
         <p className="text-lg text-slate-900 leading-relaxed mb-6">
-          Track medical supplies and devices with full FDA traceability, expiration date management, and regulatory compliance. Ensure patient safety, prevent expired inventory waste, and maintain 99.5% compliance with healthcare inventory management designed for medical facilities.
+          Track medical supplies and devices with full FDA traceability, expiration date management, and regulatory compliance. Ensure patient safety, prevent expired inventory waste, and maintain compliance with healthcare inventory management designed for medical facilities.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed mb-4">
           <strong>Medical inventory management</strong> is critical for healthcare facilities to ensure patient safety, maintain regulatory compliance, and prevent waste from expired inventory. Unlike general inventory management, <strong>medical inventory management software</strong> includes specialized features like expiration date tracking, lot/serial number tracing, and FDA compliance reporting.
@@ -283,29 +296,6 @@ export default function MedicalInventoryManagement() {
         </p>
       </div>
 
-      {/* Metrics Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-green-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Proven Results for <span className="text-blue-600">Healthcare Facilities</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See the measurable impact medical inventory management has on healthcare operations.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metrics.map((metric, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
-                <p className="text-gray-600">{metric.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Use Cases Section */}
       <section className="py-16 px-4 bg-white">
@@ -464,11 +454,11 @@ export default function MedicalInventoryManagement() {
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>99.5% compliance rate</strong> with FDA requirements</span>
+                  <span><strong>Compliance</strong> with FDA requirements</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>100% traceability</strong> with lot/serial number tracking</span>
+                  <span><strong>Full traceability</strong> with lot/serial number tracking</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -489,7 +479,7 @@ export default function MedicalInventoryManagement() {
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>25% reduction</strong> in expired inventory waste</span>
+                  <span><strong>Reduced</strong> expired inventory waste</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -509,6 +499,13 @@ export default function MedicalInventoryManagement() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

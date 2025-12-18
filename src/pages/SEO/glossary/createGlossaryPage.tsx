@@ -52,8 +52,8 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
     '@type': 'DefinedTerm',
     name: title,
     description: definition,
-    inDefinedTermSet: 'https://www.stockflow.be/glossary',
-    url: `https://www.stockflow.be${path}`,
+    inDefinedTermSet: 'https://www.stockflowsystems.com/glossary',
+    url: `https://www.stockflowsystems.com${path}`,
   };
 
   return function GlossaryPage() {
@@ -89,7 +89,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
           title={`${title} 2025 - Inventory Management Glossary | StockFlow`}
           description={metaDescription}
           keywords={pageKeywords}
-          url={`https://www.stockflow.be${path}`}
+          url={`https://www.stockflowsystems.com${path}`}
         />
 
       <StructuredData data={[jsonLd]} />

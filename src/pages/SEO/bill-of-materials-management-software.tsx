@@ -21,11 +21,24 @@ import {
   Star
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function BillOfMaterialsManagementSoftware() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
+  // Get real customer data for BOM management
+  const relevantCaseStudies = getRelevantCaseStudies('BOM management');
+  const relevantTestimonials = getRelevantTestimonials('BOM');
+  const metrics = getProprietaryMetrics('BOM management');
 
   const faqData = [
     {
@@ -107,8 +120,28 @@ export default function BillOfMaterialsManagementSoftware() {
         title="BOM Software 2025: Save 30% Waste, 5-10h/Week | StockFlow"
         description="Get bill of materials management software for manufacturing. Create BOMs, track components, calculate requirements. FREE plan (30 products). Reduce waste 30%, save 5-10 hours/week. Start free - no credit card required."
         keywords="bill of materials management software, bom management software, bill of materials software, bom software, bill of materials system, bom management system, manufacturing bom software, assembly bom software, production bom software, multi-level bom software, stockflow, stock flow"
-        url="https://www.stockflow.be/bill-of-materials-management-software"
+        url="https://www.stockflowsystems.com/bill-of-materials-management-software"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "5-10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "30% reduction in material waste",
+          keyMetric: "Complete BOM management",
+          feature: "BOM Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Hero Section */}
       <section className="py-16 px-4 bg-white">
@@ -212,7 +245,7 @@ export default function BillOfMaterialsManagementSoftware() {
           </div>
 
           <p className="text-lg text-gray-700 leading-relaxed">
-            <strong>Bill of materials management software</strong> like StockFlow provides these essential capabilities, making it easier to manage production planning and material control. When combined with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, BOM software becomes a powerful tool for complete production management. For businesses starting out, consider <Link to="/bill-of-materials-management-software-free" className="text-blue-600 hover:underline font-semibold">free BOM management software</Link> options, or learn about <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link> integration.
+            <strong>Bill of materials management software</strong> like StockFlow provides these essential capabilities, making it easier to manage production planning and material control. When combined with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, BOM software becomes a powerful tool for complete production management. For businesses starting out, consider <Link to="/bill-of-material-management-software-free" className="text-blue-600 hover:underline font-semibold">free BOM management software</Link> options, or learn about <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link> integration.
           </p>
         </div>
       </section>
@@ -352,14 +385,14 @@ export default function BillOfMaterialsManagementSoftware() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": "2025-11-26",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/bill-of-materials-management-software"
+            "@id": "https://www.stockflowsystems.com/bill-of-materials-management-software"
           }
         },
         {
@@ -392,6 +425,13 @@ export default function BillOfMaterialsManagementSoftware() {
         isOpen={isVideoModalOpen} 
         onClose={() => setIsVideoModalOpen(false)} 
       />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

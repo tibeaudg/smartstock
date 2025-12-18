@@ -19,7 +19,7 @@ export const generateInternationalStructuredData = (baseUrl: string, currentLang
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "email": "support@stockflow.be"
+      "email": "support@stockflowsystems.com"
     },
     "sameAs": [
       "https://twitter.com/stockflow",

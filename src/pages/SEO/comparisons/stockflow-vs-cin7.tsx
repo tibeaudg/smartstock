@@ -7,9 +7,22 @@ import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsCin7() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
   const [roiInputs, setRoiInputs] = useState({
     inventoryValue: '',
     hoursPerWeek: '',
@@ -81,16 +94,16 @@ export default function StockFlowVsCin7() {
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/stockflow-vs-cin7",
+      "@id": "https://www.stockflowsystems.com/stockflow-vs-cin7",
       "name": "StockFlow vs Cin7 Comparison",
       "headline": "StockFlow vs Cin7: The Better Choice for Growing Businesses",
       "description": "Compare StockFlow vs Cin7 2025. Completely free forever vs $300/month, 5-7 day setup vs 45-90 days, European hosting. Save 100% costs. See detailed comparison and start free - no credit card required.",
-      "url": "https://www.stockflow.be/stockflow-vs-cin7",
+      "url": "https://www.stockflowsystems.com/stockflow-vs-cin7",
       "inLanguage": "en",
       "isPartOf": {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       },
       "datePublished": "2025-01-01",
       "dateModified": new Date().toISOString().split("T")[0]
@@ -108,7 +121,7 @@ export default function StockFlowVsCin7() {
         title="StockFlow vs Cin7 2025 - Save 90% Costs, 10x Faster Setup | StockFlow"
         description="Compare StockFlow vs Cin7 2025. Completely free forever vs $300/month, 5-7 day setup vs 45-90 days, European hosting. Save 100% costs, 10x faster implementation. Start free - no credit card required."
         keywords="stockflow vs cin7, cin7 alternative, cin7 vs stockflow, cin7 inventory management, stockflow vs cin7 comparison, cin7 pricing, best cin7 alternative, inventory management software comparison, omnichannel inventory software, cin7 competitor, stockflow inventory software, cin7 vs stockflow pricing, inventory management software for small business, best inventory software 2025"
-        url="https://www.stockflow.be/stockflow-vs-cin7"
+        url="https://www.stockflowsystems.com/stockflow-vs-cin7"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
@@ -122,6 +135,27 @@ export default function StockFlowVsCin7() {
           This comparison helps you understand the key differences between StockFlow and Cin7, so you can make an informed decision for your inventory management needs.
         </p>
       </div>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+        variant="compact"
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -213,6 +247,13 @@ export default function StockFlowVsCin7() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
 
     </SeoPageLayout>
   );

@@ -13,7 +13,7 @@ const keywords = "inventory management best practices, inventory best practices,
 const heroBadge = "Topic Guide • Updated January 2024";
 const summaryCopy = "Inventory management best practices include: maintaining 95-99% accuracy through regular cycle counts, using barcode scanning for tracking, setting automated reorder points, maintaining safety stock, conducting regular audits, using inventory management software, training staff, and establishing clear procedures. These practices prevent stockouts, reduce overstocking, improve cash flow, and enable data-driven decisions. Implementing best practices typically improves inventory accuracy by 30-50% and reduces costs by 20-30%.";
 const takeaways = [
-  "Maintain 95-99% inventory accuracy through regular cycle counts, barcode scanning, and automated tracking systems.",
+  "Maintain 95- through regular cycle counts, barcode scanning, and automated tracking systems.",
   "Set automated reorder points and maintain safety stock to prevent stockouts while avoiding overstocking that ties up capital.",
   "Use inventory management software with real-time tracking, mobile apps, and automated alerts to streamline operations and improve efficiency."
 ];
@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2024-01-11",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/inventory-management-best-practices"
+      "@id": "https://www.stockflowsystems.com/inventory-management-best-practices"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoInventoryManagementBestPracticesPage() {
         title={`Inventory Management Best Practices: 15 Essential Strategies 2025`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -212,45 +212,7 @@ export default function SeoInventoryManagementBestPracticesPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Barcode scanning & accuracy</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Use barcode scanning to maintain 95-99% inventory accuracy. StockFlow's mobile app turns any smartphone into a barcode scanner, eliminating manual entry errors and speeding up operations by 5-10x.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated reorder points</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Set automated reorder points and safety stock levels. StockFlow automatically calculates optimal levels based on lead times and demand patterns, sending instant alerts when inventory reaches critical levels.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Cycle counting support</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Schedule and track cycle counts automatically. StockFlow helps you organize regular counts, assign tasks to staff, and identify discrepancies quickly to maintain high accuracy without disrupting operations.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

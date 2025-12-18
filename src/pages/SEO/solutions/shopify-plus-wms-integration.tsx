@@ -180,14 +180,14 @@ export default function ShopifyPlusWmsIntegration() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/solutions/shopify-plus-wms-integration"
+      "@id": "https://www.stockflowsystems.com/solutions/shopify-plus-wms-integration"
     }
   };
 
@@ -216,7 +216,7 @@ export default function ShopifyPlusWmsIntegration() {
         title="Shopify Plus WMS Integration 2025 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
         description="Shopify Plus WMS integration 2025 automates inventory sync and order fulfillment. Real-time sync, prevent overselling, multi-channel support. Save 20+ hours/week, 99%+ accuracy. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="shopify plus wms integration, shopify wms integration, shopify warehouse management, shopify inventory sync, shopify plus inventory management, shopify warehouse software, shopify inventory system, shopify wms software, shopify plus warehouse, ecommerce wms integration, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/shopify-plus-wms-integration"
+        url="https://www.stockflowsystems.com/solutions/shopify-plus-wms-integration"
         structuredData={[structuredData, faqStructuredData]}
       />
 

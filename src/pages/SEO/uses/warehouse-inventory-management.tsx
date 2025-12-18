@@ -29,11 +29,24 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 import { Link } from 'react-router-dom';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function WarehouseInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for warehouse use case
+  const relevantCaseStudies = getRelevantCaseStudies('warehouse inventory');
+  const relevantTestimonials = getRelevantTestimonials('warehouse');
+  const metrics = getProprietaryMetrics('warehouse inventory');
   
   const faqData = [
     {
@@ -70,7 +83,7 @@ export default function WarehouseInventoryManagement() {
     },
     {
       question: "What is the ROI of warehouse inventory management?",
-      answer: "The ROI is typically very high. Warehouses see: 20-30% improvement in picking efficiency, 15-25% reduction in errors, 25% reduction in carrying costs, prevention of stockouts, and improved customer satisfaction. Most warehouses see ROI within 6-12 months through efficiency gains and cost savings."
+      answer: "The ROI is typically very high. Warehouses see:  in picking efficiency, 15-25% reduction in errors, 25% reduction in carrying costs, prevention of stockouts, and improved customer satisfaction. Most warehouses see ROI within 6-12 months through efficiency gains and cost savings."
     },
     {
       question: "How does warehouse inventory management improve picking accuracy?",
@@ -329,8 +342,28 @@ export default function WarehouseInventoryManagement() {
         title="Warehouse Inventory Management Software | StockFlow"
         description="Warehouse inventory software with bin location tracking, barcode scanning & pick optimization. Improve accuracy to 99%+, reduce costs 25%. StockFlow is completely free forever - all features included."
         keywords="warehouse inventory management, warehouse management system, WMS, bin location tracking, barcode scanning, pick and pack, cycle counting, warehouse optimization, inventory accuracy, warehouse software"
-        url="https://www.stockflow.be/warehouse-inventory-management"
+        url="https://www.stockflowsystems.com/warehouse-inventory-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "8 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "99%+ accuracy",
+          feature: "Warehouse Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -713,6 +746,13 @@ export default function WarehouseInventoryManagement() {
           }))
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

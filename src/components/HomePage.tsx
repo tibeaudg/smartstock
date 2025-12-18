@@ -760,10 +760,10 @@ export const HomePage = () => {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "StockFlow",
-      "url": "https://www.stockflow.be",
+      "url": "https://www.stockflowsystems.com",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png",
+        "url": "https://www.stockflowsystems.com/logo.png",
         "width": 200,
         "height": 60
       },
@@ -773,7 +773,7 @@ export const HomePage = () => {
         "@type": "ContactPoint",
         "telephone": "+32-123-456-789",
         "contactType": "customer service",
-        "email": "info@stockflow.be",
+        "email": "info@stockflowsystems.com",
         "availableLanguage": ["English", "Dutch", "French", "German"]
       },
       "sameAs": [
@@ -836,10 +836,10 @@ export const HomePage = () => {
         }
       },
       "author": {"@type": "Organization", "name": "StockFlow"},
-      "publisher": {"@type": "Organization", "name": "StockFlow", "logo": {"@type": "ImageObject", "url": "https://www.stockflow.be/logo.png"}},
-      "image": ["https://www.stockflow.be/Inventory-Management.png", "https://www.stockflow.be/optimized/desktop.png"],
-      "screenshot": "https://www.stockflow.be/optimized/desktop.png",
-      "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflow.be/"},
+      "publisher": {"@type": "Organization", "name": "StockFlow", "logo": {"@type": "ImageObject", "url": "https://www.stockflowsystems.com/logo.png"}},
+      "image": ["https://www.stockflowsystems.com/Inventory-Management.png", "https://www.stockflowsystems.com/optimized/desktop.png"],
+      "screenshot": "https://www.stockflowsystems.com/optimized/desktop.png",
+      "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.stockflowsystems.com/"},
       "featureList": [
         "Mobile barcode scanning for shop floor counting",
         "Track shop floor and backroom stock separately",
@@ -857,7 +857,7 @@ export const HomePage = () => {
       "@type": "WebPage",
       "name": "Inventory Management for Small Retail Shops",
       "description": "Track stock across shop floor and backroom with your phone. Stop stockouts, reduce overstock, count inventory in minutes. Built for small retail stores.",
-      "url": "https://www.stockflow.be/",
+      "url": "https://www.stockflowsystems.com/",
       "mainEntity": {
         "@type": "SoftwareApplication",
         "name": "StockFlow"
@@ -869,20 +869,20 @@ export const HomePage = () => {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://www.stockflow.be/",
-            "image": "https://www.stockflow.be/logo.png"
+            "item": "https://www.stockflowsystems.com/",
+            "image": "https://www.stockflowsystems.com/logo.png"
           }
         ]
       },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.stockflow.be/search?q={search_term_string}",
+        "target": "https://www.stockflowsystems.com/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       },
       "isPartOf": {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       },
       "speakable": {
         "@type": "SpeakableSpecification",
@@ -914,10 +914,10 @@ export const HomePage = () => {
       "@type": "VideoObject",
       "name": "StockFlow Inventory Management Demo - Mobile Scanning Tutorial",
       "description": "See how StockFlow helps small retail shops manage inventory efficiently. Watch a complete walkthrough of mobile barcode scanning, stock tracking, and dead stock alerts.",
-      "thumbnailUrl": ["https://www.stockflow.be/Inventory-Management.png"],
+      "thumbnailUrl": ["https://www.stockflowsystems.com/Inventory-Management.png"],
       "uploadDate": "2024-01-01",
-      "contentUrl": "https://www.stockflow.be/intro_vid.mp4",
-      "embedUrl": "https://www.stockflow.be/intro_vid.mp4",
+      "contentUrl": "https://www.stockflowsystems.com/intro_vid.mp4",
+      "embedUrl": "https://www.stockflowsystems.com/intro_vid.mp4",
       "duration": "PT3M30S",
       "keywords": "inventory management, barcode scanning, retail software, stock tracking",
       "genre": "Educational",
@@ -926,7 +926,7 @@ export const HomePage = () => {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png",
+          "url": "https://www.stockflowsystems.com/logo.png",
           "width": 200,
           "height": 60
         }
@@ -1014,11 +1014,11 @@ export const HomePage = () => {
       "@type": "LocalBusiness",
       "name": "StockFlow - Retail Inventory Software",
       "description": "Mobile inventory management software for small retail shops, local stores, and boutiques. Track stock with your phone.",
-      "url": "https://www.stockflow.be",
-      "logo": "https://www.stockflow.be/logo.png",
-      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "url": "https://www.stockflowsystems.com",
+      "logo": "https://www.stockflowsystems.com/logo.png",
+      "image": "https://www.stockflowsystems.com/Inventory-Management.png",
       "telephone": "+32-123-456-789",
-      "email": "info@stockflow.be",
+      "email": "info@stockflowsystems.com",
       "priceRange": "Free - €29/month",
       "address": {
         "@type": "PostalAddress",
@@ -1260,14 +1260,14 @@ export const HomePage = () => {
         title="Free Inventory Management — StockFlow | Barcode, Mobile, Reporting"
         description="Free inventory management software with barcode scanning, mobile access & reporting. Track stock in real-time, prevent stockouts, save 35% costs. Start free - no credit card!"
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
-        url="https://www.stockflow.be/"
+        url="https://www.stockflowsystems.com/"
         hreflang={[
-          { lang: 'en', url: 'https://www.stockflow.be/' },
-          { lang: 'nl', url: 'https://www.stockflow.be/nl' },
+          { lang: 'en', url: 'https://www.stockflowsystems.com/' },
+          { lang: 'nl', url: 'https://www.stockflowsystems.com/nl' },
         ]}
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/nl' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl' }
         ]}
         structuredData={structuredData}
         modifiedTime={new Date().toISOString()}

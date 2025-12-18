@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   ClipboardCheck,
   Calculator,
@@ -10,9 +13,28 @@ import {
   TrendingUp,
   CheckCircle
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function CycleCount() {
   usePageRefresh();
+  
+  // Get real customer data for cycle count feature
+  const relevantCaseStudies = getRelevantCaseStudies('cycle count');
+  const relevantTestimonials = getRelevantTestimonials('cycle count');
+  const metrics = getProprietaryMetrics('cycle count');
+  const location = useLocation();
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   
   const faqData = [
     {
@@ -45,7 +67,7 @@ export default function CycleCount() {
     },
     {
       question: "What is the ROI of cycle counting?",
-      answer: "The ROI is typically very high. Businesses see: 20-30% improvement in inventory accuracy, prevention of stockouts and overstock, reduced carrying costs, improved cash flow, and better decision-making. Most businesses see ROI within 3-6 months through improved accuracy and reduced inventory discrepancies."
+      answer: "The ROI is typically very high. Businesses see:  in inventory accuracy, prevention of stockouts and overstock, reduced carrying costs, improved cash flow, and better decision-making. Most businesses see ROI within 3-6 months through improved accuracy and reduced inventory discrepancies."
     },
     {
       question: "How does cycle count differ from ABC analysis?",
@@ -117,8 +139,28 @@ export default function CycleCount() {
         title="Cycle Count Inventory 2025 - Improve Accuracy 20-30%, Save Time | StockFlow"
         description="Implement cycle count inventory 2025 for continuous accuracy. Automate cycle counting, improve accuracy 20-30%, track discrepancies. Free plan available. Start free trial - no credit card required."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
-        url="https://www.stockflow.be/cycle-count"
+        url="https://www.stockflowsystems.com/cycle-count"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "15 hours/month",
+          averageCostSaved: metrics.averageCostSaved || "20-30% accuracy improvement",
+          keyMetric: "95-99% accuracy",
+          feature: "Cycle Count"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -192,20 +234,38 @@ export default function CycleCount() {
 
  
 
-      <StructuredData data={[
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
-            }
-          }))
-        }
-      ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
+
+      <StructuredData data={generateSeoPageStructuredData({
+        title: "Cycle Count - Inventory Management Feature | StockFlow",
+        description: "Learn about cycle counting for inventory accuracy. Automated cycle count scheduling, discrepancy tracking, and continuous inventory verification.",
+        url: location.pathname,
+        breadcrumbs,
+        faqData,
+        softwareData: {
+          name: "StockFlow - Cycle Count Feature",
+          description: "Automated cycle counting for inventory accuracy. Schedule counts, track discrepancies, and maintain continuous inventory verification.",
+          category: "BusinessApplication",
+          operatingSystem: "Web Browser",
+          price: "0",
+          currency: "EUR",
+          url: location.pathname,
+          features: [
+            "Automated cycle count scheduling",
+            "Discrepancy tracking",
+            "Continuous inventory verification",
+            "Mobile counting support"
+          ]
+        },
+        pageType: 'software',
+        includeWebSite: false
+      })} />
     </SeoPageLayout>
   );
 }

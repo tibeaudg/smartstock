@@ -27,11 +27,27 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 import { Link } from 'react-router-dom';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function EducationInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for education use case
+  const relevantCaseStudies = getRelevantCaseStudies('education inventory', 'Education');
+  const relevantTestimonials = getRelevantTestimonials('education');
+  const metrics = getProprietaryMetrics('education inventory');
+  const benchmarks = getIndustryBenchmarks('Education');
   
   const faqData = [
     {
@@ -68,7 +84,7 @@ export default function EducationInventoryManagement() {
     },
     {
       question: "What is the ROI of education inventory management?",
-      answer: "The ROI is typically very high. Schools see: 60-80% reduction in lost textbooks and devices, 20-30% reduction in duplicate purchases, improved budget allocation, faster annual audits, and better resource utilization. Most schools see ROI within 6-12 months through loss prevention and cost savings."
+      answer: "The ROI is typically very high. Schools see: 60-80% reduction in lost textbooks and devices,  in duplicate purchases, improved budget allocation, faster annual audits, and better resource utilization. Most schools see ROI within 6-12 months through loss prevention and cost savings."
     },
     {
       question: "How does education inventory management prevent device loss?",
@@ -316,8 +332,34 @@ export default function EducationInventoryManagement() {
         title="School Inventory Management Software | StockFlow"
         description="Education inventory software for schools. Track textbooks, technology, supplies & equipment. Checkout system, budget tracking. Reduce loss 85%. Free plan."
         keywords="school inventory management, education inventory software, textbook tracking, school asset management, technology checkout system, K-12 inventory, college inventory management, school supplies tracking, educational institution inventory"
-        url="https://www.stockflow.be/education-inventory-management"
+        url="https://www.stockflowsystems.com/education-inventory-management"
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Education"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "20 hours/month",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Education Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -713,6 +755,13 @@ export default function EducationInventoryManagement() {
           }))
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

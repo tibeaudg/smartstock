@@ -84,7 +84,7 @@ export default function ContactPage() {
       alert('Thank you! We will contact you soon. We typically respond within 1 hour during business hours.');
     } catch (e) {
       console.error('Contact form error:', e);
-      alert('Sending failed. Please try again or email us directly at info@stockflow.be');
+      alert('Sending failed. Please try again or email us directly at info@stockflowsystems.com');
     }
   };
 
@@ -93,11 +93,11 @@ export default function ContactPage() {
     'contact',
     {
       title: 'Contact StockFlow - Support & Vragen',
-      url: 'https://www.stockflow.be/contact',
+      url: 'https://www.stockflowsystems.com/contact',
       description: 'Neem contact op met ons team. We beantwoorden meestal binnen 1 uur. Vragen over voorraadbeheer, demo\'s of support.',
       breadcrumbs: [
-        { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
-        { name: 'Contact', url: 'https://www.stockflow.be/contact', position: 2 }
+        { name: 'Home', url: 'https://www.stockflowsystems.com', position: 1 },
+        { name: 'Contact', url: 'https://www.stockflowsystems.com/contact', position: 2 }
       ]
     }
   );
@@ -108,7 +108,7 @@ export default function ContactPage() {
         title="Contact StockFlow - Support & Vragen"
         description="Neem contact op met ons team. We beantwoorden meestal binnen 1 uur. Vragen over voorraadbeheer, demo's of support? Contact StockFlow voor hulp."
         keywords="stockflow contact, voorraadbeheer support, inventory management help, contact, klantenservice, hulp, demo aanvragen"
-        url="https://www.stockflow.be/contact"
+        url="https://www.stockflowsystems.com/contact"
         structuredData={structuredData}
       />
       <Header 
@@ -156,7 +156,7 @@ export default function ContactPage() {
                       <Mail className="h-5 w-5 text-indigo-600 mt-1" />
                       <div>
                         <p className="font-medium text-gray-900">Email</p>
-                        <p className="text-gray-600">support@stockflow.be</p>
+                        <p className="text-gray-600">support@stockflowsystems.com</p>
                       </div>
                     </div>
                     

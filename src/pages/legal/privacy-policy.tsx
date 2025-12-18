@@ -10,11 +10,11 @@ export default function PrivacyPolicy() {
     "@type": "WebPage",
     "name": "Privacy Policy - StockFlow",
     "description": "Privacy Policy for StockFlow inventory management software. Learn how we protect your data and privacy.",
-    "url": "https://www.stockflow.be/privacy-policy",
+    "url": "https://www.stockflowsystems.com/privacy-policy",
     "mainEntity": {
       "@type": "Organization",
       "name": "StockFlow",
-      "url": "https://www.stockflow.be"
+      "url": "https://www.stockflowsystems.com"
     }
   };
 
@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
         title="Privacy Policy 2025 - Privacy Policy 2025"
         description="Learn how privacy policy to choose the best software. Find out how privacy policy to save time and money.. Get started free. StockFlow helps businesses manag..."
         keywords="privacy policy, data protection, GDPR compliance, personal data, privacy rights, data security, inventory management privacy, stock management privacy, warehouse management privacy, data handling, privacy protection, user privacy, data privacy policy, information security, privacy rights, data collection, privacy compliance, privacy statement, data protection policy, privacy notice, user data protection, privacy regulations, data privacy rights, privacy protection measures, data security policy, privacy compliance, data handling policy, privacy information, data protection rights, privacy policy inventory management, stock management privacy policy, warehouse management privacy policy, inventory software privacy, stock software privacy, warehouse software privacy, business software privacy, inventory management data protection, stock management data protection, warehouse management data protection, inventory software data protection, stock software data protection, warehouse software data protection, business software data protection"
-        url="https://www.stockflow.be/privacy-policy"
+        url="https://www.stockflowsystems.com/privacy-policy"
         structuredData={structuredData}
       />
 
@@ -140,9 +140,9 @@ export default function PrivacyPolicy() {
               If you have any questions about this Privacy Policy or our data practices, please contact us at:
             </p>
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
-              <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@stockflow.be</p>
+              <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@stockflowsystems.com</p>
               <p className="text-gray-700 mb-2"><strong>Address:</strong> StockFlow, Belgium</p>
-              <p className="text-gray-700"><strong>Data Protection Officer:</strong> dpo@stockflow.be</p>
+              <p className="text-gray-700"><strong>Data Protection Officer:</strong> dpo@stockflowsystems.com</p>
             </div>
 
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mt-8">

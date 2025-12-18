@@ -70,7 +70,7 @@ const pageUrls = files
     if (excludedFiles.has(withoutPrefix)) return null;
     
     const slug = getSlug(file);
-    return slug ? `https://www.stockflow.be/${slug}` : null;
+    return slug ? `https://www.stockflowsystems.com/${slug}` : null;
   })
   .filter(Boolean)
   .sort();

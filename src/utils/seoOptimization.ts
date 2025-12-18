@@ -180,7 +180,7 @@ export function generateEnhancedArticleSchema(config: {
     "@type": "Article",
     "headline": config.headline,
     "description": config.description,
-    "image": config.image || "https://www.stockflow.be/Inventory-Management.png",
+    "image": config.image || "https://www.stockflowsystems.com/Inventory-Management.png",
     "datePublished": config.datePublished,
     "dateModified": config.dateModified,
     "author": {
@@ -192,7 +192,7 @@ export function generateEnhancedArticleSchema(config: {
       "name": config.publisher || "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/Inventory-Management.png"
+        "url": "https://www.stockflowsystems.com/Inventory-Management.png"
       }
     },
     "mainEntityOfPage": {

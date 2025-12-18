@@ -10,8 +10,8 @@ export default function About() {
     "@type": "Organization",
     "name": "StockFlow",
     "description": "Leading provider of Cloud-based Inventory Management Platform for small and medium businesses worldwide.",
-    "url": "https://www.stockflow.be",
-    "logo": "https://www.stockflow.be/logo.png",
+    "url": "https://www.stockflowsystems.com",
+    "logo": "https://www.stockflowsystems.com/logo.png",
     "foundingDate": "2020",
     "founders": [
       {
@@ -27,7 +27,7 @@ export default function About() {
       "@type": "ContactPoint",
       "telephone": "+32-XXX-XXX-XXX",
       "contactType": "customer service",
-      "email": "support@stockflow.be"
+      "email": "support@stockflowsystems.com"
     },
     "sameAs": [
       "https://www.facebook.com/stockflowapp",
@@ -41,7 +41,7 @@ export default function About() {
         title="About 2025 - About 2025 -"
         description="Read the guide about to save time and money. Find out how about to optimize your inventory management. Learn. Try free now. StockFlow helps businesses manage..."
         keywords="about stockflow, inventory management company, stock management company, warehouse management company, inventory software company, stock software company, warehouse software company, business software company, inventory management team, stock management team, warehouse management team, inventory software team, stock software team, warehouse software team, business software team, inventory management mission, stock management mission, warehouse management mission, inventory software mission, stock software mission, warehouse software mission, business software mission, inventory management company story, stock management company story, warehouse management company story, inventory software company story, stock software company story, warehouse software company story, business software company story"
-        url="https://www.stockflow.be/about"
+        url="https://www.stockflowsystems.com/about"
         structuredData={structuredData}
       />
 
@@ -257,9 +257,9 @@ export default function About() {
             Have questions about StockFlow or want to learn more about how we can help your business? We'd love to hear from you.
           </p>
           <div className="bg-gray-50 p-8 rounded-lg">
-            <p className="text-gray-700 mb-4"><strong>Email:</strong> hello@stockflow.be</p>
-            <p className="text-gray-700 mb-4"><strong>Support:</strong> support@stockflow.be</p>
-            <p className="text-gray-700"><strong>Business Inquiries:</strong> business@stockflow.be</p>
+            <p className="text-gray-700 mb-4"><strong>Email:</strong> hello@stockflowsystems.com</p>
+            <p className="text-gray-700 mb-4"><strong>Support:</strong> support@stockflowsystems.com</p>
+            <p className="text-gray-700"><strong>Business Inquiries:</strong> business@stockflowsystems.com</p>
           </div>
         </div>
       </section>

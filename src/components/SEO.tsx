@@ -25,7 +25,7 @@ interface SEOProps {
 const defaultTitle = 'StockFlow - Smart Inventory Management';
 const defaultDescription = 'Manage your inventory easily, quickly and smartly with StockFlow. Cloud-based Inventory Management Platform for growing businesses.';
 const defaultImage = '/Inventory-Management.png';
-const defaultUrl = 'https://www.stockflow.be';
+const defaultUrl = 'https://www.stockflowsystems.com';
 
 // Normalize canonical URL (remove trailing slashes, query parameters, fragments)
 const normalizeCanonicalUrl = (url: string): string => {
@@ -38,8 +38,8 @@ const normalizeCanonicalUrl = (url: string): string => {
   } catch {
     // If URL parsing fails, try simple string normalization
     // Remove trailing slashes (except for root)
-    let normalized = url === 'https://www.stockflow.be/' || url === 'https://www.stockflow.be' 
-      ? 'https://www.stockflow.be' 
+    let normalized = url === 'https://www.stockflowsystems.com/' || url === 'https://www.stockflowsystems.com' 
+      ? 'https://www.stockflowsystems.com' 
       : url.replace(/\/+$/, '');
     // Remove query parameters and fragments
     normalized = normalized.split('?')[0].split('#')[0];
@@ -168,7 +168,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta name="twitter:site" content="@stockflowapp" />
       <meta name="twitter:creator" content="@stockflowapp" />
-      <meta name="twitter:domain" content="stockflow.be" />
+      <meta name="twitter:domain" content="stockflowsystems.com" />
       
       {/* LinkedIn specific */}
       <meta property="linkedin:owner" content="stockflow" />

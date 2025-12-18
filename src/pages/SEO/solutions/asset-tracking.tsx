@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   Wrench,
   MapPin,
@@ -26,9 +28,28 @@ import {
   History,
   Target
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function AssetTracking() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data for asset tracking
+  const relevantCaseStudies = getRelevantCaseStudies('asset tracking');
+  const relevantTestimonials = getRelevantTestimonials('asset');
+  const metrics = getProprietaryMetrics('asset tracking');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   const { formatPrice } = useCurrency();
 
   const faqData = [
@@ -74,7 +95,7 @@ export default function AssetTracking() {
     },
     {
       question: "What is the ROI of asset tracking?",
-      answer: "The ROI is typically very high. Businesses see: prevention of asset loss (which can cost thousands per year), reduced time spent searching for assets (saving 10+ hours per week), improved asset utilization, compliance with audit requirements, and accurate asset records for accounting. Most businesses see ROI within 3-6 months through loss prevention and time savings."
+      answer: "The ROI is typically very high. Businesses see: prevention of asset loss (which can cost thousands per year), reduced time spent searching for assets (saving ), improved asset utilization, compliance with audit requirements, and accurate asset records for accounting. Most businesses see ROI within 3-6 months through loss prevention and time savings."
     },
     {
       question: "Can asset tracking software integrate with other systems?",
@@ -86,15 +107,12 @@ export default function AssetTracking() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Asset Tracking Software for Tools, Equipment & Spare Parts",
-    url: "https://www.stockflow.be/asset-tracking",
     description: "Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, mobile scanning. Reduce loss 40-60%, save 10+ hours/week. Free plan available.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Asset Tracking", url: "https://www.stockflow.be/asset-tracking", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Asset Tracking",
       description: "Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, mobile scanning. Reduce loss 40-60%, save 10+ hours/week.",
@@ -102,10 +120,6 @@ export default function AssetTracking() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "180"
-      },
       features: [
         "Digital audit trails",
         "Location history tracking",
@@ -114,9 +128,11 @@ export default function AssetTracking() {
         "Maintenance scheduling",
         "Spare parts inventory"
       ],
-      image: "https://www.stockflow.be/AssetTracking.png",
-      url: "https://www.stockflow.be/asset-tracking"
-    }
+      image: "https://www.stockflowsystems.com/AssetTracking.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -185,7 +201,7 @@ export default function AssetTracking() {
       title: "Field Service Tools",
       description: "Track tools and equipment in service vehicles. Field technicians can scan assets, update locations, and log maintenance activities on-site.",
       icon: MapPin,
-      metrics: "Save 10+ hours per week on audits"
+      metrics: "Save  on audits"
     },
     {
       title: "Spare Parts Inventory",
@@ -201,7 +217,7 @@ export default function AssetTracking() {
     }
   ];
 
-  const metrics = [
+  const displayMetrics = [
     {
       value: "40-60%",
       label: "Reduction in Asset Loss",
@@ -238,7 +254,7 @@ export default function AssetTracking() {
     {
       name: "Mike Rodriguez",
       role: "Operations Manager, Construction Co",
-      content: "StockFlow's asset tracking transformed how we manage tools across job sites. We reduced tool loss by 45% and saved 15 hours per week on asset audits. The location history feature is invaluable.",
+      content: "StockFlow's asset tracking transformed how we manage tools across job sites. We reduced tool loss by 45% and saved  on asset audits. The location history feature is invaluable.",
       rating: 5
     },
     {
@@ -289,9 +305,29 @@ export default function AssetTracking() {
         title="Asset Tracking Software | Digital Audit Trails & Location History | StockFlow"
         description="Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, mobile scanning. Reduce loss 40-60%, save 10+ hours/week. Free plan available."
         keywords="asset tracking, asset tracking software, tool tracking, equipment tracking, spare parts tracking, digital audit trail, location history, asset management, equipment management, tool management, asset tracking app, mobile asset tracking, barcode asset tracking, asset tracking system, stockflow"
-        url="https://www.stockflow.be/asset-tracking"
+        url="https://www.stockflowsystems.com/asset-tracking"
         structuredData={structuredData}
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "40-60% reduction in loss",
+          keyMetric: "Complete asset visibility",
+          feature: "Asset Tracking"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -319,7 +355,7 @@ export default function AssetTracking() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metrics.map((metric, index) => (
+            {displayMetrics.map((metric, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
@@ -502,7 +538,7 @@ export default function AssetTracking() {
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>10+ hours per week</strong> saved on asset audits</span>
+                  <span><strong></strong> saved on asset audits</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -610,6 +646,13 @@ export default function AssetTracking() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

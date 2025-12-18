@@ -2,7 +2,9 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   HardHat,
   Wrench,
@@ -21,9 +23,31 @@ import {
   Building2,
   ArrowRight
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function ContractorInventoryManagement() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data for construction industry
+  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
+  const relevantTestimonials = getRelevantTestimonials('construction');
+  const metrics = getProprietaryMetrics('construction inventory');
+  const benchmarks = getIndustryBenchmarks('Construction');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
 
   const faqData = [
     {
@@ -60,26 +84,19 @@ export default function ContractorInventoryManagement() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Construction Inventory Management Software for Contractors",
-    url: "https://www.stockflow.be/contractor-inventory-management",
-    description: "Construction inventory management software for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, save 15+ hours/week. Mobile scanning included.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Contractor Inventory Management", url: "https://www.stockflow.be/contractor-inventory-management", position: 2 }
-    ],
-    faqData: faqData,
+    description: "Construction inventory management software for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%. Mobile scanning included.",
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Construction Inventory Management",
-      description: "Construction inventory management software for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, save 15+ hours/week.",
+      description: "Construction inventory management software for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%.",
       category: "BusinessApplication",
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "180"
-      },
       features: [
         "Multi-job site tracking",
         "Tool and equipment management",
@@ -88,9 +105,11 @@ export default function ContractorInventoryManagement() {
         "Job site transfers",
         "Maintenance scheduling"
       ],
-      image: "https://www.stockflow.be/ConstructionInventory.png",
-      url: "https://www.stockflow.be/contractor-inventory-management"
-    }
+      image: "https://www.stockflowsystems.com/ConstructionInventory.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -175,7 +194,7 @@ export default function ContractorInventoryManagement() {
     }
   ];
 
-  const metrics = [
+  const metricsData = [
     {
       value: "30%",
       label: "Reduction in Material Waste",
@@ -261,11 +280,37 @@ export default function ContractorInventoryManagement() {
     >
       <SEO
         title="Construction Inventory Management Software | StockFlow"
-        description="Construction inventory management for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, save 15+ hours/week. Mobile scanning included."
+        description="Construction inventory management for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, . Mobile scanning included."
         keywords="construction inventory management, contractor inventory software, job site inventory tracking, construction materials management, tool tracking software, construction equipment tracking, contractor inventory system, construction inventory software, job site material tracking, construction tool management, contractor inventory app, construction inventory solution, multi-site inventory tracking, construction project inventory, contractor stock management"
-        url="https://www.stockflow.be/contractor-inventory-management"
+        url="https://www.stockflowsystems.com/contractor-inventory-management"
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Construction"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Construction Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -293,7 +338,7 @@ export default function ContractorInventoryManagement() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metrics.map((metric, index) => (
+            {metricsData.map((metric, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
@@ -592,6 +637,14 @@ export default function ContractorInventoryManagement() {
           </div>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

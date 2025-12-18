@@ -27,8 +27,8 @@ export function generateRegionalStructuredData(data: RegionalBusinessData) {
     provider: {
       '@type': 'Organization',
       name: 'StockFlow',
-      url: 'https://www.stockflow.be',
-      logo: 'https://www.stockflow.be/logo.png',
+      url: 'https://www.stockflowsystems.com',
+      logo: 'https://www.stockflowsystems.com/logo.png',
       areaServed: {
         '@type': 'Country',
         name: 'Belgium'
@@ -36,7 +36,7 @@ export function generateRegionalStructuredData(data: RegionalBusinessData) {
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer support',
-        email: 'support@stockflow.be',
+        email: 'support@stockflowsystems.com',
         availableLanguage: ['Dutch', 'French', 'English']
       }
     },
@@ -53,9 +53,9 @@ export function generateLocalBusinessData(data: RegionalBusinessData) {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: 'StockFlow',
-    image: 'https://www.stockflow.be/logo.png',
-    '@id': 'https://www.stockflow.be',
-    url: 'https://www.stockflow.be',
+    image: 'https://www.stockflowsystems.com/logo.png',
+    '@id': 'https://www.stockflowsystems.com',
+    url: 'https://www.stockflowsystems.com',
     telephone: '+32-XXX-XX-XX-XX',
     address: {
       '@type': 'PostalAddress',

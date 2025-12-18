@@ -15,9 +15,25 @@ import {
   Package,
   ArrowRight
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryForHospitality() {
   usePageRefresh();
+  
+  // Get real customer data for hospitality industry
+  const relevantCaseStudies = getRelevantCaseStudies('hospitality inventory');
+  const relevantTestimonials = getRelevantTestimonials('hospitality');
+  const metrics = getProprietaryMetrics('hospitality inventory');
+  const benchmarks = getIndustryBenchmarks('Retail');
   
   const faqData = [
     {
@@ -144,7 +160,7 @@ export default function InventoryForHospitality() {
         "Supplier management",
         "Expiration date tracking"
       ],
-      "url": "https://www.stockflow.be/inventory-for-hospitality"
+      "url": "https://www.stockflowsystems.com/inventory-for-hospitality"
     },
     {
       "@context": "https://schema.org",
@@ -154,13 +170,13 @@ export default function InventoryForHospitality() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://www.stockflow.be"
+          "item": "https://www.stockflowsystems.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Inventory for Hospitality",
-          "item": "https://www.stockflow.be/inventory-for-hospitality"
+          "item": "https://www.stockflowsystems.com/inventory-for-hospitality"
         }
       ]
     }
@@ -177,14 +193,40 @@ export default function InventoryForHospitality() {
         title="Hospitality Inventory Management 2025 | F&B Software | StockFlow"
         description="Specialized hospitality inventory management reduces food waste 20-30%, improves profit margins, and streamlines F&B operations. Track ingredients, calculate food costs, manage recipes, and optimize stock levels for restaurants, hotels, and catering."
         keywords="hospitality inventory, hotel stock management, restaurant inventory, hospitality supply chain, food cost management, restaurant inventory software, hotel inventory management, catering inventory, hospitality inventory system, F&B inventory, hospitality stock control, restaurant stock management, food and beverage inventory, hospitality inventory software"
-        url="https://www.stockflow.be/inventory-for-hospitality"
+        url="https://www.stockflowsystems.com/inventory-for-hospitality"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-for-hospitality' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-horeca' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-for-hospitality' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/voorraadbeheer-horeca' }
         ]}
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Retail"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Hospitality Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -266,6 +308,14 @@ export default function InventoryForHospitality() {
 
 
       <StructuredData data={structuredData} />
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

@@ -78,7 +78,7 @@ export default function RetailPrice() {
         title="Retail Price | How to Calculate Retail Price 2025 | StockFlow"
         description="Complete guide to retail price. Learn how to calculate retail price, set retail prices, and optimize pricing strategies. Free retail price calculator included."
         keywords="retail price, retail prices, retail price calculation, retail price formula, retail price markup, how to calculate retail price, retail pricing, retail price vs wholesale price, retail price calculator, stockflow, stock flow"
-        url="https://www.stockflow.be/industries/retail-price"
+        url="https://www.stockflowsystems.com/industries/retail-price"
       />
 
       <section id="what-is" className="py-16 px-4 bg-white">

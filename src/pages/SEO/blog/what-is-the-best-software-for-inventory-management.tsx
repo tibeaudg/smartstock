@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2022-12-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/what-is-the-best-software-for-inventory-management"
+      "@id": "https://www.stockflowsystems.com/what-is-the-best-software-for-inventory-management"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoWhatIsTheBestSoftwareForInventoryManagementPage() {
         title={`What Is The Best Software For Inventory Management 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -212,45 +212,7 @@ export default function SeoWhatIsTheBestSoftwareForInventoryManagementPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Free plan available</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Start with StockFlow's free plan for up to 100 products. Get real-time tracking, barcode scanning, mobile apps, and essential features without upfront costs. Perfect for testing and small businesses.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">All essential features</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Get everything you need: real-time tracking, barcode scanning, automated reordering, multi-location support, mobile apps, reporting, and integrations. StockFlow scales from free to enterprise plans.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Easy to use</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Intuitive interface that your team will actually use. StockFlow is designed for ease of use, with mobile apps, simple setup, and comprehensive support to get you up and running quickly.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

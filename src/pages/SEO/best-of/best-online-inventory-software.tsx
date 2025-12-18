@@ -5,9 +5,23 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 import { StructuredData } from '@/components/StructuredData';
 import { ArrowUpRight, Zap, Layers, Globe, CheckCircle2, BarChart2, Smartphone, TrendingUp, Clock, Smile, Scale } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function BestOnlineInventorySoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('online inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('online inventory software');
   
   const faqData = [
     {
@@ -68,19 +82,39 @@ export default function BestOnlineInventorySoftware() {
         title="Best Online Inventory Software 2025 - Top Cloud Solutions | StockFlow"
         description="Find the best online inventory software 2025. Compare top cloud-based solutions with real-time tracking, automated alerts, multi-location support, and seamless integrations. Free plans available. Start free trial."
         keywords="best online inventory software, online inventory software, online inventory system, cloud based inventory software, inventory web based software, online stock management software, inventory management software cloud based, online inventory system, inventory software online, web based inventory software, cloud inventory software, online inventory management software, best online inventory software, top online inventory software, inventory software cloud, online inventory tracking software, cloud inventory management software, web inventory software, online inventory control software, best cloud inventory software"
-        url="https://www.stockflow.be/best-online-inventory-software"
+        url="https://www.stockflowsystems.com/best-online-inventory-software"
       />
 
   
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Online Inventory Software"
+        }}
+      />
+
       {/* Introduction */}
       <div className="mb-12">
         <p className="text-lg text-black leading-relaxed mb-6">
-          Discover the top-rated online inventory system solutions transforming businesses worldwide. From real-time tracking to automated reorder management, scale with confidence. The best online inventory software combines cutting-edge technology with user-friendly design to deliver exceptional results.
+          Discover the top-rated online inventory system solutions transforming businesses worldwide. From real-time tracking to automated reorder management, scale with confidence. Based on data from {metrics.customerCount} businesses, the best online inventory software combines cutting-edge technology with user-friendly design to deliver exceptional results. Our customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
           It provides comprehensive inventory management capabilities that address every aspect of modern business operations. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/solutions/online-inventory-management" className="text-blue-600 hover:underline font-semibold">online inventory management</Link> comparison.
         </p>
       </div>
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Key Takeaway Box */}
       <div className="my-12 p-6 bg-blue-50 border-l-4 border-blue-600 rounded-r-lg">
@@ -313,7 +347,7 @@ export default function BestOnlineInventorySoftware() {
                 "@type": "Article",
                 "headline": "Best Online Inventory Software 2024 | Top Rated Solutions",
                 "description": "Discover the best online inventory software solutions for 2024. Compare features, pricing, and reviews. Find the perfect inventory management system for your business with stockflow.",
-                "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+                "image": "https://www.stockflowsystems.com/optimized/Inventory-Management.png",
                 "author": {
                   "@type": "Organization",
                   "name": "stockflow"
@@ -323,12 +357,12 @@ export default function BestOnlineInventorySoftware() {
                   "name": "stockflow",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
+                    "url": "https://www.stockflowsystems.com/logo.png"
                   }
                 },
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/best-online-inventory-software"
+                  "@id": "https://www.stockflowsystems.com/best-online-inventory-software"
                 },
                 "datePublished": "2024-06-01",
                 "dateModified": "2024-12-19"        }      ]} />

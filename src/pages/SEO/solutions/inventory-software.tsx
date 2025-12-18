@@ -15,10 +15,24 @@ import {
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function InventorySoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
   
   const faqData = [
     {
@@ -67,7 +81,7 @@ export default function InventorySoftware() {
     },
     {
       question: "Can inventory software help reduce inventory costs?",
-      answer: "Yes, inventory software helps reduce costs by optimizing stock levels to minimize carrying costs, identifying slow-moving or obsolete inventory, preventing overstocking, reducing waste, and improving purchasing decisions through data-driven insights. Businesses typically see 20-35% reduction in inventory carrying costs with effective inventory software."
+      answer: "Yes, inventory software helps reduce costs by optimizing stock levels to minimize carrying costs, identifying slow-moving or obsolete inventory, preventing overstocking, reducing waste, and improving purchasing decisions through data-driven insights. Businesses typically see 20- in inventory carrying costs with effective inventory software."
     },
     {
       question: "What is the difference between cloud-based and on-premise inventory software?",
@@ -116,7 +130,7 @@ export default function InventorySoftware() {
     "Reduce inventory costs by up to 30%",
     "Eliminate stockouts and overstock situations",
     "Improve cash flow with better inventory turnover",
-    "Save 10+ hours per week on manual tracking",
+    "Save  on manual tracking",
     "Increase customer satisfaction",
     "Make data-driven decisions",
     "Scale your business efficiently",
@@ -154,7 +168,7 @@ export default function InventorySoftware() {
     {
       name: "David Wilson",
       role: "Owner, Wilson Electronics",
-      content: "StockFlow's inventory software saved us 15 hours per week. The automated reorder points are a game-changer for our business.",
+      content: "StockFlow's inventory software saved us . The automated reorder points are a game-changer for our business.",
       rating: 5
     },
     {
@@ -210,8 +224,28 @@ export default function InventorySoftware() {
         title="Inventory Software 2025 - Save 30% Costs, 15 Hours/Week | StockFlow"
         description="Best inventory software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. StockFlow is completely free forever - all features included, unlimited usage. Start free today - no credit card required."
         keywords="inventory software, stock management software, inventory tracking software, inventory management software, stock software, inventory control software, warehouse management software, inventory system software, stock tracking software, inventory software for small business, best inventory software, inventory software free, cloud inventory software, inventory software comparison, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-software"
+        url="https://www.stockflowsystems.com/solutions/inventory-software"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "30% reduction in costs",
+          keyMetric: "Real-time inventory tracking",
+          feature: "Inventory Software"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -771,13 +805,13 @@ export default function InventorySoftware() {
                   "name": "StockFlow",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
+                    "url": "https://www.stockflowsystems.com/logo.png"
                   }
                 },
-                "image": "https://www.stockflow.be/Inventory-Management.png",
+                "image": "https://www.stockflowsystems.com/Inventory-Management.png",
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/solutions/inventory-software"
+                  "@id": "https://www.stockflowsystems.com/solutions/inventory-software"
                 },
                 "featureList": [
                   "Real-time inventory tracking",
@@ -791,6 +825,13 @@ export default function InventorySoftware() {
                 ]
               }
         ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

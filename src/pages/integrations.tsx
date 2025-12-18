@@ -100,7 +100,7 @@ export default function IntegrationsPage() {
     "@type": "WebPage",
     "name": "Integrations - StockFlow",
     "description": "Connect StockFlow with your favorite tools and services for a complete business solution",
-    "url": "https://www.stockflow.be/integrations",
+    "url": "https://www.stockflowsystems.com/integrations",
     "mainEntity": {
       "@type": "SoftwareApplication",
       "name": "StockFlow Integrations",
@@ -114,7 +114,7 @@ export default function IntegrationsPage() {
         title="Integrations - StockFlow"
         description="Connect StockFlow with your favorite tools and services. Stripe payments, Supabase database, e-commerce platforms, and more."
         keywords="integrations, API, Stripe, Supabase, e-commerce, inventory management, business tools"
-        url="https://www.stockflow.be/integrations"
+        url="https://www.stockflowsystems.com/integrations"
         structuredData={structuredData}
       />
 

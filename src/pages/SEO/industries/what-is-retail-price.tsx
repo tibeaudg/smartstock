@@ -115,7 +115,7 @@ export default function WhatIsRetailPrice() {
         title="What is Retail Price | Retail Price Calculator & Formula 2025 | StockFlow"
         description="Learn what is retail price and how to calculate retail price. Complete guide with retail price formula, markup calculator, and pricing strategies. Free retail price calculator included. Start free trial."
         keywords="what is retail price, what are retail prices, what is the retail price, retail price, retail prices, retail price definition, retail price meaning, retail price calculation, retail price formula, retail price vs wholesale price, retail pricing, retail pricing strategy, retail price markup, retail price calculator, stockflow, stock flow"
-        url="https://www.stockflow.be/what-is-retail-price"
+        url="https://www.stockflowsystems.com/what-is-retail-price"
       />
 
 
@@ -553,14 +553,14 @@ export default function WhatIsRetailPrice() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/what-is-retail-price"
+            "@id": "https://www.stockflowsystems.com/what-is-retail-price"
           }
         }
       ]} />

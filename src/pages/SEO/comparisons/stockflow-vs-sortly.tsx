@@ -27,10 +27,23 @@ import {
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsSortly() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const toggleFaq = (index: number) => {
@@ -253,10 +266,10 @@ export default function StockFlowVsSortly() {
         title="StockFlow vs Sortly — Compare Features, Pricing, and Migration 2025 | StockFlow"
         description="Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Start free - no credit card required."
         keywords="StockFlow vs Sortly, Sortly vs StockFlow, StockFlow comparison, Sortly alternative, inventory software comparison, migrate from Sortly, StockFlow features, Sortly pricing, inventory management software, free inventory software, StockFlow migration, Sortly competitor, best inventory software, StockFlow vs Sortly pricing, StockFlow vs Sortly features"
-        url="https://www.stockflow.be/stockflow-vs-sortly"
+        url="https://www.stockflowsystems.com/stockflow-vs-sortly"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/stockflow-vs-sortly' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/stockflow-vs-sortly' }
         ]}
       />
 
@@ -327,6 +340,27 @@ export default function StockFlowVsSortly() {
           </div>
         </div>
       </section>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+        variant="compact"
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       {/* Feature Comparison Matrix */}
       <section id="features" className="py-16 px-4 bg-white">
@@ -802,6 +836,14 @@ export default function StockFlowVsSortly() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
+
       {/* Final CTA Section */}
       <section className="py-16 px-4 bg-blue-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
@@ -865,22 +907,22 @@ export default function StockFlowVsSortly() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/stockflow-vs-sortly",
+          "@id": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "name": "StockFlow vs Sortly — Compare Features, Pricing, and Migration",
           "headline": "StockFlow vs Sortly: Free Plan vs $25/month, Better Features, 5-7 Day Setup",
           "description": "Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Start free - no credit card required.",
-          "url": "https://www.stockflow.be/stockflow-vs-sortly",
+          "url": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -889,13 +931,13 @@ export default function StockFlowVsSortly() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "StockFlow vs Sortly",
-                "item": "https://www.stockflow.be/stockflow-vs-sortly"
+                "item": "https://www.stockflowsystems.com/stockflow-vs-sortly"
               }
             ]
           }
@@ -937,21 +979,21 @@ export default function StockFlowVsSortly() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+          "screenshot": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/stockflow-vs-sortly"
+            "@id": "https://www.stockflowsystems.com/stockflow-vs-sortly"
           },
           "featureList": [
             "Real-time inventory tracking",

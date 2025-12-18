@@ -17,10 +17,23 @@ import {
   Package
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryOptimizationServices() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for optimization services
+  const relevantCaseStudies = getRelevantCaseStudies('inventory optimization');
+  const relevantTestimonials = getRelevantTestimonials('optimization');
+  const metrics = getProprietaryMetrics('inventory optimization');
 
   const faqData = [
     {
@@ -123,10 +136,30 @@ export default function InventoryOptimizationServices() {
     >
       <SEO
         title="Inventory Optimization Services 2025 | Expert Consulting | StockFlow"
-        description="Professional inventory optimization services reduce costs 20-30%, improve cash flow, and optimize stock levels. Expert analysis, demand forecasting, and strategic recommendations. Free software alternative available."
+        description="Professional inventory optimization services , improve cash flow, and optimize stock levels. Expert analysis, demand forecasting, and strategic recommendations. Free software alternative available."
         keywords="inventory optimization services, inventory optimization consulting, inventory optimization company, inventory optimization experts, professional inventory optimization, inventory optimization analysis, inventory optimization solutions, inventory management optimization, stock optimization services, stockflow, stock flow"
-        url="https://www.stockflow.be/inventory-optimization-services"
+        url="https://www.stockflowsystems.com/inventory-optimization-services"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "8 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "20-30% reduction in carrying costs",
+          keyMetric: "Improved inventory turnover",
+          feature: "Inventory Optimization"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Hero Section */}
       <section className="py-16 px-4 bg-white">
@@ -320,17 +353,17 @@ export default function InventoryOptimizationServices() {
           "provider": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "areaServed": "Worldwide",
           "serviceType": "Business Consulting",
-          "url": "https://www.stockflow.be/inventory-optimization-services"
+          "url": "https://www.stockflowsystems.com/inventory-optimization-services"
         },
         {
           "@context": "https://schema.org",
           "@type": "Article",
           "headline": "Inventory Optimization Services 2025: Expert Consulting Guide",
-          "description": "Complete guide to inventory optimization services. Learn how professional consulting can reduce costs 20-30%, improve cash flow, and optimize stock levels. Compare services vs. software-based optimization.",
+          "description": "Complete guide to inventory optimization services. Learn how professional consulting can , improve cash flow, and optimize stock levels. Compare services vs. software-based optimization.",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -340,17 +373,25 @@ export default function InventoryOptimizationServices() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-optimization-services"
+            "@id": "https://www.stockflowsystems.com/inventory-optimization-services"
           }
         }
       ]} />
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

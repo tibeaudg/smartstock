@@ -2,7 +2,9 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   Palette,
   Home,
@@ -24,9 +26,31 @@ import {
   Image,
   ShoppingBag
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function InteriorDesignInventoryManagement() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management');
+  const benchmarks = getIndustryBenchmarks('Retail');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
 
   const faqData = [
     {
@@ -63,15 +87,12 @@ export default function InteriorDesignInventoryManagement() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Interior Design Inventory Management Software",
-    url: "https://www.stockflow.be/interior-design-inventory-management",
     description: "Interior design inventory management software. Track furniture, fixtures, fabrics, and materials across client projects. Reduce waste 25%, save 12+ hours/week. Mobile scanning included.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Interior Design Inventory Management", url: "https://www.stockflow.be/interior-design-inventory-management", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Interior Design Inventory Management",
       description: "Interior design inventory management software. Track furniture, fixtures, fabrics, and materials across client projects. Reduce waste 25%, save 12+ hours/week.",
@@ -79,10 +100,6 @@ export default function InteriorDesignInventoryManagement() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "180"
-      },
       features: [
         "Multi-project tracking",
         "Furniture and fixture management",
@@ -91,9 +108,11 @@ export default function InteriorDesignInventoryManagement() {
         "Project transfers",
         "Visual inventory with photos"
       ],
-      image: "https://www.stockflow.be/InventoryManagement.png",
-      url: "https://www.stockflow.be/interior-design-inventory-management"
-    }
+      image: "https://www.stockflowsystems.com/Inventory-Management.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -178,7 +197,7 @@ export default function InteriorDesignInventoryManagement() {
     }
   ];
 
-  const metrics = [
+  const metricsData = [
     {
       value: "25%",
       label: "Reduction in Material Waste",
@@ -215,7 +234,7 @@ export default function InteriorDesignInventoryManagement() {
     {
       name: "Emma Thompson",
       role: "Interior Designer, Thompson Design Studio",
-      content: "StockFlow transformed how we manage materials across our client projects. We reduced material waste by 30% and saved 15 hours per week on inventory tracking. The visual inventory feature is a game-changer for our design library.",
+      content: "StockFlow transformed how we manage materials across our client projects. We reduced material waste by 30% and saved  on inventory tracking. The visual inventory feature is a game-changer for our design library.",
       rating: 5
     },
     {
@@ -266,9 +285,35 @@ export default function InteriorDesignInventoryManagement() {
         title="Interior Design Inventory Management Software | StockFlow"
         description="Interior design inventory management software. Track furniture, fixtures, fabrics, and materials across client projects. Reduce waste 25%, save 12+ hours/week. Mobile scanning included."
         keywords="interior design inventory management, interior design inventory software, design project inventory tracking, furniture inventory management, design materials management, interior design inventory system, design inventory software, project material tracking, interior design inventory app, design inventory solution, multi-project inventory tracking, design project inventory, interior design stock management, furniture tracking software, design material library"
-        url="https://www.stockflow.be/interior-design-inventory-management"
+        url="https://www.stockflowsystems.com/interior-design-inventory-management"
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Retail"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "12 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Interior Design Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -296,7 +341,7 @@ export default function InteriorDesignInventoryManagement() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metrics.map((metric, index) => (
+            {metricsData.map((metric, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
@@ -467,7 +512,7 @@ export default function InteriorDesignInventoryManagement() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>35% reduction</strong> in duplicate purchases</span>
+                  <span><strong></strong> in duplicate purchases</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -595,6 +640,14 @@ export default function InteriorDesignInventoryManagement() {
           </div>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

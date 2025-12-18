@@ -31,7 +31,7 @@ export default function FeaturesPage() {
     {
       name: 'StockFlow Features',
       description: 'Comprehensive inventory management features for small businesses in Belgium',
-      url: 'https://www.stockflow.be/features'
+      url: 'https://www.stockflowsystems.com/features'
     }
   );
 
@@ -133,7 +133,7 @@ export default function FeaturesPage() {
         title="Inventory Software Features 2025 | StockFlow"
         description="Complete inventory management features: mobile barcode scanning, real-time tracking, multi-location support, analytics & reporting. Free plan available."
         keywords="inventory management features, stock management features, inventory software features, barcode scanning features, inventory tracking features, inventory management tools, stock management tools, inventory features list, best inventory management features, inventory software capabilities, stock control features, warehouse management features, inventory system features, inventory tracking software features, inventory management system features"
-        url="https://www.stockflow.be/features"
+        url="https://www.stockflowsystems.com/features"
         structuredData={structuredData}
       />
       
@@ -422,7 +422,7 @@ export default function FeaturesPage() {
                   Contractor Inventory
                 </Link>
                 <Link 
-                  to="/industries/warehouse-inventory-management" 
+                  to="/warehouse-inventory-management" 
                   className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-2 group"
                 >
                   <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />

@@ -195,7 +195,7 @@ export default function InventoryPhotosPage() {
       name: 'StockFlow Inventory Photos',
       description:
         'Add and manage product photos in StockFlow for better inventory identification, reduced errors, and improved e-commerce listings. Upload unlimited photos per product with automatic optimization and cloud storage.',
-      url: 'https://www.stockflow.be/inventory-photos',
+      url: 'https://www.stockflowsystems.com/inventory-photos',
       applicationCategory: 'BusinessApplication',
       operatingSystem: ['iOS', 'Android', 'Windows', 'macOS'],
       featureList: features.map((feature) => feature.title),
@@ -226,19 +226,19 @@ export default function InventoryPhotosPage() {
           '@type': 'ListItem',
           position: 1,
           name: 'Home',
-          item: 'https://www.stockflow.be'
+          item: 'https://www.stockflowsystems.com'
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'Resources',
-          item: 'https://www.stockflow.be/resources'
+          item: 'https://www.stockflowsystems.com/resources'
         },
         {
           '@type': 'ListItem',
           position: 3,
           name: 'Inventory Photos',
-          item: 'https://www.stockflow.be/inventory-photos'
+          item: 'https://www.stockflowsystems.com/inventory-photos'
         }
       ]
     }
@@ -255,7 +255,7 @@ export default function InventoryPhotosPage() {
         title="Inventory Photos 2025 - Product Image Management | StockFlow"
         description="Add photos to inventory items for better identification and tracking. Upload product images, manage visual inventory, and improve accuracy with photo-based inventory management. Sync to e-commerce, reduce errors. Start free trial."
         keywords="inventory photos, product photos, inventory image management, product image upload, inventory photography, e-commerce product photos, warehouse photos, inventory visual identification, stock photos, product image sync"
-        url="https://www.stockflow.be/inventory-photos"
+        url="https://www.stockflowsystems.com/inventory-photos"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />

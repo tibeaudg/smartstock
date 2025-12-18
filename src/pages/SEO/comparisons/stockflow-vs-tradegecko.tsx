@@ -15,6 +15,14 @@ import {
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const comparisonData = [
   {
@@ -54,6 +62,11 @@ const comparisonData = [
 
 export default function StockflowVsTradegecko() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
 
   const faqData = [
     {
@@ -89,7 +102,7 @@ export default function StockflowVsTradegecko() {
         title="StockFlow vs TradeGecko 2025 - Free Migration, Better Automation | StockFlow"
         description="Compare StockFlow vs TradeGecko 2025 (QuickBooks Commerce). Modern alternative with better automation, EU hosting, free migration. Completely free forever. Save costs, improve efficiency. Start free - no credit card required."
         keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison, tradegecko migration, tradegecko alternative 2025, quickbooks commerce alternative, inventory software after tradegecko"
-        url="https://www.stockflow.be/stockflow-vs-tradegecko"
+        url="https://www.stockflowsystems.com/stockflow-vs-tradegecko"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
@@ -137,6 +150,27 @@ export default function StockflowVsTradegecko() {
           </div>
         </div>
       </section>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+        variant="compact"
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -244,6 +278,13 @@ export default function StockflowVsTradegecko() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
 
       {/* Structured Data */}
       <StructuredData data={[
@@ -262,16 +303,16 @@ export default function StockflowVsTradegecko() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/stockflow-vs-tradegecko",
+          "@id": "https://www.stockflowsystems.com/stockflow-vs-tradegecko",
           "name": "StockFlow vs TradeGecko Comparison",
           "headline": "StockFlow vs TradeGecko: The Modern Alternative",
           "description": "TradeGecko discontinued. StockFlow is the modern alternative with EU hosting, free plan, automation, analytics.",
-          "url": "https://www.stockflow.be/stockflow-vs-tradegecko",
+          "url": "https://www.stockflowsystems.com/stockflow-vs-tradegecko",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split("T")[0]

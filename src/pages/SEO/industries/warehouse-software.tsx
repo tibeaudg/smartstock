@@ -2,7 +2,9 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import { useState } from 'react';
 import { 
   BarChart3, 
@@ -15,10 +17,32 @@ import {
   Boxes,
   ArrowRight
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function WarehouseSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('warehouse software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('warehouse software');
+  const benchmarks = getIndustryBenchmarks('Retail');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   const [roiInputs, setRoiInputs] = useState({
     inventoryValue: '',
     hoursPerWeek: '',
@@ -57,15 +81,12 @@ export default function WarehouseSoftware() {
   ];
 
   // Generate structured data
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Best Warehouse Software - Streamline Operations",
-    url: "https://www.stockflow.be/warehouse-software",
     description: "Streamline your warehouse operations with the best warehouse software. Inventory tracking, shipping integration, picking optimization, and more.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Warehouse Software", url: "https://www.stockflow.be/warehouse-software", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Best Warehouse Software",
       description: "Streamline your warehouse operations with the best warehouse software. Inventory tracking, shipping integration, picking optimization, and more.",
@@ -73,10 +94,6 @@ export default function WarehouseSoftware() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "150"
-      },
       features: [
         "Warehouse layout management",
         "Shipping integration",
@@ -86,8 +103,10 @@ export default function WarehouseSoftware() {
         "Team management"
       ],
       image: "https://www.stockflow.be/Inventory-Management.png",
-      url: "https://www.stockflow.be/warehouse-software"
-    }
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -216,9 +235,35 @@ export default function WarehouseSoftware() {
         title="Warehouse Software 2025 - Best WMS Solutions | StockFlow"
         description="Best warehouse software for distribution centers. Inventory tracking, shipping integration, picking optimization, receiving management. Reduce costs by 25%, improve efficiency by 40%. Start free trial."
         keywords="warehouse software, warehouse management software, warehouse management system, WMS software, warehouse operations software, warehouse tracking software, warehouse inventory software, warehouse automation software, warehouse optimization software, warehouse management solution, warehouse software for small business, best warehouse software, warehouse software comparison, warehouse software features, warehouse software pricing, warehouse software demo, warehouse software trial, warehouse software reviews"
-        url="https://www.stockflow.be/warehouse-software"
+        url="https://www.stockflowsystems.com/warehouse-software"
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Retail"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "8 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Warehouse Software"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -459,7 +504,13 @@ export default function WarehouseSoftware() {
 
 
 
-
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

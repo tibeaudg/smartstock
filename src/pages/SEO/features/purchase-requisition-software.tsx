@@ -18,10 +18,23 @@ import {
   CheckSquare,
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function PurchaseRequisitionSoftware() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for purchase requisition feature
+  const relevantCaseStudies = getRelevantCaseStudies('purchase requisition');
+  const relevantTestimonials = getRelevantTestimonials('purchase');
+  const metrics = getProprietaryMetrics('purchase requisition');
 
   const faqData = [
     {
@@ -58,7 +71,7 @@ export default function PurchaseRequisitionSoftware() {
     },
     {
       question: "What is the ROI of purchase requisition software?",
-      answer: "The ROI is typically very high. Businesses see: 50-70% reduction in procurement time, 20-30% reduction in unauthorized spending, elimination of manual paperwork, improved procurement visibility, and better supplier relationships. Most businesses see ROI within the first month through time savings and spending control."
+      answer: "The ROI is typically very high. Businesses see: 50-70% reduction in procurement time,  in unauthorized spending, elimination of manual paperwork, improved procurement visibility, and better supplier relationships. Most businesses see ROI within the first month through time savings and spending control."
     },
     {
       question: "Can purchase requisition software track budgets?",
@@ -201,14 +214,14 @@ export default function PurchaseRequisitionSoftware() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/features/purchase-requisition-software"
+      "@id": "https://www.stockflowsystems.com/features/purchase-requisition-software"
     }
   };
 
@@ -237,11 +250,31 @@ export default function PurchaseRequisitionSoftware() {
         title="Purchase Requisition Software 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
         description="Purchase requisition software 2025 automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Save 10+ hours/week. Free plan available. Start free trial - no credit card required."
         keywords="purchase requisition software, purchase requisition system, procurement software, purchase request software, requisition management software, purchase order software, procurement management, purchase approval software, requisition workflow, purchase requisition automation"
-        url="https://www.stockflow.be/features/purchase-requisition-software"
+        url="https://www.stockflowsystems.com/features/purchase-requisition-software"
         structuredData={[structuredData, faqStructuredData]}
       />
 
       <StructuredData data={[structuredData, faqStructuredData]} />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "12 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "50-70% reduction in procurement time",
+          keyMetric: "Complete spending control",
+          feature: "Purchase Requisition"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto">
@@ -348,6 +381,22 @@ export default function PurchaseRequisitionSoftware() {
           </p>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

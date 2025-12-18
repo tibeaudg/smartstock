@@ -310,7 +310,7 @@ const FeaturesPage: React.FC = () => {
         title="Powerful Features - StockFlow Inventory Management"
         description="Discover StockFlow's comprehensive inventory management features including barcode scanning, analytics, delivery management, and more. Built for modern businesses."
         keywords="inventory management features, stock management features, barcode scanning, analytics, delivery management, team collaboration, security, growth analytics"
-        url="https://www.stockflow.be/features"
+        url="https://www.stockflowsystems.com/features"
       />
 
       <Header 
@@ -500,7 +500,7 @@ const FeaturesPage: React.FC = () => {
             <div>
               <h3 className="font-semibold mb-4 text-white">Contact</h3>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li>support@stockflow.be</li>
+                <li>support@stockflowsystems.com</li>
                 <li>+32 123 456 789</li>
                 <li>Belgium</li>
               </ul>

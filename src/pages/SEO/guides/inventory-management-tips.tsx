@@ -114,7 +114,7 @@ export default function InventoryManagementTips() {
       "@type": "Article",
       "headline": "Inventory Management Tips: 10 Expert Strategies to Optimize Your Stock",
       "description": "Discover 10 proven inventory management tips to reduce costs by 20-30%, prevent stockouts, optimize operations, and save 10+ hours weekly. Expert strategies for efficient inventory control.",
-      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "image": "https://www.stockflowsystems.com/Inventory-Management.png",
       "author": {
         "@type": "Organization",
         "name": "StockFlow"
@@ -124,14 +124,14 @@ export default function InventoryManagementTips() {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
+          "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
       "datePublished": "2024-01-01",
       "dateModified": new Date().toISOString().split('T')[0],
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://www.stockflow.be/inventory-management-tips"
+        "@id": "https://www.stockflowsystems.com/inventory-management-tips"
       }
     },
     {
@@ -142,13 +142,13 @@ export default function InventoryManagementTips() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://www.stockflow.be"
+          "item": "https://www.stockflowsystems.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Inventory Management Tips",
-          "item": "https://www.stockflow.be/inventory-management-tips"
+          "item": "https://www.stockflowsystems.com/inventory-management-tips"
         }
       ]
     }
@@ -163,13 +163,13 @@ export default function InventoryManagementTips() {
     >
       <SEO
         title="Inventory Management Tips 2025 - Save 20-30% Costs, 10+ Hours/Week | StockFlow"
-        description="10 proven inventory management tips 2025. Reduce costs 20-30%, prevent stockouts, save 10+ hours weekly. Expert strategies for efficient inventory control. Free plan available. Start free trial - no credit card required."
+        description="10 proven inventory management tips 2025. , prevent stockouts, save 10+ hours weekly. Expert strategies for efficient inventory control. Free plan available. Start free trial - no credit card required."
         keywords="inventory management tips, stock tips, warehouse tips, inventory best practices, inventory optimization, inventory management strategies, stock management tips, inventory control tips, warehouse management tips, inventory efficiency tips"
-        url="https://www.stockflow.be/inventory-management-tips"
+        url="https://www.stockflowsystems.com/inventory-management-tips"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-tips' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-tips' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-management-tips' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/voorraadbeheer-tips' }
         ]}
         structuredData={structuredData}
       />

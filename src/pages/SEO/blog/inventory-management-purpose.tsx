@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/inventory-management-purpose"
+      "@id": "https://www.stockflowsystems.com/inventory-management-purpose"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoInventoryManagementPurposePage() {
         title={`Inventory Management Purpose 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -128,7 +128,7 @@ export default function SeoInventoryManagementPurposePage() {
               The <strong>purpose of inventory management</strong> is to ensure businesses have the right products in the right quantities at the right time while minimizing costs. Key objectives include preventing stockouts (which result in lost sales), reducing overstocking (which ties up capital), improving cash flow, minimizing waste from obsolescence, and enabling data-driven purchasing decisions.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Effective inventory management balances service levels (product availability) with inventory investment, directly impacting profitability and customer satisfaction. The purpose is achieved through accurate tracking, automated reordering, demand forecasting, safety stock management, regular audits, and data-driven optimization. Businesses with strong inventory management see 20-30% improvement in profitability through better inventory optimization.
+              Effective inventory management balances service levels (product availability) with inventory investment, directly impacting profitability and customer satisfaction. The purpose is achieved through accurate tracking, automated reordering, demand forecasting, safety stock management, regular audits, and data-driven optimization. Businesses with strong inventory management see  in profitability through better inventory optimization.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Without proper inventory management, businesses face stockouts (lost sales), overstocking (tied-up capital), inaccurate records, waste from obsolescence, and inefficient operations. Learn more about <Link to="/why-is-inventory-management-important" className="text-blue-600 hover:underline font-semibold">why inventory management is important</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
@@ -212,45 +212,7 @@ export default function SeoInventoryManagementPurposePage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Achieve optimal stock levels</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  StockFlow helps you achieve the purpose of inventory management by maintaining optimal stock levels. Automated reorder points and safety stock prevent stockouts while avoiding overstocking that ties up capital."
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Improve cash flow</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Optimize inventory levels to improve cash flow by 20-30%. StockFlow's analytics help you identify slow-moving items, optimize stock levels, and free up capital while maintaining service levels."
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Enable data-driven decisions</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Get comprehensive analytics and reporting to make data-driven purchasing decisions. StockFlow provides visibility into inventory performance, turnover rates, and optimization opportunities."
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

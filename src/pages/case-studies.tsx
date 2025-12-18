@@ -113,7 +113,7 @@ export default function CaseStudiesPage() {
     "@type": "WebPage",
     "name": "Case Studies - StockFlow",
     "description": "See how businesses are using StockFlow to improve inventory management and increase efficiency.",
-    "url": "https://www.stockflow.be/case-studies",
+    "url": "https://www.stockflowsystems.com/case-studies",
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": caseStudies.map((study, index) => ({
@@ -131,7 +131,7 @@ export default function CaseStudiesPage() {
         title="Case Studies - StockFlow"
         description="See how businesses are using StockFlow to improve inventory management. Real success stories from electronics, retail, food, and logistics companies."
         keywords="case studies, success stories, inventory management, business results, ROI, testimonials"
-        url="https://www.stockflow.be/case-studies"
+        url="https://www.stockflowsystems.com/case-studies"
         structuredData={structuredData}
       />
 

@@ -13,9 +13,23 @@ import {
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function SoftwareForInventoryManagement() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management software');
   
   const faqData = [
     {
@@ -208,8 +222,28 @@ export default function SoftwareForInventoryManagement() {
         title="Inventory Software 2025: Save 70% Time, 25% Costs | StockFlow"
         description="Best software for inventory management 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. Save 70% time, 25% costs. Trusted by 1,000+ businesses. Start free - no credit card required."
         keywords="software for inventory management, inventory management software, software inventory management, best software for inventory management, inventory management software tools, software for inventory tracking, inventory management software solution, software for stock management, inventory management software platform, software for inventory control, inventory management software system, software for inventory optimization, inventory management software tools, software for inventory planning, inventory management software solution, software for inventory analysis, inventory management software platform, software for inventory automation, softwares for inventory management, inventory tracking programs, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/software-for-inventory-management"
+        url="https://www.stockflowsystems.com/solutions/software-for-inventory-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "Comprehensive inventory solution",
+          feature: "Inventory Management Software"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -551,7 +585,7 @@ export default function SoftwareForInventoryManagement() {
           "@type": "Article",
           "headline": "Software for Inventory Management - Complete Guide 2025",
           "description": "Complete guide to software for inventory management. Learn about specialized digital tools that help businesses track, control, and optimize inventory operations. Discover comprehensive solutions with real-time tracking and automation.",
-          "image": "https://www.stockflow.be/software-inventory-management.png",
+          "image": "https://www.stockflowsystems.com/software-inventory-management.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -561,14 +595,14 @@ export default function SoftwareForInventoryManagement() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": "2025-11-26",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/software-for-inventory-management"
+            "@id": "https://www.stockflowsystems.com/solutions/software-for-inventory-management"
           },
           "keywords": "software for inventory management, inventory management software, inventory software tools"
         },
@@ -613,13 +647,13 @@ export default function SoftwareForInventoryManagement() {
                   "name": "StockFlow",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
+                    "url": "https://www.stockflowsystems.com/logo.png"
                   }
                 },
-                "image": "https://www.stockflow.be/Inventory-Management.png",
+                "image": "https://www.stockflowsystems.com/Inventory-Management.png",
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/solutions/software-for-inventory-management"
+                  "@id": "https://www.stockflowsystems.com/solutions/software-for-inventory-management"
                 },
           "featureList": [
             "Real-time inventory tracking",
@@ -634,6 +668,13 @@ export default function SoftwareForInventoryManagement() {
           ]
               }
         ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

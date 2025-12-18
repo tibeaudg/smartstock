@@ -17,10 +17,24 @@ import {
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function BestInventoryManagementSoftware() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for cross-dock warehouse use case
+  const relevantCaseStudies = getRelevantCaseStudies('warehouse inventory');
+  const relevantTestimonials = getRelevantTestimonials('warehouse');
+  const metrics = getProprietaryMetrics('warehouse inventory');
   
   const faqData = [
     {
@@ -73,7 +87,7 @@ export default function BestInventoryManagementSoftware() {
     },
     {
       question: "What is the ROI of cross-dock warehouse operations?",
-      answer: "The ROI is typically very high. Businesses see: 20-30% reduction in distribution costs, faster order fulfillment, improved customer satisfaction, reduced inventory carrying costs, and better cash flow. Most businesses see ROI within 6-12 months through cost savings and efficiency gains."
+      answer: "The ROI is typically very high. Businesses see:  in distribution costs, faster order fulfillment, improved customer satisfaction, reduced inventory carrying costs, and better cash flow. Most businesses see ROI within 6-12 months through cost savings and efficiency gains."
     }
   ];
 
@@ -240,9 +254,28 @@ export default function BestInventoryManagementSoftware() {
         title="Cross Dock Warehouse 2025 - Reduce Storage Time 50%, Save Costs | StockFlow"
         description="Complete cross-dock warehouse management 2025. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning. Free plan available. Start free trial - no credit card required."
         keywords="Cross-dock Warehouse, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, Cross-dock Warehouse comparison, best inventory software reviews, Cross-dock Warehouse features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
-        url="https://www.stockflow.be/best-inventory-management-software"
+        url="https://www.stockflowsystems.com/best-inventory-management-software"
       />
 
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "50% reduction in storage time",
+          keyMetric: "Optimized logistics flow",
+          feature: "Cross-Dock Warehouse"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Awards Section */}
       <section id="awards" className="py-16 px-4 bg-white">
@@ -481,21 +514,21 @@ Scalability: Cross-dock facilities can handle large volumes of goods with minima
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/best-inventory-management-software",
+          "@id": "https://www.stockflowsystems.com/best-inventory-management-software",
           "name": "Cross-dock Warehouse",
-          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
-          "url": "https://www.stockflow.be/best-inventory-management-software",
+          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
+          "url": "https://www.stockflowsystems.com/best-inventory-management-software",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -504,13 +537,13 @@ Scalability: Cross-dock facilities can handle large volumes of goods with minima
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Cross-dock Warehouse",
-                "item": "https://www.stockflow.be/best-inventory-management-software"
+                "item": "https://www.stockflowsystems.com/best-inventory-management-software"
               }
             ]
           }
@@ -560,21 +593,21 @@ Scalability: Cross-dock facilities can handle large volumes of goods with minima
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+          "screenshot": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/best-inventory-management-software"
+            "@id": "https://www.stockflowsystems.com/best-inventory-management-software"
           },
           "award": [
             "Best Inventory Software 2024",
@@ -590,10 +623,10 @@ Scalability: Cross-dock facilities can handle large volumes of goods with minima
             "Multi-user collaboration",
             "Enterprise security"
           ],
-          "downloadUrl": "https://www.stockflow.be/auth",
+          "downloadUrl": "https://www.stockflowsystems.com/auth",
           "softwareHelp": {
             "@type": "CreativeWork",
-            "url": "https://www.stockflow.be/contact"
+            "url": "https://www.stockflowsystems.com/contact"
           }
         },
         ...testimonials.map((testimonial) => ({
@@ -616,6 +649,13 @@ Scalability: Cross-dock facilities can handle large volumes of goods with minima
           "reviewBody": testimonial.content
         }))
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

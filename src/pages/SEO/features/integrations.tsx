@@ -16,6 +16,14 @@ import {
   TrendingUp,
   Clock
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const faqData = [
   {
@@ -93,7 +101,7 @@ const structuredData = [
     "@type": "WebPage",
     "name": "Inventory Management Integrations - StockFlow",
     "description": "Connect StockFlow with 45+ business tools. Integrate Shopify, Amazon, QuickBooks, Xero, WooCommerce. Automate inventory sync, save 10+ hours/week.",
-    "url": "https://www.stockflow.be/features/integrations",
+    "url": "https://www.stockflowsystems.com/features/integrations",
     "mainEntity": {
       "@type": "SoftwareApplication",
       "name": "StockFlow Integrations",
@@ -126,19 +134,19 @@ const structuredData = [
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://www.stockflow.be"
+        "item": "https://www.stockflowsystems.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Features",
-        "item": "https://www.stockflow.be/features"
+        "item": "https://www.stockflowsystems.com/features"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Integrations",
-        "item": "https://www.stockflow.be/features/integrations"
+        "item": "https://www.stockflowsystems.com/features/integrations"
       }
     ]
   }
@@ -146,6 +154,11 @@ const structuredData = [
 
 export default function SEOIntegrationsPage() {
   usePageRefresh();
+  
+  // Get real customer data for integrations feature
+  const relevantCaseStudies = getRelevantCaseStudies('integrations');
+  const relevantTestimonials = getRelevantTestimonials('integrations');
+  const metrics = getProprietaryMetrics('integrations');
 
   return (
     <SeoPageLayout 
@@ -158,10 +171,30 @@ export default function SEOIntegrationsPage() {
         title="Inventory Management Integrations 2025 - 45+ Connections, Save Time | StockFlow"
         description="Connect StockFlow with 45+ business tools 2025. Integrate Shopify, Amazon, QuickBooks, Xero, WooCommerce. Automate inventory sync, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
         keywords="inventory integrations, inventory management integrations, e-commerce integrations, accounting integrations, POS integrations, Shopify integration, QuickBooks integration, inventory API, stockflow integrations"
-        url="https://www.stockflow.be/features/integrations"
+        url="https://www.stockflowsystems.com/features/integrations"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "99%+ inventory accuracy",
+          keyMetric: "45+ integrations available",
+          feature: "Integrations"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction Section */}
       <section className="py-16 px-4 bg-white">
@@ -174,7 +207,7 @@ export default function SEOIntegrationsPage() {
               StockFlow integrates seamlessly with your existing business systems, eliminating manual data entry and ensuring real-time synchronization across all platforms. Connect your e-commerce stores, accounting software, POS systems, and more to create a unified inventory management ecosystem.
             </p>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              With StockFlow integrations, businesses save 10+ hours per week on manual data entry, achieve 99%+ inventory accuracy across channels, and eliminate overselling. Our integrations work in real-time, automatically syncing inventory levels, orders, and transactions between systems.
+              With StockFlow integrations, businesses save  on manual data entry, achieve 99%+ inventory accuracy across channels, and eliminate overselling. Our integrations work in real-time, automatically syncing inventory levels, orders, and transactions between systems.
             </p>
           </div>
         </div>
@@ -334,6 +367,14 @@ export default function SEOIntegrationsPage() {
 
       {/* Component Wrapper */}
       <IntegrationsPage />
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

@@ -37,7 +37,7 @@ export const DemoLayout: React.FC<DemoLayoutProps> = ({ sessionToken, children }
   // Mock user profile for demo
   const mockUserProfile = {
     id: 'demo-user',
-    email: 'demo@stockflow.be',
+    email: 'demo@stockflowsystems.com',
     first_name: 'Demo',
     last_name: 'User',
     role: 'admin' as const,

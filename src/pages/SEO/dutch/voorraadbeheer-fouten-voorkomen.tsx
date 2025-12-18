@@ -164,12 +164,12 @@ export default function VoorraadbeheerFoutenVoorkomen() {
         title="Voorraadbeheer Fouten Voorkomen 2025 - 7 Veelvoorkomende Fouten | StockFlow"
         description="Leer hoe je voorraadbeheer fouten voorkomt. Complete gids met 15 veelvoorkomende fouten en oplossingen. Bespaar 70% tijd, 25% kosten. Start gratis vandaag - geen creditcard vereist."
         keywords="voorraadbeheer fouten, voorraadbeheer tips, voorraadbeheer best practices, fouten voorkomen voorraad, stockbeheer fouten, voorraadbeheer fouten voorkomen, voorraadbeheer problemen, voorraadbeheer optimalisatie, voorraadbeheer automatiseren, voorraadbeheer software, voorraadbeheer app, voorraadbeheer systeem"
-        url="https://www.stockflow.be/voorraadbeheer-fouten-voorkomen"
+        url="https://www.stockflowsystems.com/voorraadbeheer-fouten-voorkomen"
         image="/logo.png"
         locale="nl"
         alternateLanguages={[
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-fouten-voorkomen' },
-          { lang: 'en-US', url: 'https://www.stockflow.be/avoid-inventory-mistakes' }
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/voorraadbeheer-fouten-voorkomen' },
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/avoid-inventory-mistakes' }
         ]}
       />
 
@@ -578,7 +578,7 @@ export default function VoorraadbeheerFoutenVoorkomen() {
           "@type": "Article",
                 "headline": "Fouten in Voorraadbeheer Voorkomen",
                 "description": "Veelgemaakte fouten in voorraadbeheer voorkomen? Complete gids met tips en best practices voor een foutloos voorraadbeheer in je bedrijf. Leer hoe je voorraadbeheer fouten kunt voorkomen.",
-                "image": "https://www.stockflow.be/logo.png",
+                "image": "https://www.stockflowsystems.com/logo.png",
                 "author": {
                   "@type": "Organization",
                   "name": "stockflow"
@@ -588,14 +588,14 @@ export default function VoorraadbeheerFoutenVoorkomen() {
                   "name": "stockflow",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
+                    "url": "https://www.stockflowsystems.com/logo.png"
                   }
                 },
                 "datePublished": "2024-01-01",
                 "dateModified": "2024-12-19",
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/voorraadbeheer-fouten-voorkomen"
+                  "@id": "https://www.stockflowsystems.com/voorraadbeheer-fouten-voorkomen"
                 }
         }
       ]} />

@@ -153,11 +153,11 @@ export default function ProgrammaStockbeheer() {
         title="Stockbeheer Software 2025 - Gratis Plan | StockFlow"
         description="Beste stockbeheer software voor kleine bedrijven. Gratis plan, real-time tracking, automatische bestellingen, multi-locatie. Start gratis vandaag."
         keywords="programma stockbeheer, stockbeheer programma, stockbeheer software, software stockbeheer, magazijnbeheer software, voorraadbeheer software, voorraadbeheer programma, digitaal magazijnbeheer, stock beheer, beste stockbeheer programma's, voorraadbeheer gratis, magazijnbeheer programma, programma voorraadbeheer, software voor magazijnbeheer, beter stockbeheer"
-        url="https://www.stockflow.be/programma-stockbeheer"
+        url="https://www.stockflowsystems.com/programma-stockbeheer"
         locale="nl-BE"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/softwares-for-inventory-management' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/programma-stockbeheer' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/softwares-for-inventory-management' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/programma-stockbeheer' }
         ]}
       />
 
@@ -385,17 +385,17 @@ export default function ProgrammaStockbeheer() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "image": [
-            "https://www.stockflow.be/Inventory-Management.png",
-            "https://www.stockflow.be/optimized/desktop.png"
+            "https://www.stockflowsystems.com/Inventory-Management.png",
+            "https://www.stockflowsystems.com/optimized/desktop.png"
           ],
-          "screenshot": "https://www.stockflow.be/optimized/desktop.png",
+          "screenshot": "https://www.stockflowsystems.com/optimized/desktop.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/programma-stockbeheer"
+            "@id": "https://www.stockflowsystems.com/programma-stockbeheer"
           },
           "featureList": [
             "Real-time voorraadtracking",
@@ -413,8 +413,8 @@ export default function ProgrammaStockbeheer() {
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "StockFlow",
-          "url": "https://www.stockflow.be",
-          "logo": "https://www.stockflow.be/logo.png",
+          "url": "https://www.stockflowsystems.com",
+          "logo": "https://www.stockflowsystems.com/logo.png",
           "description": "Professioneel stockbeheer programma voor groeiende bedrijven",
           "address": {
             "@type": "PostalAddress",
@@ -423,7 +423,7 @@ export default function ProgrammaStockbeheer() {
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
-            "email": "info@stockflow.be"
+            "email": "info@stockflowsystems.com"
           },
           "sameAs": [
             "https://www.linkedin.com/company/stockflow"
@@ -434,7 +434,7 @@ export default function ProgrammaStockbeheer() {
           "@type": "WebPage",
           "name": "Programma Stockbeheer - StockFlow",
           "description": "Vergelijk verschillende soorten stockbeheer programma's: cloud-based, on-premise, branchespecifieke en gratis oplossingen. Ontdek welk programma stockbeheer het beste bij jouw bedrijf past.",
-          "url": "https://www.stockflow.be/programma-stockbeheer",
+          "url": "https://www.stockflowsystems.com/programma-stockbeheer",
           "mainEntity": {
             "@type": "SoftwareApplication",
             "name": "StockFlow - Stockbeheer Programma"
@@ -446,13 +446,13 @@ export default function ProgrammaStockbeheer() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Programma Stockbeheer",
-                "item": "https://www.stockflow.be/programma-stockbeheer"
+                "item": "https://www.stockflowsystems.com/programma-stockbeheer"
               }
             ]
           }

@@ -109,13 +109,13 @@ const structuredData = [
       name: "StockFlow",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.stockflow.be/logo.png"
+        url: "https://www.stockflowsystems.com/logo.png"
       }
     },
     datePublished: "2025-09-08",
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://www.stockflow.be${canonicalPath}`
+      "@id": `https://www.stockflowsystems.com${canonicalPath}`
     }
   }
 ];
@@ -149,7 +149,7 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
         title={`${topicTitle} Practical Guide 2025`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -297,52 +297,7 @@ export default function SeoIsThereAnAppToKeepTrackOfInventoryPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className=" px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-purple-600 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow fixes the real problems</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  StockFlow doesn’t just track counts it helps you measure count confidence, record real supplier events, and lock down workflows so the app reflects what’s actually on your floor.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Count Confidence & Audit Trails</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Capture who counted what, when, and where. Flag partial receipts and reconcile them to POs so inventory numbers carry a confidence score—not blind trust. This prevents the "received but not shelved" gaps that break pick-fill rates.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Lead-Time Learning</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Record actual delivery events and use rolling windows to compute lead-time variability. That way reorder points adapt automatically when a supplier changes cadence or carrier.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Workflow Guards & Exceptions</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Allow frontline teams to create controlled exceptions with required notes and photos. Exceptions are surfaced to managers as tasks—not buried in freeform comments—so root causes are visible and remediable.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 rounded-2xl border border-white/20 bg-white/6 p-6">
-              <h4 className="text-md font-semibold text-white/90">why this matters</h4>
-              <p className="mt-3 text-sm text-white/80">
-                You can run safety-stock math in a spreadsheet, but if your counts are noisy or your supplier lead times change, the math quickly becomes irrelevant. StockFlow ties the input data to real events and human workflows so the outputs (reorder points, alerts, dashboards) remain trustworthy.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

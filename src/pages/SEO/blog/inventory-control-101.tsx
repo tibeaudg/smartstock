@@ -14,7 +14,7 @@ const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Inventory control is the process of tracking, monitoring, and managing stock levels to ensure optimal inventory quantities. It involves maintaining accurate records, setting reorder points, conducting regular counts, and preventing stockouts and overstocking. Key concepts include inventory tracking, cycle counting, reorder points, safety stock, and inventory accuracy. Effective inventory control prevents stockouts (lost sales), reduces overstocking (tied-up capital), improves cash flow, and enables data-driven purchasing decisions.";
 const takeaways = [
   "Inventory control tracks, monitors, and manages stock levels to maintain optimal inventory quantities, preventing stockouts and overstocking.",
-  "Key components include accurate tracking, regular cycle counts, reorder points, safety stock, and maintaining 95-99% inventory accuracy.",
+  "Key components include accurate tracking, regular cycle counts, reorder points, safety stock, and maintaining 95-.",
   "Effective control prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow by 20-30%, and enables data-driven decisions."
 ];
 const actionSteps = [
@@ -28,7 +28,7 @@ const actionSteps = [
   },
   {
     "title": "Conduct regular cycle counts",
-    "description": "Schedule regular cycle counts (weekly/monthly for high-value items) to verify accuracy. Investigate discrepancies immediately and adjust processes to maintain 95-99% inventory accuracy."
+    "description": "Schedule regular cycle counts (weekly/monthly for high-value items) to verify accuracy. Investigate discrepancies immediately and adjust processes to maintain 95-."
   }
 ];
 const metrics = [
@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-09-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/inventory-control-101"
+      "@id": "https://www.stockflowsystems.com/inventory-control-101"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoInventoryControl101Page() {
         title={`Inventory Control 101 2025 - Complete Beginner's Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -128,7 +128,7 @@ export default function SeoInventoryControl101Page() {
               <strong>Inventory control</strong> is the process of tracking, monitoring, and managing stock levels to ensure optimal inventory quantities. It involves maintaining accurate records, setting reorder points, conducting regular counts, and preventing stockouts and overstocking. Effective inventory control prevents lost sales, reduces tied-up capital, and improves cash flow.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Key components of inventory control include: accurate tracking (using software with barcode scanning), regular cycle counts (weekly/monthly for high-value items), reorder points (minimum stock levels that trigger new orders), safety stock (buffers against demand variability), and maintaining 95-99% inventory accuracy. The goal is to balance having enough stock to meet demand without tying up excessive capital.
+              Key components of inventory control include: accurate tracking (using software with barcode scanning), regular cycle counts (weekly/monthly for high-value items), reorder points (minimum stock levels that trigger new orders), safety stock (buffers against demand variability), and maintaining 95-. The goal is to balance having enough stock to meet demand without tying up excessive capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Effective inventory control prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow by 20-30%, and enables data-driven purchasing decisions. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
@@ -212,45 +212,7 @@ export default function SeoInventoryControl101Page() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Real-time tracking</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Track inventory in real-time with barcode scanning and automated updates. StockFlow provides instant visibility into stock levels, movements, and locations across all devices and locations, maintaining 95-99% accuracy.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated reorder alerts</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Set automated reorder points and get instant alerts when inventory reaches critical levels. StockFlow automatically calculates optimal reorder points based on lead times and demand patterns, preventing stockouts.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Cycle counting support</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Schedule and track cycle counts automatically. StockFlow helps you organize regular counts, assign tasks to staff, and identify discrepancies quickly to maintain high accuracy without disrupting operations."
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

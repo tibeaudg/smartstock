@@ -158,13 +158,13 @@ export const AuthPage = () => {
       title: mode === 'register' 
         ? 'StockFlow: Gratis Voorraadbeheer - Registreer Nu'
         : 'StockFlow: Gratis Voorraadbeheer - Login',
-      url: 'https://www.stockflow.be/auth',
+      url: 'https://www.stockflowsystems.com/auth',
       description: mode === 'register'
         ? 'Start vandaag met gratis voorraadbeheer. Registreer voor StockFlow en beheer uw voorraad eenvoudig en efficiënt.'
         : 'Log in op uw gratis StockFlow account en beheer uw voorraad met krachtige tools.',
       breadcrumbs: [
-        { name: 'Home', url: 'https://www.stockflow.be', position: 1 },
-        { name: mode === 'register' ? 'Registreer' : 'Login', url: 'https://www.stockflow.be/auth', position: 2 }
+        { name: 'Home', url: 'https://www.stockflowsystems.com', position: 1 },
+        { name: mode === 'register' ? 'Registreer' : 'Login', url: 'https://www.stockflowsystems.com/auth', position: 2 }
       ]
     }
   );
@@ -179,7 +179,7 @@ export const AuthPage = () => {
           ? 'Start vandaag met gratis voorraadbeheer. Registreer voor StockFlow en beheer uw voorraad eenvoudig en efficiënt. Geen verborgen kosten, 100% gratis voor kleine bedrijven.'
           : 'Log in op uw gratis StockFlow account en beheer uw voorraad met krachtige tools. Barcode scanning, analytics, en meer.'}
         keywords="gratis voorraadbeheer, stockflow login, inventaris beheer, voorraad software, gratis voorraad app, stockbeheer, inventory management, free stock management"
-        url="https://www.stockflow.be/auth"
+        url="https://www.stockflowsystems.com/auth"
         structuredData={structuredData}
       />
       <Header 

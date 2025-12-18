@@ -16,9 +16,22 @@ import {
   Wifi,
   WifiOff
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function MobileInventoryManagement() {
   usePageRefresh();
+  
+  // Get real customer data for mobile inventory management
+  const relevantCaseStudies = getRelevantCaseStudies('mobile inventory');
+  const relevantTestimonials = getRelevantTestimonials('mobile');
+  const metrics = getProprietaryMetrics('mobile inventory');
   
   const faqData = [
     {
@@ -157,11 +170,11 @@ export default function MobileInventoryManagement() {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
+          "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
-      "url": "https://www.stockflow.be/mobile-inventory-management",
-      "screenshot": "https://www.stockflow.be/mobile.png"
+      "url": "https://www.stockflowsystems.com/mobile-inventory-management",
+      "screenshot": "https://www.stockflowsystems.com/mobile.png"
     },
     {
       "@context": "https://schema.org",
@@ -171,13 +184,13 @@ export default function MobileInventoryManagement() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://www.stockflow.be"
+          "item": "https://www.stockflowsystems.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Mobile Inventory Management",
-          "item": "https://www.stockflow.be/mobile-inventory-management"
+          "item": "https://www.stockflowsystems.com/mobile-inventory-management"
         }
       ]
     }
@@ -194,14 +207,34 @@ export default function MobileInventoryManagement() {
         title="Mobile Inventory Management 2025 - Save 40-60% Time, 99.9% Accuracy | StockFlow"
         description="Mobile inventory management 2025 for iOS and Android. Barcode scanning, offline mode, real-time sync. Increase productivity 40-60%, achieve 99.9% accuracy. Free plan available. Start free trial - no credit card required."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/mobile-inventory-management"
+        url="https://www.stockflowsystems.com/solutions/mobile-inventory-management"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/mobile-inventory-management' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/mobiel-voorraadbeheer' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/mobile-inventory-management' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/mobiel-voorraadbeheer' }
         ]}
         structuredData={structuredData}
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "40-60% productivity increase",
+          averageCostSaved: metrics.averageCostSaved || "99.9% accuracy",
+          keyMetric: "Mobile-first inventory management",
+          feature: "Mobile Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -490,6 +523,13 @@ export default function MobileInventoryManagement() {
 
       {/* Structured Data */}
       <StructuredData data={structuredData} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

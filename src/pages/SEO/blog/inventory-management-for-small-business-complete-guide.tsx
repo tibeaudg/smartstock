@@ -10,7 +10,7 @@ const canonicalPath = "/blog/inventory-management-for-small-business-complete-gu
 const metaDescription = "Complete guide to inventory management for small businesses. Learn fundamentals, software selection, implementation strategies, best practices, common mistakes, ROI calculation, and actionable next steps for success.";
 const keywords = "inventory management for small business, small business inventory, inventory software small business, inventory management guide, small business inventory management, inventory control small business";
 const heroBadge = "Complete Guide • Updated December 2024";
-const summaryCopy = "Inventory management for small business is essential for controlling costs, preventing stockouts, optimizing cash flow, and scaling operations. This complete guide covers everything small business owners need to know: from understanding inventory basics to selecting the right software, implementing systems, avoiding common mistakes, and calculating ROI. Small businesses using professional inventory management software see 20-30% reduction in carrying costs, 70% time savings, 90% error reduction, and improved profitability. The key is choosing user-friendly software that scales with growth, implementing proper processes, and maintaining accurate data.";
+const summaryCopy = "Inventory management for small business is essential for controlling costs, preventing stockouts, optimizing cash flow, and scaling operations. This complete guide covers everything small business owners need to know: from understanding inventory basics to selecting the right software, implementing systems, avoiding common mistakes, and calculating ROI. Small businesses using professional inventory management software see  in carrying costs, 70% time savings, 90% error reduction, and improved profitability. The key is choosing user-friendly software that scales with growth, implementing proper processes, and maintaining accurate data.";
 
 const faqData = [
   {
@@ -19,7 +19,7 @@ const faqData = [
   },
   {
     question: "Why do small businesses need inventory management software?",
-    answer: "Small businesses need inventory management software because manual methods (like Excel spreadsheets) become unsustainable as the business grows. Software provides real-time tracking, automated reordering, error reduction, multi-location support, and valuable insights. Small businesses using inventory software typically see 20-30% reduction in carrying costs, 70% time savings, and 90% error reduction compared to manual methods."
+    answer: "Small businesses need inventory management software because manual methods (like Excel spreadsheets) become unsustainable as the business grows. Software provides real-time tracking, automated reordering, error reduction, multi-location support, and valuable insights. Small businesses using inventory software typically see  in carrying costs, 70% time savings, and 90% error reduction compared to manual methods."
   },
   {
     question: "How much does inventory management software cost for small businesses?",
@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2024-12-01",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-management-for-small-business-complete-guide"
+      "@id": "https://www.stockflowsystems.com/blog/inventory-management-for-small-business-complete-guide"
     }
   }
 ];
@@ -109,7 +109,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
         title={`Inventory Management for Small Business — Complete Guide 2024 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -128,7 +128,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>20-30% reduction</strong> in inventory carrying costs with proper management</span>
+                <span><strong></strong> in inventory carrying costs with proper management</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -140,7 +140,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>99% inventory accuracy</strong> achievable with modern software solutions</span>
+                <span><strong></strong> achievable with modern software solutions</span>
               </li>
             </ul>
           </div>
@@ -218,7 +218,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
               <h3 className="text-xl font-semibold text-gray-900 mb-3">2. Time Savings</h3>
               <p className="text-gray-700 mb-3">
-                Manual inventory tracking is extremely time-consuming. Small business owners typically spend 10-15 hours per week on inventory tasks when using spreadsheets. Inventory management software:
+                Manual inventory tracking is extremely time-consuming. Small business owners typically spend 10- on inventory tasks when using spreadsheets. Inventory management software:
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
                 <li>Saves 70%+ of time spent on manual tracking</li>

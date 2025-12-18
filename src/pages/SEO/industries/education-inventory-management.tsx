@@ -2,7 +2,9 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   GraduationCap,
   Laptop,
@@ -20,9 +22,31 @@ import {
   Building,
   MapPin
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function EducationInventoryManagement() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data for education industry
+  const relevantCaseStudies = getRelevantCaseStudies('education inventory', 'Education');
+  const relevantTestimonials = getRelevantTestimonials('education');
+  const metrics = getProprietaryMetrics('education inventory');
+  const benchmarks = getIndustryBenchmarks('Education');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
 
   const faqData = [
     {
@@ -63,15 +87,12 @@ export default function EducationInventoryManagement() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "School Inventory Management Software for Education",
-    url: "https://www.stockflow.be/education-inventory-management",
     description: "School inventory management software for educational institutions. Track IT equipment, library books, and supplies across campuses. Reduce lost equipment 40%, save 20 hours/month. Free plan available.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Education Inventory Management", url: "https://www.stockflow.be/education-inventory-management", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Education Inventory Management",
       description: "School inventory management software for educational institutions. Track IT equipment, library books, and supplies across campuses.",
@@ -79,10 +100,6 @@ export default function EducationInventoryManagement() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.7",
-        count: "160"
-      },
       features: [
         "Multi-campus tracking",
         "IT equipment management",
@@ -91,9 +108,11 @@ export default function EducationInventoryManagement() {
         "Mobile barcode scanning",
         "Asset assignment"
       ],
-      image: "https://www.stockflow.be/education.png",
-      url: "https://www.stockflow.be/education-inventory-management"
-    }
+      image: "https://www.stockflowsystems.com/education.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -178,7 +197,7 @@ export default function EducationInventoryManagement() {
     }
   ];
 
-  const metrics = [
+  const metricsData = [
     {
       value: "500+",
       label: "Items Tracked",
@@ -266,9 +285,35 @@ export default function EducationInventoryManagement() {
         title="School Inventory Management Software | StockFlow"
         description="School inventory management for education. Track IT equipment, library books, and supplies across campuses. Reduce lost equipment 40%, save 20 hours/month. Free plan available."
         keywords="school inventory management, education inventory software, school supply tracking, IT asset tracking for schools, library inventory management, school equipment tracking, education inventory system, school inventory software, campus inventory management, school asset tracking, education inventory app, school inventory solution, multi-campus inventory, school supply management, education inventory tracking"
-        url="https://www.stockflow.be/education-inventory-management"
+        url="https://www.stockflowsystems.com/education-inventory-management"
         structuredData={structuredData}
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Education"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "20 hours/month",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Education Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -296,7 +341,7 @@ export default function EducationInventoryManagement() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metrics.map((metric, index) => (
+            {metricsData.map((metric, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
@@ -509,6 +554,13 @@ export default function EducationInventoryManagement() {
         </div>
       </section>
 
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
     </SeoPageLayout>
   );

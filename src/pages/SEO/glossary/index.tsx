@@ -289,7 +289,7 @@ export default function GlossaryHomePage() {
         '@type': 'DefinedTerm',
         name: item.term,
         description: item.summary,
-        url: `https://www.stockflow.be${item.href}`,
+        url: `https://www.stockflowsystems.com${item.href}`,
         position: sectionIndex * 10 + itemIndex + 1,
       })),
     );
@@ -311,7 +311,7 @@ export default function GlossaryHomePage() {
         title="Inventory Management Glossary 2025 - Complete Terms & Definitions | StockFlow"
         description="Complete inventory management glossary with definitions of key terms, concepts, and formulas. Learn inventory management terminology from ABC analysis to zero inventory. Free resource."
         keywords="inventory glossary, warehouse glossary, supply chain glossary, inventory definitions, stockflow glossary"
-        url="https://www.stockflow.be/glossary"
+        url="https://www.stockflowsystems.com/glossary"
       />
 
       <StructuredData data={itemListStructuredData} />

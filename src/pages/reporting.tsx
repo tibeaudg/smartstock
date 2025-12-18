@@ -29,7 +29,7 @@ export default function Reporting() {
     "@type": "WebPage",
     "name": "Reporting & Analytics - StockFlow",
     "description": "Generate powerful, data-driven insights instantly with StockFlow's comprehensive reporting and analytics features.",
-    "url": "https://www.stockflow.be/reporting",
+    "url": "https://www.stockflowsystems.com/reporting",
     "mainEntity": {
       "@type": "SoftwareApplication",
       "name": "StockFlow Reporting",
@@ -150,7 +150,7 @@ export default function Reporting() {
         title="Reporting & Analytics - Generate Powerful Data-Driven Insights | StockFlow"
         description="Generate powerful, data-driven insights instantly with StockFlow's comprehensive reporting and analytics. Track sales, inventory, and financial performance with real-time reports."
         keywords="inventory reporting, stock reporting, analytics software, business intelligence, inventory analytics, sales reports, inventory reports, data-driven insights, business reporting, inventory management reports, stock analysis, financial reports, operational reports, custom reports, export reports"
-        url="https://www.stockflow.be/reporting"
+        url="https://www.stockflowsystems.com/reporting"
         structuredData={structuredData}
       />
 

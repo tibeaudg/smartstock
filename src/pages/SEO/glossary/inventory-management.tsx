@@ -337,7 +337,7 @@ export default function InventoryManagementGuide() {
         title="Inventory Management 2025 - Save 20-30% Costs, Complete Guide | StockFlow"
         description="Complete guide to inventory management 2025. Learn what inventory management is, types, methods, best practices. Reduce costs by 20-30%, improve efficiency. Free plan available. Start free trial - no credit card required."
         keywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
-        url="https://www.stockflow.be/inventory-management"
+        url="https://www.stockflowsystems.com/inventory-management"
         publishedTime="2025-11-06T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
@@ -970,7 +970,7 @@ export default function InventoryManagementGuide() {
           "@type": "Article",
           "headline": "Inventory Management: Complete Guide to Methods, KPIs & Best Practices",
           "description": "Master inventory management: learn core methods (JIT, MRP, EOQ), essential KPIs, accounting principles, red flags to avoid, and step-by-step optimization strategies.",
-          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -980,14 +980,14 @@ export default function InventoryManagementGuide() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-management"
+            "@id": "https://www.stockflowsystems.com/inventory-management"
           }
         },
         {
@@ -1055,19 +1055,19 @@ export default function InventoryManagementGuide() {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.stockflow.be"
+              "item": "https://www.stockflowsystems.com"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Glossary",
-              "item": "https://www.stockflow.be/glossary"
+              "item": "https://www.stockflowsystems.com/glossary"
             },
             {
               "@type": "ListItem",
               "position": 3,
               "name": "Inventory Management",
-              "item": "https://www.stockflow.be/inventory-management"
+              "item": "https://www.stockflowsystems.com/inventory-management"
             }
           ]
         }

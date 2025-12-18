@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2022-10-20",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/how-to-improve-inventory-control"
+      "@id": "https://www.stockflowsystems.com/how-to-improve-inventory-control"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoHowToImproveInventoryControlPage() {
         title={`How To Improve Inventory Control 2025 - 10 Proven Strategies | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -136,7 +136,7 @@ export default function SeoHowToImproveInventoryControlPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why improving inventory control matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Better inventory control directly impacts profitability: it prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow, increases customer satisfaction, and enables data-driven purchasing decisions. Businesses with strong inventory control see 20-30% reduction in carrying costs and 40-60% fewer stockouts.
+                Better inventory control directly impacts profitability: it prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow, increases customer satisfaction, and enables data-driven purchasing decisions. Businesses with strong inventory control see  in carrying costs and 40-60% fewer stockouts.
               </p>
             </div>
           </div>
@@ -212,45 +212,7 @@ export default function SeoHowToImproveInventoryControlPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated tracking & alerts</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Barcode scanning and automated reorder points eliminate manual errors and prevent stockouts. Get instant alerts when inventory reaches critical levels or when discrepancies are detected.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Real-time visibility</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  See inventory levels, movements, and trends in real-time across all locations. Make data-driven decisions with comprehensive dashboards and reports that track accuracy and performance.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Cycle count management</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Schedule and manage regular cycle counts with mobile apps. Compare physical counts to system records, investigate discrepancies, and maintain 95-99% accuracy consistently.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

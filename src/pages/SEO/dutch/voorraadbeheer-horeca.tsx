@@ -2,7 +2,9 @@
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import { RelatedArticles } from '@/components/seo/RelatedArticles';
 import { getRelatedPages } from '@/config/topicClusters';
 import { Check, TrendingUp, AlertCircle, BarChart3, Package, Clock, DollarSign, Users, Zap } from 'lucide-react';
@@ -66,46 +68,45 @@ const faqData = [
   }
 ];
 
-const structuredData = generateComprehensiveStructuredData('software', {
-  title: 'Voorraadbeheer Horeca – Complete Gids voor Efficiënt en Duurzaam Voorraadbeheer | Stockflow',
-  url: 'https://www.stockflow.be/voorraadbeheer-horeca',
-  description:
-    'Ontdek hoe je voorraadbeheer in de horeca optimaliseert. Minder verspilling, betere marges en realtime inzicht met moderne voorraadsoftware. Tips, termen en strategieën.',
-  breadcrumbs: [
-    { name: 'Home', url: 'https://www.stockflow.be/', position: 1 },
-    { name: 'Voorraadbeheer Software', url: 'https://www.stockflow.be/voorraadbeheer-software', position: 2 },
-    { name: 'Voorraadbeheer Horeca', url: 'https://www.stockflow.be/voorraadbeheer-horeca', position: 3 }
-  ],
-  faqData,
-  softwareData: {
-    name: 'StockFlow Horeca',
-    description: 'Voorraadbeheer software voor horeca met receptbeheer, kostprijsanalyse en multi-locatie ondersteuning.',
-    category: 'BusinessApplication',
-    operatingSystem: 'Web, iOS, Android',
-    price: '0',
-    currency: 'EUR',
-    rating: {
-      value: '4.9',
-      count: '212'
-    },
-    features: [
-      'Recept- en menu engineering',
-      'Automatische bestelpunten',
-      'Multi-locatie voorraad',
-      'Mobiele telrondes',
-      'Barcode & QR scanning',
-      'Verlies- en verspilling analyse',
-      'Realtime voorraadniveaus',
-      'Foodcost- en marge-analyses'
-    ],
-    image: 'https://www.stockflow.be/Inventory-Management.png',
-    url: 'https://www.stockflow.be/voorraadbeheer-horeca'
-  }
-});
-
 export default function VoorraadbeheerHorecaPage() {
   usePageRefresh();
+  const location = useLocation();
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   const relatedPages = getRelatedPages('/voorraadbeheer-horeca', 6);
+  
+  const structuredData = generateSeoPageStructuredData({
+    title: 'Voorraadbeheer Horeca – Complete Gids voor Efficiënt en Duurzaam Voorraadbeheer | Stockflow',
+    description: 'Ontdek hoe je voorraadbeheer in de horeca optimaliseert. Minder verspilling, betere marges en realtime inzicht met moderne voorraadsoftware. Tips, termen en strategieën.',
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
+    softwareData: {
+      name: 'StockFlow Horeca',
+      description: 'Voorraadbeheer software voor horeca met receptbeheer, kostprijsanalyse en multi-locatie ondersteuning.',
+      category: 'BusinessApplication',
+      operatingSystem: 'Web Browser',
+      price: '0',
+      currency: 'EUR',
+      features: [
+        'Recept- en menu engineering',
+        'Automatische bestelpunten',
+        'Multi-locatie voorraad',
+        'Mobiele telrondes',
+        'Barcode & QR scanning',
+        'Verlies- en verspilling analyse',
+        'Realtime voorraadniveaus',
+        'Foodcost- en marge-analyses'
+      ],
+      image: 'https://www.stockflow.be/Inventory-Management.png',
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
+  });
 
   return (
     <SeoPageLayout 
@@ -118,10 +119,10 @@ export default function VoorraadbeheerHorecaPage() {
         title="Horeca Voorraadbeheer 2025: Bespaar 25% Kosten | StockFlow"
         description="Complete voorraadbeheer software voor restaurants, cafés en hotels. Houdbaarheidsdata, recepturen, foodcost. Bespaar 25% op voedselkosten, voorkom verspilling. GRATIS plan (30 producten). Start gratis - geen creditcard vereist."
         keywords="voorraadbeheer horeca, horeca voorraad, horeca voorraadbeheer software, horeca inventaris, foodcost, keukenvoorraad, restaurant voorraadbeheer, derving horeca, voorraadbeheersysteem horeca, voedselverspilling horeca, horeca marge, kostprijs horeca"
-        url="https://www.stockflow.be/voorraadbeheer-horeca"
+        url="https://www.stockflowsystems.com/voorraadbeheer-horeca"
         structuredData={structuredData}
         locale="nl"
-        alternateLanguages={[{ lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-horeca' }, { lang: 'en-US', url: 'https://www.stockflow.be/inventory-for-hospitality' }]}
+        alternateLanguages={[{ lang: 'nl-BE', url: 'https://www.stockflowsystems.com/voorraadbeheer-horeca' }, { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-for-hospitality' }]}
       />
 
       {/* Introduction */}

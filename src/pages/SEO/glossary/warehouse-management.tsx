@@ -104,10 +104,10 @@ export default function WarehouseManagement() {
         title="Warehouse Management Software 2025 | Best WMS | Free Plan | StockFlow"
         description="Discover the best warehouse management software 2025. Real-time tracking, barcode scanning, multi-location support. Reduce costs 30% & save 20 hours/week. Start free today."
         keywords="warehouse management software, warehouse management, warehouse software, warehouse management system, WMS software, warehouse optimization, warehouse tracking, stockflow warehouse management"
-        url="https://www.stockflow.be/warehouse-management"
+        url="https://www.stockflowsystems.com/warehouse-management"
         hreflang={[
-          { lang: "en", url: "https://www.stockflow.be/warehouse-management" },
-          { lang: "nl", url: "https://www.stockflow.be/magazijnbeheer" }
+          { lang: "en", url: "https://www.stockflowsystems.com/warehouse-management" },
+          { lang: "nl", url: "https://www.stockflowsystems.com/magazijnbeheer" }
         ]}
       />
 
@@ -297,10 +297,10 @@ export default function WarehouseManagement() {
                   "name": "StockFlow",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
+                    "url": "https://www.stockflowsystems.com/logo.png"
                   }
                 },
-                "url": "https://www.stockflow.be/warehouse-management",
+                "url": "https://www.stockflowsystems.com/warehouse-management",
                 "inLanguage": "en",
                 "availableLanguage": ["en", "nl"]
               }

@@ -1,12 +1,34 @@
 ﻿import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import { Link } from 'react-router-dom';
 import { Check, X, Star } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function BestInventoryManagementSoftware() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management software');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
 
   // 1. IMPROVED: Expanded FAQ with more specific Long-Tail Keywords
   const faqData = [
@@ -28,26 +50,6 @@ export default function BestInventoryManagementSoftware() {
     }
   ];
 
-  // 2. NEW: SoftwareApplication Schema (Crucial for Software SEO)
-  const softwareSchema = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "StockFlow Inventory Management",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web, iOS, Android",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR",
-      "priceValidUntil": "2025-12-31"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "120"
-    },
-    "featureList": "Barcode Scanning, Multi-channel Sync, Offline Mode, Order Fulfillment"
-  };
 
   return (
     <SeoPageLayout
@@ -58,33 +60,44 @@ export default function BestInventoryManagementSoftware() {
     >
       <SEO
         title="Best Inventory Software 2025: Completely Free Forever | StockFlow"
-        description="Best inventory management software 2025. Completely free forever - unlimited products, all features included. Real-time tracking, barcode scanning. Save 35% costs & 15 hours/week. Trusted by 1,000+ businesses. Start free - no credit card required."
+        description="Best inventory management software 2025. Completely free forever - unlimited products, all features included. Compare top solutions based on operational resilience, offline capability, and unit-of-measure handling. Trusted by 1,000+ businesses. Start free - no credit card required."
         keywords="best inventory management software, best inventory software, top inventory management software, best inventory management software 2025, best inventory software for small business, inventory management software comparison, best inventory system, stockflow, stock flow"
-        url="https://www.stockflow.be/best-inventory-management-software"
+        url="https://www.stockflowsystems.com/best-inventory-management-software"
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Management Software"
+        }}
       />
 
       {/* Introduction */}
       <div className="mb-12">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Why This Guide Matters</h2>
-          <p className="text-lg text-slate-800 leading-relaxed mb-4">
-            After analyzing 1,000+ businesses, we found that the <strong>best inventory management software</strong> saves companies an average of <strong>35% on inventory costs</strong> and <strong>15 hours per week</strong> on manual tracking. This comprehensive 2025 guide compares the top solutions to help you find the right fit.
-          </p>
-          <p className="text-base text-slate-700">
-            <strong>Quick Stats:</strong> Businesses using the right inventory software see 99% accuracy (vs 85% manual), 70% time savings, and 25% cost reduction within the first 3 months.
-          </p>
-        </div>
         <p className="text-lg text-slate-800 leading-relaxed mb-6">
           Searching for the <strong>best inventory management software</strong> usually leads to two bad options: 
           over-complicated Enterprise Resource Planning (ERP) systems that cost thousands a month, or 
-          basic plugins that crash when you hit 50 orders a day.
+          basic plugins that crash when you hit 50 orders a day. Based on data from {metrics.customerCount} businesses, the best software delivers measurable results: customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
           The "best" software isn't about the longest feature list. It's about <strong>operational resilience</strong>. 
           Does it work when the Wi-Fi cuts out? Can it handle unit-of-measure conversions (buying cases, selling units) automatically? 
-          This guide compares the three main categories of inventory systems to help you decide. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide, explore <Link to="/solutions/software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">software for inventory management</Link> options, and check our <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> comparison. Learn about <Link to="/bill-of-material-management-software-free" className="text-blue-600 hover:underline font-semibold">free BOM management software</Link> for manufacturing needs.
+          This guide compares the three main categories of inventory systems to help you decide. One hardware store chain saved €12,000 annually by switching to StockFlow.
         </p>
       </div>
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
 
 
@@ -514,85 +527,34 @@ export default function BestInventoryManagementSoftware() {
 
 
 
-      {/* Related Reading Section */}
-      <div className="mt-16 pt-8 border-t-2 border-slate-200">
-        <h2 className="text-3xl font-bold text-black mb-6">
-          Related Reading
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
-            <h3 className="text-xl font-semibold text-black mb-3">
-              <Link to="/inventory-management-software" className="text-blue-600 hover:underline">
-                Inventory Management Software Guide
-              </Link>
-            </h3>
-            <p className="text-base text-slate-600 leading-relaxed">
-              Complete guide to inventory management software. Learn about features, benefits, and how to choose the right solution for your business.
-            </p>
-          </div>
-          <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
-            <h3 className="text-xl font-semibold text-black mb-3">
-              <Link to="/online-inventory-software" className="text-blue-600 hover:underline">
-                Online Inventory Software
-              </Link>
-            </h3>
-            <p className="text-base text-slate-600 leading-relaxed">
-              Compare top online inventory software solutions. Cloud-based systems for real-time tracking and multi-channel management.
-            </p>
-          </div>
-          <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
-            <h3 className="text-xl font-semibold text-black mb-3">
-              <Link to="/bill-of-material-management-software-free" className="text-blue-600 hover:underline">
-                Free BOM Management Software
-              </Link>
-            </h3>
-            <p className="text-base text-slate-600 leading-relaxed">
-              Discover free bill of materials management software for manufacturing. Track components and calculate material requirements.
-            </p>
-          </div>
-        </div>
-      </div>
 
       <StructuredData
-        data={[
-          {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: faqData.map(faq => ({
-              "@type": "Question",
-              name: faq.question,
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: faq.answer,
-              },
-            })),
+        data={generateSeoPageStructuredData({
+          title: "Best Inventory Management Software 2025: Free vs Paid Comparison",
+          description: "Compare the best inventory management software 2025. Free plans, pricing, features. Find the right tool for your business.",
+          url: location.pathname,
+          breadcrumbs,
+          faqData,
+          softwareData: {
+            name: "StockFlow Inventory Management",
+            description: "Best inventory management software 2025. Free plans, pricing, features. Find the right tool for your business.",
+            category: "BusinessApplication",
+            operatingSystem: "Web Browser",
+            price: "0",
+            currency: "EUR",
+            url: location.pathname,
+            features: [
+              "Barcode Scanning",
+              "Multi-channel Sync",
+              "Offline Mode",
+              "Order Fulfillment"
+            ]
           },
-          {
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": "Best Inventory Management Software 2025: Free vs Paid Comparison",
-            "description": "Compare the best inventory management software 2025. Free plans, pricing, features. Find the right tool for your business.",
-            "author": {
-              "@type": "Organization",
-              "name": "StockFlow"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "StockFlow",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.stockflow.be/logo.png"
-              }
-            },
-            "datePublished": "2024-01-01",
-            "dateModified": "2025-11-26",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": "https://www.stockflow.be/best-inventory-management-software"
-            }
-          },
-          softwareSchema
-        ]}
+          pageType: 'software',
+          datePublished: "2024-01-01",
+          dateModified: "2025-11-26",
+          includeWebSite: false
+        })}
       />
     </SeoPageLayout>
   );

@@ -18,10 +18,23 @@ import {
   WifiOff
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function ConstructionInventoryApp() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for construction use case
+  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
+  const relevantTestimonials = getRelevantTestimonials('construction');
+  const metrics = getProprietaryMetrics('construction inventory');
 
   const faqData = [
     {
@@ -58,7 +71,7 @@ export default function ConstructionInventoryApp() {
     },
     {
       question: "What is the ROI of construction inventory apps?",
-      answer: "The ROI is typically very high. Construction companies see: 10+ hours saved per week on inventory tasks, 15-25% reduction in material waste, 20-30% reduction in material theft, improved inventory accuracy to 99%+, and prevention of project delays from material shortages. Most companies see ROI within the first month through efficiency gains and theft prevention."
+      answer: "The ROI is typically very high. Construction companies see: 10+ hours saved per week on inventory tasks, 15-25% reduction in material waste,  in material theft, improved inventory accuracy to 99%+, and prevention of project delays from material shortages. Most companies see ROI within the first month through efficiency gains and theft prevention."
     },
     {
       question: "How do construction inventory apps handle material transfers between job sites?",
@@ -112,7 +125,7 @@ export default function ConstructionInventoryApp() {
   ];
 
   const benefits = [
-    { icon: Clock, text: "Save 10+ hours per week on inventory tasks" },
+    { icon: Clock, text: "Save  on inventory tasks" },
     { icon: CheckCircle, text: "Update inventory in real-time from job sites" },
     { icon: DollarSign, text: "Reduce material waste by 15-25%" },
     { icon: Shield, text: "Prevent theft and loss of high-value materials" },
@@ -178,14 +191,14 @@ export default function ConstructionInventoryApp() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/solutions/construction-inventory-app"
+      "@id": "https://www.stockflowsystems.com/solutions/construction-inventory-app"
     }
   };
 
@@ -214,7 +227,7 @@ export default function ConstructionInventoryApp() {
         title="Construction Inventory App 2025 - Save 10+ Hours/Week, Reduce Theft 20-30% | StockFlow"
         description="Mobile construction inventory app 2025 for job sites. Offline capability, barcode scanning, multi-site tracking. Save 10+ hours/week, reduce theft 20-30%, improve accuracy 99%+. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="construction inventory app, construction inventory mobile app, construction materials app, job site inventory app, construction inventory tracking app, mobile construction inventory, construction inventory software mobile, construction app inventory, construction materials tracking app, construction inventory management app, mobile construction inventory management, construction site inventory app"
-        url="https://www.stockflow.be/solutions/construction-inventory-app"
+        url="https://www.stockflowsystems.com/solutions/construction-inventory-app"
         structuredData={[structuredData, faqStructuredData]}
       />
 

@@ -10,9 +10,22 @@ import {
   TrendingUp,
   CheckCircle
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function EcommerceInventoryManagement() {
   usePageRefresh();
+  
+  // Get real customer data for ecommerce use case
+  const relevantCaseStudies = getRelevantCaseStudies('ecommerce inventory');
+  const relevantTestimonials = getRelevantTestimonials('ecommerce');
+  const metrics = getProprietaryMetrics('ecommerce inventory');
   
   const faqData = [
     {
@@ -123,8 +136,28 @@ export default function EcommerceInventoryManagement() {
         title="Ecommerce Inventory Management 2025 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
         description="Complete ecommerce inventory management 2025. Multi-channel sync, real-time updates, prevent overselling. Integrate Shopify, Amazon, WooCommerce. Save 20+ hours/week, 99%+ accuracy. Free plan available. Start free trial - no credit card required."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
-        url="https://www.stockflow.be/ecommerce-inventory-management"
+        url="https://www.stockflowsystems.com/ecommerce-inventory-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "20 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "99%+ inventory accuracy",
+          keyMetric: "Eliminate overselling",
+          feature: "Ecommerce Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -355,6 +388,14 @@ export default function EcommerceInventoryManagement() {
           }))
         }
       ]} />
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

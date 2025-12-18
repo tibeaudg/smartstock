@@ -175,11 +175,11 @@ export default function VoorraadbeheerSoftware() {
         title="Voorraadbeheer Software 2025: GRATIS Plan, Bespaar 70% Tijd | StockFlow"
         description="Beste voorraadbeheer software 2025. GRATIS plan (30 producten), real-time tracking, barcode scanning. Bespaar 70% tijd, 25% kosten. Vertrouwd door 1.000+ bedrijven. Start gratis - geen creditcard vereist."
         keywords="stockbeheer programma, voorraadbeheer programma, voorraadbeheer software, gratis voorraadbeheer, stockbeheer software, magazijnbeheer software, inventarisatie software, voorraadbeheer app, stockbeheer app, stockflow, gratis stockbeheer, KMO software, kleine onderneming software, voorraad software, inventory software, programma voor voorraadbeheer, stockbeheer programma gratis"
-        url="https://www.stockflow.be/voorraadbeheer-software"
+        url="https://www.stockflowsystems.com/voorraadbeheer-software"
         locale="nl"
         alternateLanguages={[
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-software' },
-          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-management-software' }
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/voorraadbeheer-software' },
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-management-software' }
         ]}
       />
 
@@ -809,10 +809,10 @@ export default function VoorraadbeheerSoftware() {
             "name": "stockflow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "url": "https://www.stockflow.be/voorraadbeheer-software"
+          "url": "https://www.stockflowsystems.com/voorraadbeheer-software"
         },
         {
           "@context": "https://schema.org",
@@ -822,13 +822,13 @@ export default function VoorraadbeheerSoftware() {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://www.stockflow.be"
+              "item": "https://www.stockflowsystems.com"
             },
             {
               "@type": "ListItem",
               "position": 2,
               "name": "Voorraadbeheer Software",
-              "item": "https://www.stockflow.be/voorraadbeheer-software"
+              "item": "https://www.stockflowsystems.com/voorraadbeheer-software"
             }
           ]
         }

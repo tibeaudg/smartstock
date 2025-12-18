@@ -2,7 +2,9 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
   Building2,
   Users,
@@ -21,9 +23,28 @@ import {
   Zap,
   Globe
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function SuppliersPage() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data for supplier management
+  const relevantCaseStudies = getRelevantCaseStudies('supplier management');
+  const relevantTestimonials = getRelevantTestimonials('supplier');
+  const metrics = getProprietaryMetrics('supplier management');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
 
   const faqData = [
     {
@@ -60,15 +81,12 @@ export default function SuppliersPage() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Supplier Management Software for Inventory Control",
-    url: "https://www.stockflow.be/suppliers",
     description: "Supplier management software for inventory control. Track suppliers, automate purchase orders, monitor performance. Reduce procurement costs 15-25%. Free plan available.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Supplier Management", url: "https://www.stockflow.be/suppliers", position: 2 }
-    ],
-    faqData: faqData,
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow - Supplier Management",
       description: "Supplier management software for inventory control. Track suppliers, automate purchase orders, monitor performance. Reduce procurement costs 15-25%.",
@@ -76,10 +94,6 @@ export default function SuppliersPage() {
       operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "180"
-      },
       features: [
         "Supplier contact management",
         "Purchase order automation",
@@ -88,9 +102,11 @@ export default function SuppliersPage() {
         "Automated reordering",
         "Multi-supplier support"
       ],
-      image: "https://www.stockflow.be/Inventory-Management.png",
-      url: "https://www.stockflow.be/suppliers"
-    }
+      image: "https://www.stockflowsystems.com/Inventory-Management.png",
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   const features = [
@@ -146,7 +162,7 @@ export default function SuppliersPage() {
     {
       icon: Clock,
       title: "Save Time on Ordering",
-      description: "Automate purchase order creation and supplier communication. Save 10+ hours per week on procurement tasks.",
+      description: "Automate purchase order creation and supplier communication. Save  on procurement tasks.",
       metric: "10+ hours/week"
     },
     {
@@ -236,9 +252,29 @@ export default function SuppliersPage() {
         title="Supplier Management Software | StockFlow"
         description="Supplier management software for inventory control. Track suppliers, automate purchase orders, monitor performance. Reduce procurement costs 15-25%. Free plan available."
         keywords="supplier management, vendor management, supplier tracking, purchase order software, supplier performance, procurement software, supplier management system, vendor tracking, supplier relationship management, purchase order automation, supplier management software, vendor management software, supplier tracking software, procurement management, supplier database, vendor database, stockflow, stock flow"
-        url="https://www.stockflow.be/suppliers"
+        url="https://www.stockflowsystems.com/suppliers"
         structuredData={structuredData}
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "6 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "15-25% reduction in procurement costs",
+          keyMetric: "Improved supplier relationships",
+          feature: "Supplier Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -403,6 +439,21 @@ export default function SuppliersPage() {
           </div>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

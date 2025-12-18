@@ -18,12 +18,24 @@ import {
 
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
-
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryManagementProvider() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management software');
   
   const faqData = [
     {
@@ -242,7 +254,7 @@ export default function InventoryManagementProvider() {
         title="Inventory Management Provider 2025 - Save 50-90% Costs, Free Plan | StockFlow"
         description="Choose the best inventory management provider 2025. Real-time tracking, 24/7 support, free plan for up to 100 products. Save 50-90% costs vs competitors. Trusted by 500+ businesses. Start free trial - no credit card required."
         keywords="inventory management provider, inventory management software provider, best inventory provider, inventory provider, stock management provider, inventory system provider, inventory software provider, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-provider"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-provider"
       />
 
 
@@ -608,21 +620,21 @@ export default function InventoryManagementProvider() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/solutions/inventory-management-provider",
+          "@id": "https://www.stockflowsystems.com/solutions/inventory-management-provider",
           "name": "Inventory Management Provider",
-          "description": "Save 35% costs & 15 hours/week! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
-          "url": "https://www.stockflow.be/inventory-management-provider",
+          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
+          "url": "https://www.stockflowsystems.com/inventory-management-provider",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2025-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -631,13 +643,13 @@ export default function InventoryManagementProvider() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Inventory Management Provider",
-                "item": "https://www.stockflow.be/inventory-management-provider"
+                "item": "https://www.stockflowsystems.com/inventory-management-provider"
               }
             ]
           }
@@ -687,21 +699,21 @@ export default function InventoryManagementProvider() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
-          "screenshot": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+          "screenshot": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-management-provider"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-management-provider"
           },
           "award": [
             "Best Inventory Software 2024",
@@ -717,10 +729,10 @@ export default function InventoryManagementProvider() {
             "Multi-user collaboration",
             "Enterprise security"
           ],
-          "downloadUrl": "https://www.stockflow.be/auth",
+          "downloadUrl": "https://www.stockflowsystems.com/auth",
           "softwareHelp": {
             "@type": "CreativeWork",
-            "url": "https://www.stockflow.be/contact"
+            "url": "https://www.stockflowsystems.com/contact"
           }
         },
         ...testimonials.map((testimonial) => ({

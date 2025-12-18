@@ -7,9 +7,22 @@ import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock, AlertCircle, Database, FileText, Users, TrendingUp, MapPin } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsSpreadsheets() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
 
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Real-Time Inventory Tracking', stockflow: true, competitor: false },
@@ -87,16 +100,16 @@ export default function StockFlowVsSpreadsheets() {
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/stockflow-vs-spreadsheets",
+      "@id": "https://www.stockflowsystems.com/stockflow-vs-spreadsheets",
       "name": "StockFlow vs Spreadsheets Comparison",
       "headline": "StockFlow vs Spreadsheets: Why Professional Inventory Software Beats Manual Tracking",
       "description": "Compare StockFlow vs spreadsheets for inventory management. Real-time tracking, barcode scanning, automation, and integrations vs manual data entry. Save 10-20 hours/week. StockFlow is completely free forever - start free.",
-      "url": "https://www.stockflow.be/stockflow-vs-spreadsheets",
+      "url": "https://www.stockflowsystems.com/stockflow-vs-spreadsheets",
       "inLanguage": "en",
       "isPartOf": {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       },
       "datePublished": "2025-01-01",
       "dateModified": new Date().toISOString().split("T")[0]
@@ -152,7 +165,7 @@ export default function StockFlowVsSpreadsheets() {
         title="StockFlow vs Spreadsheets 2025 - Save 10-20 Hours/Week | StockFlow"
         description="Compare StockFlow vs spreadsheets for inventory management. Real-time tracking, barcode scanning, automation, and integrations vs manual data entry. Save 10-20 hours/week. StockFlow is completely free forever - start free."
         keywords="stockflow vs spreadsheets, excel inventory management, google sheets inventory, inventory software vs excel, replace excel inventory, spreadsheet inventory management, inventory management software, barcode scanning inventory, real-time inventory tracking, automated inventory management, inventory software free, stockflow vs excel"
-        url="https://www.stockflow.be/stockflow-vs-spreadsheets"
+        url="https://www.stockflowsystems.com/stockflow-vs-spreadsheets"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
@@ -166,6 +179,26 @@ export default function StockFlowVsSpreadsheets() {
           This comparison shows why thousands of businesses have switched from spreadsheets to StockFlow for professional inventory management.
         </p>
       </div>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10-20 hours/week",
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: "75% reduction in counting time",
+          feature: "Inventory Software vs Spreadsheets"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       {/* Feature Comparison */}
       <section className="py-16 px-4 bg-white">
@@ -406,6 +439,14 @@ export default function StockFlowVsSpreadsheets() {
           </div>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
     </SeoPageLayout>
   );
 }

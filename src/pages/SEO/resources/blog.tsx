@@ -13,7 +13,7 @@ const structuredData = {
   "@type": "CollectionPage",
   "name": "Blog - StockFlow",
   "description": "Explore our complete library of articles, guides, and resources about inventory management, software comparisons, and industry insights.",
-  "url": "https://www.stockflow.be/resources",
+  "url": "https://www.stockflowsystems.com/resources",
   "mainEntity": {
     "@type": "ItemList",
     "name": "StockFlow Blog Articles",
@@ -62,7 +62,7 @@ export default function SEOResourcesBlogPage() {
         title="Inventory Management Blog 2025 - Articles, Guides & Resources | StockFlow"
         description="Explore 95+ articles about inventory management, software comparisons, best practices, and industry insights. Expert guides to optimize your inventory operations. Free resources."
         keywords="inventory management blog, inventory articles, stock management guides, inventory software guides, warehouse management articles, inventory best practices, inventory management tips, inventory control guides"
-        url="https://www.stockflow.be/resources"
+        url="https://www.stockflowsystems.com/resources"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />

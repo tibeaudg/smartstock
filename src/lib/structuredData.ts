@@ -26,6 +26,16 @@ export interface OrganizationData {
   services?: string[];
 }
 
+export interface ReviewData {
+  author: {
+    name: string;
+    type?: string;
+  };
+  rating: number | string;
+  reviewBody: string;
+  datePublished?: string;
+}
+
 export interface SoftwareApplicationData {
   name: string;
   description: string;
@@ -49,6 +59,7 @@ export interface SoftwareApplicationData {
     availability?: string;
     validFrom?: string;
   }>;
+  reviews?: ReviewData[];
 }
 
 export interface ServiceData {
@@ -170,12 +181,12 @@ export function generateWebSiteSchema(organizationName: string, baseUrl: string)
 
 // Generate SoftwareApplication Schema
 export function generateSoftwareApplicationSchema(data: SoftwareApplicationData) {
-  const baseUrl = data.baseUrl || "https://www.stockflow.be";
+  const baseUrl = data.baseUrl || "https://www.stockflowsystems.com";
   
   // Normalize image to array format
   const images = data.image 
     ? (Array.isArray(data.image) ? data.image : [data.image])
-    : ["https://www.stockflow.be/Inventory-Management.png"];
+    : ["https://www.stockflowsystems.com/Inventory-Management.png"];
   
   // Ensure all image URLs are absolute
   const normalizedImages = images.map(img => 
@@ -221,20 +232,39 @@ export function generateSoftwareApplicationSchema(data: SoftwareApplicationData)
     };
   }
   
-  // Aggregate rating with proper defaults
-  const aggregateRating = data.rating ? {
+  // Calculate aggregate rating from reviews if provided, otherwise use provided rating or defaults
+  let aggregateRating;
+  if (data.reviews && data.reviews.length > 0) {
+    // Calculate average rating from reviews
+    const totalRating = data.reviews.reduce((sum, review) => {
+      const rating = typeof review.rating === 'string' ? parseFloat(review.rating) : review.rating;
+      return sum + rating;
+    }, 0);
+    const averageRating = (totalRating / data.reviews.length).toFixed(1);
+    aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": averageRating,
+      "ratingCount": data.reviews.length.toString(),
+      "bestRating": "5",
+      "worstRating": "1"
+    };
+  } else if (data.rating) {
+    aggregateRating = {
       "@type": "AggregateRating",
       "ratingValue": data.rating.value,
       "ratingCount": data.rating.count,
       "bestRating": "5",
       "worstRating": "1"
-    } : {
+    };
+  } else {
+    aggregateRating = {
       "@type": "AggregateRating",
       "ratingValue": "4.8",
       "ratingCount": "150",
       "bestRating": "5",
       "worstRating": "1"
     };
+  }
   
   // Build the schema
   const schema: any = {
@@ -281,6 +311,10 @@ export function generateSoftwareApplicationSchema(data: SoftwareApplicationData)
     schema.featureList = data.features;
   }
   
+  // Add review property if reviews are provided (reviews will be separate schemas, but we link them)
+  // Note: Individual Review schemas should be generated separately and included in the page
+  // The review property here is for linking, but we'll handle that in the combined generator
+  
   return schema;
 }
 
@@ -294,7 +328,7 @@ export interface ProductPageStructuredDataOptions {
 }
 
 export function generateProductPageStructuredData(options: ProductPageStructuredDataOptions) {
-  const { softwareData, faqData, breadcrumbs, includeBreadcrumbs = false, baseUrl = "https://www.stockflow.be" } = options;
+  const { softwareData, faqData, breadcrumbs, includeBreadcrumbs = false, baseUrl = "https://www.stockflowsystems.com" } = options;
   
   const schemas: any[] = [];
   
@@ -433,8 +467,8 @@ export function generateComprehensiveStructuredData(
 ) {
   const baseOrganizationData: OrganizationData = {
     name: "StockFlow",
-    url: "https://www.stockflow.be",
-    logo: "https://www.stockflow.be/logo.png",
+    url: "https://www.stockflowsystems.com",
+    logo: "https://www.stockflowsystems.com/logo.png",
     description: "Smart inventory management software for growing businesses. Free stock management solution for SMEs.",
     foundingDate: "2024",
     address: {
@@ -444,13 +478,13 @@ export function generateComprehensiveStructuredData(
     contactPoints: [
       {
         type: "customer service",
-        email: "support@stockflow.be",
+        email: "support@stockflowsystems.com",
         phone: "+32-XXX-XXX-XXX",
         languages: ["English", "Dutch", "French", "German", "Spanish"]
       },
       {
         type: "sales",
-        email: "sales@stockflow.be",
+        email: "sales@stockflowsystems.com",
         languages: ["English", "Dutch"]
       }
     ],
@@ -472,8 +506,8 @@ export function generateComprehensiveStructuredData(
   const schemas = [
     generateOrganizationSchema(baseOrganizationData),
     generateBreadcrumbSchema(pageData.breadcrumbs),
-    generateWebSiteSchema("StockFlow", "https://www.stockflow.be"),
-    generateLocalBusinessSchema("StockFlow", "https://www.stockflow.be")
+    generateWebSiteSchema("StockFlow", "https://www.stockflowsystems.com"),
+    generateLocalBusinessSchema("StockFlow", "https://www.stockflowsystems.com")
   ];
 
   // Add page-specific schemas
@@ -500,7 +534,7 @@ export function generateComprehensiveStructuredData(
       "mainEntity": {
         "@type": "Organization",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       }
     } as any);
   }
@@ -537,7 +571,7 @@ export function generateVideoObjectSchema(config: {
       "name": config.publisher || "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     }
   };
@@ -562,7 +596,7 @@ export function generateProductSchema(config: {
   };
   baseUrl?: string;
 }) {
-  const baseUrl = config.baseUrl || "https://www.stockflow.be";
+  const baseUrl = config.baseUrl || "https://www.stockflowsystems.com";
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -609,7 +643,7 @@ export function generateCourseSchema(config: {
   baseUrl?: string;
   courseUrl?: string;
 }) {
-  const baseUrl = config.baseUrl || "https://www.stockflow.be";
+  const baseUrl = config.baseUrl || "https://www.stockflowsystems.com";
   return {
     "@context": "https://schema.org",
     "@type": "Course",
@@ -669,4 +703,226 @@ export function generateReviewSchema(config: {
     ...(config.reviewBody && { "reviewBody": config.reviewBody }),
     ...(config.datePublished && { "datePublished": config.datePublished })
   };
+}
+
+// Generate Review Schema specifically for SoftwareApplication
+export function generateReviewSchemaForSoftware(
+  review: ReviewData,
+  softwareName: string,
+  softwareUrl?: string
+) {
+  const ratingValue = typeof review.rating === 'string' ? review.rating : review.rating.toString();
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "SoftwareApplication",
+      "name": softwareName,
+      ...(softwareUrl && { "url": softwareUrl })
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": ratingValue,
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "author": {
+      "@type": review.author.type || "Person",
+      "name": review.author.name
+    },
+    "reviewBody": review.reviewBody,
+    ...(review.datePublished && { "datePublished": review.datePublished })
+  };
+}
+
+// Generate SoftwareApplication with linked Review schemas
+export function generateSoftwareApplicationWithReviews(
+  softwareData: SoftwareApplicationData,
+  reviews?: ReviewData[]
+): any[] {
+  const schemas: any[] = [];
+  
+  // Generate SoftwareApplication schema with calculated aggregateRating from reviews
+  const softwareSchema = generateSoftwareApplicationSchema({
+    ...softwareData,
+    reviews: reviews || softwareData.reviews
+  });
+  
+  schemas.push(softwareSchema);
+  
+  // Generate individual Review schemas if reviews are provided
+  if (reviews && reviews.length > 0) {
+    const baseUrl = softwareData.baseUrl || "https://www.stockflowsystems.com";
+    const softwareUrl = softwareData.url.startsWith('http') 
+      ? softwareData.url 
+      : `${baseUrl}${softwareData.url.startsWith('/') ? '' : '/'}${softwareData.url}`;
+    
+    reviews.forEach(review => {
+      const reviewSchema = generateReviewSchemaForSoftware(
+        review,
+        softwareData.name,
+        softwareUrl
+      );
+      schemas.push(reviewSchema);
+    });
+  }
+  
+  return schemas;
+}
+
+// Generate comprehensive structured data for SEO pages
+export interface SeoPageStructuredDataOptions {
+  title: string;
+  description: string;
+  url: string;
+  baseUrl?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  faqData?: Array<{question: string; answer: string}>;
+  softwareData?: SoftwareApplicationData;
+  reviews?: ReviewData[];
+  includeOrganization?: boolean;
+  includeWebSite?: boolean;
+  includeBreadcrumbs?: boolean;
+  pageType?: 'article' | 'software' | 'service' | 'product';
+  datePublished?: string;
+  dateModified?: string;
+}
+
+export function generateSeoPageStructuredData(options: SeoPageStructuredDataOptions): any[] {
+  const {
+    title,
+    description,
+    url,
+    baseUrl = "https://www.stockflowsystems.com",
+    breadcrumbs = [],
+    faqData,
+    softwareData,
+    reviews,
+    includeOrganization = true,
+    includeWebSite = false,
+    includeBreadcrumbs = true,
+    pageType = 'article',
+    datePublished,
+    dateModified
+  } = options;
+
+  const schemas: any[] = [];
+  const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+
+  // Add Organization schema if requested
+  if (includeOrganization) {
+    const orgData: OrganizationData = {
+      name: "StockFlow",
+      url: baseUrl,
+      logo: `${baseUrl}/logo.png`,
+      description: "Smart inventory management software for growing businesses. Free stock management solution for SMEs.",
+      foundingDate: "2024",
+      address: {
+        country: "BE",
+        region: "Belgium"
+      },
+      contactPoints: [
+        {
+          type: "customer service",
+          email: "support@stockflowsystems.com",
+          languages: ["English", "Dutch", "French", "German", "Spanish"]
+        },
+        {
+          type: "sales",
+          email: "sales@stockflowsystems.com",
+          languages: ["English", "Dutch"]
+        }
+      ],
+      socialMedia: [
+        "https://www.facebook.com/profile.php?id=61578067034898",
+        "https://twitter.com/stockflow",
+        "https://www.linkedin.com/company/stockflow",
+        "https://www.instagram.com/stockflowbe"
+      ],
+      services: [
+        "Inventory Management",
+        "Stock Control",
+        "Warehouse Management",
+        "Business Software",
+        "SMB Solutions"
+      ]
+    };
+    schemas.push(generateOrganizationSchema(orgData));
+  }
+
+  // Add WebSite schema if requested
+  if (includeWebSite) {
+    schemas.push(generateWebSiteSchema("StockFlow", baseUrl));
+  }
+
+  // Add BreadcrumbList if requested and breadcrumbs are provided
+  if (includeBreadcrumbs && breadcrumbs.length > 0) {
+    schemas.push(generateBreadcrumbSchema(breadcrumbs));
+  }
+
+  // Add SoftwareApplication with Reviews if software data is provided
+  if (softwareData) {
+    const softwareSchemas = generateSoftwareApplicationWithReviews(
+      {
+        ...softwareData,
+        baseUrl,
+        url: fullUrl
+      },
+      reviews
+    );
+    schemas.push(...softwareSchemas);
+  } else if (reviews && reviews.length > 0 && pageType === 'software') {
+    // If only reviews provided without softwareData, create basic SoftwareApplication
+    const basicSoftwareData: SoftwareApplicationData = {
+      name: "StockFlow",
+      description: description,
+      category: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      price: "0",
+      currency: "EUR",
+      url: fullUrl,
+      baseUrl,
+      reviews
+    };
+    const softwareSchemas = generateSoftwareApplicationWithReviews(basicSoftwareData, reviews);
+    schemas.push(...softwareSchemas);
+  }
+
+  // Add FAQ schema if provided
+  if (faqData && faqData.length > 0) {
+    schemas.push(generateFAQSchema(faqData));
+  }
+
+  // Add Article schema for article pages
+  if (pageType === 'article' && datePublished) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": title,
+      "description": description,
+      "datePublished": datePublished,
+      "dateModified": dateModified || datePublished,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": fullUrl
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "url": baseUrl
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/logo.png`
+        }
+      }
+    });
+  }
+
+  // Filter out any undefined or null schemas
+  return schemas.filter(schema => schema && typeof schema === 'object');
 }

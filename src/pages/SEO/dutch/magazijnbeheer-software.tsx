@@ -2,10 +2,18 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 
 export default function MagazijnbeheerSoftware() {
   usePageRefresh();
+  const location = useLocation();
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   
   const faqData = [
     {
@@ -66,26 +74,19 @@ export default function MagazijnbeheerSoftware() {
     }
   ];
 
-  const structuredData = generateComprehensiveStructuredData('software', {
+  const structuredData = generateSeoPageStructuredData({
     title: "Gratis Magazijnbeheer Software voor KMO's | StockFlow",
-    url: "https://www.stockflow.be/magazijnbeheer-software",
-    description: "Eenvoudig magazijnbeheer software voor kleine bedrijven. Beheer voorraad, leveringen en producten in Ã©Ã©n online dashboard. Gratis te proberen.",
-    breadcrumbs: [
-      { name: "Home", url: "https://www.stockflow.be/", position: 1 },
-      { name: "Magazijnbeheer Software", url: "https://www.stockflow.be/magazijnbeheer-software", position: 2 }
-    ],
-    faqData: faqData,
+    description: "Eenvoudig magazijnbeheer software voor kleine bedrijven. Beheer voorraad, leveringen en producten in één online dashboard. Gratis te proberen.",
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
     softwareData: {
       name: "StockFlow Magazijnbeheer Software",
       description: "Eenvoudig magazijnbeheer software voor kleine bedrijven. Beheer je magazijn en voorraad online met real-time inzicht.",
       category: "BusinessApplication",
-      operatingSystem: "Web, iOS, Android",
+      operatingSystem: "Web Browser",
       price: "0",
       currency: "EUR",
-      rating: {
-        value: "4.8",
-        count: "127"
-      },
       features: [
         "Real-time voorraad tracking",
         "Barcode scanning",
@@ -97,8 +98,10 @@ export default function MagazijnbeheerSoftware() {
         "Mobiele app toegang"
       ],
       image: "https://www.stockflow.be/Inventory-Management.png",
-      url: "https://www.stockflow.be/magazijnbeheer-software"
-    }
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
   });
 
   return (
@@ -112,7 +115,7 @@ export default function MagazijnbeheerSoftware() {
         title="Magazijnbeheer Software 2025 - Gratis Plan | StockFlow"
         description="Beste magazijnbeheer software voor kleine bedrijven. Gratis plan tot 30 producten, real-time tracking, barcode scanning, multi-locatie. Bespaar 35% kosten, 70% tijd. Start gratis vandaag - geen creditcard vereist."
         keywords="magazijnbeheer software, voorraadbeheer software, warehouse management, stockbeheer software, gratis magazijnbeheer, KMO software, magazijnbeheer software gratis, beste magazijnbeheer software, magazijnbeheer software voor kleine bedrijven, online magazijnbeheer"
-        url="https://www.stockflow.be/magazijnbeheer-software"
+        url="https://www.stockflowsystems.com/magazijnbeheer-software"
         structuredData={structuredData}
       />
 

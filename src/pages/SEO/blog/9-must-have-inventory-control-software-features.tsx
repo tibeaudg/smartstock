@@ -5,6 +5,14 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const topicTitle = "9 Must Have Inventory Control Software Features";
 const canonicalPath = "/9-must-have-inventory-control-software-features";
@@ -78,13 +86,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-09-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/9-must-have-inventory-control-software-features"
+      "@id": "https://www.stockflowsystems.com/9-must-have-inventory-control-software-features"
     }
   }
 ];
@@ -92,6 +100,11 @@ const structuredData = [
 export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
   usePageRefresh();
   const location = useLocation();
+
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory control software features');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory control');
 
   const pageStructuredData = structuredData.map((item) => ({
     ...item,
@@ -113,30 +126,37 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
         title={`9 Must-Have Inventory Control Software Features 2025 - Essential Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
 
 
 
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: "75% reduction in counting time",
+          feature: "Inventory Control Features"
+        }}
+        variant="compact"
+        className="mb-8"
+      />
+
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
+              {topicTitle} has become a recurring talking point for fast-moving inventory teams. Based on data from {metrics.customerCount} businesses, these 9 features deliver measurable results: customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings and see significant cost reductions. The original Stockflow
               article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
               distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
               departments, and secure measurable results without adding administrative overhead.
             </p>
-            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why it matters now</h3>
-              <p className="mt-3 text-base text-blue-900/90">
-                Every economic cycle pressures teams to do more with less. {topicTitle} gives you language, tactics, or inspiration
-                to modernize inventory, supply chain, and asset management workflows so they scale with confidence.
-              </p>
-            </div>
+            
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (
@@ -190,7 +210,7 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Metrics that Matter</h2>
               <p className="mt-3 max-w-2xl text-base text-gray-600">
-                Use these scorecards to prove the ROI of {topicTitle.toLowerCase()}. Set a baseline, monitor progress weekly, and
+                Use these scorecards to prove the ROI of {topicTitle.toLowerCase()}. Based on {metrics.customerCount} customer implementations, these metrics show real results. Set a baseline, monitor progress weekly, and
                 communicate wins with clarity.
               </p>
             </div>
@@ -210,45 +230,23 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Unified data foundation</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Centralize item masters, stock movements, suppliers, and documents so 9 must have inventory control software features decisions never rely on outdated spreadsheets.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automation & alerts</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Trigger workflows, approvals, and reorder points when 9 must have inventory control software features KPIs drift from plan.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Collaboration built in</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Give finance, operations, and frontline teams a shared system of record for 9 must have inventory control software features progress.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="carousel"
+          maxItems={2}
+        />
+      )}
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
+      
     </SeoPageLayout>
   );
 }

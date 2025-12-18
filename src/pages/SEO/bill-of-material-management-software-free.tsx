@@ -25,10 +25,23 @@ import {
 } from 'lucide-react';
 import { getRelatedPages } from '@/config/topicClusters';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function BillOfMaterialManagementSoftwareFree() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for BOM management
+  const relevantCaseStudies = getRelevantCaseStudies('BOM management');
+  const relevantTestimonials = getRelevantTestimonials('BOM');
+  const metrics = getProprietaryMetrics('BOM management');
 
   // Get related pages from topic cluster
   const relatedPages = getRelatedPages('/bill-of-material-management-software-free', 6);
@@ -197,12 +210,32 @@ export default function BillOfMaterialManagementSoftwareFree() {
         title="Free BOM Software 2025: Save 30% Waste, 5-10h/Week | StockFlow"
         description="Get FREE BOM management software for manufacturing. Track components, calculate material requirements. FREE plan (30 products). Reduce material waste by 30%, save 5-10 hours/week. Start free - no credit card required."
         keywords="bill of materials software free, free bom software, bill of materials management software free, bom software free, free bom management software, bill of materials free software, stockflow, stock flow"
-        url="https://www.stockflow.be/bill-of-material-management-software-free"
+        url="https://www.stockflowsystems.com/bill-of-material-management-software-free"
         locale="en-US"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/bill-of-material-management-software-free' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/bill-of-material-management-software-free' }
         ]}
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "5-10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "30% reduction in material waste",
+          keyMetric: "Complete BOM management",
+          feature: "BOM Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Hero Introduction Section */}
       <section className="py-16 px-4 bg-white">
@@ -695,14 +728,14 @@ export default function BillOfMaterialManagementSoftwareFree() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": "2025-11-26",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/bill-of-material-management-software-free"
+            "@id": "https://www.stockflowsystems.com/bill-of-material-management-software-free"
           },
           "articleSection": "Manufacturing Software",
           "keywords": "bill of materials software free, bom software free, free bom management software, bill of materials management software free"
@@ -752,17 +785,17 @@ export default function BillOfMaterialManagementSoftwareFree() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "image": [
-            "https://www.stockflow.be/Inventory-Management.png",
-            "https://www.stockflow.be/optimized/desktop.png"
+            "https://www.stockflowsystems.com/Inventory-Management.png",
+            "https://www.stockflowsystems.com/optimized/desktop.png"
           ],
-          "screenshot": "https://www.stockflow.be/optimized/desktop.png",
+          "screenshot": "https://www.stockflowsystems.com/optimized/desktop.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/bill-of-material-management-software-free"
+            "@id": "https://www.stockflowsystems.com/bill-of-material-management-software-free"
           },
           "featureList": [
             "Multi-level BOM management",
@@ -780,8 +813,8 @@ export default function BillOfMaterialManagementSoftwareFree() {
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "StockFlow",
-          "url": "https://www.stockflow.be",
-          "logo": "https://www.stockflow.be/logo.png",
+          "url": "https://www.stockflowsystems.com",
+          "logo": "https://www.stockflowsystems.com/logo.png",
           "description": "Free BOM management software for manufacturing and assembly",
           "address": {
             "@type": "PostalAddress",
@@ -790,7 +823,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
-            "email": "info@stockflow.be"
+            "email": "info@stockflowsystems.com"
           },
           "sameAs": [
             "https://www.linkedin.com/company/stockflow"
@@ -801,7 +834,7 @@ export default function BillOfMaterialManagementSoftwareFree() {
           "@type": "WebPage",
           "name": "Free Bill of Materials Management Software | BOM Software Free",
           "description": "Get free BOM management software for manufacturing. Track components, calculate material requirements, and manage production with StockFlow's free bill of materials software.",
-          "url": "https://www.stockflow.be/bill-of-material-management-software-free",
+          "url": "https://www.stockflowsystems.com/bill-of-material-management-software-free",
           "mainEntity": {
             "@type": "SoftwareApplication",
             "name": "StockFlow - Free BOM Management Software"
@@ -813,18 +846,25 @@ export default function BillOfMaterialManagementSoftwareFree() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Free BOM Management Software",
-                "item": "https://www.stockflow.be/bill-of-material-management-software-free"
+                "item": "https://www.stockflowsystems.com/bill-of-material-management-software-free"
               }
             ]
           }
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

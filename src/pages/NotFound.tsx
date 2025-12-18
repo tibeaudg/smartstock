@@ -59,11 +59,11 @@ const NotFound = () => {
       "@type": "WebPage",
       "name": "Page Not Found (404) | StockFlow",
       "description": "This page doesn't exist. Find the right inventory management information, tips and solutions for SMEs here.",
-      "url": `https://www.stockflow.be${location.pathname}`,
+      "url": `https://www.stockflowsystems.com${location.pathname}`,
       "isPartOf": {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       },
       "breadcrumb": {
         "@type": "BreadcrumbList",
@@ -72,13 +72,13 @@ const NotFound = () => {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://www.stockflow.be/"
+            "item": "https://www.stockflowsystems.com/"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "404 Error",
-            "item": `https://www.stockflow.be${location.pathname}`
+            "item": `https://www.stockflowsystems.com${location.pathname}`
           }
         ]
       }
@@ -129,16 +129,16 @@ const NotFound = () => {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "StockFlow",
-      "url": "https://www.stockflow.be",
+      "url": "https://www.stockflowsystems.com",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       },
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+32-123-456-789",
         "contactType": "customer service",
-        "email": "info@stockflow.be"
+        "email": "info@stockflowsystems.com"
       }
     }
   ];
@@ -175,7 +175,7 @@ const NotFound = () => {
           title="Page Not Found (404) | StockFlow"
           description="This page doesn't exist. Find the right inventory management information, tips and solutions for SMEs here."
           keywords="404, page not found, inventory management, stock management, tips, SMB"
-          url={`https://www.stockflow.be${location.pathname}`}
+          url={`https://www.stockflowsystems.com${location.pathname}`}
           structuredData={structuredData}
           noindex={true}
         />
@@ -228,10 +228,10 @@ const NotFound = () => {
                 </h3>
         
                 <a 
-                  href="mailto:info@stockflow.be" 
+                  href="mailto:info@stockflowsystems.com" 
                   className="text-blue-600 hover:underline justify-center items-center"
                 >
-                  info@stockflow.be
+                  info@stockflowsystems.com
                 </a>
               </div>
 

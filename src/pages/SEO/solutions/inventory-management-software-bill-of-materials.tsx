@@ -21,11 +21,24 @@ import {
   Database
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryManagementSoftwareBillOfMaterials() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('bill of materials');
+  const relevantTestimonials = getRelevantTestimonials('manufacturing');
+  const metrics = getProprietaryMetrics('bill of materials');
 
   const faqData = [
     {
@@ -127,7 +140,7 @@ export default function InventoryManagementSoftwareBillOfMaterials() {
         title="Inventory Management Software Bill of Materials 2025 - Save 30-40% Costs | StockFlow"
         description="Get inventory management software with bill of materials integration 2025. Track finished goods and components, calculate material requirements automatically. Save 30-40% costs, reduce waste 25-35%. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management software bill of materials, inventory software bill of materials, inventory management with bom, bom inventory management software, inventory system with bill of materials, stock management with bom, manufacturing inventory with bom, production inventory software, assembly inventory management, bom inventory software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-software-bill-of-materials"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-software-bill-of-materials"
       />
 
       {/* Hero Section */}

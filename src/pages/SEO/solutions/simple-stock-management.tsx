@@ -13,9 +13,22 @@ import {
   Star
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function SimpleStockManagement() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('stock management');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('stock management');
   
   const faqData = [
     {
@@ -84,8 +97,28 @@ export default function SimpleStockManagement() {
         title="Simple Stock Management Software | StockFlow"
         description="Simple stock management made easy. Intuitive inventory control, real-time tracking, automated alerts, barcode scanning. Save 70% time. Free plan available."
         keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control, easy stock management, simple inventory system, user-friendly inventory, easy stock tracking, simple inventory management, easy stock control, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/simple-stock-management"
+        url="https://www.stockflowsystems.com/solutions/simple-stock-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "Easy to use",
+          keyMetric: "Simple and intuitive",
+          feature: "Simple Stock Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* What is Simple Stock Management Section */}
       <section id="what-is" className="py-16 px-4 bg-white">
@@ -209,7 +242,7 @@ export default function SimpleStockManagement() {
           "@type": "Article",
           "headline": "Simple Stock Management - Complete Guide 2025",
           "description": "Complete guide to simple stock management. Learn about easy-to-use inventory control systems that provide essential features without complexity. Perfect for businesses that want effective inventory management with minimal learning curve.",
-          "image": "https://www.stockflow.be/simple-stock-management.png",
+          "image": "https://www.stockflowsystems.com/simple-stock-management.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -219,14 +252,14 @@ export default function SimpleStockManagement() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-25",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/simple-stock-management"
+            "@id": "https://www.stockflowsystems.com/solutions/simple-stock-management"
           },
           "keywords": "simple stock management, easy inventory control, user-friendly inventory"
         },
@@ -255,7 +288,7 @@ export default function SimpleStockManagement() {
             "description": "Free plan available"
           },
           "description": "Simple stock management system designed for ease of use. Intuitive interface, essential features, and quick setup. Perfect for businesses that want effective inventory control without complexity.",
-          "url": "https://www.stockflow.be/solutions/simple-stock-management",
+          "url": "https://www.stockflowsystems.com/solutions/simple-stock-management",
           "featureList": [
             "Easy-to-use interface",
             "Real-time stock tracking",
@@ -267,6 +300,13 @@ export default function SimpleStockManagement() {
           ]
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

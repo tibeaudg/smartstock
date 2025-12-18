@@ -15,9 +15,32 @@ import {
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
+import { generateSeoPageStructuredData, type SoftwareApplicationData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function InventorySoftwareManagement() {
   // Gebruik de page refresh hook
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management software');
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   
   const faqData = [
     {
@@ -204,8 +227,28 @@ export default function InventorySoftwareManagement() {
         title="Inventory Software Management 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Master inventory software management 2025 with our comprehensive guide. Learn about inventory system software, inventory control software. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory software management, inventory system software, inventory control software, stock system software, software for inventory management, inventory software system, software inventory management, inventory management software, inventory control system software, stock control software, inventory tracking software, inventory management systems software, inventory software management system, free inventory tracking system, inventory planning software, stock maintain software, system for inventory management, inventory programs, software for inventory control, inventory keeping software, inventory software management solution, inventory management software systems, best inventory software management, inventory management system software, inventory software solutions"
-        url="https://www.stockflow.be/solutions/inventory-software-management"
+        url="https://www.stockflowsystems.com/solutions/inventory-software-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "Comprehensive inventory solution",
+          feature: "Inventory Software Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -482,7 +525,7 @@ export default function InventorySoftwareManagement() {
             <div className="bg-blue-50 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3 text-blue-800">Cost Reduction</h3>
               <p className="text-gray-700 mb-4">
-                Inventory software management reduces costs through optimized stock levels, reduced waste, lower carrying costs, and decreased emergency purchases. Businesses typically see 20-35% reduction in inventory carrying costs.
+                Inventory software management reduces costs through optimized stock levels, reduced waste, lower carrying costs, and decreased emergency purchases. Businesses typically see 20- in inventory carrying costs.
               </p>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li>• Reduced excess inventory</li>
@@ -581,66 +624,40 @@ export default function InventorySoftwareManagement() {
             
 
       {/* Schema.org Structured Data */}
-      <StructuredData data={[
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
-            }
-          }))
+      <StructuredData data={generateSeoPageStructuredData({
+        title: "Inventory Software Management - StockFlow",
+        description: "Master inventory software management with StockFlow. Automated tracking, real-time analytics, and comprehensive management tools.",
+        url: location.pathname,
+        breadcrumbs,
+        faqData,
+        softwareData: {
+          name: "StockFlow - Inventory Software Management",
+          description: "Master inventory software management with StockFlow. Automated tracking, real-time analytics, and comprehensive management tools.",
+          category: "BusinessApplication",
+          operatingSystem: "Web Browser",
+          price: "0",
+          currency: "EUR",
+          url: location.pathname,
+          features: [
+            "Centralized management",
+            "Automated processes",
+            "Advanced analytics",
+            "Barcode integration",
+            "Team collaboration",
+            "Cloud-based access"
+          ],
+          image: "https://www.stockflowsystems.com/Inventory-Management.png"
         },
-        {"@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "StockFlow - Inventory Software Management",
-                "description": "Master inventory software management with StockFlow. Automated tracking, real-time analytics, and comprehensive management tools.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Web Browser",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "EUR",
-                  "description": "Free plan - Basic inventory software management",
-                  "availability": "https://schema.org/InStock"
-                },
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.8",
-                  "ratingCount": "150",
-                  "bestRating": "5",
-                  "worstRating": "1"
-                },
-                "author": {
-                  "@type": "Organization",
-                  "name": "StockFlow"
-                },
-                "publisher": {
-                  "@type": "Organization",
-                  "name": "StockFlow",
-                  "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
-                  }
-                },
-                "image": "https://www.stockflow.be/Inventory-Management.png",
-                "mainEntityOfPage": {
-                  "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/solutions/inventory-software-management"
-                },
-                "featureList": [
-                  "Centralized management",
-                  "Automated processes",
-                  "Advanced analytics",
-                  "Barcode integration",
-                  "Team collaboration",
-                  "Cloud-based access"
-                ]
-              }
-        ]} />
+        pageType: 'software',
+        includeWebSite: false
+      })} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

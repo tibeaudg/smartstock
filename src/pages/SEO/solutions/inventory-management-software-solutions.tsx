@@ -2,9 +2,19 @@
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { generateComprehensiveStructuredData } from '@/lib/structuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import { useState } from 'react';
 import VideoModal from '@/components/VideoModal';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const faqData = [
   {
@@ -61,44 +71,49 @@ const faqData = [
     }
 ];
 
-const structuredData = generateComprehensiveStructuredData('software', {
-  title: 'Inventory Management Software Solutions | StockFlow',
-  url: 'https://www.stockflow.be/inventory-management-software-solutions',
-  description:
-    'Explore StockFlow’s inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control.',
-  breadcrumbs: [
-    { name: 'Home', url: 'https://www.stockflow.be/', position: 1 },
-    { name: 'Inventory Management Software', url: 'https://www.stockflow.be/inventory-management-software', position: 2 },
-    { name: 'Inventory Management Software Solutions', url: 'https://www.stockflow.be/inventory-management-software-solutions', position: 3 }
-  ],
-  faqData,
-  softwareData: {
-    name: 'StockFlow Inventory Management Solutions',
-    description: 'Cloud-based inventory management software solution with purchasing automation, warehouse management, and analytics.',
-    category: 'BusinessApplication',
-    operatingSystem: 'Web, iOS, Android',
-    price: '0',
-    currency: 'EUR',
-    rating: {
-      value: '4.8',
-      count: '168'
-    },
-    features: [
-      'Purchasing automation',
-      'Barcode & mobile scanning',
-      'Multi-warehouse management',
-      'Sales channel integrations',
-      'Demand forecasting',
-      'Real-time analytics'
-    ],
-    image: 'https://www.stockflow.be/Inventory-Management.png',
-    url: 'https://www.stockflow.be/inventory-management-software-solutions'
-  }
-});
-
 export default function InventoryManagementSoftwareSolutionsPage() {
   usePageRefresh();
+  const location = useLocation();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management software');
+  
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
+  const structuredData = generateSeoPageStructuredData({
+    title: 'Inventory Management Software Solutions | StockFlow',
+    description: "Explore StockFlow's inventory management software solutions. Unify purchasing, warehousing, and analytics with barcode automation and multi-location control.",
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
+    softwareData: {
+      name: 'StockFlow Inventory Management Solutions',
+      description: 'Cloud-based inventory management software solution with purchasing automation, warehouse management, and analytics.',
+      category: 'BusinessApplication',
+      operatingSystem: 'Web Browser',
+      price: '0',
+      currency: 'EUR',
+      features: [
+        'Purchasing automation',
+        'Barcode & mobile scanning',
+        'Multi-warehouse management',
+        'Sales channel integrations',
+        'Demand forecasting',
+        'Real-time analytics'
+      ],
+      image: 'https://www.stockflowsystems.com/Inventory-Management.png',
+      url: location.pathname
+    },
+    pageType: 'software',
+    includeWebSite: false
+  });
 
   return (
     <SeoPageLayout 
@@ -111,7 +126,7 @@ export default function InventoryManagementSoftwareSolutionsPage() {
         title="Inventory Management Software Solutions 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Get complete inventory management software solutions 2025. Unify purchasing, warehousing, analytics. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory management software solutions, inventory solutions, inventory management solution, stock management solution, inventory system software, cloud inventory solution, inventory management systems solutions, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-management-software-solutions"
+        url="https://www.stockflowsystems.com/solutions/inventory-management-software-solutions"
         structuredData={structuredData}
       />
 

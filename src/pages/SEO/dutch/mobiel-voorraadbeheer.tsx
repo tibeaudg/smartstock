@@ -158,7 +158,7 @@ export default function MobielVoorraadbeheer() {
         title="Mobiel Voorraadbeheer 2025 - App & Barcode Scanning | StockFlow"
         description="Mobiel voorraadbeheer met smartphone app. Barcode scanning, offline modus, real-time updates. Beheer voorraad onderweg. Bespaar 40-60% tijd. Start gratis vandaag - geen creditcard vereist."
         keywords="mobiel voorraadbeheer, voorraadbeheer app, voorraadbeheer smartphone, voorraadbeheer tablet, mobiele voorraadbeheer software, voorraadbeheer mobiel, voorraadbeheer app downloaden, voorraadbeheer iOS, voorraadbeheer Android, voorraadbeheer offline, voorraadbeheer barcode scanning, voorraadbeheer realtime, voorraadbeheer team, voorraadbeheer onderweg"
-        url="https://www.stockflow.be/mobiel-voorraadbeheer"
+        url="https://www.stockflowsystems.com/mobiel-voorraadbeheer"
       />
 
       {/* Introduction */}
@@ -414,7 +414,7 @@ export default function MobielVoorraadbeheer() {
                 "@type": "Article",
                 "headline": "Mobiel Voorraadbeheer",
                 "description": "Mobiel voorraadbeheer: beheer je voorraad eenvoudig via je smartphone of tablet. Ontdek de voordelen van een mobiele voorraadbeheer app.",
-                "image": "https://www.stockflow.be/logo.png",
+                "image": "https://www.stockflowsystems.com/logo.png",
                 "author": {
                   "@type": "Organization",
                   "name": "stockflow"
@@ -424,12 +424,12 @@ export default function MobielVoorraadbeheer() {
                   "name": "stockflow",
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://www.stockflow.be/logo.png"
+                    "url": "https://www.stockflowsystems.com/logo.png"
                   }
                 },
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflow.be/mobiel-voorraadbeheer"
+                  "@id": "https://www.stockflowsystems.com/mobiel-voorraadbeheer"
                 },
                 "datePublished": "2024-06-01",
                 "dateModified": "2024-12-19"        }      ]} />

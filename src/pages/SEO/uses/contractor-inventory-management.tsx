@@ -5,10 +5,26 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { StructuredData } from '@/components/StructuredData';
 import { Building, Camera, Wrench, BarChart3, Shield, Zap, CheckCircle, Star } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function ContractorInventoryManagement() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for contractor use case
+  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
+  const relevantTestimonials = getRelevantTestimonials('construction');
+  const metrics = getProprietaryMetrics('construction inventory');
+  const benchmarks = getIndustryBenchmarks('Construction');
   
   const faqData = [
     {
@@ -45,7 +61,7 @@ export default function ContractorInventoryManagement() {
     },
     {
       question: "What is the ROI of contractor inventory management?",
-      answer: "The ROI is typically very high. Contractors see: 60% reduction in tool and equipment loss, 10-15 hours saved per week on inventory tasks, 20-30% improvement in project profitability, prevention of project delays, and better cost control. Most contractors see ROI within 3-6 months."
+      answer: "The ROI is typically very high. Contractors see: 60% reduction in tool and equipment loss, 10-15 hours saved per week on inventory tasks,  in project profitability, prevention of project delays, and better cost control. Most contractors see ROI within 3-6 months."
     },
     {
       question: "How does contractor inventory management improve project profitability?",
@@ -100,7 +116,7 @@ export default function ContractorInventoryManagement() {
 
   const benefits = [
     "Reduce tool and equipment loss by up to 60%",
-    "Save 10+ hours per week on inventory tracking",
+    "Save  on inventory tracking",
     "Improve project profitability with accurate cost tracking",
     "Prevent material waste and over-ordering",
     "Ensure tools are available when needed",
@@ -174,8 +190,34 @@ export default function ContractorInventoryManagement() {
         title="Inventory Software for Contractors — StockFlow"
         description="Contractor inventory management software. Track tools, equipment & materials across job sites. Barcode scanning, tool checkout. Reduce loss 60%. Free plan."
         keywords="contractor inventory management, contractor inventory software, construction inventory management, tool tracking software, equipment inventory management, contractor inventory system, construction inventory software, tool management software, contractor equipment tracking, construction inventory tracking, contractor inventory app, construction tool tracking, contractor material management, contractor inventory solution, contractor inventory platform, construction equipment management, contractor inventory control, construction inventory app, contractor tool management, construction material tracking, stockflow, stock flow"
-        url="https://www.stockflow.be/contractor-inventory-management"
+        url="https://www.stockflowsystems.com/contractor-inventory-management"
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Construction"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Contractor Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4 bg-white">
@@ -334,21 +376,21 @@ export default function ContractorInventoryManagement() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/contractor-inventory-management",
+          "@id": "https://www.stockflowsystems.com/contractor-inventory-management",
           "name": "Contractor Inventory Management Software 2025",
           "description": "Best contractor inventory management software for tracking tools, equipment, and materials across multiple job sites. Prevent tool loss, optimize costs, and streamline project billing.",
-          "url": "https://www.stockflow.be/contractor-inventory-management",
+          "url": "https://www.stockflowsystems.com/contractor-inventory-management",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-15",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -357,13 +399,13 @@ export default function ContractorInventoryManagement() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Contractor Inventory Management",
-                "item": "https://www.stockflow.be/contractor-inventory-management"
+                "item": "https://www.stockflowsystems.com/contractor-inventory-management"
               }
             ]
           }
@@ -397,20 +439,20 @@ export default function ContractorInventoryManagement() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/contractor-inventory-management"
+            "@id": "https://www.stockflowsystems.com/contractor-inventory-management"
           },
           "featureList": [
             "Multi-site inventory tracking",
@@ -441,6 +483,14 @@ export default function ContractorInventoryManagement() {
           "reviewBody": testimonial.content
         }))
       ]} />
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

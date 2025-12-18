@@ -31,11 +31,27 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 import { Link } from 'react-router-dom';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function MedicalInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for medical use case
+  const relevantCaseStudies = getRelevantCaseStudies('medical inventory', 'Healthcare');
+  const relevantTestimonials = getRelevantTestimonials('medical');
+  const metrics = getProprietaryMetrics('medical inventory');
+  const benchmarks = getIndustryBenchmarks('Healthcare');
   
   const faqData = [
     {
@@ -375,8 +391,34 @@ export default function MedicalInventoryManagement() {
         title="Medical Inventory Management Software | StockFlow"
         description="Medical inventory software with traceability, expiration tracking & compliance. Track supplies, lot/serial numbers. Reduce waste, ensure compliance. Free plan."
         keywords="medical inventory management, healthcare inventory software, hospital inventory system, pharmacy inventory management, medical supply tracking, expiration date tracking, lot number tracking, medical device traceability, FDA compliance, ISO 13485, healthcare supply chain"
-        url="https://www.stockflow.be/medical-inventory-management"
+        url="https://www.stockflowsystems.com/medical-inventory-management"
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Healthcare"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "6 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Medical Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -785,7 +827,7 @@ export default function MedicalInventoryManagement() {
           "@type": "MedicalBusiness",
           "name": "StockFlow Medical Inventory Management",
           "description": "Medical inventory management software with expiration tracking, lot/serial traceability, and regulatory compliance for healthcare facilities.",
-          "url": "https://www.stockflow.be/medical-inventory-management"
+          "url": "https://www.stockflowsystems.com/medical-inventory-management"
         },
         {
           "@context": "https://schema.org",
@@ -826,6 +868,13 @@ export default function MedicalInventoryManagement() {
           ]
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

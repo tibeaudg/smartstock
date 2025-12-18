@@ -7,9 +7,22 @@ import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock, Database, Download, Settings, Users } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsInFlow() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
 
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Completely Free Forever', competitor: '14-day trial only' },
@@ -86,16 +99,16 @@ export default function StockFlowVsInFlow() {
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/stockflow-vs-inflow",
+      "@id": "https://www.stockflowsystems.com/stockflow-vs-inflow",
       "name": "StockFlow vs InFlow Comparison",
       "headline": "StockFlow vs InFlow: The Better Choice for Growing Businesses",
       "description": "Compare StockFlow vs InFlow 2025. Completely free forever vs $71/month, 5-7 day setup vs 30-60 days, European hosting. Save 100% costs. See detailed comparison and start free - no credit card required.",
-      "url": "https://www.stockflow.be/stockflow-vs-inflow",
+      "url": "https://www.stockflowsystems.com/stockflow-vs-inflow",
       "inLanguage": "en",
       "isPartOf": {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       },
       "datePublished": "2025-01-01",
       "dateModified": new Date().toISOString().split("T")[0]
@@ -151,7 +164,7 @@ export default function StockFlowVsInFlow() {
         title="StockFlow vs InFlow 2025 - Save 55% Costs, 10x Faster Setup | StockFlow"
         description="Compare StockFlow vs InFlow 2025. Completely free forever vs $71/month, 5-7 day setup vs 30-60 days, European hosting. Save 100% costs, 10x faster implementation. Start free - no credit card required."
         keywords="stockflow vs inflow, inflow alternative, inflow vs stockflow, inflow inventory management, stockflow vs inflow comparison, inflow pricing, best inflow alternative, inventory management software comparison, manufacturing inventory software, inflow competitor, stockflow inventory software, inflow vs stockflow pricing, inventory management software for small business, best inventory software 2025"
-        url="https://www.stockflow.be/stockflow-vs-inflow"
+        url="https://www.stockflowsystems.com/stockflow-vs-inflow"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
@@ -165,6 +178,27 @@ export default function StockFlowVsInFlow() {
           This comparison helps you understand the key differences between StockFlow and InFlow, so you can make an informed decision for your inventory management needs.
         </p>
       </div>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+        variant="compact"
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={2}
+        />
+      )}
 
       {/* Feature Comparison */}
       <section className="py-16 px-4 bg-white">
@@ -427,6 +461,14 @@ export default function StockFlowVsInFlow() {
           </div>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="default"
+        />
+      )}
     </SeoPageLayout>
   );
 }

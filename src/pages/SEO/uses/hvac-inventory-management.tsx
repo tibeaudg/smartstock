@@ -20,10 +20,23 @@ import {
   Truck
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function HvacInventoryManagement() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for HVAC contractor use case
+  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
+  const relevantTestimonials = getRelevantTestimonials('construction');
+  const metrics = getProprietaryMetrics('construction inventory');
 
   const faqData = [
     {
@@ -203,14 +216,14 @@ export default function HvacInventoryManagement() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/hvac-inventory-management"
+      "@id": "https://www.stockflowsystems.com/hvac-inventory-management"
     }
   };
 
@@ -239,11 +252,31 @@ export default function HvacInventoryManagement() {
         title="HVAC Inventory Management 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
         description="Complete HVAC inventory management 2025. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Start free trial - no credit card required."
         keywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
-        url="https://www.stockflow.be/hvac-inventory-management"
+        url="https://www.stockflowsystems.com/hvac-inventory-management"
         structuredData={[structuredData, faqStructuredData]}
       />
 
       <StructuredData data={[structuredData, faqStructuredData]} />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "30-40% reduction in callbacks",
+          keyMetric: "Optimized seasonal demand",
+          feature: "HVAC Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto">
@@ -386,6 +419,13 @@ export default function HvacInventoryManagement() {
           </p>
         </div>
       </section>
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

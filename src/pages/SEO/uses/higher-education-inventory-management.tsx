@@ -26,11 +26,27 @@ import {
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Link } from 'react-router-dom';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function HigherEducationInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for higher education use case
+  const relevantCaseStudies = getRelevantCaseStudies('education inventory', 'Education');
+  const relevantTestimonials = getRelevantTestimonials('education');
+  const metrics = getProprietaryMetrics('education inventory');
+  const benchmarks = getIndustryBenchmarks('Education');
   
   const faqData = [
     {
@@ -71,7 +87,7 @@ export default function HigherEducationInventoryManagement() {
     },
     {
       question: "What is the ROI of higher education inventory management?",
-      answer: "The ROI is typically very high. Universities see: 60-80% reduction in lost equipment, 20-30% reduction in duplicate purchases, improved grant compliance, faster audit processes, better budget allocation, and improved resource utilization. Most institutions see ROI within 6-12 months through loss prevention and cost savings."
+      answer: "The ROI is typically very high. Universities see: 60-80% reduction in lost equipment,  in duplicate purchases, improved grant compliance, faster audit processes, better budget allocation, and improved resource utilization. Most institutions see ROI within 6-12 months through loss prevention and cost savings."
     },
     {
       question: "How does higher education inventory management prevent equipment loss?",
@@ -212,8 +228,34 @@ export default function HigherEducationInventoryManagement() {
         title="Higher Education Inventory Management 2025 - Reduce Loss 85%, Save Time | StockFlow"
         description="Complete higher education inventory management 2025 for colleges and universities. Track research equipment, lab supplies, technology. Reduce loss by 85%, streamline grant audits. Free plan available. Start free trial - no credit card required."
         keywords="higher education inventory management, university inventory management, college inventory management, university asset management, research equipment tracking, lab inventory management, higher education inventory software, university inventory system, college asset tracking, grant compliance inventory, stockflow, stock flow"
-        url="https://www.stockflow.be/higher-education-inventory-management"
+        url="https://www.stockflowsystems.com/higher-education-inventory-management"
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Education"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "20 hours/month",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Higher Education Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -517,6 +559,13 @@ export default function HigherEducationInventoryManagement() {
           }))
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

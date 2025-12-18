@@ -110,7 +110,7 @@ export default function CustomerDetailPage() {
     {
       title: `${details.name} - StockFlow Customer Success Story`,
       description: details.quote,
-      url: `https://www.stockflow.be/customers/${id}`,
+      url: `https://www.stockflowsystems.com/customers/${id}`,
       breadcrumbs: breadcrumbs
     }
   );
@@ -121,7 +121,7 @@ export default function CustomerDetailPage() {
         title={`${details.name} - StockFlow Customer Success Story`}
         description={details.quote}
         keywords={`${details.name}, ${details.company}, stockflow customer, inventory management success story, ${details.industry}`}
-        url={`https://www.stockflow.be/customers/${id}`}
+        url={`https://www.stockflowsystems.com/customers/${id}`}
         structuredData={structuredData}
       />
       

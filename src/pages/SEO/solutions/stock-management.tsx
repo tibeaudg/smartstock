@@ -16,8 +16,22 @@ import {
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
+
 export default function StockManagement() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('stock management');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('stock management');
   
   const faqData = [
     {
@@ -85,8 +99,28 @@ export default function StockManagement() {
         title="Stock Management Software 2025 | StockFlow"
         description="Stock management with real-time tracking, automated reordering & demand forecasting. Reduce costs 30%, prevent stockouts. Free plan available."
         keywords="stock management, inventory control, stock tracking, warehouse management, inventory software, stock control system, SMB inventory, small business stock, stock management software, stock optimization, stock management app, stock management tools, stock control, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/stock-management"
+        url="https://www.stockflowsystems.com/solutions/stock-management"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "30% reduction in costs",
+          keyMetric: "Optimized stock levels",
+          feature: "Stock Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Introduction */}
       <div className="mb-12">
@@ -179,7 +213,7 @@ export default function StockManagement() {
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mt-8">
               <h3 className="text-xl font-semibold mb-3 text-gray-900">Why Effective Stock Management Matters</h3>
               <p className="text-gray-700 mb-4">
-                Businesses that implement effective stock management typically see 20-30% reduction in inventory carrying costs, improved cash flow through better inventory turnover, and enhanced customer satisfaction through reduced stockouts. The investment in proper stock management tools and processes pays dividends through operational efficiency and cost savings.
+                Businesses that implement effective stock management typically see  in inventory carrying costs, improved cash flow through better inventory turnover, and enhanced customer satisfaction through reduced stockouts. The investment in proper stock management tools and processes pays dividends through operational efficiency and cost savings.
               </p>
               <p className="text-gray-700">
                 Whether you're managing a small retail store or a large distribution network, effective stock management provides the foundation for profitable operations. By maintaining optimal stock levels and responding quickly to demand changes, businesses can compete more effectively and scale their operations efficiently. Explore <Link to="/solutions/inventory-management-software-solutions" className="text-blue-600 hover:text-blue-800 underline">inventory management software solutions</Link> to find the right tools for your stock management needs.
@@ -308,7 +342,7 @@ export default function StockManagement() {
           "@type": "Article",
           "headline": "Stock Management - Complete Guide 2025",
           "description": "Complete guide to stock management. Learn how to optimize inventory levels, reduce carrying costs, prevent stockouts, and improve cash flow. Discover stock management best practices and tools.",
-          "image": "https://www.stockflow.be/stock-management.png",
+          "image": "https://www.stockflowsystems.com/stock-management.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -318,14 +352,14 @@ export default function StockManagement() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-25",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/stock-management"
+            "@id": "https://www.stockflowsystems.com/solutions/stock-management"
           },
           "keywords": "stock management, inventory control, stock tracking, stock optimization"
         },
@@ -371,10 +405,10 @@ export default function StockManagement() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "url": "https://www.stockflow.be/stock-management",
+          "url": "https://www.stockflowsystems.com/stock-management",
           "featureList": [
             "Real-time stock tracking",
             "Automated reorder alerts",
@@ -386,6 +420,13 @@ export default function StockManagement() {
           ]
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

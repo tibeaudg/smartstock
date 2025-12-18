@@ -57,13 +57,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2024-12-01",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/migrating-from-excel-to-inventory-software"
+      "@id": "https://www.stockflowsystems.com/blog/migrating-from-excel-to-inventory-software"
     }
   }
 ];
@@ -88,7 +88,7 @@ export default function MigratingFromExcelToInventorySoftwarePage() {
         title={`Migrating from Excel to Inventory Software 2024 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />

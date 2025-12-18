@@ -110,7 +110,7 @@ const faqData = [
   },
   {
     question: 'What are the benefits of supplier management software?',
-    answer: 'Benefits include: centralized supplier database, automated purchase order generation, supplier performance tracking, cost reduction through better negotiations, improved supplier relationships, streamlined procurement workflows, reduced manual work, and better visibility into supplier performance. Businesses typically see 20-30% reduction in procurement costs.'
+    answer: 'Benefits include: centralized supplier database, automated purchase order generation, supplier performance tracking, cost reduction through better negotiations, improved supplier relationships, streamlined procurement workflows, reduced manual work, and better visibility into supplier performance. Businesses typically see  in procurement costs.'
   },
   {
     question: 'How does supplier management software improve procurement?',
@@ -149,7 +149,7 @@ export default function SuppliersSolutionPage() {
       '@type': 'Article',
       headline: 'Supplier Management Software - Complete Guide 2025',
       description: 'Complete guide to supplier management software. Learn how to centralize vendor information, automate purchasing workflows, and track supplier performance. Discover unified supplier directories and procurement automation.',
-      image: 'https://www.stockflow.be/supplier-management.png',
+      image: 'https://www.stockflowsystems.com/supplier-management.png',
       author: {
         '@type': 'Organization',
         name: 'StockFlow'
@@ -159,14 +159,14 @@ export default function SuppliersSolutionPage() {
         name: 'StockFlow',
         logo: {
           '@type': 'ImageObject',
-          url: 'https://www.stockflow.be/logo.png'
+          url: 'https://www.stockflowsystems.com/logo.png'
         }
       },
       datePublished: '2025-11-25',
       dateModified: '2025-11-25',
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': 'https://www.stockflow.be/solutions/suppliers'
+        '@id': 'https://www.stockflowsystems.com/solutions/suppliers'
       },
       keywords: 'supplier management software, vendor management, procurement automation'
     },
@@ -196,11 +196,11 @@ export default function SuppliersSolutionPage() {
         priceCurrency: 'EUR',
       },
       featureList: heroHighlights.map(highlight => highlight.title),
-      url: 'https://www.stockflow.be/suppliers',
+      url: 'https://www.stockflowsystems.com/suppliers',
       publisher: {
         '@type': 'Organization',
         name: 'StockFlow',
-        url: 'https://www.stockflow.be',
+        url: 'https://www.stockflowsystems.com',
       },
     }
   ];
@@ -216,7 +216,7 @@ export default function SuppliersSolutionPage() {
         title="Supplier Management Software 2025 - Save 20-30% Costs, Automate Workflows | StockFlow"
         description="Centralize supplier data 2025, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/suppliers"
+        url="https://www.stockflowsystems.com/solutions/suppliers"
         structuredData={structuredData}
       />
 
@@ -324,7 +324,7 @@ export default function SuppliersSolutionPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-                <a href="https://app.stockflow.be/auth?mode=register" target="_blank" rel="noopener noreferrer">
+                <a href="https://app.stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
                   Start managing suppliers
                 </a>
               </Button>
@@ -428,7 +428,7 @@ export default function SuppliersSolutionPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-              <a href="https://app.stockflow.be/auth?mode=register" target="_blank" rel="noopener noreferrer">
+              <a href="https://app.stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
                 Get started free
               </a>
             </Button>

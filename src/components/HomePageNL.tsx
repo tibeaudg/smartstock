@@ -350,14 +350,14 @@ export const HomePageNL = () => {
     "@type": "WebPage",
     "name": "StockFlow - Voorraadbeheer Software voor KMO's",
     "description": "Professionele voorraadbeheer software voor Belgische KMO's. Beheer voorraad, bespaar geld en optimaliseer bestellingen. Alles in één eenvoudig platform.",
-    "url": "https://www.stockflow.be/nl",
+    "url": "https://www.stockflowsystems.com/nl",
     "inLanguage": "nl-BE",
     "publisher": {
       "@type": "Organization",
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     }
   };
@@ -375,7 +375,7 @@ export const HomePageNL = () => {
         title="Voorraadbeheer Software: Gratis Starten | StockFlow 2025"
         description="Bespaar 20% op kosten & voorkom verspilling! Professionele voorraadbeheer software voor KMO's. Real-time tracking, barcode scanning, automatische meldingen. 500+ Belgische bedrijven gebruiken StockFlow. Start gratis nu - geen creditcard vereist!"
         keywords="voorraadbeheer, voorraadbeheer software, voorraad beheren, magazijnbeheer, KMO software België, voorraad optimalisatie, barcode scanner"
-        url="https://www.stockflow.be/nl"
+        url="https://www.stockflowsystems.com/nl"
       />
 
       <Header />

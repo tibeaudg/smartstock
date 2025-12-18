@@ -179,14 +179,14 @@ export default function WarehouseModelingSoftware() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/solutions/warehouse-modeling-software"
+      "@id": "https://www.stockflowsystems.com/solutions/warehouse-modeling-software"
     }
   };
 
@@ -215,7 +215,7 @@ export default function WarehouseModelingSoftware() {
         title="Warehouse Modeling Software 2025 - Increase Capacity 20-30%, Save Time | StockFlow"
         description="Warehouse modeling software 2025 for layout design, space optimization, material flow simulation. Increase capacity 20-30%, reduce picking time 15-25%. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="warehouse modeling software, warehouse design software, warehouse layout software, warehouse optimization software, warehouse planning software, 3d warehouse modeling, warehouse space optimization, warehouse layout design, warehouse simulation software, warehouse capacity planning, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/warehouse-modeling-software"
+        url="https://www.stockflowsystems.com/solutions/warehouse-modeling-software"
         structuredData={[structuredData, faqStructuredData]}
       />
 

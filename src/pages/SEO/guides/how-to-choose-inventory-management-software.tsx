@@ -95,8 +95,8 @@ const HowToChooseInventoryManagementSoftware = () => {
       'How to Choose Inventory Management Software',
       'Complete step-by-step guide to selecting the right inventory management software for your business. Learn how to evaluate features, compare options, and make an informed decision.',
       '/dashboard.png',
-      'https://www.stockflow.be',
-      'https://www.stockflow.be/how-to-choose-inventory-management-software'
+      'https://www.stockflowsystems.com',
+      'https://www.stockflowsystems.com/how-to-choose-inventory-management-software'
     ),
     generateFAQSchema(faqData)
   ];
@@ -112,7 +112,7 @@ const HowToChooseInventoryManagementSoftware = () => {
         title="How To Choose Inventory Management Software 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Complete guide to choosing inventory management software 2025. Step-by-step evaluation, feature comparison, pricing guide. Find the best software - save 70% time, 25% costs. Free plan available. Start free trial - no credit card required."
         keywords={expandedKeywords}
-        url="https://www.stockflow.be/how-to-choose-inventory-management-software"
+        url="https://www.stockflowsystems.com/how-to-choose-inventory-management-software"
         locale="en"
         category="Guides"
         publishedTime={publishedTime}

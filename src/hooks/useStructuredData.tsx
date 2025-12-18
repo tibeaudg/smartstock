@@ -71,7 +71,7 @@ export function createArticleStructuredData(config: {
       "name": "stockflow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": config.datePublished || "2024-01-01",
@@ -123,7 +123,7 @@ export function createSoftwareStructuredData(config: {
       "name": "stockflow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     ...(config.image ? { "image": config.image } : {}),

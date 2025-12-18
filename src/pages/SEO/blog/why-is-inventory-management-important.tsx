@@ -28,7 +28,7 @@ const actionSteps = [
   },
   {
     "title": "Conduct regular audits",
-    "description": "Schedule regular cycle counts and physical inventories to verify accuracy. Investigate discrepancies immediately and adjust processes to maintain 95-99% inventory accuracy."
+    "description": "Schedule regular cycle counts and physical inventories to verify accuracy. Investigate discrepancies immediately and adjust processes to maintain 95-."
   }
 ];
 const metrics = [
@@ -60,7 +60,7 @@ const faqData = [
   },
   {
     "question": "How does inventory management improve profitability?",
-    "answer": "Inventory management improves profitability by preventing stockouts (lost sales), reducing overstocking (frees up capital), optimizing cash flow, minimizing waste from obsolescence, enabling better purchasing decisions, and reducing carrying costs. Businesses with strong inventory management see 20-30% improvement in profitability through better inventory optimization."
+    "answer": "Inventory management improves profitability by preventing stockouts (lost sales), reducing overstocking (frees up capital), optimizing cash flow, minimizing waste from obsolescence, enabling better purchasing decisions, and reducing carrying costs. Businesses with strong inventory management see  in profitability through better inventory optimization."
   }
 ];
 const structuredData = [
@@ -78,13 +78,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-09-26",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/why-is-inventory-management-important"
+      "@id": "https://www.stockflowsystems.com/why-is-inventory-management-important"
     }
   }
 ];
@@ -113,7 +113,7 @@ export default function SeoWhyIsInventoryManagementImportantPage() {
         title={`Why Is Inventory Management Important 2025 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />
@@ -128,7 +128,7 @@ export default function SeoWhyIsInventoryManagementImportantPage() {
               <strong>Inventory management is important</strong> because it directly impacts profitability, cash flow, and customer satisfaction. Effective management prevents stockouts (which result in lost sales), reduces overstocking (which ties up capital), improves cash flow by optimizing inventory levels, minimizes waste from obsolescence, and enables data-driven purchasing decisions.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Without proper inventory management, businesses face stockouts (lost sales and customer dissatisfaction), overstocking (tied-up capital and storage costs), inaccurate records, waste from obsolescence, inefficient operations, and poor cash flow. These issues directly hurt profitability. Businesses with strong inventory management see 20-30% improvement in profitability through better inventory optimization.
+              Without proper inventory management, businesses face stockouts (lost sales and customer dissatisfaction), overstocking (tied-up capital and storage costs), inaccurate records, waste from obsolescence, inefficient operations, and poor cash flow. These issues directly hurt profitability. Businesses with strong inventory management see  in profitability through better inventory optimization.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Effective inventory management provides visibility into business operations, enables data-driven decisions, improves customer satisfaction through product availability, and optimizes cash flow. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
@@ -212,45 +212,7 @@ export default function SeoWhyIsInventoryManagementImportantPage() {
         </div>
       </section>
 
-      <section id="stockflow-advantage" className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <div className="rounded-3xl bg-white/10 p-8 shadow-xl backdrop-blur">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2 className="text-3xl font-bold">Why StockFlow Makes {topicTitle} Stick</h2>
-                <p className="mt-4 max-w-2xl text-base text-white/85">
-                  Transform ideas into measurable outcomes. StockFlow connects inventory data, automates notifications,
-                  and keeps every stakeholder aligned—even across warehouses, regions, or partner networks.
-                </p>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white">
-                <Lightbulb className="h-4 w-4" />
-                Built for continuous improvement
-              </div>
-            </div>
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Real-time visibility</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  See inventory levels, movements, and trends in real-time across all locations. StockFlow provides comprehensive dashboards that show exactly what you have, where it is, and when to reorder—enabling data-driven decisions.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Automated reorder points</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Set automated reorder points and safety stock levels. Get instant alerts when inventory reaches critical levels, preventing stockouts and ensuring optimal stock levels at all times.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/30 bg-white/10 p-5">
-                <h3 className="text-lg font-semibold">Accurate tracking</h3>
-                <p className="mt-3 text-sm text-white/85">
-                  Maintain 95-99% inventory accuracy with barcode scanning and automated tracking. StockFlow eliminates manual errors, reduces discrepancies, and ensures your inventory records match physical stock.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </SeoPageLayout>
   );
 }

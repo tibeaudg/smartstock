@@ -24,11 +24,11 @@ const ServerError = () => {
       "@type": "WebPage",
       "name": "Server Error (500) | StockFlow",
       "description": "We're experiencing technical difficulties. Our team has been notified and is working to resolve the issue.",
-      "url": "https://www.stockflow.be/500",
+      "url": "https://www.stockflowsystems.com/500",
       "isPartOf": {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be"
+        "url": "https://www.stockflowsystems.com"
       }
     }
   ];
@@ -40,7 +40,7 @@ const ServerError = () => {
           title="Server Error (500) | StockFlow"
           description="We're experiencing technical difficulties. Our team has been notified and is working to resolve the issue."
           keywords="500, server error, technical difficulties"
-          url="https://www.stockflow.be/500"
+          url="https://www.stockflowsystems.com/500"
           structuredData={structuredData}
           noindex={true}
         />
@@ -92,10 +92,10 @@ const ServerError = () => {
                 </h3>
         
                 <a 
-                  href="mailto:info@stockflow.be" 
+                  href="mailto:info@stockflowsystems.com" 
                   className="text-blue-600 hover:underline"
                 >
-                  info@stockflow.be
+                  info@stockflowsystems.com
                 </a>
               </div>
             </div>

@@ -5,10 +5,26 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { StructuredData } from '@/components/StructuredData';
 import { Package, TrendingUp, Truck, BarChart3, Users, Zap, CheckCircle, Star } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  IndustryBenchmarks,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics,
+  getIndustryBenchmarks
+} from '@/components/seo/EnhancedContent';
 
 export default function WholesalerInventoryManagement() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for wholesale industry
+  const relevantCaseStudies = getRelevantCaseStudies('wholesale inventory');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('wholesale inventory');
+  const benchmarks = getIndustryBenchmarks('Retail');
   
   const faqData = [
     {
@@ -154,8 +170,34 @@ export default function WholesalerInventoryManagement() {
         title="Wholesaler Inventory Management 2025 - Save 30% Costs, Multi-Warehouse | StockFlow"
         description="Complete wholesaler and distributor inventory management 2025. Multi-warehouse tracking, bulk order processing, inventory turnover optimization. Reduce costs by 30%, improve turnover 25%. Free plan available. Start free trial - no credit card required."
         keywords="wholesaler inventory management, wholesaler inventory software, distributor inventory management, wholesaler inventory system, distributor inventory software, wholesaler and distributor, distributors and wholesalers, wholesale inventory management, distributor inventory system, wholesaler inventory app, distributor inventory app, wholesale inventory software, distributor inventory solution, wholesaler inventory platform, wholesale inventory tracking, distributor inventory tracking, wholesaler stock management, distributor stock management, wholesale inventory control, distributor inventory control, stockflow, stock flow"
-        url="https://www.stockflow.be/wholesaler-inventory-management"
+        url="https://www.stockflowsystems.com/wholesaler-inventory-management"
       />
+
+      {/* Industry Benchmarks */}
+      <IndustryBenchmarks 
+        industry="Retail"
+        benchmarks={benchmarks}
+      />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: benchmarks.averageSavings,
+          keyMetric: benchmarks.typicalResult,
+          feature: "Wholesale Inventory Management"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4 bg-white">
@@ -313,21 +355,21 @@ export default function WholesalerInventoryManagement() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/wholesaler-inventory-management",
+          "@id": "https://www.stockflowsystems.com/wholesaler-inventory-management",
           "name": "Wholesaler Inventory Management Software 2025",
           "description": "Best wholesaler inventory management software for distributors and wholesalers. Manage inventory across multiple warehouses, optimize turnover, and process bulk orders.",
-          "url": "https://www.stockflow.be/wholesaler-inventory-management",
+          "url": "https://www.stockflowsystems.com/wholesaler-inventory-management",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-15",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -336,13 +378,13 @@ export default function WholesalerInventoryManagement() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Wholesaler Inventory Management",
-                "item": "https://www.stockflow.be/wholesaler-inventory-management"
+                "item": "https://www.stockflowsystems.com/wholesaler-inventory-management"
               }
             ]
           }
@@ -376,20 +418,20 @@ export default function WholesalerInventoryManagement() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/wholesaler-inventory-management"
+            "@id": "https://www.stockflowsystems.com/wholesaler-inventory-management"
           },
           "featureList": [
             "Multi-warehouse inventory tracking",
@@ -420,6 +462,14 @@ export default function WholesalerInventoryManagement() {
           "reviewBody": testimonial.content
         }))
       ]} />
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

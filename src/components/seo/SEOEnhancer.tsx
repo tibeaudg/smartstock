@@ -21,7 +21,7 @@ interface SEOEnhancerProps {
   includeOrganization?: boolean;
   
   /**
-   * Base URL for the site (defaults to https://www.stockflow.be)
+   * Base URL for the site (defaults to https://www.stockflowsystems.com)
    */
   baseUrl?: string;
   
@@ -39,7 +39,7 @@ interface SEOEnhancerProps {
 export const SEOEnhancer: React.FC<SEOEnhancerProps> = ({
   includeWebSite = true,
   includeOrganization = true,
-  baseUrl = 'https://www.stockflow.be',
+  baseUrl = 'https://www.stockflowsystems.com',
   language = 'en',
   customSchemas = []
 }) => {

@@ -10,6 +10,7 @@ import { TableOfContents } from '@/components/seo/TableOfContents';
 import { ReadingTime } from '@/components/seo/ReadingTime';
 import { detectPageLanguage } from '@/utils/seoPageHelpers';
 import { getStableRelatedArticles } from '@/utils/linkAlgo';
+import { generateReviewSchemaForSoftware, generateSoftwareApplicationSchema, type SoftwareApplicationData } from '@/lib/structuredData';
 import { 
   Star, 
   CheckCircle2, 
@@ -635,7 +636,7 @@ const normalizeCanonicalUrl = (pathname: string): string => {
     normalized = '/' + normalized;
   }
   // Construct absolute URL
-  return `https://www.stockflow.be${normalized}`;
+  return `https://www.stockflowsystems.com${normalized}`;
 };
 
 // --- Main Component ---
@@ -681,16 +682,16 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   const canonicalUrl = useMemo(() => normalizeCanonicalUrl(location.pathname), [location.pathname]);
 
   // --- Memoized JSON-LD ---
-  const jsonLd = useMemo(() => ({
-    "@context": "https://schema.org",
-    "@graph": [
+  const jsonLd = useMemo(() => {
+    const baseUrl = "https://www.stockflowsystems.com";
+    const graph: any[] = [
       {
         "@type": "BreadcrumbList",
         "itemListElement": breadcrumbItems.map((item, index) => ({
           "@type": "ListItem",
           "position": index + 1,
           "name": item.name,
-          "item": `https://www.stockflow.be${item.path}`
+          "item": `${baseUrl}${item.path}`
         }))
       },
       {
@@ -706,14 +707,14 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         "author": {
           "@type": "Organization",
           "name": "StockFlow",
-          "url": "https://www.stockflow.be"
+          "url": baseUrl
         },
         "publisher": {
           "@type": "Organization",
           "name": "StockFlow",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": `${baseUrl}/Inventory-Management.png`
           }
         },
         "inLanguage": pageLanguage === 'nl' ? 'nl-BE' : 'en-US'
@@ -721,20 +722,20 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
       {
         "@type": "WebSite",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be",
+        "url": baseUrl,
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://www.stockflow.be/search?q={search_term_string}",
+          "target": `${baseUrl}/search?q={search_term_string}`,
           "query-input": "required name=search_term_string"
         }
       },
       {
         "@type": "Organization",
         "name": "StockFlow",
-        "url": "https://www.stockflow.be",
+        "url": baseUrl,
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/Inventory-Management.png",
+          "url": `${baseUrl}/Inventory-Management.png`,
           "width": 512,
           "height": 512
         },
@@ -746,13 +747,66 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
-          "email": "support@stockflow.be",
+          "email": "support@stockflowsystems.com",
           "availableLanguage": ["English", "Dutch", "French"]
         }
       }
-      // FAQPage is handled by individual pages via StructuredData component to avoid duplication
-    ]
-  }), [breadcrumbItems, title, description, publishDate, updatedDate, canonicalUrl, pageLanguage]);
+    ];
+
+    // Add SoftwareApplication schema with Reviews from testimonials
+    const softwareData: SoftwareApplicationData = {
+      name: "StockFlow",
+      description: "Smart inventory management software for growing businesses. Free stock management solution for SMEs.",
+      category: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      price: "0",
+      currency: "EUR",
+      url: canonicalUrl,
+      baseUrl,
+      features: [
+        "Real-time inventory tracking",
+        "Barcode scanning",
+        "Multi-location support",
+        "Automated reordering",
+        "Reporting and analytics"
+      ],
+      reviews: testimonials.map(testimonial => ({
+        author: {
+          name: testimonial.name,
+          type: "Person"
+        },
+        rating: 5, // All testimonials are 5-star
+        reviewBody: testimonial.content,
+        datePublished: new Date().toISOString().split('T')[0] // Use current date as fallback
+      }))
+    };
+
+    const softwareSchema = generateSoftwareApplicationSchema(softwareData);
+    graph.push(softwareSchema);
+
+    // Add individual Review schemas for each testimonial
+    testimonials.forEach(testimonial => {
+      const reviewSchema = generateReviewSchemaForSoftware(
+        {
+          author: {
+            name: testimonial.name,
+            type: "Person"
+          },
+          rating: 5,
+          reviewBody: testimonial.content,
+          datePublished: new Date().toISOString().split('T')[0]
+        },
+        "StockFlow",
+        canonicalUrl
+      );
+      graph.push(reviewSchema);
+    });
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": graph
+    };
+  }, [breadcrumbItems, title, description, publishDate, updatedDate, canonicalUrl, pageLanguage]);
 
   const handleLoginClick = useMemo(() => () => navigate('/auth'), [navigate]);
 

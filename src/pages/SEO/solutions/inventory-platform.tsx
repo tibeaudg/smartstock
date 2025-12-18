@@ -14,10 +14,23 @@ import {
   Shield
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryPlatform() {
   usePageRefresh();
   const location = useLocation();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory platform');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management');
   
   const faqData = [
     {
@@ -121,10 +134,28 @@ export default function InventoryPlatform() {
         title="Inventory Platform 2025 - Save 70% Time, 25% Costs | StockFlow"
         description="Comprehensive inventory platform 2025 with automation, real-time tracking, integrations. Save 70% time, 25% costs. Unified system for inventory management, automated control, multi-location support. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="inventory platform, inventory platform software, automated inventory control platforms, inventory platform solution, inventory platform system, inventory management platform, inventory control platform, inventory platform services, cloud inventory platform, unified inventory system, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-platform"
+        url="https://www.stockflowsystems.com/solutions/inventory-platform"
       />      
-      
 
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "Unified inventory platform",
+          feature: "Inventory Platform"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -266,7 +297,7 @@ export default function InventoryPlatform() {
           "@type": "Article",
           "headline": "Inventory Platform - Complete Guide 2025",
           "description": "Complete guide to inventory platforms. Learn how unified inventory management platforms provide automation, real-time tracking, and integrations. Discover automated inventory control platforms for comprehensive inventory management.",
-          "image": "https://www.stockflow.be/inventory-platform.png",
+          "image": "https://www.stockflowsystems.com/inventory-platform.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -276,14 +307,14 @@ export default function InventoryPlatform() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-25",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-platform"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-platform"
           },
           "keywords": "inventory platform, inventory platform software, automated inventory control, inventory management platform"
         },
@@ -312,7 +343,7 @@ export default function InventoryPlatform() {
             "description": "Free tier available"
           },
           "description": "Comprehensive inventory platform providing unified inventory management with automation, real-time tracking, and extensive integration capabilities. All-in-one solution for inventory control.",
-          "url": "https://www.stockflow.be/solutions/inventory-platform",
+          "url": "https://www.stockflowsystems.com/solutions/inventory-platform",
           "featureList": [
             "Unified inventory management",
             "Automated inventory control",
@@ -325,6 +356,13 @@ export default function InventoryPlatform() {
           ]
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

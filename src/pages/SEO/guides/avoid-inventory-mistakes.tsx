@@ -106,7 +106,7 @@ export default function AvoidInventoryMistakes() {
       "@type": "Article",
       "headline": "Avoid Inventory Mistakes: 7 Common Errors & Solutions",
       "description": "Learn how to avoid costly inventory mistakes that cost businesses 10-20% of inventory value annually. Discover the 7 most common errors and proven solutions to prevent them.",
-      "image": "https://www.stockflow.be/Inventory-Management.png",
+      "image": "https://www.stockflowsystems.com/Inventory-Management.png",
       "author": {
         "@type": "Organization",
         "name": "StockFlow"
@@ -116,14 +116,14 @@ export default function AvoidInventoryMistakes() {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
+          "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
       "datePublished": "2024-01-01",
       "dateModified": new Date().toISOString().split('T')[0],
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://www.stockflow.be/avoid-inventory-mistakes"
+        "@id": "https://www.stockflowsystems.com/avoid-inventory-mistakes"
       }
     },
     {
@@ -134,13 +134,13 @@ export default function AvoidInventoryMistakes() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://www.stockflow.be"
+          "item": "https://www.stockflowsystems.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Avoid Inventory Mistakes",
-          "item": "https://www.stockflow.be/avoid-inventory-mistakes"
+          "item": "https://www.stockflowsystems.com/avoid-inventory-mistakes"
         }
       ]
     }
@@ -157,11 +157,11 @@ export default function AvoidInventoryMistakes() {
         title="Avoid Inventory Mistakes 2025 - Save 10-20% Costs, 7 Solutions | StockFlow"
         description="Avoid costly inventory mistakes 2025 that cost 10-20% of inventory value annually. Discover 7 common errors and proven solutions. Reduce errors 90-95%. Free plan available. Start free trial - no credit card required."
         keywords="inventory mistakes, stock errors, inventory problems, avoid inventory errors, common inventory mistakes, inventory management errors, prevent inventory mistakes, inventory tracking errors"
-        url="https://www.stockflow.be/avoid-inventory-mistakes"
+        url="https://www.stockflowsystems.com/avoid-inventory-mistakes"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/avoid-inventory-mistakes' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/voorraadbeheer-fouten-voorkomen' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/avoid-inventory-mistakes' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/voorraadbeheer-fouten-voorkomen' }
         ]}
         structuredData={structuredData}
       />

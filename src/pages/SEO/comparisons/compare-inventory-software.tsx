@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { useLocation } from 'react-router-dom';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 import { useState } from 'react';
 import VideoModal from '@/components/VideoModal';
 import {
@@ -15,6 +18,14 @@ import {
   Sparkles,
   CheckCircle2,
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 const competitors = [
   {
@@ -80,7 +91,18 @@ const evaluationChecklist = [
 
 export default function CompareInventorySoftware() {
   usePageRefresh();
+  const location = useLocation();
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1
+  }));
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory software');
 
   const faqData = [
     {
@@ -105,63 +127,35 @@ export default function CompareInventorySoftware() {
     }
   ];
 
-  const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqData.map(faq => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer
-        }
-      }))
+  const structuredData = generateSeoPageStructuredData({
+    title: "Compare Inventory Software 2025 - Complete Buyer's Guide",
+    description: "Compare top inventory management software 2025. Side-by-side feature comparison, pricing, integrations. Save 50-90% costs vs competitors, free plan available.",
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
+    softwareData: {
+      name: "StockFlow - Inventory Management Software",
+      description: "Compare top inventory management software 2025. StockFlow is completely free forever - save 100% costs vs competitors.",
+      category: "BusinessApplication",
+      operatingSystem: "Web Browser",
+      price: "0",
+      currency: "EUR",
+      url: location.pathname,
+      features: [
+        "Real-time inventory tracking",
+        "Barcode scanning",
+        "Multi-location support",
+        "Automated reordering",
+        "Advanced analytics",
+        "Free forever plan"
+      ],
+      image: "https://www.stockflowsystems.com/Inventory-Management.png"
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Compare Inventory Software 2025 - Complete Buyer's Guide",
-      "description": "Compare top inventory management software 2025. Side-by-side feature comparison, pricing, integrations. Save 50-90% costs vs competitors, free plan available.",
-      "image": "https://www.stockflow.be/Inventory-Management.png",
-      "author": {
-        "@type": "Organization",
-        "name": "StockFlow"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "StockFlow",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
-        }
-      },
-      "datePublished": "2024-01-01",
-      "dateModified": new Date().toISOString().split('T')[0],
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://www.stockflow.be/compare-inventory-software"
-      }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://www.stockflow.be"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Compare Inventory Software",
-          "item": "https://www.stockflow.be/compare-inventory-software"
-        }
-      ]
-    }
-  ];
+    pageType: 'software',
+    datePublished: "2024-01-01",
+    dateModified: new Date().toISOString().split('T')[0],
+    includeWebSite: false
+  });
 
   return (
     <SeoPageLayout 
@@ -174,7 +168,7 @@ export default function CompareInventorySoftware() {
         title="Compare Inventory Software 2025 - Save 50-90% Costs, Free Plan | StockFlow"
         description="Compare top inventory management software 2025. Side-by-side feature comparison, pricing, integrations. StockFlow is completely free forever - save 100% costs vs competitors. Start free - no credit card required."
         keywords="compare inventory software, inventory software comparison, best inventory management software, inventory software pricing, compare inventory systems, inventory software features, best inventory software 2025"
-        url="https://www.stockflow.be/compare-inventory-software"
+        url="https://www.stockflowsystems.com/compare-inventory-software"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
         structuredData={structuredData}
@@ -232,6 +226,26 @@ export default function CompareInventorySoftware() {
           </div>
         </div>
       </section>
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved,
+          averageCostSaved: metrics.averageCostSaved,
+          keyMetric: metrics.keyMetric,
+          feature: "Inventory Software"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* Competitor snapshot */}
       <section className="py-20 px-4 bg-white">
@@ -355,6 +369,14 @@ export default function CompareInventorySoftware() {
           </div>
         </div>
       </section>
+
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
 
       {/* CTA */}
       <section className="py-20 px-4 bg-blue-600 text-white">

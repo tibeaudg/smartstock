@@ -82,7 +82,7 @@ export default function VoorraadbeheerTips() {
         title="Voorraadbeheer Tips 2025 - 10 Expert Strategieën | StockFlow"
         description="Ontdek 15 bewezen voorraadbeheer tips voor KMO's. Bespaar 70% tijd, voorkom tekorten, verlaag kosten met 25%. Praktische strategieën die direct werken. Start gratis vandaag - geen creditcard vereist."
         keywords="voorraadbeheer tips, stockbeheer tips, voorraadbeheer best practices, voorraadbeheer strategieën, voorraad optimaliseren, KMO voorraadbeheer, voorraadbeheer automatiseren, voorraadbeheer 2025, voorraadbeheer tips KMO, voorraadbeheer software, voorraadbeheer app, stockflow, gratis voorraadbeheer, magazijnbeheer tips, inventarisatie tips, voorraadbeheer optimalisatie, efficiënt voorraadbeheer, voorraadbeheer kosten besparen, stockbeheer software, tips voor stockbeheer, voorraadbeheer best practices 2025"
-        url="https://www.stockflow.be/voorraadbeheer-tips"
+        url="https://www.stockflowsystems.com/voorraadbeheer-tips"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -106,7 +106,7 @@ export default function VoorraadbeheerTips() {
           "@type": "Article",
           "headline": "Voorraadbeheer Tips: 5 Bewezen Strategieën voor KMO's",
           "description": "Ontdek 5 bewezen voorraadbeheer tips die je vandaag nog kunt toepassen. Bespaar 70% tijd, voorkom tekorten en groei je KMO. Gratis tips van experts.",
-          "image": "https://www.stockflow.be/optimized/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/optimized/Inventory-Management.png",
           "author": {
             "@type": "Organization",
             "name": "stockflow"
@@ -116,12 +116,12 @@ export default function VoorraadbeheerTips() {
             "name": "stockflow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/voorraadbeheer-tips"
+            "@id": "https://www.stockflowsystems.com/voorraadbeheer-tips"
           },
           "datePublished": "2024-06-01",
           "dateModified": new Date().toISOString().split('T')[0]

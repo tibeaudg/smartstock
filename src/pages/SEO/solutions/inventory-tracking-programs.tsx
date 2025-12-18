@@ -14,10 +14,23 @@ import {
   CheckCircle,
   Star
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryTrackingPrograms() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory tracking');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory tracking');
   
   const faqData = [
     {
@@ -183,7 +196,7 @@ export default function InventoryTrackingPrograms() {
         title="Inventory Tracking Programs 2025 | StockFlow"
         description="Best inventory tracking programs 2025. Real-time tracking, barcode scanning, automated alerts. Achieve 99%+ accuracy, save 70% time. Free plan available."
         keywords="inventory tracking programs, inventory tracking software, inventory tracking program, inventory tracking system, inventory tracking app, inventory tracking solution, inventory tracking platform, inventory tracking tool, inventory tracking software free, inventory tracking program free, best inventory tracking program, inventory tracking software for small business, inventory tracking software online, cloud inventory tracking, inventory tracking software comparison, inventory tracking software reviews, inventory tracking software features, inventory tracking software cost, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-tracking-programs"
+        url="https://www.stockflowsystems.com/solutions/inventory-tracking-programs"
       />
 
       {/* What is Inventory Tracking Programs Section */}
@@ -422,7 +435,7 @@ export default function InventoryTrackingPrograms() {
           "@type": "Article",
           "headline": "Inventory Tracking Programs - Complete Guide 2025",
           "description": "Complete guide to inventory tracking programs. Learn how real-time tracking, barcode scanning, and automated alerts help businesses maintain accurate inventory records and prevent stockouts.",
-          "image": "https://www.stockflow.be/inventory-tracking-programs.png",
+          "image": "https://www.stockflowsystems.com/inventory-tracking-programs.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -432,14 +445,14 @@ export default function InventoryTrackingPrograms() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-25",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-tracking-programs"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-tracking-programs"
           },
           "keywords": "inventory tracking programs, inventory tracking software, real-time tracking, barcode scanning"
         },
@@ -458,21 +471,21 @@ export default function InventoryTrackingPrograms() {
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "https://www.stockflow.be/solutions/inventory-tracking-programs",
+          "@id": "https://www.stockflowsystems.com/solutions/inventory-tracking-programs",
           "name": "Inventory Tracking Programs 2025",
           "description": "Best inventory tracking programs for businesses of all sizes. Real-time inventory tracking, barcode scanning, automated alerts. Free plan available.",
-          "url": "https://www.stockflow.be/inventory-tracking-programs",
+          "url": "https://www.stockflowsystems.com/inventory-tracking-programs",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "datePublished": "2024-01-15",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",
-            "url": "https://www.stockflow.be/Inventory-Management.png"
+            "url": "https://www.stockflowsystems.com/Inventory-Management.png"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -481,13 +494,13 @@ export default function InventoryTrackingPrograms() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Inventory Tracking Programs",
-                "item": "https://www.stockflow.be/inventory-tracking-programs"
+                "item": "https://www.stockflowsystems.com/inventory-tracking-programs"
               }
             ]
           }
@@ -521,20 +534,20 @@ export default function InventoryTrackingPrograms() {
           "author": {
             "@type": "Organization",
             "name": "StockFlow",
-            "url": "https://www.stockflow.be"
+            "url": "https://www.stockflowsystems.com"
           },
           "publisher": {
             "@type": "Organization",
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "image": "https://www.stockflow.be/Inventory-Management.png",
+          "image": "https://www.stockflowsystems.com/Inventory-Management.png",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-tracking-programs"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-tracking-programs"
           },
           "featureList": [
             "Real-time inventory tracking",
@@ -565,6 +578,13 @@ export default function InventoryTrackingPrograms() {
           "reviewBody": testimonial.content
         }))
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

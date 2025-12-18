@@ -21,10 +21,23 @@ import {
   Building2
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function ConstructionInventoryManagementSystem() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
+  
+  // Get real customer data for construction use case
+  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
+  const relevantTestimonials = getRelevantTestimonials('construction');
+  const metrics = getProprietaryMetrics('construction inventory');
 
   const faqData = [
     {
@@ -61,7 +74,7 @@ export default function ConstructionInventoryManagementSystem() {
     },
     {
       question: "What is the ROI of construction inventory management systems?",
-      answer: "The ROI is typically very high. Construction companies see: 15-25% reduction in material waste, 20-30% reduction in material theft, 10-15 hours saved per week on inventory tasks, prevention of project delays from material shortages, and 20-30% reduction in carrying costs. Most companies see ROI within the first month through waste reduction and theft prevention."
+      answer: "The ROI is typically very high. Construction companies see: 15-25% reduction in material waste,  in material theft, 10-15 hours saved per week on inventory tasks, prevention of project delays from material shortages, and  in carrying costs. Most companies see ROI within the first month through waste reduction and theft prevention."
     },
     {
       question: "How do construction inventory systems handle material deliveries?",
@@ -167,7 +180,7 @@ export default function ConstructionInventoryManagementSystem() {
   const benefits = [
     { icon: DollarSign, text: "Reduce material waste by 15-25%" },
     { icon: Shield, text: "Prevent theft and loss of high-value materials" },
-    { icon: Clock, text: "Save 10+ hours per week on inventory tasks" },
+    { icon: Clock, text: "Save  on inventory tasks" },
     { icon: CheckCircle, text: "Eliminate material shortages delaying projects" },
     { icon: TrendingUp, text: "Optimize purchasing and reduce excess inventory" },
     { icon: BarChart3, text: "Accurate project cost tracking and budgeting" }
@@ -187,14 +200,14 @@ export default function ConstructionInventoryManagementSystem() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/solutions/construction-inventory-management-system"
+      "@id": "https://www.stockflowsystems.com/solutions/construction-inventory-management-system"
     }
   };
 
@@ -223,7 +236,7 @@ export default function ConstructionInventoryManagementSystem() {
         title="Construction Inventory Management System 2025 - Reduce Waste 15-25%, Save Time | StockFlow"
         description="Construction inventory management system 2025 for tracking materials and equipment across job sites. Mobile scanning, theft prevention, automated alerts. Reduce waste 15-25%, save 10+ hours/week. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="construction inventory management system, construction inventory software, construction materials tracking, construction inventory app, job site inventory, construction equipment tracking, material management construction, construction inventory control, construction stock management, building materials inventory, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/construction-inventory-management-system"
+        url="https://www.stockflowsystems.com/solutions/construction-inventory-management-system"
         structuredData={[structuredData, faqStructuredData]}
       />
 

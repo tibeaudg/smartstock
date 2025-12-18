@@ -124,7 +124,7 @@ export default function HelpCenterPage() {
     "@type": "WebPage",
     "name": "Help Center - StockFlow",
     "description": "Get help with StockFlow inventory management. Find answers, tutorials, and contact support.",
-    "url": "https://www.stockflow.be/help-center",
+    "url": "https://www.stockflowsystems.com/help-center",
     "mainEntity": {
       "@type": "HelpCenter",
       "name": "StockFlow Help Center"
@@ -137,7 +137,7 @@ export default function HelpCenterPage() {
         title="Help Center - StockFlow"
         description="Get help with StockFlow inventory management. Find answers, tutorials, and contact our support team."
         keywords="help, support, documentation, tutorial, inventory management, FAQ"
-        url="https://www.stockflow.be/help-center"
+        url="https://www.stockflowsystems.com/help-center"
         structuredData={structuredData}
       />
 

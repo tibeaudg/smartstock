@@ -96,7 +96,7 @@ export default function AssetControllerMeaning() {
         title="Asset Controller Meaning | What is Asset Controller 2025 | StockFlow"
         description="Discover the asset controller meaning in inventory management. Learn what asset controller means, asset controller responsibilities, and how asset controller software helps businesses track and manage assets."
         keywords="asset controller meaning, what is asset controller, asset controller definition, asset controller responsibilities, asset controller software, asset management controller, asset tracking controller, asset control meaning, stockflow, stock flow"
-        url="https://www.stockflow.be/glossary/asset-controller-meaning"
+        url="https://www.stockflowsystems.com/glossary/asset-controller-meaning"
       />
 
       {/* Hero Section */}
@@ -289,7 +289,7 @@ export default function AssetControllerMeaning() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",

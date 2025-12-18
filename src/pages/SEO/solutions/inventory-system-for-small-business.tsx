@@ -11,9 +11,22 @@ import {
   CheckCircle,
   Star
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventorySystemForSmallBusiness() {
   usePageRefresh();
+  
+  // Get real customer data
+  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('inventory management software');
   
   const faqData = [
     {
@@ -130,8 +143,28 @@ export default function InventorySystemForSmallBusiness() {
         title="Inventory System for Small Business 2025 - Save 70% Time, Free Plan | StockFlow"
         description="Best inventory system for small business 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 70% time, 25% costs. Start free trial - no credit card required."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-system-for-small-business"
+        url="https://www.stockflowsystems.com/solutions/inventory-system-for-small-business"
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
+          averageCostSaved: metrics.averageCostSaved || "25% reduction in costs",
+          keyMetric: "Perfect for small businesses",
+          feature: "Small Business Inventory System"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* What is Inventory System for Small Business Section */}
       <section id="what-is" className="py-16 px-4 bg-white">
@@ -279,7 +312,7 @@ export default function InventorySystemForSmallBusiness() {
           "@type": "Article",
           "headline": "Inventory System for Small Business - Complete Guide 2025",
           "description": "Complete guide to inventory systems for small businesses. Learn about affordable solutions, free plans, essential features, and how to choose the right system for your small business.",
-          "image": "https://www.stockflow.be/inventory-system-small-business.png",
+          "image": "https://www.stockflowsystems.com/inventory-system-small-business.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -289,14 +322,14 @@ export default function InventorySystemForSmallBusiness() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-25",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-system-for-small-business"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-system-for-small-business"
           },
           "keywords": "inventory system for small business, small business inventory management, affordable inventory software"
         },
@@ -325,7 +358,7 @@ export default function InventorySystemForSmallBusiness() {
             "description": "Free plan available for up to 100 products"
           },
           "description": "Affordable inventory system designed specifically for small businesses. Free plan available, easy setup, essential features, and scalable pricing.",
-          "url": "https://www.stockflow.be/solutions/inventory-system-for-small-business",
+          "url": "https://www.stockflowsystems.com/solutions/inventory-system-for-small-business",
           "featureList": [
             "Free plan for small businesses",
             "Real-time inventory tracking",
@@ -337,6 +370,13 @@ export default function InventorySystemForSmallBusiness() {
           ]
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

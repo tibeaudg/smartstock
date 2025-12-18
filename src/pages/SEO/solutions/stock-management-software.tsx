@@ -15,9 +15,22 @@ import {
   TrendingUp,
   Building2
 } from 'lucide-react';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function StockManagementSoftware() {
   usePageRefresh();
+  
+  // Get real customer data for stock management
+  const relevantCaseStudies = getRelevantCaseStudies('stock management');
+  const relevantTestimonials = getRelevantTestimonials('inventory');
+  const metrics = getProprietaryMetrics('stock management');
   
   const faqData = [
     {
@@ -50,7 +63,7 @@ export default function StockManagementSoftware() {
     },
     {
       question: "Can stock management software reduce inventory costs?",
-      answer: "Yes, stock management software reduces costs by: optimizing stock levels to minimize carrying costs, preventing overstocking, identifying slow-moving inventory, reducing waste from expired products, and improving purchasing decisions. Businesses typically see 20-30% reduction in inventory carrying costs."
+      answer: "Yes, stock management software reduces costs by: optimizing stock levels to minimize carrying costs, preventing overstocking, identifying slow-moving inventory, reducing waste from expired products, and improving purchasing decisions. Businesses typically see  in inventory carrying costs."
     },
     {
       question: "Is cloud-based stock management software better than desktop?",
@@ -103,7 +116,7 @@ export default function StockManagementSoftware() {
       "@type": "Article",
       "headline": "Stock Management Software - Complete Guide 2025",
       "description": "Complete guide to stock management software. Learn how real-time tracking, automated reordering, and barcode scanning help businesses optimize inventory levels, reduce costs, and prevent stockouts.",
-      "image": "https://www.stockflow.be/stock-management-software.png",
+      "image": "https://www.stockflowsystems.com/stock-management-software.png",
       "author": {
         "@type": "Organization",
         "name": "StockFlow"
@@ -113,14 +126,14 @@ export default function StockManagementSoftware() {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
+          "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
       "datePublished": "2025-11-25",
       "dateModified": "2025-11-25",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://www.stockflow.be/solutions/stock-management-software"
+        "@id": "https://www.stockflowsystems.com/solutions/stock-management-software"
       },
       "keywords": "stock management software, inventory software, stock control, warehouse software"
     },
@@ -167,10 +180,10 @@ export default function StockManagementSoftware() {
         "name": "StockFlow",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.stockflow.be/logo.png"
+          "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
-      "url": "https://www.stockflow.be/solutions/stock-management-software",
+      "url": "https://www.stockflowsystems.com/solutions/stock-management-software",
       "featureList": [
         "Real-time stock tracking",
         "Automated reorder alerts",
@@ -188,19 +201,19 @@ export default function StockManagementSoftware() {
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://www.stockflow.be"
+          "item": "https://www.stockflowsystems.com"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Solutions",
-          "item": "https://www.stockflow.be/solutions"
+          "item": "https://www.stockflowsystems.com/solutions"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "Stock Management Software",
-          "item": "https://www.stockflow.be/solutions/stock-management-software"
+          "item": "https://www.stockflowsystems.com/solutions/stock-management-software"
         }
       ]
     }
@@ -217,14 +230,34 @@ export default function StockManagementSoftware() {
         title="Stock Management Software 2025 - Save 10+ Hours/Week, 90% Fewer Errors | StockFlow"
         description="Professional stock management software 2025 for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Start free trial - no credit card required."
         keywords="stock management software, inventory software, stock control, warehouse software, SMB stock, small business inventory, stock tracking software, inventory management for small business, stock management system, stock control software, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/stock-management-software"
+        url="https://www.stockflowsystems.com/solutions/stock-management-software"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/solutions/stock-management-software' },
-          { lang: 'nl-BE', url: 'https://www.stockflow.be/stockbeheer-software' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/solutions/stock-management-software' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/stockbeheer-software' }
         ]}
         structuredData={structuredData}
       />
+
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "90% fewer errors",
+          keyMetric: "Real-time stock control",
+          feature: "Stock Management Software"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       {/* What is Stock Management Software Section */}
       <section id="what-is" className="py-16 px-4 bg-white">
@@ -411,6 +444,13 @@ export default function StockManagementSoftware() {
 
       {/* Structured Data */}
       <StructuredData data={structuredData} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

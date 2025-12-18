@@ -96,7 +96,7 @@ export default function WhatIsLeadTime() {
         title="What Is Lead Time 2025 - Prevent Stockouts, Save 25% Costs | StockFlow"
         description="Complete guide to lead time in inventory management 2025. Definition, formula, calculation examples. Optimize lead times to prevent stockouts and save 25% costs. Free plan available. Start free trial - no credit card required."
         keywords="what is lead time, lead time, lead time definition, lead time meaning, lead time calculation, lead time formula, lead time inventory, lead time management, lead time planning, lead time optimization, supplier lead time, production lead time, order lead time, lead time tracking, stockflow, stock flow"
-        url="https://www.stockflow.be/what-is-lead-time"
+        url="https://www.stockflowsystems.com/what-is-lead-time"
       />      
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

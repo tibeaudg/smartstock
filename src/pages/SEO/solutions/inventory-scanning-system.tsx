@@ -10,10 +10,23 @@ import {
   Shield
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  CaseStudySection, 
+  ProprietaryMetrics, 
+  RealCustomerResults,
+  getRelevantCaseStudies,
+  getRelevantTestimonials,
+  getProprietaryMetrics
+} from '@/components/seo/EnhancedContent';
 
 export default function InventoryScanningSystem() {
   usePageRefresh();
   const location = useLocation();
+  
+  // Get real customer data for inventory scanning
+  const relevantCaseStudies = getRelevantCaseStudies('barcode scanning');
+  const relevantTestimonials = getRelevantTestimonials('barcode');
+  const metrics = getProprietaryMetrics('barcode scanning');
   
   const faqData = [
     {
@@ -120,9 +133,28 @@ export default function InventoryScanningSystem() {
         title="Inventory Scanning Software 2025 - 99%+ Accuracy, 10x Faster | StockFlow"
         description="Discover the best inventory scanning software 2025. Barcode & QR code scanning with 99%+ accuracy. Mobile scanning, no special hardware needed. Save 20+ hours/week, 10x faster than manual. Free plan available. Start free trial - no credit card required."
         keywords="inventory scanning system, inventory scanning, inventory scanning software, inventory scanning app, barcode scanning inventory, inventory barcode scanning, inventory scanning solution, inventory scanning technology, inventory scanning system software, inventory scanning system app, inventory scanning tools, mobile inventory scanning, QR code scanning, barcode scanner inventory, stockflow, stock flow"
-        url="https://www.stockflow.be/solutions/inventory-scanning-system"
+        url="https://www.stockflowsystems.com/solutions/inventory-scanning-system"
       />      
 
+      {/* Proprietary Metrics */}
+      <ProprietaryMetrics 
+        metrics={{
+          customerCount: metrics.customerCount,
+          averageTimeSaved: metrics.averageTimeSaved || "20 hours/week",
+          averageCostSaved: metrics.averageCostSaved || "99%+ accuracy",
+          keyMetric: "10x faster than manual",
+          feature: "Inventory Scanning System"
+        }}
+      />
+
+      {/* Real Customer Results */}
+      {relevantTestimonials.length > 0 && (
+        <RealCustomerResults 
+          testimonials={relevantTestimonials}
+          variant="grid"
+          maxItems={3}
+        />
+      )}
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -263,7 +295,7 @@ export default function InventoryScanningSystem() {
           "@type": "Article",
           "headline": "Inventory Scanning System - Complete Guide 2025",
           "description": "Complete guide to inventory scanning systems. Learn how barcode and QR code scanning transforms inventory management, improves accuracy to 99%+, and streamlines operations. Discover mobile scanning solutions that require no special hardware.",
-          "image": "https://www.stockflow.be/inventory-scanning-system.png",
+          "image": "https://www.stockflowsystems.com/inventory-scanning-system.png",
           "author": {
             "@type": "Organization",
             "name": "StockFlow"
@@ -273,14 +305,14 @@ export default function InventoryScanningSystem() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2025-11-25",
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/solutions/inventory-scanning-system"
+            "@id": "https://www.stockflowsystems.com/solutions/inventory-scanning-system"
           },
           "keywords": "inventory scanning system, barcode scanning, QR code scanning, inventory management, mobile inventory scanning"
         },
@@ -309,7 +341,7 @@ export default function InventoryScanningSystem() {
             "description": "Free tier available"
           },
           "description": "Mobile-first inventory scanning system that uses smartphone cameras for barcode and QR code scanning. No special hardware required. Real-time inventory updates and offline support.",
-          "url": "https://www.stockflow.be/solutions/inventory-scanning-system",
+          "url": "https://www.stockflowsystems.com/solutions/inventory-scanning-system",
           "featureList": [
             "Mobile barcode scanning",
             "QR code support",
@@ -320,6 +352,13 @@ export default function InventoryScanningSystem() {
           ]
         }
       ]} />
+      {/* Case Study Section */}
+      {relevantCaseStudies.length > 0 && (
+        <CaseStudySection 
+          caseStudy={relevantCaseStudies[0]}
+          variant="highlighted"
+        />
+      )}
     </SeoPageLayout>
   );
 }

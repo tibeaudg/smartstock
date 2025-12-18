@@ -151,10 +151,10 @@ export default function InventoryTurnoverRatio() {
         title="Inventory Turnover Ratio 2025 - Improve Cash Flow 15-25% | StockFlow"
         description="Learn inventory turnover ratio 2025: formula, calculation, how to improve. Compare benchmarks, optimize inventory. Improve cash flow 15-25%. Free plan available. Start free trial - no credit card required."
         keywords="inventory turnover ratio, inventory turnover ratios, inventory turnover rate, inventory turn over rate, inventory turnover rates, inventory turn ratio, inventory turnover, calculate inventory turnover, inventory turnover formula, improve inventory turnover, inventory turnover calculation, inventory turnover analysis, inventory turnover metric, inventory turnover benchmark, inventory turnover optimization, inventory turnover ratio meaning, inventory turnover ratio formula, inventory turnover ratio calculation"
-        url="https://www.stockflow.be/inventory-turnover-ratio"
+        url="https://www.stockflowsystems.com/inventory-turnover-ratio"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflow.be/inventory-turnover-ratio' }
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-turnover-ratio' }
         ]}
         modifiedTime={new Date().toISOString()}
       />
@@ -451,14 +451,14 @@ export default function InventoryTurnoverRatio() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflow.be/logo.png"
+              "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflow.be/inventory-turnover-ratio"
+            "@id": "https://www.stockflowsystems.com/inventory-turnover-ratio"
           },
           "keywords": "inventory turnover ratio, inventory turnover ratios, inventory turnover rate, inventory turn over rate, inventory turnover rates, inventory turn ratio, inventory turnover, calculate inventory turnover, inventory turnover formula"
         }

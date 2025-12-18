@@ -161,7 +161,7 @@ export default function GuestSandbox() {
         title="Try StockFlow Free - 7-Day Demo | StockFlow"
         description="Experience StockFlow with a free 7-day demo account. No credit card required."
         keywords="demo, trial, inventory management, free trial"
-        url="https://www.stockflow.be/demo"
+        url="https://www.stockflowsystems.com/demo"
       />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
         <div className="container mx-auto px-4 py-16 max-w-4xl">

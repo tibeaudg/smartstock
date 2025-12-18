@@ -59,14 +59,14 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2024-11-20",
     "dateModified": new Date().toISOString().split("T")[0],
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://www.stockflow.be${canonicalPath}`
+      "@id": `https://www.stockflowsystems.com${canonicalPath}`
     }
   },
   {
@@ -97,7 +97,7 @@ export default function BarcodeInventoryPage() {
         title={`${topicTitle} - Complete Guide 2025 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={structuredData} />

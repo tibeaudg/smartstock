@@ -31,7 +31,7 @@ const faqData = [
   },
   {
     question: "How much can small businesses save with inventory software?",
-    answer: "Small businesses typically save: 20-30% on inventory carrying costs, 10-15 hours per week in time (worth €6,500-13,000 annually at €25/hour), 90% reduction in errors, and improved cash flow from optimized stock levels. Total annual savings often range from €10,000-50,000+ depending on inventory size and operations."
+    answer: "Small businesses typically save: 20-30% on inventory carrying costs, 10- in time (worth €6,500-13,000 annually at €25/hour), 90% reduction in errors, and improved cash flow from optimized stock levels. Total annual savings often range from €10,000-50,000+ depending on inventory size and operations."
   },
   {
     question: "What costs should be included in inventory software ROI calculation?",
@@ -70,13 +70,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2024-12-01",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/roi-calculator-for-inventory-software"
+      "@id": "https://www.stockflowsystems.com/blog/roi-calculator-for-inventory-software"
     }
   },
   {
@@ -112,7 +112,7 @@ export default function ROICalculatorForInventorySoftwarePage() {
         title={`ROI Calculator for Inventory Software 2024 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />

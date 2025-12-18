@@ -65,13 +65,13 @@ const structuredData = [
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2024-12-01",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/blog/inventory-management-for-contractors"
+      "@id": "https://www.stockflowsystems.com/blog/inventory-management-for-contractors"
     }
   }
 ];
@@ -96,7 +96,7 @@ export default function InventoryManagementForContractorsPage() {
         title={`Inventory Management for Contractors 2024 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
-        url={`https://www.stockflow.be${canonicalPath}`}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={pageStructuredData} />

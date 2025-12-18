@@ -30,7 +30,7 @@ export default function InventoryOptimizationServices() {
     },
     {
       question: "Why do businesses need inventory optimization services?",
-      answer: "Many businesses struggle with inventory management: overstocking ties up capital, stockouts lose sales, dead stock wastes money, poor forecasting leads to excess inventory, and manual processes are inefficient. Inventory optimization services provide expert analysis, data-driven recommendations, and implementation support to solve these problems. Businesses typically see 20-30% reduction in inventory carrying costs and 15-25% improvement in service levels."
+      answer: "Many businesses struggle with inventory management: overstocking ties up capital, stockouts lose sales, dead stock wastes money, poor forecasting leads to excess inventory, and manual processes are inefficient. Inventory optimization services provide expert analysis, data-driven recommendations, and implementation support to solve these problems. Businesses typically see  in inventory carrying costs and 15-25% improvement in service levels."
     },
     {
       question: "What do inventory optimization services include?",
@@ -50,7 +50,7 @@ export default function InventoryOptimizationServices() {
     },
     {
       question: "What results can I expect from inventory optimization services?",
-      answer: "Typical results include: 20-30% reduction in inventory carrying costs, 15-25% improvement in service levels (fewer stockouts), 30-50% reduction in dead stock, 10-20% improvement in cash flow, better supplier relationships, and improved forecasting accuracy. Results vary by industry and starting point."
+      answer: "Typical results include:  in inventory carrying costs, 15-25% improvement in service levels (fewer stockouts), 30-50% reduction in dead stock, 10-20% improvement in cash flow, better supplier relationships, and improved forecasting accuracy. Results vary by industry and starting point."
     },
     {
       question: "Can inventory optimization services work with existing inventory software?",
@@ -58,7 +58,7 @@ export default function InventoryOptimizationServices() {
     },
     {
       question: "What is the ROI of inventory optimization services?",
-      answer: "The ROI of inventory optimization services is typically very high. Businesses see: 20-30% reduction in carrying costs, 15-25% improvement in service levels, 30-50% reduction in dead stock, and 10-20% improvement in cash flow. Most businesses see ROI within 3-6 months, with ongoing benefits thereafter."
+      answer: "The ROI of inventory optimization services is typically very high. Businesses see:  in carrying costs, 15-25% improvement in service levels, 30-50% reduction in dead stock, and 10-20% improvement in cash flow. Most businesses see ROI within 3-6 months, with ongoing benefits thereafter."
     },
     {
       question: "Do I need inventory optimization services if I have inventory software?",
@@ -178,14 +178,14 @@ export default function InventoryOptimizationServices() {
       "name": "StockFlow",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://www.stockflow.be/logo.png"
+        "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
     "datePublished": "2025-01-15",
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflow.be/solutions/inventory-optimization-services"
+      "@id": "https://www.stockflowsystems.com/solutions/inventory-optimization-services"
     }
   };
 
@@ -212,9 +212,9 @@ export default function InventoryOptimizationServices() {
     >
       <SEO
         title="Inventory Optimization Services 2025 | StockFlow"
-        description="Inventory optimization services to reduce costs 20-30%, improve service levels 15-25%, eliminate dead stock 30-50%. Free tools available."
+        description="Inventory optimization services to , improve service levels 15-25%, eliminate dead stock 30-50%. Free tools available."
         keywords="inventory optimization services, inventory optimization consulting, inventory analysis services, inventory management consulting, inventory optimization, inventory consulting services, stock optimization, inventory reduction services, inventory planning services, inventory improvement services"
-        url="https://www.stockflow.be/solutions/inventory-optimization-services"
+        url="https://www.stockflowsystems.com/solutions/inventory-optimization-services"
         structuredData={[structuredData, faqStructuredData]}
       />
 
@@ -227,7 +227,7 @@ export default function InventoryOptimizationServices() {
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            Effective inventory optimization services typically include inventory audits, demand forecasting, reorder point optimization, ABC analysis, dead stock identification, supplier performance analysis, and process improvement recommendations. Businesses typically see 20-30% reduction in inventory carrying costs, 15-25% improvement in service levels, and 30-50% reduction in dead stock.
+            Effective inventory optimization services typically include inventory audits, demand forecasting, reorder point optimization, ABC analysis, dead stock identification, supplier performance analysis, and process improvement recommendations. Businesses typically see  in inventory carrying costs, 15-25% improvement in service levels, and 30-50% reduction in dead stock.
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">

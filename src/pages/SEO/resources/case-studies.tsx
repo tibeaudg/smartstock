@@ -106,7 +106,7 @@ const structuredData = [
     "@type": "WebPage",
     "name": "Inventory Management Case Studies - StockFlow",
     "description": "See how businesses use StockFlow to improve inventory management. Real success stories from electronics, retail, food, and logistics companies. Learn about ROI, time savings, and results.",
-    "url": "https://www.stockflow.be/resources/case-studies",
+    "url": "https://www.stockflowsystems.com/resources/case-studies",
     "mainEntity": {
       "@type": "ItemList",
       "name": "StockFlow Case Studies",
@@ -133,19 +133,19 @@ const structuredData = [
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://www.stockflow.be"
+        "item": "https://www.stockflowsystems.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Resources",
-        "item": "https://www.stockflow.be/resources"
+        "item": "https://www.stockflowsystems.com/resources"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Case Studies",
-        "item": "https://www.stockflow.be/resources/case-studies"
+        "item": "https://www.stockflowsystems.com/resources/case-studies"
       }
     ]
   }
@@ -165,7 +165,7 @@ export default function SEOCaseStudiesPage() {
         title="Inventory Management Case Studies 2025 - Success Stories | StockFlow"
         description="See how businesses use StockFlow to improve inventory management. Real success stories from electronics, retail, food, and logistics companies. Learn about ROI, time savings, and results."
         keywords="case studies, success stories, inventory management, business results, ROI, testimonials, inventory software case studies, inventory management success stories, stockflow case studies"
-        url="https://www.stockflow.be/resources/case-studies"
+        url="https://www.stockflowsystems.com/resources/case-studies"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
