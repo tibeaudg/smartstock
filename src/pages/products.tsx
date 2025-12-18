@@ -193,6 +193,27 @@ export default function CategorysPage() {
     }
   }, [location.search]);
   
+  // Handle URL parameter for category filter
+  React.useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      const categoryId = decodeURIComponent(categoryParam);
+      // Set the category filter from URL parameter (replace any existing selection)
+      // Use functional update to avoid dependency on selectedCategoryIds
+      setSelectedCategoryIds(prev => {
+        // Only update if different to avoid unnecessary re-renders
+        if (prev.length === 1 && prev[0] === categoryId) {
+          return prev;
+        }
+        // Replace selection with the category from URL
+        return [categoryId];
+      });
+    }
+    // If no category param in URL, don't clear selection (user might have manually selected)
+    // This allows users to filter by category in the UI without URL param
+  }, [location.search]);
+  
   // Refetch products when returning to categories page (e.g., after adding a product)
   const prevLocationRef = React.useRef(location.pathname);
   React.useEffect(() => {
