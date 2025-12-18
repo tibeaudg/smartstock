@@ -211,7 +211,7 @@ const AppRouter = () => {
 
   // Branch-aware route component (must be used inside BranchProvider)
   const BranchAwareRoute = ({ children }: { children: React.ReactNode }) => {
-    const { branches, hasNoBranches, loading: branchesLoading, hasError } = useBranches();
+    const { branches, hasNoBranches, loading: branchesLoading, hasError, queryLoading, isInitialLoad } = useBranches();
     const { authLoading } = useAuth();
     const [forceRender, setForceRender] = useState(false);
     const [retryCount, setRetryCount] = useState(0);
@@ -280,9 +280,14 @@ const AppRouter = () => {
     }
 
     // Check if user has no branches and needs to create their first branch
-    // Only show this if we're certain (not loading, no error, and explicitly hasNoBranches)
-    if (hasNoBranches && branches.length === 0 && !branchesLoading && !hasError) {
-      console.debug('[BranchAwareRoute] No branches found, showing FirstBranchSetup');
+    // Only show this if:
+    // 1. Initial load has completed (isInitialLoad is false)
+    // 2. Query is not loading (queryLoading is false)
+    // 3. No error occurred
+    // 4. We're certain there are no branches (hasNoBranches is true)
+    // This prevents showing the popup before we've actually checked if branches exist
+    if (!isInitialLoad && !queryLoading && !hasError && hasNoBranches && branches.length === 0) {
+      console.debug('[BranchAwareRoute] No branches found after initial load, showing FirstBranchSetup');
       return <FirstBranchSetup />;
     }
 

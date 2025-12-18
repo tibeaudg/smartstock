@@ -18,6 +18,8 @@ interface BranchContextType {
   refreshBranches: () => Promise<void>;
   hasNoBranches: boolean;
   hasError: boolean;
+  queryLoading: boolean; // Expose the actual query loading state
+  isInitialLoad: boolean; // Track if this is the initial load
 }
 
 const BranchContext = createContext<BranchContextType | undefined>(undefined);
@@ -73,6 +75,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
   
   const [activeBranch, setActiveBranchState] = useState<Branch | null>(null);
+  const [hasCompletedInitialLoad, setHasCompletedInitialLoad] = useState(false);
 
   // Fetch branches using React Query
   const {
@@ -80,6 +83,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     isLoading: queryLoading,
     refetch,
     isError: queryError,
+    isFetching: queryFetching,
   } = useQuery<Branch[]>({
     queryKey: ['branches', user?.id],
     queryFn: async () => {
@@ -163,10 +167,29 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     retryDelay: 2000, // 2 second delay between retries
   });
 
+  // Reset initial load state when user changes (e.g., on login/logout)
+  useEffect(() => {
+    if (!user?.id) {
+      setHasCompletedInitialLoad(false);
+    }
+  }, [user?.id]);
+
+  // Track when initial load has completed
+  useEffect(() => {
+    if (!queryLoading && !authLoading && user?.id) {
+      // Only mark as completed if we're not loading and we have a user
+      if (!hasCompletedInitialLoad) {
+        console.debug('[useBranches] Initial load completed, branches:', branches.length);
+        setHasCompletedInitialLoad(true);
+      }
+    }
+  }, [queryLoading, authLoading, user?.id, branches.length, hasCompletedInitialLoad]);
+
   // Computed value for hasNoBranches
   // Only consider it "no branches" if we've successfully loaded and got an empty result
+  // AND we've completed the initial load (to prevent showing popup before query completes)
   // Don't show "no branches" if we're still loading or if there was an error/timeout
-  const hasNoBranches = !queryLoading && !queryError && branches.length === 0;
+  const hasNoBranches = hasCompletedInitialLoad && !queryLoading && !queryError && branches.length === 0;
 
   // Improved loading state logic: only show loading if there's no cached data
   // This prevents stuck loading states when cache exists but query is refetching
@@ -325,6 +348,8 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         refreshBranches,
         hasNoBranches,
         hasError: queryError,
+        queryLoading,
+        isInitialLoad: !hasCompletedInitialLoad,
       }}
     >
       {children}

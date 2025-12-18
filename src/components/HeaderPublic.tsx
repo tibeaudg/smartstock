@@ -487,20 +487,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     
     <header ref={headerRef} className={`fixed inset-x-0 top-0 z-[99] ${className}`}>
-      {!hideNotifications && (
-        <div className="bg-slate-900 text-white">
-          <div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-2 text-sm">
-            <Link
-              to="/pricing"
-              onClick={handleNavigate}
-              className="inline-flex items-center gap-2 font-medium text-white transition-opacity hover:opacity-80"
-            >
-              Limited time offer: first 100 products free for life!
-              <ChevronRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      )}
+  
 
       <div className="border-b border-gray-400" style={{ backgroundColor: baseColor }}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:py-4">

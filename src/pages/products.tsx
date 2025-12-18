@@ -1090,11 +1090,11 @@ export default function CategorysPage() {
       'name': { label: 'Product', sortKey: 'name', align: 'left', width: 'w-1/3' },
       'location': { label: 'Location', sortKey: 'location', align: 'center', responsive: 'hidden md:table-cell', width: 'w-1/8' },
       'warehouses': { label: 'Warehouses', sortKey: 'warehouses', align: 'center', responsive: 'hidden md:table-cell', width: 'w-1/8' },
-      'stock': { label: 'Stock', sortKey: 'stock', align: 'center', width: 'w-1/8' },
-      'minimum_stock_level': { label: 'Min. Level', sortKey: 'minimum_stock_level', align: 'center', responsive: 'hidden sm:table-cell' },
-      'purchase_price': { label: 'Cost', sortKey: 'purchase_price', align: 'center', responsive: 'hidden sm:table-cell', width: 'w-1/8' },
-      'sale_price': { label: 'Price', sortKey: 'sale_price', align: 'center', responsive: 'hidden sm:table-cell', width: 'w-1/8' },
-      'unit_price': { label: 'Unit Price', sortKey: 'unit_price', align: 'center', responsive: 'hidden lg:table-cell' },
+      'stock': { label: 'Stock', sortKey: 'stock', align: 'right', width: 'w-1/8' },
+      'minimum_stock_level': { label: 'Min. Level', sortKey: 'minimum_stock_level', align: 'right', responsive: 'hidden sm:table-cell' },
+      'purchase_price': { label: 'Cost', sortKey: 'purchase_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-1/8' },
+      'sale_price': { label: 'Price', sortKey: 'sale_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-1/8' },
+      'unit_price': { label: 'Unit Price', sortKey: 'unit_price', align: 'right', responsive: 'hidden lg:table-cell' },
     };
 
     const config = columnConfigs[columnId];
@@ -1107,7 +1107,7 @@ export default function CategorysPage() {
       <th
         key={columnId}
         className={cn(
-          config.align === 'center' ? 'text-center' : 'text-left',
+          config.align === 'center' ? 'text-center' : config.align === 'right' ? 'text-right' : 'text-left',
           config.width || '',
           config.responsive || '',
           "px-2 sm:px-3 text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap border-r border-gray-200",
@@ -1118,7 +1118,8 @@ export default function CategorysPage() {
       >
         <div className={cn(
           "flex items-center",
-          config.align === 'center' && "justify-center"
+          config.align === 'center' && "justify-center",
+          config.align === 'right' && "justify-end"
         )}>
           {config.label}
           {isSortable && getSortIcon(sortKey)}
@@ -1136,7 +1137,9 @@ export default function CategorysPage() {
     stockDotColor: string, 
     rowIndicators: Array<{ type: string; color: string; label: string }>,
     isVariant: boolean = false,
-    parentProduct?: any
+    parentProduct?: any,
+    hasVariants?: boolean,
+    variantCount?: number
   ): React.ReactNode => {
     if (!isColumnVisible(columnId)) return null;
 
@@ -1145,25 +1148,26 @@ export default function CategorysPage() {
         if (isVariant) {
           const hasVariantSKU = !!(product.variant_sku || product.sku);
           const hasParentSKU = parentProduct && !!(parentProduct.sku && parentProduct.sku !== '---');
-          const showDash = !hasVariantSKU && !hasParentSKU;
+          const variantMatchesParent = hasVariantSKU && hasParentSKU && (product.variant_sku || product.sku) === parentProduct.sku;
+          const showDash = (!hasVariantSKU && !hasParentSKU) || variantMatchesParent;
           return (
             <td className={cn(
-              "text-left relative z-10 border-r border-gray-200 bg-gray-50",
+              "text-left relative z-10 border-r border-gray-200 bg-blue-50/30",
               "px-2 sm:px-3 py-1"
             )}>
               <span className={cn(
                 "font-mono",
-                showDash ? "text-gray-400" : (!hasVariantSKU ? "text-gray-400 italic" : "text-gray-900"),
+                showDash ? "text-gray-300" : (!hasVariantSKU ? "text-gray-300 opacity-50" : "text-gray-600"),
                 compactMode ? "text-xs" : "text-xs sm:text-sm"
               )}>
-                {showDash ? '—' : (product.variant_sku || product.sku || 'Not set')}
+                {showDash ? '—' : (product.variant_sku || product.sku || <span className="opacity-40">—</span>)}
               </span>
             </td>
           );
         }
-        const hasVariants = !product.is_variant && (variantCounts.get(product.id) ?? 0) > 0;
-        const productVariants = hasVariants ? (variantsByParentId.get(product.id) || []) : [];
-        const hasDifferentSKUs = hasVariants && productVariants.length > 0 && 
+        const productHasVariants = !product.is_variant && (variantCounts.get(product.id) ?? 0) > 0;
+        const productVariants = productHasVariants ? (variantsByParentId.get(product.id) || []) : [];
+        const hasDifferentSKUs = productHasVariants && productVariants.length > 0 && 
           new Set(productVariants.map((v: any) => v.variant_sku || v.sku).filter(Boolean)).size > 1;
         return (
           <td className={cn(
@@ -1172,13 +1176,13 @@ export default function CategorysPage() {
           )}>
             <div className="flex items-center gap-1.5">
               <span className={cn(
-                hasVariants && hasDifferentSKUs ? "" : "font-mono",
-                !product.sku || product.sku === '---' ? "text-gray-400 italic" : "text-gray-900",
+                productHasVariants && hasDifferentSKUs ? "" : "font-mono",
+                !product.sku || product.sku === '---' ? "text-gray-300 opacity-50" : "text-gray-900",
                 compactMode ? "text-xs" : "text-xs sm:text-sm"
               )}>
-                {hasVariants && hasDifferentSKUs ? 'Multiple' : (product.sku || 'Not set')}
+                {productHasVariants && hasDifferentSKUs ? 'Multiple' : (product.sku || <span className="opacity-40">—</span>)}
               </span>
-              {!hasVariants && rowIndicators.find(i => i.type === 'missing-sku') && (
+              {!productHasVariants && rowIndicators.find(i => i.type === 'missing-sku') && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -1199,18 +1203,19 @@ export default function CategorysPage() {
         if (isVariant) {
           const hasVariantBarcode = !!(product.variant_barcode || product.barcode);
           const hasParentBarcode = parentProduct && !!parentProduct.barcode;
-          const showDash = !hasVariantBarcode && !hasParentBarcode;
+          const variantMatchesParent = hasVariantBarcode && hasParentBarcode && (product.variant_barcode || product.barcode) === parentProduct.barcode;
+          const showDash = (!hasVariantBarcode && !hasParentBarcode) || variantMatchesParent;
           return (
             <td className={cn(
-              "text-left relative z-10 hidden md:table-cell border-r border-gray-200 align-middle bg-gray-50",
+              "text-left relative z-10 hidden md:table-cell border-r border-gray-200 align-middle bg-blue-50/30",
               "px-2 sm:px-3 py-1"
             )}>
               <span className={cn(
                 "font-mono",
-                showDash ? "text-gray-400" : (!hasVariantBarcode ? "text-gray-400 italic" : "text-gray-600"),
+                showDash ? "text-gray-300" : (!hasVariantBarcode ? "text-gray-300 opacity-50" : "text-gray-600"),
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {showDash ? '—' : (product.variant_barcode || product.barcode || 'Not set')}
+                {showDash ? '—' : (product.variant_barcode || product.barcode || <span className="opacity-40">—</span>)}
               </span>
             </td>
           );
@@ -1222,10 +1227,10 @@ export default function CategorysPage() {
           )}>
             <span className={cn(
               "font-mono",
-              !product.barcode ? "text-gray-400 italic" : "text-gray-900",
+              !product.barcode ? "text-gray-300 opacity-50" : "text-gray-900",
               compactMode ? "text-xs" : "text-sm"
             )}>
-              {product.barcode || 'Not set'}
+              {product.barcode || <span className="opacity-40">—</span>}
             </span>
           </td>
         );
@@ -1250,7 +1255,29 @@ export default function CategorysPage() {
 
       case 'category_name':
         // Hide category column for variants (they inherit from parent)
-        if (isVariant) return null;
+        if (isVariant) {
+          const variantCategory = product.category_name;
+          const parentCategory = parentProduct?.category_name;
+          const matchesParent = variantCategory === parentCategory;
+          return (
+            <td className={cn(
+              "text-left relative z-10 border-r border-gray-200 align-middle bg-blue-50/30",
+              "px-2 sm:px-3 py-1"
+            )}>
+              {matchesParent ? (
+                <span className="text-gray-300 text-xs">—</span>
+              ) : (
+                <span className={cn(
+                  "text-gray-500",
+                  !variantCategory && "text-gray-300 opacity-50",
+                  compactMode ? "text-xs" : "text-sm"
+                )}>
+                  {variantCategory || <span className="opacity-40">—</span>}
+                </span>
+              )}
+            </td>
+          );
+        }
         return (
           <td className={cn(
               "text-left relative z-10 border-r border-gray-200 align-middle",
@@ -1259,10 +1286,10 @@ export default function CategorysPage() {
             <div className="flex items-center gap-1.5">
               <span className={cn(
                 "text-gray-600",
-                !product.category_name && "text-gray-400 italic",
+                !product.category_name && "text-gray-300 opacity-50",
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {product.category_name || 'Uncategorized'}
+                {product.category_name || <span className="opacity-40">—</span>}
               </span>
               {rowIndicators.find(i => i.type === 'no-category') && (
                 <TooltipProvider>
@@ -1285,11 +1312,11 @@ export default function CategorysPage() {
           const variantLabel = formatVariantLabel(product);
           return (
             <td className={cn(
-              "w-1/4 relative z-10 border-r border-gray-200 align-middle bg-gray-50",
+              "w-1/4 relative z-10 border-r border-gray-200 align-middle bg-blue-50/30",
               "px-2 sm:px-3 py-1"
             )}>
               <div className="flex items-center">
-                {/* Simple tree connector - horizontal line only */}
+                {/* Continuous vertical line connector */}
                 <div className="w-4 h-px bg-gray-300 mr-2"></div>
                 <h3 className={cn(
                   "font-normal text-gray-600",
@@ -1301,8 +1328,9 @@ export default function CategorysPage() {
             </td>
           );
         }
-        const hasVariants = !product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
-        const isExpanded = hasVariants && expandedProductIds.has(product.id);
+        // For parent products, check if they have variants
+        const productHasVariants = hasVariants !== undefined ? hasVariants : (!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0);
+        const productVariantCount = variantCount !== undefined ? variantCount : (productHasVariants ? (variantCounts.get(String(product.id)) ?? 0) : 0);
         return (
           <td className={cn(
             "w-1/4 relative z-10 overflow-visible border-r border-gray-200 align-middle",
@@ -1333,29 +1361,21 @@ export default function CategorysPage() {
               <div className="flex-1 min-w-0">
                 <div className={cn(
                   "flex items-center flex-wrap",
-                  compactMode ? "gap-1" : "gap-2"
+                  compactMode ? "gap-1.5" : "gap-2"
                 )}>
-                  {hasVariants && (
-                    <div className="flex-shrink-0 mr-2 flex items-center justify-center w-5 h-5 rounded-md bg-blue-50 border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 transition-colors">
-                      {isExpanded ? (
-                        <ChevronDown className="w-3.5 h-3.5 text-blue-600" />
-                      ) : (
-                        <ChevronRight className="w-3.5 h-3.5 text-blue-600" />
-                      )}
-                    </div>
-                  )}
+                  {/* Parent text - bolder and larger, with embedded variant badge */}
                   <h3 className={cn(
-                    hasVariants ? "font-bold text-gray-900" : "font-semibold text-gray-900",
-                    "truncate",
-                    compactMode ? "text-xs" : "text-sm"
+                    productHasVariants ? "font-bold" : "font-semibold",
+                    productHasVariants ? (compactMode ? "text-sm" : "text-base") : (compactMode ? "text-xs" : "text-sm"),
+                    "text-gray-900 truncate"
                   )}>
                     {product.name}
+                    {productHasVariants && productVariantCount > 0 && (
+                      <span className="ml-2 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                        {productVariantCount} variant{productVariantCount !== 1 ? 's' : ''}
+                      </span>
+                    )}
                   </h3>
-                  {hasVariants && (
-                    <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded ml-2 border border-blue-200">
-                      {variantCounts.get(String(product.id))} variant{(variantCounts.get(String(product.id)) ?? 0) !== 1 ? 's' : ''}
-                    </span>
-                  )}
                   {product.category_name && !isColumnVisible('category_name') && (
                     <Badge 
                       variant="secondary" 
@@ -1417,20 +1437,26 @@ export default function CategorysPage() {
           const showDash = (!hasVariantLocation && !hasParentLocation) || variantMatchesParent;
           return (
             <td className={cn(
-              "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200 align-middle bg-gray-50",
+              "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200 align-middle bg-blue-50/30",
               "px-2 sm:px-3 py-1"
             )}>
               <div className="flex items-center justify-center gap-1">
-                <MapPin className={cn(
-                  showDash ? "text-gray-300 opacity-50" : (product.location ? (repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-400") : "text-gray-300 opacity-50"),
-                  compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
-                )} />
-                <span className={cn(
-                  showDash ? "text-gray-400" : (!product.location ? "text-gray-400 italic" : repetitiveLocations.has(product.location || '') ? "text-gray-400" : "text-gray-600"),
-                  compactMode ? "text-xs" : "text-sm"
-                )}>
-                  {showDash ? '—' : (product.location || 'Not assigned')}
-                </span>
+                {showDash ? (
+                  <span className="text-gray-300 text-xs">—</span>
+                ) : (
+                  <>
+                    <MapPin className={cn(
+                      product.location ? (repetitiveLocations.has(product.location || '') ? "text-gray-200" : "text-gray-300") : "text-gray-200 opacity-30",
+                      compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                    )} />
+                    <span className={cn(
+                      !product.location ? "text-gray-300 opacity-50" : repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-500",
+                      compactMode ? "text-xs" : "text-sm"
+                    )}>
+                      {product.location}
+                    </span>
+                  </>
+                )}
               </div>
             </td>
           );
@@ -1442,14 +1468,14 @@ export default function CategorysPage() {
           )}>
             <div className="flex items-center justify-center gap-1">
               <MapPin className={cn(
-                product.location ? (repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-400") : "text-gray-300 opacity-50",
+                product.location ? (repetitiveLocations.has(product.location || '') ? "text-gray-200" : "text-gray-300") : "text-gray-200 opacity-30",
                 compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
               )} />
               <span className={cn(
-                !product.location ? "text-gray-400 italic" : repetitiveLocations.has(product.location || '') ? "text-gray-400" : "text-gray-600",
+                !product.location ? "text-gray-300 opacity-50" : repetitiveLocations.has(product.location || '') ? "text-gray-300" : "text-gray-600",
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {product.location || 'Not assigned'}
+                {product.location || <span className="opacity-40">—</span>}
               </span>
               {rowIndicators.find(i => i.type === 'no-location') && (
                 <TooltipProvider>
@@ -1469,6 +1495,34 @@ export default function CategorysPage() {
 
       case 'warehouses':
         const warehouseName = getWarehouseName(product.warehouse_name);
+        if (isVariant) {
+          const variantWarehouse = getWarehouseName(product.warehouse_name);
+          const parentWarehouse = parentProduct ? getWarehouseName(parentProduct.warehouse_name) : null;
+          const matchesParent = variantWarehouse === parentWarehouse;
+          return (
+            <td className={cn(
+              "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200 align-middle bg-blue-50/30",
+              "px-2 sm:px-3 py-1"
+            )}>
+              {matchesParent ? (
+                <span className="text-gray-300 text-xs">—</span>
+              ) : (
+                <div className="flex items-center justify-center gap-1">
+                  <Warehouse className={cn(
+                    variantWarehouse ? "text-gray-300" : "text-gray-200 opacity-30",
+                    compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                  )} />
+                  <span className={cn(
+                    !variantWarehouse ? "text-gray-300 opacity-50" : "text-gray-500",
+                    compactMode ? "text-xs" : "text-sm"
+                  )}>
+                    {variantWarehouse || <span className="opacity-40">—</span>}
+                  </span>
+                </div>
+              )}
+            </td>
+          );
+        }
         return (
           <td className={cn(
             "text-center w-1/8 hidden md:table-cell relative z-10 border-r border-gray-200 align-middle",
@@ -1476,14 +1530,14 @@ export default function CategorysPage() {
           )}>
             <div className="flex items-center justify-center gap-1">
               <Warehouse className={cn(
-                warehouseName ? "text-gray-400" : "text-gray-300 opacity-50",
+                warehouseName ? "text-gray-300" : "text-gray-200 opacity-30",
                 compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
               )} />
               <span className={cn(
-                !warehouseName ? "text-gray-400 italic" : "text-gray-600",
+                !warehouseName ? "text-gray-300 opacity-50" : "text-gray-600",
                 compactMode ? "text-xs" : "text-sm"
               )}>
-                {warehouseName || 'Not assigned'}
+                {warehouseName || <span className="opacity-40">—</span>}
               </span>
             </div>
           </td>
@@ -1492,12 +1546,12 @@ export default function CategorysPage() {
       case 'minimum_stock_level':
         return (
           <td className={cn(
-            "text-center hidden sm:table-cell border-r border-gray-200",
+            "text-right hidden sm:table-cell border-r border-gray-200",
             "px-2 sm:px-3 py-1 align-middle"
           )}>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-end">
               <span className={cn(
-                "text-gray-600",
+                "text-gray-600 font-mono",
                 compactMode ? "text-xs" : "text-sm"
               )}>
                 {formatStockQuantity(product.minimum_stock_level || 0)}
@@ -1510,13 +1564,13 @@ export default function CategorysPage() {
         const stockValue = isVariant ? Number(product.quantity_in_stock) || 0 : displayStock;
         const stockStatusValue = isVariant ? getStockStatus(Number(product.quantity_in_stock) || 0, product.minimum_stock_level || 0) : stockStatus;
         const stockDotColorValue = isVariant ? getStockStatusDotColor(Number(product.quantity_in_stock) || 0, product.minimum_stock_level || 0) : stockDotColor;
-        const hasVariants = !isVariant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
-        const isAggregatedTotal = hasVariants && displayStock !== (Number(product.quantity_in_stock) || 0);
+        const productHasVariantsForStock = !isVariant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
+        const isAggregatedTotal = productHasVariantsForStock && displayStock !== (Number(product.quantity_in_stock) || 0);
         return (
           <td 
             className={cn(
-              "text-center w-1/8 border-r border-gray-200 align-middle",
-              isVariant ? "bg-gray-50" : "",
+              "text-right w-1/8 border-r border-gray-200 align-middle",
+              isVariant ? "bg-blue-50/30" : "",
               "px-2 sm:px-3 py-1"
             )} 
             onClick={(e) => isMobile && e.stopPropagation()}
@@ -1539,7 +1593,7 @@ export default function CategorysPage() {
                     }}
                   >
                     <div className={cn(
-                      "flex items-center justify-center",
+                      "flex items-center justify-end",
                       compactMode ? "gap-1.5" : "gap-2"
                     )}>
                       <div
@@ -1553,7 +1607,7 @@ export default function CategorysPage() {
                       <span
                         className={cn(
                           isVariant ? 'font-medium' : (isAggregatedTotal ? 'font-bold text-blue-700' : 'font-semibold'),
-                          'transition-colors',
+                          'transition-colors font-mono',
                           stockValue === 0
                             ? 'animate-pulse text-red-600'
                             : isAggregatedTotal ? 'text-blue-700' : 'text-gray-900',
@@ -1569,7 +1623,7 @@ export default function CategorysPage() {
                     </div>
                     {!compactMode && (
                       <div className={cn(
-                        "text-xs font-medium transition-colors",
+                        "text-xs font-medium transition-colors text-right",
                         isMobile ? "text-gray-600" : "text-gray-600 group-hover:text-white/90"
                       )}>
                         {stockStatusValue}
@@ -1583,7 +1637,7 @@ export default function CategorysPage() {
                       {formatStockQuantity(stockValue)} in stock. Minimum: {formatStockQuantity(product.minimum_stock_level || 0)}
                       {isAggregatedTotal && <span className="text-xs text-gray-500 ml-1">(Total)</span>}
                     </p>
-                    {hasVariants && (
+                    {productHasVariantsForStock && (
                       <p className="text-xs text-gray-400 mt-1">
                         Base: {formatStockQuantity(product.quantity_in_stock)} + Variants: {formatStockQuantity(displayStock - (Number(product.quantity_in_stock) || 0))}
                       </p>
@@ -1606,13 +1660,13 @@ export default function CategorysPage() {
       case 'purchase_price':
         return (
           <td className={cn(
-            "text-center w-1/8 hidden sm:table-cell border-r border-gray-200",
+            "text-right w-1/8 hidden sm:table-cell border-r border-gray-200",
             "px-2 sm:px-3 py-1 align-middle"
           )}>
             <div className={cn(
-              "flex items-center justify-center",
+              "flex items-center justify-end",
               getPriceColor(product.purchase_price, 'text-gray-900'),
-              "font-medium",
+              "font-medium font-mono",
               compactMode ? "text-xs" : "text-sm"
             )}>
               ${product.purchase_price ? Number(product.purchase_price).toFixed(2) : '0.00'}
@@ -1624,13 +1678,13 @@ export default function CategorysPage() {
         if (isVariant) {
           return (
             <td className={cn(
-              "text-center w-1/8 hidden sm:table-cell border-r border-gray-200 align-middle bg-gray-50",
+              "text-right w-1/8 hidden sm:table-cell border-r border-gray-200 align-middle bg-blue-50/30",
               "px-2 sm:px-3 py-1"
             )}>
               <div className={cn(
-                "flex items-center justify-center gap-1.5",
+                "flex items-center justify-end gap-1.5",
                 getPriceColor(product.sale_price, 'text-green-600'),
-                "font-medium",
+                "font-medium font-mono",
                 compactMode ? "text-xs" : "text-sm"
               )}>
                 <span>
@@ -1656,13 +1710,13 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
-            "text-center w-1/8 hidden sm:table-cell border-r border-gray-200 align-middle",
+            "text-right w-1/8 hidden sm:table-cell border-r border-gray-200 align-middle",
             "px-2 sm:px-3 py-1"
           )}>
             <div className={cn(
-              "flex items-center justify-center gap-1.5",
+              "flex items-center justify-end gap-1.5",
               getPriceColor(product.sale_price, 'text-green-600'),
-              "font-medium",
+              "font-medium font-mono",
               compactMode ? "text-xs" : "text-sm"
             )}>
               <span>
@@ -1689,13 +1743,13 @@ export default function CategorysPage() {
       case 'unit_price':
         return (
           <td className={cn(
-            "text-center hidden lg:table-cell border-r border-gray-200 align-middle",
+            "text-right hidden lg:table-cell border-r border-gray-200 align-middle",
             "px-2 sm:px-3 py-1"
           )}>
             <div className={cn(
-              "flex items-center justify-center",
+              "flex items-center justify-end",
               getPriceColor(product.unit_price, 'text-gray-900'),
-              "font-medium",
+              "font-medium font-mono",
               compactMode ? "text-xs" : "text-sm"
             )}>
               ${product.unit_price ? Number(product.unit_price).toFixed(2) : '0.00'}
@@ -2576,23 +2630,24 @@ export default function CategorysPage() {
                 {/* Normal Header: Search Bar (left, expanded) + Action Buttons (right) */}
                 <>
                   {/* Multi-Intent Search Bar - Left, Expanded Width */}
-                  <MultiIntentSearch
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    onSubmit={handleSearchSubmit}
-                    onProductClick={handleSearchProductClick}
-                    onCategoryClick={handleSearchCategoryClick}
-                    onSupplierClick={handleSearchSupplierClick}
-                    onCreateProduct={() => {
-                      setScannedSKU('');
-                      setPreFilledProductName('');
-                      navigate('/dashboard/products/new');
-                    }}
-                    onCreateCategory={handleAddCategory}
-                    onCreateLocation={handleCreateLocation}
-                    placeholder="Search products, SKUs, categories, suppliers…"
-                    className="bg-gray-50"
-                  />
+                  <div className="flex-1">
+                    <MultiIntentSearch
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      onSubmit={handleSearchSubmit}
+                      onProductClick={handleSearchProductClick}
+                      onCategoryClick={handleSearchCategoryClick}
+                      onSupplierClick={handleSearchSupplierClick}
+                      onCreateProduct={() => {
+                        setScannedSKU('');
+                        setPreFilledProductName('');
+                        navigate('/dashboard/products/new');
+                      }}
+                      onCreateCategory={handleAddCategory}
+                      onCreateLocation={handleCreateLocation}
+                      placeholder="Search products, SKUs, categories, suppliers…"
+                    />
+                  </div>
                   {/* Action Buttons - Right */}
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {selectedProductIds.size > 0 && (
@@ -2704,6 +2759,8 @@ export default function CategorysPage() {
                           <tr className="border-b border-gray-200">
                             {/* Empty header cell for row indicator bar alignment */}
                             <th className="w-1"></th>
+                            {/* Expansion chevron column - moved to left */}
+                            <th className="w-8 px-1 border-r border-gray-200"></th>
                             <th 
                               className={cn(
                                 "text-center w-12 border-r border-gray-200",
@@ -2747,6 +2804,12 @@ export default function CategorysPage() {
                             // Always use stock status color for the border (red/orange/green)
                             const stockBorderColor = getStockStatusDotColor(displayStock, product.minimum_stock_level);
                             
+                            // Check if product has variants
+                            const hasVariants = !product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
+                            const isExpanded = hasVariants && expandedProductIds.has(product.id);
+                            const productVariants = hasVariants ? (variantsByParentId.get(product.id) || []) : [];
+                            const variantCount = hasVariants ? (variantCounts.get(String(product.id)) ?? 0) : 0;
+                            
                             return (
                               <React.Fragment key={product.id}>
                               <tr
@@ -2764,7 +2827,10 @@ export default function CategorysPage() {
                                   'group hover:bg-blue-50/50 hover:shadow-sm transition-all duration-200 border-b border-gray-100 relative',
                                   hoveredImageProductId === product.id && 'z-50',
                                   hoveredProductGroupId === product.id && 'bg-blue-50 shadow-sm',
-                                  index % 2 === 0 && hoveredProductGroupId !== product.id ? 'bg-white' : hoveredProductGroupId !== product.id ? 'bg-gray-50/30' : '',
+                                  // Parent row background - light blue when expanded with children, subtle when collapsed
+                                  isExpanded && 'bg-blue-50/30',
+                                  !isExpanded && hasVariants && 'bg-blue-50/20',
+                                  !hasVariants && index % 2 === 0 && hoveredProductGroupId !== product.id ? 'bg-white' : !hasVariants && hoveredProductGroupId !== product.id ? 'bg-gray-50/30' : '',
                                   'cursor-pointer',
                                   'h-8'
                                 )}
@@ -2778,6 +2844,33 @@ export default function CategorysPage() {
                                   )}
                                   style={{ zIndex: 1 }}
                                 />
+                                
+                                {/* Expansion chevron - moved to absolute left */}
+                                <td 
+                                  className={cn(
+                                    "w-8 px-1 relative z-10 border-r border-gray-200",
+                                    "text-center"
+                                  )}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (hasVariants) {
+                                      toggleProductExpansion(product.id);
+                                    }
+                                  }}
+                                  data-interactive
+                                >
+                                  {hasVariants && (
+                                    <div className="flex items-center justify-center">
+                                      <div className="flex items-center justify-center w-5 h-5 rounded-md bg-blue-50 border border-blue-200 group-hover:bg-blue-100 group-hover:border-blue-300 transition-colors cursor-pointer">
+                                        {isExpanded ? (
+                                          <ChevronDown className="w-3.5 h-3.5 text-blue-600" />
+                                        ) : (
+                                          <ChevronRight className="w-3.5 h-3.5 text-blue-600" />
+                                        )}
+                                      </div>
+                                    </div>
+                                  )}
+                                </td>
                                 
                                 {/* Selection checkbox */}
                                 <td 
@@ -2811,7 +2904,7 @@ export default function CategorysPage() {
                                 {/* Render columns in order */}
                                 {getOrderedVisibleColumns.map(columnId => 
                                   <React.Fragment key={columnId}>
-                                    {renderColumnCell(columnId, product, displayStock, stockStatus, stockDotColor, rowIndicators, false)}
+                                    {renderColumnCell(columnId, product, displayStock, stockStatus, stockDotColor, rowIndicators, false, undefined, hasVariants, variantCount)}
                                   </React.Fragment>
                                 )}
                               </tr>
@@ -2844,35 +2937,31 @@ export default function CategorysPage() {
                                             setHoveredProductGroupId(null);
                                           }}
                                           className={cn(
-                                            'group hover:bg-blue-50/30 hover:shadow-sm transition-all duration-200 border-b border-gray-100 relative',
-                                            hoveredProductGroupId === product.id ? 'bg-blue-50/50 shadow-sm' : 'bg-gray-50/20',
+                                            'group hover:bg-blue-50/40 hover:shadow-sm transition-all duration-200 border-b border-gray-100 relative',
+                                            // Always use light blue background when parent is expanded
+                                            'bg-blue-50/30',
+                                            hoveredProductGroupId === product.id && 'bg-blue-50/40 shadow-sm',
                                             'cursor-pointer',
                                             'h-8'
                                           )}
                                         >
-                                          {/* Row Indicator Bar - offset for indentation */}
+                                          {/* Continuous vertical line - connects parent to last child */}
                                           <td 
-                                            className={cn(
-                                              "absolute top-0 bottom-0 w-1.5 rounded-r-sm",
-                                              variantStockDotColor,
-                                              "shadow-sm"
-                                            )}
-                                            style={{ zIndex: 1, left: '24px' }}
+                                            className="absolute left-8 top-0 bottom-0 w-px bg-gray-300"
+                                            style={{ zIndex: 0 }}
                                           />
                                           
-                                          {/* Spacer cell for indentation - matches table background */}
+                                          {/* Empty chevron cell for alignment */}
                                           <td 
-                                            className="w-6 border-r border-gray-200 bg-gray-50 p-0"
-                                            style={{ width: '24px', padding: 0 }}
+                                            className="w-8 px-1 border-r border-gray-200 bg-blue-50/30"
                                           />
                                           
-                                          {/* Empty checkbox cell for alignment - visually hidden for variants */}
+                                          {/* Empty checkbox cell for alignment */}
                                           <td 
                                             className={cn(
-                                              "w-12 border-r border-gray-200 bg-gray-50",
+                                              "w-12 border-r border-gray-200 bg-blue-50/30",
                                               "px-2 sm:px-3 py-1"
                                             )}
-                                            style={{ visibility: 'hidden' }}
                                           />
                                           
                                           {/* Render columns in order for variants */}
