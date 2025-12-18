@@ -50,6 +50,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
@@ -535,12 +536,26 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem
                     onClick={() => {
+                      toggleTheme();
+                    }}
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    {theme === 'dark' ? (
+                      <Sun className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-100" />
+                    ) : (
+                      <Moon className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-100" />
+                    )}
+                    <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
                       handleSignOut();
                       setProfileDropdownOpen(false);
                     }}
-                    className="text-red-600 focus:text-red-600"
+                    className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
+                    <LogOut className="w-4 h-4 mr-2 text-red-600 dark:text-red-400" />
                     <span>Logout</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

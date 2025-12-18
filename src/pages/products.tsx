@@ -27,7 +27,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Download, GitBranch } from 'lucide-react';
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, AlertTriangle, TrendingUp, ArrowRightLeft, FolderTree, Download, Upload, GitBranch, Hash, Layers } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -1843,25 +1843,15 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 </div>
-                {/* Line 2: SKU • Category • Supplier (muted) */}
-                <div className={cn(
-                  "flex items-center gap-1.5 text-gray-500 mt-0.5",
-                  compactMode ? "text-[9px]" : "text-[10px]"
-                )}>
-                  {product.sku && product.sku !== '---' && (
-                    <>
-                      <span className="font-mono">{product.sku}</span>
-                      <span className="text-gray-400">•</span>
-                    </>
-                  )}
-                  {product.category_name && (
-                    <>
-                      <span>{product.category_name}</span>
-                      {(product.sku && product.sku !== '---') && <span className="text-gray-400">•</span>}
-                    </>
-                  )}
-                  {/* Supplier could go here if available */}
-                </div>
+                {/* Line 2: SKU (muted) */}
+                {product.sku && product.sku !== '---' && (
+                  <div className={cn(
+                    "flex items-center gap-1.5 text-gray-500 mt-0.5",
+                    compactMode ? "text-[9px]" : "text-[10px]"
+                  )}>
+                    <span className="font-mono">{product.sku}</span>
+                  </div>
+                )}
                 {product.description && !compactMode && (
                   <p className="text-[10px] text-gray-500 truncate max-w-xs leading-tight hidden sm:block mt-0.5">
                     {product.description}
@@ -2974,175 +2964,222 @@ export default function CategorysPage() {
   // Removed localStorage loading and saving to ensure compact mode is always the default
 
   return (
-    <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} flex flex-col gap-4 overflow-hidden overscroll-none`} style={{ touchAction: 'pan-y' }}>
+    <div className={`h-screen ${isMobile ? 'p-2' : 'p-4'} flex flex-col gap-4 overflow-hidden`} style={{ touchAction: 'pan-y' }}>
       {/* Header Section - Separate Card */}
       <Card className="flex-shrink-0">
         <CardContent className="p-0">
-          {/* Quick Switcher Bar */}
-          <div className="border-b border-gray-200 bg-white">
-            <QuickSwitcherBar
-              tree={tree}
-              selectedCategoryIds={selectedCategoryIds}
-              onCategorySelectionChange={handleCategorySelectionChange}
-              selectedLocation={selectedLocation}
-              onLocationChange={setSelectedLocation}
-              selectedWarehouse={selectedWarehouse}
-              onWarehouseChange={setSelectedWarehouse}
-              onQuickFilterChange={setActiveQuickFilter}
-              activeQuickFilter={activeQuickFilter}
-              onImportClick={handleImportClick}
-              onExportClick={handleExportAll}
-            />
-          </div>
-
-          {/* Needs Attention Filters */}
-          <div className="px-3 md:px-4 lg:px-6 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-medium text-gray-600 mr-1">Needs attention:</span>
-            <button
-              onClick={() => toggleQuickFilter('out-of-stock')}
-              className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium transition-all",
-                activeQuickFilters.includes('out-of-stock')
-                  ? "bg-red-100 text-red-700 border border-red-300 shadow-sm"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
-              )}
-            >
-              Out of stock ({quickFilterCounts['out-of-stock']})
-            </button>
-            <button
-              onClick={() => toggleQuickFilter('low-stock')}
-              className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium transition-all",
-                activeQuickFilters.includes('low-stock')
-                  ? "bg-orange-100 text-orange-700 border border-orange-300 shadow-sm"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
-              )}
-            >
-              Low stock ({quickFilterCounts['low-stock']})
-            </button>
-            <button
-              onClick={() => toggleQuickFilter('no-location')}
-              className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium transition-all",
-                activeQuickFilters.includes('no-location')
-                  ? "bg-blue-100 text-blue-700 border border-blue-300 shadow-sm"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
-              )}
-            >
-              No location ({quickFilterCounts['no-location']})
-            </button>
-            <button
-              onClick={() => toggleQuickFilter('missing-sku')}
-              className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium transition-all",
-                activeQuickFilters.includes('missing-sku')
-                  ? "bg-yellow-100 text-yellow-700 border border-yellow-300 shadow-sm"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
-              )}
-            >
-              Missing SKU ({quickFilterCounts['missing-sku']})
-            </button>
-            <button
-              onClick={() => toggleQuickFilter('has-variants')}
-              className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium transition-all",
-                activeQuickFilters.includes('has-variants')
-                  ? "bg-purple-100 text-purple-700 border border-purple-300 shadow-sm"
-                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
-              )}
-            >
-              Has variants ({quickFilterCounts['has-variants']})
-            </button>
-            {activeQuickFilters.length > 0 && (
-              <button
-                onClick={() => setActiveQuickFilters([])}
-                className="px-2 py-1 text-xs text-gray-500 hover:text-gray-700 underline"
-              >
-                Clear all
-              </button>
-            )}
-          </div>
-
-          {/* Search Bar + Action Buttons */}
-          <div className="px-3 md:px-4 lg:px-6 py-2 bg-white flex items-center gap-3 transition-all duration-200">
-            {/* Multi-Intent Search Bar - Left, Expanded Width */}
-            <div className="flex-1">
-              <MultiIntentSearch
-                value={searchTerm}
-                onChange={handleSearchChange}
-                onSubmit={handleSearchSubmit}
-                onProductClick={handleSearchProductClick}
-                onCategoryClick={handleSearchCategoryClick}
-                onSupplierClick={handleSearchSupplierClick}
-                onCreateProduct={() => {
-                  setScannedSKU('');
-                  setPreFilledProductName('');
-                  navigate('/dashboard/products/new');
-                }}
-                onCreateCategory={handleAddCategory}
-                onCreateLocation={handleCreateLocation}
-                placeholder="Search products, SKUs, categories, suppliers…"
-              />
+          {/* Section 1: Filters + Primary Actions */}
+          <div className="px-4 md:px-6 py-3 bg-white border-b border-gray-200">
+            <div className="flex items-center justify-between gap-4">
+              {/* Filters */}
+              <div className="flex items-center gap-3 flex-1">
+                <QuickSwitcherBar
+                  tree={tree}
+                  selectedCategoryIds={selectedCategoryIds}
+                  onCategorySelectionChange={handleCategorySelectionChange}
+                  selectedLocation={selectedLocation}
+                  onLocationChange={setSelectedLocation}
+                  selectedWarehouse={selectedWarehouse}
+                  onWarehouseChange={setSelectedWarehouse}
+                  onQuickFilterChange={setActiveQuickFilter}
+                  activeQuickFilter={activeQuickFilter}
+                />
+              </div>
+              
+              {/* Primary & Secondary Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {/* Secondary Actions */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleImportClick}
+                  className="h-9 px-3 text-sm font-medium rounded-lg border-gray-300 hover:bg-gray-50"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Import
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportAll}
+                  className="h-9 px-3 text-sm font-medium rounded-lg border-gray-300 hover:bg-gray-50"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
+                {/* Primary Action */}
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    setScannedSKU('');
+                    setPreFilledProductName('');
+                    navigate('/dashboard/products/new');
+                  }}
+                  className="h-9 px-4 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Product
+                </Button>
+              </div>
             </div>
-            {/* Action Buttons - Right */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              {selectedProductIds.size > 0 && (
-                <span className="text-sm font-medium text-gray-600 hidden sm:inline">
-                  {selectedProductIds.size} selected
-                </span>
-              )}
-              <Button
-                variant={categoryProducts.length === 0 ? "default" : "outline"}
-                size="sm"
-                className={categoryProducts.length === 0 
-                  ? "bg-blue-600 hover:bg-blue-700 text-white" 
-                  : "border-gray-300 hover:bg-gray-50"}
-                onClick={() => {
-                  setScannedSKU('');
-                  setPreFilledProductName('');
-                  navigate('/dashboard/products/new');
+          </div>
+
+          {/* Section 2: Needs Attention Status Bar */}
+          <div className="px-4 md:px-6 py-2.5 bg-gray-50 border-b border-gray-200">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Needs attention</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Out of stock - Red */}
+                <button
+                  onClick={() => toggleQuickFilter('out-of-stock')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('out-of-stock')
+                      ? "bg-red-100 text-red-700 border border-red-300 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>Out of stock</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-200 text-red-800">
+                    {quickFilterCounts['out-of-stock']}
+                  </span>
+                </button>
                 
-                }}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Product
-              </Button>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setIsColumnVisibilityModalOpen(true)}
-                      className="gap-2"
-                    >
-                      <Settings className="w-4 h-4" />
-                      <span className="hidden sm:inline">Columns</span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Customize visible columns</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <Button
-                variant="ghost"
-                className="hidden"
-                size="sm"
-                onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
-              >
-                {productViewMode === 'table' ? (
-                  <>
-                    <Grid3x3 className="w-4 h-4 mr-2" />
-                    Grid
-                  </>
-                ) : (
-                  <>
-                    <Table2 className="w-4 h-4 mr-2" />
-                    Table
-                  </>
+                {/* Low stock - Orange */}
+                <button
+                  onClick={() => toggleQuickFilter('low-stock')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('low-stock')
+                      ? "bg-orange-100 text-orange-700 border border-orange-300 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  <span>Low stock</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-orange-200 text-orange-800">
+                    {quickFilterCounts['low-stock']}
+                  </span>
+                </button>
+                
+                {/* No location - Neutral */}
+                <button
+                  onClick={() => toggleQuickFilter('no-location')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('no-location')
+                      ? "bg-gray-100 text-gray-700 border border-gray-400 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>No location</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-200 text-gray-800">
+                    {quickFilterCounts['no-location']}
+                  </span>
+                </button>
+                
+                {/* Missing SKU - Neutral */}
+                <button
+                  onClick={() => toggleQuickFilter('missing-sku')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('missing-sku')
+                      ? "bg-gray-100 text-gray-700 border border-gray-400 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <Hash className="w-3.5 h-3.5" />
+                  <span>Missing SKU</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-200 text-gray-800">
+                    {quickFilterCounts['missing-sku']}
+                  </span>
+                </button>
+                
+                {/* Has variants - Neutral */}
+                <button
+                  onClick={() => toggleQuickFilter('has-variants')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('has-variants')
+                      ? "bg-gray-100 text-gray-700 border border-gray-400 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Has variants</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-200 text-gray-800">
+                    {quickFilterCounts['has-variants']}
+                  </span>
+                </button>
+                
+                {/* Clear all */}
+                {activeQuickFilters.length > 0 && (
+                  <button
+                    onClick={() => setActiveQuickFilters([])}
+                    className="px-2 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    Clear all
+                  </button>
                 )}
-              </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Search + Secondary Actions */}
+          <div className="px-4 md:px-6 py-3 bg-white">
+            <div className="flex items-center gap-3">
+              {/* Search Bar - Centered and Prominent */}
+              <div className="flex-1 flex justify-center">
+                <div className="w-full max-w-2xl">
+                  <MultiIntentSearch
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  onSubmit={handleSearchSubmit}
+                  onProductClick={handleSearchProductClick}
+                  onCategoryClick={handleSearchCategoryClick}
+                  onSupplierClick={handleSearchSupplierClick}
+                  onCreateProduct={() => {
+                    setScannedSKU('');
+                    setPreFilledProductName('');
+                    navigate('/dashboard/products/new');
+                  }}
+                  onCreateCategory={handleAddCategory}
+                  onCreateLocation={handleCreateLocation}
+                  placeholder="Search products, SKUs, suppliers…"
+                  />
+                </div>
+              </div>
+              
+              {/* Secondary Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {selectedProductIds.size > 0 && (
+                  <span className="text-sm font-medium text-gray-600 hidden sm:inline">
+                    {selectedProductIds.size} selected
+                  </span>
+                )}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsColumnVisibilityModalOpen(true)}
+                        className="h-9 px-3 text-sm font-medium rounded-lg border-gray-300 hover:bg-gray-50"
+                      >
+                        <Settings className="w-4 h-4 mr-2" />
+                        <span className="hidden sm:inline">Customize Columns</span>
+                        <span className="sm:hidden">Columns</span>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Customize visible columns</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
             </div>
           </div>
         </CardContent>

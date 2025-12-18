@@ -16,9 +16,7 @@ import {
   X,
   ChevronDown,
   Plus,
-  Search,
-  Upload,
-  Download
+  Search
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useBranches } from '@/hooks/useBranches';
@@ -43,8 +41,6 @@ interface QuickSwitcherBarProps {
   onQuickFilterChange?: (filter: string | null) => void;
   activeQuickFilter?: string | null;
   className?: string;
-  onImportClick?: () => void;
-  onExportClick?: () => void;
 }
 
 export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
@@ -58,8 +54,6 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   onQuickFilterChange,
   activeQuickFilter,
   className,
-  onImportClick,
-  onExportClick,
 }) => {
   const { activeBranch } = useBranches();
   const { user } = useAuth();
@@ -173,36 +167,53 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
     warehouse.name.toLowerCase().includes(warehouseSearchQuery.toLowerCase())
   );
 
-  const actionButtons = [
-    { id: 'import', label: 'Import', icon: Upload, color: 'text-blue-600', onClick: onImportClick },
-    { id: 'export', label: 'Export', icon: Download, color: 'text-green-600', onClick: onExportClick },
-  ];  
-
   const selectedCategoryNames = allCategories
     .filter(cat => selectedCategoryIds.includes(cat.id))
     .map(cat => cat.name);
 
+  const hasActiveCategoryFilter = selectedCategoryIds.length > 0;
+  const hasActiveWarehouseFilter = selectedWarehouse !== null && selectedWarehouse !== undefined;
+
   return (
-    <div className={cn("flex items-center gap-2 px-4 py-2 bg-white border-b flex-wrap", className)}>
-      {/* Category Quick Selector */}
-      <Popover open={isCategoryPopoverOpen} onOpenChange={setIsCategoryPopoverOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 text-xs"
-          >
-            <Package className="w-3 h-3 mr-1.5" />
-            {selectedCategoryIds.length === 0 ? (
-              'All Categories'
-            ) : selectedCategoryIds.length === 1 ? (
-              selectedCategoryNames[0] || '1 Category'
-            ) : (
-              `${selectedCategoryIds.length} Categories`
-            )}
-            <ChevronDown className="w-3 h-3 ml-1.5" />
-          </Button>
-        </PopoverTrigger>
+    <div className={cn("flex items-center gap-3", className)}>
+      {/* Filters Section */}
+      <div className="flex items-center gap-2 flex-1">
+        {/* Category Filter */}
+        <Popover open={isCategoryPopoverOpen} onOpenChange={setIsCategoryPopoverOpen}>
+          <PopoverTrigger asChild>
+            <div className="flex items-center gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(
+                  "h-9 px-3 text-sm font-medium rounded-lg border-gray-300 bg-white hover:bg-gray-50 transition-colors",
+                  hasActiveCategoryFilter && "bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100"
+                )}
+              >
+                <Package className="w-4 h-4 mr-2" />
+                {selectedCategoryIds.length === 0 ? (
+                  'All Categories'
+                ) : selectedCategoryIds.length === 1 ? (
+                  selectedCategoryNames[0] || '1 Category'
+                ) : (
+                  `${selectedCategoryIds.length} Categories`
+                )}
+                <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+              {hasActiveCategoryFilter && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCategorySelectionChange([]);
+                  }}
+                  className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 transition-colors"
+                  aria-label="Clear category filter"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </PopoverTrigger>
         <PopoverContent className="w-64 p-2" align="start">
           <div className="space-y-1">
       
@@ -270,19 +281,36 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
         </PopoverContent>
       </Popover>
 
-      {/* Warehouse Quick Selector */}
+      {/* Warehouse Filter */}
       {warehouses.length > 0 && (
         <Popover open={isWarehousePopoverOpen} onOpenChange={setIsWarehousePopoverOpen}>
           <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 text-xs"
-            >
-              <Warehouse className="w-3 h-3 mr-1.5" />
-              {selectedWarehouse || 'All Warehouses'}
-              <ChevronDown className="w-3 h-3 ml-1.5" />
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(
+                  "h-9 px-3 text-sm font-medium rounded-lg border-gray-300 bg-white hover:bg-gray-50 transition-colors",
+                  hasActiveWarehouseFilter && "bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100"
+                )}
+              >
+                <Warehouse className="w-4 h-4 mr-2" />
+                {selectedWarehouse || 'All Warehouses'}
+                <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+              {hasActiveWarehouseFilter && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleWarehouseSelect(null);
+                  }}
+                  className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 transition-colors"
+                  aria-label="Clear warehouse filter"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </PopoverTrigger>
           <PopoverContent className="w-48 p-2" align="start">
             <div className="space-y-1">
@@ -326,50 +354,10 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
                   </div>
                 )}
               </div>
-              {selectedWarehouse && (
-                <div className="pt-1 border-t mt-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      handleWarehouseSelect(null);
-                    }}
-                    className="w-full h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-                  >
-                    <X className="w-3 h-3 mr-1" />
-                    Clear Selection
-                  </Button>
-                </div>
-              )}
             </div>
           </PopoverContent>
         </Popover>
       )}
-
-  
-
-      {/* Import/Export Action Buttons */}
-      <div className="flex items-center gap-1.5 ml-auto">
-        {actionButtons.map((button) => {
-          const Icon = button.icon;
-          
-          return (
-            <Button
-              key={button.id}
-              variant="outline"
-              size="sm"
-              className={cn(
-                "h-8 text-xs",
-                button.id === 'import' && "border-blue-600 text-blue-600 hover:bg-blue-50",
-                button.id === 'export' && "border-green-600 text-green-600 hover:bg-green-50"
-              )}
-              onClick={button.onClick}
-            >
-              <Icon className={cn("w-3 h-3 mr-1.5", button.color)} />
-              {button.label}
-            </Button>
-          );
-        })}
       </div>
     </div>
   );

@@ -287,6 +287,147 @@
     color: hsl(var(--muted-foreground)) !important;
   }
 
+  /* Additional gray text colors for dark mode */
+  .dark .text-gray-300 {
+    color: hsl(var(--muted-foreground) / 0.6) !important;
+  }
+
+  .dark .text-gray-400 {
+    color: hsl(var(--muted-foreground) / 0.5) !important;
+  }
+
+  .dark .text-gray-500 {
+    color: hsl(var(--muted-foreground) / 0.7) !important;
+  }
+
+  /* Additional gray background colors for dark mode */
+  .dark .bg-gray-100 {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .dark .bg-gray-200 {
+    background-color: hsl(var(--secondary)) !important;
+  }
+
+  .dark .hover\:bg-gray-100:hover {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  /* Blue backgrounds for dark mode */
+  .dark .bg-blue-50 {
+    background-color: hsl(var(--accent)) !important;
+  }
+
+  .dark .hover\:bg-blue-50:hover {
+    background-color: hsl(var(--accent)) !important;
+  }
+
+  /* Border colors for dark mode */
+  .dark .border-gray-300 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Divide colors for dark mode */
+  .dark .divide-gray-200 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark .divide-y > * + * {
+    border-top-color: hsl(var(--border)) !important;
+  }
+
+  /* Scrollbar colors for dark mode */
+  .dark .scrollbar-thumb-gray-300 {
+    --scrollbar-thumb: hsl(var(--border));
+  }
+
+  .dark .scrollbar-track-gray-100 {
+    --scrollbar-track: hsl(var(--muted));
+  }
+
+  /* Additional background fixes */
+  .dark .bg-gray-50\/50 {
+    background-color: hsl(var(--muted) / 0.5) !important;
+  }
+
+  /* Fix for inline style highlights (blue background) */
+  .dark [style*="background-color: rgb(219, 234, 254)"],
+  .dark [style*="background-color:#dbeafe"] {
+    background-color: hsl(var(--accent)) !important;
+  }
+
+  /* Fix for variant row border gradient in dark mode */
+  .dark [style*="background-image: linear-gradient"][style*="rgb(209, 213, 219)"] {
+    background-image: linear-gradient(to right, hsl(var(--border)) 0px, hsl(var(--border)) 1px, transparent 1px) !important;
+  }
+
+  /* Red color variants for dark mode */
+  .dark .bg-red-100 {
+    background-color: hsl(0 62.8% 20%) !important;
+  }
+
+  .dark .bg-red-200 {
+    background-color: hsl(0 62.8% 25%) !important;
+  }
+
+  .dark .text-red-700 {
+    color: hsl(0 72% 70%) !important;
+  }
+
+  .dark .text-red-800 {
+    color: hsl(0 72% 75%) !important;
+  }
+
+  .dark .border-red-300 {
+    border-color: hsl(0 62.8% 30%) !important;
+  }
+
+  /* Orange color variants for dark mode */
+  .dark .bg-orange-100 {
+    background-color: hsl(25 95% 20%) !important;
+  }
+
+  .dark .bg-orange-200 {
+    background-color: hsl(25 95% 25%) !important;
+  }
+
+  .dark .text-orange-700 {
+    color: hsl(25 95% 70%) !important;
+  }
+
+  .dark .text-orange-800 {
+    color: hsl(25 95% 75%) !important;
+  }
+
+  .dark .border-orange-300 {
+    border-color: hsl(25 95% 30%) !important;
+  }
+
+  /* Additional gray variants for dark mode */
+  .dark .bg-gray-200 {
+    background-color: hsl(var(--secondary)) !important;
+  }
+
+  .dark .text-gray-800 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .border-gray-400 {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark .hover\:border-gray-400:hover {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .dark .text-gray-500 {
+    color: hsl(var(--muted-foreground) / 0.7) !important;
+  }
+
+  .dark .hover\:text-gray-700:hover {
+    color: hsl(var(--foreground)) !important;
+  }
+
   /* Remove yellow utility classes */
   .bg-yellow-50,
   .bg-yellow-100,
@@ -347,6 +488,10 @@ body>* {
 .gradient-background {
   background: #f3f4f6;
   min-height: 100vh;
+}
+
+.dark .gradient-background {
+  background: hsl(var(--background));
 }
 
 /* Custom animation for products button - ensures timing is applied correctly */
