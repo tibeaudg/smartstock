@@ -82,9 +82,8 @@ const AppRouter = () => {
   // This must be inside the Router context
   useNavigationQueryReset();
   
-  // Force browser refresh on window focus for authenticated routes
-  // This ensures fresh data and prevents stale data issues
-  useAuthRouteRefresh();
+  // Note: useAuthRouteRefresh removed - it was causing full page reloads
+  // useFocusDataRefresh in ContentWrapper handles data refresh more gracefully
 
   
   // Protected Route Component (without branch logic)

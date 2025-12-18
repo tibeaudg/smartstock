@@ -370,8 +370,7 @@ export const useBasicDashboardMetrics = () => {
     staleTime: Infinity, // Never mark as stale - persist until invalidated
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    // @ts-expect-error: keepPreviousData is supported in v5, type mismatch workaround
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData, // Preserve data during refetch
   });
 
   return {

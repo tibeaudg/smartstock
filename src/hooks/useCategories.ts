@@ -134,6 +134,7 @@ export function useCategoryProducts(categoryId: string | null | 'all') {
     },
     enabled: !!user && (categoryId === 'all' || !!categoryId),
     staleTime: 1000 * 60 * 2, // 2 minutes
+    placeholderData: (previousData) => previousData, // Preserve data during refetch
   });
 }
 
@@ -157,6 +158,7 @@ export function useProductsByCategories(categoryIds: string[]) {
     },
     enabled: !!user,
     staleTime: 1000 * 60 * 2, // 2 minutes
+    placeholderData: (previousData) => previousData, // Preserve data during refetch
   });
 }
 

@@ -34,7 +34,7 @@ import {
 
 
 import { HeroSection } from "@/components/ui/hero-section-1"
-import { PlatformPreviewSection } from "./PlatformPreviewSection";
+import { PlatformFeaturesSection } from "./PlatformFeaturesSection";
 import { CustomerLogos } from "./trust/CustomerLogos";
 import { ReviewBadges } from "./trust/ReviewBadges";
 import { TestimonialQuotes } from "./trust/TestimonialQuotes";
@@ -1421,8 +1421,9 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Platform Preview Section */}
-      <PlatformPreviewSection />
+
+      {/* Platform Features Section */}
+      <PlatformFeaturesSection />
 
       <section className="py-16 sm:py-20 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

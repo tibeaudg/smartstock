@@ -25,8 +25,14 @@ export const useFocusDataRefresh = () => {
 
       const touch = (prefix: unknown[]) => {
         const predicate = predicateFor(prefix);
-        queryClient.invalidateQueries({ predicate });
-        queryClient.refetchQueries({ predicate, type: 'active' });
+        // Use refetchQueries directly instead of invalidate + refetch
+        // This preserves existing data while fetching new data in the background
+        // cancelRefetch: false ensures we don't cancel ongoing refetches
+        queryClient.refetchQueries({ 
+          predicate, 
+          type: 'active',
+          cancelRefetch: false // Don't cancel ongoing refetches
+        });
       };
 
       touch(['branches']);
