@@ -1592,30 +1592,6 @@ export default function CategorysPage() {
         );
       }
 
-      case 'urgency': {
-        const urgencyScore = getUrgencyScore(product);
-        const urgencyLabel = urgencyScore >= 80 ? 'Critical' : urgencyScore >= 50 ? 'High' : urgencyScore > 0 ? 'Medium' : 'Low';
-        return (
-          <td className={cn(
-            "text-left hidden lg:table-cell",
-            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-200"
-          )}>
-            <Badge
-              variant="outline"
-              className={cn(
-                "text-xs",
-                urgencyScore >= 80 && "bg-red-50 text-red-700 border-red-200",
-                urgencyScore >= 50 && urgencyScore < 80 && "bg-orange-50 text-orange-700 border-orange-200",
-                urgencyScore > 0 && urgencyScore < 50 && "bg-yellow-50 text-yellow-700 border-yellow-200",
-                urgencyScore === 0 && "bg-green-50 text-green-700 border-green-200"
-              )}
-            >
-              {urgencyLabel}
-            </Badge>
-          </td>
-        );
-      }
-
       case 'minimum_stock_level':
         return (
           <td className={cn(
