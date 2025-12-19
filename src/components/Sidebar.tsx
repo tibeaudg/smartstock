@@ -35,6 +35,7 @@ import { BranchSelector } from './BranchSelector';
 import { SupportModal } from './SupportModal';
 import { ChatModal } from './ChatModal';
 import { FloatingChatButton } from './FloatingChatButton';
+import { NotificationButton } from './NotificationButton';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
@@ -44,6 +45,15 @@ import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { useProductCount } from '@/hooks/useDashboardData';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTheme } from '@/hooks/useTheme';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Button } from '@/components/ui/button';
+import { LogOut } from 'lucide-react';
 
 interface SidebarProps {
   currentTab: string;
@@ -52,6 +62,8 @@ interface SidebarProps {
   userProfile?: UserProfile;
   isOpen: boolean;
   onToggle: () => void;
+  unreadCount?: number;
+  onNotificationClick?: () => void;
 }
 
 interface MenuItem {
@@ -67,7 +79,7 @@ interface MenuItem {
   }[];
 }
 
-export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProps) => {
+export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount = 0, onNotificationClick }: SidebarProps) => {
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { user } = useAuth();
@@ -79,6 +91,17 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
+  };
   
   // Check subscription-based feature access
   const { canUseFeature, currentTier } = useSubscription();
@@ -317,11 +340,19 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
     <>
       {/* Sidebar */}
       <div className="fixed left-0 top-0 h-screen bg-white dark:bg-gray-950 transition-all border border-gray-200 dark:border-gray-800 duration-300 z-50 flex flex-col w-64 md:relative md:translate-x-0">
-        <div className="flex items-center pl-3 sm:pl-5 space-x-2 sm:space-x-3 h-[60px] sm:h-[70px] flex-shrink-0">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        {/* Logo Section */}
+        <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </div>
+              <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">stockflow</h1>
+            </div>
+            {user && onNotificationClick && (
+              <NotificationButton unreadCount={unreadCount} onClick={onNotificationClick} />
+            )}
           </div>
-          <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">stockflow</h1>
         </div>
 
         {/* Branch Selector */}
@@ -409,6 +440,29 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
                   {/* Submenu */}
                   {hasSubItems && isExpanded && (
                     <ul className="ml-3 sm:ml-4 space-y-1 border-l-2 border-gray-200 dark:border-gray-700 pl-3">
+                      {item.id === 'settings' && (
+                        <li>
+                          <div className="flex items-center justify-between px-3 sm:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors">
+                            <div className="flex items-center gap-2">
+                              {theme === 'dark' ? (
+                                <Moon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
+                              ) : (
+                                <Sun className="w-4 h-4 text-gray-600 dark:text-gray-200" />
+                              )}
+                              <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">
+                                {theme === 'dark' ? 'Dark mode' : 'Light mode'}
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={toggleTheme}
+                              className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              Switch
+                            </button>
+                          </div>
+                        </li>
+                      )}
                       {item.subItems.map((subItem) => (
                         <li key={subItem.id}>
                           <NavLink
@@ -450,33 +504,63 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle }: SidebarProp
           </ul>
         </nav>
 
-        {/* Fixed Bottom Section - Theme Toggle */}
+        {/* Fixed Bottom Section - Profile */}
         <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800">
           <div className="px-3 py-3">
-            <div className="px-3 py-3 rounded-lg bg-gray-100 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700 transition-colors">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  {theme === 'dark' ? (
-                    <Moon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                  ) : (
-                    <Sun className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                  )}
-                  <div>
-                    <div className="text-sm font-medium text-gray-800 dark:text-gray-100">Appearance</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {theme === 'dark' ? 'Dark mode enabled' : 'Light mode enabled'}
+            {user && userProfile && (
+              <DropdownMenu open={profileDropdownOpen} onOpenChange={setProfileDropdownOpen}>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start px-3 py-3 h-auto hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <div className="flex items-center gap-3 w-full">
+                      <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-semibold">
+                          {userProfile?.first_name?.[0] || userProfile?.email?.[0] || 'U'}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                          {userProfile?.first_name && userProfile?.last_name
+                            ? `${userProfile.first_name} ${userProfile.last_name}`
+                            : userProfile?.email || 'User'}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          {userProfile?.email}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className="inline-flex items-center gap-1 rounded-md border border-transparent bg-white dark:bg-gray-900 px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                >
-                  {theme === 'dark' ? 'Light' : 'Dark'}
-                </button>
-              </div>
-            </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      toggleTheme();
+                    }}
+                    className="text-gray-900 dark:text-gray-100"
+                  >
+                    {theme === 'dark' ? (
+                      <Sun className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-100" />
+                    ) : (
+                      <Moon className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-100" />
+                    )}
+                    <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      handleSignOut();
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+                  >
+                    <LogOut className="w-4 h-4 mr-2 text-red-600 dark:text-red-400" />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </div>

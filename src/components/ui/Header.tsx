@@ -83,9 +83,9 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
                     handleSignOut();
                     setProfileDropdownOpen(false);
                   }}
-                  className="text-red-600 focus:text-red-600"
+                  className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
+                  <LogOut className="w-4 h-4 mr-2 text-red-600 dark:text-red-400" />
                   <span>Logout</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -136,9 +136,9 @@ export const Header: React.FC<HeaderProps> = ({ title, unreadCount = 0, onNotifi
                       handleSignOut();
                       setProfileDropdownOpen(false);
                     }}
-                    className="text-red-600 focus:text-red-600"
+                    className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
                   >
-                    <LogOut className="w-4 h-4 mr-2" />
+                    <LogOut className="w-4 h-4 mr-2 text-red-600 dark:text-red-400" />
                     <span>Logout</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>

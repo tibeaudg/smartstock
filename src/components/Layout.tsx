@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './Sidebar';
-import { Header } from './ui/Header';
 import { useMobile } from '@/hooks/use-mobile';
 import { UserProfile, useAuth } from '@/hooks/useAuth';
-import { BranchSelector } from './BranchSelector';
-import { NotificationButton } from './NotificationButton';
 import { useNotifications } from '../hooks/useNotifications';
 import { EmailVerificationBanner } from './EmailVerificationBanner';
 
@@ -52,26 +49,9 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
     setShowNotifications((prev) => !prev);
     if (unreadCount > 0) markAllAsRead();
   };
-  
-  // Profile modal state for mobile
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const handleProfileClick = () => {
-    setProfileDropdownOpen(!profileDropdownOpen);
-  };
 
   return (
     <div className="h-screen flex flex-col bg-background text-foreground transition-colors">
-      {/* Header with sidebar toggle */}
-      <Header 
-        title="Dashboard" 
-        unreadCount={unreadCount} 
-        onNotificationClick={handleNotificationClick}
-        sidebarOpen={sidebarOpen}
-        onSidebarToggle={() => setSidebarOpen(!sidebarOpen)}
-        userProfile={userProfile}
-        onProfileClick={handleProfileClick}
-      />
-      
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - hidden on mobile, shown on desktop */}
         {!isMobile && (
@@ -83,6 +63,8 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
               userProfile={userProfile}
               isOpen={sidebarOpen}
               onToggle={() => setSidebarOpen(!sidebarOpen)}
+              unreadCount={unreadCount}
+              onNotificationClick={handleNotificationClick}
             />
           </div>
         )}
@@ -96,13 +78,13 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
             userProfile={userProfile}
             isOpen={false}
             onToggle={() => {}}
-            profileDropdownOpen={profileDropdownOpen}
-            onProfileDropdownChange={setProfileDropdownOpen}
+            unreadCount={unreadCount}
+            onNotificationClick={handleNotificationClick}
           />
         )}
 
         <main
-          className={`flex-1 main-content-surface ${variant === 'admin' ? 'pt-[70px] md:pt-[70px] md:pl-0 overflow-y-auto' : 'p-4 pt-8 md:pt-20 overflow-y-auto'} ${
+          className={`flex-1 main-content-surface ${variant === 'admin' ? 'md:pl-0 overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
               : sidebarOpen 
@@ -119,7 +101,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
 
       {/* Notification Overlay */}
       {showNotifications && user && (
-        <div className="fixed top-20 right-4 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto transition-colors">
+        <div className="fixed top-4 right-4 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto transition-colors">
           <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Notifications</h4>
           {notificationsLoading ? (
             <div className="text-gray-500 dark:text-gray-400 text-sm">Loading...</div>

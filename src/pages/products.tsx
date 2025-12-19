@@ -21,7 +21,11 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+<<<<<<< HEAD
 import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, TrendingUp, ArrowRightLeft, FolderTree, Download, GitBranch, Upload } from 'lucide-react';
+=======
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, MoreVertical, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, AlertTriangle, TrendingUp, ArrowRightLeft, FolderTree, Download, Upload, GitBranch, Hash, Layers } from 'lucide-react';
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -39,8 +43,18 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/components/CommandPalette';
 import { useColumnPreferences } from '@/hooks/useColumnPreferences';
 import { ColumnVisibilityModal } from '@/components/products/ColumnVisibilityModal';
+<<<<<<< HEAD
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
+=======
+import { getColumnById } from '@/lib/products/columnFieldMapping';
+import { StockBadge, type StockStatus } from '@/components/products/StockBadge';
+import { InlineReorderButton } from '@/components/products/InlineReorderButton';
+import { calculateDaysOfCover, velocityToDailyConsumption } from '@/utils/daysOfCover';
+import { EmptyStateCTA } from '@/components/products/EmptyStateCTA';
+import { BulkActionBar } from '@/components/products/BulkActionBar';
+import { BulkSKUModal } from '@/components/products/BulkSKUModal';
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
 
 export default function CategorysPage() {
   const { user } = useAuth();
@@ -65,6 +79,14 @@ export default function CategorysPage() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState<string | null>(null);
   const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(null);
+  // Quick filter pills - supports multiple active filters
+  const [activeQuickFilters, setActiveQuickFilters] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('inventory-quick-filters');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -140,6 +162,33 @@ export default function CategorysPage() {
   
   // Command palette
   const { open: isCommandPaletteOpen, setOpen: setCommandPaletteOpen } = useCommandPalette();
+  
+  // Search input ref for keyboard shortcut
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+  
+  // Keyboard shortcut: "/" to focus search
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only trigger if not typing in an input/textarea and not in command palette
+      if (
+        e.key === '/' &&
+        !isCommandPaletteOpen &&
+        document.activeElement?.tagName !== 'INPUT' &&
+        document.activeElement?.tagName !== 'TEXTAREA'
+      ) {
+        e.preventDefault();
+        // Focus the search input - we'll need to expose a focus method from MultiIntentSearch
+        // For now, try to find and focus the input directly
+        const searchInput = document.querySelector('input[placeholder*="Search products"]') as HTMLInputElement;
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCommandPaletteOpen]);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -352,7 +401,7 @@ export default function CategorysPage() {
       });
     }
 
-    // Quick filters
+    // Quick filters (legacy single filter - keep for backward compatibility)
     if (activeQuickFilter) {
       filtered = filtered.filter((product: any) => {
         const qty = Number(product.quantity_in_stock) || 0;
@@ -378,8 +427,36 @@ export default function CategorysPage() {
       });
     }
 
+    // Quick filter pills (multiple filters)
+    // Note: has-variants filter will be applied after variantCounts is calculated
+    if (activeQuickFilters.length > 0) {
+      const filtersToApply = activeQuickFilters.filter(f => f !== 'has-variants');
+      if (filtersToApply.length > 0) {
+        filtered = filtered.filter((product: any) => {
+          const qty = Number(product.quantity_in_stock) || 0;
+          const minLevel = Number(product.minimum_stock_level) || 0;
+          
+          // Product matches if it matches ANY of the active filters (OR logic)
+          return filtersToApply.some(filterType => {
+            switch (filterType) {
+              case 'out-of-stock':
+                return qty === 0;
+              case 'low-stock':
+                return qty > 0 && qty <= minLevel;
+              case 'no-location':
+                return !product.location || product.location.trim() === '';
+              case 'missing-sku':
+                return !product.is_variant && (!product.sku || product.sku === '---' || product.sku.trim() === '');
+              default:
+                return false;
+            }
+          });
+        });
+      }
+    }
+
     return filtered;
-  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedWarehouse, selectedStockStatus, dateRange, activeQuickFilter]);
+  }, [categoryProducts, searchTerm, selectedLocations, selectedLocation, selectedWarehouse, selectedStockStatus, dateRange, activeQuickFilter, activeQuickFilters]);
 
   // Fetch variants for all products to calculate variant counts (use filteredProducts to respect filters)
   const productIds = React.useMemo(() => 
@@ -485,9 +562,69 @@ export default function CategorysPage() {
     return totals;
   }, [categoryProducts]);
 
-  // Use filtered products for sorting (always use filteredProducts to include all filters)
+  // Apply has-variants filter after variantCounts is available
+  const filteredProductsWithVariants = React.useMemo(() => {
+    let filtered = filteredProducts;
+    
+    // Apply has-variants filter if it's in activeQuickFilters
+    if (activeQuickFilters.includes('has-variants')) {
+      filtered = filtered.filter((product: any) => {
+        return !product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
+      });
+    }
+    
+    return filtered;
+  }, [filteredProducts, activeQuickFilters, variantCounts]);
+
+  // Calculate quick filter counts (for display in pills)
+  const quickFilterCounts = React.useMemo(() => {
+    const counts = {
+      'out-of-stock': 0,
+      'low-stock': 0,
+      'no-location': 0,
+      'has-variants': 0,
+      'missing-sku': 0,
+    };
+    
+    categoryProducts.forEach((product: any) => {
+      const qty = Number(product.quantity_in_stock) || 0;
+      const minLevel = Number(product.minimum_stock_level) || 0;
+      
+      if (qty === 0) counts['out-of-stock']++;
+      if (qty > 0 && qty <= minLevel) counts['low-stock']++;
+      if (!product.location || product.location.trim() === '') counts['no-location']++;
+      if (!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0) {
+        counts['has-variants']++;
+      }
+      if (!product.is_variant && (!product.sku || product.sku === '---' || product.sku.trim() === '')) {
+        counts['missing-sku']++;
+      }
+    });
+    
+    return counts;
+  }, [categoryProducts, variantCounts]);
+
+  // Persist quick filters to localStorage
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('inventory-quick-filters', JSON.stringify(activeQuickFilters));
+    }
+  }, [activeQuickFilters]);
+
+  // Toggle quick filter
+  const toggleQuickFilter = (filterType: string) => {
+    setActiveQuickFilters(prev => {
+      if (prev.includes(filterType)) {
+        return prev.filter(f => f !== filterType);
+      } else {
+        return [...prev, filterType];
+      }
+    });
+  };
+
+  // Use filtered products for sorting (always use filteredProductsWithVariants to include all filters)
   const sortedProducts = React.useMemo(() => {
-    const productsToSort = filteredProducts;
+    const productsToSort = filteredProductsWithVariants;
     if (!sortColumn) return productsToSort;
 
     return [...productsToSort].sort((a, b) => {
@@ -1021,6 +1158,7 @@ export default function CategorysPage() {
     return 'In Stock';
   };
 
+<<<<<<< HEAD
   // Get stock status label for display
   const getStockStatusLabel = (quantity: number, minLevel: number) => {
     const qty = Number(quantity);
@@ -1064,6 +1202,95 @@ export default function CategorysPage() {
     const diffTime = now.getTime() - lastStockedDate.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return diffDays >= 0 ? diffDays : null;
+=======
+  // Enhanced stock status details with actionability information
+  const getStockStatusDetails = (quantity: number, minLevel: number, updatedAt?: string | null) => {
+    const qty = Number(quantity);
+    const min = Number(minLevel);
+    
+    let status: 'out' | 'low' | 'healthy';
+    let stockStatus: StockStatus;
+    let label: string;
+    let actionText: string | null = null;
+    let dotColor: string;
+    let bgColor: string;
+    let borderColor: string;
+    let textColor: string;
+    
+    if (qty === 0) {
+      status = 'out';
+      stockStatus = 'critical';
+      label = 'Out of Stock';
+      dotColor = 'bg-red-500';
+      bgColor = 'bg-red-50';
+      borderColor = 'border-red-200';
+      textColor = 'text-red-700';
+      
+      // Calculate days since last update
+      if (updatedAt) {
+        const daysSince = Math.floor((Date.now() - new Date(updatedAt).getTime()) / (1000 * 60 * 60 * 24));
+        if (daysSince > 0) {
+          actionText = `Last stocked ${daysSince} day${daysSince !== 1 ? 's' : ''} ago`;
+        } else {
+          actionText = 'Last stocked today';
+        }
+      } else {
+        actionText = 'No recent stock activity';
+      }
+    } else if (qty > 0 && qty <= min) {
+      status = 'low';
+      stockStatus = 'at-risk';
+      label = 'Low Stock';
+      dotColor = 'bg-orange-500';
+      bgColor = 'bg-orange-50';
+      borderColor = 'border-orange-200';
+      textColor = 'text-orange-700';
+      
+      // Estimate days until reorder (simple calculation: assume 10% daily consumption)
+      const daysUntilReorder = Math.ceil(qty / Math.max(min * 0.1, 1));
+      if (daysUntilReorder <= 7) {
+        actionText = `Reorder in ~${daysUntilReorder} day${daysUntilReorder !== 1 ? 's' : ''}`;
+      } else {
+        actionText = `Reorder soon (${qty} units remaining)`;
+      }
+    } else {
+      status = 'healthy';
+      stockStatus = 'healthy';
+      label = 'Healthy';
+      dotColor = 'bg-green-500';
+      bgColor = '';
+      borderColor = '';
+      textColor = 'text-gray-700';
+      actionText = null;
+    }
+    
+    return {
+      status,
+      stockStatus,
+      label,
+      actionText,
+      dotColor,
+      bgColor,
+      borderColor,
+      textColor,
+      isUrgent: status === 'out' || status === 'low',
+    };
+  };
+
+  // Calculate days of cover using a simple estimate
+  // Uses minimum stock level as a proxy for average daily consumption
+  // If min level represents ~7 days of stock, then daily consumption ≈ min / 7
+  const calculateDaysOfCoverSimple = (quantity: number, minLevel: number): number | null => {
+    if (quantity <= 0) return 0;
+    if (minLevel <= 0) return null; // Can't calculate without reorder point
+    
+    // Estimate daily consumption: assume min level covers ~7-14 days typically
+    // Use a conservative estimate of minLevel / 10 for daily consumption
+    const estimatedDailyConsumption = minLevel / 10;
+    if (estimatedDailyConsumption <= 0) return null;
+    
+    return quantity / estimatedDailyConsumption;
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
   };
 
   // Format variant label from attributes or fall back to variant_name
@@ -1094,8 +1321,57 @@ export default function CategorysPage() {
     return 'bg-green-500';
   };
 
+  // Get variant health summary for a product
+  const getVariantHealthSummary = (productId: string): { total: number; low: number; out: number; healthy: number } => {
+    const variants = variantsByParentId.get(productId) || [];
+    const summary = {
+      total: variants.length,
+      low: 0,
+      out: 0,
+      healthy: 0,
+    };
+    
+    variants.forEach((variant: any) => {
+      const qty = Number(variant.quantity_in_stock) || 0;
+      const minLevel = Number(variant.minimum_stock_level) || 0;
+      
+      if (qty === 0) {
+        summary.out++;
+      } else if (qty > 0 && qty <= minLevel) {
+        summary.low++;
+      } else {
+        summary.healthy++;
+      }
+    });
+    
+    return summary;
+  };
+
   const formatStockQuantity = (quantity: number) => {
     return new Intl.NumberFormat('en-US').format(Number(quantity) || 0);
+  };
+
+  // Format time ago (e.g., "2h ago", "3d ago")
+  const formatTimeAgo = (dateString: string | null | undefined): string | null => {
+    if (!dateString) return null;
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    
+    const diffWeeks = Math.floor(diffDays / 7);
+    if (diffWeeks < 4) return `${diffWeeks}w ago`;
+    
+    const diffMonths = Math.floor(diffDays / 30);
+    return `${diffMonths}mo ago`;
   };
 
   // Row indicator helpers
@@ -1145,6 +1421,42 @@ export default function CategorysPage() {
     return indicators;
   };
 
+  // Shared column configuration
+  // Product name has no width constraint (flexible, widest)
+  // Other columns have fixed small widths that fit their content
+  const columnConfigs: Record<string, { label: string; sortKey?: string; align?: 'left' | 'center' | 'right'; responsive?: string; width?: string }> = React.useMemo(() => ({
+    'sku': { label: 'SKU', sortKey: 'sku', align: 'left', width: 'w-24' },
+    'barcode': { label: 'Barcode', align: 'left', responsive: 'hidden md:table-cell', width: 'w-28' },
+    'description': { label: 'Description', align: 'left', responsive: 'hidden lg:table-cell', width: 'w-40' },
+    'category_name': { label: 'Category', sortKey: 'name', align: 'left', width: 'w-32' },
+    'name': { label: 'Product', sortKey: 'name', align: 'left', width: undefined }, // No width - flexible, takes remaining space
+    'location': { label: 'Location', sortKey: 'location', align: 'center', responsive: 'hidden md:table-cell', width: 'w-24' },
+    'warehouses': { label: 'Warehouses', sortKey: 'warehouses', align: 'center', responsive: 'hidden md:table-cell', width: 'w-28' },
+    'stock': { label: 'Stock', sortKey: 'stock', align: 'center', width: 'w-32' },
+    'minimum_stock_level': { label: 'Min. Level', sortKey: 'minimum_stock_level', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
+    'purchase_price': { label: 'Cost', sortKey: 'purchase_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
+    'sale_price': { label: 'Price', sortKey: 'sale_price', align: 'right', responsive: 'hidden sm:table-cell', width: 'w-24' },
+    'unit_price': { label: 'Unit Price', sortKey: 'unit_price', align: 'right', responsive: 'hidden lg:table-cell', width: 'w-28' },
+  }), []);
+
+  // Helper to get column classes (width, responsive, align)
+  const getColumnClasses = (columnId: string, includeAlign: boolean = true): string => {
+    const config = columnConfigs[columnId];
+    if (!config) return '';
+    
+    const classes: string[] = [];
+    if (includeAlign) {
+      if (config.align === 'center') classes.push('text-center');
+      else if (config.align === 'right') classes.push('text-right');
+      else classes.push('text-left');
+    }
+    // Only add width if it's defined (product name has undefined width for flexibility)
+    if (config.width) classes.push(config.width);
+    if (config.responsive) classes.push(config.responsive);
+    
+    return classes.join(' ');
+  };
+
   // Helper to check if column should be visible
   // Now uses user preferences instead of view configs
   const isColumnVisible = (column: string): boolean => {
@@ -1180,6 +1492,7 @@ export default function CategorysPage() {
 
   // Helper to render column header
   const renderColumnHeader = (columnId: string) => {
+<<<<<<< HEAD
     const columnConfigs: Record<string, { label: string; sortKey?: string; align?: 'left' | 'center' | 'right'; responsive?: string; width?: string }> = {
       'sku': { label: 'SKU', sortKey: 'sku', align: 'center', width: 'w-12' }, // Fixed width for SKU (reduced by 20%)
       'barcode': { label: 'Barcode', align: 'center', responsive: 'hidden md:table-cell' },
@@ -1195,6 +1508,8 @@ export default function CategorysPage() {
       'unit_price': { label: 'Unit Price', sortKey: 'unit_price', align: 'center', responsive: 'hidden lg:table-cell' },
     };
 
+=======
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
     const config = columnConfigs[columnId];
     if (!config) return null;
 
@@ -1205,11 +1520,19 @@ export default function CategorysPage() {
       <th
         key={columnId}
         className={cn(
+<<<<<<< HEAD
           config.align === 'center' ? 'text-center' : config.align === 'right' ? 'text-right' : 'text-left',
           config.width || '',
           config.responsive || '',
           "px-3 sm:px-4 py-1.5 text-xs font-semibold text-gray-800 uppercase tracking-wider whitespace-nowrap",
           isSortable && "cursor-pointer hover:bg-gray-200 transition-colors touch-manipulation"
+=======
+          getColumnClasses(columnId),
+          "px-3 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-gray-300",
+          isSortable && "cursor-pointer hover:bg-gray-100 transition-colors",
+          // Product name column should take remaining space (no width constraint)
+          !config.width && columnId === 'name' && "w-auto"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
         )}
         onClick={isSortable ? () => handleSort(sortKey) : undefined}
       >
@@ -1223,6 +1546,30 @@ export default function CategorysPage() {
         </div>
       </th>
     );
+  };
+
+  // Helper to render empty state with tooltip
+  const renderEmptyState = (message: string, tooltipText?: string) => {
+    const content = (
+      <span className="text-gray-400 italic text-xs">Not set</span>
+    );
+    
+    if (tooltipText) {
+      return (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {content}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">{tooltipText}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+    
+    return content;
   };
 
   // Helper to render column cell
@@ -1249,6 +1596,7 @@ export default function CategorysPage() {
           const showNoSKU = (!hasVariantSKU && !hasParentSKU) || variantMatchesParent;
           return (
             <td className={cn(
+<<<<<<< HEAD
               "text-left relative z-10 w-12",
               "px-3 sm:px-4 py-0.5 "
             )}>
@@ -1274,6 +1622,41 @@ export default function CategorysPage() {
                     </span>
                   )}
                 </span>
+=======
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
+            )}>
+              {showDash ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertCircle className="w-3.5 h-3.5 text-gray-400 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs">Variant inherits SKU from parent</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : product.variant_sku || product.sku ? (
+                <span className={cn(
+                  "font-mono text-gray-600",
+                  compactMode ? "text-xs" : "text-xs sm:text-sm"
+                )}>
+                  {product.variant_sku || product.sku}
+                </span>
+              ) : (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertCircle className="w-3.5 h-3.5 text-yellow-500 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs">SKU required for tracking & exports</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               )}
             </td>
           );
@@ -1282,14 +1665,24 @@ export default function CategorysPage() {
         const productVariants = productHasVariants ? (variantsByParentId.get(product.id) || []) : [];
         const hasDifferentSKUs = productHasVariants && productVariants.length > 0 && 
           new Set(productVariants.map((v: any) => v.variant_sku || v.sku).filter(Boolean)).size > 1;
+        const hasSKU = product.sku && product.sku !== '---';
+        
         return (
+<<<<<<< HEAD
             <td className={cn(
               "text-left relative z-10 align-middle w-12",
             "px-3 sm:px-4 py-1 "
+=======
+          <td className={cn(
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             <div className="flex items-center gap-1.5">
               {productHasVariants && hasDifferentSKUs ? (
                 <span className={cn(
+<<<<<<< HEAD
                   "text-xs",
                   "text-gray-900"
                 )}>
@@ -1309,6 +1702,31 @@ export default function CategorysPage() {
                 )}>
                   {product.sku}
                 </span>
+=======
+                  "text-gray-600",
+                  compactMode ? "text-xs" : "text-xs sm:text-sm"
+                )}>
+                  Multiple
+                </span>
+              ) : hasSKU ? (
+                <span className={cn(
+                  "font-mono text-gray-900",
+                  compactMode ? "text-xs" : "text-xs sm:text-sm"
+                )}>
+                  {product.sku}
+                </span>
+              ) : (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <AlertCircle className="w-3.5 h-3.5 text-yellow-500 cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs">SKU required for tracking & exports</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               )}
             </div>
           </td>
@@ -1323,6 +1741,7 @@ export default function CategorysPage() {
           const showNoBarcode = (!hasVariantBarcode && !hasParentBarcode) || variantMatchesParent;
           return (
             <td className={cn(
+<<<<<<< HEAD
               "text-left relative z-10 hidden md:table-cell align-middle ",
               "pl-8 sm:pl-10 pr-3 sm:pr-4 py-0.5 "
             )}>
@@ -1349,11 +1768,25 @@ export default function CategorysPage() {
                   )}
                 </span>
               )}
+=======
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
+            )}>
+              <span className={cn(
+                "font-mono",
+                showDash ? "text-gray-300" : (!hasVariantBarcode ? "text-gray-300 opacity-50" : "text-gray-600"),
+                compactMode ? "text-xs" : "text-sm"
+              )}>
+                {showDash ? renderEmptyState('Barcode', 'Variant inherits barcode from parent') : (product.variant_barcode || product.barcode || renderEmptyState('Barcode', 'No barcode assigned.'))}
+              </span>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
             </td>
           );
         }
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left relative z-10 hidden md:table-cell align-middle",
             "px-3 sm:px-4 py-1 "
           )}>
@@ -1372,14 +1805,33 @@ export default function CategorysPage() {
                 {product.barcode}
               </span>
             )}
+=======
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
+          )}>
+            <span className={cn(
+              "font-mono",
+              !product.barcode ? "text-gray-300 opacity-50" : "text-gray-900",
+              compactMode ? "text-xs" : "text-sm"
+            )}>
+              {product.barcode || renderEmptyState('Barcode', 'No barcode assigned.')}
+            </span>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           </td>
         );
 
       case 'description':
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left relative z-10 hidden lg:table-cell align-middle",
             "px-3 sm:px-4 py-1 "
+=======
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             {!isVariant && (
               <span className={cn(
@@ -1401,6 +1853,7 @@ export default function CategorysPage() {
           const matchesParent = variantCategory === parentCategory;
           return (
             <td className={cn(
+<<<<<<< HEAD
               "text-left relative z-10 align-middle w-16",
               "px-3 sm:px-4 py-1 "
             )}>
@@ -1418,12 +1871,24 @@ export default function CategorysPage() {
                 )}>
                   —
                 </span>
+=======
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
+            )}>
+              {matchesParent ? (
+                renderEmptyState('Category', 'Variant inherits category from parent')
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               ) : (
                 <span className={cn(
                   "text-gray-900",
                   compactMode ? "text-xs" : "text-sm"
                 )}>
+<<<<<<< HEAD
                   {variantCategory}
+=======
+                  {variantCategory || renderEmptyState('Category', 'Variant inherits category from parent')}
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 </span>
               )}
             </td>
@@ -1431,8 +1896,14 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
+<<<<<<< HEAD
               "text-left relative z-10 align-middle w-16",
             "px-3 sm:px-4 py-1 "
+=======
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             {!product.category_name ? (
               <span className={cn(
@@ -1446,7 +1917,11 @@ export default function CategorysPage() {
                 "text-gray-900",
                 compactMode ? "text-xs" : "text-sm"
               )}>
+<<<<<<< HEAD
                 {product.category_name}
+=======
+                {product.category_name || renderEmptyState('Category', 'No category assigned. Products without categories may be harder to organize.')}
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               </span>
             )}
           </td>
@@ -1457,15 +1932,26 @@ export default function CategorysPage() {
           const variantLabel = formatVariantLabel(product);
           return (
             <td className={cn(
+<<<<<<< HEAD
               "relative z-10 align-middle",
               "px-3 sm:px-4 py-1 "
+=======
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
             )}>
               <div className="flex items-center">
-                {/* Continuous vertical line connector */}
-                <div className="w-4 h-px bg-gray-300 mr-2"></div>
+                {/* Very minimal connector line with no right margin to align text */}
+                <div className="w-2 h-px bg-gray-300 mr-0.5"></div>
                 <h3 className={cn(
+<<<<<<< HEAD
                   "font-normal text-gray-900 leading-tight",
                   compactMode ? "text-xs" : "text-sm"
+=======
+                  "font-normal text-gray-600",
+                  compactMode ? "text-sm" : "text-base"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 )}>
                   {variantLabel}
                 </h3>
@@ -1476,14 +1962,25 @@ export default function CategorysPage() {
         // For parent products, check if they have variants
         const productHasVariants = hasVariants !== undefined ? hasVariants : (!product.is_variant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0);
         const productVariantCount = variantCount !== undefined ? variantCount : (productHasVariants ? (variantCounts.get(String(product.id)) ?? 0) : 0);
+        const isProductExpanded = productHasVariants && expandedProductIds.has(product.id);
         return (
           <td className={cn(
+<<<<<<< HEAD
             "relative z-10 overflow-visible align-middle text-left",
             "pl-0 pr-3 sm:pr-4 py-1 "
           )}>
             <div className={cn(
               "flex items-center",
               compactMode ? "gap-1" : "gap-1 sm:gap-1.5"
+=======
+            getColumnClasses(columnId),
+            "relative z-10 overflow-visible align-middle border-r border-gray-300",
+            "px-3 py-2"
+          )}>
+            <div className={cn(
+              "flex items-center",
+              compactMode ? "gap-1" : "gap-1.5"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
             )}>
               {/* Always reserve space for image to maintain alignment */}
               <div className={cn("flex-shrink-0", compactMode ? "w-6 h-6" : "w-6 h-6")}>
@@ -1511,6 +2008,7 @@ export default function CategorysPage() {
                   "flex items-center flex-wrap",
                   compactMode ? "gap-1" : "gap-1.5"
                 )}>
+<<<<<<< HEAD
                   {/* Always reserve space for chevron to maintain alignment */}
                   <div className={cn("flex-shrink-0", productHasVariants ? "" : "w-5 sm:w-4")}>
                     {productHasVariants && (
@@ -1536,14 +2034,94 @@ export default function CategorysPage() {
                     "font-bold",
                     productHasVariants ? (compactMode ? "text-sm" : "text-base") : (compactMode ? "text-xs" : "text-sm"),
                     "text-gray-900 truncate leading-tight"
+=======
+                  {/* Chevron for expandable products */}
+                  {productHasVariants && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleProductExpansion(product.id);
+                      }}
+                      className="flex items-center justify-center w-5 h-5 rounded hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0"
+                      data-interactive
+                    >
+                      {isProductExpanded ? (
+                        <ChevronDown className="w-4 h-4 text-gray-600" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-gray-600" />
+                      )}
+                    </button>
+                  )}
+                  {/* Product name - Line 1: Bold */}
+                  <h3 className={cn(
+                    "font-bold text-gray-900 truncate leading-tight",
+                    compactMode ? "text-sm" : "text-base"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                   )}>
                     {product.name}
-                    {productHasVariants && productVariantCount > 0 && (
-                      <span className="ml-2 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
-                        {productVariantCount} variant{productVariantCount !== 1 ? 's' : ''}
-                      </span>
-                    )}
                   </h3>
+<<<<<<< HEAD
+=======
+                  {/* Variant badge - New format */}
+                  {productHasVariants && productVariantCount > 0 && (() => {
+                    const healthSummary = getVariantHealthSummary(String(product.id));
+                    const allHealthy = healthSummary.out === 0 && healthSummary.low === 0 && healthSummary.healthy === healthSummary.total;
+                    const allOut = healthSummary.healthy === 0 && healthSummary.low === 0;
+                    const someLow = healthSummary.low > 0;
+                    
+                    let healthText = '';
+                    if (allHealthy) {
+                      healthText = 'All healthy';
+                    } else if (allOut) {
+                      healthText = 'All out';
+                    } else if (someLow) {
+                      healthText = `${healthSummary.low} low`;
+                    } else {
+                      healthText = `${healthSummary.healthy} healthy`;
+                    }
+                    
+                    return (
+                      <TooltipProvider delayDuration={150}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span 
+                              className={cn(
+                                "inline-flex items-center gap-0.5 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors",
+                                compactMode && "text-[9px] px-1"
+                              )}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                expandProductAndScroll(product.id);
+                              }}
+                              data-interactive
+                            >
+                              <ChevronRight className={cn(compactMode ? "w-2.5 h-2.5" : "w-3 h-3")} />
+                              {productVariantCount} variants · {healthText}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center" sideOffset={4}>
+                            <p className="text-xs font-medium mb-1">Variant Health Summary</p>
+                            {healthSummary.out > 0 && <p className="text-xs text-red-600">Out of stock: {healthSummary.out}</p>}
+                            {healthSummary.low > 0 && <p className="text-xs text-orange-600">Low stock: {healthSummary.low}</p>}
+                            {healthSummary.healthy > 0 && <p className="text-xs text-green-600">Healthy: {healthSummary.healthy}</p>}
+                            <p className="text-xs text-gray-400 mt-1">Click to expand/collapse variants</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    );
+                  })()}
+                  {product.category_name && !isColumnVisible('category_name') && (
+                    <Badge 
+                      variant="secondary" 
+                      className={cn(
+                        "text-[9px] px-1.5 py-0 h-4 border bg-gray-100 text-gray-700 border-gray-200",
+                        compactMode && "text-[8px] px-1"
+                      )}
+                    >
+                      {product.category_name}
+                    </Badge>
+                  )}
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                   <div className="flex items-center gap-1 ml-1">
                     {rowIndicators.filter(i => ['price-mismatch'].includes(i.type)).map((indicator, idx) => (
                       <TooltipProvider key={idx}>
@@ -1567,16 +2145,28 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 </div>
+<<<<<<< HEAD
                 {product.barcode && (
                   <p className={cn(
                     "text-gray-700 font-mono leading-tight",
                     compactMode ? "text-[9px] mt-0" : "text-[10px] mt-0"
+=======
+                {/* Line 2: SKU (muted) */}
+                {product.sku && product.sku !== '---' && (
+                  <div className={cn(
+                    "flex items-center gap-1.5 text-gray-500 mt-0.5",
+                    compactMode ? "text-[9px]" : "text-[10px]"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                   )}>
-                    {product.barcode}
-                  </p>
+                    <span className="font-mono">{product.sku}</span>
+                  </div>
                 )}
                 {product.description && !compactMode && (
+<<<<<<< HEAD
                   <p className="text-xs text-gray-700 truncate max-w-xs mt-1 hidden sm:block">
+=======
+                  <p className="text-[10px] text-gray-500 truncate max-w-xs leading-tight hidden sm:block mt-0.5">
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                     {product.description}
                   </p>
                 )}
@@ -1594,6 +2184,7 @@ export default function CategorysPage() {
           const showNoLocation = (!hasVariantLocation && !hasParentLocation) || variantMatchesParent;
           return (
             <td className={cn(
+<<<<<<< HEAD
               "text-left w-1/8 hidden md:table-cell relative z-10 align-left ",
               "px-3 sm:px-4 py-1 "
             )}>
@@ -1610,6 +2201,21 @@ export default function CategorysPage() {
                   "text-xs"
                 )}>
                   {product.location || (
+=======
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
+            )}>
+              <div className="flex items-center justify-center gap-1">
+                {showDash ? (
+                  renderEmptyState('Location', 'Variant inherits location from parent')
+                ) : (
+                  <>
+                    <MapPin className={cn(
+                      product.location ? (repetitiveLocations.has(product.location || '') ? "text-gray-200" : "text-gray-300") : "text-gray-200 opacity-30",
+                      compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                    )} />
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                     <span className={cn(
                       "text-gray-400",
                       "text-xs"
@@ -1624,15 +2230,25 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left w-1/8 hidden md:table-cell relative z-10 align-left",
             "px-3 sm:px-4 py-1 "
+=======
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             {!product.location ? (
               <span className={cn(
                 "text-gray-400",
                 "text-xs"
               )}>
+<<<<<<< HEAD
                 —
+=======
+                {product.location || renderEmptyState('Location', 'No location assigned. Products without locations may be harder to find in the warehouse.')}
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               </span>
             ) : (
               <span className={cn(
@@ -1653,6 +2269,7 @@ export default function CategorysPage() {
           const matchesParent = variantWarehouse === parentWarehouse;
           return (
             <td className={cn(
+<<<<<<< HEAD
               "text-left w-1/8 hidden md:table-cell relative z-10 align-left ",
               "px-3 sm:px-4 py-1 "
             )}>
@@ -1677,21 +2294,52 @@ export default function CategorysPage() {
                 )}>
                   {variantWarehouse}
                 </span>
+=======
+              getColumnClasses(columnId),
+              "relative z-10 align-middle border-r border-gray-300",
+              "px-3 py-1"
+            )}>
+              {matchesParent ? (
+                renderEmptyState('Category', 'Variant inherits category from parent')
+              ) : (
+                <div className="flex items-center justify-center gap-1">
+                  <Warehouse className={cn(
+                    variantWarehouse ? "text-gray-300" : "text-gray-200 opacity-30",
+                    compactMode ? "w-2.5 h-2.5" : "w-3 h-3"
+                  )} />
+                  <span className={cn(
+                    !variantWarehouse ? "text-gray-300 opacity-50" : "text-gray-500",
+                    compactMode ? "text-xs" : "text-sm"
+                  )}>
+                    {variantWarehouse || renderEmptyState('Warehouse', 'Variant inherits warehouse from parent')}
+                  </span>
+                </div>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               )}
             </td>
           );
         }
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left w-1/8 hidden md:table-cell relative z-10 align-left",
             "px-3 sm:px-4 py-1 "
+=======
+            getColumnClasses(columnId),
+            "relative z-10 align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             {!warehouseName ? (
               <span className={cn(
                 "text-gray-400",
                 "text-[10px]"
               )}>
+<<<<<<< HEAD
                 —
+=======
+                {warehouseName || renderEmptyState('Warehouse', 'No warehouse assigned.')}
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               </span>
             ) : (
               <span className={cn(
@@ -1707,8 +2355,13 @@ export default function CategorysPage() {
       case 'minimum_stock_level':
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left hidden sm:table-cell",
             "px-3 sm:px-4 py-2 align-middle "
+=======
+            getColumnClasses(columnId),
+            "px-3 py-2 align-middle border-r border-gray-300"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             <div className="flex items-center justify-end">
               <span className={cn(
@@ -1731,6 +2384,7 @@ export default function CategorysPage() {
         const productHasVariantsForStock = !isVariant && product.id && (variantCounts.get(String(product.id)) ?? 0) > 0;
         const isAggregatedTotal = productHasVariantsForStock && displayStock !== (Number(product.quantity_in_stock) || 0);
         
+<<<<<<< HEAD
         // Calculate contextual information
         const reorderDays = stockValue > 0 && stockValue <= (product.minimum_stock_level || 0) 
           ? getReorderDays(stockValue, product.minimum_stock_level || 0)
@@ -1738,10 +2392,22 @@ export default function CategorysPage() {
         const daysSinceLastStocked = stockValue === 0 
           ? getDaysSinceLastStocked(product)
           : null;
+=======
+        // Get enhanced stock status details
+        const statusDetails = getStockStatusDetails(
+          stockValue,
+          product.minimum_stock_level || 0,
+          product.updated_at
+        );
+        
+        // Only show badge for critical or at-risk, not for healthy
+        const shouldShowBadge = statusDetails.stockStatus === 'critical' || statusDetails.stockStatus === 'at-risk';
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
         
         return (
           <td 
             className={cn(
+<<<<<<< HEAD
               "text-left w-1/8 align-middle",
               isVariant ? "" : "",
               "px-3 sm:px-4 py-1 "
@@ -1852,14 +2518,52 @@ export default function CategorysPage() {
                 )}
               </Tooltip>
             </TooltipProvider>
+=======
+              getColumnClasses(columnId),
+              "align-middle border-r border-t border-b border-gray-300",
+              "py-1",
+              "px-3"
+            )} 
+            onClick={(e) => isMobile && e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center gap-2">
+              {/* Stock Badge - only show for critical/at-risk */}
+              {shouldShowBadge && (
+                <StockBadge
+                  status={statusDetails.stockStatus}
+                  quantity={stockValue}
+                  daysOfCover={null}
+                  compact={compactMode}
+                />
+              )}
+              
+              {/* Unit count - always visible, more prominent, green for healthy */}
+              <span className={cn(
+                "font-mono font-semibold",
+                shouldShowBadge ? "text-gray-700" : "text-green-600",
+                compactMode ? "text-xs" : "text-sm"
+              )}>
+                {formatStockQuantity(stockValue)}
+              </span>
+              
+              {isAggregatedTotal && (
+                <span className="text-[9px] text-blue-600 font-bold bg-blue-200/50 px-1 py-0.5 rounded">Σ</span>
+              )}
+            </div>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           </td>
         );
 
       case 'purchase_price':
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-right w-1/8 hidden sm:table-cell",
             "px-3 sm:px-4 py-2 align-middle "
+=======
+            getColumnClasses(columnId),
+            "px-3 py-2 align-middle border-r border-gray-300"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             <div className={cn(
               "flex items-center justify-left",
@@ -1876,8 +2580,14 @@ export default function CategorysPage() {
         if (isVariant) {
           return (
             <td className={cn(
+<<<<<<< HEAD
               "text-right w-1/8 hidden sm:table-cell align-middle ",
               "px-3 sm:px-4 py-1 "
+=======
+              getColumnClasses(columnId),
+              "align-middle border-r border-gray-300",
+              "px-3 py-1"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
             )}>
               <div className={cn(
                 "flex items-center justify-left gap-2",
@@ -1908,8 +2618,14 @@ export default function CategorysPage() {
         }
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left w-1/8 hidden sm:table-cell align-middle",
             "px-3 sm:px-4 py-1 "
+=======
+            getColumnClasses(columnId),
+            "align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             <div className={cn(
               "flex items-center justify-left gap-2",
@@ -1941,8 +2657,14 @@ export default function CategorysPage() {
       case 'unit_price':
         return (
           <td className={cn(
+<<<<<<< HEAD
             "text-left hidden lg:table-cell align-middle",
             "px-3 sm:px-4 py-1 "
+=======
+            getColumnClasses(columnId),
+            "align-middle border-r border-gray-300",
+            "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           )}>
             <div className={cn(
               "flex items-center justify-left",
@@ -2694,12 +3416,240 @@ export default function CategorysPage() {
   // Removed localStorage loading and saving to ensure compact mode is always the default
 
   return (
+<<<<<<< HEAD
     <div className={`h-[calc(100vh-8rem)] md:h-[calc(100vh-8rem)] ${isMobile ? 'm-2' : 'm-4'} rounded-lg border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
       {/* Main Layout with Product Table */}
       <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
         {/* Main Content - Products Table */}
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
           {/* Search Results Info - Above all other elements */}
+=======
+    <div className={`h-screen ${isMobile ? 'p-2' : 'p-4'} flex flex-col gap-4 overflow-hidden`} style={{ touchAction: 'pan-y' }}>
+      {/* Header Section - Separate Card */}
+      <Card className="flex-shrink-0">
+        <CardContent className="p-0">
+          {/* Section 1: Filters + Primary Actions */}
+          <div className="px-4 md:px-6 py-3 bg-white border-b border-gray-200">
+            <div className="flex items-center justify-between gap-4">
+              {/* Filters */}
+              <div className="flex items-center gap-3 flex-1">
+                <QuickSwitcherBar
+                  tree={tree}
+                  selectedCategoryIds={selectedCategoryIds}
+                  onCategorySelectionChange={handleCategorySelectionChange}
+                  selectedLocation={selectedLocation}
+                  onLocationChange={setSelectedLocation}
+                  selectedWarehouse={selectedWarehouse}
+                  onWarehouseChange={setSelectedWarehouse}
+                  onQuickFilterChange={setActiveQuickFilter}
+                  activeQuickFilter={activeQuickFilter}
+                />
+              </div>
+              
+              {/* Primary & Secondary Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {/* Secondary Actions */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleImportClick}
+                  className="h-9 px-3 text-sm font-medium rounded-lg border-gray-300 hover:bg-gray-50"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Import
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportAll}
+                  className="h-9 px-3 text-sm font-medium rounded-lg border-gray-300 hover:bg-gray-50"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export
+                </Button>
+                {/* Primary Action */}
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    setScannedSKU('');
+                    setPreFilledProductName('');
+                    navigate('/dashboard/products/new');
+                  }}
+                  className="h-9 px-4 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Product
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Needs Attention Status Bar */}
+          <div className="px-4 md:px-6 py-2.5 bg-gray-50 border-b border-gray-200">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Needs attention</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Out of stock - Red */}
+                <button
+                  onClick={() => toggleQuickFilter('out-of-stock')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('out-of-stock')
+                      ? "bg-red-100 text-red-700 border border-red-300 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>Out of stock</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-200 text-red-800">
+                    {quickFilterCounts['out-of-stock']}
+                  </span>
+                </button>
+                
+                {/* Low stock - Orange */}
+                <button
+                  onClick={() => toggleQuickFilter('low-stock')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('low-stock')
+                      ? "bg-orange-100 text-orange-700 border border-orange-300 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                  <span>Low stock</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-orange-200 text-orange-800">
+                    {quickFilterCounts['low-stock']}
+                  </span>
+                </button>
+                
+                {/* No location - Neutral */}
+                <button
+                  onClick={() => toggleQuickFilter('no-location')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('no-location')
+                      ? "bg-gray-100 text-gray-700 border border-gray-400 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>No location</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-200 text-gray-800">
+                    {quickFilterCounts['no-location']}
+                  </span>
+                </button>
+                
+                {/* Missing SKU - Neutral */}
+                <button
+                  onClick={() => toggleQuickFilter('missing-sku')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('missing-sku')
+                      ? "bg-gray-100 text-gray-700 border border-gray-400 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <Hash className="w-3.5 h-3.5" />
+                  <span>Missing SKU</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-200 text-gray-800">
+                    {quickFilterCounts['missing-sku']}
+                  </span>
+                </button>
+                
+                {/* Has variants - Neutral */}
+                <button
+                  onClick={() => toggleQuickFilter('has-variants')}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    activeQuickFilters.includes('has-variants')
+                      ? "bg-gray-100 text-gray-700 border border-gray-400 shadow-sm"
+                      : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Has variants</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-gray-200 text-gray-800">
+                    {quickFilterCounts['has-variants']}
+                  </span>
+                </button>
+                
+                {/* Clear all */}
+                {activeQuickFilters.length > 0 && (
+                  <button
+                    onClick={() => setActiveQuickFilters([])}
+                    className="px-2 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    Clear all
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Search + Secondary Actions */}
+          <div className="px-4 md:px-6 py-3 bg-white">
+            <div className="flex items-center gap-3">
+              {/* Search Bar - Centered and Prominent */}
+              <div className="flex-1 flex justify-center">
+                <div className="w-full max-w-2xl">
+                  <MultiIntentSearch
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  onSubmit={handleSearchSubmit}
+                  onProductClick={handleSearchProductClick}
+                  onCategoryClick={handleSearchCategoryClick}
+                  onSupplierClick={handleSearchSupplierClick}
+                  onCreateProduct={() => {
+                    setScannedSKU('');
+                    setPreFilledProductName('');
+                    navigate('/dashboard/products/new');
+                  }}
+                  onCreateCategory={handleAddCategory}
+                  onCreateLocation={handleCreateLocation}
+                  placeholder="Search products, SKUs, suppliers…"
+                  />
+                </div>
+              </div>
+              
+              {/* Secondary Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {selectedProductIds.size > 0 && (
+                  <span className="text-sm font-medium text-gray-600 hidden sm:inline">
+                    {selectedProductIds.size} selected
+                  </span>
+                )}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setIsColumnVisibilityModalOpen(true)}
+                        className="h-9 px-3 text-sm font-medium rounded-lg border-gray-300 hover:bg-gray-50"
+                      >
+                        <Settings className="w-4 h-4 mr-2" />
+                        <span className="hidden sm:inline">Customize Columns</span>
+                        <span className="sm:hidden">Columns</span>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Customize visible columns</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Main Table Section - Separate Card */}
+      <Card className="flex-1 flex flex-col overflow-hidden min-h-0">
+        <CardContent className="p-0 flex-1 flex flex-col overflow-hidden min-h-0">
+          {/* Search Results Info */}
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
           {searchTerm && (
             <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-blue-50 border-b border-blue-200 flex items-center justify-between gap-3 relative z-50">
               <div className="text-sm font-medium text-blue-900">
@@ -2736,6 +3686,7 @@ export default function CategorysPage() {
 
           {(categoryProducts.length > 0 || productsLoading) ? (
             <>
+<<<<<<< HEAD
               {/* Consolidated Filtering Row - Search + Category + Warehouse + Actions */}
               <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-white border-b flex flex-wrap items-center gap-2">
                 {/* Search Bar */}
@@ -3016,6 +3967,8 @@ export default function CategorysPage() {
                 </div>
               </div>
               
+=======
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
               {/* Products Section - Scrollable */}
               <div 
                 className="flex-1 overflow-y-auto min-h-0 overscroll-contain bg-gray-50" 
@@ -3058,6 +4011,7 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 ) : productViewMode === 'table' ? (
+<<<<<<< HEAD
                   <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden relative">
                     {/* Scroll indicators for mobile */}
                     <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none z-20 sm:hidden" />
@@ -3065,12 +4019,48 @@ export default function CategorysPage() {
                     <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" style={{ WebkitOverflowScrolling: 'touch' }}>
                       <table className={cn("w-full table-auto divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
                         <thead className="bg-gray-100 border-b-2 border-gray-300 sticky top-0 z-10">
+=======
+                  <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                    {/* Bulk Action Bar */}
+                    <BulkActionBar
+                      selectedCount={selectedProductIds.size}
+                      onUpdateStock={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkAdjustStock();
+                        }
+                      }}
+                      onAssignLocation={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkTransferStock();
+                        }
+                      }}
+                      onExport={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkExport();
+                        }
+                      }}
+                      onArchive={() => {
+                        if (selectedProductIds.size > 0) {
+                          handleBulkArchive();
+                        }
+                      }}
+                      onClearSelection={() => setSelectedProductIds(new Set())}
+                    />
+                    <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                      <table className={cn("w-full table-fixed border-collapse", !isMobile && "min-w-[640px]")}>
+                        <thead className="bg-gray-50 sticky top-0 z-10 border-b border-gray-300">
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                           {/* Column Headers */}
                           <tr>
                             <th 
                               className={cn(
+<<<<<<< HEAD
                                 "text-center w-14 sm:w-12",
                                 "px-3 sm:px-4 py-1.5 "
+=======
+                                "text-center w-12 border-r border-gray-300 sticky left-0 z-20 bg-gray-50",
+                                compactMode ? "px-2 py-1.5" : "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -3112,6 +4102,7 @@ export default function CategorysPage() {
                             const productVariants = hasVariants ? (variantsByParentId.get(product.id) || []) : [];
                             const variantCount = hasVariants ? (variantCounts.get(String(product.id)) ?? 0) : 0;
                             
+<<<<<<< HEAD
                             // Calculate base row index for alternating colors
                             // Count all previous rows including their variants
                             let rowIndex = 0;
@@ -3128,6 +4119,10 @@ export default function CategorysPage() {
                             // Current row index (0-based)
                             const currentRowIndex = rowIndex;
                             const isEvenRow = currentRowIndex % 2 === 0;
+=======
+                            // Determine row visual emphasis based on stock status
+                            const stockStatusDetails = getStockStatusDetails(displayStock, product.minimum_stock_level, product.updated_at);
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                             
                             return (
                               <React.Fragment key={product.id}>
@@ -3143,6 +4138,7 @@ export default function CategorysPage() {
                                   setHoveredProductGroupId(null);
                                 }}
                                 className={cn(
+<<<<<<< HEAD
                                   'group transition-all duration-200 relative',
                                   'border-b border-[#EEE]',
                                   hoveredImageProductId === product.id && 'z-50',
@@ -3153,6 +4149,20 @@ export default function CategorysPage() {
                                   className={cn(
                                     "text-center w-14 sm:w-12 relative z-10",
                                     "px-3 sm:px-4 py-1 "
+=======
+                                  'group transition-all duration-200 relative cursor-pointer',
+                                  index % 2 === 0 ? "bg-white" : "bg-gray-50/50",
+                                  hoveredImageProductId === product.id && 'z-50',
+                                  hoveredProductGroupId === product.id && 'bg-blue-50/50',
+                                  'hover:bg-blue-50/50'
+                                )}
+                              >
+                                {/* Selection checkbox - sticky */}
+                                <td 
+                                  className={cn(
+                                    "text-center w-12 relative z-10 border-r border-gray-300 sticky left-0 bg-inherit",
+                                    compactMode ? "px-2 py-1" : "px-3 py-1.5"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -3219,12 +4229,26 @@ export default function CategorysPage() {
                                             setHoveredProductGroupId(null);
                                           }}
                                           className={cn(
+<<<<<<< HEAD
                                             'group transition-all duration-200 relative',
                                             'border-b border-[#EEE]',
                                             'cursor-pointer',
                                             'h-6'
+=======
+                                            'group transition-all duration-200 relative bg-white',
+                                            hoveredProductGroupId === product.id && 'bg-gray-50',
+                                            'hover:bg-gray-50',
+                                            'cursor-pointer'
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                                           )}
+                                          style={{
+                                            backgroundImage: 'linear-gradient(to right, rgb(209, 213, 219) 0px, rgb(209, 213, 219) 1px, transparent 1px)',
+                                            backgroundPosition: 'left center',
+                                            backgroundSize: '1px 100%',
+                                            backgroundRepeat: 'no-repeat'
+                                          }}
                                         >
+<<<<<<< HEAD
                                           {/* Continuous vertical line - connects parent to last child */}
                                           <td 
                                             className="absolute left-0 top-0 bottom-0 w-px bg-gray-300"
@@ -3236,8 +4260,18 @@ export default function CategorysPage() {
                                             className={cn(
                                               "w-14 sm:w-12",
                                               "px-3 sm:px-4 py-0.5"
+=======
+                                          {/* Render checkbox cell - empty for variants but must be present for column alignment */}
+                                          <td 
+                                            className={cn(
+                                              "text-center w-12 relative z-10 border-r border-gray-300",
+                                              "px-3 py-2"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                                             )}
-                                          />
+                                          >
+                                            {/* Non-breaking space to ensure cell maintains width */}
+                                            &nbsp;
+                                          </td>
                                           
                                           {/* Render columns in order for variants */}
                                           {getOrderedVisibleColumns.map(columnId => 
@@ -3372,8 +4406,8 @@ export default function CategorysPage() {
               </div>
             </div>
           )}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Add Category Modal */}
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
@@ -3779,8 +4813,9 @@ export default function CategorysPage() {
         onReset={resetToDefaults}
       />
 
-      {/* Fixed Bottom Bulk Action Bar */}
+      {/* Fixed Bottom Bulk Action Bar - Enhanced */}
       {selectedProductIds.size > 0 && (
+<<<<<<< HEAD
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg safe-area-inset-bottom">
           <div className="max-w-full mx-auto px-3 sm:px-4 py-3">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -3788,14 +4823,33 @@ export default function CategorysPage() {
                 <span className="text-xs sm:text-sm font-semibold text-gray-900">
                   {selectedProductIds.size} selected
                 </span>
+=======
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-50 to-indigo-50 border-t-2 border-blue-300 shadow-2xl animate-in slide-in-from-bottom duration-300">
+          <div className="max-w-full mx-auto px-4 py-4">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-blue-600 text-white px-3 py-1.5 rounded-lg shadow-md">
+                  <Check className="w-4 h-4" />
+                  <span className="text-sm font-bold">
+                    {selectedProductIds.size} product{selectedProductIds.size !== 1 ? 's' : ''} selected
+                  </span>
+                </div>
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedProductIds(new Set())}
+<<<<<<< HEAD
                   className="text-gray-600 hover:text-gray-900 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation"
                 >
                   <X className="w-4 h-4 sm:mr-1" />
                   <span className="hidden sm:inline">Clear</span>
+=======
+                  className="text-gray-700 hover:text-gray-900 hover:bg-white/50"
+                >
+                  <X className="w-4 h-4 mr-1" />
+                  Clear selection
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 </Button>
               </div>
               <div className="flex items-center gap-2 flex-wrap">
@@ -3819,31 +4873,54 @@ export default function CategorysPage() {
                 )}
               
                 <Button
-                  variant="outline"
+                  variant="default"
                   size="sm"
                   onClick={handleBulkAdjustStock}
+<<<<<<< HEAD
                   className="flex items-center gap-2 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation flex-1 sm:flex-initial"
+=======
+                  className="flex items-center gap-2 bg-blue-600 text-white hover:bg-blue-700 shadow-md"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 >
                   <TrendingUp className="w-4 h-4" />
-                  <span className="hidden sm:inline">Adjust Stock</span>
+                  <span className="hidden sm:inline">Update Stock</span>
                   <span className="sm:hidden">Stock</span>
                 </Button>
               
                 <Button
                   variant="outline"
                   size="sm"
+                  onClick={handleBulkTransferStock}
+                  className="flex items-center gap-2 border-blue-300 hover:bg-blue-50"
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span className="hidden sm:inline">Move Location</span>
+                  <span className="sm:hidden">Move</span>
+                </Button>
+              
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={handleBulkExport}
+<<<<<<< HEAD
                   className="flex items-center gap-2 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation flex-1 sm:flex-initial"
+=======
+                  className="flex items-center gap-2 border-gray-300 hover:bg-gray-50"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 >
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">Export</span>
                   <span className="sm:hidden">Export</span>
                 </Button>
                 <Button
-                  variant="destructive"
+                  variant="outline"
                   size="sm"
                   onClick={handleBulkDeleteProducts}
+<<<<<<< HEAD
                   className="flex items-center gap-2 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation flex-1 sm:flex-initial"
+=======
+                  className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-300"
+>>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
                 >
                   <Trash2 className="w-4 h-4" />
                   <span className="hidden sm:inline">Delete</span>

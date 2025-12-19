@@ -341,6 +341,61 @@ export function ColumnVisibilityModal({
           </button>
         </div>
 
+        {/* Column Presets */}
+        <div className="px-4 py-3 border-b bg-gray-50">
+          <Label className="text-xs font-medium text-gray-700 mb-2 block">Presets:</Label>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => {
+                // Operations preset: name, sku, stock, location, category
+                const opsColumns = ['name', 'sku', 'stock', 'location', 'category_name'];
+                setSelectedColumns(opsColumns);
+              }}
+            >
+              Operations
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => {
+                // Replenishment preset: name, sku, stock, minimum_stock_level, location
+                const replColumns = ['name', 'sku', 'stock', 'minimum_stock_level', 'location'];
+                setSelectedColumns(replColumns);
+              }}
+            >
+              Replenishment
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => {
+                // Accounting preset: name, sku, purchase_price, sale_price, unit_price
+                const accColumns = ['name', 'sku', 'purchase_price', 'sale_price', 'unit_price'];
+                setSelectedColumns(accColumns);
+              }}
+            >
+              Accounting
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => {
+                // Audit preset: name, sku, category_name, location, warehouses, created_at
+                const auditColumns = ['name', 'sku', 'category_name', 'location', 'warehouses'];
+                setSelectedColumns(auditColumns);
+              }}
+            >
+              Audit
+            </Button>
+          </div>
+        </div>
+
         <div className="flex-1 overflow-hidden flex flex-col min-h-0">
           {activeTab === 'visibility' ? (
             <>
