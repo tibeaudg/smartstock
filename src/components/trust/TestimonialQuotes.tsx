@@ -90,8 +90,9 @@ export const TestimonialQuotes: React.FC<TestimonialQuotesProps> = ({
         <Link
           to={`/customers/${quote.id}`}
           className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          aria-label={`Read more about ${quote.author}'s story`}
         >
-          Read more →
+          Read more about {quote.author} →
         </Link>
       </div>
     </div>

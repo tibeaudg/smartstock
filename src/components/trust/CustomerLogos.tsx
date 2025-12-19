@@ -37,7 +37,10 @@ export const CustomerLogos: React.FC<CustomerLogosProps> = ({
             src={logo.logo}
             alt={`${logo.name} logo`}
             className="h-8 md:h-10 lg:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+            width="96"
+            height="48"
             loading="lazy"
+            decoding="async"
           />
         </div>
       ))}
@@ -62,7 +65,10 @@ export const CustomerLogos: React.FC<CustomerLogosProps> = ({
                 src={logo.logo}
                 alt={`${logo.name} logo`}
                 className="h-8 md:h-10 lg:h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                width="96"
+                height="48"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           ))}
@@ -90,7 +96,10 @@ export const CustomerLogos: React.FC<CustomerLogosProps> = ({
               src={logo.logo}
               alt={`${logo.name} logo`}
               className="h-8 md:h-10 lg:h-12 w-auto object-contain grayscale"
+              width="96"
+              height="48"
               loading="lazy"
+              decoding="async"
             />
           </div>
         ))}
@@ -123,10 +132,13 @@ export const CustomerLogos: React.FC<CustomerLogosProps> = ({
               src={logo.logo}
               alt={`${logo.name} logo`}
               className="h-6 md:h-8 lg:h-10 w-auto object-contain"
+              width="80"
+              height="40"
               style={{ 
                 filter: 'brightness(0) invert(1) opacity(0.5)',
               }}
               loading="lazy"
+              decoding="async"
             />
           </div>
         ))}

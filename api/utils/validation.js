@@ -1,11 +1,7 @@
 // Shared validation utilities for API routes
 // Uses Zod for strict input validation to prevent injection attacks
 
-// Note: This file uses CommonJS for compatibility with Node.js API routes
-// If your environment supports ES modules, you can use import/export instead
-
-// For now, we'll use a simple validation approach that works in CommonJS
-// In a production environment with ES modules, use: import { z } from 'zod';
+const { z } = require('zod');
 
 /**
  * Validates email address using RFC 5322 compliant regex
@@ -31,137 +27,100 @@ function sanitizeString(str, maxLength = 1000) {
     .substring(0, maxLength);
 }
 
+// Zod schemas for comprehensive validation
+const contactFormSchema = z.object({
+  name: z.string().min(2).max(100).trim(),
+  email: z.string().email().max(254).toLowerCase().trim(),
+  message: z.string().min(10).max(5000).trim(),
+  subject: z.string().max(200).trim().optional()
+});
+
 /**
- * Validates and sanitizes contact form input
+ * Validates and sanitizes contact form input using Zod
  */
 function validateContactForm(body) {
-  const errors = [];
-  
-  if (!body.name || typeof body.name !== 'string') {
-    errors.push('Name is required and must be a string');
-  }
-  if (!body.email || !validateEmail(body.email)) {
-    errors.push('Valid email is required');
-  }
-  if (!body.message || typeof body.message !== 'string') {
-    errors.push('Message is required and must be a string');
-  }
-  
-  if (errors.length > 0) {
-    return { valid: false, errors };
-  }
-  
-  // Validate length constraints
-  const name = sanitizeString(body.name, 100);
-  const email = sanitizeString(body.email, 254);
-  const message = sanitizeString(body.message, 5000);
-  const subject = body.subject ? sanitizeString(body.subject, 200) : '';
-  
-  if (name.length < 2) {
-    errors.push('Name must be at least 2 characters');
-  }
-  if (message.length < 10) {
-    errors.push('Message must be at least 10 characters');
-  }
-  if (message.length > 5000) {
-    errors.push('Message must be less than 5000 characters');
-  }
-  
-  if (errors.length > 0) {
-    return { valid: false, errors };
-  }
-  
-  return {
-    valid: true,
-    data: {
-      name,
-      email,
-      message,
-      subject
+  try {
+    const result = contactFormSchema.safeParse(body);
+    if (result.success) {
+      return {
+        valid: true,
+        data: result.data
+      };
+    } else {
+      return {
+        valid: false,
+        errors: result.error.errors.map(err => `${err.path.join('.')}: ${err.message}`)
+      };
     }
-  };
+  } catch (error) {
+    return {
+      valid: false,
+      errors: [`Validation error: ${error.message}`]
+    };
+  }
 }
 
+// Visitor chat schema
+const visitorChatSchema = z.object({
+  email: z.string().email().max(254).toLowerCase().trim(),
+  message: z.string().min(5).max(2000).trim()
+});
+
 /**
- * Validates and sanitizes visitor chat input
+ * Validates and sanitizes visitor chat input using Zod
  */
 function validateVisitorChat(body) {
-  const errors = [];
-  
-  if (!body.email || !validateEmail(body.email)) {
-    errors.push('Valid email is required');
-  }
-  if (!body.message || typeof body.message !== 'string') {
-    errors.push('Message is required and must be a string');
-  }
-  
-  if (errors.length > 0) {
-    return { valid: false, errors };
-  }
-  
-  const email = sanitizeString(body.email, 254);
-  const message = sanitizeString(body.message, 2000);
-  
-  if (message.length < 5) {
-    errors.push('Message must be at least 5 characters');
-  }
-  if (message.length > 2000) {
-    errors.push('Message must be less than 2000 characters');
-  }
-  
-  if (errors.length > 0) {
-    return { valid: false, errors };
-  }
-  
-  return {
-    valid: true,
-    data: {
-      email,
-      message
+  try {
+    const result = visitorChatSchema.safeParse(body);
+    if (result.success) {
+      return {
+        valid: true,
+        data: result.data
+      };
+    } else {
+      return {
+        valid: false,
+        errors: result.error.errors.map(err => `${err.path.join('.')}: ${err.message}`)
+      };
     }
-  };
+  } catch (error) {
+    return {
+      valid: false,
+      errors: [`Validation error: ${error.message}`]
+    };
+  }
 }
 
+// Lead capture schema
+const leadCaptureSchema = z.object({
+  email: z.string().email().max(255).toLowerCase().trim(),
+  source: z.string().max(100).trim(),
+  metadata: z.record(z.unknown()).optional()
+});
+
 /**
- * Validates and sanitizes lead capture input
+ * Validates and sanitizes lead capture input using Zod
  */
 function validateLeadCapture(body) {
-  const errors = [];
-  
-  if (!body.email || !validateEmail(body.email)) {
-    errors.push('Valid email is required');
-  }
-  if (!body.source || typeof body.source !== 'string') {
-    errors.push('Source is required and must be a string');
-  }
-  
-  if (errors.length > 0) {
-    return { valid: false, errors };
-  }
-  
-  const email = sanitizeString(body.email, 255);
-  const source = sanitizeString(body.source, 100);
-  const metadata = body.metadata && typeof body.metadata === 'object' 
-    ? body.metadata 
-    : {};
-  
-  // Validate metadata is a plain object (not an array, function, etc.)
-  if (Array.isArray(metadata) || typeof metadata === 'function') {
-    errors.push('Metadata must be a plain object');
-  }
-  
-  if (errors.length > 0) {
-    return { valid: false, errors };
-  }
-  
-  return {
-    valid: true,
-    data: {
-      email,
-      source,
-      metadata
+  try {
+    const result = leadCaptureSchema.safeParse(body);
+    if (result.success) {
+      return {
+        valid: true,
+        data: result.data
+      };
+    } else {
+      return {
+        valid: false,
+        errors: result.error.errors.map(err => `${err.path.join('.')}: ${err.message}`)
+      };
     }
-  };
+  } catch (error) {
+    return {
+      valid: false,
+      errors: [`Validation error: ${error.message}`]
+    };
+  }
 }
 
 /**

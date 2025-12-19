@@ -246,7 +246,7 @@ export default function Carousel({
             return (
               <motion.button
                 key={index}
-                className={`flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2 sm:p-0 rounded-full transition-colors duration-150 ${
+                className={`flex items-center justify-center min-w-[44px] min-h-[44px] p-2 rounded-full transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                   isActive
                     ? round
                       ? ''
@@ -263,7 +263,7 @@ export default function Carousel({
                 aria-label={`Go to slide ${index + 1}`}
               >
                 <span
-                  className={`h-2 w-2 sm:h-2 sm:w-2 rounded-full transition-colors duration-150 ${
+                  className={`h-2 w-2 rounded-full transition-colors duration-150 ${
                     isActive
                       ? round
                         ? 'bg-white'

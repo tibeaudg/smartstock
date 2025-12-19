@@ -1,3 +1,4 @@
+import React, { Suspense, useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
@@ -6,7 +7,8 @@ import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
-import { HomePageNL } from "./components/HomePageNL";
+// Lazy load HomePageNL to reduce initial bundle size
+const HomePageNL = React.lazy(() => import("./components/HomePageNL"));
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
 import ServerError from "./pages/ServerError";
@@ -23,7 +25,6 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
-import React, { Suspense, useState, useEffect } from "react";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
@@ -48,10 +49,11 @@ import { ThemeProvider } from './hooks/useTheme';
 
 // Import remaining synchronous pages
 import HelpCenterPage from "./pages/help-center";
-import CategorysPage from './pages/products';
-import CategoriesPage from './pages/CategoriesPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import AddProductPage from './pages/AddProductPage';
+// Lazy load heavy pages to reduce initial bundle size
+const CategorysPage = React.lazy(() => import('./pages/products'));
+const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
+const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
+const AddProductPage = React.lazy(() => import('./pages/AddProductPage'));
 import BillOfMaterialsPage from './pages/BillOfMaterialsPage';
 import AdminPage from './pages/admin';
 import PricingPage from './pages/pricing';

@@ -18,13 +18,33 @@ export interface ErrorInfo {
 /**
  * Log een error met contextuele informatie
  */
+/**
+ * Sanitizes URL to remove sensitive query parameters
+ */
+function sanitizeUrl(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    // Remove sensitive query parameters
+    const sensitiveParams = ['token', 'password', 'secret', 'apiKey', 'key', 'auth'];
+    sensitiveParams.forEach(param => urlObj.searchParams.delete(param));
+    return urlObj.toString();
+  } catch {
+    // If URL parsing fails, return as-is but mask obvious secrets
+    return url.replace(/([?&])(token|password|secret|apiKey|key|auth)=[^&]*/gi, '$1$2=[REDACTED]');
+  }
+}
+
 export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
+  // Security: Sanitize sensitive data before logging
+  const sanitizedUrl = typeof window !== 'undefined' ? sanitizeUrl(window.location.href) : context?.url || '';
+  const sanitizedMessage = error.message.replace(/(password|token|secret|apiKey|key|auth)=[^\s]*/gi, '$1=[REDACTED]');
+  
   const errorInfo: ErrorInfo = {
-    message: error.message,
-    stack: error.stack,
+    message: sanitizedMessage,
+    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined, // Only in dev
     timestamp: new Date().toISOString(),
-    userAgent: navigator.userAgent,
-    url: window.location.href,
+    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 200) : '', // Limit length
+    url: sanitizedUrl,
     ...context,
   };
 
@@ -62,16 +82,20 @@ export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
       }
     }
 
+    // Security: Sanitize data before inserting into database
+    const sanitizedUrl = sanitizeUrl(window.location.href);
+    const sanitizedErrorMessage = sanitizedMessage || 'Unknown error';
+    
     // Insert error into database (don't await to avoid blocking)
     supabase
       .from('application_errors')
       .insert({
-        error_message: error.message || 'Unknown error',
+        error_message: sanitizedErrorMessage,
         error_type: errorType,
-        stack_trace: error.stack || null,
+        stack_trace: process.env.NODE_ENV === 'development' ? error.stack : null, // Only in dev
         user_id: userId,
-        page_url: window.location.href,
-        user_agent: navigator.userAgent,
+        page_url: sanitizedUrl,
+        user_agent: navigator.userAgent.substring(0, 200), // Limit length
         component_stack: context?.componentStack || null,
         metadata: {
           branchId: context?.branchId || null,
@@ -81,12 +105,6 @@ export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
         // Silently fail if database logging fails (to prevent infinite loops)
         console.warn('Failed to log error to database:', dbError);
       });
-  }
-
-  // Hier kun je externe error logging toevoegen (bijv. Sentry, LogRocket, etc.)
-  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-    // Externe logging voor productie
-    // sendToExternalLogger(errorInfo);
   }
 
   return errorInfo;

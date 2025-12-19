@@ -94,7 +94,7 @@ export default function SEOResourcesBlogPage() {
                   </p>
                 )}
                 <span className="text-sm text-blue-600 font-medium mt-auto">
-                  Read more →
+                  Read more about {article.title} →
                 </span>
               </Link>
             ))}

@@ -33,9 +33,9 @@ export function AlertCard({ className }: AlertCardProps) {
               Alert
             </span>
           </div>
-          <h3 className="text-sm font-semibold text-white mb-1">
+          <div className="text-sm font-semibold text-white mb-1">
             Reorder Triggered
-          </h3>
+          </div>
           <p className="text-xs text-white/70 leading-relaxed">
             Product "Widget A" has reached minimum stock level. Automatic reorder initiated.
           </p>

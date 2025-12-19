@@ -35,7 +35,6 @@ import {
 
 import { HeroSection } from "@/components/ui/hero-section-1"
 import { PlatformFeaturesSection } from "./PlatformFeaturesSection";
-import { CustomerLogos } from "./trust/CustomerLogos";
 import { ReviewBadges } from "./trust/ReviewBadges";
 import { TestimonialQuotes } from "./trust/TestimonialQuotes";
 import { CaseStudyThumbnails } from "./trust/CaseStudyThumbnails";
@@ -171,6 +170,7 @@ const Gallery4 = ({
               }}
               disabled={!canScrollPrev}
               className="disabled:pointer-events-auto"
+              aria-label="Previous slide"
             >
               <ArrowLeft className="size-5" />
             </Button>
@@ -182,6 +182,7 @@ const Gallery4 = ({
               }}
               disabled={!canScrollNext}
               className="disabled:pointer-events-auto"
+              aria-label="Next slide"
             >
               <ArrowRight className="size-5" />
             </Button>
@@ -211,6 +212,10 @@ const Gallery4 = ({
                       src={item.image}
                       alt={item.title}
                       className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      width="640"
+                      height="360"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 h-full bg-[linear-gradient(hsl(var(--primary)/0),hsl(var(--primary)/0.4),hsl(var(--primary)/0.8)_100%)] mix-blend-multiply" />
                     <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 text-primary-foreground md:p-8">
@@ -235,12 +240,16 @@ const Gallery4 = ({
           {items.map((_, index) => (
             <button
               key={index}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                currentSlide === index ? "bg-primary" : "bg-primary/20"
-              }`}
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               onClick={() => carouselApi?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}
-            />
+            >
+              <span
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  currentSlide === index ? "bg-primary" : "bg-primary/20"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>
@@ -320,13 +329,17 @@ const MobileCarousel = ({ items, renderItem }) => {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-colors ${
-              index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-            }`}
+            className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
             role="tab"
             aria-selected={index === currentIndex}
             aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            <span
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
+              }`}
+            />
+          </button>
         ))}
       </div>
 
@@ -1280,10 +1293,6 @@ export const HomePage = () => {
 
         <HeroSection />
 
-      {/* Customer Logos Section */}
-      <CustomerLogos 
-        variant="marquee" 
-      />
 
 
 

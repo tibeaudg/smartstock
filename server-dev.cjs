@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+// Security middleware
+const { csrfTokenGenerator, csrfValidator } = require('./api/utils/csrf.js');
+const { verifyStripeWebhook } = require('./api/utils/webhookVerification.js');
+
 // Load environment variables
 dotenv.config();
 
@@ -106,10 +110,41 @@ app.use(cors({
   origin: ['http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token']
 }));
-app.use(express.json({ limit: '5mb' })); 
+
+// Security: Parse JSON with size limits, but preserve raw body for webhook verification
+app.use(express.json({ limit: '5mb' }));
+app.use(express.raw({ type: 'application/json', limit: '5mb' }));
+
+// Security: Store raw body for webhook signature verification
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/webhooks/')) {
+    req.rawBody = req.body.toString('utf8');
+    // Re-parse JSON for normal processing
+    try {
+      req.body = JSON.parse(req.rawBody);
+    } catch (e) {
+      // If not JSON, keep as is
+    }
+  }
+  next();
+});
+
+// Security: Rate limiting (before CSRF to prevent abuse)
 app.use(rateLimiter);
+
+// Security: CSRF token generation for GET requests
+app.use(csrfTokenGenerator);
+
+// Security: CSRF validation for state-changing requests (except webhooks)
+app.use((req, res, next) => {
+  // Skip CSRF for webhooks (they use signature verification instead)
+  if (req.path.startsWith('/api/webhooks/')) {
+    return next();
+  }
+  csrfValidator(req, res, next);
+});
 
 // Import API handlers
 const loadHandler = (relativePath) => {
@@ -123,6 +158,7 @@ const adsHandler = loadHandler('./api/ads.js');
 const sitemapHandler = loadHandler('./api/sitemap.js');
 
 // API routes
+// Public endpoints (no auth required, but CSRF protected)
 app.post('/api/visitor-chat', (req, res) => {
   visitorChatHandler(req, res);
 });
@@ -130,6 +166,9 @@ app.post('/api/visitor-chat', (req, res) => {
 app.post('/api/contact', (req, res) => {
   contactHandler(req, res);
 });
+
+// Webhook endpoints (signature verified, no CSRF)
+// Example: app.post('/api/webhooks/stripe', verifyStripeWebhook, stripeWebhookHandler);
 
 app.get('/api/ads', (req, res) => {
   adsHandler(req, res);
@@ -147,13 +186,14 @@ app.get('/api/health', (req, res) => {
 
 // Security: Error sanitization middleware to prevent information leakage
 app.use((err, req, res, next) => {
-  // Log full error details server-side only
+  // Security: Log full error details server-side only (sanitize PII)
+  const sanitizedPath = req.path.replace(/\/[^\/]+\/[^\/]+$/, '/***/***'); // Mask IDs in paths
   console.error('[Server Error]', {
     message: err.message,
-    stack: err.stack,
-    path: req.path,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined, // Only in dev
+    path: sanitizedPath,
     method: req.method,
-    ip: req.ip,
+    ip: req.ip ? req.ip.replace(/(\d+\.\d+\.\d+)\.\d+/, '$1.***') : 'unknown', // Mask last octet
     timestamp: new Date().toISOString()
   });
   

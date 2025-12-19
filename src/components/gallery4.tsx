@@ -110,6 +110,7 @@ const Gallery4 = ({
               }}
               disabled={!canScrollPrev}
               className="disabled:pointer-events-auto"
+              aria-label="Previous slide"
             >
               <ArrowLeft className="size-5" />
             </Button>
@@ -121,6 +122,7 @@ const Gallery4 = ({
               }}
               disabled={!canScrollNext}
               className="disabled:pointer-events-auto"
+              aria-label="Next slide"
             >
               <ArrowRight className="size-5" />
             </Button>
@@ -174,12 +176,16 @@ const Gallery4 = ({
           {items.map((_, index) => (
             <button
               key={index}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                currentSlide === index ? "bg-primary" : "bg-primary/20"
-              }`}
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               onClick={() => carouselApi?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}
-            />
+            >
+              <span
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  currentSlide === index ? "bg-primary" : "bg-primary/20"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>

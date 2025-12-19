@@ -10,7 +10,6 @@ import { PageHeader } from './PageHeader';
 interface SystemHealth {
   database: 'healthy' | 'warning' | 'error';
   api: 'healthy' | 'warning' | 'error';
-  sentry: 'healthy' | 'warning' | 'error';
 }
 
 interface OperationalMetrics {
@@ -70,7 +69,6 @@ export const SystemOverview: React.FC = () => {
       const healthStatus: SystemHealth = {
         database: 'error',
         api: 'error',
-        sentry: 'error',
       };
 
       // Check database connection
@@ -99,13 +97,6 @@ export const SystemOverview: React.FC = () => {
         }
       } catch (error) {
         healthStatus.api = 'error';
-      }
-
-      // Check Sentry (check if initialized)
-      if (typeof window !== 'undefined' && (window as any).__SENTRY_INITIALIZED__) {
-        healthStatus.sentry = 'healthy';
-      } else {
-        healthStatus.sentry = 'warning';
       }
 
       return healthStatus;
@@ -190,21 +181,6 @@ export const SystemOverview: React.FC = () => {
                 <span className="text-sm font-medium text-slate-900">API</span>
                 <span className="text-sm text-slate-600">
                   {loadingHealth ? 'Checking...' : getHealthStatusText(health?.api || 'error')}
-                </span>
-              </div>
-            </div>
-
-            {/* Sentry Health */}
-            <div className="flex items-center gap-3">
-              {loadingHealth ? (
-                <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
-              ) : (
-                <div className={`w-2 h-2 rounded-full ${getHealthStatusDot(health?.sentry || 'error')}`} />
-              )}
-              <div className="flex-1 flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-900">Error Tracking</span>
-                <span className="text-sm text-slate-600">
-                  {loadingHealth ? 'Checking...' : getHealthStatusText(health?.sentry || 'error')}
                 </span>
               </div>
             </div>

@@ -106,7 +106,6 @@ export const initializeTrustedTypes = () => {
         createScriptURL: (input: string) => {
           // Allow known safe domains for script URLs
           const allowedDomains = [
-            'sentry.io',
             'cdn.jsdelivr.net',
             'unpkg.com',
             'cdnjs.cloudflare.com',
@@ -123,7 +122,7 @@ export const initializeTrustedTypes = () => {
             return input;
           }
           
-          // Allow blob URLs (used by Sentry for workers)
+          // Allow blob URLs
           if (input.startsWith('blob:')) {
             return input;
           }
@@ -261,7 +260,6 @@ export const initializeDefaultPolicy = () => {
         createScriptURL: (input: string) => {
           // Allow known safe domains for script URLs
           const allowedDomains = [
-            'sentry.io',
             'cdn.jsdelivr.net',
             'unpkg.com',
             'cdnjs.cloudflare.com',
@@ -278,7 +276,7 @@ export const initializeDefaultPolicy = () => {
             return input;
           }
           
-          // Allow blob URLs (used by Sentry for workers)
+          // Allow blob URLs
           if (input.startsWith('blob:')) {
             return input;
           }

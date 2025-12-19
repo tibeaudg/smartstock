@@ -302,16 +302,16 @@ export default function HorizontalScrollCarousel({
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className="flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 p-2 sm:p-0 rounded-full transition-all duration-200"
+              className="flex items-center justify-center min-w-[44px] min-h-[44px] p-2 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
               role="tab"
               aria-selected={index === currentIndex}
               aria-label={`Go to slide ${index + 1}`}
             >
               <span
-                className={`w-3 h-3 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-200 ${
+                className={`w-3 h-3 rounded-full transition-all duration-200 ${
                   index === currentIndex 
-                    ? 'bg-blue-600 sm:scale-125' 
-                    : 'bg-gray-300 sm:hover:bg-gray-400'
+                    ? 'bg-blue-600 scale-125' 
+                    : 'bg-gray-300 hover:bg-gray-400'
                 }`}
               />
             </button>

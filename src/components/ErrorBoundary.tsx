@@ -1,6 +1,5 @@
 import React, { Component, ReactNode } from 'react';
 import { logError, ErrorInfo } from '@/lib/errorHandler';
-import * as Sentry from '@sentry/react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -35,15 +34,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({ errorInfo });
-    
-    // Send to Sentry with component stack
-    Sentry.captureException(error, {
-      contexts: {
-        react: {
-          componentStack: errorInfo.componentStack,
-        }
-      }
-    });
     
     // Log de error met uitgebreide contextuele informatie (async, don't await)
     logError(error, {

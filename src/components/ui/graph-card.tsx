@@ -40,7 +40,7 @@ export function GraphCard({ className }: GraphCardProps) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-sm font-semibold text-white">Sales Velocity</h3>
+          <div className="text-sm font-semibold text-white">Sales Velocity</div>
         </div>
         <span className="text-xs text-cyan-400 font-medium">+12.5%</span>
       </div>

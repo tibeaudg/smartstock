@@ -258,7 +258,9 @@ export const APIAccess = () => {
   };
 
   // Security: Hash API key using SHA-256 before storing
-  // Note: Ideally this should be done server-side, but for client-side we use crypto.subtle
+  // TODO: Move this to server-side API endpoint (api/utils/apiKeySecurity.js)
+  // Client-side hashing is less secure as the key is exposed in memory
+  // Server-side implementation available at: api/utils/apiKeySecurity.js
   const hashAPIKey = async (key: string): Promise<string> => {
     try {
       const encoder = new TextEncoder();

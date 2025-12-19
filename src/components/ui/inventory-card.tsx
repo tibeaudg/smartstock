@@ -25,7 +25,7 @@ export function InventoryCard({ className }: InventoryCardProps) {
     >
       <div className="flex items-center gap-2 mb-3">
         <Package className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-sm font-semibold text-white">Inventory Status</h3>
+        <div className="text-sm font-semibold text-white">Inventory Status</div>
       </div>
 
       <div className="space-y-2">
