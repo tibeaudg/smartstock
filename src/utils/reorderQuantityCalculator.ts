@@ -131,3 +131,4 @@ export function calculateDaysUntilRunout(
   return Math.floor(currentStock / dailyConsumption);
 }
 
+

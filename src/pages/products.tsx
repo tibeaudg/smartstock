@@ -22,7 +22,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, ChevronRight, ChevronLeft, ChevronDown, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, AlertTriangle, TrendingUp, ArrowRightLeft, FolderTree, Download, GitBranch, Hash } from 'lucide-react';
+import { Grid3x3, Table2, Edit, Trash2, Copy, MapPin, ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Palette, ArrowUpDown, ArrowUp, ArrowDown, Scan, Filter, Search, X, Settings, Minimize2, Check, Printer, Truck, Tag, Package2, DollarSign,Warehouse, AlertCircle, AlertTriangle, TrendingUp, ArrowRightLeft, FolderTree, Download, GitBranch, Hash } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import type { CategoryTree, CategoryCreateData } from '@/types/categoryTypes';
@@ -85,6 +85,7 @@ export default function CategorysPage() {
   const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(null);
   const [activeQuickFilters, setActiveQuickFilters] = useState<QuickFilterType[]>([]);
   const [searchTokens, setSearchTokens] = useState<{ stock?: 'low' | 'out' | 'in'; warehouse?: string; category?: string }>({});
+  const [showFilters, setShowFilters] = useState(false); // Default to collapsed
   // Default to table view on both mobile and desktop
   const [productViewMode, setProductViewMode] = useState<'grid' | 'list' | 'table'>(() => {
     if (typeof window !== 'undefined') {
@@ -1207,7 +1208,7 @@ export default function CategorysPage() {
           config.align === 'center' ? 'text-center' : config.align === 'right' ? 'text-right' : 'text-left',
           config.width || '',
           config.responsive || '',
-          "px-3 sm:px-4 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-gray-200",
+          "px-3 sm:px-4 py-0.5 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-gray-200",
           isSortable && "cursor-pointer hover:bg-gray-100 transition-colors touch-manipulation min-h-[44px] sm:min-h-0"
         )}
         onClick={isSortable ? () => handleSort(sortKey) : undefined}
@@ -1257,7 +1258,7 @@ export default function CategorysPage() {
         
         return (
           <td className={cn(
-            "text-center w-12 px-2 py-2 border-r border-gray-200",
+            "text-center w-12 px-2 py-0 border-r border-gray-200",
             isVariant && "bg-[#F9FAFB]"
           )}>
             <TooltipProvider>
@@ -1298,7 +1299,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left relative z-10 bg-blue-50/20",
-              "px-3 sm:px-4 py-2 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-200"
             )}>
               <ActionableSKU
                 product={product}
@@ -1314,7 +1315,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 align-middle",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             <div className="flex items-center gap-1.5">
               {productHasVariants && hasDifferentSKUs ? (
@@ -1346,7 +1347,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left relative z-10 hidden md:table-cell align-middle bg-blue-50/40",
-              "pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-1 border-r border-gray-200"
+              "pl-8 sm:pl-10 pr-3 sm:pr-4 py-0 border-r border-gray-200"
             )}>
               {showNoBarcode ? (
                 <span className={cn(
@@ -1377,7 +1378,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 hidden md:table-cell align-middle",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             {!product.barcode ? (
               <span className={cn(
@@ -1401,7 +1402,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 hidden lg:table-cell align-middle",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             {!isVariant && (
               <span className={cn(
@@ -1421,7 +1422,7 @@ export default function CategorysPage() {
           <td className={cn(
             "text-left relative z-10 align-middle",
             isVariant && "bg-[#F9FAFB]",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             <CategoryColumn
               product={product}
@@ -1445,9 +1446,9 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "w-1/4 relative z-10 align-middle bg-[#F9FAFB]",
-              "px-3 sm:px-4 py-2 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-200"
             )}>
-              <div className="flex items-center relative h-12">
+              <div className="flex items-center relative h-8">
                 {/* Horizontal line connecting to variant name - aligned with vertical center */}
                 <div className="absolute left-0 top-0 bottom-0 flex items-center pointer-events-none" style={{ width: '2.75rem' }}>
                   <div 
@@ -1473,7 +1474,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "w-1/4 relative z-10 overflow-visible align-middle",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             {/* Expansion chevron - positioned in left padding */}
             {productHasVariants && (
@@ -1576,7 +1577,7 @@ export default function CategorysPage() {
           <td className={cn(
             "text-left w-1/8 hidden md:table-cell relative z-10 align-left",
             isVariant && "bg-[#F9FAFB]",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             <StorageColumn
               product={product}
@@ -1597,7 +1598,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left hidden lg:table-cell",
-            "px-3 sm:px-4 py-2 align-middle border-r border-gray-200"
+            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-200"
           )}>
             <Badge
               variant="outline"
@@ -1619,7 +1620,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left hidden sm:table-cell",
-            "px-3 sm:px-4 py-2 align-middle border-r border-gray-200"
+            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-200"
           )}>
             <div className="flex items-center justify-end">
               <span className={cn(
@@ -1667,7 +1668,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-right w-1/8 hidden sm:table-cell",
-            "px-3 sm:px-4 py-2 align-middle border-r border-gray-200"
+            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-200"
           )}>
             <div className={cn(
               "flex items-center justify-left",
@@ -1685,7 +1686,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-right w-1/8 hidden sm:table-cell align-middle bg-blue-50/20",
-              "px-3 sm:px-4 py-2 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-200"
             )}>
               <div className={cn(
                 "flex items-center justify-left gap-2",
@@ -1717,7 +1718,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left w-1/8 hidden sm:table-cell align-middle",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             <div className={cn(
               "flex items-center justify-left gap-2",
@@ -1750,7 +1751,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left hidden lg:table-cell align-middle",
-            "px-3 sm:px-4 py-2 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-200"
           )}>
             <div className={cn(
               "flex items-center justify-left",
@@ -1768,7 +1769,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left hidden lg:table-cell align-middle bg-blue-50/20",
-              "px-3 sm:px-4 py-2 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-200"
             )}>
               <span className="text-xs text-gray-400">Inherited</span>
             </td>
@@ -1791,7 +1792,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left hidden lg:table-cell align-middle bg-blue-50/20",
-              "px-3 sm:px-4 py-2 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-200"
             )}>
               <span className="text-xs text-gray-400">Inherited</span>
             </td>
@@ -1801,7 +1802,7 @@ export default function CategorysPage() {
           <td 
             className={cn(
               "text-left hidden lg:table-cell align-middle",
-              "px-3 sm:px-4 py-2 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-200"
             )}
             onClick={(e) => {
               if (viewMode === 'daily-ops') {
@@ -2692,7 +2693,7 @@ export default function CategorysPage() {
   };
 
   return (
-    <div className={`h-screen ${isMobile ? 'm-2 rounded-lg' : 'm-0 rounded-none'} border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y bg-white`} style={{ touchAction: 'pan-y' }}>
+    <div className={`h-screen ${isMobile ? 'm-2 rounded-lg' : 'm-0 rounded-none'} border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y`} style={{ touchAction: 'pan-y' }}>
 
 
 
@@ -2701,12 +2702,13 @@ export default function CategorysPage() {
 
 
       {/* Main Layout with Product Table */}
-      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none">
+      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none p-6">
         {/* Main Content - Products Table */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 min-w-0 min-h-0 relative">
+        <div className="flex-1 flex flex-col overflow-hidden  min-w-0 min-h-0 relative ">
           {/* Search Results Info - Above all other elements */}
+          
           {searchTerm && (
-            <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 bg-blue-50 border-b border-blue-200 flex items-center justify-between gap-3 relative z-50">
+            <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-0.5 bg-blue-50 border-b border-blue-200 flex items-center justify-between gap-3 relative z-50 ">
               <div className="text-sm font-medium text-blue-900">
                 {filteredProducts.length > 0 && (
                   <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found</span>
@@ -2715,6 +2717,7 @@ export default function CategorysPage() {
                   <span className="text-red-600">No results found</span>
                 )}
               </div>
+              
               {productViewMode === 'table' && (
                 <div className="flex items-center gap-2 ml-auto">
                   <TooltipProvider>
@@ -2741,116 +2744,140 @@ export default function CategorysPage() {
 
           {(categoryProducts.length > 0 || productsLoading) ? (
             <>
-              {/* Row A: Control Bar - Search Bar + Action Buttons */}
-              <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-2 sm:py-2 bg-white border-b flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                {/* Multi-Intent Search Bar - Full width on mobile */}
-                <div className="flex-1 w-full sm:w-auto">
-                  <MultiIntentSearch
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    onSubmit={handleSearchSubmit}
-                    onProductClick={handleSearchProductClick}
-                    onCategoryClick={handleSearchCategoryClick}
-                    onSupplierClick={handleSearchSupplierClick}
-                    onCreateProduct={() => {
-                      setScannedSKU('');
-                      setPreFilledProductName('');
-                      navigate('/dashboard/products/new');
-                    }}
-                    onCreateCategory={handleAddCategory}
-                    onTokensChange={(tokens) => setSearchTokens(tokens)}
-                    placeholder="Search products, SKUs, categories, suppliers… (e.g., stock:low warehouse:A)"
-                  />
-                </div>
-                {/* Action Buttons - Stack on mobile, horizontal on desktop */}
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {selectedProductIds.size > 0 && (
-                    <span className="text-xs sm:text-sm font-medium text-gray-600 px-2 py-1.5 sm:px-0 sm:py-0 bg-gray-100 sm:bg-transparent rounded-md sm:rounded-none">
-                      {selectedProductIds.size} selected
-                    </span>
-                  )}
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation flex-1 sm:flex-initial"
-                    onClick={() => {
-                      setScannedSKU('');
-                      setPreFilledProductName('');
-                      navigate('/dashboard/products/new');
-                    }}
-                  >
-                    <Plus className="w-4 h-4 sm:mr-2" />
-                    <span className="hidden xs:inline sm:inline">Add Product</span>
-                  </Button>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setIsColumnVisibilityModalOpen(true)}
-                          className="gap-2 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation px-3 sm:px-3"
-                        >
-                          <Settings className="w-4 h-4" />
-                          <span className="hidden sm:inline">Columns</span>
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Customize visible columns</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <Button
-                    variant="ghost"
-                    className="hidden"
-                    size="sm"
-                    onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
-                  >
-                    {productViewMode === 'table' ? (
-                      <>
-                        <Grid3x3 className="w-4 h-4 mr-2" />
-                        Grid
-                      </>
-                    ) : (
-                      <>
-                        <Table2 className="w-4 h-4 mr-2" />
-                        Table
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              {/* Quick Filters with Category and Warehouse Dropdowns */}
-              <div className="flex-shrink-0 bg-white border-b border-gray-200">
-                <div className="flex items-center justify-between gap-3 px-3 md:px-4 lg:px-6 py-2">
-                  {/* Quick Filters on the left */}
-                  <div className="flex-1 min-w-0">
-                    <QuickFilters
-                      activeFilters={activeQuickFilters}
-                      onFilterToggle={(filter) => {
-                        setActiveQuickFilters(prev => 
-                          prev.includes(filter) 
-                            ? prev.filter(f => f !== filter)
-                            : [...prev, filter]
-                        );
-                      }}
-                      onClearAll={() => setActiveQuickFilters([])}
-                      lowStockCount={dashboardMetrics.lowStockCount}
-                      outOfStockCount={dashboardMetrics.outOfStockCount}
-                      missingDataCount={categoryProducts.filter((p: any) => 
-                        !p.sku || p.sku === '---' || !p.category_name
-                      ).length}
-                      needsReorderCount={categoryProducts.filter((p: any) => {
-                        const qty = Number(p.quantity_in_stock) || 0;
-                        const minLevel = Number(p.minimum_stock_level) || 0;
-                        return qty > 0 && qty <= minLevel;
-                      }).length}
-                    />
+              {/* Search and Filters Card */}
+              <Card className="mb-6">
+                <CardContent className="p-4 space-y-4">
+                  {/* Row A: Control Bar - Search Bar + Action Buttons */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                    {/* Multi-Intent Search Bar - Full width on mobile */}
+                    <div className="flex-1 w-full sm:w-auto">
+                      <MultiIntentSearch
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        onSubmit={handleSearchSubmit}
+                        onProductClick={handleSearchProductClick}
+                        onCategoryClick={handleSearchCategoryClick}
+                        onSupplierClick={handleSearchSupplierClick}
+                        onCreateProduct={() => {
+                          setScannedSKU('');
+                          setPreFilledProductName('');
+                          navigate('/dashboard/products/new');
+                        }}
+                        onCreateCategory={handleAddCategory}
+                        onTokensChange={(tokens) => setSearchTokens(tokens)}
+                        placeholder="Search products, SKUs, categories, suppliers… (e.g., stock:low warehouse:A)"
+                      />
+                    </div>
+                    {/* Action Buttons - Stack on mobile, horizontal on desktop */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      {selectedProductIds.size > 0 && (
+                        <span className="text-xs sm:text-sm font-medium text-gray-600 px-2 py-0.5 sm:px-0 sm:py-0 bg-gray-100 sm:bg-transparent rounded-md sm:rounded-none">
+                          {selectedProductIds.size} selected
+                        </span>
+                      )}
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation flex-1 sm:flex-initial"
+                        onClick={() => {
+                          setScannedSKU('');
+                          setPreFilledProductName('');
+                          navigate('/dashboard/products/new');
+                        }}
+                      >
+                        <Plus className="w-4 h-4 sm:mr-2" />
+                        <span className="hidden xs:inline sm:inline">Add Product</span>
+                      </Button>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setShowFilters(!showFilters)}
+                              className="gap-2 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation px-3 sm:px-3"
+                            >
+                              <Filter className="w-4 h-4" />
+                              {showFilters ? (
+                                <ChevronUp className="w-4 h-4" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4" />
+                              )}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{showFilters ? 'Hide filters' : 'Show filters'}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setIsColumnVisibilityModalOpen(true)}
+                              className="gap-2 h-10 sm:h-9 min-h-[44px] sm:min-h-0 touch-manipulation px-3 sm:px-3"
+                            >
+                              <Settings className="w-4 h-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Customize visible columns</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <Button
+                        variant="ghost"
+                        className="hidden"
+                        size="sm"
+                        onClick={() => setProductViewMode(productViewMode === 'table' ? 'grid' : 'table')}
+                      >
+                        {productViewMode === 'table' ? (
+                          <>
+                            <Grid3x3 className="w-4 h-4 mr-2" />
+                            Grid
+                          </>
+                        ) : (
+                          <>
+                            <Table2 className="w-4 h-4 mr-2" />
+                            Table
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </div>
-                  
-                  {/* Category and Warehouse Dropdowns on the right */}
-                  <div className="flex items-center gap-2 flex-shrink-0">
+
+                  {/* Quick Filters with Category and Warehouse Dropdowns */}
+                  {showFilters && (
+                  <div className="flex items-center justify-between gap-3 pt-2 border-t">
+                    {/* Quick Filters on the left */}
+                    <div className="flex-1 min-w-0">
+                      <QuickFilters
+                        activeFilters={activeQuickFilters}
+                        onFilterToggle={(filter) => {
+                          setActiveQuickFilters(prev => 
+                            prev.includes(filter) 
+                              ? prev.filter(f => f !== filter)
+                              : [...prev, filter]
+                          );
+                        }}
+                        onClearAll={() => setActiveQuickFilters([])}
+                        lowStockCount={dashboardMetrics.lowStockCount}
+                        outOfStockCount={dashboardMetrics.outOfStockCount}
+                        missingDataCount={categoryProducts.filter((p: any) => 
+                          !p.sku || p.sku === '---' || !p.category_name
+                        ).length}
+                        needsReorderCount={categoryProducts.filter((p: any) => {
+                          const qty = Number(p.quantity_in_stock) || 0;
+                          const minLevel = Number(p.minimum_stock_level) || 0;
+                          return qty > 0 && qty <= minLevel;
+                        }).length}
+                      />
+                    </div>
+                    
+                    {/* Category and Warehouse Dropdowns on the right */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
                     {/* Category Quick Selector */}
                     <Popover open={isCategoryPopoverOpen} onOpenChange={setIsCategoryPopoverOpen}>
                       <PopoverTrigger asChild>
@@ -2899,7 +2926,7 @@ export default function CategorysPage() {
                                   <label
                                     key={category.id}
                                     className={cn(
-                                      "flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
+                                      "flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
                                       isSelected && "bg-blue-50"
                                     )}
                                   >
@@ -2983,7 +3010,7 @@ export default function CategorysPage() {
                                   setIsWarehousePopoverOpen(false);
                                 }}
                                 className={cn(
-                                  "w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
+                                  "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
                                   !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
                                 )}
                               >
@@ -2998,7 +3025,7 @@ export default function CategorysPage() {
                                       setIsWarehousePopoverOpen(false);
                                     }}
                                     className={cn(
-                                      "w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
+                                      "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
                                       selectedWarehouse === warehouse.name && "bg-blue-50 font-medium text-blue-900"
                                     )}
                                   >
@@ -3006,7 +3033,7 @@ export default function CategorysPage() {
                                   </button>
                                 ))
                               ) : (
-                                <div className="px-2 py-1.5 text-xs text-gray-500 text-center">
+                                <div className="px-2 py-0.5 text-xs text-gray-500 text-center">
                                   No warehouses found
                                 </div>
                               )}
@@ -3032,7 +3059,9 @@ export default function CategorysPage() {
                     )}
                   </div>
                 </div>
-              </div>
+                  )}
+              </CardContent>
+            </Card>
               
               {/* Products Section - Scrollable */}
               <div 
@@ -3044,7 +3073,7 @@ export default function CategorysPage() {
               >
                 <div className="flex-1 flex flex-col min-h-0">
                 {productsLoading ? (
-                  <div className="flex items-center justify-center py-12">
+                  <div className="flex items-center justify-center py-2">
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
                       <p className="text-gray-600">Loading products...</p>
@@ -3076,7 +3105,7 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 ) : productViewMode === 'table' ? (
-                  <div className="flex-1 flex flex-col min-h-0 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden relative">
+                  <div className="flex-1 flex flex-col min-h-0 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden relative p-1">
                     {/* Scroll indicators for mobile */}
                     <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none z-20 sm:hidden" />
                     <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none z-20 sm:hidden" />
@@ -3088,7 +3117,7 @@ export default function CategorysPage() {
                             <th 
                               className={cn(
                                 "text-center w-14 sm:w-12",
-                                "px-3 sm:px-4 py-3 border-r border-gray-200"
+                                "px-3 sm:px-4 py-0 border-r border-gray-200"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -3185,12 +3214,12 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-14 sm:w-12 relative z-10",
-                                    "px-3 sm:px-4 py-2 border-r border-gray-200"
+                                    "px-3 sm:px-4 py-0 border-r border-gray-200"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
                                 >
-                                  <div className="flex items-center justify-center h-12">
+                                  <div className="flex items-center justify-center h-8">
                                     <input
                                       type="checkbox"
                                       checked={selectedProductIds.has(product.id)}
@@ -3254,7 +3283,7 @@ export default function CategorysPage() {
                                           className={cn(
                                             'group transition-all duration-200 relative border-b border-gray-200',
                                             'cursor-pointer',
-                                            'h-12',
+                                            'h-8',
                                             'bg-[#F9FAFB]'
                                           )}
                                         >
@@ -3264,12 +3293,12 @@ export default function CategorysPage() {
                                           <td 
                                             className={cn(
                                               "text-center w-14 sm:w-12 relative z-10 bg-[#F9FAFB]",
-                                              "px-3 sm:px-4 py-2 border-r border-gray-200"
+                                              "px-3 sm:px-4 py-0 border-r border-gray-200"
                                             )}
                                             onClick={(e) => e.stopPropagation()}
                                             data-interactive
                                           >
-                                            <div className="flex items-center justify-center h-12">
+                                            <div className="flex items-center justify-center h-8">
                                               <input
                                                 type="checkbox"
                                                 checked={selectedProductIds.has(variant.id)}
@@ -3312,7 +3341,7 @@ export default function CategorysPage() {
                     
                     {/* Pagination Controls */}
                     {totalPages > 1 && (
-                      <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-3 bg-white border-t border-gray-200">
+                      <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-1 bg-white border-t border-gray-200">
                         <div className="flex items-center gap-2">
                           <span className="text-xs sm:text-sm text-gray-700">
                             Showing {startIndex + 1} to {Math.min(endIndex, totalProducts)} of {totalProducts} products
@@ -3690,7 +3719,7 @@ export default function CategorysPage() {
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">{selectedProduct.name}</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4 py-4">
+            <div className="space-y-4 py-1">
               {/* Stock Information */}
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
@@ -3851,7 +3880,7 @@ export default function CategorysPage() {
       {/* Fixed Bottom Bulk Action Bar */}
       {selectedProductIds.size > 0 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg safe-area-inset-bottom">
-          <div className="max-w-full mx-auto px-3 sm:px-4 py-3">
+          <div className="max-w-full mx-auto px-3 sm:px-4 py-1">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-3">
                 <span className="text-xs sm:text-sm font-semibold text-gray-900">

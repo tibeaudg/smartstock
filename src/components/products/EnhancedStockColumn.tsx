@@ -38,11 +38,6 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
   onViewHistory,
   formatStockQuantity,
 }) => {
-  // Calculate reorder threshold progress
-  const reorderProgress = minimumStockLevel > 0 
-    ? Math.min(100, (stockValue / minimumStockLevel) * 100)
-    : 100;
-
   const getTrendIcon = () => {
     if (!trend) return null;
     switch (trend) {
@@ -71,12 +66,27 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
     }
   };
 
+  // Map stock dot color to lighter background color
+  const getCellBackgroundColor = () => {
+    if (stockDotColor === 'bg-red-500') return 'bg-red-50';
+    if (stockDotColor === 'bg-orange-500') return 'bg-orange-50';
+    if (stockDotColor === 'bg-green-500') return 'bg-green-50';
+    return '';
+  };
+
+  // Map stock dot color to darker border color
+  const getBadgeBorderColor = () => {
+    if (stockDotColor === 'bg-red-500') return 'border-red-400';
+    if (stockDotColor === 'bg-orange-500') return 'border-orange-400';
+    if (stockDotColor === 'bg-green-500') return 'border-green-400';
+    return 'border-gray-300';
+  };
+
   return (
     <td 
       className={cn(
-        "text-right w-1/8 align-middle",
-        isVariant ? "bg-blue-50/20" : "",
-        "px-3 sm:px-4 py-2 border-r border-gray-200"
+        "text-right w-auto align-middle",
+        "px-2 sm:px-4 py-1 border-r border-gray-200"
       )} 
       onClick={(e) => isMobile && e.stopPropagation()}
     >
@@ -93,15 +103,20 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
                 <div
                   data-interactive
                   className={cn(
-                    compactMode ? "rounded-lg p-1 transition-all" : "space-y-1 rounded-lg p-1.5 transition-all",
-                    "cursor-pointer group hover:bg-blue-600 hover:shadow-md",
-                    isAggregatedTotal && "bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/60 shadow-sm"
+                    compactMode ? "rounded-lg p-1 transition-all" : "space-y-0.5 rounded-lg p-1 transition-all",
+                    "cursor-pointer group hover:shadow-md",
+                    "border-2",
+                    isVariant 
+                      ? "bg-blue-50/20 border-blue-300" 
+                      : isAggregatedTotal 
+                        ? "bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-400 shadow-sm"
+                        : cn(getCellBackgroundColor(), getBadgeBorderColor())
                   )}
                   onClick={(e) => e.stopPropagation()}
                 >
                   {/* Stock value and status */}
                   <div className={cn(
-                    "flex items-center justify-left gap-2"
+                    "flex items-center justify-center gap-2"
                   )}>
                     <div
                       className={cn(
@@ -127,14 +142,6 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
                     >
                       {formatStockQuantity(stockValue)}
                     </span>
-                    {minimumStockLevel > 0 && !isVariant && (
-                      <span className={cn(
-                        "text-[10px] font-normal transition-colors",
-                        isMobile ? "text-gray-400" : "text-gray-400 group-hover:text-blue-100"
-                      )}>
-                        / {formatStockQuantity(minimumStockLevel)} min
-                      </span>
-                    )}
                     {isAggregatedTotal && (
                       <span className="text-[9px] text-blue-600 font-bold ml-1 bg-blue-200/50 px-1 py-0.5 rounded">Σ</span>
                     )}
@@ -144,7 +151,7 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
                   {/* Status and trend */}
                   {!compactMode && (
                     <div className={cn(
-                      "text-xs font-medium transition-colors text-right",
+                      "text-xs font-medium transition-colors text-center",
                       isMobile ? "text-gray-600" : "text-gray-600 group-hover:text-blue-600"
                     )}>
                       {stockStatus}
@@ -158,21 +165,6 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
                           · {getTrendLabel()}
                         </span>
                       )}
-                    </div>
-                  )}
-
-                  {/* Reorder threshold visualization - constrained width */}
-                  {minimumStockLevel > 0 && !isVariant && (
-                    <div className="mt-1">
-                      <div className="h-1 bg-gray-200 overflow-hidden" style={{ width: '120px', maxWidth: '100%', borderRadius: '4px' }}>
-                        <div
-                          className={cn(
-                            "h-full transition-all",
-                            reorderProgress < 50 ? "bg-red-500" : reorderProgress < 75 ? "bg-orange-500" : "bg-green-500"
-                          )}
-                          style={{ width: `${Math.min(100, reorderProgress)}%`, borderRadius: '4px' }}
-                        />
-                      </div>
                     </div>
                   )}
 
@@ -203,8 +195,15 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
           </TooltipProvider>
         </StockQuickActionMenu>
       ) : (
-        <div className="space-y-1">
-          <div className="flex items-center justify-end gap-2">
+        <div 
+          className={cn(
+            "space-y-0.5 rounded-lg p-1.5 border-2",
+            isVariant 
+              ? "bg-blue-50/20 border-blue-300" 
+              : cn(getCellBackgroundColor(), getBadgeBorderColor())
+          )}
+        >
+          <div className="flex items-center justify-center gap-2">
             <div
               className={cn(
                 'rounded-full shadow-sm',
@@ -223,7 +222,7 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
               {formatStockQuantity(stockValue)}
             </span>
           </div>
-          <div className="text-xs text-gray-600 text-right">
+          <div className="text-xs text-gray-600 text-center">
             {stockStatus}
           </div>
         </div>
