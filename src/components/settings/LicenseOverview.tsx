@@ -4,17 +4,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Package, Sparkles } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
-
-const formatCurrency = (value: number | null | undefined) => {
-  const amount = typeof value === 'number' ? value : 0;
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 2,
-  }).format(amount);
-};
+import { useCurrency } from '@/hooks/useCurrency';
 
 export const LicenseOverview = () => {
+  const { formatPrice } = useCurrency();
   const {
     currentTier,
     nextTier,
@@ -59,7 +52,7 @@ export const LicenseOverview = () => {
     : null;
 
   const nextPlanMessage = nextTier
-    ? `${nextTier.display_name} • ${nextTier.included_products ?? 'Unlimited'} products • ${formatCurrency(nextTier.price_monthly)}`
+    ? `${nextTier.display_name} • ${nextTier.included_products ?? 'Unlimited'} products • ${formatPrice(nextTier.price_monthly)}`
     : 'You are on the highest available plan.';
 
   return (
@@ -87,7 +80,7 @@ export const LicenseOverview = () => {
             </div>
             <div className="text-right">
               <p className="text-sm text-muted-foreground">Estimated monthly charge</p>
-              <p className="text-xl font-semibold text-foreground">{formatCurrency(planPrice)}</p>
+              <p className="text-xl font-semibold text-foreground">{formatPrice(planPrice)}</p>
             </div>
           </div>
 

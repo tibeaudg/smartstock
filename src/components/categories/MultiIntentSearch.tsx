@@ -348,7 +348,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   const showDropdown = isOpen && (value.trim().length >= 2 || activeTab === 'create');
 
   return (
-    <div ref={searchRef} className="relative flex-1">
+    <div ref={searchRef} className="relative flex-1 rounded-xl">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
         <Input

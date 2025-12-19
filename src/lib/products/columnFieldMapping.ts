@@ -194,23 +194,6 @@ export function getDefaultVisibleColumns(): string[] {
  * Decision-first order: Product | Stock Status | Available | Location(s) | SKU | Category | Warehouses
  */
 export function getDefaultColumnOrder(): string[] {
-<<<<<<< HEAD
-  // Recommended decision-first order
-  return [
-    'name',           // Product
-    'stock',          // Stock Status & Available (shows both status indicator and quantity)
-    'location',       // Location(s)
-    'sku',            // SKU
-    'category_name',  // Category
-    'warehouses',     // Warehouses
-    // Additional columns (not in default visible set)
-    'barcode',
-    'description',
-    'minimum_stock_level',
-    'purchase_price',
-    'sale_price',
-    'unit_price',
-=======
   // Decision-first order prioritizing actionable information
   return [
     'name',           // Product (visual anchor)
@@ -225,7 +208,6 @@ export function getDefaultColumnOrder(): string[] {
     'purchase_price', // Cost (financial)
     'sale_price',    // Price (financial)
     'unit_price',    // Unit Price (financial)
->>>>>>> 0c6dbc15edfccecdd64f738284615a3dd123bee3
   ];
 }
 

@@ -15,10 +15,10 @@ interface CurrencyProviderProps {
 }
 
 export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
-  // Initialize currency from localStorage or default to EUR
+  // Initialize currency from localStorage or default to USD
   const [currency, setCurrencyState] = useState<Currency>(() => {
     const saved = localStorage.getItem('currency');
-    return (saved as Currency) || 'EUR';
+    return (saved as Currency) || 'USD';
   });
 
   // Save to localStorage whenever currency changes
@@ -31,7 +31,7 @@ export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
   }, []);
 
   const formatPrice = useCallback((price: number): string => {
-    const locale = currency === 'EUR' ? 'nl-NL' : 'en-US';
+    const locale = 'en-US';
     
     return new Intl.NumberFormat(locale, {
       style: 'currency',

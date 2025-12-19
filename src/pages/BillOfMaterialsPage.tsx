@@ -57,6 +57,7 @@ export default function BillOfMaterialsPage() {
   // Fetch all products with BOMs (either with components or with versions)
   const { data: bomList, isLoading, refetch } = useQuery<BOMListItem[]>({
     queryKey: ['bomList', activeBranch?.branch_id],
+    refetchOnWindowFocus: true, // Enable refetch on window focus
     queryFn: async () => {
       if (!activeBranch) return [];
 

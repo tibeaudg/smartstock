@@ -20,11 +20,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { User, Key, CheckCircle, Check, LogOut, Trash2 } from 'lucide-react';
+import { User, Key, CheckCircle, Check, LogOut, Trash2, DollarSign } from 'lucide-react';
 import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { CurrencySwitcher } from '@/components/CurrencySwitcher';
 
 // Schema for profile data validation
 const profileSchema = z.object({
@@ -236,6 +237,17 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
 
         </Card>
       </div>
+
+      {/* Currency Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2"><DollarSign className="w-4 h-4" /><span>Currency</span></CardTitle>
+          <CardDescription>Select your preferred currency for displaying prices.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <CurrencySwitcher />
+        </CardContent>
+      </Card>
 
       {/* Delete Account Card */}
       <Card className="border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/50">

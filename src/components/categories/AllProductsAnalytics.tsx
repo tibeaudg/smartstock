@@ -15,6 +15,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useCurrency } from '@/hooks/useCurrency';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AllProductsAnalyticsProps {
@@ -26,6 +27,7 @@ export const AllProductsAnalytics: React.FC<AllProductsAnalyticsProps> = ({
 }) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { formatPrice } = useCurrency();
 
   // Calculate current analytics from products
   const analytics = React.useMemo(() => {
@@ -133,15 +135,6 @@ export const AllProductsAnalytics: React.FC<AllProductsAnalyticsProps> = ({
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
   const formatNumber = (value: number) => {
     return new Intl.NumberFormat('en-US').format(value);
   };
@@ -213,7 +206,7 @@ export const AllProductsAnalytics: React.FC<AllProductsAnalyticsProps> = ({
     },
     {
       title: 'Stock Value',
-      value: formatCurrency(analytics.total_stock_value),
+      value: formatPrice(analytics.total_stock_value),
       change: stockValueChange,
       icon: DollarSign,
       gradient: 'from-purple-50 to-purple-100',

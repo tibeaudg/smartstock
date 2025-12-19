@@ -187,8 +187,8 @@ export const useStockMovements = (): {
       return fetchTransactions(cachedTransactions);
     },
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false, // Disabled - show cached data immediately
-    staleTime: Infinity, // Never mark as stale - persist until invalidated
+    refetchOnWindowFocus: true, // Enable refetch on window focus for fresh data
+    staleTime: 1000 * 60 * 2, // Mark as stale after 2 minutes (allows background refresh)
     onError: (error) => {
       console.error('Stock movements fetch error:', error);
     },

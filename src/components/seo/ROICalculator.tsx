@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { Calculator, TrendingUp, Clock, DollarSign, AlertCircle } from 'lucide-react';
+import { useCurrency } from '@/hooks/useCurrency';
 
 interface ROICalculatorProps {
   className?: string;
 }
 
 export default function ROICalculator({ className = '' }: ROICalculatorProps) {
+  const { formatPrice } = useCurrency();
   const [inventoryValue, setInventoryValue] = useState<number>(50000);
   const [weeklyHours, setWeeklyHours] = useState<number>(10);
   const [hourlyRate, setHourlyRate] = useState<number>(25);
@@ -59,15 +61,6 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
       annualTimeSaved
     };
   }, [inventoryValue, weeklyHours, hourlyRate, errorRate, stockoutFrequency, stockoutCost, overstockPercentage, softwareCost]);
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
 
   const formatNumber = (value: number, decimals: number = 1) => {
     return value.toFixed(decimals);
@@ -214,7 +207,7 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
               {calculations.roi > 0 ? '+' : ''}{formatNumber(calculations.roi)}%
             </div>
             <div className="text-sm opacity-90">
-              {formatCurrency(calculations.netSavings)} net savings per year
+              {formatPrice(calculations.netSavings)} net savings per year
             </div>
           </div>
 
@@ -227,7 +220,7 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
                   <span className="text-sm font-medium text-gray-700">Time Savings</span>
                 </div>
                 <span className="text-lg font-bold text-blue-600">
-                  {formatCurrency(calculations.timeSavingsValue)}
+                  {formatPrice(calculations.timeSavingsValue)}
                 </span>
               </div>
               <p className="text-xs text-gray-600">
@@ -242,7 +235,7 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
                   <span className="text-sm font-medium text-gray-700">Error Reduction</span>
                 </div>
                 <span className="text-lg font-bold text-green-600">
-                  {formatCurrency(calculations.annualErrorSavings)}
+                  {formatPrice(calculations.annualErrorSavings)}
                 </span>
               </div>
               <p className="text-xs text-gray-600">
@@ -257,7 +250,7 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
                   <span className="text-sm font-medium text-gray-700">Stockout Reduction</span>
                 </div>
                 <span className="text-lg font-bold text-orange-600">
-                  {formatCurrency(calculations.annualStockoutSavings)}
+                  {formatPrice(calculations.annualStockoutSavings)}
                 </span>
               </div>
               <p className="text-xs text-gray-600">
@@ -272,7 +265,7 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
                   <span className="text-sm font-medium text-gray-700">Overstock Reduction</span>
                 </div>
                 <span className="text-lg font-bold text-purple-600">
-                  {formatCurrency(calculations.carryingCostSavings)}
+                  {formatPrice(calculations.carryingCostSavings)}
                 </span>
               </div>
               <p className="text-xs text-gray-600">
@@ -286,19 +279,19 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <div className="flex items-center justify-between mb-2">
               <span className="text-base font-semibold text-gray-900">Total Annual Savings</span>
               <span className="text-2xl font-bold text-gray-900">
-                {formatCurrency(calculations.totalAnnualSavings)}
+                {formatPrice(calculations.totalAnnualSavings)}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">Annual Software Cost</span>
               <span className="text-gray-700 font-medium">
-                {formatCurrency(calculations.annualSoftwareCost)}
+                {formatPrice(calculations.annualSoftwareCost)}
               </span>
             </div>
             <div className="mt-3 pt-3 border-t border-gray-300 flex items-center justify-between">
               <span className="text-base font-semibold text-gray-900">Net Annual Savings</span>
               <span className="text-xl font-bold text-blue-600">
-                {formatCurrency(calculations.netSavings)}
+                {formatPrice(calculations.netSavings)}
               </span>
             </div>
           </div>
