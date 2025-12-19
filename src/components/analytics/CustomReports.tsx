@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { z } from 'zod';
 
 interface ReportTemplate {
   id: string;
@@ -169,14 +170,47 @@ export const CustomReports = () => {
     fetchTemplates();
   }, [user]);
 
+  // Security: Validate dateRange input to prevent SQL injection
+  const dateRangeSchema = z.enum(['7d', '30d', '90d', '1y', '7 days', '30 days', '90 days', '365 days']);
+  const validateDateRange = (dateRange: string): string => {
+    try {
+      // Normalize common formats
+      const normalized = dateRange.toLowerCase().trim();
+      const validRanges: Record<string, string> = {
+        '7d': '7 days',
+        '30d': '30 days',
+        '90d': '90 days',
+        '1y': '365 days',
+        '7 days': '7 days',
+        '30 days': '30 days',
+        '90 days': '90 days',
+        '365 days': '365 days',
+      };
+      
+      const validRange = validRanges[normalized];
+      if (!validRange) {
+        throw new Error('Invalid date range');
+      }
+      return validRange;
+    } catch {
+      // Default to safe value if invalid
+      return '30 days';
+    }
+  };
+
   const handleCreateTemplate = async () => {
     if (!user) return;
 
     try {
-      // Generate SQL query based on form data
-      let querySql = '';
+      // Security: Validate and sanitize inputs
+      const validatedDateRange = validateDateRange(formData.dateRange);
+      
+      // Security: Use parameterized query templates with placeholders
+      // These templates will be executed via RPC functions or with proper parameterization
+      let queryTemplate = '';
       if (formData.type === 'sales') {
-        querySql = `
+        // Template with placeholder - will be replaced safely when executed
+        queryTemplate = `
           SELECT 
             DATE(st.created_at) as datum,
             p.name as product,
@@ -184,13 +218,13 @@ export const CustomReports = () => {
             (st.quantity * p.unit_price) as omzet
           FROM stock_transactions st
           JOIN products p ON st.product_id = p.id
-          WHERE st.user_id = '${user.id}'
+          WHERE st.user_id = :user_id
             AND st.transaction_type = 'out'
-            AND st.created_at >= NOW() - INTERVAL '${formData.dateRange}'
+            AND st.created_at >= NOW() - INTERVAL :date_range
           ORDER BY st.created_at DESC
         `;
       } else if (formData.type === 'inventory') {
-        querySql = `
+        queryTemplate = `
           SELECT 
             p.name as product,
             c.name as Category,
@@ -203,12 +237,12 @@ export const CustomReports = () => {
             END as status
           FROM products p
           LEFT JOIN categories c ON p.category_id = c.id
-          WHERE p.user_id = '${user.id}'
+          WHERE p.user_id = :user_id
             AND p.status = 'active'
           ORDER BY p.current_stock ASC
         `;
       } else if (formData.type === 'financial') {
-        querySql = `
+        queryTemplate = `
           SELECT 
             DATE_TRUNC('week', st.created_at) as periode,
             COUNT(*) as transacties,
@@ -218,15 +252,16 @@ export const CustomReports = () => {
             (SUM(st.quantity * p.unit_price * 0.3) / SUM(st.quantity * p.unit_price) * 100) as marges
           FROM stock_transactions st
           JOIN products p ON st.product_id = p.id
-          WHERE st.user_id = '${user.id}'
+          WHERE st.user_id = :user_id
             AND st.transaction_type = 'out'
-            AND st.created_at >= NOW() - INTERVAL '${formData.dateRange}'
+            AND st.created_at >= NOW() - INTERVAL :date_range
           GROUP BY DATE_TRUNC('week', st.created_at)
           ORDER BY periode DESC
         `;
       }
 
-      // Save template to database
+      // Security: Store validated parameters separately from query template
+      // Save template to database with parameterized query and validated parameters
       const { data, error } = await supabase
         .from('analytics_queries')
         .insert({
@@ -234,12 +269,14 @@ export const CustomReports = () => {
           name: formData.name,
           description: formData.description,
           query_type: formData.type,
-          query_sql: querySql,
+          query_sql: queryTemplate,
           parameters: {
-            dateRange: formData.dateRange,
-            categories: formData.categories,
-            products: formData.products,
-            branches: formData.branches
+            // Store validated, sanitized parameters
+            dateRange: validatedDateRange,
+            user_id: user.id, // Store user_id in parameters for safe substitution
+            categories: Array.isArray(formData.categories) ? formData.categories : [],
+            products: Array.isArray(formData.products) ? formData.products : [],
+            branches: Array.isArray(formData.branches) ? formData.branches : []
           }
         })
         .select()

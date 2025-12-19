@@ -45,10 +45,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       }
     });
     
-    // Log de error met uitgebreide contextuele informatie
+    // Log de error met uitgebreide contextuele informatie (async, don't await)
     logError(error, {
       componentStack: errorInfo.componentStack,
       message: `ErrorBoundary caught error: ${error.message}`,
+    }).catch(() => {
+      // Silently fail if logging fails
     });
 
     // Extra debugging informatie voor productie

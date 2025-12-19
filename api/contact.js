@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { validateContactForm } from './utils/validation.js';
 
 export default async function contactHandler(req, res) {
   try {
@@ -7,34 +8,18 @@ export default async function contactHandler(req, res) {
       return;
     }
 
-    const { name, email, message, subject } = req.body || {};
-    if (!name || !email || !message) {
-      res.status(400).json({ ok: false, error: 'Missing fields' });
-      return;
-    }
-
-    // Input validation and sanitization
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      res.status(400).json({ ok: false, error: 'Invalid email format' });
-      return;
-    }
-
-    // Sanitize inputs to prevent injection attacks
-    const sanitize = (str) => String(str).replace(/[<>]/g, '').trim();
-    const safeName = sanitize(name).substring(0, 100);
-    const safeEmail = sanitize(email).substring(0, 100);
-    const safeMessage = sanitize(message).substring(0, 5000);
-    const safeSubject = subject ? sanitize(subject).substring(0, 200) : '';
-
-    // Additional validation
-    if (safeName.length < 2 || safeMessage.length < 10) {
-      res.status(400).json({
-        ok: false,
-        error: 'Name must be at least 2 characters and message at least 10 characters'
+    // Security: Strict input validation using Zod-like validation
+    const validation = validateContactForm(req.body || {});
+    if (!validation.valid) {
+      res.status(400).json({ 
+        ok: false, 
+        error: 'Validation failed',
+        details: validation.errors 
       });
       return;
     }
+
+    const { name: safeName, email: safeEmail, message: safeMessage, subject: safeSubject } = validation.data;
 
     const smtpHost = process.env.SMTP_HOST;
     const smtpUser = process.env.SMTP_USER;

@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { validateVisitorChat } from './utils/validation.js';
 
 export default async function visitorChatHandler(req, res) {
   try {
@@ -7,29 +8,18 @@ export default async function visitorChatHandler(req, res) {
       return;
     }
 
-    const { email, message } = req.body || {};
-    if (!email || !message) {
-      res.status(400).json({ ok: false, error: 'Email and message are required' });
+    // Security: Strict input validation
+    const validation = validateVisitorChat(req.body || {});
+    if (!validation.valid) {
+      res.status(400).json({ 
+        ok: false, 
+        error: 'Validation failed',
+        details: validation.errors 
+      });
       return;
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      res.status(400).json({ ok: false, error: 'Invalid email format' });
-      return;
-    }
-
-    // Sanitize inputs to prevent injection attacks
-    const sanitize = (str) => String(str).replace(/[<>]/g, '').trim();
-    const safeEmail = sanitize(email).substring(0, 100);
-    const safeMessage = sanitize(message).substring(0, 2000);
-
-    // Additional validation
-    if (safeMessage.length < 5) {
-      res.status(400).json({ ok: false, error: 'Message must be at least 5 characters' });
-      return;
-    }
+    const { email: safeEmail, message: safeMessage } = validation.data;
 
     const smtpHost = process.env.SMTP_HOST;
     const smtpUser = process.env.SMTP_USER;

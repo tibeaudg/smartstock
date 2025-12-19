@@ -2,6 +2,8 @@
  * Centrale error handling utility voor de StockFlow applicatie
  */
 
+import { supabase } from '@/integrations/supabase/client';
+
 export interface ErrorInfo {
   message: string;
   stack?: string;
@@ -16,7 +18,7 @@ export interface ErrorInfo {
 /**
  * Log een error met contextuele informatie
  */
-export const logError = (error: Error, context?: Partial<ErrorInfo>) => {
+export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
   const errorInfo: ErrorInfo = {
     message: error.message,
     stack: error.stack,
@@ -39,6 +41,47 @@ export const logError = (error: Error, context?: Partial<ErrorInfo>) => {
   console.error('User Agent:', navigator.userAgent);
   console.error('Timestamp:', new Date().toISOString());
   console.groupEnd();
+
+  // Log to database (non-blocking, fire and forget)
+  if (typeof window !== 'undefined') {
+    // Get current user if available
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id || context?.userId || null;
+
+    // Determine error type from error message/name
+    let errorType = 'unknown';
+    if (error.name) {
+      errorType = error.name.toLowerCase();
+    } else if (error.message) {
+      if (error.message.includes('Network') || error.message.includes('fetch')) {
+        errorType = 'network';
+      } else if (error.message.includes('timeout')) {
+        errorType = 'timeout';
+      } else if (error.message.includes('permission') || error.message.includes('unauthorized')) {
+        errorType = 'permission';
+      }
+    }
+
+    // Insert error into database (don't await to avoid blocking)
+    supabase
+      .from('application_errors')
+      .insert({
+        error_message: error.message || 'Unknown error',
+        error_type: errorType,
+        stack_trace: error.stack || null,
+        user_id: userId,
+        page_url: window.location.href,
+        user_agent: navigator.userAgent,
+        component_stack: context?.componentStack || null,
+        metadata: {
+          branchId: context?.branchId || null,
+        }
+      })
+      .catch((dbError) => {
+        // Silently fail if database logging fails (to prevent infinite loops)
+        console.warn('Failed to log error to database:', dbError);
+      });
+  }
 
   // Hier kun je externe error logging toevoegen (bijv. Sentry, LogRocket, etc.)
   if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
@@ -75,7 +118,7 @@ export const safeJsonParse = <T>(json: string, fallback: T): T => {
   try {
     return JSON.parse(json);
   } catch (error) {
-    logError(error as Error, { message: 'JSON parse error' });
+    void logError(error as Error, { message: 'JSON parse error' });
     return fallback;
   }
 };
@@ -88,7 +131,7 @@ export const safeLocalStorage = {
     try {
       return localStorage.getItem(key) || fallback;
     } catch (error) {
-      logError(error as Error, { message: `localStorage.getItem error for key: ${key}` });
+      void logError(error as Error, { message: `localStorage.getItem error for key: ${key}` });
       return fallback;
     }
   },
@@ -98,7 +141,7 @@ export const safeLocalStorage = {
       localStorage.setItem(key, value);
       return true;
     } catch (error) {
-      logError(error as Error, { message: `localStorage.setItem error for key: ${key}` });
+      void logError(error as Error, { message: `localStorage.setItem error for key: ${key}` });
       return false;
     }
   },
@@ -108,7 +151,7 @@ export const safeLocalStorage = {
       localStorage.removeItem(key);
       return true;
     } catch (error) {
-      logError(error as Error, { message: `localStorage.removeItem error for key: ${key}` });
+      void logError(error as Error, { message: `localStorage.removeItem error for key: ${key}` });
       return false;
     }
   }
@@ -131,7 +174,7 @@ export const withRetry = async <T>(
       lastError = error as Error;
       
       if (attempt === maxRetries) {
-        logError(lastError, { message: `Operation failed after ${maxRetries} attempts` });
+        void logError(lastError, { message: `Operation failed after ${maxRetries} attempts` });
         throw lastError;
       }
       

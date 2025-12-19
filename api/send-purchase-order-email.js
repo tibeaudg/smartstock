@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { validateSMTPConfig, validateEmailData } from './utils/validation.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -8,44 +9,83 @@ export default async function handler(req, res) {
   try {
     const { smtpConfig, emailData } = req.body;
 
-    if (!smtpConfig || !emailData) {
-      return res.status(400).json({ error: 'Missing required parameters' });
+    // Security: Strict input validation
+    const smtpValidation = validateSMTPConfig(smtpConfig);
+    if (!smtpValidation.valid) {
+      return res.status(400).json({ 
+        error: 'Invalid SMTP configuration',
+        details: smtpValidation.errors 
+      });
     }
 
-    // Create transporter
+    const emailValidation = validateEmailData(emailData);
+    if (!emailValidation.valid) {
+      return res.status(400).json({ 
+        error: 'Invalid email data',
+        details: emailValidation.errors 
+      });
+    }
+
+    const validatedSMTP = smtpValidation.data;
+    const validatedEmail = emailValidation.data;
+
+    // Security: Validate SMTP host against allowlist for production
+    const allowedSMTPHosts = process.env.ALLOWED_SMTP_HOSTS 
+      ? process.env.ALLOWED_SMTP_HOSTS.split(',').map(h => h.trim())
+      : [];
+    
+    // In production, validate SMTP host
+    if (process.env.NODE_ENV === 'production' && allowedSMTPHosts.length > 0) {
+      if (!allowedSMTPHosts.includes(validatedSMTP.host)) {
+        return res.status(400).json({
+          success: false,
+          error: 'SMTP host not allowed'
+        });
+      }
+    }
+
+    // Create transporter with proper TLS validation
     const transporter = nodemailer.createTransport({
-      host: smtpConfig.host,
-      port: smtpConfig.port,
-      secure: smtpConfig.useTls && smtpConfig.port === 465, // true for 465, false for other ports
+      host: validatedSMTP.host,
+      port: validatedSMTP.port,
+      secure: validatedSMTP.useTls && validatedSMTP.port === 465, // true for 465, false for other ports
       auth: {
-        user: smtpConfig.username,
-        pass: smtpConfig.password,
+        user: validatedSMTP.username,
+        pass: validatedSMTP.password,
       },
+      // Security: Enable TLS certificate validation (removed rejectUnauthorized: false)
+      // Only allow self-signed certificates in development
       tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: process.env.NODE_ENV === 'production',
+        // In development, allow self-signed certs but log a warning
+        ...(process.env.NODE_ENV !== 'production' && {
+          rejectUnauthorized: false,
+          // Log warning in development
+          servername: validatedSMTP.host
+        })
       }
     });
 
     // Verify connection configuration
     await transporter.verify();
 
-    // Email options
+    // Email options using validated data
     const mailOptions = {
       from: {
-        name: smtpConfig.fromName || 'StockFlow',
-        address: smtpConfig.fromEmail
+        name: validatedSMTP.fromName,
+        address: validatedSMTP.fromEmail
       },
-      to: emailData.to,
-      cc: emailData.cc || undefined,
-      subject: emailData.subject,
-      html: emailData.body,
-      attachments: [
+      to: validatedEmail.to,
+      cc: validatedEmail.cc || undefined,
+      subject: validatedEmail.subject,
+      html: validatedEmail.body,
+      attachments: validatedEmail.purchaseOrderId ? [
         {
-          filename: `purchase-order-${emailData.purchaseOrderId}.pdf`,
+          filename: `purchase-order-${validatedEmail.purchaseOrderId}.pdf`,
           content: 'Purchase order PDF would be generated here',
           contentType: 'application/pdf'
         }
-      ]
+      ] : []
     };
 
     // Send email

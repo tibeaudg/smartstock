@@ -3,14 +3,17 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw, Trash2 } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw, Trash2, Search, Activity } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
-import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';  
+import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
+import { SystemOverview } from '@/components/admin/SystemOverview';
+import { RecentErrors } from '@/components/admin/RecentErrors';
+import { BackgroundJobs } from '@/components/admin/BackgroundJobs';  
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -20,6 +23,9 @@ import { UserActivityView } from '@/components/admin/UserActivityView';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
+import { formatDistanceToNow } from 'date-fns';
+import { PageHeader } from '@/components/admin/PageHeader';
+import { MetricCard } from '@/components/admin/MetricCard';
 
 // User management types
 type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'branches' | 'linkedUsers' | 'cus' | 'created';
@@ -123,6 +129,7 @@ function calculateUserStats(users: UserProfile[]) {
 /**
  * Calculate inactivity days
  * Returns days since last login, or days since account creation if never logged in
+ * Uses relative time format: "Active now", "2d ago", "1w ago", "1mo ago"
  */
 function calculateInactivityDays(
   lastLogin: string | null,
@@ -131,25 +138,70 @@ function calculateInactivityDays(
   const now = new Date();
   const accountCreated = new Date(createdAt);
   
+  let referenceDate: Date;
   if (!lastLogin) {
     // Never logged in - use account creation date
-    const diffTime = now.getTime() - accountCreated.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return {
-      days: diffDays,
-      display: diffDays === 0 ? 'Today' : `${diffDays}d ago`
-    };
+    referenceDate = accountCreated;
+  } else {
+    referenceDate = new Date(lastLogin);
   }
   
-  const lastLoginDate = new Date(lastLogin);
-  const diffTime = now.getTime() - lastLoginDate.getTime();
+  const diffTime = now.getTime() - referenceDate.getTime();
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   
-  if (diffDays === 0) return { days: 0, display: 'Today' };
-  if (diffDays === 1) return { days: 1, display: '1d ago' };
-  if (diffDays < 0) return { days: 0, display: `${Math.abs(diffDays)}d future` };
+  if (diffDays === 0) {
+    return { days: 0, display: 'Active now' };
+  }
   
-  return { days: diffDays, display: `${diffDays}d ago` };
+  if (diffDays < 0) {
+    return { days: 0, display: 'Active now' };
+  }
+  
+  // Use formatDistanceToNow for relative time
+  try {
+    const relative = formatDistanceToNow(referenceDate, { addSuffix: false });
+    // Convert to shorter format
+    if (relative.includes('less than a minute') || relative.includes('minute')) {
+      return { days: diffDays, display: 'Active now' };
+    }
+    if (relative.includes('hour')) {
+      const hours = Math.floor(diffTime / (1000 * 60 * 60));
+      return { days: diffDays, display: `${hours}h ago` };
+    }
+    if (relative.includes('day')) {
+      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      if (days < 7) {
+        return { days: diffDays, display: `${days}d ago` };
+      } else if (days < 30) {
+        const weeks = Math.floor(days / 7);
+        return { days: diffDays, display: `${weeks}w ago` };
+      } else {
+        const months = Math.floor(days / 30);
+        return { days: diffDays, display: `${months}mo ago` };
+      }
+    }
+    if (relative.includes('month')) {
+      const months = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30));
+      return { days: diffDays, display: `${months}mo ago` };
+    }
+    if (relative.includes('year')) {
+      const years = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
+      return { days: diffDays, display: `${years}y ago` };
+    }
+    
+    return { days: diffDays, display: `${diffDays}d ago` };
+  } catch (error) {
+    // Fallback to simple format
+    if (diffDays < 7) {
+      return { days: diffDays, display: `${diffDays}d ago` };
+    } else if (diffDays < 30) {
+      const weeks = Math.floor(diffDays / 7);
+      return { days: diffDays, display: `${weeks}w ago` };
+    } else {
+      const months = Math.floor(diffDays / 30);
+      return { days: diffDays, display: `${months}mo ago` };
+    }
+  }
 }
 
 /**
@@ -254,16 +306,27 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 bg-white p-4 rounded-lg border flex items-center justify-center">
-        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+      <div className="w-full h-96 bg-white p-6 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-slate-400 mb-3" />
+        <p className="text-sm text-slate-600">Loading chart data...</p>
+      </div>
+    );
+  }
+
+  if (chartData.length === 0 || maxCount === 0) {
+    return (
+      <div className="w-full h-96 bg-white p-6 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
+        <Activity className="w-12 h-12 text-slate-400 mb-3" />
+        <p className="text-sm font-medium text-slate-900 mb-1">No data available</p>
+        <p className="text-xs text-slate-600">User registration data will appear here once available</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-64 bg-white p-4 rounded-lg border">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">User Registrations</h3>
+    <div className="w-full h-96 bg-white p-6 rounded-lg border border-slate-200">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-slate-900">User Registrations</h3>
         <div className="flex gap-2">
           <Select value={timeRange} onValueChange={onTimeRangeChange}>
             <SelectTrigger className="w-32">
@@ -279,7 +342,7 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
         </div>
       </div>
       
-      <div className="flex items-end justify-between h-48 gap-1">
+      <div className="flex items-end justify-between h-64 gap-1 pb-8">
         {chartData.map((item, index) => (
           <div key={index} className="flex flex-col items-center flex-1 group relative">
             <div 
@@ -290,23 +353,23 @@ function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
               }}
               title={`${item.date}: ${item.count} user${item.count !== 1 ? 's' : ''}`}
             />
-            <div className="text-xs text-gray-600 mt-2 transform -rotate-45 origin-left whitespace-nowrap">
+            <div className="text-xs text-slate-600 mt-2 transform -rotate-45 origin-left whitespace-nowrap absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full">
               {timeRange === 'day' ? new Date(item.date).getDate() : 
                timeRange === 'week' ? item.date :
                timeRange === 'month' ? item.date.split(' ')[0] :
                item.date}
             </div>
             {/* Tooltip on hover */}
-            <div className="absolute bottom-full mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
+            <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
               {item.date}: {item.count} user{item.count !== 1 ? 's' : ''}
             </div>
           </div>
         ))}
       </div>
       
-      <div className="flex justify-between text-xs text-gray-500 mt-2">
+      <div className="flex justify-between text-xs text-slate-500 mt-2">
         <span>0</span>
-        <span>{maxCount}</span>
+        <span className="tabular-nums">{maxCount}</span>
       </div>
     </div>
   );
@@ -455,7 +518,7 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'features' | 'chats' | 'notifications' | 'subscription-management'>('users');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications' | 'subscription-management'>('overview');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -464,6 +527,8 @@ export default function AdminPage() {
   const [sortColumn, setSortColumn] = useState<SortColumn>('created');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [quickFilter, setQuickFilter] = useState<'all' | 'active' | 'blocked' | 'inactive'>('all');
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -712,11 +777,21 @@ export default function AdminPage() {
     };
   }, [currentUser?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'users' | 'features' | 'chats' | 'notifications' | 'subscription-management'; label: string }[] = [
+  const sidebarNavItems: { id: 'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications' | 'subscription-management'; label: string }[] = [
+    { id: 'overview', label: 'System Overview' },
     { id: 'users', label: 'User Management' },
+    { id: 'errors', label: 'Recent Errors' },
+    { id: 'jobs', label: 'Background Jobs' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
     { id: 'subscription-management', label: 'Subscription Management' },
+  ];
+  
+  // Submenu items for System Overview (MVP features)
+  const systemOverviewSubmenu: { id: 'overview' | 'errors' | 'jobs'; label: string; icon?: string }[] = [
+    { id: 'overview', label: 'System Overview' },
+    { id: 'errors', label: 'Recent Errors' },
+    { id: 'jobs', label: 'Background Jobs' },
   ];
   
   // Access control - only owners can view the admin page
@@ -745,10 +820,11 @@ export default function AdminPage() {
         userProfile={userProfile}
         variant="admin"
       >
-        <div className="flex-grow ml-6 mr-6 min-h-screen overflow-y-auto">
+        <>
+          <div className="flex-grow ml-6 mr-6 min-h-screen overflow-y-auto">
           {/* Top navigation bar - responsive design */}
           <div className="w-full">
-            <div className="mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-4">
+            <div className="mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-6 py-6">
               {/* Mobile: Vertical tab navigation */}
               {isMobile ? (
                 <div className="space-y-2">
@@ -762,7 +838,7 @@ export default function AdminPage() {
                           ${
                             activeTab === item.id
                               ? 'bg-blue-50 text-blue-700 border-blue-200'
-                              : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'
+                              : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
                           }
                         `}
                       >
@@ -772,25 +848,68 @@ export default function AdminPage() {
                   </nav>
                 </div>
               ) : (
-                /* Desktop: Horizontal tab navigation */
+                /* Desktop: Horizontal tab navigation with submenu for System Overview */
                 <>
                   <nav className="flex flex-wrap items-center gap-2 font-semibold text-sm">
-                    {sidebarNavItems.map((item) => (
+                    {/* System Overview with submenu */}
+                    <div className="relative group">
                       <button
-                        key={item.id}
-                        onClick={() => setActiveTab(item.id)}
+                        onClick={() => setActiveTab('overview')}
                         className={`
-                          px-3 py-2 rounded-lg transition-colors border
+                          px-3 py-2 rounded-lg transition-colors border flex items-center gap-2
                           ${
-                            activeTab === item.id
+                            ['overview', 'errors', 'jobs'].includes(activeTab)
                               ? 'bg-blue-50 text-blue-700 border-blue-200'
-                              : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'
+                              : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
                           }
                         `}
                       >
-                        {item.label}
+                        System Overview
+                        <ChevronDown className={`w-4 h-4 transition-transform ${['overview', 'errors', 'jobs'].includes(activeTab) ? 'rotate-180' : ''}`} />
                       </button>
-                    ))}
+                      
+                      {/* Submenu dropdown */}
+                      <div className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div className="py-1">
+                          {systemOverviewSubmenu.map((subItem) => (
+                            <button
+                              key={subItem.id}
+                              onClick={() => setActiveTab(subItem.id)}
+                              className={`
+                                w-full text-left px-4 py-2 text-sm transition-colors
+                                ${
+                                  activeTab === subItem.id
+                                    ? 'bg-blue-50 text-blue-700 font-medium'
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                }
+                              `}
+                            >
+                              {subItem.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Other main navigation items */}
+                    {sidebarNavItems
+                      .filter(item => !['overview', 'errors', 'jobs'].includes(item.id))
+                      .map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => setActiveTab(item.id)}
+                          className={`
+                            px-3 py-2 rounded-lg transition-colors border
+                            ${
+                              activeTab === item.id
+                                ? 'bg-blue-50 text-blue-700 border-blue-200'
+                                : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
+                            }
+                          `}
+                        >
+                          {item.label}
+                        </button>
+                      ))}
                   </nav>
                 </>
               )}
@@ -798,15 +917,21 @@ export default function AdminPage() {
           </div>
 
           {/* Main content area */}
-          <div className="w-full flex-grow space-y-2 mt-6 mb-24">
-
-
-
+          <div className="w-full flex-grow space-y-8 mb-24">
+            {activeTab === 'overview' && (
+              <SystemOverview />
+            )}
+            {activeTab === 'errors' && (
+              <RecentErrors />
+            )}
+            {activeTab === 'jobs' && (
+              <BackgroundJobs />
+            )}
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
             )}
             {activeTab === 'users' && (
-              <div className="space-y-2">
+              <div className="space-y-8">
                 {/* Registration Chart */}
                 <Card>
                   <CardHeader>
@@ -818,14 +943,12 @@ export default function AdminPage() {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1">
-                        <CardTitle>User Management</CardTitle>
-                        <CardDescription>Manage users, block/unblock and view user details.</CardDescription>
-                      </div>
-                      <div className="flex items-center gap-2">
+                <div>
+                  <PageHeader
+                    title="User Management"
+                    description="Find and view any user's data to investigate support tickets without writing SQL."
+                    actions={
+                      <>
                         <Button
                           onClick={handleExportEmails}
                           variant="outline"
@@ -846,10 +969,87 @@ export default function AdminPage() {
                           <Download className="w-4 h-4" />
                           Export All Data
                         </Button>
+                      </>
+                    }
+                  />
+
+                  <Card className="mt-8">
+                    <CardContent className="p-6">
+                    {/* Search and Filter Controls */}
+                    <div className="mb-6 space-y-4">
+                      {/* Search Input */}
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                          type="text"
+                          placeholder="Search by email or name..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+                      
+                      {/* Quick Filters */}
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => setQuickFilter('all')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'all'
+                              ? 'bg-blue-50 border-blue-200 text-blue-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          All Users
+                        </button>
+                        <button
+                          onClick={() => setQuickFilter('active')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'active'
+                              ? 'bg-green-50 border-green-200 text-green-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Active
+                        </button>
+                        <button
+                          onClick={() => setQuickFilter('blocked')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'blocked'
+                              ? 'bg-red-50 border-red-200 text-red-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Blocked
+                        </button>
+                        <button
+                          onClick={() => setQuickFilter('inactive')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'inactive'
+                              ? 'bg-yellow-50 border-yellow-200 text-yellow-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Inactive (≥7d, CUS=0)
+                        </button>
+                      </div>
+                      
+                      {/* Results count */}
+                      <div className="text-sm text-slate-600">
+                        Showing {sortedUsers.length} of {users.length} users
+                        {(searchTerm || quickFilter !== 'all') && (
+                          <button
+                            onClick={() => {
+                              setSearchTerm('');
+                              setQuickFilter('all');
+                            }}
+                            className="ml-2 text-blue-600 hover:underline"
+                          >
+                            Clear filters
+                          </button>
+                        )}
                       </div>
                     </div>
-                  </CardHeader>
-                  <CardContent>
+                    
                     {/* Stats Cards - responsive grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-6">
                       <Card className="bg-blue-50 border-blue-200">
@@ -877,7 +1077,7 @@ export default function AdminPage() {
                   {isMobile ? (
                     <div className="space-y-4">
                       {sortedUsers.length === 0 ? (
-                        <div className="text-center py-8 text-gray-500">No users found.</div>
+                        <div className="text-center py-8 text-slate-500">No users found.</div>
                       ) : sortedUsers.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
                         const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
@@ -986,10 +1186,10 @@ export default function AdminPage() {
                     /* Desktop: Table layout */
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm text-left">
-                        <thead className="text-xs uppercase bg-gray-50">
+                        <thead className="text-xs uppercase bg-slate-50">
                           <tr>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('email')}
                             >
                               <div className="flex items-center gap-1">
@@ -1000,7 +1200,7 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('name')}
                             >
                               <div className="flex items-center gap-1">
@@ -1011,21 +1211,21 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('inactivity')}
                             >
-                              <div className="flex items-center justify-center gap-1">
-                                Inactivity Days
+                              <div className="flex items-center gap-1">
+                                Inactivity
                                 {sortColumn === 'inactivity' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
                                 )}
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('products')}
                             >
-                              <div className="flex items-center justify-center gap-1">
+                              <div className="flex items-center justify-end gap-1">
                                 Products
                                 {sortColumn === 'products' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
@@ -1033,10 +1233,10 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('branches')}
                             >
-                              <div className="flex items-center justify-center gap-1">
+                              <div className="flex items-center justify-end gap-1">
                                 Branches
                                 {sortColumn === 'branches' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
@@ -1044,10 +1244,10 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('linkedUsers')}
                             >
-                              <div className="flex items-center justify-center gap-1">
+                              <div className="flex items-center justify-end gap-1">
                                 Linked Users
                                 {sortColumn === 'linkedUsers' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
@@ -1055,10 +1255,10 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none text-center"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('cus')}
                             >
-                              <div className="flex items-center justify-center gap-1">
+                              <div className="flex items-center justify-end gap-1">
                                 CUS
                                 {sortColumn === 'cus' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
@@ -1066,7 +1266,7 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-gray-100 select-none"
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('created')}
                             >
                               <div className="flex items-center gap-1">
@@ -1088,26 +1288,26 @@ export default function AdminPage() {
                             const shouldHighlight = shouldHighlightInactivity(inactivity.days, stats?.coreUsageScore || 0);
                             
                             return (
-                              <tr key={user.id} className="bg-white border-b hover:bg-blue-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
-                                <td className="px-4 py-2">{user.email}</td>
-                                <td className="px-4 py-2">{user.first_name} {user.last_name}</td>
-                                <td className={`px-4 py-2 text-center ${shouldHighlight ? 'text-red-600 font-semibold bg-red-50' : ''}`}>
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : inactivity.display}
+                              <tr key={user.id} className="bg-white border-b hover:bg-slate-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
+                                <td className="px-4 py-2 text-left">{user.email}</td>
+                                <td className="px-4 py-2 text-left">{user.first_name} {user.last_name}</td>
+                                <td className={`px-4 py-2 text-left ${shouldHighlight ? 'text-red-600 font-semibold bg-red-50' : ''}`}>
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin" /> : inactivity.display}
                                 </td>
-                                <td className="px-4 py-2 text-center">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.productCount || 0}
+                                <td className="px-4 py-2 text-right tabular-nums">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.productCount || 0}
                                 </td>
-                                <td className="px-4 py-2 text-center">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.branchCount || 0}
+                                <td className="px-4 py-2 text-right tabular-nums">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.branchCount || 0}
                                 </td>
-                                <td className="px-4 py-2 text-center">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.linkedUserCount || 0}
+                                <td className="px-4 py-2 text-right tabular-nums">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
-                                <td className="px-4 py-2 text-center">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : stats?.coreUsageScore || 0}
+                                <td className="px-4 py-2 text-right tabular-nums">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.coreUsageScore || 0}
                                 </td>
                                
-                                <td className="px-4 py-2">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
+                                <td className="px-4 py-2 text-left">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
                                 <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
                                   <div className="flex gap-1">
                                     <button
@@ -1174,6 +1374,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
             </div>
+              </div>
             )}
 
    
@@ -1187,8 +1388,8 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* User Activity Dialog */}
-        <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
+          {/* User Activity Dialog */}
+          <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
           <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
@@ -1203,6 +1404,7 @@ export default function AdminPage() {
             )}
           </DialogContent>
         </Dialog>
+        </>
       </Layout>
     </BranchProvider>
   );

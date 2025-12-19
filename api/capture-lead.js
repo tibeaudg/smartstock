@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { validateLeadCapture } from './utils/validation.js';
 
 export default async function captureLeadHandler(req, res) {
   try {
@@ -7,24 +8,18 @@ export default async function captureLeadHandler(req, res) {
       return;
     }
 
-    const { email, source, metadata } = req.body || {};
-    
-    if (!email || !source) {
-      res.status(400).json({ ok: false, error: 'Missing required fields: email and source' });
+    // Security: Strict input validation
+    const validation = validateLeadCapture(req.body || {});
+    if (!validation.valid) {
+      res.status(400).json({ 
+        ok: false, 
+        error: 'Validation failed',
+        details: validation.errors 
+      });
       return;
     }
 
-    // Input validation and sanitization
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      res.status(400).json({ ok: false, error: 'Invalid email format' });
-      return;
-    }
-
-    // Sanitize inputs
-    const sanitize = (str) => String(str).replace(/[<>]/g, '').trim();
-    const safeEmail = sanitize(email).substring(0, 255);
-    const safeSource = sanitize(source).substring(0, 100);
+    const { email: safeEmail, source: safeSource, metadata } = validation.data;
 
     // Initialize Supabase client
     const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;

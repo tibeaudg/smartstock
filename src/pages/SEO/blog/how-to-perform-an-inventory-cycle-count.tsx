@@ -4,6 +4,7 @@ import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
+import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
 
 const topicTitle = "How To Perform An Inventory Cycle Count";
 const canonicalPath = "/how-to-perform-an-inventory-cycle-count";
@@ -175,7 +176,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
                   <Target className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: step.description }} />
+                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: sanitizeBlogContent(step.description) }} />
               </div>
             ))}
           </div>
@@ -201,7 +202,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
             {metrics.map((metric) => (
               <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
-                <p className="mt-3 text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: metric.detail }} />
+                <p className="mt-3 text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: sanitizeBlogContent(metric.detail) }} />
               </div>
             ))}
           </div>

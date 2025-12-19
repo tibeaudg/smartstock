@@ -257,12 +257,29 @@ export const APIAccess = () => {
     return result;
   };
 
+  // Security: Hash API key using SHA-256 before storing
+  // Note: Ideally this should be done server-side, but for client-side we use crypto.subtle
+  const hashAPIKey = async (key: string): Promise<string> => {
+    try {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(key);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      // Convert to hex string for storage
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (error) {
+      console.error('Error hashing API key:', error);
+      // Fallback: throw error rather than using insecure encoding
+      throw new Error('Failed to hash API key securely');
+    }
+  };
+
   const handleCreateKey = async () => {
     if (!user) return;
 
     try {
       const apiKey = generateAPIKey();
-      const keyHash = btoa(apiKey); // Simple encoding, in production use proper hashing
+      const keyHash = await hashAPIKey(apiKey); // Cryptographic hashing using SHA-256
 
       // Save API key to database
       const { data, error } = await supabase

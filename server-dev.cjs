@@ -8,30 +8,96 @@ dotenv.config();
 const app = express();
 const PORT = 3001;
 
-// Rate limiting middleware
+// Security: Enhanced rate limiting with per-endpoint limits
 const rateLimit = {};
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const MAX_REQUESTS = 10; // max 10 requests per minute
+
+// Per-endpoint rate limits (stricter for sensitive endpoints)
+const RATE_LIMITS = {
+  default: { max: 60, window: 60 * 1000 }, // 60 requests per minute
+  '/api/contact': { max: 10, window: 60 * 1000 }, // 10 requests per minute
+  '/api/visitor-chat': { max: 20, window: 60 * 1000 }, // 20 requests per minute
+  '/api/capture-lead': { max: 30, window: 60 * 1000 }, // 30 requests per minute
+  '/api/send-purchase-order-email': { max: 5, window: 60 * 1000 }, // 5 requests per minute (very strict)
+};
+
+// Cleanup old rate limit entries periodically (prevent memory leak)
+setInterval(() => {
+  const now = Date.now();
+  for (const ip in rateLimit) {
+    for (const endpoint in rateLimit[ip]) {
+      if (rateLimit[ip][endpoint].resetTime < now) {
+        delete rateLimit[ip][endpoint];
+      }
+    }
+    // Remove IP entry if no endpoints remain
+    if (Object.keys(rateLimit[ip]).length === 0) {
+      delete rateLimit[ip];
+    }
+  }
+}, 5 * 60 * 1000); // Cleanup every 5 minutes
 
 const rateLimiter = (req, res, next) => {
-  const ip = req.ip || req.connection.remoteAddress;
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
+  const path = req.path;
   const now = Date.now();
   
+  // Get rate limit config for this endpoint
+  const limitConfig = RATE_LIMITS[path] || RATE_LIMITS.default;
+  const maxRequests = limitConfig.max;
+  const window = limitConfig.window;
+  
+  // Initialize IP tracking if needed
   if (!rateLimit[ip]) {
-    rateLimit[ip] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
-    return next();
+    rateLimit[ip] = {};
   }
   
-  if (now > rateLimit[ip].resetTime) {
-    rateLimit[ip] = { count: 1, resetTime: now + RATE_LIMIT_WINDOW };
-    return next();
+  // Initialize endpoint tracking if needed
+  if (!rateLimit[ip][path]) {
+    rateLimit[ip][path] = { count: 0, resetTime: now + window, violations: 0 };
   }
   
-  if (rateLimit[ip].count >= MAX_REQUESTS) {
-    return res.status(429).json({ ok: false, error: 'Too many requests. Please try again later.' });
+  const endpointData = rateLimit[ip][path];
+  
+  // Reset if window expired
+  if (now > endpointData.resetTime) {
+    endpointData.count = 0;
+    endpointData.resetTime = now + window;
+    // Reset violations after successful window
+    if (endpointData.violations > 0) {
+      endpointData.violations = Math.max(0, endpointData.violations - 1);
+    }
   }
   
-  rateLimit[ip].count++;
+  // Check if limit exceeded
+  if (endpointData.count >= maxRequests) {
+    endpointData.violations++;
+    
+    // Exponential backoff: increase reset time for repeated violations
+    const backoffMultiplier = Math.min(1 + (endpointData.violations * 0.5), 5); // Max 5x backoff
+    endpointData.resetTime = now + (window * backoffMultiplier);
+    
+    // Add rate limit headers
+    res.setHeader('X-RateLimit-Limit', maxRequests);
+    res.setHeader('X-RateLimit-Remaining', 0);
+    res.setHeader('X-RateLimit-Reset', new Date(endpointData.resetTime).toISOString());
+    res.setHeader('Retry-After', Math.ceil((endpointData.resetTime - now) / 1000));
+    
+    return res.status(429).json({ 
+      ok: false, 
+      error: 'Too many requests. Please try again later.',
+      retryAfter: Math.ceil((endpointData.resetTime - now) / 1000)
+    });
+  }
+  
+  // Increment counter
+  endpointData.count++;
+  
+  // Add rate limit headers to successful requests
+  res.setHeader('X-RateLimit-Limit', maxRequests);
+  res.setHeader('X-RateLimit-Remaining', Math.max(0, maxRequests - endpointData.count));
+  res.setHeader('X-RateLimit-Reset', new Date(endpointData.resetTime).toISOString());
+  
   next();
 };
 
@@ -79,14 +145,33 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Error handling middleware
+// Security: Error sanitization middleware to prevent information leakage
 app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  res.status(500).json({ 
-    ok: false, 
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+  // Log full error details server-side only
+  console.error('[Server Error]', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
+    ip: req.ip,
+    timestamp: new Date().toISOString()
   });
+  
+  // Security: Return generic error to client, never expose stack traces or internal details
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  // Only expose error message in development
+  const errorResponse = {
+    ok: false,
+    error: 'Internal server error',
+    ...(isDevelopment && {
+      // Development-only details
+      message: err.message,
+      // Never expose stack traces, even in development (security best practice)
+    })
+  };
+  
+  res.status(500).json(errorResponse);
 });
 
 // Start server

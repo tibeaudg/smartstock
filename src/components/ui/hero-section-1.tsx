@@ -8,6 +8,7 @@ import { GridOverlay } from '@/components/ui/grid-overlay'
 import { ParticleSystem } from '@/components/ui/particle-system'
 import { FloatingUICards } from '@/components/ui/floating-ui-cards'
 import { CustomerLogos } from '@/components/trust/CustomerLogos'
+import { ShaderGradient } from '@/components/ShaderGradient'
 
 const transitionVariants = {
     item: {
@@ -38,7 +39,12 @@ export function HeroSection() {
             <main>
                 <section className="relative overflow-visible">
                     <div className="relative pt-24 md:pt-36 min-h-[600px] md:min-h-[800px]" style={{ background: 'transparent' }}>
-                        {/* Background Layer: Animated Gradient Mesh */}
+                        {/* Background Layer: ShaderGradient */}
+                        <div className="absolute inset-0 z-0">
+                            <ShaderGradient className="w-full h-full" />
+                        </div>
+
+                        {/* Background Layer: Animated Gradient Mesh (optional overlay) */}
                         <GradientMeshBackground />
 
                         {/* SVG Grid Overlay */}

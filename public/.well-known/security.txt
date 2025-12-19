@@ -1,0 +1,19 @@
+Contact: mailto:security@stockflow.be
+Expires: 2026-12-31T23:59:59.000Z
+Preferred-Languages: en, nl
+Canonical: https://stockflow.be/.well-known/security.txt
+Policy: https://stockflow.be/security-policy
+
+# Security Policy
+# 
+# We take security seriously. If you discover a security vulnerability,
+# please report it to security@stockflow.be
+#
+# Please include:
+# - Description of the vulnerability
+# - Steps to reproduce
+# - Potential impact
+# - Suggested fix (if any)
+#
+# We will respond within 48 hours and work with you to resolve the issue.
+

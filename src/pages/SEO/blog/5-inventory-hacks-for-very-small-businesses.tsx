@@ -5,6 +5,7 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
+import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
 
 const topicTitle = "5 Inventory Hacks For Very Small Businesses";
 const canonicalPath = "/5-inventory-hacks-for-very-small-businesses";
@@ -176,7 +177,7 @@ export default function Seo5InventoryHacksForVerySmallBusinessesPage() {
                   <Target className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: step.description }} />
+                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: sanitizeBlogContent(step.description) }} />
               </div>
             ))}
           </div>

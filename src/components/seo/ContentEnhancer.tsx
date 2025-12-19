@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { getAllSeoPages, type PageMetadata } from '@/config/topicClusters';
+import DOMPurify from 'dompurify';
 
 interface ContentEnhancerProps {
   content: string;
@@ -89,10 +90,19 @@ export const ContentEnhancer: React.FC<ContentEnhancerProps> = ({
     return enhanced;
   }, [content, relevantPages]);
 
+  // Security: Sanitize HTML content to prevent XSS attacks
+  const sanitizedContent = React.useMemo(() => {
+    return DOMPurify.sanitize(enhancedContent, {
+      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+      ALLOWED_ATTR: ['href', 'class', 'data-internal-link'],
+      ALLOW_DATA_ATTR: true
+    });
+  }, [enhancedContent]);
+
   return (
     <div 
       className="prose prose-lg max-w-none"
-      dangerouslySetInnerHTML={{ __html: enhancedContent }}
+      dangerouslySetInnerHTML={{ __html: sanitizedContent }}
     />
   );
 };

@@ -3,6 +3,7 @@ import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
+import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
 import {
   CheckCircle,
   Target,
@@ -180,7 +181,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
                   <Target className="h-5 w-5 text-blue-500" />
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: step.description }} />
+                <p className="mt-3 text-sm leading-relaxed text-gray-600" dangerouslySetInnerHTML={{ __html: sanitizeBlogContent(step.description) }} />
               </div>
             ))}
           </div>

@@ -10,6 +10,8 @@ if (typeof window !== 'undefined') {
 
 // Initialize Sentry as early as possible (after Trusted Types)
 import * as Sentry from "@sentry/react";
+// Import error handler for database logging
+import { logError } from './lib/errorHandler';
 
 // Prevent multiple Sentry initializations during HMR (Hot Module Reload)
 if (!(window as { __SENTRY_INITIALIZED__?: boolean }).__SENTRY_INITIALIZED__) {
@@ -341,6 +343,15 @@ window.addEventListener('error', (event) => {
       }
     }
   });
+
+  // Log to database (non-blocking)
+  if (event.error) {
+    logError(event.error, {
+      message: `Global error: ${event.message}`,
+    }).catch(() => {
+      // Silently fail if logging fails
+    });
+  }
 });
 
 // Globale handler voor unhandled promise rejections
@@ -353,6 +364,17 @@ window.addEventListener('unhandledrejection', (event) => {
   
   // Send to Sentry
   Sentry.captureException(event.reason);
+
+  // Log to database (non-blocking)
+  const error = event.reason instanceof Error 
+    ? event.reason 
+    : new Error(String(event.reason));
+  
+  logError(error, {
+    message: `Unhandled promise rejection: ${error.message}`,
+  }).catch(() => {
+    // Silently fail if logging fails
+  });
 });
 
 // Start de applicatie
