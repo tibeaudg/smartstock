@@ -19,7 +19,6 @@ import { LicenseOverview } from './settings/LicenseOverview';
 import { InvoicingOverview } from '@/components/settings/InvoicingOverview';
 import { useAuth } from '@/hooks/useAuth';
 import { useLocation, useNavigate, Outlet, useMatch } from 'react-router-dom';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
 import {
   Building2,
@@ -35,9 +34,6 @@ export const Settings = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isMobile } = useMobile();
-  
-  // Use the page refresh hook
-  usePageRefresh();
 
   // Get current path to determine active submenu
   const settingsMatch = useMatch('/dashboard/settings/*');
