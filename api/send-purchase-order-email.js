@@ -7,7 +7,58 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { smtpConfig, emailData } = req.body;
+    const { smtpConfig, emailData, action } = req.body;
+    
+    // Handle SMTP connection test (action: 'test')
+    if (action === 'test' || !emailData) {
+      if (!smtpConfig) {
+        return res.status(400).json({ error: 'Missing SMTP configuration' });
+      }
+
+      // Security: Validate SMTP config even for testing
+      const smtpValidation = validateSMTPConfig(smtpConfig);
+      if (!smtpValidation.valid) {
+        return res.status(400).json({ 
+          error: 'Invalid SMTP configuration',
+          details: smtpValidation.errors 
+        });
+      }
+
+      const validatedSMTP = smtpValidation.data;
+
+      // Create transporter
+      const transporter = nodemailer.createTransport({
+        host: validatedSMTP.host,
+        port: validatedSMTP.port,
+        secure: validatedSMTP.useTls && validatedSMTP.port === 465,
+        auth: {
+          user: validatedSMTP.username,
+          pass: validatedSMTP.password,
+        },
+        tls: {
+          rejectUnauthorized: process.env.NODE_ENV === 'production',
+          ...(process.env.NODE_ENV !== 'production' && {
+            rejectUnauthorized: false,
+            servername: validatedSMTP.host
+          })
+        }
+      });
+
+      // Test connection
+      await transporter.verify();
+
+      console.log('SMTP connection test successful');
+
+      return res.status(200).json({
+        success: true,
+        message: 'SMTP connection test successful'
+      });
+    }
+
+    // Handle email sending (default action)
+    if (!smtpConfig || !emailData) {
+      return res.status(400).json({ error: 'Missing required fields: smtpConfig and emailData' });
+    }
 
     // Security: Strict input validation
     const smtpValidation = validateSMTPConfig(smtpConfig);

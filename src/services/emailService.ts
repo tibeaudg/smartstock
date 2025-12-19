@@ -73,12 +73,12 @@ export class EmailService {
 
   public async testSmtpConnection(config: SmtpConfig): Promise<boolean> {
     try {
-      const response = await fetch('/api/test-smtp-connection', {
+      const response = await fetch('/api/send-purchase-order-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ smtpConfig: config }),
+        body: JSON.stringify({ smtpConfig: config, action: 'test' }),
       });
 
       if (!response.ok) {
