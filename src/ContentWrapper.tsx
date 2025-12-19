@@ -5,7 +5,7 @@ import { Header } from './components/ui/Header';
 import { useNotifications } from './hooks/useNotifications';
 import { AuthContext } from './hooks/useAuth';
 import { useSessionRevalidation } from './hooks/useSessionRevalidation';
-import { useFocusDataRefresh } from './hooks/useFocusDataRefresh';
+import { useWindowRefocusRefresh } from './hooks/useWindowRefocusRefresh';
 import { useWebsiteTracking } from './hooks/useWebsiteTracking';
 
 const getPageTitle = (pathname: string) => {
@@ -26,8 +26,8 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Globally revalidate auth session on tab focus to prevent stale data freezes
   useSessionRevalidation();
-  // Global focus-based cache refresh (debounced)
-  useFocusDataRefresh();
+  // Global window refocus refresh - works on all pages
+  useWindowRefocusRefresh();
   // Enable website tracking throughout the app
   useWebsiteTracking();
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();

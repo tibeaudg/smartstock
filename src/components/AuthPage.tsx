@@ -11,7 +11,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2, CheckCircle, Shield, Zap, Users, Star, ArrowRight, Package } from 'lucide-react';
 import Header from './HeaderPublic';
 import { cn } from '@/lib/utils';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
@@ -44,9 +43,6 @@ export const AuthPage = () => {
     // Navigeer naar de homepage
     navigate('/');
   };
-  
-  // Use the page refresh hook
-  usePageRefresh();
   
   // Use website tracking
   useWebsiteTracking();

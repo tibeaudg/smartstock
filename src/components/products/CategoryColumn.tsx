@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Tag, Plus } from 'lucide-react';
+import { Tag, Plus, Link2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
@@ -66,12 +66,21 @@ export const CategoryColumn: React.FC<CategoryColumnProps> = ({
     
     if (categoryMatchesParent) {
       return (
-        <span className={cn(
-          "text-gray-400 opacity-60",
-          compactMode ? "text-[10px]" : "text-xs"
-        )}>
-          Same as parent
-        </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center justify-center">
+                <Link2 className={cn(
+                  "text-[#D1D5DB]",
+                  compactMode ? "w-3 h-3" : "w-4 h-4"
+                )} style={{ opacity: 0.3 }} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Inherited from parent</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     }
   }
@@ -105,7 +114,7 @@ export const CategoryColumn: React.FC<CategoryColumnProps> = ({
                   setIsAssigning(true);
                 }}
                 className={cn(
-                  "h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 opacity-40",
+                  "h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 opacity-60 group-hover:opacity-100 transition-opacity",
                   compactMode && "h-5 px-1.5 text-[10px]"
                 )}
               >

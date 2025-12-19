@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 import { TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { StockQuickActionMenu } from './StockQuickActionMenu';
-import { InlineIntelligence } from './InlineIntelligence';
 import type { StockTrend } from '@/utils/stockTrends';
 
 interface EnhancedStockColumnProps {
@@ -118,17 +117,20 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
                         'transition-colors font-mono',
                         stockValue === 0
                           ? 'animate-pulse text-red-600'
-                          : isAggregatedTotal ? 'text-blue-700' : 'text-gray-900',
-                        !isMobile && 'group-hover:text-blue-600',
+                          : isVariant 
+                            ? 'text-gray-700' // Variant stock numbers in neutral dark gray
+                            : isAggregatedTotal ? 'text-blue-700' : 'text-gray-900',
+                        !isMobile && !isVariant && 'group-hover:text-blue-600',
                         'text-sm'
                       )}
+                      style={!isVariant && !isAggregatedTotal ? { fontWeight: 600 } : undefined}
                     >
                       {formatStockQuantity(stockValue)}
                     </span>
                     {minimumStockLevel > 0 && !isVariant && (
                       <span className={cn(
-                        "text-[9px] font-medium transition-colors",
-                        isMobile ? "text-gray-500" : "text-gray-500 group-hover:text-blue-100"
+                        "text-[10px] font-normal transition-colors",
+                        isMobile ? "text-gray-400" : "text-gray-400 group-hover:text-blue-100"
                       )}>
                         / {formatStockQuantity(minimumStockLevel)} min
                       </span>
@@ -159,16 +161,16 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
                     </div>
                   )}
 
-                  {/* Reorder threshold visualization */}
+                  {/* Reorder threshold visualization - constrained width */}
                   {minimumStockLevel > 0 && !isVariant && (
                     <div className="mt-1">
-                      <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-1 bg-gray-200 overflow-hidden" style={{ width: '120px', maxWidth: '100%', borderRadius: '4px' }}>
                         <div
                           className={cn(
                             "h-full transition-all",
                             reorderProgress < 50 ? "bg-red-500" : reorderProgress < 75 ? "bg-orange-500" : "bg-green-500"
                           )}
-                          style={{ width: `${Math.min(100, reorderProgress)}%` }}
+                          style={{ width: `${Math.min(100, reorderProgress)}%`, borderRadius: '4px' }}
                         />
                       </div>
                     </div>

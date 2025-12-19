@@ -24,9 +24,7 @@ import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import React, { Suspense, useState, useEffect } from "react";
-import { useOptimizedTabSwitching } from "./hooks/useOptimizedTabSwitching";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
-import { useAuthRouteRefresh } from "./hooks/useAuthRouteRefresh";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -82,8 +80,7 @@ const AppRouter = () => {
   // This must be inside the Router context
   useNavigationQueryReset();
   
-  // Note: useAuthRouteRefresh removed - it was causing full page reloads
-  // useFocusDataRefresh in ContentWrapper handles data refresh more gracefully
+  // Window refocus refresh is handled by useWindowRefocusRefresh in ContentWrapper
 
   
   // Protected Route Component (without branch logic)
@@ -475,9 +472,6 @@ const AppRouter = () => {
 };
 
 export default function App() {
-  // Use the optimized tab switching hook at the top level
-  useOptimizedTabSwitching();
-  
   // Initialize cookie consent and tracking
   useCookieConsent();
   

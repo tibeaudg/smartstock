@@ -43,7 +43,6 @@ import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/
 import { useColumnPreferences } from '@/hooks/useColumnPreferences';
 import { ColumnVisibilityModal } from '@/components/products/ColumnVisibilityModal';
 import { CommandCenterPanel } from '@/components/products/CommandCenterPanel';
-import { InlineIntelligence } from '@/components/products/InlineIntelligence';
 import { StockBadge, type StockStatus } from '@/components/products/StockBadge';
 import { InlineReorderButton } from '@/components/products/InlineReorderButton';
 import { ActionableSKU } from '@/components/products/ActionableSKU';
@@ -1236,7 +1235,9 @@ export default function CategorysPage() {
     isVariant: boolean = false,
     parentProduct?: any,
     hasVariants?: boolean,
-    variantCount?: number
+    variantCount?: number,
+    variantIndex?: number,
+    isLastVariant?: boolean
   ): React.ReactNode => {
     if (!isColumnVisible(columnId)) return null;
 
@@ -1257,7 +1258,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-center w-12 px-2 py-2 border-r border-gray-200",
-            isVariant && "bg-blue-50/20"
+            isVariant && "bg-[#F9FAFB]"
           )}>
             <TooltipProvider>
               <Tooltip>
@@ -1419,7 +1420,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 align-middle",
-            isVariant && "bg-blue-50/20",
+            isVariant && "bg-[#F9FAFB]",
             "px-3 sm:px-4 py-2 border-r border-gray-200"
           )}>
             <CategoryColumn
@@ -1440,17 +1441,24 @@ export default function CategorysPage() {
       case 'name': {
         if (isVariant) {
           const variantLabel = formatVariantLabel(product);
+          
           return (
             <td className={cn(
-              "w-1/4 relative z-10 align-middle bg-blue-50/20",
+              "w-1/4 relative z-10 align-middle bg-[#F9FAFB]",
               "px-3 sm:px-4 py-2 border-r border-gray-200"
             )}>
-              <div className="flex items-center pl-[2.75rem] sm:pl-[2.25rem]">
-                {/* Continuous vertical line connector */}
-                <div className="w-4 h-px bg-gray-300 mr-2"></div>
+              <div className="flex items-center relative h-12">
+                {/* Horizontal line connecting to variant name - aligned with vertical center */}
+                <div className="absolute left-0 top-0 bottom-0 flex items-center pointer-events-none" style={{ width: '2.75rem' }}>
+                  <div 
+                    className="absolute left-[2.75rem] sm:left-[2.25rem] top-1/2 w-4 h-px bg-gray-300 -translate-y-1/2"
+                  />
+                </div>
+                {/* Variant name aligned with parent name start position */}
                 <h3 className={cn(
-                  "font-normal text-gray-600",
-                  compactMode ? "text-xs" : "text-sm"
+                  "font-normal text-gray-600 relative z-10",
+                  compactMode ? "text-xs" : "text-sm",
+                  "pl-[2.75rem] sm:pl-[2.25rem]"
                 )}>
                   {variantLabel}
                 </h3>
@@ -1515,15 +1523,18 @@ export default function CategorysPage() {
                   "flex items-center flex-wrap",
                   compactMode ? "gap-1" : "gap-1.5"
                 )}>
-                  {/* Parent text - bolder and larger, with embedded variant badge */}
-                  <h3 className={cn(
-                    productHasVariants ? "font-bold" : "font-semibold",
-                    productHasVariants ? (compactMode ? "text-sm" : "text-base") : (compactMode ? "text-xs" : "text-sm"),
-                    "text-gray-900 truncate"
-                  )}>
+                  {/* Parent text - font-weight 600 for parent rows */}
+                  <h3 
+                    className={cn(
+                      productHasVariants ? "font-semibold" : "font-semibold",
+                      productHasVariants ? (compactMode ? "text-sm" : "text-base") : (compactMode ? "text-xs" : "text-sm"),
+                      "text-gray-900 truncate"
+                    )} 
+                    style={productHasVariants ? { fontWeight: 600 } : undefined}
+                  >
                     {product.name}
                     {productHasVariants && productVariantCount > 0 && (
-                      <span className="ml-2 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                      <span className="ml-2 text-[10px] font-medium text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200" style={{ marginLeft: '8px' }}>
                         {productVariantCount} variant{productVariantCount !== 1 ? 's' : ''}
                       </span>
                     )}
@@ -1564,7 +1575,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left w-1/8 hidden md:table-cell relative z-10 align-left",
-            isVariant && "bg-blue-50/20",
+            isVariant && "bg-[#F9FAFB]",
             "px-3 sm:px-4 py-2 border-r border-gray-200"
           )}>
             <StorageColumn
@@ -3163,7 +3174,11 @@ export default function CategorysPage() {
                                 }}
                                 className={cn(
                                   'group transition-all duration-200 relative border-b border-gray-200',
-                                  hoveredImageProductId === product.id && 'z-50'
+                                  hoveredImageProductId === product.id && 'z-50',
+                                  // Parent row styling when expanded
+                                  hasVariants && isExpanded && 'bg-[#F9FAFB] border-l-2 border-l-blue-600',
+                                  // Parent row background even when not expanded
+                                  hasVariants && 'bg-[#F9FAFB]'
                                 )}
                               >
                                 {/* Selection checkbox */}
@@ -3175,7 +3190,7 @@ export default function CategorysPage() {
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
                                 >
-                                  <div className="flex items-center justify-center min-h-[44px] sm:min-h-0">
+                                  <div className="flex items-center justify-center h-12">
                                     <input
                                       type="checkbox"
                                       checked={selectedProductIds.has(product.id)}
@@ -3239,25 +3254,22 @@ export default function CategorysPage() {
                                           className={cn(
                                             'group transition-all duration-200 relative border-b border-gray-200',
                                             'cursor-pointer',
-                                            'h-7'
+                                            'h-12',
+                                            'bg-[#F9FAFB]'
                                           )}
                                         >
-                                          {/* Continuous vertical line - connects parent to last child */}
-                                          <div 
-                                            className="absolute left-8 top-0 bottom-0 w-px bg-gray-300"
-                                            style={{ zIndex: 0 }}
-                                          />
+                                          {/* L-shaped connector lines will be rendered in name column */}
                                           
                                           {/* Checkbox cell for variants - matches parent structure */}
                                           <td 
                                             className={cn(
-                                              "text-center w-14 sm:w-12 relative z-10 bg-blue-50/20",
+                                              "text-center w-14 sm:w-12 relative z-10 bg-[#F9FAFB]",
                                               "px-3 sm:px-4 py-2 border-r border-gray-200"
                                             )}
                                             onClick={(e) => e.stopPropagation()}
                                             data-interactive
                                           >
-                                            <div className="flex items-center justify-center min-h-[44px] sm:min-h-0">
+                                            <div className="flex items-center justify-center h-12">
                                               <input
                                                 type="checkbox"
                                                 checked={selectedProductIds.has(variant.id)}
@@ -3282,7 +3294,7 @@ export default function CategorysPage() {
                                           {/* Render columns in order for variants */}
                                           {getOrderedVisibleColumns.map(columnId => 
                                             <React.Fragment key={columnId}>
-                                              {renderColumnCell(columnId, variant, variantStock, variantStockStatus, variantStockDotColor, [], true, product)}
+                                              {renderColumnCell(columnId, variant, variantStock, variantStockStatus, variantStockDotColor, [], true, product, false, 0, variantIndex, isLastVariant)}
                                             </React.Fragment>
                                           )}
                                         </tr>

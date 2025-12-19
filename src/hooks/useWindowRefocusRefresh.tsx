@@ -1,35 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
 
 /**
- * Hook that forces a full browser refresh when the window regains focus
- * on authenticated routes (routes after /auth like /dashboard, /admin, etc.)
- * This ensures fresh data and prevents stale data issues.
+ * Simple page refresh on window refocus.
+ * 
+ * - Listens to both window.focus and visibilitychange events
+ * - Force refreshes the page when user returns to the tab
+ * - Works everywhere, simple and reliable
  */
-export const useAuthRouteRefresh = () => {
-  const location = useLocation();
-  const isProcessingRef = useRef(false);
-  const wasHiddenRef = useRef(false);
+export const useWindowRefocusRefresh = () => {
+  const wasHiddenRef = useRef<boolean>(false);
+  const isProcessingRef = useRef<boolean>(false);
 
   useEffect(() => {
-    // Check if current route is an authenticated route
-    const isAuthenticatedRoute = (pathname: string): boolean => {
-      // Routes that require authentication (after /auth)
-      const authRoutes = ['/dashboard', '/admin'];
-      
-      // Exclude the auth page itself
-      if (pathname === '/auth' || pathname.startsWith('/auth/')) {
-        return false;
-      }
-      
-      // Check if pathname starts with any authenticated route
-      return authRoutes.some(route => pathname.startsWith(route));
-    };
-
-    if (!isAuthenticatedRoute(location.pathname)) {
-      return;
-    }
-
     const handleRefresh = () => {
       // Prevent multiple simultaneous refreshes
       if (isProcessingRef.current) {
@@ -37,9 +19,9 @@ export const useAuthRouteRefresh = () => {
       }
 
       isProcessingRef.current = true;
-
-      // Force a full browser refresh
-      console.log('[AuthRouteRefresh] Window refocused on authenticated route, refreshing...');
+      console.log('[WindowRefocusRefresh] Refreshing page...');
+      
+      // Force full page reload
       window.location.reload();
     };
 
@@ -47,6 +29,7 @@ export const useAuthRouteRefresh = () => {
       if (document.hidden) {
         // Page became hidden - mark that we were hidden
         wasHiddenRef.current = true;
+        isProcessingRef.current = false;
       } else if (wasHiddenRef.current) {
         // Page became visible again after being hidden - refresh
         wasHiddenRef.current = false;
@@ -56,7 +39,6 @@ export const useAuthRouteRefresh = () => {
 
     const handleFocus = () => {
       // Only refresh if we were previously hidden (user switched tabs/windows)
-      // This prevents refresh when clicking within the same window
       if (wasHiddenRef.current) {
         wasHiddenRef.current = false;
         handleRefresh();
@@ -70,10 +52,9 @@ export const useAuthRouteRefresh = () => {
     return () => {
       window.removeEventListener('focus', handleFocus);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      // Reset flags when unmounting or route changes
       isProcessingRef.current = false;
       wasHiddenRef.current = false;
     };
-  }, [location.pathname]);
+  }, []);
 };
 
