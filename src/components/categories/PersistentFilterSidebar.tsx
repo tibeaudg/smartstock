@@ -34,7 +34,6 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 interface FilterState {
   categories: string[];
-  locations: string[];
   stockStatus: string[];
   dateRange: 'all' | 'today' | 'week' | 'month' | 'year';
   tags: string[];
@@ -63,15 +62,12 @@ export const PersistentFilterSidebar: React.FC<PersistentFilterSidebarProps> = (
   const { activeBranch } = useBranches();
   
   // Filter states
-  const [locations, setLocations] = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [selectedStockStatus, setSelectedStockStatus] = useState<string[]>([]);
   const [dateRange, setDateRange] = useState<'all' | 'today' | 'week' | 'month' | 'year'>('all');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   
   // Collapsible sections
   const [categoriesExpanded, setCategoriesExpanded] = useState(true);
-  const [locationsExpanded, setLocationsExpanded] = useState(true);
   const [stockStatusExpanded, setStockStatusExpanded] = useState(true);
   const [dateExpanded, setDateExpanded] = useState(false);
   const [tagsExpanded, setTagsExpanded] = useState(false);
@@ -86,46 +82,17 @@ export const PersistentFilterSidebar: React.FC<PersistentFilterSidebarProps> = (
     return [...allCategories].sort((a, b) => a.name.localeCompare(b.name));
   }, [allCategories]);
 
-  // Fetch unique locations
-  useEffect(() => {
-    const fetchLocations = async () => {
-      if (!user || !activeBranch) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from('products')
-          .select('location')
-          .eq('branch_id', activeBranch.branch_id)
-          .not('location', 'is', null)
-          .neq('location', '');
-        
-        if (error) {
-          console.error('Error fetching locations:', error);
-          return;
-        }
-        
-        const uniqueLocations = [...new Set(data?.map(item => item.location).filter(Boolean))];
-        setLocations(uniqueLocations.sort());
-      } catch (error) {
-        console.error('Error fetching locations:', error);
-      }
-    };
-
-    fetchLocations();
-  }, [user, activeBranch]);
-
   // Notify parent of filter changes
   useEffect(() => {
     if (onFiltersChange) {
       onFiltersChange({
         categories: selectedCategoryIds,
-        locations: selectedLocations,
         stockStatus: selectedStockStatus,
         dateRange,
         tags: selectedTags,
       });
     }
-  }, [selectedCategoryIds, selectedLocations, selectedStockStatus, dateRange, selectedTags, onFiltersChange]);
+  }, [selectedCategoryIds, selectedStockStatus, dateRange, selectedTags, onFiltersChange]);
 
   const handleCategoryToggle = (categoryId: string) => {
     if (selectedCategoryIds.includes(categoryId)) {
@@ -143,13 +110,6 @@ export const PersistentFilterSidebar: React.FC<PersistentFilterSidebarProps> = (
     }
   };
 
-  const handleLocationToggle = (location: string) => {
-    if (selectedLocations.includes(location)) {
-      setSelectedLocations(selectedLocations.filter(l => l !== location));
-    } else {
-      setSelectedLocations([...selectedLocations, location]);
-    }
-  };
 
   const handleStockStatusToggle = (status: string) => {
     if (selectedStockStatus.includes(status)) {
@@ -159,12 +119,11 @@ export const PersistentFilterSidebar: React.FC<PersistentFilterSidebarProps> = (
     }
   };
 
-  const activeFiltersCount = selectedCategoryIds.length + selectedLocations.length + selectedStockStatus.length + 
+  const activeFiltersCount = selectedCategoryIds.length + selectedStockStatus.length + 
     (dateRange !== 'all' ? 1 : 0) + selectedTags.length;
 
   const handleClearAll = () => {
     onCategorySelectionChange([]);
-    setSelectedLocations([]);
     setSelectedStockStatus([]);
     setDateRange('all');
     setSelectedTags([]);
@@ -293,62 +252,6 @@ export const PersistentFilterSidebar: React.FC<PersistentFilterSidebarProps> = (
                             {count}
                           </Badge>
                         )}
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
-
-        {/* Locations Section */}
-        <Collapsible open={locationsExpanded} onOpenChange={setLocationsExpanded}>
-          <CollapsibleTrigger className="w-full px-4 py-3 border-b bg-white hover:bg-gray-50 transition-colors flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-gray-600" />
-              <span className="text-sm font-medium text-gray-900">Locations</span>
-              {selectedLocations.length > 0 && (
-                <Badge variant="secondary" className="text-xs">
-                  {selectedLocations.length}
-                </Badge>
-              )}
-            </div>
-            {locationsExpanded ? (
-              <ChevronUp className="w-4 h-4 text-gray-500" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-gray-500" />
-            )}
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div className="p-2 max-h-[200px] overflow-y-auto">
-              {locations.length === 0 ? (
-                <div className="p-4 text-center">
-                  <p className="text-xs text-gray-500">No locations found</p>
-                </div>
-              ) : (
-                <div className="space-y-1">
-                  {locations.map((location) => {
-                    const isSelected = selectedLocations.includes(location);
-                    return (
-                      <label
-                        key={location}
-                        className={cn(
-                          "flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
-                          isSelected && "bg-blue-50 hover:bg-blue-100"
-                        )}
-                      >
-                        <Checkbox
-                          checked={isSelected}
-                          onCheckedChange={() => handleLocationToggle(location)}
-                          className="data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
-                        />
-                        <span className={cn(
-                          "flex-1 text-xs truncate",
-                          isSelected ? "font-medium text-blue-900" : "text-gray-700"
-                        )}>
-                          {location}
-                        </span>
                       </label>
                     );
                   })}

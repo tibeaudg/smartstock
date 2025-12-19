@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { Search, Package, Tag, Building2, Plus, X, ChevronRight, MapPin } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,6 +17,19 @@ import { useBranches } from '@/hooks/useBranches';
 import { useCategoryTree } from '@/hooks/useCategories';
 import { useQuery } from '@tanstack/react-query';
 import { getCategoryPath } from '@/lib/categories/categoryUtils';
+import { SavedSearches } from '@/components/products/SavedSearches';
+
+interface SearchTokens {
+  stock?: 'low' | 'out' | 'in';
+  warehouse?: string;
+  category?: string;
+  location?: string;
+}
+
+interface ParsedSearch {
+  baseTerm: string;
+  tokens: SearchTokens;
+}
 
 interface MultiIntentSearchProps {
   value: string;
@@ -27,6 +41,7 @@ interface MultiIntentSearchProps {
   onCreateProduct?: () => void;
   onCreateCategory?: () => void;
   onCreateLocation?: () => void;
+  onTokensChange?: (tokens: SearchTokens) => void;
   placeholder?: string;
   inputRef?: React.Ref<HTMLInputElement>;
 }
@@ -37,7 +52,47 @@ interface SearchResult {
   name: string;
   subtitle?: string;
   data?: any;
+  matchedFields?: string[];
 }
+
+// Parse search query for tokens
+const parseSearchQuery = (query: string): ParsedSearch => {
+  const tokens: SearchTokens = {};
+  let baseTerm = query;
+
+  // Match tokens like stock:low, warehouse:A, category:electronics
+  const tokenPattern = /(\w+):([^\s]+)/g;
+  const matches = [...query.matchAll(tokenPattern)];
+  
+  matches.forEach(match => {
+    const [fullMatch, key, value] = match;
+    const lowerKey = key.toLowerCase();
+    const lowerValue = value.toLowerCase();
+
+    switch (lowerKey) {
+      case 'stock':
+        if (['low', 'out', 'in'].includes(lowerValue)) {
+          tokens.stock = lowerValue as 'low' | 'out' | 'in';
+          baseTerm = baseTerm.replace(fullMatch, '').trim();
+        }
+        break;
+      case 'warehouse':
+        tokens.warehouse = value;
+        baseTerm = baseTerm.replace(fullMatch, '').trim();
+        break;
+      case 'category':
+        tokens.category = value;
+        baseTerm = baseTerm.replace(fullMatch, '').trim();
+        break;
+      case 'location':
+        tokens.location = value;
+        baseTerm = baseTerm.replace(fullMatch, '').trim();
+        break;
+    }
+  });
+
+  return { baseTerm, tokens };
+};
 
 export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentSearchProps>(({
   value,
@@ -49,6 +104,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   onCreateProduct,
   onCreateCategory,
   onCreateLocation,
+  onTokensChange,
   placeholder = "Search products, SKUs, categories, suppliers…",
   inputRef: externalInputRef,
 }, ref) => {
@@ -61,6 +117,14 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   const searchRef = useRef<HTMLDivElement>(null);
   const internalInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Parse tokens from search query
+  const parsedSearch = useMemo(() => parseSearchQuery(value), [value]);
+  
+  // Notify parent of token changes
+  useEffect(() => {
+    onTokensChange?.(parsedSearch.tokens);
+  }, [parsedSearch.tokens, onTokensChange]);
   
   // Callback ref to merge external and internal refs
   const setInputRef = React.useCallback((node: HTMLInputElement | null) => {
@@ -79,13 +143,13 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   
   const inputRef = internalInputRef;
 
-  // Search query
+  // Search query - use baseTerm for actual search
   const searchQuery = useQuery({
-    queryKey: ['multiSearch', value, user?.id, activeBranch?.branch_id],
+    queryKey: ['multiSearch', parsedSearch.baseTerm, user?.id, activeBranch?.branch_id],
     queryFn: async () => {
-      if (!user || !value.trim() || value.length < 2) return [];
+      if (!user || !parsedSearch.baseTerm.trim() || parsedSearch.baseTerm.length < 2) return [];
       
-      const term = value.toLowerCase().trim();
+      const term = parsedSearch.baseTerm.toLowerCase().trim();
       const results: SearchResult[] = [];
 
       // Search products
@@ -96,8 +160,15 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
         .or(`name.ilike.%${term}%,sku.ilike.%${term}%,barcode.ilike.%${term}%`)
         .limit(10);
 
-      if (products) {
-        products.forEach(product => {
+      if (products && Array.isArray(products)) {
+        products.forEach((product: any) => {
+          const matchedFields: string[] = [];
+          
+          // Check which fields matched
+          if (product.name?.toLowerCase().includes(term)) matchedFields.push('name');
+          if (product.sku?.toLowerCase().includes(term)) matchedFields.push('SKU');
+          if (product.barcode?.toLowerCase().includes(term)) matchedFields.push('barcode');
+          
           // Add as product match
           if (product.name?.toLowerCase().includes(term)) {
             results.push({
@@ -106,6 +177,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
               name: product.name,
               subtitle: product.sku ? `SKU: ${product.sku}` : product.location || undefined,
               data: product,
+              matchedFields,
             });
           }
           // Add as SKU match if SKU matches
@@ -116,6 +188,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
               name: product.sku,
               subtitle: product.name,
               data: product,
+              matchedFields: ['SKU'],
             });
           }
         });
@@ -129,8 +202,8 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
         .ilike('name', `%${term}%`)
         .limit(10);
 
-      if (categoryResults && flatCategories.length > 0) {
-        categoryResults.forEach(category => {
+      if (categoryResults && Array.isArray(categoryResults) && flatCategories.length > 0) {
+        categoryResults.forEach((category: any) => {
           const path = getCategoryPath(category as any, flatCategories);
           results.push({
             type: 'category',
@@ -150,21 +223,26 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
         .ilike('name', `%${term}%`)
         .limit(10);
 
-      if (suppliers) {
-        suppliers.forEach(supplier => {
+      if (suppliers && Array.isArray(suppliers)) {
+        suppliers.forEach((supplier: any) => {
+          const matchedFields: string[] = ['name'];
+          if (supplier.contact_person?.toLowerCase().includes(term)) matchedFields.push('contact');
+          if (supplier.email?.toLowerCase().includes(term)) matchedFields.push('email');
+          
           results.push({
             type: 'supplier',
             id: supplier.id,
             name: supplier.name,
             subtitle: supplier.contact_person || supplier.email || undefined,
             data: supplier,
+            matchedFields,
           });
         });
       }
 
       return results;
     },
-    enabled: !!user && !!activeBranch && value.length >= 2,
+    enabled: !!user && !!activeBranch && parsedSearch.baseTerm.length >= 2,
     staleTime: 1000 * 30, // 30 seconds
   });
 
@@ -271,7 +349,8 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     onChange(newValue);
-    if (newValue.trim().length >= 2) {
+    const parsed = parseSearchQuery(newValue);
+    if (parsed.baseTerm.trim().length >= 2 || Object.keys(parsed.tokens).length > 0) {
       setIsOpen(true);
       setActiveTab('results');
     } else {
@@ -280,9 +359,28 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   };
 
   const handleInputFocus = () => {
-    if (value.trim().length >= 2) {
+    const parsed = parseSearchQuery(value);
+    if (parsed.baseTerm.trim().length >= 2 || Object.keys(parsed.tokens).length > 0) {
       setIsOpen(true);
     }
+  };
+
+  const handleRemoveToken = (tokenKey: keyof SearchTokens) => {
+    const newTokens = { ...parsedSearch.tokens };
+    delete newTokens[tokenKey];
+    
+    // Reconstruct query without the removed token
+    let newQuery = parsedSearch.baseTerm;
+    if (Object.keys(newTokens).length > 0) {
+      const tokenStrings: string[] = [];
+      if (newTokens.stock) tokenStrings.push(`stock:${newTokens.stock}`);
+      if (newTokens.warehouse) tokenStrings.push(`warehouse:${newTokens.warehouse}`);
+      if (newTokens.category) tokenStrings.push(`category:${newTokens.category}`);
+      if (newTokens.location) tokenStrings.push(`location:${newTokens.location}`);
+      newQuery = tokenStrings.join(' ') + (parsedSearch.baseTerm ? ' ' + parsedSearch.baseTerm : '');
+    }
+    
+    onChange(newQuery.trim());
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -345,7 +443,24 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   };
 
   const hasResults = searchResults.length > 0;
-  const showDropdown = isOpen && (value.trim().length >= 2 || activeTab === 'create');
+  const hasTokens = Object.keys(parsedSearch.tokens).length > 0;
+  const showDropdown = isOpen && (parsedSearch.baseTerm.trim().length >= 2 || hasTokens || activeTab === 'create');
+
+  const getTokenLabel = (key: keyof SearchTokens, value: string | undefined) => {
+    if (!value) return '';
+    switch (key) {
+      case 'stock':
+        return `Stock: ${value}`;
+      case 'warehouse':
+        return `Warehouse: ${value}`;
+      case 'category':
+        return `Category: ${value}`;
+      case 'location':
+        return `Location: ${value}`;
+      default:
+        return `${key}: ${value}`;
+    }
+  };
 
   return (
     <div ref={searchRef} className="relative flex-1 rounded-xl">
@@ -367,13 +482,77 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
               onChange('');
               setIsOpen(false);
             }}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors"
+            className="absolute right-10 top-1/2 transform -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors"
             aria-label="Clear search"
           >
             <X className="w-4 h-4 text-gray-400" />
           </button>
         )}
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <SavedSearches
+            currentQuery={value}
+            onSelect={(query) => {
+              onChange(query);
+              onSubmit(query);
+            }}
+            userId={user?.id}
+          />
+        </div>
       </div>
+      
+      {/* Token chips */}
+      {hasTokens && (
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {parsedSearch.tokens.stock && (
+            <Badge variant="secondary" className="text-xs px-2 py-0.5 flex items-center gap-1">
+              {getTokenLabel('stock', parsedSearch.tokens.stock)}
+              <button
+                onClick={() => handleRemoveToken('stock')}
+                className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                aria-label="Remove stock filter"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          )}
+          {parsedSearch.tokens.warehouse && (
+            <Badge variant="secondary" className="text-xs px-2 py-0.5 flex items-center gap-1">
+              {getTokenLabel('warehouse', parsedSearch.tokens.warehouse)}
+              <button
+                onClick={() => handleRemoveToken('warehouse')}
+                className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                aria-label="Remove warehouse filter"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          )}
+          {parsedSearch.tokens.category && (
+            <Badge variant="secondary" className="text-xs px-2 py-0.5 flex items-center gap-1">
+              {getTokenLabel('category', parsedSearch.tokens.category)}
+              <button
+                onClick={() => handleRemoveToken('category')}
+                className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                aria-label="Remove category filter"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          )}
+          {parsedSearch.tokens.location && (
+            <Badge variant="secondary" className="text-xs px-2 py-0.5 flex items-center gap-1">
+              {getTokenLabel('location', parsedSearch.tokens.location)}
+              <button
+                onClick={() => handleRemoveToken('location')}
+                className="ml-1 hover:bg-gray-200 rounded-full p-0.5"
+                aria-label="Remove location filter"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </Badge>
+          )}
+        </div>
+      )}
 
       {showDropdown && dropdownPosition && typeof document !== 'undefined' && createPortal(
         <div
@@ -400,10 +579,10 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
                 <div className="p-4 text-center text-sm text-gray-500">
                   Searching...
                 </div>
-              ) : !hasResults ? (
+              ) : !hasResults && !hasTokens ? (
                 <div className="p-4 text-center text-sm text-gray-500">
-                  {value.trim().length < 2 
-                    ? 'Type at least 2 characters to search'
+                  {parsedSearch.baseTerm.trim().length < 2 
+                    ? 'Type at least 2 characters to search, or use filters like stock:low'
                     : 'No results found'}
                 </div>
               ) : (
@@ -430,6 +609,15 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
                             {result.subtitle && (
                               <div className="text-xs text-gray-500 truncate">
                                 {result.subtitle}
+                              </div>
+                            )}
+                            {result.matchedFields && result.matchedFields.length > 0 && (
+                              <div className="flex gap-1 mt-1">
+                                {result.matchedFields.map((field, idx) => (
+                                  <Badge key={idx} variant="secondary" className="text-[10px] px-1 py-0">
+                                    {field}
+                                  </Badge>
+                                ))}
                               </div>
                             )}
                           </div>
@@ -463,6 +651,15 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
                                 {result.subtitle}
                               </div>
                             )}
+                            {result.matchedFields && result.matchedFields.length > 0 && (
+                              <div className="flex gap-1 mt-1">
+                                {result.matchedFields.map((field, idx) => (
+                                  <Badge key={idx} variant="secondary" className="text-[10px] px-1 py-0">
+                                    {field}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
                           </div>
                           <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
                         </button>
@@ -494,6 +691,15 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
                                 {result.subtitle}
                               </div>
                             )}
+                            {result.matchedFields && result.matchedFields.length > 0 && (
+                              <div className="flex gap-1 mt-1">
+                                {result.matchedFields.map((field, idx) => (
+                                  <Badge key={idx} variant="secondary" className="text-[10px] px-1 py-0">
+                                    {field}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
                           </div>
                           <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
                         </button>
@@ -523,6 +729,15 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
                             {result.subtitle && (
                               <div className="text-xs text-gray-500 truncate">
                                 {result.subtitle}
+                              </div>
+                            )}
+                            {result.matchedFields && result.matchedFields.length > 0 && (
+                              <div className="flex gap-1 mt-1">
+                                {result.matchedFields.map((field, idx) => (
+                                  <Badge key={idx} variant="secondary" className="text-[10px] px-1 py-0">
+                                    {field}
+                                  </Badge>
+                                ))}
                               </div>
                             )}
                           </div>

@@ -16,6 +16,8 @@ export const useFocusDataRefresh = () => {
   const debounceMs = 5000;
   const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const wasHiddenRef = useRef<boolean>(false);
+  const isProcessingRef = useRef<boolean>(false);
+  const sessionCheckPromiseRef = useRef<Promise<void> | null>(null);
 
   useEffect(() => {
     /**
@@ -121,8 +123,14 @@ export const useFocusDataRefresh = () => {
       console.log('[FocusDataRefresh] Refresh triggered for all active queries');
     };
 
-    const handleFocus = async () => {
-      console.log('[FocusDataRefresh] Window focus event triggered, wasHidden:', wasHiddenRef.current);
+    const performRefresh = async (source: 'focus' | 'visibility') => {
+      // Prevent multiple simultaneous executions
+      if (isProcessingRef.current) {
+        console.log(`[FocusDataRefresh] Already processing refresh from ${source}, skipping`);
+        return;
+      }
+
+      console.log(`[FocusDataRefresh] ${source} event triggered, wasHidden:`, wasHiddenRef.current);
       
       // Only refresh if we were previously hidden (user switched tabs/windows)
       // This prevents refresh when clicking within the same window
@@ -130,9 +138,10 @@ export const useFocusDataRefresh = () => {
         console.log('[FocusDataRefresh] Window was not hidden, skipping refresh');
         return;
       }
-      
-      wasHiddenRef.current = false;
 
+      // Mark as processing immediately to prevent race conditions
+      isProcessingRef.current = true;
+      
       // Clear any pending refresh timeout
       if (refreshTimeoutRef.current) {
         clearTimeout(refreshTimeoutRef.current);
@@ -141,19 +150,59 @@ export const useFocusDataRefresh = () => {
 
       try {
         // Try to re-check session quickly; do not block UI
-        const { data } = await supabase.auth.getSession();
-        if (!data?.session) {
-          await supabase.auth.refreshSession().catch(() => {});
+        // Reuse existing promise if one is already in progress
+        if (!sessionCheckPromiseRef.current) {
+          sessionCheckPromiseRef.current = (async () => {
+            try {
+              const { data } = await supabase.auth.getSession();
+              if (!data?.session) {
+                await supabase.auth.refreshSession().catch(() => {});
+              }
+            } catch (error) {
+              console.error('[FocusDataRefresh] Session check error:', error);
+            } finally {
+              sessionCheckPromiseRef.current = null;
+            }
+          })();
         }
+        
+        // Wait for session check to complete (or use existing promise)
+        await sessionCheckPromiseRef.current;
+      } catch (error) {
+        console.error('[FocusDataRefresh] Error during session check:', error);
       } finally {
         // Add a delay to allow immediate user interactions (like clicking chevrons)
         // This prevents the refresh from interfering with user clicks
         // Refresh happens in the background
         console.log('[FocusDataRefresh] Scheduling refresh in 300ms...');
         refreshTimeoutRef.current = setTimeout(() => {
-          invalidateAndRefetch();
+          // Check if page is still visible before executing refresh
+          // If page became hidden again, skip the refresh
+          if (document.hidden) {
+            console.log('[FocusDataRefresh] Page became hidden again, skipping scheduled refresh');
+            isProcessingRef.current = false;
+            return;
+          }
+          
+          try {
+            invalidateAndRefetch();
+          } catch (error) {
+            console.error('[FocusDataRefresh] Error during refresh:', error);
+          } finally {
+            isProcessingRef.current = false;
+            // Only reset wasHiddenRef after refresh completes and page is still visible
+            if (!document.hidden) {
+              wasHiddenRef.current = false;
+            }
+          }
         }, 300);
       }
+    };
+
+    const handleFocus = () => {
+      // Focus event can fire even when page wasn't hidden (e.g., clicking in same window)
+      // So we rely on wasHiddenRef to determine if refresh is needed
+      performRefresh('focus');
     };
 
     const visibilityHandler = () => {
@@ -161,29 +210,47 @@ export const useFocusDataRefresh = () => {
         // Page became hidden - mark that we were hidden
         console.log('[FocusDataRefresh] Page hidden');
         wasHiddenRef.current = true;
-      } else if (wasHiddenRef.current) {
-        // Page became visible again after being hidden - refresh
-        console.log('[FocusDataRefresh] Page visible again after being hidden');
-        // Clear any pending refresh timeout
+        
+        // Clear any pending refresh timeout when page is hidden
         if (refreshTimeoutRef.current) {
           clearTimeout(refreshTimeoutRef.current);
           refreshTimeoutRef.current = null;
         }
-        // Call handleFocus which will reset wasHiddenRef
-        handleFocus();
+        
+        // Reset processing flag when page is hidden (allows new refresh when visible again)
+        isProcessingRef.current = false;
+      } else {
+        // Page became visible again
+        // Only trigger refresh if we were previously hidden
+        if (wasHiddenRef.current) {
+          console.log('[FocusDataRefresh] Page visible again after being hidden');
+          // Trigger refresh via visibilitychange
+          // Note: focus event might also fire, but isProcessingRef will prevent double execution
+          performRefresh('visibility');
+        } else {
+          console.log('[FocusDataRefresh] Page visible but was not hidden, skipping refresh');
+        }
       }
     };
 
-    window.addEventListener('focus', handleFocus);
+    // Use capture phase for focus event to catch it early
+    window.addEventListener('focus', handleFocus, true);
     document.addEventListener('visibilitychange', visibilityHandler);
+    
     return () => {
-      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('focus', handleFocus, true);
       document.removeEventListener('visibilitychange', visibilityHandler);
+      
       // Clear timeout on cleanup
       if (refreshTimeoutRef.current) {
         clearTimeout(refreshTimeoutRef.current);
         refreshTimeoutRef.current = null;
       }
+      
+      // Reset flags on cleanup
+      isProcessingRef.current = false;
+      wasHiddenRef.current = false;
+      sessionCheckPromiseRef.current = null;
     };
   }, [queryClient, location.pathname]);
 };

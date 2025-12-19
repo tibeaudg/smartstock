@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Package, MapPin, Download, Archive, X } from 'lucide-react';
+import { Package, MapPin, Download, Archive, X, Hash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BulkActionBarProps {
@@ -9,6 +9,7 @@ interface BulkActionBarProps {
   onAssignLocation?: () => void;
   onExport?: () => void;
   onArchive?: () => void;
+  onGenerateSKUs?: () => void;
   onClearSelection?: () => void;
   className?: string;
 }
@@ -19,6 +20,7 @@ export const BulkActionBar: React.FC<BulkActionBarProps> = ({
   onAssignLocation,
   onExport,
   onArchive,
+  onGenerateSKUs,
   onClearSelection,
   className,
 }) => {
@@ -66,6 +68,17 @@ export const BulkActionBar: React.FC<BulkActionBarProps> = ({
           >
             <MapPin className="w-3.5 h-3.5 mr-1.5" />
             Assign Location
+          </Button>
+        )}
+        {onGenerateSKUs && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onGenerateSKUs}
+            className="h-8 text-xs"
+          >
+            <Hash className="w-3.5 h-3.5 mr-1.5" />
+            Auto-generate SKUs
           </Button>
         )}
         {onExport && (

@@ -37,3 +37,4 @@ CREATE POLICY "Admin can view all leads" ON public.leads
 
 
 
+

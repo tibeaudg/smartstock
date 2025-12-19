@@ -12,11 +12,11 @@ import { useQuery } from '@tanstack/react-query';
 
 interface WarehouseDistributionProps {
   productId: string;
-  onAddLocation?: () => void;
+  onAddWarehouse?: () => void;
 }
 
-interface LocationData {
-  location: string;
+interface WarehouseData {
+  warehouse: string;
   quantity: number;
   value: number;
   lastMovement: string | null;
@@ -25,20 +25,20 @@ interface LocationData {
 
 export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
   productId,
-  onAddLocation,
+  onAddWarehouse,
 }) => {
   const { formatPrice } = useCurrency();
   const { activeBranch } = useBranches();
 
-  const { data: locationData, isLoading } = useQuery<LocationData[]>({
+  const { data: warehouseData, isLoading } = useQuery<WarehouseData[]>({
     queryKey: ['warehouseDistribution', productId, activeBranch?.branch_id],
     queryFn: async () => {
       if (!productId || !activeBranch) return [];
 
-      // Fetch product and variants with locations
+      // Fetch product and variants with warehouses
       const { data: products, error } = await supabase
         .from('products')
-        .select('id, location, quantity_in_stock, unit_price, purchase_price')
+        .select('id, warehouse_name, quantity_in_stock, unit_price, purchase_price')
         .or(`id.eq.${productId},parent_product_id.eq.${productId}`)
         .eq('branch_id', activeBranch.branch_id);
 
@@ -49,22 +49,22 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
 
       if (!products || products.length === 0) return [];
 
-      // Group by location
-      const locationMap = new Map<string, LocationData>();
+      // Group by warehouse
+      const warehouseMap = new Map<string, WarehouseData>();
 
       products.forEach((product) => {
-        const location = product.location || 'No Location';
+        const warehouse = product.warehouse_name || 'No Warehouse';
         const quantity = product.quantity_in_stock || 0;
         const price = product.purchase_price || product.unit_price || 0;
         const value = quantity * (typeof price === 'string' ? parseFloat(price) : price);
 
-        if (locationMap.has(location)) {
-          const existing = locationMap.get(location)!;
+        if (warehouseMap.has(warehouse)) {
+          const existing = warehouseMap.get(warehouse)!;
           existing.quantity += quantity;
           existing.value += value;
         } else {
-          locationMap.set(location, {
-            location,
+          warehouseMap.set(warehouse, {
+            warehouse,
             quantity,
             value,
             lastMovement: null,
@@ -73,9 +73,9 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
         }
       });
 
-      // Fetch last movement for each location
-      const locations = Array.from(locationMap.keys());
-      for (const location of locations) {
+      // Fetch last movement for each warehouse
+      const warehouses = Array.from(warehouseMap.keys());
+      for (const warehouse of warehouses) {
         const { data: lastTx } = await supabase
           .from('stock_transactions')
           .select('created_at')
@@ -86,14 +86,14 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
           .maybeSingle();
 
         if (lastTx) {
-          const locationData = locationMap.get(location);
-          if (locationData) {
-            locationData.lastMovement = lastTx.created_at;
+          const warehouseData = warehouseMap.get(warehouse);
+          if (warehouseData) {
+            warehouseData.lastMovement = lastTx.created_at;
           }
         }
       }
 
-      return Array.from(locationMap.values()).sort((a, b) => b.quantity - a.quantity);
+      return Array.from(warehouseMap.values()).sort((a, b) => b.quantity - a.quantity);
     },
     enabled: !!productId && !!activeBranch,
     staleTime: 30000,
@@ -112,19 +112,6 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
     }
   };
 
-  const parseBinLevel = (location: string) => {
-    // Support formats like "A1-B2-S3" or "Warehouse A, Shelf 3, Bin 5"
-    if (location.includes('-')) {
-      const parts = location.split('-');
-      return {
-        zone: parts[0] || '',
-        aisle: parts[1] || '',
-        shelf: parts[2] || '',
-      };
-    }
-    return null;
-  };
-
   if (isLoading) {
     return (
       <Card className="p-6">
@@ -133,19 +120,19 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
     );
   }
 
-  if (!locationData || locationData.length === 0) {
+  if (!warehouseData || warehouseData.length === 0) {
     return (
       <Card className="p-6">
         <div className="text-center py-8">
           <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 mb-2">No location data</p>
+          <p className="text-gray-600 mb-2">No warehouse data</p>
           <p className="text-sm text-gray-500 mb-4">
-            Add a location to track where this product is stored
+            Add a warehouse to track where this product is stored
           </p>
-          {onAddLocation && (
-            <Button variant="outline" size="sm" onClick={onAddLocation}>
+          {onAddWarehouse && (
+            <Button variant="outline" size="sm" onClick={onAddWarehouse}>
               <Plus className="w-4 h-4 mr-2" />
-              Add Location
+              Add Warehouse
             </Button>
           )}
         </div>
@@ -159,7 +146,7 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Location</TableHead>
+              <TableHead>Warehouse</TableHead>
               <TableHead className="text-right">Quantity</TableHead>
               <TableHead className="text-right">Value</TableHead>
               <TableHead>Last Movement</TableHead>
@@ -167,23 +154,13 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {locationData.map((item, index) => {
-              const binLevel = parseBinLevel(item.location);
+            {warehouseData.map((item, index) => {
               return (
                 <TableRow key={index}>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-gray-400" />
-                      <div>
-                        <div className="font-medium">{item.location}</div>
-                        {binLevel && (
-                          <div className="text-xs text-gray-500">
-                            Zone: {binLevel.zone}
-                            {binLevel.aisle && ` • Aisle: ${binLevel.aisle}`}
-                            {binLevel.shelf && ` • Shelf: ${binLevel.shelf}`}
-                          </div>
-                        )}
-                      </div>
+                      <div className="font-medium">{item.warehouse}</div>
                     </div>
                   </TableCell>
                   <TableCell className="text-right font-mono">
@@ -207,6 +184,7 @@ export const WarehouseDistribution: React.FC<WarehouseDistributionProps> = ({
     </Card>
   );
 };
+
 
 
 

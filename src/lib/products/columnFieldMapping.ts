@@ -93,22 +93,32 @@ export const AVAILABLE_COLUMNS: ColumnDefinition[] = [
     description: 'Minimum stock level before reorder',
   },
   {
+    id: 'storage',
+    label: 'Storage',
+    category: 'inventory',
+    sortable: true,
+    defaultVisible: true,
+    dataKey: 'storage',
+    description: 'Warehouse and storage location (combined)',
+  },
+  // Legacy columns (kept for backward compatibility, but storage replaces them)
+  {
     id: 'location',
     label: 'Location',
     category: 'inventory',
     sortable: true,
-    defaultVisible: true,
+    defaultVisible: false,
     dataKey: 'location',
-    description: 'Storage location',
+    description: 'Storage location (use Storage column instead)',
   },
   {
     id: 'warehouses',
     label: 'Warehouses',
     category: 'inventory',
     sortable: true,
-    defaultVisible: true,
-    dataKey: 'location',
-    description: 'Warehouse name',
+    defaultVisible: false,
+    dataKey: 'warehouse_name',
+    description: 'Warehouse name (use Storage column instead)',
   },
   
   // Pricing Information
@@ -199,10 +209,9 @@ export function getDefaultColumnOrder(): string[] {
     'name',           // Product (visual anchor)
     'stock',          // Stock Status (decision-critical)
     'minimum_stock_level', // Available/Min level (context for stock status)
-    'location',       // Location(s) (operational)
+    'storage',        // Storage (warehouse + location)
     'sku',            // SKU (secondary identifier)
     'category_name',  // Category (filtering/grouping)
-    'warehouses',     // Warehouses (secondary filter)
     'barcode',        // Barcode (metadata)
     'description',    // Description (metadata)
     'purchase_price', // Cost (financial)

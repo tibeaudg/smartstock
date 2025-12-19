@@ -147,3 +147,4 @@ GRANT ALL ON public.stock_transfer_items TO authenticated;
 
 
 
+

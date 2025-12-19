@@ -76,20 +76,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   const { data: warehouses = [] } = useWarehouses();
 
-  // Map product locations to warehouse names
-  const locationToWarehouseMap = React.useMemo(() => {
-    const map = new Map<string, string>();
-    warehouses.forEach(warehouse => {
-      map.set(warehouse.name, warehouse.name);
-    });
-    return map;
-  }, [warehouses]);
-
-  // Get warehouse name for a product based on its warehouse_name
-  const getWarehouseName = React.useCallback((warehouseName: string | null | undefined): string | null => {
-    if (!warehouseName) return null;
-    return warehouseName;
-  }, []);
   
   // Variants state
   const [variants, setVariants] = useState<any[]>([]);
@@ -120,7 +106,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     sale_price: 0,
     variant_sku: '',
     variant_barcode: '',
-    location: '',
   });
   
   // Form state
@@ -132,7 +117,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     purchase_price: product?.purchase_price || 0,
     sale_price: product?.sale_price || 0,
     sku: product?.sku || '',
-    location: product?.location || '',
     category_id: product?.category_id || '',
     category_name: product?.category_name || '',
   });
@@ -168,7 +152,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         purchase_price: product.purchase_price || 0,
         sale_price: product.sale_price || 0,
         sku: product.sku || '',
-        location: product.location || '',
         category_id: product.category_id || '',
         category_name: product.category_name || '',
       });
@@ -251,7 +234,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       sale_price: variant.sale_price || 0,
       variant_sku: variant.variant_sku || '',
       variant_barcode: variant.variant_barcode || '',
-      location: variant.location || '',
     });
   };
 
@@ -268,7 +250,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         sale_price: Number(variantForm.sale_price) || null,
         variant_sku: variantForm.variant_sku.trim() || null,
         variant_barcode: variantForm.variant_barcode.trim() || null,
-        location: variantForm.location.trim() || null,
         updated_at: new Date().toISOString(),
       };
 
@@ -315,7 +296,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       sale_price: 0,
       variant_sku: '',
       variant_barcode: '',
-      location: '',
     });
   };
 
@@ -478,8 +458,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         updateData.sale_price = Number(form.sale_price);
       } else if (field === 'sku') {
         updateData.sku = form.sku.trim() || null;
-      } else if (field === 'location') {
-        updateData.location = form.location.trim() || null;
       } else if (field === 'category') {
         updateData.category_id = categoryId;
         updateData.category_name = form.category_name.trim() || null;
@@ -517,7 +495,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           purchase_price: updatedProduct.purchase_price || 0,
           sale_price: updatedProduct.sale_price || 0,
           sku: updatedProduct.sku || '',
-          location: updatedProduct.location || '',
           category_id: updatedProduct.category_id || '',
           category_name: updatedProduct.category_name || '',
         }));
@@ -559,7 +536,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       purchase_price: currentProduct?.purchase_price || 0,
       sale_price: currentProduct?.sale_price || 0,
       sku: currentProduct?.sku || '',
-      location: currentProduct?.location || '',
       category_id: currentProduct?.category_id || '',
       category_name: currentProduct?.category_name || '',
     });
@@ -652,10 +628,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
       if (!error && data) {
         setCurrentProduct(data);
-        setForm(prev => ({
-          ...prev,
-          location: data.location || '',
-        }));
       }
     }
     
@@ -1204,76 +1176,20 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
                 )}
                 </div>
-                
-                {/* Location */}
-                <div>
-                  {editingField === 'location' ? (
-                    <div className="space-y-2">
-                      <Label>Location</Label>
-                      <Input
-                        value={form.location}
-                        onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
-                        placeholder="Enter location (e.g. row6 box 4)"
-                        disabled={loading}
-                      />
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleSave('location')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCancel('location')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between text-sm">
-                      <div>
-                        <span className="text-gray-600">Location:</span>
-                        <span className="ml-2 text-gray-900">
-                          {currentProduct.location || 'Not set'}
-                        </span>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setEditingField('location')}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  )}
-                </div>
 
                 {/* Warehouse */}
-                {(() => {
-                  const warehouseName = getWarehouseName(currentProduct.warehouse_name);
-                  return (
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-2">
-                        <Warehouse className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-600">Warehouse:</span>
-                        <span className={cn(
-                          "text-gray-900",
-                          !warehouseName && "text-gray-400 italic"
-                        )}>
-                          {warehouseName || 'Not assigned'}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })()}
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <Warehouse className="w-4 h-4 text-gray-400" />
+                    <span className="text-gray-600">Warehouse:</span>
+                    <span className={cn(
+                      "text-gray-900",
+                      !currentProduct.warehouse_name && "text-gray-400 italic"
+                    )}>
+                      {currentProduct.warehouse_name || 'Not assigned'}
+                    </span>
+                  </div>
+                </div>
                 
                 {/* Category */}
                 {editingField === 'category' ? (
@@ -1474,7 +1390,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   productId={currentProduct.id}
                   currentStock={totalStock}
                   reorderPoint={currentProduct.minimum_stock_level || 0}
-                  onAddLocation={() => setEditingField('location')}
                 />
               )}
             </TabsContent>
@@ -1584,7 +1499,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Variant Name</th>
                             <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                             <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
                             <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                             <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -1636,18 +1550,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                     />
                                   ) : (
                                     <span className="text-sm font-mono text-gray-600">{variant.variant_sku || variant.sku || '-'}</span>
-                                  )}
-                                </td>
-                                <td className="px-4 py-3">
-                                  {isEditing ? (
-                                    <Input
-                                      value={variantForm.location}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, location: e.target.value }))}
-                                      className="text-sm"
-                                      disabled={loading}
-                                    />
-                                  ) : (
-                                    <span className="text-sm text-gray-600">{variant.location || '-'}</span>
                                   )}
                                 </td>
                                 <td className="px-4 py-3 text-center">

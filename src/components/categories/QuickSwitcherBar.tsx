@@ -1,6 +1,6 @@
 /**
  * Quick Switcher Bar Component
- * Global quick-switchers for Location, Category, and quick filters
+ * Global quick-switchers for Warehouse, Category, and quick filters
  */
 
 import React, { useState, useEffect } from 'react';
@@ -34,8 +34,6 @@ interface QuickSwitcherBarProps {
   tree: CategoryTree[];
   selectedCategoryIds: string[];
   onCategorySelectionChange: (categoryIds: string[]) => void;
-  selectedLocation?: string | null;
-  onLocationChange?: (location: string | null) => void;
   selectedWarehouse?: string | null;
   onWarehouseChange?: (warehouse: string | null) => void;
   onQuickFilterChange?: (filter: string | null) => void;
@@ -47,8 +45,6 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   tree,
   selectedCategoryIds,
   onCategorySelectionChange,
-  selectedLocation,
-  onLocationChange,
   selectedWarehouse,
   onWarehouseChange,
   onQuickFilterChange,
@@ -58,11 +54,8 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   const { activeBranch } = useBranches();
   const { user } = useAuth();
   const { data: warehouses = [] } = useWarehouses();
-  const [locations, setLocations] = useState<string[]>([]);
   const [isCategoryPopoverOpen, setIsCategoryPopoverOpen] = useState(false);
-  const [isLocationPopoverOpen, setIsLocationPopoverOpen] = useState(false);
   const [isWarehousePopoverOpen, setIsWarehousePopoverOpen] = useState(false);
-  const [locationSearchQuery, setLocationSearchQuery] = useState('');
   const [categorySearchQuery, setCategorySearchQuery] = useState('');
   const [warehouseSearchQuery, setWarehouseSearchQuery] = useState('');
 
@@ -70,41 +63,6 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
   const allCategories = React.useMemo(() => {
     return flattenCategoryTree(tree);
   }, [tree]);
-
-  // Fetch unique locations
-  useEffect(() => {
-    const fetchLocations = async () => {
-      if (!user || !activeBranch) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from('products')
-          .select('location')
-          .eq('branch_id', activeBranch.branch_id)
-          .not('location', 'is', null)
-          .neq('location', '');
-        
-        if (error) {
-          console.error('Error fetching locations:', error);
-          return;
-        }
-        
-        const uniqueLocations = [...new Set(data?.map(item => item.location).filter(Boolean))];
-        setLocations(uniqueLocations.sort());
-      } catch (error) {
-        console.error('Error fetching locations:', error);
-      }
-    };
-
-    fetchLocations();
-  }, [user, activeBranch]);
-
-  // Clear search query when popover closes
-  useEffect(() => {
-    if (!isLocationPopoverOpen) {
-      setLocationSearchQuery('');
-    }
-  }, [isLocationPopoverOpen]);
 
   useEffect(() => {
     if (!isCategoryPopoverOpen) {
@@ -126,13 +84,6 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
     }
   };
 
-  const handleLocationSelect = (location: string | null) => {
-    if (onLocationChange) {
-      onLocationChange(location);
-    }
-    setIsLocationPopoverOpen(false);
-  };
-
   const handleWarehouseSelect = (warehouse: string | null) => {
     if (onWarehouseChange) {
       onWarehouseChange(warehouse);
@@ -140,22 +91,11 @@ export const QuickSwitcherBar: React.FC<QuickSwitcherBarProps> = ({
     setIsWarehousePopoverOpen(false);
   };
 
-  const handleCreateLocation = () => {
-    // TODO: Implement create location functionality
-    console.log('Create new location clicked');
-    // You can add a modal or form here to create a new location
-  };
-
   const handleCreateCategory = () => {
     // TODO: Implement create category functionality
     console.log('Create new category clicked');
     // You can add a modal or form here to create a new category
   };
-
-  // Filter locations based on search query
-  const filteredLocations = locations.filter(location =>
-    location.toLowerCase().includes(locationSearchQuery.toLowerCase())
-  );
 
   // Filter categories based on search query
   const filteredCategories = allCategories.filter(category =>

@@ -17,7 +17,6 @@ interface FilterState {
   searchTerm: string;
   categoryFilter: string;
   stockStatusFilter: string;
-  locationFilter: string;
   minPriceFilter: string;
   maxPriceFilter: string;
   minStockFilter: string;
@@ -46,7 +45,6 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
   // Use the shared categories hook for automatic sync with CategoriesPage
   const { data: categories = [] } = useCategories();
   
-  const [locations, setLocations] = useState<string[]>([]);
   const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [availableColors, setAvailableColors] = useState<string[]>([]);
   
@@ -58,34 +56,9 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
   // Fetch filter options when component mounts
   useEffect(() => {
     if (user) {
-      fetchLocations();
       fetchAttributes();
     }
   }, [user]);
-
-
-  const fetchLocations = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('location')
-        .not('location', 'is', null)
-        .neq('location', '');
-      
-      if (error) {
-        console.error('Error fetching locations:', error);
-        return;
-      }
-      
-      // Extract unique locations
-      const uniqueLocations = [...new Set(data?.map(item => item.location).filter(Boolean))];
-      setLocations(uniqueLocations.sort());
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-    }
-  };
 
   const fetchAttributes = async () => {
     if (!user) return;

@@ -35,3 +35,4 @@ files.forEach(file => {
 console.log(`\nCompleted! Updated ${updatedCount} files with ${totalReplacements} total replacements.`);
 
 
+
