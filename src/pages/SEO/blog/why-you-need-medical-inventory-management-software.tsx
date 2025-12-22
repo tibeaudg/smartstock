@@ -123,14 +123,22 @@ export default function SeoWhyYouNeedMedicalInventoryManagementSoftwarePage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why You Need Medical Inventory Management Software</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Medical inventory mistakes don't just cost money—they can compromise patient safety. One clinic we worked with lost €15,000 in expired medications in a single year because they didn't track expiration dates. More critically, using expired supplies violates regulations and risks patient safety. Medical inventory requires specialized software.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              You need medical inventory management software because: <strong>compliance requirements</strong> (track expiration dates, lot numbers, maintain audit trails for FDA/HIPAA), <strong>patient safety</strong> (prevent expired/damaged supplies from being used, ensure availability), <strong>cost control</strong> (reduce waste from expired items, optimize stock levels), <strong>efficiency</strong> (automate tracking, reduce manual errors), and <strong>regulatory compliance</strong> (FDA, HIPAA requirements demand detailed tracking and audit trails).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Medical inventory has unique challenges: <strong>expiration tracking</strong> (critical for patient safety—expired medications can't be used), <strong>lot number tracking</strong> (required for recall management), <strong>compliance requirements</strong> (regulatory standards demand detailed records), and <strong>specialized items</strong> (medical devices, pharmaceuticals need specific tracking). Software designed for medical inventory addresses these challenges and ensures compliance. Learn more about <Link to="/blog/pharmacy-inventory-management-best-practices" className="text-blue-600 hover:underline font-semibold">pharmacy inventory management</Link> or explore <Link to="/blog/how-to-store-medical-supplies" className="text-blue-600 hover:underline font-semibold">storing medical supplies</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why medical inventory software matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Medical inventory mistakes don't just cost money—they can compromise patient safety and violate regulations. Medical inventory software ensures compliance (FDA, HIPAA), prevents expired supplies from being used (patient safety), enables recall management (lot number tracking), and reduces waste (expiration tracking). Medical-specific features are essential for healthcare facilities.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

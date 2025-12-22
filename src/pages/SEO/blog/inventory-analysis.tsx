@@ -123,13 +123,22 @@ export default function SeoInventoryAnalysisPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Analysis?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Inventory analysis</strong> transforms raw data into actionable insights. Most businesses track inventory, but they don't analyze it—leading to overstock of slow-moving items and stockouts of fast-moving ones. One retailer we worked with discovered €8,500 tied up in items that hadn't sold in 18 months, simply because they weren't analyzing their data.
             </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Inventory analysis is the process of examining inventory data to identify trends, optimize stock levels, identify slow-moving items, and make data-driven decisions. Key analyses include: <strong>inventory turnover analysis</strong> (how many times inventory is sold per year), <strong>ABC analysis</strong> (classifying items by value), <strong>days sales of inventory (DSI)</strong> (how many days of inventory you hold), <strong>slow-moving item identification</strong> (items that haven't sold), and <strong>stockout analysis</strong> (when and why items run out).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Effective analysis helps businesses optimize inventory levels, reduce costs by 20-30%, improve cash flow, and make better purchasing decisions. Modern inventory management software automates these analyses, providing real-time insights and recommendations. Learn more about <Link to="/inventory-formulas-and-ratios" className="text-blue-600 hover:underline font-semibold">inventory formulas and ratios</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with analytics.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why inventory analysis matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Without analysis, you're managing inventory blind. Effective analysis reveals slow-moving items (free up capital), identifies fast-moving items (ensure adequate stock), optimizes stock levels (reduces costs), and prevents stockouts (improves service). Businesses that analyze inventory see 20-30% cost reductions and significantly better cash flow.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

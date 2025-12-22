@@ -123,14 +123,22 @@ export default function SeoHowToStoreMedicalSuppliesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Store Medical Supplies</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Improper storage of medical supplies isn't just wasteful—it's dangerous. We've seen clinics lose thousands in expired medications because they didn't follow FIFO (first in, first out) rotation. More critically, expired supplies can't be used, potentially compromising patient care. Proper storage ensures supplies remain safe, effective, and compliant with healthcare regulations.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Store medical supplies by: <strong>following temperature requirements</strong> (refrigerated items in proper temperature-controlled storage), <strong>using FIFO rotation</strong> (first in, first out for expiration management), <strong>organizing by category and expiration date</strong> (use oldest items first), <strong>maintaining clean and secure storage</strong> (clean areas, secure storage for controlled substances), <strong>tracking expiration dates</strong>, and <strong>using inventory management software</strong> (for compliance and accuracy).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key requirements include: <strong>temperature monitoring</strong> for refrigerated items (prevent spoilage), <strong>expiration date tracking</strong> to prevent expired supplies (patient safety), <strong>secure storage</strong> for controlled substances (regulatory compliance), and <strong>compliance with healthcare regulations</strong>. Proper storage ensures supplies remain safe and effective, prevents waste from expired items, and supports compliance. Learn more about <Link to="/blog/why-you-need-medical-inventory-management-software" className="text-blue-600 hover:underline font-semibold">medical inventory management software</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with healthcare features.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why proper storage matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Proper storage ensures supplies remain safe and effective for patient care, prevents waste from expired items (saves thousands annually), and supports regulatory compliance. Effective FIFO rotation and expiration tracking minimize expired inventory, ensuring supplies are available when needed while maintaining patient safety.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

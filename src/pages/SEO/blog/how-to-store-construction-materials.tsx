@@ -123,14 +123,22 @@ export default function SeoHowToStoreConstructionMaterialsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Store Construction Materials</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Construction sites lose thousands annually to damaged materials and theft—problems that proper storage solves. One contractor we worked with lost €6,800 in materials during a single project because they stored items improperly and couldn't track what was stolen. The fix? Proper storage combined with inventory tracking.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Store construction materials by: <strong>protecting from weather</strong> (cover outdoor storage, use weatherproof containers to prevent damage from rain, sun, and moisture), <strong>organizing by type and size</strong> (easy to find and access), <strong>using proper storage systems</strong> (racks, shelves, bins for organization), <strong>securing against theft</strong> (locked storage, site security), <strong>tracking locations with inventory software</strong> (know what's where across job sites), and <strong>maintaining clean, organized storage areas</strong>.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key considerations include: <strong>weather protection</strong> (prevent damage that costs thousands), <strong>theft prevention</strong> (secure storage and site security reduce losses), <strong>organization</strong> (easy to find materials saves time), and <strong>tracking</strong> (know what's where prevents loss). Proper storage prevents damage, reduces theft, improves efficiency, and ensures materials are available when needed. Learn more about <Link to="/blog/benefits-of-construction-inventory-management" className="text-blue-600 hover:underline font-semibold">construction inventory management</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for construction.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why proper storage matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Proper storage prevents material damage (saves thousands in replacement costs), reduces theft (protects investments), improves efficiency (materials easy to find), and ensures materials are available when needed. Well-organized storage with tracking reduces losses by 40-60% and improves job site efficiency significantly.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

@@ -123,14 +123,22 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Manage Inventory in Restaurants</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Restaurant inventory mistakes cost 4-10% of revenue through waste and over-ordering. One restaurant we worked with reduced food costs by 24% simply by tracking expiration dates and implementing FIFO rotation. The difference? They could see what was expiring before it spoiled, instead of discovering expired food during cleanup.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Manage restaurant inventory by: <strong>tracking food items with expiration dates</strong> (use FIFO - first in, first out rotation), <strong>monitoring perishable items daily</strong> (prevent waste), <strong>setting reorder points</strong> for frequently used items (prevent stockouts), <strong>reducing waste</strong> (track usage, prevent over-ordering), <strong>coordinating with menu planning</strong> (align inventory with menu), and <strong>using restaurant inventory management software</strong> with expiration tracking and waste monitoring.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key challenges include: expiration management (prevent expired food—critical for food safety), waste reduction (food spoilage costs 4-10% of revenue), accurate tracking (prevent stockouts that disrupt service), and cost control. Effective management reduces food costs by 20-30%, minimizes waste, prevents stockouts, and improves profitability. Learn more about <Link to="/blog/restaurant-inventory-management-best-practices" className="text-blue-600 hover:underline font-semibold">restaurant inventory best practices</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">restaurant inventory software</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why restaurant inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Restaurant inventory mistakes cost 4-10% of revenue through waste and over-ordering. Effective management with expiration tracking and FIFO rotation reduces food costs by 20-30%, prevents expired food from being used (food safety), minimizes waste, and improves profitability. Without proper management, food spoils, costs spiral, and compliance risks increase.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

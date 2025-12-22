@@ -103,9 +103,9 @@ export default function AssetControllerMeaning() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Asset Controller Meaning
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               Understanding the <strong>asset controller meaning</strong> is essential for effective asset management. An asset controller is a person or system responsible for tracking, managing, and maintaining accountability for organizational assets throughout their lifecycle. In modern businesses, <strong>asset controller</strong> often refers to inventory management software that automates these critical responsibilities.

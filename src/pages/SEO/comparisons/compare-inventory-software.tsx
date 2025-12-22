@@ -183,9 +183,9 @@ export default function CompareInventorySoftware() {
               <Sparkles className="w-4 h-4" />
               2025 Inventory Management Buyer’s Guide
             </span>
-            <h1 className="mt-6 text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
+            <h2 className="mt-6 text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
               Compare Inventory Software and choose the platform that scales with you
-            </h1>
+            </h2>
             <p className="mt-5 text-lg text-slate-600">
               We did the legwork on real pricing and packaged capabilities from leading systems—so you can benchmark
               against StockFlow, shortlist faster, and avoid costly mismatches.

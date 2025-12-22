@@ -143,9 +143,9 @@ export default function BillOfMaterialsInventoryManagement() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Bill of Materials Inventory Management
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               Integrate <strong>bill of materials</strong> with <strong>inventory management</strong> to track components and finished goods in one unified system. Automatically calculate material requirements, check component availability, and optimize production planning based on real-time inventory levels.

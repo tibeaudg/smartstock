@@ -81,7 +81,6 @@ export default function StockFlowVsZohoInventory() {
       title="StockFlow vs Zoho Inventory"
       heroTitle="StockFlow vs Zoho Inventory"
       updatedDate="3/12/2025"
-      updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO

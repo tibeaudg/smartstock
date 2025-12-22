@@ -165,7 +165,7 @@ export default function ProgrammaStockbeheer() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto prose prose-lg">
           <article>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Verschillende Soorten Stockbeheer Programma's Begrijpen</h1>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Verschillende Soorten Stockbeheer Programma's Begrijpen</h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               De markt voor stockbeheer programma's is aanzienlijk geëvolueerd, waarbij bedrijven verschillende oplossingen krijgen aangeboden die zijn afgestemd op verschillende behoeften, budgetten en operationele schalen. Het begrijpen van het landschap van beschikbare programma's helpt je een weloverwogen beslissing te nemen die aansluit bij je bedrijfsdoelen en groeitraject.

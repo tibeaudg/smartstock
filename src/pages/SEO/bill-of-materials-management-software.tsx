@@ -147,9 +147,9 @@ export default function BillOfMaterialsManagementSoftware() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Bill of Materials Management Software
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
               Streamline your manufacturing operations with <strong>bill of materials management software</strong>. Create accurate BOMs, calculate material requirements automatically, track component costs, and optimize production planning—all in one integrated platform. When integrated with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link>, BOM software provides complete production control. Compare with <Link to="/bill-of-material-management-software-free" className="text-blue-600 hover:underline font-semibold">free BOM software options</Link>, explore <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> solutions, or learn about <Link to="/solutions/software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">software for inventory management</Link> with BOM features.

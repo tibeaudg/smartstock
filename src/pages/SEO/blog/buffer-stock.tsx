@@ -123,14 +123,22 @@ export default function SeoBufferStockPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Buffer Stock?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Buffer stock</strong> (also called safety stock) is extra inventory kept on hand to prevent stockouts due to demand variability, supplier delays, or unexpected issues. Most businesses set buffer stock too low—leading to stockouts when demand spikes—or too high—tying up capital unnecessarily. One retailer we worked with lost €3,200 in sales during a single week because their buffer stock was calculated incorrectly.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              The purpose of buffer stock is to: prevent stockouts (ensure items are available when needed), handle demand spikes (unexpected increases in sales), account for supplier delays (late deliveries), and provide a cushion for uncertainty. Effective buffer stock calculation balances stockout prevention with carrying costs—too little causes lost sales, too much ties up capital.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Buffer stock is calculated using the formula: <strong>Buffer Stock = (Maximum Daily Usage × Maximum Lead Time) - (Average Daily Usage × Average Lead Time)</strong>. Factors affecting buffer stock include demand variability (higher variability needs more buffer), supplier reliability (unreliable suppliers need more buffer), item criticality (critical items need more buffer), and lead time variability. Learn more about <Link to="/glossary/safety-stock" className="text-blue-600 hover:underline font-semibold">safety stock</Link> or explore <Link to="/reorder-point-formula" className="text-blue-600 hover:underline font-semibold">reorder point calculations</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why buffer stock matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Buffer stock prevents stockouts that result in lost sales and customer dissatisfaction. However, it increases carrying costs (storage, insurance, obsolescence risk). The key is finding the right balance—enough to prevent stockouts without excessive costs. Effective buffer stock typically reduces stockouts by 40-60% while keeping carrying costs reasonable.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

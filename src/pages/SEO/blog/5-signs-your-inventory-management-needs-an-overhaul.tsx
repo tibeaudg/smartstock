@@ -123,14 +123,22 @@ export default function Seo5SignsYourInventoryManagementNeedsAnOverhaulPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">5 Signs Your Inventory Management Needs an Overhaul</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Your inventory management system is broken—you just haven't realized it yet. We've seen businesses waste thousands monthly because they didn't recognize the warning signs. One hardware store lost €12,000 in sales over three months before they realized their spreadsheet-based system couldn't handle growth.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              The 5 warning signs your inventory management needs an overhaul: <strong>1) Frequent stockouts</strong> (items unavailable when needed, indicates poor tracking), <strong>2) High error rates</strong> (inventory accuracy below 90%, records don't match reality), <strong>3) Using spreadsheets for 50+ items</strong> (becomes error-prone, can't scale), <strong>4) Spending too much time on inventory</strong> (10+ hours weekly indicates inefficiency), and <strong>5) Can't find items</strong> (poor organization, no location tracking).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              If you recognize 3+ of these signs, an overhaul is needed. Modern inventory management software addresses all five: barcode scanning improves accuracy to 95-99%, automated alerts prevent stockouts, mobile access reduces time spent, and location tracking ensures items are findable. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">improving inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why recognizing these signs matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Early recognition of warning signs helps prevent bigger problems and reduces costs from inefficiency. An overhaul with modern software improves accuracy to 95-99%, reduces time spent by 50-70%, prevents stockouts, and enables better organization. Waiting too long increases costs and lost sales.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

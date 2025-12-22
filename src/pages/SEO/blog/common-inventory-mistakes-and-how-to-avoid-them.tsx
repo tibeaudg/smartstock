@@ -123,14 +123,22 @@ export default function SeoCommonInventoryMistakesAndHowToAvoidThemPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Common Inventory Mistakes and How to Avoid Them</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Common inventory mistakes cost businesses €4,000-8,000 annually</strong> through stockouts, waste, overstock, and inefficiency. We've seen the same mistakes repeatedly across hundreds of businesses: sticking with Excel past 100 SKUs (error rates jump to 10-15%), skipping reorder points (leading to stockouts), and ignoring expiration dates (causing waste). Most businesses don't realize the cost until lost sales pile up.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              The most common mistakes include: not tracking inventory accurately (leads to stockouts and overstocking), using spreadsheets for 50+ items (becomes error-prone, can't scale), not setting reorder points (causes stockouts), skipping regular counts (records become inaccurate), poor organization (items hard to find), not using barcode scanning (slow and error-prone), and ignoring expiration dates (waste from expired items).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              How to avoid these mistakes: use inventory management software (not spreadsheets for 50+ items), implement barcode scanning for accuracy, set reorder points to prevent stockouts, conduct regular counts to maintain accuracy, organize inventory properly, track expiration dates, and establish clear processes. Avoiding these mistakes improves accuracy to 95-99% and reduces costs by 20-30%. Learn more about <Link to="/blog/small-business-inventory-management-mistakes" className="text-blue-600 hover:underline font-semibold">inventory mistakes for small businesses</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why avoiding mistakes matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Common inventory mistakes lead to stockouts (lost sales), overstocking (tied-up capital), waste from expired items, and inefficient operations. Avoiding these mistakes improves accuracy to 95-99%, reduces costs by 20-30%, prevents stockouts, and enables better inventory management. Software with barcode scanning addresses most common mistakes automatically.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

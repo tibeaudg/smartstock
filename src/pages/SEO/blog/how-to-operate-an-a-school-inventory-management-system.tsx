@@ -123,14 +123,22 @@ export default function SeoHowToOperateAnASchoolInventoryManagementSystemPage() 
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Operate a School Inventory Management System</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Schools manage thousands of items across classrooms, labs, and storage—without proper tracking, supplies disappear, equipment gets misplaced, and budgets get wasted. One school district we worked with saved €12,000 annually simply by tracking where equipment actually was, instead of buying replacements for "lost" items that were just in different classrooms.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Operate a school inventory management system by: <strong>setting up item records</strong> (supplies, equipment, textbooks, furniture, technology), <strong>organizing by location</strong> (classrooms, labs, library), <strong>tracking assignments</strong> (who has what equipment), <strong>scheduling maintenance</strong> (for equipment), <strong>monitoring usage</strong> (identify needs), and <strong>using mobile apps</strong> for tracking from anywhere in the school.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key operations include: receiving new supplies (record deliveries), issuing items (track assignments to teachers/students), conducting counts (maintain accuracy), generating reports (usage, needs, budgets), and managing budgets (track spending). School inventory includes supplies (paper, pens, art materials), equipment (computers, projectors, lab equipment), textbooks, furniture, and technology. Effective operation ensures supplies are available when needed and helps manage budgets. Learn more about <Link to="/asset-tracking-101" className="text-blue-600 hover:underline font-semibold">asset tracking</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for schools.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why school inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                School inventory management prevents loss (saving thousands annually on "lost" equipment), ensures supplies are available when needed (improving educational outcomes), helps manage budgets (tracking spending and identifying needs), and enables proper maintenance (extending equipment life). Without tracking, supplies disappear, equipment gets misplaced, and budgets get wasted on duplicate purchases.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

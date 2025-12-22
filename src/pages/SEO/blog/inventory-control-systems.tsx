@@ -123,14 +123,22 @@ export default function SeoInventoryControlSystemsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What are Inventory Control Systems?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Inventory control systems</strong> are the foundation of effective inventory management. They track and manage inventory levels, movements, and operations—ensuring you know exactly what you have, where it is, and when to reorder. Most businesses start with spreadsheets, but once they hit 50+ items, accuracy drops to 60-80%. Modern systems improve this to 95-99%.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Types of inventory control systems include: <strong>perpetual systems</strong> (real-time tracking with software, most common for modern businesses), <strong>periodic systems</strong> (physical counts at intervals, used for verification), <strong>manual systems</strong> (spreadsheets/paper, only for very small operations with under 50 items), and <strong>automated systems</strong> (barcode scanning, RFID, for accuracy and efficiency).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Modern systems use inventory management software with barcode scanning, real-time tracking, automated alerts, and mobile access. Key features include: real-time visibility, automated reordering, multi-location support, reporting and analytics, and integration capabilities. Choose based on volume (50+ items need software), accuracy needs (automated systems provide 95-99% accuracy), and budget. Learn more about <Link to="/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why inventory control systems matter</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Effective control systems improve accuracy from 60-80% to 95-99%, reduce time spent by 50-70%, prevent stockouts by 40-60%, and enable better decision-making. The right system scales with your business, providing the foundation for growth and operational efficiency.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

@@ -284,9 +284,9 @@ export default function BarcodingPage() {
               <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
                 PWA Barcode Scanner
               </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              <h2 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
                 StockFlow Barcoding for Real-Time Inventory Accuracy
-              </h1>
+              </h2>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
                 Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
               </p>

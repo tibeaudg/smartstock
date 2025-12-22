@@ -133,10 +133,10 @@ export default function SeoHowToImproveInventoryControlPage() {
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Modern inventory management software like StockFlow automates many control processes, providing real-time visibility, automated alerts, and comprehensive reporting. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control basics</Link>.
             </p>
-            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why improving inventory control matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Better inventory control directly impacts profitability: it prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow, increases customer satisfaction, and enables data-driven purchasing decisions. Businesses with strong inventory control see  in carrying costs and 40-60% fewer stockouts.
+                Better inventory control directly impacts profitability: it prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow, increases customer satisfaction, and enables data-driven purchasing decisions. Businesses with strong inventory control see 20-30% reductions in carrying costs and 40-60% fewer stockouts.
               </p>
             </div>
           </div>

@@ -123,14 +123,22 @@ export default function SeoHowToTakeInventoryForSmallBusinessesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Take Inventory for Small Businesses</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Taking inventory doesn't have to be a nightmare. We've seen small business owners waste entire weekends counting items manually—only to end up with inaccurate numbers that cause stockouts. The truth? There's a better way. Whether you have 20 items or 500, systematic counting methods save time and improve accuracy.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Take inventory for small businesses by: <strong>preparing in advance</strong> (organize items, ensure accessibility), <strong>counting systematically</strong> (by location or category to avoid missing items), <strong>using counting sheets or inventory software</strong> (for accuracy and speed), <strong>recording quantities accurately</strong>, <strong>reconciling with records</strong> (compare physical counts with system records), and <strong>updating inventory</strong> (fix discrepancies).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Methods vary by size: <strong>manual counting with spreadsheets</strong> works for very small operations (20-30 items), but for 50+ items, <strong>barcode scanning with inventory software</strong> is 10-20x faster and more accurate. For small businesses, free inventory software (like StockFlow free for up to 100 products) makes counting easier and more accurate than manual methods. Learn more about <Link to="/blog/how-to-perform-an-inventory-cycle-count" className="text-blue-600 hover:underline font-semibold">cycle counting</Link> or explore <Link to="/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline font-semibold">free inventory software</Link> options.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why systematic counting matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Systematic counting improves accuracy from 60-80% to 95-99%, reduces time spent by 50-70%, and prevents costly errors that lead to stockouts or overstocking. For small businesses, free software with barcode scanning makes professional inventory counting accessible without expensive systems.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

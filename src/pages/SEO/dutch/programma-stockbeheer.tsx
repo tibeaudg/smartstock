@@ -175,9 +175,9 @@ export default function ProgrammaStockbeheer() {
         <article className="prose prose-lg prose-blue mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100">
           
           {/* H1 - Primary Keyword Focus */}
-          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
             Verschillende Soorten Stockbeheer Programma's Begrijpen: Een Complete Gids
-          </h1>
+          </h2>
           
           <p className="text-xl text-gray-600 leading-relaxed mb-8">
             De markt voor <Link to="/programma-stockbeheer" className="font-semibold text-blue-600 hover:text-blue-800 transition-colors">stockbeheer programma's</Link> is enorm gegroeid. Van gratis tools tot enterprise systemen: het kiezen van de juiste software is cruciaal voor jouw groei.

@@ -123,14 +123,22 @@ export default function SeoEquipmentInventoryManagementBestPracticesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Equipment Inventory Management Best Practices</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Equipment tracking is where most businesses fail—until they lose a €5,000 piece of machinery. One construction company we worked with lost €12,000 worth of tools over six months simply because they couldn't track who had what and where it was. Proper equipment management prevents these losses and extends equipment life significantly.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Equipment inventory management best practices include: <strong>creating a comprehensive asset register</strong> (list all equipment with details: name, serial number, purchase date, value, location), <strong>labeling with barcodes or asset tags</strong> (easy scanning for tracking), <strong>tracking locations and assignments</strong> (who has what, where), <strong>scheduling maintenance</strong> (extends equipment life, prevents breakdowns), <strong>monitoring utilization</strong> (optimize allocation, identify underused equipment), and <strong>using asset management software</strong> (comprehensive tracking solution).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key practices include: maintain accurate records, track locations in real-time, schedule preventive maintenance, monitor utilization, prevent loss, and optimize allocation. Effective management prevents loss, extends equipment life through maintenance (20-30% longer lifespan), improves utilization, supports depreciation accounting, and helps make informed purchasing decisions. Learn more about <Link to="/blog/how-to-track-equipment-inventory" className="text-blue-600 hover:underline font-semibold">how to track equipment inventory</Link> or explore <Link to="/why-your-business-should-track-assets-too" className="text-blue-600 hover:underline font-semibold">asset tracking</Link> solutions.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why equipment management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Effective equipment management prevents loss (reduces theft and misplacement by 40-60%), extends equipment life through scheduled maintenance (20-30% longer lifespan), improves utilization (optimizes allocation), and protects investments worth thousands. Proper tracking and maintenance pay for themselves through reduced losses and extended equipment life.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

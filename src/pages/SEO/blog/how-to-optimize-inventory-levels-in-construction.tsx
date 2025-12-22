@@ -123,14 +123,22 @@ export default function SeoHowToOptimizeInventoryLevelsInConstructionPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Optimize Inventory Levels in Construction</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Construction inventory waste is brutal—materials sit unused between projects, weather damage destroys stock, and theft goes unnoticed. One contractor optimized their inventory and reduced waste by 28%, freeing up €45,000 in tied-up capital. Optimization isn't just about counting—it's about timing orders with projects and maintaining safety stock for critical items.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Optimize construction inventory levels by: <strong>tracking usage patterns</strong> (identify fast/slow-moving items), <strong>setting appropriate reorder points</strong> (based on lead times and usage), <strong>maintaining safety stock</strong> for critical items (prevent project delays), <strong>coordinating with project schedules</strong> (order when needed), <strong>reducing waste</strong> (prevent damage, theft, expiration), and <strong>using inventory management software</strong> for real-time tracking across job sites.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Optimization reduces costs by 20-30%, prevents stockouts that delay projects, minimizes waste, and improves project profitability. Key strategies include analyzing usage to identify patterns, setting reorder points based on lead times, maintaining safety stock for critical materials, and coordinating ordering with project timelines. Learn more about <Link to="/benefits-of-construction-inventory-management" className="text-blue-600 hover:underline font-semibold">construction inventory management benefits</Link> or explore <Link to="/inventory-optimization" className="text-blue-600 hover:underline font-semibold">inventory optimization</Link> strategies.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why optimization matters in construction</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Construction inventory optimization reduces costs by 20-30%, prevents stockouts that delay projects, minimizes waste from weather and theft, and improves project profitability. Without optimization, materials sit unused between projects, capital gets tied up, and project delays cost thousands in lost productivity.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

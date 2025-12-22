@@ -123,14 +123,22 @@ export default function SeoCalculatingBeginningInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Calculate Beginning Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Beginning inventory</strong> is the starting point for all inventory calculations—and getting it wrong throws off your entire cost of goods sold (COGS) calculation. We've seen businesses misreport profits by thousands simply because they calculated beginning inventory incorrectly. The good news? It's straightforward once you understand the concept.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Calculate beginning inventory by: taking ending inventory from the previous period (this becomes beginning inventory for the current period), conducting a physical count at the period start, using inventory management software records, or using the formula: <strong>Beginning Inventory = Ending Inventory (previous period)</strong>. For the first period: Beginning Inventory = Initial purchases/stock.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Beginning inventory is essential for COGS calculations: <strong>COGS = Beginning Inventory + Purchases - Ending Inventory</strong>. Accurate beginning inventory ensures accurate financial reporting and inventory valuation. Use inventory management software to automatically track beginning and ending inventory across periods, ensuring continuity and accuracy. Learn more about <Link to="/inventory-formulas-and-ratios" className="text-blue-600 hover:underline font-semibold">inventory formulas and ratios</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with accounting integration.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why beginning inventory matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Beginning inventory is the foundation for accurate COGS calculations and financial reporting. Errors in beginning inventory cascade through all financial calculations, affecting profit reporting, tax calculations, and inventory valuation. Accurate tracking across periods is essential for proper accounting and business decision-making.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

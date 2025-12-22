@@ -277,11 +277,11 @@ export default function StockFlowVsSortly() {
       <section className="bg-gradient-to-br from-blue-50 via-white to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
               StockFlow vs Sortly
               <br />
               <span className="text-blue-600">Compare Features, Pricing, and Migration</span>
-            </h1>
+            </h2>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
               Completely free forever vs $25/month • 5-7 day setup vs 30+ days • Save 100% costs • Free migration assistance
             </p>
@@ -910,7 +910,7 @@ export default function StockFlowVsSortly() {
           "@id": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "name": "StockFlow vs Sortly — Compare Features, Pricing, and Migration",
           "headline": "StockFlow vs Sortly: Free Plan vs $25/month, Better Features, 5-7 Day Setup",
-          "description": "Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Join for Free - no credit card required.",
+          "description": "Compare StockFlow vs Sortly 2025. Free forever vs $25/month, better features. 5-7 day setup vs 30+ days. EU hosting. Save 100% costs.",
           "url": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "inLanguage": "en",
           "isPartOf": {

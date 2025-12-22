@@ -38,7 +38,7 @@ const metrics = [
   },
   {
     "label": "Inventory cost optimization",
-    "detail": "Track improvements in inventory costs. Effective management optimizes inventory levels, reducing carrying costs while maintaining production continuity. Target  in inventory costs."
+                "detail": "Track improvements in inventory costs. Effective management optimizes inventory levels, reducing carrying costs while maintaining production continuity. Target 20-30% reduction in inventory costs."
   },
   {
     "label": "Production efficiency",
@@ -123,14 +123,22 @@ export default function SeoImportanceOfInventoryManagementManufacturingPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why Inventory Management is Critical for Manufacturing</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              In manufacturing, inventory management isn't just about tracking—it's about keeping production running. One manufacturer we worked with lost €45,000 in a single month when raw material stockouts halted production lines. Poor inventory management doesn't just cause delays; it stops revenue.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Inventory management is critical for manufacturing because it: <strong>prevents production delays</strong> (stockouts of raw materials stop production, costing thousands per hour), <strong>reduces costs</strong> (optimizes inventory levels, reduces waste from expired or damaged materials), <strong>improves production efficiency</strong> (ensures materials are available when needed), <strong>supports quality control</strong> (tracks materials through production for traceability), and <strong>enables better planning</strong> (accurate demand forecasting prevents shortages and overstock).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Poor inventory management causes production stoppages (costing thousands per hour), excess inventory (ties up capital), waste (expired/damaged materials), and quality issues. Effective management ensures materials are available for production, optimizes inventory investment, and improves overall manufacturing efficiency. Learn more about <Link to="/blog/how-to-track-raw-materials" className="text-blue-600 hover:underline font-semibold">tracking raw materials</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for manufacturing.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why manufacturing inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                In manufacturing, inventory stockouts don't just lose sales—they stop production, costing thousands per hour. Effective inventory management prevents these expensive shutdowns, optimizes inventory investment, reduces waste, and ensures production continuity. The stakes are higher in manufacturing, making inventory management essential for profitability.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

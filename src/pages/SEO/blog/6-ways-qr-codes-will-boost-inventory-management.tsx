@@ -123,14 +123,22 @@ export default function Seo6WaysQRCodesWillBoostInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">6 Ways QR Codes Will Boost Inventory Management</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              QR codes aren't just for menus anymore—they're transforming inventory management. One warehouse we worked with switched from traditional barcodes to QR codes and cut scanning time by 40% because staff could scan from any angle. Plus, QR codes can store maintenance history, expiration dates, and serial numbers—all in one scan.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              6 ways QR codes boost inventory management: <strong>1) Faster scanning</strong> (10-20x faster than manual entry, scan from any angle), <strong>2) Store more data</strong> (up to 4,296 characters—product details, URLs, batch info), <strong>3) Smartphone accessibility</strong> (use phone cameras, no special scanners needed), <strong>4) Better accuracy</strong> (95-99% vs 60-80% manual, error correction built-in), <strong>5) Cost-effective</strong> (free to generate, use existing smartphones), <strong>6) Flexible integration</strong> (connect with inventory software, store rich data).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              QR codes improve inventory management efficiency, accuracy, and accessibility. They're particularly valuable for businesses wanting smartphone-based scanning and richer data storage. QR codes provide significant advantages over manual entry and even traditional barcodes in many use cases. Learn more about <Link to="/the-future-of-qr-codes-what-lies-ahead-for-inventory-management" className="text-blue-600 hover:underline font-semibold">the future of QR codes</Link> or explore <Link to="/3-ways-barcodes-and-qr-codes-reduce-human-error" className="text-blue-600 hover:underline font-semibold">how QR codes reduce errors</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why QR codes matter for inventory</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                QR codes enable 10-20x faster scanning than manual entry, store up to 4,296 characters (vs. limited data in barcodes), work with any smartphone camera (no expensive scanners), improve accuracy to 95-99%, and provide built-in error correction. They're cost-effective, accessible, and provide richer data storage than traditional barcodes.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

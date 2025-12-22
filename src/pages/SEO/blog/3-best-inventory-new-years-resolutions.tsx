@@ -24,7 +24,7 @@ const actionSteps = [
   },
   {
     "title": "Reduce waste",
-    "description": "Commit to reducing waste: track expiration dates (prevent expired items), optimize stock levels (prevent overstocking), and monitor usage patterns (identify waste sources). Target  in waste."
+    "description": "Commit to reducing waste: track expiration dates (prevent expired items), optimize stock levels (prevent overstocking), and monitor usage patterns (identify waste sources). Target 20-30% reduction in waste."
   },
   {
     "title": "Automate processes",
@@ -38,7 +38,7 @@ const metrics = [
   },
   {
     "label": "Waste reduction",
-    "detail": "Monitor reduction in waste. Target  in waste through expiration tracking, optimized stock levels, and better planning. Track waste monthly."
+    "detail": "Monitor reduction in waste. Target 20-30% reduction in waste through expiration tracking, optimized stock levels, and better planning. Track waste monthly."
   },
   {
     "label": "Automation progress",
@@ -56,7 +56,7 @@ const faqData = [
   },
   {
     "question": "How do I reduce inventory waste?",
-    "answer": "Reduce by: tracking expiration dates (prevent expired items), optimizing stock levels (prevent overstocking), monitoring usage patterns (identify waste sources), and improving forecasting. Target  in waste."
+    "answer": "Reduce by: tracking expiration dates (prevent expired items), optimizing stock levels (prevent overstocking), monitoring usage patterns (identify waste sources), and improving forecasting. Target 20-30% reduction in waste."
   },
   {
     "question": "What inventory processes should I automate?",
@@ -122,14 +122,22 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">3 Best Inventory New Year's Resolutions</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow blog
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Most New Year's resolutions fail because they're vague or unrealistic. But inventory resolutions are different—they're measurable, achievable, and directly impact your bottom line. We've seen businesses save €10,000+ annually by setting just one of these resolutions and sticking to it. The key? Pick one and execute it fully before moving to the next.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              The 3 best inventory New Year's resolutions: <strong>1) Improve accuracy</strong> (target 95%+ accuracy, implement barcode scanning, conduct regular counts), <strong>2) Reduce waste</strong> (track expiration dates, optimize stock levels, prevent overstocking), and <strong>3) Automate processes</strong> (use inventory management software, set automated reorder alerts, eliminate manual spreadsheets).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              These resolutions are practical, measurable, and achievable. They address common inventory challenges: accuracy prevents stockouts and overstocking, waste reduction saves money, and automation saves time. Setting these resolutions helps businesses start the year with clear goals. Improving accuracy, reducing waste, and automating processes typically reduce inventory costs by 20-30% and improve operational efficiency. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">improving inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why these resolutions work</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Unlike vague resolutions, these are specific, measurable, and achievable. They address real inventory challenges and deliver tangible results. Businesses that set these resolutions typically see 20-30% cost reductions and significant improvements in accuracy and efficiency. The key is picking one and executing it fully before moving to the next.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

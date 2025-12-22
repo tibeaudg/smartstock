@@ -97,7 +97,7 @@ export default function StockFlowVsCin7() {
       "@id": "https://www.stockflowsystems.com/stockflow-vs-cin7",
       "name": "StockFlow vs Cin7 Comparison",
       "headline": "StockFlow vs Cin7: The Better Choice for Growing Businesses",
-      "description": "Compare StockFlow vs Cin7 2025. Completely free forever vs $300/month, 5-7 day setup vs 45-90 days, European hosting. Save 100% costs. See detailed comparison and Join for Free - no credit card required.",
+      "description": "Compare StockFlow vs Cin7 2025. Free forever vs $300/month, 5-7 day setup vs 45-90 days. EU hosting. Save 100% costs, faster implementation.",
       "url": "https://www.stockflowsystems.com/stockflow-vs-cin7",
       "inLanguage": "en",
       "isPartOf": {

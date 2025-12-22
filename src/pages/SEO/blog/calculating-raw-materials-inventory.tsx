@@ -123,14 +123,22 @@ export default function SeoCalculatingRawMaterialsInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Calculating Raw Materials Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Accurate raw materials inventory calculation is critical for manufacturing—wrong calculations lead to production delays, financial reporting errors, and poor purchasing decisions. One manufacturer improved cost accuracy by 18% simply by implementing proper costing methods and automated calculations through inventory software.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Calculate raw materials inventory by: <strong>counting physical quantities</strong> (conduct physical counts, use barcode scanning for accuracy), <strong>determining unit costs</strong> (purchase price per unit), <strong>calculating total value</strong> (quantity × unit cost), <strong>using costing methods</strong> (FIFO, LIFO, weighted average), <strong>tracking by location</strong> (warehouse, production floor), and <strong>maintaining accurate records</strong> using inventory management software.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Formulas: Total Value = Quantity × Unit Cost, Average Cost = Total Cost / Total Quantity, Ending Inventory = Beginning Inventory + Purchases - Usage. Methods include FIFO (first in, first out—uses oldest costs), LIFO (last in, first out—uses newest costs), and weighted average (average of all costs). Accurate calculation is essential for financial reporting, cost control, and production planning. Learn more about <Link to="/blog/importance-of-inventory-management-manufacturing" className="text-blue-600 hover:underline font-semibold">manufacturing inventory management</Link> or explore <Link to="/inventory-formulas-and-ratios" className="text-blue-600 hover:underline font-semibold">inventory formulas</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why accurate calculation matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Accurate raw materials inventory calculation is essential for financial reporting (balance sheet accuracy), cost control (production cost accuracy), production planning (material availability), and decision-making (purchasing, pricing). Wrong calculations lead to production delays, financial errors, and poor purchasing decisions. Inventory software automates calculations, ensuring accuracy and saving time.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

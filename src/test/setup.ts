@@ -39,15 +39,17 @@ vi.mock('@/integrations/supabase/client', () => ({
   },
 }))
 
-// Mock React Router
-vi.mock('react-router-dom', () => ({
-  useNavigate: () => vi.fn(),
-  useLocation: () => ({ pathname: '/dashboard' }),
-  BrowserRouter: ({ children }: { children: React.ReactNode }) => children,
-  Routes: ({ children }: { children: React.ReactNode }) => children,
-  Route: ({ children }: { children: React.ReactNode }) => children,
-  Navigate: ({ to }: { to: string }) => React.createElement('div', { 'data-testid': 'navigate', 'data-to': to }),
-}))
+// Mock React Router - but allow actual exports for testing
+// Tests that need the real router will import it directly
+// Note: Individual test files can override these mocks if needed
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom')
+  return {
+    ...actual,
+    // Only override useNavigate by default - useLocation should use actual router
+    useNavigate: vi.fn(() => vi.fn()),
+  }
+})
 
 // Mock toast notifications
 vi.mock('sonner', () => ({

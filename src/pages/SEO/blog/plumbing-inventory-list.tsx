@@ -123,14 +123,22 @@ export default function SeoPlumbingInventoryListPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Essential Plumbing Inventory List</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Running to the hardware store mid-job costs time and money—we've seen plumbers waste €150+ per day on unnecessary trips. A well-organized plumbing inventory list prevents these delays and keeps jobs moving. The key is tracking the items you actually use, not everything that exists.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              A plumbing inventory list should include: <strong>pipes and fittings</strong> (PVC, copper, PEX in common sizes), <strong>fixtures</strong> (faucets, sinks, toilets for common jobs), <strong>valves and connectors</strong> (standard sizes you use frequently), <strong>tools</strong> (wrenches, pipe cutters, specialized equipment), <strong>sealants and adhesives</strong> (pipe dope, thread tape, PVC cement), and <strong>common replacement parts</strong> (washers, O-rings, connectors).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Organize by category (pipes, fittings, fixtures, tools), track quantities, set reorder points for frequently used items, and use inventory management software for contractors. Essential items vary by business type: residential plumbers need common fixtures and fittings, commercial plumbers need larger quantities and specialized items. Mobile inventory tracking helps plumbers track materials across job sites, ensuring they have what they need when they need it. Learn more about <Link to="/blog/how-to-store-construction-materials" className="text-blue-600 hover:underline font-semibold">storing construction materials</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for contractors.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why a plumbing inventory list matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                A well-organized inventory list prevents job delays (no mid-job store trips), saves money (buy in bulk, avoid rush purchases), and improves efficiency (materials ready when needed). Mobile tracking helps plumbers manage inventory across multiple job sites, ensuring materials are available when needed without overstocking.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

@@ -123,14 +123,22 @@ export default function SeoSupplyChainInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Supply Chain Inventory Management</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Most businesses manage inventory in isolation—and lose thousands as a result. One manufacturer we worked with reduced total inventory costs by €45,000 annually simply by coordinating with suppliers and distributors. Supply chain inventory management optimizes inventory across the entire chain, not just your warehouse.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              <strong>Supply chain inventory management</strong> optimizes inventory levels across the entire supply chain (suppliers, warehouses, distribution centers, retailers) to reduce costs, improve efficiency, and meet demand. Key strategies include: <strong>demand forecasting</strong> (predict needs across the chain), <strong>safety stock optimization</strong> (balance service levels with costs), <strong>vendor management</strong> (coordinate with suppliers), <strong>cross-chain visibility</strong> (real-time data sharing), and <strong>coordinated planning</strong> (align ordering schedules).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Effective supply chain inventory management reduces total inventory costs by 20-30%, improves service levels, minimizes stockouts, and optimizes working capital. It requires coordination across all supply chain partners and real-time visibility into inventory levels throughout the chain. Learn more about <Link to="/what-is-demand-forecasting" className="text-blue-600 hover:underline font-semibold">demand forecasting</Link> or explore <Link to="/why-supply-chain-traceability-matters-to-small-businesses" className="text-blue-600 hover:underline font-semibold">supply chain traceability</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why supply chain inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Managing inventory in isolation means you're optimizing only one part of the chain—missing opportunities for cost savings. Effective supply chain management reduces total costs by 20-30%, improves service levels, and optimizes working capital. Coordination and visibility across the entire chain deliver results that isolated management can't match.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

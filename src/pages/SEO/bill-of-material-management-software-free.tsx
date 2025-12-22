@@ -241,9 +241,9 @@ export default function BillOfMaterialManagementSoftwareFree() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Free Bill of Materials Management Software for Manufacturing
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
               Managing production with <strong>free BOM management software</strong> is now easier than ever. Whether you're manufacturing electronics, furniture, or custom products, <strong>bill of materials software free</strong> helps you track components, calculate material requirements, and optimize production costs—all without upfront investment. This free BOM software integrates seamlessly with <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> to provide complete production control. Compare with <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">paid BOM management software</Link> options, explore <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> solutions, or learn about <Link to="/solutions/software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">software for inventory management</Link> with BOM features.

@@ -123,14 +123,22 @@ export default function SeoHowToInventoryYourToolsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Inventory Your Tools</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Lost or misplaced tools cost businesses thousands annually. One contractor we worked with tracked down €8,500 in "missing" tools simply by implementing proper tool inventory—they were in job site trailers, employee vehicles, and storage units. Without tracking, tools disappear, maintenance gets skipped, and costs add up quickly.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Inventory your tools by: <strong>creating a tool register</strong> (list all tools with details: name, serial number, purchase date, value, location), <strong>labeling tools with barcodes</strong> or asset tags for easy scanning, <strong>tracking locations and assignments</strong> (who has which tools), <strong>scheduling maintenance</strong> (extend tool life), <strong>monitoring utilization</strong> (identify needs), and <strong>using asset management software</strong> with mobile apps for tracking across locations.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Tool inventory prevents loss, enables maintenance scheduling (extends tool life by 20-30%), improves utilization, and helps make informed purchasing decisions. Use asset management software with mobile apps for multi-location tracking. Learn more about <Link to="/asset-tracking-101" className="text-blue-600 hover:underline font-semibold">asset tracking</Link> or explore <Link to="/why-your-business-should-track-assets-too" className="text-blue-600 hover:underline font-semibold">why to track assets</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why tool inventory matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Tool inventory prevents loss (saving businesses thousands annually), enables scheduled maintenance (extending tool life by 20-30%), improves utilization, and helps make informed purchasing decisions. Without tracking, tools disappear, maintenance gets skipped, and capital is wasted on duplicate purchases.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

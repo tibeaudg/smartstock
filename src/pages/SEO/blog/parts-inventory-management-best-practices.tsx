@@ -123,14 +123,22 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Parts Inventory Management Best Practices</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Parts inventory is different—a stockout doesn't just lose a sale, it stops production. One manufacturer lost €25,000 in a single week when critical parts ran out and production halted. Parts inventory management requires different strategies than regular inventory, with focus on preventing downtime.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Parts inventory management best practices include: <strong>ABC analysis</strong> (prioritize critical parts that cause downtime if unavailable), <strong>accurate tracking with barcode scanning</strong> (95-99% accuracy), <strong>setting appropriate reorder points</strong> (prevent stockouts), <strong>maintaining safety stock for critical parts</strong> (buffer against variability), <strong>organizing parts by equipment/application</strong> (easy to find), <strong>tracking usage patterns</strong> (improve forecasting), and <strong>managing supplier relationships</strong> (reliable sources for critical parts).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key challenges include: preventing stockouts of critical parts (causes costly downtime), avoiding overstocking (ties up capital), and managing many SKUs efficiently. Effective parts management ensures critical parts are always available while optimizing inventory investment, reducing downtime, and improving maintenance efficiency. Learn more about <Link to="/what-are-the-3-major-inventory-management-techniques" className="text-blue-600 hover:underline font-semibold">ABC analysis</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for parts tracking.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why parts inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Parts stockouts cause expensive production downtime—often costing thousands per hour. Effective parts management prevents stockouts, optimizes inventory investment, reduces downtime, and improves maintenance efficiency. ABC analysis helps prioritize critical parts that matter most, ensuring they're always available when needed.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

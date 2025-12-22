@@ -123,14 +123,22 @@ export default function SeoHowToTrackRawMaterialsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Track Raw Materials</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Running out of raw materials stops production—and that costs thousands per hour. One manufacturer we worked with lost €8,500 in a single day when they couldn't track materials and ran out of a critical component. Proper raw materials tracking prevents these expensive shutdowns.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Track raw materials by: <strong>receiving and recording all materials</strong> (quantities, suppliers, dates), <strong>using barcode scanning for accuracy</strong> (improves accuracy to 95-99%), <strong>tracking usage in production</strong> (monitor as materials move into production), <strong>monitoring stock levels</strong> (real-time visibility), <strong>setting reorder points</strong> (prevent stockouts), and <strong>maintaining real-time visibility</strong> (know what you have when you need it).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key steps: label all materials with barcodes, scan at receipt, track movements to production, update quantities as used, and set alerts for low stock. Use inventory management software with barcode scanning for accuracy and efficiency. Track from receipt through production to finished goods for complete visibility. This prevents stockouts that stop production, enables accurate production planning, and optimizes inventory levels. Learn more about <Link to="/blog/importance-of-inventory-management-manufacturing" className="text-blue-600 hover:underline font-semibold">inventory management in manufacturing</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> for manufacturing.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why raw materials tracking matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Raw materials tracking prevents stockouts that stop production (costing thousands per hour), enables accurate production planning, optimizes inventory levels, reduces waste, and improves overall manufacturing efficiency. Accurate tracking from receipt through production ensures materials are available when needed, maintaining production continuity.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

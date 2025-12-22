@@ -119,14 +119,22 @@ export default function SeoTeamInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Team Inventory Management</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Managing inventory solo works until it doesn't. Once you have multiple team members touching inventory—warehouse staff, sales teams, managers—things get chaotic fast. We've seen businesses waste hours weekly simply because team members couldn't see what others were doing. Team inventory management fixes this.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              <strong>Team inventory management</strong> enables multiple users to track and manage inventory collaboratively. Key features include: <strong>role-based access</strong> (control who can view/edit—administrators, managers, staff, viewers), <strong>multi-user support</strong> (multiple people can work simultaneously), <strong>real-time updates</strong> (changes visible to all immediately), <strong>mobile access</strong> (team members can track from anywhere), <strong>assignment tracking</strong> (who has what items), and <strong>collaboration tools</strong> (comments, notifications).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Best practices include: define roles and permissions, train all team members, establish clear processes, use mobile apps for field access, and maintain communication. Team inventory management improves coordination, enables distributed teams, and ensures everyone has access to current inventory data. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with team features or explore <Link to="/9-must-have-inventory-control-software-features" className="text-blue-600 hover:underline font-semibold">must-have inventory software features</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why team inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Teams need shared access to current data, not outdated spreadsheets or conflicting information. Team inventory management enables coordination, supports distributed teams across multiple locations, ensures real-time visibility, and scales as your team grows. Modern inventory software with team features is essential for businesses with multiple users.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

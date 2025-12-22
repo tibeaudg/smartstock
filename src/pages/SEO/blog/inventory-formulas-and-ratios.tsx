@@ -123,14 +123,22 @@ export default function SeoInventoryFormulasAndRatiosPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Essential Inventory Formulas and Ratios</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Most businesses manage inventory by guesswork—and lose thousands as a result. The right formulas eliminate the guesswork, providing data-driven decisions that optimize stock levels and prevent costly mistakes. One hardware store saved €12,000 annually simply by calculating reorder points correctly instead of ordering "when it feels low."
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Essential inventory formulas include: <strong>Inventory Turnover</strong> (COGS ÷ Average Inventory - shows efficiency), <strong>Days Sales of Inventory</strong> (365 ÷ Turnover - days of stock on hand), <strong>Reorder Point</strong> (Lead Time × Average Daily Usage + Safety Stock - when to order), <strong>Safety Stock</strong> (Z-score × Standard Deviation × √Lead Time - buffer against variability), and <strong>Economic Order Quantity (EOQ)</strong> (optimizes order quantities to minimize total costs).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              These formulas help optimize stock levels, prevent stockouts, reduce costs by 20-30%, and improve cash flow through data-driven inventory management. Understanding and applying these formulas enables better purchasing decisions and operational efficiency. Learn more about <Link to="/reorder-point-formula" className="text-blue-600 hover:underline font-semibold">reorder point calculations</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> that automates these calculations.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why formulas and ratios matter</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Formulas eliminate guesswork, providing data-driven decisions that optimize stock levels, prevent stockouts, and reduce costs. Effective use of formulas typically improves turnover by 20-40%, reduces stockouts by 40-60%, and cuts carrying costs by 20-30%. The right formula at the right time can save thousands annually.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

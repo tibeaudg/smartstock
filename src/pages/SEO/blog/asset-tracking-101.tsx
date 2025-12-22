@@ -123,14 +123,22 @@ export default function SeoAssetTracking101Page() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Asset Tracking 101: The Complete Beginner's Guide</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Asset tracking</strong> is what separates organized businesses from chaotic ones. We've seen construction companies lose €5,000+ in tools annually simply because they couldn't track what they had or where it was. Unlike inventory that you sell or consume, assets (equipment, tools, furniture, vehicles) stick around—and they need different management.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Asset tracking monitors and manages business assets throughout their lifecycle. Key activities include: tracking locations (where is each asset?), scheduling maintenance (when does equipment need servicing?), managing depreciation (accounting for asset value over time), monitoring utilization (are assets being used efficiently?), preventing loss (reducing theft and misplacement), and ensuring compliance (meeting regulatory requirements).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Tracking methods include: <strong>barcode scanning</strong> (cost-effective, works with smartphones), <strong>QR codes</strong> (store more data than barcodes), <strong>RFID</strong> (bulk scanning without line-of-sight, but more expensive), or <strong>asset management software</strong> (comprehensive tracking solution). Unlike inventory (sold/consumed), assets are used over time and need different tracking: maintenance schedules, depreciation accounting, location history, and utilization metrics. Learn more about <Link to="/why-your-business-should-track-assets-too" className="text-blue-600 hover:underline font-semibold">why businesses should track assets</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory and asset management software</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why asset tracking matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Asset tracking prevents loss, extends asset life through scheduled maintenance, supports depreciation accounting, optimizes utilization, and ensures compliance. Effective tracking protects investments worth thousands and improves operational efficiency. Businesses that track assets properly reduce loss by 40-60% and extend asset life by 20-30%.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

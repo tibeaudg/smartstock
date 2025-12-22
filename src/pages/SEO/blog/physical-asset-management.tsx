@@ -123,14 +123,22 @@ export default function SeoPhysicalAssetManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Physical Asset Management</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Assets are different from inventory—they stick around. One business lost €18,000 in equipment over two years simply because they couldn't track where assets were or who had them. Physical asset management prevents these losses and extends asset life through proper maintenance.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              <strong>Physical asset management</strong> tracks and manages tangible business assets (equipment, tools, furniture, vehicles, technology) throughout their lifecycle. Key activities include: <strong>tracking asset locations</strong> (where is each asset?), <strong>scheduling maintenance</strong> (when does equipment need servicing?), <strong>managing depreciation</strong> (accounting for asset value over time), <strong>monitoring utilization</strong> (are assets being used efficiently?), <strong>preventing loss</strong> (reducing theft and misplacement), and <strong>ensuring compliance</strong> (meeting regulatory requirements).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Unlike inventory (sold/consumed), assets are used over time and need different tracking: maintenance schedules, depreciation accounting, location history, and utilization metrics. Effective asset management prevents loss (reduces losses by 40-60%), extends asset life through maintenance (20-30% longer lifespan), supports depreciation accounting, and optimizes asset utilization. Learn more about <Link to="/asset-tracking-101" className="text-blue-600 hover:underline font-semibold">asset tracking basics</Link> or explore <Link to="/why-your-business-should-track-assets-too" className="text-blue-600 hover:underline font-semibold">why businesses should track assets</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why physical asset management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Asset management prevents loss (protects investments worth thousands), extends asset life through scheduled maintenance (20-30% longer lifespan), supports depreciation accounting, optimizes utilization, and ensures compliance. Effective management protects investments and improves operational efficiency, complementing inventory management for comprehensive resource visibility.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (

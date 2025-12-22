@@ -123,14 +123,22 @@ export default function SeoPharmacyInventoryManagementBestPracticesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Pharmacy Inventory Management Best Practices</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Pharmacy inventory is different—mistakes aren't just costly, they're dangerous. One pharmacy we worked with lost €12,000 in expired medications in a single year because they didn't track expiration dates properly. More critically, expired medications can't be dispensed, potentially compromising patient care.
             </p>
-            
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Pharmacy inventory management best practices include: <strong>expiration date tracking</strong> (FIFO - first in, first out to prevent expired medications), <strong>controlled substances management</strong> (DEA compliance, secure storage, detailed records for all movements), <strong>temperature monitoring</strong> for refrigerated items (prevent spoilage), <strong>accurate counting and reconciliation</strong> (especially for controlled substances), <strong>supplier management</strong> (reliable sources), and <strong>compliance with regulations</strong> (pharmacy-specific requirements).
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              Key requirements include: track expiration dates to prevent expired medications (patient safety), maintain detailed records for controlled substances (DEA compliance), ensure proper storage conditions (temperature monitoring), and conduct regular audits. Specialized pharmacy inventory software helps manage these requirements efficiently, ensuring compliance while preventing waste. Learn more about <Link to="/blog/how-to-store-medical-supplies" className="text-blue-600 hover:underline font-semibold">storing medical supplies</Link> or explore <Link to="/blog/why-you-need-medical-inventory-management-software" className="text-blue-600 hover:underline font-semibold">medical inventory management software</Link>.
+            </p>
+            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
+              <h3 className="text-xl font-semibold">Why pharmacy inventory management matters</h3>
+              <p className="mt-3 text-base text-blue-900/90">
+                Pharmacy inventory mistakes don't just cost money—they can compromise patient safety. Expired medications can't be dispensed, controlled substances require strict tracking for DEA compliance, and proper storage conditions are essential. Effective inventory management ensures patient safety, regulatory compliance, and prevents costly waste from expired medications.
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             {takeaways.map((item) => (
