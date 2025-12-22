@@ -124,7 +124,7 @@ export default function VendorManagedStock() {
     >
       <SEO
         title="Vendor Managed Stock 2025 - Complete Guide | StockFlow"
-        description="Discover vendor managed stock (VMS) inventory management 2025. Learn how vendor managed stock works, benefits, implementation strategies. Start free trial - no credit card required."
+        description="Discover vendor managed stock (VMS) inventory management 2025. Learn how vendor managed stock works, benefits, implementation strategies. Join for Free - no credit card required."
         keywords="vendor managed stock, vms inventory, vendor managed stock meaning, vendor managed inventory, vms system, vendor managed stock benefits, vendor managed stock implementation, vendor stock management, stockflow, stock flow"
         url="https://www.stockflowsystems.com/glossary/vendor-managed-stock"
       />
@@ -133,9 +133,9 @@ export default function VendorManagedStock() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Vendor Managed Stock
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               <strong>Vendor managed stock (VMS)</strong> is an inventory management arrangement where the supplier or vendor is responsible for monitoring, managing, and replenishing inventory levels at the customer's location. The vendor takes ownership of inventory planning, ordering, and stock management, typically maintaining agreed-upon stock levels while the customer pays for products as they are consumed.
@@ -275,7 +275,7 @@ export default function VendorManagedStock() {
                 to="/auth"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
               >
-                Start Free Trial
+                Join for Free
               </Link>
               <button
                 onClick={() => setIsVideoModalOpen(true)}

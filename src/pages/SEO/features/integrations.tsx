@@ -169,7 +169,7 @@ export default function SEOIntegrationsPage() {
     >
       <SEO
         title="Inventory Management Integrations 2025 - 45+ Connections, Save Time | StockFlow"
-        description="Connect StockFlow with 45+ business tools 2025. Integrate Shopify, Amazon, QuickBooks, Xero, WooCommerce. Automate inventory sync, save 10+ hours/week. Free plan available. Start free trial - no credit card required."
+        description="Connect StockFlow with 45+ business tools 2025. Integrate Shopify, Amazon, QuickBooks, Xero, WooCommerce. Automate inventory sync, save 10+ hours/week. Free plan available. Join for Free - no credit card required."
         keywords="inventory integrations, inventory management integrations, e-commerce integrations, accounting integrations, POS integrations, Shopify integration, QuickBooks integration, inventory API, stockflow integrations"
         url="https://www.stockflowsystems.com/features/integrations"
         structuredData={structuredData}
@@ -359,7 +359,7 @@ export default function SEOIntegrationsPage() {
             to="/auth"
             className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition"
           >
-            Start Free Trial
+            Join for Free
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </div>

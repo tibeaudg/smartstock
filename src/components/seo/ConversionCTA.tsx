@@ -19,7 +19,7 @@ interface ConversionCTAProps {
 export const ConversionCTA: React.FC<ConversionCTAProps> = ({
   title = 'Start Managing Your Inventory Today',
   description = 'Join thousands of businesses using StockFlow to streamline their inventory management.',
-  primaryText = 'Start Free Trial',
+  primaryText = 'Join for Free',
   primaryLink = '/auth',
   secondaryText,
   secondaryLink,

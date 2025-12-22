@@ -241,7 +241,7 @@ export default function InventoryManagementSoftwareOnline() {
     >
       <SEO
         title="Online Inventory Management Software 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Get online inventory management software 2025 with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Get online inventory management software 2025 with cloud-based access from anywhere. Real-time tracking, barcode scanning, multi-channel sync. Save 70% time, 25% costs. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="inventory management software online, online inventory management software, cloud inventory software, web-based inventory software, online inventory system, inventory software online, cloud inventory management, online inventory tracking, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-software-online"
       />
@@ -250,9 +250,9 @@ export default function InventoryManagementSoftwareOnline() {
       {/* Hero Section */}
       <section id="hero" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
             Online Inventory Management Software
-          </h1>
+          </h2>
           <p className="text-xl text-gray-700 leading-relaxed mb-8">
             <strong>Online inventory management software</strong> provides cloud-based access to track, manage, and optimize inventory from anywhere, on any device. Unlike traditional desktop systems, online inventory software offers real-time synchronization across multiple locations, automated workflows, and seamless integration with e-commerce platforms, POS systems, and accounting software. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> combines the power of cloud computing with intuitive design, making it accessible for businesses of all sizes. Explore <Link to="/solutions/online-inventory-software" className="text-blue-600 hover:underline font-semibold">online inventory software</Link> solutions or learn about <Link to="/solutions/inventory-management-software-cloud-based" className="text-blue-600 hover:underline font-semibold">cloud-based inventory management software</Link> options.
           </p>

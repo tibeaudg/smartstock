@@ -132,7 +132,7 @@ export default function InventoryPlatform() {
     >
       <SEO
         title="Inventory Platform 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Comprehensive inventory platform 2025 with automation, real-time tracking, integrations. Save 70% time, 25% costs. Unified system for inventory management, automated control, multi-location support. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Comprehensive inventory platform 2025 with automation, real-time tracking, integrations. Save 70% time, 25% costs. Unified system for inventory management, automated control, multi-location support. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="inventory platform, inventory platform software, automated inventory control platforms, inventory platform solution, inventory platform system, inventory management platform, inventory control platform, inventory platform services, cloud inventory platform, unified inventory system, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-platform"
       />      

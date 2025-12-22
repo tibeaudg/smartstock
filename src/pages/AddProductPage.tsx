@@ -1799,9 +1799,12 @@ export default function AddProductPage() {
           <div className="bg-white border border-blue-300 rounded-lg shadow-lg p-6 max-w-md relative flex flex-col items-center">
             <Info className="w-8 h-8 text-blue-700 mb-4" />
             <div className="text-center">
-              <div className="font-bold text-blue-700 text-lg mb-2">Subscription automatically upgraded</div>
-              <div className="text-blue-900 text-sm">
-                Your number of products exceeds the limit of your current subscription. You will be automatically transferred to a higher subscription. Click 'Accept' to view your new license.
+              <div className="font-bold text-blue-700 text-lg mb-2">Plan automatically upgraded</div>
+              <div className="text-blue-900 text-sm mb-3">
+                StockFlow uses a freemium model—start free, pay as you grow. You started on our free plan (up to 100 products at no cost). As your business grows and you add more products, your plan automatically upgrades to match your needs.
+              </div>
+              <div className="text-blue-900 text-sm font-medium">
+                Your plan has been upgraded to accommodate your growing inventory. Click 'View Plan' to see your new plan details and pricing.
               </div>
             </div>
             <button
@@ -1813,7 +1816,7 @@ export default function AddProductPage() {
               }}
               autoFocus
             >
-              Accept
+              View Plan
             </button>
           </div>
         </div>

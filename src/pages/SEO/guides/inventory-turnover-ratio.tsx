@@ -149,7 +149,7 @@ export default function InventoryTurnoverRatio() {
     >
       <SEO
         title="Inventory Turnover Ratio 2025 - Improve Cash Flow 15-25% | StockFlow"
-        description="Learn inventory turnover ratio 2025: formula, calculation, how to improve. Compare benchmarks, optimize inventory. Improve cash flow 15-25%. Free plan available. Start free trial - no credit card required."
+        description="Learn inventory turnover ratio 2025: formula, calculation, how to improve. Compare benchmarks, optimize inventory. Improve cash flow 15-25%. Free plan available. Join for Free - no credit card required."
         keywords="inventory turnover ratio, inventory turnover ratios, inventory turnover rate, inventory turn over rate, inventory turnover rates, inventory turn ratio, inventory turnover, calculate inventory turnover, inventory turnover formula, improve inventory turnover, inventory turnover calculation, inventory turnover analysis, inventory turnover metric, inventory turnover benchmark, inventory turnover optimization, inventory turnover ratio meaning, inventory turnover ratio formula, inventory turnover ratio calculation"
         url="https://www.stockflowsystems.com/inventory-turnover-ratio"
         locale="en"
@@ -362,7 +362,7 @@ export default function InventoryTurnoverRatio() {
               to="/auth"
               className="inline-flex items-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition"
             >
-              Start Free Trial
+              Join for Free
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>

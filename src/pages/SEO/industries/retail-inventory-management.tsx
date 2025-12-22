@@ -102,22 +102,22 @@ export default function RetailInventoryManagement() {
     {
       icon: ShoppingCart,
       title: "Real-time Stock Tracking",
-      description: "Monitor your inventory levels in real-time as customers make purchases. Never run out of popular items again."
+      description: "See stock levels update instantly as sales happen. Know exactly what's available right now—not tomorrow morning."
     },
     {
       icon: Smartphone,
       title: "Mobile Barcode Scanning",
-      description: "Scan barcodes with your smartphone to quickly update stock levels and check product information on the go."
+      description: "Use your phone's camera to scan barcodes. Count 100 items in 3 minutes instead of 30. No special hardware needed."
     },
     {
       icon: AlertTriangle,
       title: "Low Stock Alerts",
-      description: "Get instant notifications when inventory levels drop below your set thresholds. Stay ahead of stockouts."
+      description: "Get alerts when items hit reorder points. No more guessing—the system tells you exactly when to order."
     },
     {
       icon: BarChart3,
       title: "Sales Analytics",
-      description: "Track your best-selling products, seasonal trends, and profit margins to make smarter purchasing decisions."
+      description: "Identify bestsellers automatically. See seasonal patterns. Spot dead stock before it expires. Make purchasing decisions based on data, not gut feeling."
     },
     {
       icon: Users,
@@ -405,6 +405,9 @@ export default function RetailInventoryManagement() {
             <img 
               src="/dashboard.png" 
               alt="StockFlow Retail Inventory Management Dashboard - Real-time tracking, POS integration, and multi-store sync"
+              width={512}
+              height={512}
+              loading="lazy"
               className="w-full rounded-lg"
             />
             {/* NOTE: Replace this placeholder image with actual StockFlow retail dashboard screenshot showing:

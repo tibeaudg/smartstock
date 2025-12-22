@@ -118,7 +118,7 @@ export default function BillOfMaterialsManagementSoftware() {
     >
       <SEO
         title="BOM Software 2025: Save 30% Waste, 5-10h/Week | StockFlow"
-        description="Get bill of materials management software for manufacturing. Create BOMs, track components, calculate requirements. FREE plan (30 products). Reduce waste 30%, save 5-10 hours/week. Start free - no credit card required."
+        description="Get bill of materials management software for manufacturing. Create BOMs, track components, calculate requirements. FREE plan (30 products). Reduce waste 30%, save 5-10 hours/week. Join for Free - no credit card required."
         keywords="bill of materials management software, bom management software, bill of materials software, bom software, bill of materials system, bom management system, manufacturing bom software, assembly bom software, production bom software, multi-level bom software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/bill-of-materials-management-software"
       />
@@ -344,7 +344,7 @@ export default function BillOfMaterialsManagementSoftware() {
                 to="/auth"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
               >
-                Start Free Trial
+                Join for Free
               </Link>
               <button
                 onClick={() => setIsVideoModalOpen(true)}

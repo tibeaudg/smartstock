@@ -463,7 +463,7 @@ const FeaturesPage: React.FC = () => {
                 to="/auth"
                 className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 text-xl font-bold rounded-full shadow-2xl hover:shadow-blue-500/25 transform hover:scale-110 transition-all duration-300 border border-blue-500/20"
               >
-                Start Free Trial →
+                Join for Free →
               </Link>
             </div>
             <p className="text-sm text-gray-500">

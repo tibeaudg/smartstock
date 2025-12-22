@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is The Point Of Inventory Control";
 const canonicalPath = "/what-is-the-point-of-inventory-control";
-const metaDescription = "What is the point of inventory control? Learn why inventory control matters, its benefits, objectives, and how proper inventory control improves business operations.";
+const metaDescription = "Inventory control prevents stockouts (lost sales) and overstock (tied-up capital). It improves cash flow by 20-30% and cuts costs. Here's what it does and why it matters.";
 const keywords = "point of inventory control, why inventory control, inventory control purpose, importance of inventory control, inventory control benefits, inventory control objectives";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "The point of inventory control is to ensure businesses have the right products in the right quantities at the right time while minimizing costs. Effective inventory control prevents stockouts (lost sales), reduces overstocking (tied-up capital), improves cash flow, increases customer satisfaction, and enables data-driven decision-making. It balances service levels with inventory investment, helping businesses optimize operations and profitability.";
@@ -125,18 +125,18 @@ export default function SeoWhatIsThePointOfInventoryControlPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is the Point of Inventory Control?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              The <strong>point of inventory control</strong> is to ensure businesses have the right products in the right quantities at the right time while minimizing costs. Effective inventory control balances customer service levels with inventory investment, preventing both stockouts (which lead to lost sales) and overstocking (which ties up capital and increases carrying costs).
+              The <strong>point of inventory control</strong> is simple: right products, right quantities, right time—without wasting capital. Effective control balances having enough stock (to prevent stockouts) with not having too much (to avoid tying up capital). One hardware retailer reduced overstock by €15,000 and eliminated stockouts after implementing proper control.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Inventory control serves multiple critical purposes: it prevents stockouts that result in lost sales and customer dissatisfaction, reduces overstocking that ties up capital and increases storage costs, improves cash flow by optimizing inventory levels, minimizes waste from obsolescence, enables data-driven purchasing decisions, and provides visibility into business operations. Without proper control, businesses face stockouts, excess inventory, inaccurate records, and inefficient operations.
+              Control prevents stockouts (lost sales), reduces overstock (frees capital), improves cash flow by 20-30%, cuts waste from obsolescence, and enables data-driven decisions. Without it, businesses face stockouts that kill sales, excess inventory that ties up cash, inaccurate records that cause wrong orders, and inefficiency that wastes hours weekly. One fashion boutique had €8,500 in dead stock before implementing control—that capital is now working instead of sitting on shelves.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Modern inventory control uses software, automation, and data analytics to maintain optimal stock levels. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why inventory control matters</h3>
+              <h3 className="text-xl font-semibold">What poor control costs</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Poor inventory control leads to stockouts (lost sales), overstocking (tied-up capital), inaccurate records, waste from obsolescence, and inefficient operations. Good control improves cash flow, reduces costs by 20-30%, increases customer satisfaction, and enables data-driven decision-making. Businesses with strong inventory control see measurable improvements in profitability and operational efficiency.
+                Poor control costs businesses €4,000-8,000 annually through stockouts (lost sales), overstock (tied-up capital), inaccurate records, waste, and inefficiency. Good control improves cash flow by 20-30%, reduces carrying costs, increases customer satisfaction, and enables data-driven decisions. One retailer improved profitability by €18,000 annually after implementing proper control systems.
               </p>
             </div>
           </div>

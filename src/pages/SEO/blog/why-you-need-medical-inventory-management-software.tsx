@@ -110,7 +110,7 @@ export default function SeoWhyYouNeedMedicalInventoryManagementSoftwarePage() {
       
     >
       <SEO
-        title={`Why You Need Medical Inventory Management Software 2025 - Complete Guide | StockFlow`}
+        title={`Medical Inventory Software Guide 2025 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

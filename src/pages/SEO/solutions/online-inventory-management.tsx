@@ -125,7 +125,7 @@ export default function OnlineInventoryManagement() {
     >
       <SEO
         title="Online Inventory Management 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="inventory management online, online inventory management, inventory management software online, online inventory management software, online stock management, cloud inventory management, web based inventory, real-time inventory tracking, inventory management system, cloud inventory software, online inventory system, web inventory management, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/online-inventory-management"
         structuredData={structuredData}
@@ -171,6 +171,9 @@ export default function OnlineInventoryManagement() {
                 <img 
                   src="https://www.greatplacetowork.ca/images/Asset_3.webp" 
                   alt="Team Collaboration" 
+                  width={800}
+                  height={600}
+                  loading="lazy"
                   className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
                 />
               </div>
@@ -244,6 +247,9 @@ export default function OnlineInventoryManagement() {
                 <img 
                   src="https://www.warehousingandfulfillment.com/wp-content/uploads/2020/04/Barcode-Scanning-Technologies.jpg" 
                   alt="Barcode Scanning Technology" 
+                  width={800}
+                  height={600}
+                  loading="lazy"
                   className="w-full max-w-sm sm:max-w-md lg:w-96 h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg mb-4"
                 />
               </div>
@@ -262,6 +268,9 @@ export default function OnlineInventoryManagement() {
                 <img 
                   src="https://valuechain.be/media/images/20232316226515_shutterstock-1106078390.width-1292.webp" 
                   alt="Modern Warehouse" 
+                  width={1292}
+                  height={864}
+                  loading="lazy"
                   className="w-full h-96 object-cover rounded-lg mb-4"
                 />
               </div>
@@ -313,14 +322,14 @@ export default function OnlineInventoryManagement() {
             Start Your Online Inventory Management Journey Today
           </h2>
           <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
-            Join thousands of businesses already using stockflow for their online inventory management needs. Start free and experience the difference.
+            Join thousands of businesses already using stockflow for their online inventory management needs. Join for Free and experience the difference.
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Link
               to="/auth"
               className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-base md:text-lg"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
           <p className="text-sm mt-4 opacity-75">No credit card required • Instant access • 24/7 support</p>

@@ -248,7 +248,7 @@ export default function PurchaseRequisitionSoftware() {
     >
       <SEO
         title="Purchase Requisition Software 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
-        description="Purchase requisition software 2025 automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Save 10+ hours/week. Free plan available. Start free trial - no credit card required."
+        description="Purchase requisition software 2025 automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Save 10+ hours/week. Free plan available. Join for Free - no credit card required."
         keywords="purchase requisition software, purchase requisition system, procurement software, purchase request software, requisition management software, purchase order software, procurement management, purchase approval software, requisition workflow, purchase requisition automation"
         url="https://www.stockflowsystems.com/features/purchase-requisition-software"
         structuredData={[structuredData, faqStructuredData]}

@@ -335,7 +335,7 @@ export default function InventoryManagementGuide() {
     >
       <SEO
         title="Inventory Management 2025 - Save 20-30% Costs, Complete Guide | StockFlow"
-        description="Complete guide to inventory management 2025. Learn what inventory management is, types, methods, best practices. Reduce costs by 20-30%, improve efficiency. Free plan available. Start free trial - no credit card required."
+        description="Complete guide to inventory management 2025. Learn types, methods, best practices. Reduce costs 20-30%, improve efficiency. Free plan available."
         keywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
         url="https://www.stockflowsystems.com/inventory-management"
         publishedTime="2025-11-06T00:00:00Z"
@@ -365,14 +365,14 @@ export default function InventoryManagementGuide() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">What is Inventory Management?</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
-              <strong>Inventory management</strong> is the set of processes and systems a business uses to order, store, track, and sell stock—covering raw materials, components, work-in-progress (WIP), and finished goods.
+              <strong>Inventory management</strong> covers the processes businesses use to order, store, track, and sell stock—from raw materials to finished goods. Most small businesses do this poorly, leading to stockouts, overstock, and wasted capital.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              It encompasses both day-to-day operational tasks (receiving, put-away, picking, shipping) and strategic activities (demand forecasting, replenishment policy, safety stock planning, supplier management).
+              It includes both operational work (receiving shipments, storing items, picking orders, shipping) and strategic planning (predicting demand, setting reorder points, maintaining safety stock, managing suppliers). Get both right, and you'll prevent stockouts while freeing up cash. Get them wrong, and you'll lose sales or tie up capital unnecessarily.
             </p>
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg my-8">
               <p className="text-xl font-semibold text-gray-900">
-                The objective is simple: <span className="text-blue-600">Have the right inventory, in the right quantity, at the right time, and at the right cost.</span>
+                The goal: <span className="text-blue-600">Right products. Right quantities. Right time. Right cost.</span> Most businesses fail at one of these—usually quantity (overstock) or time (stockouts). Good inventory management prevents both.
               </p>
             </div>
           </div>
@@ -892,7 +892,7 @@ export default function InventoryManagementGuide() {
                 to="/auth" 
                 className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold px-8 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-lg"
               >
-                Start Free - No Credit Card Required
+                Join for Free - No Credit Card Required
               </Link>
               <p className="text-sm text-gray-600 mt-4">Join 500+ businesses who signed up this month</p>
             </div>

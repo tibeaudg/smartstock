@@ -110,7 +110,7 @@ const HowToChooseInventoryManagementSoftware = () => {
     >
       <SEO
         title="How To Choose Inventory Management Software 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Complete guide to choosing inventory management software 2025. Step-by-step evaluation, feature comparison, pricing guide. Find the best software - save 70% time, 25% costs. Free plan available. Start free trial - no credit card required."
+        description="Complete guide to choosing inventory management software 2025. Step-by-step evaluation, feature comparison, pricing. Save 70% time, 25% costs. Free plan available."
         keywords={expandedKeywords}
         url="https://www.stockflowsystems.com/how-to-choose-inventory-management-software"
         locale="en"
@@ -123,13 +123,12 @@ const HowToChooseInventoryManagementSoftware = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             How to Choose Inventory Management Software: Complete Buyer Guide
-          </h1>
+          </h2>
           
           <p className="text-xl text-gray-600 mb-8">
-            Selecting the right inventory management software is crucial for your business success. 
-            This comprehensive guide walks you through every step of the evaluation and selection process. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> comparison.
+            Pick the wrong inventory software, and you'll waste €500+/month on tools you'll barely use. Pick right, and you'll cut counting time by 75% and eliminate stockouts. This guide shows you how to evaluate options without overthinking it. For deeper dives, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> comparison.
           </p>
 
           <section className="mb-12">
@@ -299,7 +298,7 @@ const HowToChooseInventoryManagementSoftware = () => {
                 to="/auth"
                 className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
               >
-                Start Free Trial →
+                Join for Free →
               </Link>
               <Link
                 to="/solutions/inventory-management-software"

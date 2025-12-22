@@ -252,7 +252,7 @@ export default function InventoryManagementProvider() {
     >
       <SEO
         title="Inventory Management Provider 2025 - Save 50-90% Costs, Free Plan | StockFlow"
-        description="Choose the best inventory management provider 2025. Real-time tracking, 24/7 support, free plan for up to 100 products. Save 50-90% costs vs competitors. Trusted by 500+ businesses. Start free trial - no credit card required."
+        description="Choose the best inventory management provider 2025. Real-time tracking, 24/7 support, free plan for up to 100 products. Save 50-90% costs vs competitors. Trusted by 500+ businesses. Join for Free - no credit card required."
         keywords="inventory management provider, inventory management software provider, best inventory provider, inventory provider, stock management provider, inventory system provider, inventory software provider, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-provider"
       />
@@ -262,9 +262,6 @@ export default function InventoryManagementProvider() {
       <section id="awards" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
-          Inventory Management Provider
-            </h1>
           </div>
 
           <div className="text-center mb-8 border-b border-gray-200 pb-8">
@@ -622,7 +619,7 @@ export default function InventoryManagementProvider() {
           "@type": "WebPage",
           "@id": "https://www.stockflowsystems.com/solutions/inventory-management-provider",
           "name": "Inventory Management Provider",
-          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
+          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Join for Free now - no credit card!",
           "url": "https://www.stockflowsystems.com/inventory-management-provider",
           "inLanguage": "en",
           "isPartOf": {

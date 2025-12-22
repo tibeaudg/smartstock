@@ -1,13 +1,13 @@
-Contact: mailto:security@stockflow.be
+Contact: mailto:security@stockflowsystems.com
 Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en, nl
-Canonical: https://stockflow.be/.well-known/security.txt
-Policy: https://stockflow.be/security-policy
+Canonical: https://stockflowsystems.com/.well-known/security.txt
+Policy: https://stockflowsystems.com/security-policy
 
 # Security Policy
 # 
 # We take security seriously. If you discover a security vulnerability,
-# please report it to security@stockflow.be
+# please report it to security@stockflowsystems.com
 #
 # Please include:
 # - Description of the vulnerability

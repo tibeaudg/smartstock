@@ -381,6 +381,9 @@ export default function AssetTracking() {
             <img 
               src="/AssetTracking.png" 
               alt="StockFlow Asset Tracking Dashboard - Track tools, equipment, and spare parts with digital audit trails and location history"
+              width={512}
+              height={512}
+              loading="lazy"
               className="w-full rounded-lg"
             />
           </div>
@@ -600,7 +603,7 @@ export default function AssetTracking() {
                 Pricing
               </h3>
               <p className="text-sm text-gray-600 mb-3">
-                Start free, scale as you grow.
+                Join for Free, scale as you grow.
               </p>
               <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
                 View Plans <ArrowRight className="h-4 w-4" />

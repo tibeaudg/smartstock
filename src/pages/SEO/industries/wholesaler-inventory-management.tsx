@@ -168,7 +168,7 @@ export default function WholesalerInventoryManagement() {
     >
       <SEO
         title="Wholesaler Inventory Management 2025 - Save 30% Costs, Multi-Warehouse | StockFlow"
-        description="Complete wholesaler and distributor inventory management 2025. Multi-warehouse tracking, bulk order processing, inventory turnover optimization. Reduce costs by 30%, improve turnover 25%. Free plan available. Start free trial - no credit card required."
+        description="Complete wholesaler and distributor inventory management 2025. Multi-warehouse tracking, bulk order processing, inventory turnover optimization. Reduce costs by 30%, improve turnover 25%. Free plan available. Join for Free - no credit card required."
         keywords="wholesaler inventory management, wholesaler inventory software, distributor inventory management, wholesaler inventory system, distributor inventory software, wholesaler and distributor, distributors and wholesalers, wholesale inventory management, distributor inventory system, wholesaler inventory app, distributor inventory app, wholesale inventory software, distributor inventory solution, wholesaler inventory platform, wholesale inventory tracking, distributor inventory tracking, wholesaler stock management, distributor stock management, wholesale inventory control, distributor inventory control, stockflow, stock flow"
         url="https://www.stockflowsystems.com/wholesaler-inventory-management"
       />
@@ -317,7 +317,7 @@ export default function WholesalerInventoryManagement() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">

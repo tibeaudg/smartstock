@@ -116,64 +116,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const navItems = useMemo<NavItem[]>(
     () => [
-      {
-        id: 'features',
-        label: 'Features',
-        megaMenu: {
-          intro: {
-            title: 'Features',
-            description: 'Discover how StockFlow simplifies inventory with features designed for ease and organization.',
-            ctaLabel: 'View all features',
-            ctaTo: '/features'
-          },
-          sections: [
-            {
-              items: [
-                {
-                  label: 'Mobile App',
-                  description: 'Track inventory from any device, any location with our mobile experience.',
-                  to: '/mobile-app',
-                  icon: Smartphone
-                },
-                {
-                  label: 'Inventory Photos',
-                  description: 'Add images to every item for visual clarity and faster picking.',
-                  to: '/inventory-photos',
-                  icon: ImageIcon
-                },
-                {
-                  label: 'Alerts',
-                  description: 'Simplify reordering with low stock and date-based notifications.',
-                  to: '/alerts',
-                  icon: Bell
-                }
-              ]
-            },
-            {
-              items: [
-                {
-                  label: 'Barcoding',
-                  description: 'Save time with built-in barcode & QR scanning.',
-                  to: '/barcoding',
-                  icon: Barcode
-                },
-                {
-                  label: 'Integrations',
-                  description: 'Connect StockFlow with the tools your team already uses.',
-                  to: '/integrations',
-                  icon: Puzzle
-                },
-                {
-                  label: 'Reporting',
-                  description: 'Generate powerful, data-driven insights instantly.',
-                  to: '/reporting',
-                  icon: BarChart3
-                }
-              ]
-            }
-          ]
-        }
-      },
+  
       {
         id: 'solutions',
         label: 'Solutions',
@@ -258,21 +201,13 @@ const Header: React.FC<HeaderProps> = ({
         }
       },
 
-      {
-        id: 'pricing',
-        label: 'Pricing',
-        to: '/pricing'
-      },
+
       {
         id: 'resources',
         label: 'Resources',
         to: '/resources'
       },
-      {
-        id: 'blog',
-        label: 'Blog',
-        to: '/blog'
-      }
+    
     ],
     []
   );
@@ -608,7 +543,7 @@ const Header: React.FC<HeaderProps> = ({
                     size="sm"
                     className="rounded-xl px-5 text-sm bg-blue-700 text-white border border-white">
                     <Link to="/auth?mode=register">
-                        <span className="text-nowrap">Start Free</span>
+                        <span className="text-nowrap">Join for Free</span>
                     </Link>
                 </Button>
               </div>
@@ -743,7 +678,7 @@ const Header: React.FC<HeaderProps> = ({
                     className="w-full rounded-full px-4 py-3 font-semibold text-white"
                     style={{ backgroundColor: buttonBgColor || '#2563eb', color: buttonTextColor || '#fff' }}
                   >
-                    Start Free Trial
+                    Join for Free
                   </button>
                 </div>
               )}

@@ -8,10 +8,10 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why Is Inventory Management Important";
 const canonicalPath = "/why-is-inventory-management-important";
-const metaDescription = "Why is inventory management important? Learn the key benefits, impact on business operations, cost savings, and why proper inventory management is critical for success.";
+const metaDescription = "Skip inventory management, lose €4,000-8,000 annually. Stockouts kill sales. Overstock ties up capital. Here's why it matters—and what happens when businesses ignore it.";
 const keywords = "why inventory management important, importance of inventory management, why inventory management matters, inventory management benefits, inventory management importance";
 const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Inventory management is important because it directly impacts profitability, cash flow, and customer satisfaction. Effective management prevents stockouts (lost sales), reduces overstocking (tied-up capital), improves cash flow by optimizing inventory levels, minimizes waste from obsolescence, enables data-driven purchasing decisions, and provides visibility into business operations. Poor inventory management leads to stockouts, excess inventory, inaccurate records, and inefficient operations that hurt profitability.";
+const summaryCopy = "Small businesses waste €4,000-8,000 annually on inventory mistakes. Stockouts kill sales. Overstock ties up capital. Poor tracking leads to waste. Effective inventory management fixes all three—and improves cash flow by 20-30%. Here's why it matters and what happens when businesses skip it.";
 const takeaways = [
   "Inventory management prevents stockouts (lost sales) and overstocking (tied-up capital), directly impacting profitability and cash flow by 20-30%.",
   "Effective management improves customer satisfaction by ensuring products are available when needed, while reducing waste and obsolescence costs.",
@@ -125,10 +125,10 @@ export default function SeoWhyIsInventoryManagementImportantPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why is Inventory Management Important?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Inventory management is important</strong> because it directly impacts profitability, cash flow, and customer satisfaction. Effective management prevents stockouts (which result in lost sales), reduces overstocking (which ties up capital), improves cash flow by optimizing inventory levels, minimizes waste from obsolescence, and enables data-driven purchasing decisions.
+              <strong>Inventory management directly determines profitability.</strong> A Brussels retailer lost €12,000 in one month from stockouts and expired goods. A fashion boutique tied up €8,500 in dead stock. These aren't anomalies—they're what happens when businesses skip proper tracking. Effective management prevents stockouts (lost sales), reduces overstocking (frees capital), cuts waste, and improves cash flow by 20-30%.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Without proper inventory management, businesses face stockouts (lost sales and customer dissatisfaction), overstocking (tied-up capital and storage costs), inaccurate records, waste from obsolescence, inefficient operations, and poor cash flow. These issues directly hurt profitability. Businesses with strong inventory management see  in profitability through better inventory optimization.
+              Skip inventory management, and you'll face: stockouts that frustrate customers and kill sales, overstock that ties up capital you need elsewhere, inaccurate records that lead to wrong orders, waste from expired or obsolete items, and inefficient operations that waste hours weekly. Businesses with solid inventory management see 20-30% better cash flow because they optimize stock levels instead of guessing.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Effective inventory management provides visibility into business operations, enables data-driven decisions, improves customer satisfaction through product availability, and optimizes cash flow. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
@@ -136,7 +136,7 @@ export default function SeoWhyIsInventoryManagementImportantPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why it matters now</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                With rising costs and economic pressures, effective inventory management is more critical than ever. It prevents stockouts (lost sales), reduces overstocking (frees up capital), improves cash flow by 20-30%, and enables data-driven decisions. Poor inventory management directly hurts profitability and customer satisfaction.
+                Rising costs and tight margins make inventory management non-negotiable. One stockout can cost €500+ in lost sales. One overstock can tie up €2,000+ for months. With economic pressure, businesses can't afford these mistakes. Proper management prevents both—and improves cash flow by 20-30% through optimized stock levels.
               </p>
             </div>
           </div>

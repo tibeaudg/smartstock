@@ -1271,7 +1271,7 @@ export const HomePage = () => {
       </Helmet>
       <SEO
         title="Free Inventory Management — StockFlow | Barcode, Mobile, Reporting"
-        description="Free inventory management software with barcode scanning, mobile access & reporting. Track stock in real-time, prevent stockouts, save 35% costs. Start free - no credit card!"
+        description="Free inventory management that actually works. Scan barcodes with your phone, track stock in real-time, prevent stockouts, recover dead stock capital. 500+ businesses trust StockFlow—free forever."
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflowsystems.com/"
         hreflang={[
@@ -1666,12 +1666,12 @@ export const HomePage = () => {
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                   {/* Main Headline */}
                   <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center text-white">
-                    Ready to simplify your stock management?
+                    Stop wasting money on inventory mistakes
                   </h2>
                   
                   {/* Subheadline */}
                   <p className="text-md pt-4 pb-8 text-blue-100 max-w-3xl mx-auto px-4 leading-relaxed">
-                    Get started free today - no credit card required, all features included forever.
+                    Stockouts kill sales. Overstock ties up capital. Track everything with your phone, get instant alerts, eliminate errors. Free forever.
                   </p>
                   
                   {/* CTA Buttons */}

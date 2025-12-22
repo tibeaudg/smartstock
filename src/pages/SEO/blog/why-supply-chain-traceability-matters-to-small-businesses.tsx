@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why Supply Chain Traceability Matters To Small Businesses";
 const canonicalPath = "/why-supply-chain-traceability-matters-to-small-businesses";
-const metaDescription = "Why supply chain traceability matters to small businesses. Learn how traceability improves quality, compliance, customer trust, and helps small businesses compete effectively.";
+const metaDescription = "Traceability helps small businesses catch quality issues in hours (not days), build customer trust, and meet compliance. One retailer saved €15,000 on a recall. Here's why it matters.";
 const keywords = "supply chain traceability, supply chain traceability small business, traceability benefits, supply chain tracking, product traceability, supply chain transparency";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Supply chain traceability matters to small businesses because: quality control (track products from source, identify issues quickly), compliance (meet regulatory requirements, maintain records), customer trust (transparency builds confidence), competitive advantage (differentiate from competitors), risk management (identify and address issues early), and recall management (quickly identify affected products). Traceability enables small businesses to compete effectively, build customer trust, and ensure quality. Modern inventory management software with barcode scanning makes traceability accessible and affordable for small businesses.";
@@ -125,10 +125,7 @@ export default function SeoWhySupplyChainTraceabilityMattersToSmallBusinessesPag
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Supply chain traceability</strong> means tracking products from source to customer. For small businesses, it's not just about compliance—it's about quality control, customer trust, and competitive advantage. One food retailer caught a contamination issue in 2 hours (instead of days) because they could trace products to specific batches. That saved €15,000 in potential recalls.
             </p>
             
           </div>

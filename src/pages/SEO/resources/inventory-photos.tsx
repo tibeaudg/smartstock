@@ -253,7 +253,7 @@ export default function InventoryPhotosPage() {
     >
       <SEO
         title="Inventory Photos 2025 - Product Image Management | StockFlow"
-        description="Add photos to inventory items for better identification and tracking. Upload product images, manage visual inventory, and improve accuracy with photo-based inventory management. Sync to e-commerce, reduce errors. Start free trial."
+        description="Add photos to inventory items for better identification and tracking. Upload product images, manage visual inventory, and improve accuracy with photo-based inventory management. Sync to e-commerce, reduce errors. Join for Free."
         keywords="inventory photos, product photos, inventory image management, product image upload, inventory photography, e-commerce product photos, warehouse photos, inventory visual identification, stock photos, product image sync"
         url="https://www.stockflowsystems.com/inventory-photos"
         structuredData={structuredData}
@@ -268,9 +268,9 @@ export default function InventoryPhotosPage() {
               <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
                 Product Photo Management
               </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              <h2 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
                 Inventory Photos for Better Product Identification
-              </h1>
+              </h2>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
                 Add unlimited photos to your inventory items for visual identification, reduced errors, and improved e-commerce listings. Upload from any device, organize with tags, and sync automatically to your online stores.
               </p>
@@ -302,6 +302,9 @@ export default function InventoryPhotosPage() {
                   <img
                     src="/Inventory-Management.png"
                     alt="StockFlow inventory photo management interface"
+                    width={512}
+                    height={512}
+                    loading="lazy"
                     className="h-[96] w-64 object-cover rounded-3xl"
                   />
             </div>
@@ -488,7 +491,7 @@ export default function InventoryPhotosPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-white text-indigo-700 hover:bg-indigo-100" asChild>
               <Link to="/auth">
-                Start Free Trial
+                Join for Free
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>

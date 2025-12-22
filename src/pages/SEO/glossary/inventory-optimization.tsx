@@ -227,7 +227,7 @@ export default function InventoryOptimization() {
     >
       <SEO
         title="Inventory Optimization 2025 - Save 30% Costs, 15-25% Cash Flow | StockFlow"
-        description="Master inventory optimization 2025. Reduce costs by 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI-powered tools, best practices. Free plan available. Start free trial - no credit card required."
+        description="Master inventory optimization 2025. Reduce costs 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI tools, best practices."
         keywords="inventory optimization, optimal inventory, stock optimization, inventory balance, inventory efficiency, stock level optimization, inventory management optimization, inventory cost optimization, ABC analysis, demand forecasting, reorder points, safety stock, EOQ, inventory turnover"
         url="https://www.stockflowsystems.com/glossary/inventory-optimization"
         publishedTime={pageMetadata.published}
@@ -299,12 +299,12 @@ export default function InventoryOptimization() {
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              <strong>Inventory optimization</strong> is the strategic process of maintaining the perfect balance of inventory—enough to satisfy customer demand without tying up excessive capital or risking stockouts. In today's competitive market, businesses that master <strong>inventory optimization</strong> see significant improvements in cash flow, reduced carrying costs, and better customer satisfaction. This comprehensive guide covers everything you need to know about optimizing your inventory levels in 2025.
+              <strong>Inventory optimization</strong> means finding the sweet spot: enough stock to prevent stockouts, but not so much that you tie up capital. Most businesses struggle with this balance—we've seen retailers lose €4,800 annually from overstock, while others lose sales from stockouts. Businesses that optimize properly see 20-30% cost reductions and 95%+ service levels. Here's how to get there.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
               <p className="text-base text-slate-800 leading-relaxed m-0">
-                <strong className="text-blue-900">Key Insight:</strong> Effective <strong>inventory optimization</strong> balances customer service levels with inventory investment costs. Modern <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> uses AI and analytics to automatically optimize stock levels, helping businesses reduce costs by 20-30% while maintaining 95%+ service levels.
+                <strong className="text-blue-900">What most businesses get wrong:</strong> They optimize for one thing (avoiding stockouts) and ignore the cost. Or they minimize inventory and lose sales. Effective optimization balances both. Modern <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> uses real sales data to calculate optimal levels automatically—removing the guesswork that causes most mistakes.
               </p>
             </div>
           </div>

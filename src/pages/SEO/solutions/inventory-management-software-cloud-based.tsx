@@ -160,7 +160,7 @@ export default function InventoryManagementSoftwareCloudBased() {
     >
       <SEO
         title="Cloud-Based Inventory Management Software 2025 | StockFlow"
-        description="Discover cloud-based inventory management software. Access your inventory from anywhere, real-time synchronization, automatic backups, and mobile access. Free plan for up to 100 products. Start free trial."
+        description="Discover cloud-based inventory management software. Access your inventory from anywhere, real-time synchronization, automatic backups, and mobile access. Free plan for up to 100 products. Join for Free."
         keywords="cloud-based inventory management software, cloud inventory management, cloud inventory software, cloud inventory system, online inventory management software, web-based inventory software, cloud stock management, saas inventory management, cloud inventory solution, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-software-cloud-based"
       />
@@ -169,9 +169,9 @@ export default function InventoryManagementSoftwareCloudBased() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Cloud-Based Inventory Management Software
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               Access your inventory from anywhere, anytime with <strong>cloud-based inventory management software</strong>. No installation, no IT infrastructure, no hassle—just professional inventory management accessible from any device with an internet connection. StockFlow offers cloud-based inventory management with real-time synchronization, automatic backups, and mobile access.
@@ -348,7 +348,7 @@ export default function InventoryManagementSoftwareCloudBased() {
                 to="/auth"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
               >
-                Start Free Trial
+                Join for Free
               </Link>
               <button
                 onClick={() => setIsVideoModalOpen(true)}

@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Year End Inventory";
 const canonicalPath = "/year-end-inventory";
-const metaDescription = "Complete guide to year-end inventory. Learn how to conduct year-end inventory counts, accounting procedures, tax implications, and best practices for closing inventory.";
+const metaDescription = "Year-end inventory counts take 2-3 days without preparation. Use cycle counts throughout the year and proper software to cut time to 4-6 hours. Here's how to do it right.";
 const keywords = "year end inventory, year-end inventory, end of year inventory, year end inventory count, closing inventory, year end inventory accounting, inventory year end";
 const heroBadge = "Topic Guide • Updated October 2025";
 const summaryCopy = "Year-end inventory is the physical count and valuation of all inventory at the end of the fiscal year for financial reporting and tax purposes. It involves counting all items, valuing inventory (FIFO, LIFO, or weighted average), reconciling discrepancies, and reporting values for accounting. Year-end inventory is required for accurate financial statements, tax calculations, and compliance. Best practices include: preparing in advance, using cycle counts throughout the year, using inventory management software for accuracy, and reconciling discrepancies promptly.";
@@ -110,7 +110,7 @@ export default function SeoYearEndInventoryPage() {
       
     >
       <SEO
-        title={`Year End Inventory 2025 - Complete Guide | StockFlow`}
+        title={`Year End Inventory Guide 2025 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -125,10 +125,10 @@ export default function SeoYearEndInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Year End Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Year-end inventory</strong> is the physical count and valuation of all inventory at the end of the fiscal year for financial reporting and tax purposes. It involves counting all items, valuing inventory (FIFO, LIFO, or weighted average), reconciling discrepancies, and reporting values for accounting.
+              <strong>Year-end inventory</strong> means counting and valuing all stock at fiscal year-end for accounting and taxes. Without preparation, it takes 2-3 days and disrupts operations. One hardware store spent 3 days counting 2,500 SKUs manually—then found €8,500 in discrepancies to reconcile.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Year-end inventory is required for accurate financial statements, tax calculations, and compliance. It provides the ending inventory value used in cost of goods sold calculations and financial reporting. Best practices include preparing in advance, using cycle counts throughout the year, using inventory management software for accuracy, and reconciling discrepancies promptly.
+              Year-end counts are required for financial statements and tax reporting. The ending inventory value goes into cost of goods sold calculations. Smart businesses use cycle counts throughout the year (so year-end is mostly verification) and inventory software for accuracy. One retailer cut year-end counting from 3 days to 4 hours by doing monthly cycle counts and using barcode scanning.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Effective year-end inventory processes reduce time spent, improve accuracy, and ensure compliance. Inventory management software helps by maintaining accurate records throughout the year, enabling efficient counting with barcode scanning, and generating reports. Learn more about <Link to="/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">physical inventory counts</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.

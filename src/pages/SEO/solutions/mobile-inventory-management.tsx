@@ -205,7 +205,7 @@ export default function MobileInventoryManagement() {
     >
       <SEO
         title="Mobile Inventory Management 2025 - Save 40-60% Time, 99.9% Accuracy | StockFlow"
-        description="Mobile inventory management 2025 for iOS and Android. Barcode scanning, offline mode, real-time sync. Increase productivity 40-60%, achieve 99.9% accuracy. Free plan available. Start free trial - no credit card required."
+        description="Mobile inventory management 2025 for iOS and Android. Barcode scanning, offline mode, real-time sync. Increase productivity 40-60%, achieve 99.9% accuracy. Free plan available. Join for Free - no credit card required."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/mobile-inventory-management"
         locale="en"
@@ -514,7 +514,7 @@ export default function MobileInventoryManagement() {
             to="/auth"
             className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
           >
-            Start Free Trial →
+            Join for Free →
           </Link>
         </div>
       </section>

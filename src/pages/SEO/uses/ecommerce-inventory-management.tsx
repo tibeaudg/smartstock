@@ -134,7 +134,7 @@ export default function EcommerceInventoryManagement() {
     >
       <SEO
         title="Ecommerce Inventory Management 2025 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
-        description="Complete ecommerce inventory management 2025. Multi-channel sync, real-time updates, prevent overselling. Integrate Shopify, Amazon, WooCommerce. Save 20+ hours/week, 99%+ accuracy. Free plan available. Start free trial - no credit card required."
+        description="Complete ecommerce inventory management 2025. Multi-channel sync, real-time updates, prevent overselling. Integrate Shopify, Amazon, WooCommerce. Save 20+ hours/week, 99%+ accuracy. Free plan available. Join for Free - no credit card required."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/ecommerce-inventory-management"
       />
@@ -367,7 +367,7 @@ export default function EcommerceInventoryManagement() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
         </div>

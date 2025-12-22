@@ -165,9 +165,9 @@ export default function InventoryOptimizationServices() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Inventory Optimization Services
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               Professional <strong>inventory optimization services</strong> help businesses reduce costs by 20-30%, improve cash flow, and maintain optimal stock levels through expert analysis, demand forecasting, and strategic recommendations. Whether you need a one-time assessment or ongoing optimization support, professional services can help you achieve significant improvements in inventory efficiency. Many businesses find that <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with built-in optimization features provides similar benefits at a fraction of the cost.
@@ -324,7 +324,7 @@ export default function InventoryOptimizationServices() {
                 to="/auth"
                 className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
               >
-                Start Free - Get Optimization Features
+                Join for Free - Get Optimization Features
               </Link>
             </div>
           </div>

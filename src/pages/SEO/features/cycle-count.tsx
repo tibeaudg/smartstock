@@ -137,7 +137,7 @@ export default function CycleCount() {
     >
       <SEO
         title="Cycle Count Inventory 2025 - Improve Accuracy 20-30%, Save Time | StockFlow"
-        description="Implement cycle count inventory 2025 for continuous accuracy. Automate cycle counting, improve accuracy 20-30%, track discrepancies. Free plan available. Start free trial - no credit card required."
+        description="Cycle count inventory 2025: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
         url="https://www.stockflowsystems.com/cycle-count"
       />
@@ -226,7 +226,7 @@ export default function CycleCount() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
         </div>

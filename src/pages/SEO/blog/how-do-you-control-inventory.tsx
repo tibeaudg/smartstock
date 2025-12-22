@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do You Control Inventory";
 const canonicalPath = "/how-do-you-control-inventory";
-const metaDescription = "Learn how to control inventory effectively. Essential inventory control methods, techniques, and best practices to maintain accurate stock levels and prevent stockouts or overstock.";
+const metaDescription = "Control inventory: track all movements, set reorder points, conduct cycle counts. Software with barcode scanning improves accuracy from 60-80% to 95-99%. Here's how to do it.";
 const keywords = "how to control inventory, inventory control, control inventory, inventory control methods, inventory control techniques, stock control, inventory management control";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Control inventory by: tracking all movements (receipts, shipments, adjustments), maintaining accurate records, setting reorder points to prevent stockouts, conducting regular counts (cycle counts or full counts), using inventory management software for real-time tracking, implementing barcode scanning for accuracy, and establishing clear processes. Key methods: perpetual inventory (real-time tracking with software), cycle counting (count subsets regularly), ABC analysis (prioritize high-value items), and automated reordering. Effective control maintains 95-99% accuracy, prevents stockouts, reduces overstocking, and optimizes inventory investment.";
@@ -125,10 +125,7 @@ export default function SeoHowDoYouControlInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              <strong>Control inventory</strong> by tracking all movements (receipts, shipments, adjustments), maintaining accurate records, setting reorder points, and conducting regular counts. Most businesses do this manually and achieve 60-80% accuracy. Using proper software with barcode scanning pushes accuracy to 95-99%. One hardware retailer improved from 72% to 98% accuracy after implementing proper control systems—stockouts dropped by 85%.
             </p>
             
           </div>

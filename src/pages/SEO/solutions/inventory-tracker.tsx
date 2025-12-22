@@ -531,7 +531,7 @@ export default function InventoryTracker() {
               to="/auth"
               className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
             >
-              Start Free Trial
+              Join for Free
             </Link>
 
           </div>

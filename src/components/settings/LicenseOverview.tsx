@@ -99,8 +99,8 @@ export const LicenseOverview = () => {
                 {isUnlimited
                   ? 'Plan includes unlimited products.'
                   : remainingProducts !== null && remainingProducts > 0
-                    ? `${remainingProducts} products left before upgrade`
-                    : 'Limit reached — next plan will auto-apply.'}
+                    ? `${remainingProducts} products left before automatic upgrade`
+                    : 'Limit reached — your plan will automatically upgrade to accommodate your growing inventory.'}
               </span>
               <span className="flex items-center gap-1">
                 <Sparkles className="h-4 w-4 text-blue-500" />

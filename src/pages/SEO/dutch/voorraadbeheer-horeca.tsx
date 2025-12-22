@@ -101,7 +101,7 @@ export default function VoorraadbeheerHorecaPage() {
         'Realtime voorraadniveaus',
         'Foodcost- en marge-analyses'
       ],
-      image: 'https://www.stockflow.be/Inventory-Management.png',
+      image: 'https://www.stockflowsystems.com/Inventory-Management.png',
       url: location.pathname
     },
     pageType: 'software',

@@ -84,9 +84,9 @@ export default function RetailPrice() {
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6">
               Retail Price
-            </h1>
+            </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               <strong>Retail price</strong> is the final price at which products are sold to end consumers. The fundamental formula is: <strong>Retail Price = Cost + Margin</strong>. To maintain your margin, you must track accurate costs and stock levels. Understanding retail pricing is essential for inventory management, profitability, and competitive positioning.
             </p>
@@ -152,7 +152,7 @@ export default function RetailPrice() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
         </div>

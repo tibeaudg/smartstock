@@ -587,7 +587,7 @@ RecentArticlesSection.displayName = 'RecentArticlesSection';
 const CTASection = memo<{ pageLanguage: 'nl' | 'en' }>(({ pageLanguage }) => {
   const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
   const heading = pageLanguage === 'nl' ? 'Klaar voor de volgende stap?' : 'Ready to Simplify Your Stock Management?';
-  const ctaText = pageLanguage === 'nl' ? 'Start Gratis' : 'Start Free Trial';
+  const ctaText = pageLanguage === 'nl' ? 'Start Gratis' : 'Join for Free';
   const watchDemoText = pageLanguage === 'nl' ? 'Bekijk Demo' : 'Watch Demo';
 
   return (
@@ -680,6 +680,20 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
 
   // Normalize canonical URL (remove trailing slashes, ensure consistency)
   const canonicalUrl = useMemo(() => normalizeCanonicalUrl(location.pathname), [location.pathname]);
+
+  // SEO Validation: Warn if title or description exceed recommended lengths
+  if (process.env.NODE_ENV === 'development') {
+    if (title.length > 60) {
+      console.warn(`[SeoPageLayout] Title exceeds 60 characters (${title.length}): "${title.substring(0, 70)}..."`);
+    }
+    if (description && description.length > 160) {
+      console.warn(`[SeoPageLayout] Description exceeds 160 characters (${description?.length}): "${description.substring(0, 170)}..."`);
+    }
+  }
+
+  // Truncate title and description to enforce limits
+  const optimizedTitle = title.length > 60 ? title.substring(0, 57) + '...' : title;
+  const optimizedDescription = description && description.length > 160 ? description.substring(0, 157) + '...' : description;
 
   // --- Memoized JSON-LD ---
   const jsonLd = useMemo(() => {
@@ -821,8 +835,8 @@ const SeoPageLayout: React.FC<SeoPageLayoutProps> = ({
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900" lang={pageLanguage}>
       <Helmet>
-        <title>{title}</title>
-        {description && <meta name="description" content={description} />}
+        <title>{optimizedTitle}</title>
+        {optimizedDescription && <meta name="description" content={optimizedDescription} />}
         <link rel="canonical" href={canonicalUrl} />
         {/* Performance optimizations */}
         <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" />

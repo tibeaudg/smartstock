@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A Good Inventory Turnover Ratio";
 const canonicalPath = "/what-is-a-good-inventory-turnover-ratio";
-const metaDescription = "What is a good inventory turnover ratio? Learn ideal inventory turnover rates by industry, how to calculate it, and how to improve your inventory turnover ratio.";
+const metaDescription = "Good inventory turnover: retail 4-6x, manufacturing 6-8x, fast-moving goods 8-12x. Below 2-3x means overstock. Here's how to calculate it and boost turnover by 40-60%.";
 const keywords = "good inventory turnover ratio, inventory turnover ratio, ideal inventory turnover, inventory turnover rate, inventory turnover by industry, calculate inventory turnover";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "A good inventory turnover ratio varies by industry, but generally ranges from 4-12 times per year for most businesses. The ratio measures how many times inventory is sold and replaced annually. Higher turnover indicates efficient inventory management and better cash flow, while very low turnover suggests overstocking or slow-moving items. Retail typically sees 4-6x, while fast-moving consumer goods may see 8-12x. The ideal ratio balances having enough stock to meet demand without tying up excessive capital.";
@@ -125,18 +125,18 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Good Inventory Turnover Ratio?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              A <strong>good inventory turnover ratio</strong> measures how efficiently a business manages its inventory by calculating how many times inventory is sold and replaced per year. The ratio is calculated as: <strong>Cost of Goods Sold ÷ Average Inventory</strong>. Higher turnover generally indicates more efficient inventory management, better cash flow, and less capital tied up in stock.
+              Turnover ratio shows how many times you sell and replace inventory per year: <strong>Cost of Goods Sold ÷ Average Inventory</strong>. Retail typically sees 4-6x. Manufacturing 6-8x. Fast-moving goods 8-12x. One hardware store improved from 3.2x to 6.8x by cutting slow-moving items—freeing €15,000 in capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Good turnover ratios vary significantly by industry: retail typically sees 4-6x per year, manufacturing 6-8x, and fast-moving consumer goods 8-12x. However, very high turnover (above 12-15x) may indicate stockouts and lost sales, while very low turnover (below 2-3x) suggests overstocking or slow-moving items. The ideal ratio balances having enough stock to meet demand without tying up excessive capital.
+              Very high turnover (above 12-15x) might mean stockouts—you're running out too fast. Very low (below 2-3x) means overstock or dead items. The ideal balances having enough stock to meet demand without tying up capital. One fashion retailer had 2.1x turnover (bad) and €12,000 in dead stock. After optimizing, they hit 5.8x and recovered that capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Improving inventory turnover requires optimizing stock levels, improving demand forecasting, and eliminating slow-moving items. Learn more about <Link to="/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with turnover analytics.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why inventory turnover matters</h3>
+              <h3 className="text-xl font-semibold">What low turnover costs</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Higher turnover improves cash flow by reducing capital tied up in inventory, lowers carrying costs (storage, insurance, obsolescence), and indicates efficient operations. Low turnover suggests overstocking, slow-moving items, or poor inventory management, which ties up capital and increases costs. Monitoring turnover helps identify optimization opportunities.
+                Low turnover ties up capital. On €200,000 inventory, a 3x ratio means €66,667 tied up at any time. At 6x, that drops to €33,333—€33,000 freed for growth. Higher turnover also cuts carrying costs (storage, insurance, obsolescence). One retailer reduced carrying costs by €8,400 annually after improving turnover from 3.5x to 6.2x.
               </p>
             </div>
           </div>

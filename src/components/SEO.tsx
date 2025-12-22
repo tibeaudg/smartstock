@@ -111,10 +111,24 @@ export const SEO: React.FC<SEOProps> = ({
   // Normalize canonical URL to ensure consistency (no trailing slashes, no query params)
   const normalizedUrl = normalizeCanonicalUrl(url);
 
+  // SEO Validation: Warn if title or description exceed recommended lengths
+  if (process.env.NODE_ENV === 'development') {
+    if (title.length > 60) {
+      console.warn(`[SEO] Title exceeds 60 characters (${title.length}): "${title.substring(0, 70)}..."`);
+    }
+    if (description.length > 160) {
+      console.warn(`[SEO] Description exceeds 160 characters (${description.length}): "${description.substring(0, 170)}..."`);
+    }
+  }
+
+  // Truncate title and description to enforce limits (prevent SEO issues)
+  const optimizedTitle = title.length > 60 ? title.substring(0, 57) + '...' : title;
+  const optimizedDescription = description.length > 160 ? description.substring(0, 157) + '...' : description;
+
   return (
     <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
+      <title>{optimizedTitle}</title>
+      <meta name="description" content={optimizedDescription} />
       <meta name="keywords" content={keywords} />
       <meta name="language" content={resolvedLocale} />
       <meta name="geo.region" content="BE" />

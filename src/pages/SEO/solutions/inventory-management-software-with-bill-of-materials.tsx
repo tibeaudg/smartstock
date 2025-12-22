@@ -158,18 +158,18 @@ export default function InventoryManagementSoftwareWithBillOfMaterials() {
     >
       <SEO
         title="Inventory Management Software with Bill of Materials 2025 | BOM Integration | StockFlow"
-        description="Get inventory management software with bill of materials (BOM) integration. Track finished goods and components, calculate material requirements automatically, and manage production planning. Free plan for up to 100 products. Start free trial."
+        description="Get inventory management software with bill of materials (BOM) integration. Track finished goods and components, calculate material requirements automatically, and manage production planning. Free plan for up to 100 products. Join for Free."
         keywords="inventory management software with bill of materials, inventory management with bom, bom inventory management, inventory software with bill of materials, inventory management system with bom, stock management with bom, inventory tracking with bill of materials, manufacturing inventory software with bom, assembly inventory management, production inventory software, bom inventory management software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-software-with-bill-of-materials"
       />
 
-      {/* Hero Section */}
-      <section className="py-16 px-4 bg-white">
+      {/* Overview Section */}
+      <section id="overview" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Inventory Management Software with Bill of Materials
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               Combine <strong>inventory management software with bill of materials</strong> functionality to track both finished goods and components in one integrated system. Automatically calculate material requirements, manage production planning, and optimize your manufacturing operations—all from a single platform. StockFlow's <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> provides comprehensive BOM integration. Learn more about <Link to="/bill-of-materials-inventory-management" className="text-blue-600 hover:underline font-semibold">bill of materials inventory management</Link> or explore <Link to="/solutions/inventory-management-software-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software bill of materials</Link>.
@@ -385,7 +385,7 @@ export default function InventoryManagementSoftwareWithBillOfMaterials() {
                 to="/auth"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
               >
-                Start Free Trial
+                Join for Free
               </Link>
               <button
                 onClick={() => setIsVideoModalOpen(true)}

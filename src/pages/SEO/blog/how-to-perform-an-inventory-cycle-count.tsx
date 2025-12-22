@@ -8,7 +8,7 @@ import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
 
 const topicTitle = "How To Perform An Inventory Cycle Count";
 const canonicalPath = "/how-to-perform-an-inventory-cycle-count";
-const metaDescription = "Step-by-step guide to performing inventory cycle counts. Learn how to count inventory accurately, schedule cycle counts, and use cycle counting to maintain inventory accuracy without disrupting operations.";
+const metaDescription = "Cycle counts maintain 98%+ accuracy without shutting down. Count A-items monthly, B-items quarterly. Here's the step-by-step process that takes 2-3 hours instead of a full-day shutdown.";
 const keywords = "how to perform cycle count, inventory cycle count, cycle counting, how to count inventory, inventory audit, cycle count procedure, inventory counting, stock counting";
 const heroBadge = "How-To Guide • Updated September 2025";
 const summaryCopy = "Cycle counting is an efficient inventory auditing method where you count specific items on a rotating schedule throughout the year. This step-by-step guide shows you how to perform cycle counts accurately, schedule them effectively, and use the results to maintain inventory accuracy without the disruption of full physical inventory counts.";
@@ -94,6 +94,18 @@ const structuredData = [
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/how-to-perform-an-inventory-cycle-count"
     }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer.replace(/<Link[^>]*>.*?<\/Link>/g, '').replace(/className="[^"]*"/g, '')
+      }
+    }))
   }
 ];
 
@@ -115,7 +127,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
       
     >
       <SEO
-        title={`How To Perform An Inventory Cycle Count: Step-by-Step Guide 2025`}
+        title={`How To Perform Inventory Cycle Count 2025`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

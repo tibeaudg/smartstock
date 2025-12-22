@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A GS1 Barcode";
 const canonicalPath = "/what-is-a-gs1-barcode";
-const metaDescription = "What is a GS1 barcode? Learn GS1 barcode definition, standards, how GS1 barcodes work, benefits, and when to use GS1 barcodes for inventory and product identification.";
+const metaDescription = "GS1 barcodes use globally unique identification numbers. Required for major retailers and international sales. Costs €250-500/year. Here's what GS1 barcodes are and when you need them.";
 const keywords = "what is GS1 barcode, GS1 barcode, GS1 barcode definition, GS1 barcode standards, GS1 barcode system, GS1 barcode format, GS1 barcode meaning";
 const heroBadge = "Topic Guide • Updated May 2025";
 const summaryCopy = "A GS1 barcode is a standardized barcode format developed by GS1, a global standards organization. GS1 barcodes use unique identification numbers (GTINs) that ensure products can be identified consistently worldwide. These barcodes are used in retail, healthcare, logistics, and inventory management to enable accurate tracking, reduce errors, and facilitate global trade. Common GS1 formats include UPC (12 digits), EAN-13 (13 digits), and EAN-8 (8 digits).";
@@ -125,10 +125,10 @@ export default function SeoWhatIsAGS1BarcodePage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a GS1 Barcode?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              A <strong>GS1 barcode</strong> is a standardized barcode format developed by GS1, a global standards organization that sets identification standards for products, locations, and assets worldwide. GS1 barcodes use unique identification numbers called Global Trade Item Numbers (GTINs) that ensure products can be identified consistently across all systems, countries, and trading partners.
+              A <strong>GS1 barcode</strong> uses globally unique identification numbers (GTINs) set by GS1, a global standards organization. These barcodes ensure products are identified consistently worldwide—required if you sell through major retailers (Walmart, Amazon, etc.) or internationally. Formats include UPC (12 digits, North America), EAN-13 (13 digits, worldwide), and EAN-8 (8 digits, small products).
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              The most common GS1 barcode formats are <strong>UPC</strong> (Universal Product Code, 12 digits, used primarily in North America), <strong>EAN-13</strong> (European Article Number, 13 digits, used worldwide), and <strong>EAN-8</strong> (8 digits, used for small products). All GS1 barcodes follow strict standards that ensure they can be read by any GS1-compliant scanner or system, enabling seamless global trade and inventory management.
+              GS1 barcodes cost €250-500/year to register, but they're required for major retailers and international sales. All GS1 barcodes follow strict standards, so they work with any GS1-compliant scanner—critical for global trade. If you're selling only internally or to small local retailers, you might not need GS1. But if you want to scale or sell through major channels, GS1 compliance is mandatory. One small business couldn't get into major retailers until they switched from proprietary barcodes to GS1.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               GS1 barcodes are essential for businesses that sell through major retailers (which require GS1 compliance), operate internationally, or need to ensure compatibility across different inventory systems. Learn more about <Link to="/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link> or explore <Link to="/solutions/inventory-scanning-system" className="text-blue-600 hover:underline font-semibold">inventory scanning systems</Link>.

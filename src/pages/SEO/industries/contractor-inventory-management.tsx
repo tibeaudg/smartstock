@@ -280,7 +280,7 @@ export default function ContractorInventoryManagement() {
     >
       <SEO
         title="Construction Inventory Management Software | StockFlow"
-        description="Construction inventory management for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, . Mobile scanning included."
+        description="Construction inventory management for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, save time with mobile scanning."
         keywords="construction inventory management, contractor inventory software, job site inventory tracking, construction materials management, tool tracking software, construction equipment tracking, contractor inventory system, construction inventory software, job site material tracking, construction tool management, contractor inventory app, construction inventory solution, multi-site inventory tracking, construction project inventory, contractor stock management"
         url="https://www.stockflowsystems.com/contractor-inventory-management"
         structuredData={structuredData}
@@ -592,7 +592,7 @@ export default function ContractorInventoryManagement() {
                 Pricing
               </h3>
               <p className="text-sm text-gray-600 mb-3">
-                Start free, scale as you grow.
+                Join for Free, scale as you grow.
               </p>
               <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
                 View Plans <ArrowRight className="h-4 w-4" />

@@ -92,7 +92,7 @@ export default function SoftwareStockbeheer() {
         "Team samenwerking",
         "Mobiele app toegang"
       ],
-      image: "https://www.stockflow.be/Inventory-Management.png",
+      image: "https://www.stockflowsystems.com/Inventory-Management.png",
       url: location.pathname
     },
     pageType: 'software',
@@ -133,6 +133,9 @@ export default function SoftwareStockbeheer() {
                 <img 
                   src="https://valuechain.be/media/images/20232316226515_shutterstock-1106078390.width-1292.webp" 
                   alt="Modern Magazijn" 
+                  width={1292}
+                  height={864}
+                  loading="lazy"
                   className="w-full h-64 sm:h-80 lg:h-96 mx-auto object-cover rounded-lg"
                 />
               </div>
@@ -308,6 +311,9 @@ export default function SoftwareStockbeheer() {
           <img
             src="/logo.png"
             alt="StockFlow"
+            width={200}
+            height={60}
+            loading="lazy"
             className="h-10 md:h-12 mx-auto mb-6"
           />
           <p className="text-gray-400 text-base md:text-lg mb-8 leading-relaxed max-w-2xl mx-auto">

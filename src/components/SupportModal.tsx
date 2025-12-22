@@ -187,7 +187,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                       : 'border-gray-200 hover:border-gray-300 hover:shadow-md bg-white hover:bg-gray-50'
                     }
                   `}
-                  title={isDisabled ? 'Premium feature - Upgrade required' : undefined}
+                  title={isDisabled ? 'Available on Premium plan - Upgrade as you grow' : undefined}
                 >
                   <div className="flex items-start gap-4">
                     <div className={`
@@ -231,7 +231,7 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                 {/* Tooltip for disabled options */}
                 {isDisabled && (
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
-                    Premium plan required - Upgrade to access
+                    Available on Premium plan - Upgrade as you grow
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                   </div>
                 )}

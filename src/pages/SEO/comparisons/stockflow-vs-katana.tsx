@@ -97,7 +97,7 @@ export default function StockflowVsKatana() {
     >
       <SEO
         title="StockFlow vs Katana 2025 - Save 50% Costs, Faster Setup | StockFlow"
-        description="Compare StockFlow vs Katana 2025. StockFlow for e-commerce/distribution, Katana for manufacturing. Completely free forever vs paid, 5-7 day setup vs 30+ days. Save 100% costs, faster implementation. Start free - no credit card required."
+        description="Compare StockFlow vs Katana 2025. Free forever vs paid. StockFlow for e-commerce/distribution, 5-7 day setup. Save 100% costs, faster implementation."
         keywords="stockflow vs katana, katana alternative, katana inventory comparison, stockflow comparison, katana vs stockflow, manufacturing inventory software, e-commerce inventory management, katana alternative for sme, stockflow vs katana pricing, inventory software comparison"
         url="https://www.stockflowsystems.com/stockflow-vs-katana"
         publishedTime="2024-01-01T00:00:00Z"
@@ -108,7 +108,7 @@ export default function StockflowVsKatana() {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>              <p className="text-xl text-gray-600 mb-8">
-                Katana focuses on shop-floor scheduling. StockFlow unifies inventory, procurement and fulfilment for teams managing multiple sales channels. Compare the strengths of each platform.
+                Katana excels at shop-floor scheduling for manufacturers. StockFlow unifies inventory, procurement, and fulfillment across e-commerce, retail, and wholesale. If you're manufacturing-focused with complex production routing, consider Katana. If you're managing multiple sales channels and need fast setup, StockFlow fits better—and it's free forever.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link

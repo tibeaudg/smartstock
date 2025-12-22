@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is A Stockout";
 const canonicalPath = "/what-is-a-stockout";
-const metaDescription = "What is a stockout? Learn stockout definition, causes, costs, and how to prevent stockouts with proper inventory management, safety stock, and reorder points.";
+const metaDescription = "Stockouts lose 10-20% of revenue on affected items. 30-40% of customers shop elsewhere after one. Here's what causes stockouts, what they really cost, and how to prevent them.";
 const keywords = "what is a stockout, stockout definition, stockout meaning, prevent stockouts, stockout costs, inventory stockout, out of stock";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "A stockout occurs when inventory for a product is completely depleted and unavailable for sale. Stockouts result in lost sales, customer dissatisfaction, and potential long-term damage to brand reputation. Common causes include inaccurate demand forecasting, delayed supplier deliveries, inadequate safety stock, and poor inventory management. Preventing stockouts requires accurate tracking, automated reorder points, safety stock buffers, and reliable supplier relationships.";
@@ -125,18 +125,18 @@ export default function SeoWhatIsAStockoutPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Stockout?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              A <strong>stockout</strong> occurs when inventory for a product is completely depleted and unavailable for sale. Stockouts are a critical inventory problem that results in lost sales, customer dissatisfaction, and potential long-term damage to brand reputation. When customers can't find the products they want, they may take their business elsewhere, resulting in immediate revenue loss and potentially losing customers permanently.
+              A <strong>stockout</strong> means you're out of inventory when a customer wants to buy. That costs 10-20% of revenue on affected items. Worse, 30-40% of customers shop elsewhere after experiencing a stockout—and many don't come back. One fashion retailer lost €8,500 in sales over three months from repeated stockouts on bestsellers. Customers switched to competitors, and the business never recovered those relationships.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Stockouts happen when demand exceeds available inventory and no safety stock is maintained to buffer against variability. Common causes include inaccurate demand forecasting, delayed supplier deliveries, inadequate safety stock levels, poor inventory tracking, unexpected demand spikes, and supply chain disruptions. The cost of stockouts extends beyond lost sales—it includes customer dissatisfaction, rush shipping costs, and damage to brand reputation.
+              Stockouts happen when demand spikes or suppliers delay—and you have no safety stock buffer. Most businesses cause their own stockouts: inaccurate forecasting, ignoring reorder points, poor tracking that shows inventory that isn't there. The true cost includes lost sales, rush shipping fees (€50-200 per emergency order), and brand damage. One hardware store lost 15% of regular customers after holiday stockouts.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Preventing stockouts requires accurate inventory tracking, automated reorder points, safety stock buffers, reliable supplier relationships, and real-time visibility. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why preventing stockouts matters</h3>
+              <h3 className="text-xl font-semibold">The hidden cost</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Stockouts cost businesses 10-20% of potential revenue for affected items. Beyond lost sales, they damage customer relationships and brand reputation. Studies show that 30-40% of customers will shop elsewhere if they experience a stockout, and many won't return. Preventing stockouts through proper inventory management is essential for maintaining profitability and customer satisfaction.
+                Lost sales are just the start. Rush shipping adds €50-200 per emergency order. Customer churn hits hard—30-40% switch to competitors after one stockout. One retailer calculated €12,000 in lost revenue over six months from stockouts on just 10 SKUs. Preventing them through proper reorder points and safety stock costs a fraction of that.
               </p>
             </div>
           </div>

@@ -224,7 +224,7 @@ export default function InventoryManagementOnline() {
     >
       <SEO
         title="Inventory Management Online 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Get online inventory management software 2025. Cloud-based system with real-time tracking, multi-channel sync, mobile access. Save 70% time, 25% costs. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="inventory management online, online inventory management, cloud inventory management, web-based inventory, online inventory system, inventory management online software, online inventory tracking, cloud inventory software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-online"
       />
@@ -344,9 +344,6 @@ export default function InventoryManagementOnline() {
       <section id="awards" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8 mt-16">
-          Inventory Management Online
-            </h1>
           </div>
 
           <div className="text-center mb-8 border-b border-gray-200 pb-8">
@@ -739,7 +736,7 @@ Real-time tracking, barcode scanning, automated alerts, multi-location support
           "@type": "WebPage",
           "@id": "https://www.stockflowsystems.com/solutions/inventory-management-online", 
           "name": "Inventory Management Online",
-          "description": "Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE now - no credit card required!",
+          "description": "Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Join for Free now - no credit card required!",
           "url": "https://www.stockflowsystems.com/inventory-management-online",
           "inLanguage": "en",
           "isPartOf": {

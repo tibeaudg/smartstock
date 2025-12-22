@@ -107,7 +107,7 @@ export default function InventorySystemForSmallBusiness() {
   ];
 
   const benefits = [
-    "Start free with up to 100 products",
+    "Join for Free with up to 100 products",
     "No complex setup or training needed",
     "Access inventory from anywhere with mobile app",
     "Prevent stockouts and lost sales",
@@ -141,7 +141,7 @@ export default function InventorySystemForSmallBusiness() {
     >
       <SEO
         title="Inventory System for Small Business 2025 - Save 70% Time, Free Plan | StockFlow"
-        description="Best inventory system for small business 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 70% time, 25% costs. Start free trial - no credit card required."
+        description="Best inventory system for small business 2025. Free plan for up to 100 products. Real-time tracking, barcode scanning, automated alerts. Save 70% time, 25% costs. Join for Free - no credit card required."
         keywords="inventory system for small business, inventory management software small business, inventory management software for small business, inventory management software for small businesses, inventory management system small business, inventory tracking software for small business, stock management software for small business, inventory programs for small business, small business inventory system, inventory system small business, inventory management for small business, inventory software for small business, small business inventory software, inventory system for small companies, small business inventory management, inventory tracking for small business, small business inventory app, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-system-for-small-business"
       />

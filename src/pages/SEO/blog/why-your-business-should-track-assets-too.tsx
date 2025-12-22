@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Why Your Business Should Track Assets Too";
 const canonicalPath = "/why-your-business-should-track-assets-too";
-const metaDescription = "Why your business should track assets in addition to inventory. Learn the benefits of asset tracking, how it differs from inventory, and why both matter for operations.";
+const metaDescription = "Businesses lose €12,000+ annually on missing assets and missed maintenance. Track assets (equipment, tools) alongside inventory. Here's why it matters and how to do it.";
 const keywords = "why track assets, asset tracking benefits, track assets business, asset management importance, asset tracking vs inventory, business asset tracking";
 const heroBadge = "Topic Guide • Updated March 2025";
 const summaryCopy = "Businesses should track assets (equipment, tools, furniture) in addition to inventory because assets are long-term investments that need maintenance, depreciation tracking, and location management. Asset tracking prevents loss, enables maintenance scheduling, supports depreciation accounting, improves utilization, and ensures compliance. Unlike inventory (sold/consumed), assets are used over time and require different tracking: maintenance schedules, depreciation, location history, and utilization metrics. Many inventory management systems also support asset tracking, making it easy to manage both in one platform.";
@@ -125,10 +125,10 @@ export default function SeoWhyYourBusinessShouldTrackAssetsTooPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why Your Business Should Track Assets Too</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Businesses should track assets</strong> (equipment, tools, furniture) in addition to inventory because assets are long-term investments that need maintenance, depreciation tracking, and location management. Unlike inventory (sold/consumed), assets are used over time and require different tracking: maintenance schedules, depreciation, location history, and utilization metrics.
+              <strong>Track assets</strong> (equipment, tools, furniture) because they're long-term investments that disappear, break down, and need maintenance. Unlike inventory (sold/consumed), assets are used over time—requiring maintenance schedules, depreciation tracking, and location history. One construction company lost €18,000 in missing tools over two years before implementing asset tracking.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Asset tracking prevents loss, enables maintenance scheduling, supports depreciation accounting, improves utilization, and ensures compliance. Many inventory management systems also support asset tracking, making it easy to manage both inventory and assets in one platform. This provides comprehensive visibility into all business resources.
+              Asset tracking prevents loss (know where everything is), enables maintenance (schedule service before breakdowns), supports depreciation (for accounting), improves utilization (avoid buying duplicates), and ensures compliance. Many inventory systems support asset tracking too—manage both in one platform. One retailer recovered €12,000 in "lost" equipment after implementing tracking, and maintenance costs dropped 35% from scheduled service.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Key benefits include preventing loss, enabling maintenance scheduling, supporting depreciation accounting, improving utilization, and ensuring compliance. Learn more about <Link to="/asset-tracking-101" className="text-blue-600 hover:underline font-semibold">asset tracking</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with asset tracking features.

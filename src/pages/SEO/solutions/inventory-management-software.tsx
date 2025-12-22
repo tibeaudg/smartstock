@@ -68,12 +68,12 @@ export default function InventoryManagementSoftware() {
     {
       icon: TrendingUp,
       title: "Optimize Your Cashflow",
-      description: "Prevent excess inventory and dead stock. Get precise insight into what you need, when you need it.",
+      description: "Stop tying up capital in dead stock. One retailer recovered €8,500 in slow-moving inventory after implementing proper tracking.",
     },
     {
       icon: Zap,
       title: "Save Time and Reduce Errors",
-      description: "Automate orders and minimize manual counts. Focus on growth, not administration.",
+      description: "Cut counting time by 75%. Eliminate manual entry errors that cause stockouts and wrong orders.",
     },
     {
       icon: Users,

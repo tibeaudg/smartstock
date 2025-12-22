@@ -339,7 +339,7 @@ export default function CheckoutPage() {
                     className="w-full bg-green-600 hover:bg-green-700 text-lg py-6"
                     size="lg"
                   >
-                    {isProcessing || isStartingTrial ? 'Processing...' : 'Start free'}
+                    {isProcessing || isStartingTrial ? 'Processing...' : 'Join for Free'}
                   </Button>
                 ) : (
                   <div className="space-y-4">

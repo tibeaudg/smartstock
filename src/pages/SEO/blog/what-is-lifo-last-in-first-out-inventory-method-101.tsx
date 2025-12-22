@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Is Lifo Last In First Out Inventory Method 101";
 const canonicalPath = "/what-is-lifo-last-in-first-out-inventory-method-101";
-const metaDescription = "What is LIFO (Last In First Out) inventory method? Learn LIFO definition, how it works, advantages, disadvantages, and when to use LIFO vs FIFO inventory costing.";
+const metaDescription = "LIFO assumes newest inventory is sold first, reducing taxes during inflation. Only allowed in the US (not IFRS). Can create outdated inventory values. Here's when to use LIFO vs FIFO.";
 const keywords = "LIFO inventory method, last in first out, LIFO method, LIFO vs FIFO, LIFO inventory costing, LIFO accounting, inventory costing methods";
 const heroBadge = "Topic Guide • Updated May 2025";
 const summaryCopy = "LIFO (Last In First Out) is an inventory costing method that assumes the most recently purchased or produced items are sold first. Under LIFO, the cost of goods sold (COGS) uses the cost of the newest inventory, while older inventory remains on the balance sheet. LIFO is primarily used in the United States for tax advantages during inflation, as it typically results in higher COGS and lower taxable income. However, LIFO can create inventory valuation issues and is not allowed under IFRS accounting standards.";
@@ -125,10 +125,10 @@ export default function SeoWhatIsLifoLastInFirstOutInventoryMethod101Page() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is LIFO (Last In First Out) Inventory Method?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>LIFO (Last In First Out)</strong> is an inventory costing method that assumes the most recently purchased or produced items are sold first. Under LIFO, when calculating the cost of goods sold (COGS), you use the cost of the newest inventory items, while older inventory remains on the balance sheet at their original (typically lower) costs.
+              <strong>LIFO (Last In First Out)</strong> assumes the newest inventory is sold first, so COGS uses recent (higher) costs. During inflation, this increases COGS and reduces taxable income—a tax advantage. One US retailer saved €15,000 in taxes using LIFO during a period of rising costs. Older inventory stays on the balance sheet at older (lower) costs.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              LIFO is primarily used in the United States for tax advantages during periods of inflation. Because LIFO matches higher current costs to current revenue, it typically results in higher COGS and lower taxable income compared to FIFO (First In First Out). However, LIFO is not allowed under IFRS accounting standards (used outside the US) and can create inventory valuation issues, as the balance sheet may show outdated inventory values.
+              LIFO only works in the US—IFRS (used outside the US) doesn't allow it. The tradeoff: you get tax savings during inflation, but your balance sheet shows outdated inventory values. During deflation, LIFO backfires (higher taxable income). Most businesses outside the US use FIFO. If you're in the US and costs are rising, LIFO can save taxes. But it's more complex to track and doesn't reflect how most businesses actually sell inventory.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               The choice between LIFO and FIFO depends on tax strategy, accounting standards, and business needs. Learn more about <Link to="/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> that supports different costing methods.

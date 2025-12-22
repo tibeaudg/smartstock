@@ -166,7 +166,7 @@ export default function CompareInventorySoftware() {
     >
       <SEO
         title="Compare Inventory Software 2025 - Save 50-90% Costs, Free Plan | StockFlow"
-        description="Compare top inventory management software 2025. Side-by-side feature comparison, pricing, integrations. StockFlow is completely free forever - save 100% costs vs competitors. Start free - no credit card required."
+        description="Compare top inventory management software 2025. Side-by-side feature comparison, pricing, integrations. StockFlow is free forever - save 100% vs competitors."
         keywords="compare inventory software, inventory software comparison, best inventory management software, inventory software pricing, compare inventory systems, inventory software features, best inventory software 2025"
         url="https://www.stockflowsystems.com/compare-inventory-software"
         publishedTime="2024-01-01T00:00:00Z"

@@ -272,7 +272,7 @@ export default function CustomerDetailPage() {
               onClick={() => navigate('/auth?mode=register')}
               className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full"
             >
-              Start Free Trial
+              Join for Free
             </Button>
             <Button
               onClick={() => navigate('/customers')}

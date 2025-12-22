@@ -213,7 +213,7 @@ export default function WarehouseModelingSoftware() {
     >
       <SEO
         title="Warehouse Modeling Software 2025 - Increase Capacity 20-30%, Save Time | StockFlow"
-        description="Warehouse modeling software 2025 for layout design, space optimization, material flow simulation. Increase capacity 20-30%, reduce picking time 15-25%. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Warehouse modeling software 2025 for layout design, space optimization, material flow simulation. Increase capacity 20-30%, reduce picking time 15-25%. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="warehouse modeling software, warehouse design software, warehouse layout software, warehouse optimization software, warehouse planning software, 3d warehouse modeling, warehouse space optimization, warehouse layout design, warehouse simulation software, warehouse capacity planning, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/warehouse-modeling-software"
         structuredData={[structuredData, faqStructuredData]}

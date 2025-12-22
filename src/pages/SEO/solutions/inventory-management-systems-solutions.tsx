@@ -233,12 +233,11 @@ export default function InventoryManagementSystemsSolutions() {
   return (
     <SeoPageLayout 
       title="Inventory Management Systems Solutions"
-      
-      
+      updatedDate="3/12/2025"
     >
       <SEO
         title="Inventory Management Systems Solutions 2025 | Complete Systems | StockFlow"
-        description="Get complete inventory management systems solutions. Real-time tracking, multi-location support, barcode scanning, automated alerts. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Complete inventory management systems solutions 2025. Real-time tracking, multi-location support, barcode scanning, automated alerts. Free plan available."
         keywords="inventory management systems solutions, inventory systems solutions, inventory management system, inventory management solutions, inventory system software, stock management systems, inventory tracking systems, inventory management software solutions, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-systems-solutions"
       />
@@ -246,18 +245,11 @@ export default function InventoryManagementSystemsSolutions() {
 
 
 
-      <section id="awards" className="py-16 px-4 bg-white">
+      <section id="overview" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-8">
-          Inventory Management Systems Solutions
-            </h1>
-          </div>
-
           <div className="text-center mb-8 border-b border-gray-200 pb-8">
-          <span className="text-center text-gray-600 text-sm">published: 11/11/2025</span>
+            <span className="text-center text-gray-600 text-sm">published: 11/11/2025</span>
           </div>
-
 
           <div className="max-w-3xl mx-auto">
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -636,7 +628,7 @@ export default function InventoryManagementSystemsSolutions() {
           "@type": "WebPage",
           "@id": "https://www.stockflowsystems.com/solutions/inventory-management-systems-solutions",
           "name": "Inventory Management Systems Solutions",
-          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Start FREE trial now - no credit card!",
+          "description": "! Join 10,000+ businesses using award-winning inventory software. Real-time tracking, automated alerts, barcode scanning. Join for Free now - no credit card!",
           "url": "https://www.stockflowsystems.com/inventory-management-systems-solutions",
           "inLanguage": "en",
           "isPartOf": {

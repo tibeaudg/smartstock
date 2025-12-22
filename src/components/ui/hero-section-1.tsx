@@ -31,7 +31,7 @@ const transitionVariants = {
 }
 
 // Text reveal animation for headline
-const headlineWords = "Smart Inventory Management".split(" ")
+const headlineWords = "Stop Wasting Money on Inventory".split(" ")
 
 export function HeroSection() {
     return (
@@ -88,7 +88,7 @@ export function HeroSection() {
                                         transition={{ duration: 0.6, delay: 0.5 }}
                                         className="mx-auto mt-8 max-w-2xl text-balance text-lg text-white/90"
                                     >
-                                        Keep track of your inventory, see what's selling, and get alerts when you need to reorder.
+                                        Scan barcodes with your phone. Track stock in real-time. Prevent stockouts. Recover capital tied in dead inventory. 500+ businesses already using StockFlow—free forever.
                                     </motion.p>
                                 </AnimatedGroup>
 
@@ -112,7 +112,7 @@ export function HeroSection() {
                                             className="rounded-xl px-5 text-base bg-blue-700 text-white border border-white relative overflow-hidden group shadow-[0_0_20px_rgba(29,78,216,0.5)] hover:shadow-[0_0_30px_rgba(29,78,216,0.7)] transition-shadow duration-300 cta-shimmer"
                                         >
                                             <Link to="/pricing">
-                                                <span className="text-nowrap relative z-10 font-bold" style={{ fontWeight: 700 }}>Start Free Trial</span>
+                                                <span className="text-nowrap relative z-10 font-bold" style={{ fontWeight: 700 }}>Join for Free</span>
                                             </Link>
                                         </Button>
                                     </div>

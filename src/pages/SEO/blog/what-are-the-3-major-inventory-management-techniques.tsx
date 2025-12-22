@@ -8,7 +8,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "What Are The 3 Major Inventory Management Techniques";
 const canonicalPath = "/what-are-the-3-major-inventory-management-techniques";
-const metaDescription = "Learn the 3 major inventory management techniques: ABC analysis, Just-in-Time (JIT), and Economic Order Quantity (EOQ). Compare methods and choose the right approach.";
+const metaDescription = "The 3 major techniques: ABC analysis (focus on 20% of items = 80% of value), JIT (order only when needed), EOQ (optimal order size). Here's when each works and how to combine them.";
 const keywords = "inventory management techniques, 3 major inventory techniques, ABC analysis, JIT inventory, EOQ, inventory management methods, inventory techniques";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "The 3 major inventory management techniques are: 1) ABC Analysis - classifying inventory by value (A items = high value, 20% of items, 80% of value; B = moderate; C = low value, 80% of items, 20% of value), 2) Just-in-Time (JIT) - ordering inventory only when needed to minimize holding costs, and 3) Economic Order Quantity (EOQ) - calculating optimal order quantity to minimize total costs (ordering + holding). Each technique addresses different inventory challenges: ABC focuses on prioritization, JIT on minimizing waste, and EOQ on cost optimization.";
@@ -125,10 +125,7 @@ export default function SeoWhatAreThe3MajorInventoryManagementTechniquesPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              {topicTitle} has become a recurring talking point for fast-moving inventory teams. The original Stockflow
-              article sparked interest because it addresses real-world frictions that leaders face every day. This updated guide
-              distills those takeaways for StockFlow customers—showing you how to adapt the narrative, build alignment across
-              departments, and secure measurable results without adding administrative overhead.
+              Most businesses use three inventory techniques—often without knowing it. <strong>ABC Analysis</strong> helps you focus on high-value items (20% of products = 80% of value). <strong>Just-in-Time (JIT)</strong> orders inventory only when needed to minimize holding costs. <strong>Economic Order Quantity (EOQ)</strong> calculates the optimal order size to minimize total costs. Here's when each works and how successful businesses combine them.
             </p>
             
           </div>

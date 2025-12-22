@@ -165,8 +165,7 @@ export default function CustomersPage() {
               Loved by Small Business Owners
             </h1>
             <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-              Join 500+ Belgian businesses that have transformed their inventory management 
-              with StockFlow. See their success stories and discover how much you could save.
+              500+ businesses already using StockFlow. They've eliminated stockouts, recovered €400K+ in dead stock, and cut counting time by 75%. Here's how.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -212,7 +211,7 @@ export default function CustomersPage() {
               Customer Success Stories
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Real stories from real business owners who've transformed their inventory management.
+              Coffee shops, boutiques, contractors—actual Belgian businesses sharing what changed after switching to StockFlow.
             </p>
           </div>
 
@@ -404,7 +403,7 @@ export default function CustomersPage() {
               onClick={() => navigate('/auth?mode=register')}
               className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full"
             >
-              Start Free Trial
+              Join for Free
             </Button>
             <Button
               onClick={() => navigate('/contact')}

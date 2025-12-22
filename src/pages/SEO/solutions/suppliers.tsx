@@ -213,8 +213,8 @@ export default function SuppliersSolutionPage() {
       faqData={faqData}
     >
       <SEO
-        title="Supplier Management Software 2025 - Save 20-30% Costs, Automate Workflows | StockFlow"
-        description="Centralize supplier data 2025, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering. Free plan for up to 100 products. Start free trial - no credit card required."
+        title="Supplier Management Software 2025 - Save 20-30% Costs | StockFlow"
+        description="Centralize supplier data 2025, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/suppliers"
         structuredData={structuredData}
@@ -315,9 +315,9 @@ export default function SuppliersSolutionPage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 lg:flex-row lg:items-center">
           <div className="space-y-6">
             <Badge className="bg-white/10 text-white">Supplier Management</Badge>
-            <h1 className="text-4xl font-bold md:text-5xl">
+            <h2 className="text-4xl font-bold md:text-5xl">
               Build a resilient supplier network with StockFlow
-            </h1>
+            </h2>
             <p className="text-lg text-blue-100 md:text-xl">
               Replace spreadsheets with a unified system for sourcing, purchasing, and monitoring every
               vendor. StockFlow keeps suppliers accountable while saving teams hours every week.

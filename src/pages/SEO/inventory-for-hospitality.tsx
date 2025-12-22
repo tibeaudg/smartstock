@@ -230,9 +230,9 @@ export default function InventoryForHospitality() {
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight text-center">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight text-center">
             Inventory Management for Hospitality
-          </h1>
+          </h2>
           <div className="text-center mb-12">
             <p className="text-xl text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
               <strong>Inventory management for hospitality</strong> involves tracking, monitoring, and optimizing food & beverage (F&B) inventory, supplies, and equipment for restaurants, hotels, cafes, and catering businesses. Specialized <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> helps hospitality businesses reduce food waste by 20-30%, improve profit margins through better cost control, and streamline operations. Learn more about <Link to="/higher-education-inventory-management" className="text-blue-600 hover:underline font-semibold">industry-specific inventory solutions</Link>.

@@ -629,7 +629,7 @@ export default function EducationInventoryManagement() {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
               <div className="text-4xl font-bold mb-2">€0</div>
-              <div className="text-lg font-semibold mb-2">Start Free</div>
+              <div className="text-lg font-semibold mb-2">Join for Free</div>
               <div className="text-sm opacity-90">Up to 100 items • Perfect for small schools</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
@@ -690,7 +690,7 @@ export default function EducationInventoryManagement() {
                 className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-lg"
               >
                 <GraduationCap className="w-5 h-5 mr-2" />
-                Start Free - No Credit Card Required
+                Join for Free - No Credit Card Required
               </Link>
               <p className="text-sm text-gray-600 mt-4">Join 400+ schools using StockFlow</p>
             </div>

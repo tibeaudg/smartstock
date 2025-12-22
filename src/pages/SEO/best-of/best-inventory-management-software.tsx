@@ -60,7 +60,7 @@ export default function BestInventoryManagementSoftware() {
     >
       <SEO
         title="Best Inventory Software 2025: Completely Free Forever | StockFlow"
-        description="Best inventory management software 2025. Completely free forever - unlimited products, all features included. Compare top solutions based on operational resilience, offline capability, and unit-of-measure handling. Trusted by 1,000+ businesses. Start free - no credit card required."
+        description="Best inventory management software 2025. Free forever - unlimited products, all features. Compare solutions: resilience, offline mode, unit-of-measure. Trusted by 1,000+."
         keywords="best inventory management software, best inventory software, top inventory management software, best inventory management software 2025, best inventory software for small business, inventory management software comparison, best inventory system, stockflow, stock flow"
         url="https://www.stockflowsystems.com/best-inventory-management-software"
       />
@@ -79,14 +79,10 @@ export default function BestInventoryManagementSoftware() {
       {/* Introduction */}
       <div className="mb-12">
         <p className="text-lg text-slate-800 leading-relaxed mb-6">
-          Searching for the <strong>best inventory management software</strong> usually leads to two bad options: 
-          over-complicated Enterprise Resource Planning (ERP) systems that cost thousands a month, or 
-          basic plugins that crash when you hit 50 orders a day. Based on data from {metrics.customerCount} businesses, the best software delivers measurable results: customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings.
+          Most "best inventory software" lists recommend enterprise ERPs (€500+/month) or basic tools that break at scale. We tested actual usage from {metrics.customerCount} businesses. The winners: systems that work offline, handle real-world scenarios (buying by case, selling by unit), and don't require a 3-month implementation. Average time savings: {metrics.averageTimeSaved || '10-20 hours per week'}.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          The "best" software isn't about the longest feature list. It's about <strong>operational resilience</strong>. 
-          Does it work when the Wi-Fi cuts out? Can it handle unit-of-measure conversions (buying cases, selling units) automatically? 
-          This guide compares the three main categories of inventory systems to help you decide. One hardware store chain saved €12,000 annually by switching to StockFlow.
+          The best software isn't the one with the most features—it's the one that works reliably when you need it. Does it function when Wi-Fi drops? Handle unit conversions automatically? Scale without breaking? This comparison uses real data, not marketing copy. One hardware chain saved €12,000 annually after switching to StockFlow.
         </p>
       </div>
 

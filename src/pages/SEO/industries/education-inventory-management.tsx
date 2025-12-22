@@ -394,6 +394,9 @@ export default function EducationInventoryManagement() {
             <img 
               src="/education.png" 
               alt="StockFlow Education Inventory Management Dashboard - Track IT equipment, library books, and supplies across campuses"
+              width={512}
+              height={512}
+              loading="lazy"
               className="w-full rounded-lg"
             />
             {/* NOTE: Replace this placeholder image with actual StockFlow education dashboard screenshot showing:

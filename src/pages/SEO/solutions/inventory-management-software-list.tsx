@@ -188,7 +188,7 @@ export default function InventoryManagementSoftwareList() {
     >
       <SEO
         title="Inventory Management Software List 2025 - Compare & Save 50-90% | StockFlow"
-        description="Compare the best inventory management software list. Reviews, features, pricing, and recommendations for small businesses, e-commerce, and enterprise. Free plan for up to 100 products. Start free trial."
+        description="Compare the best inventory management software list. Reviews, features, pricing, and recommendations for small businesses, e-commerce, and enterprise. Free plan for up to 100 products. Join for Free."
         keywords="inventory management software list, best inventory management software, inventory software list, inventory management software comparison, top inventory software, inventory management software reviews, inventory software recommendations, best inventory software 2025, inventory software comparison, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-software-list"
       />
@@ -197,9 +197,9 @@ export default function InventoryManagementSoftwareList() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Inventory Management Software List
-            </h1>
+            </h2>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               Compare the best <strong>inventory management software</strong> options for your business. This comprehensive <strong>inventory management software list</strong> includes reviews, features, pricing, and recommendations to help you choose the right solution. Whether you're a small business, e-commerce store, or growing enterprise, find the perfect inventory management software for your needs. Explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions or see our <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide.
@@ -393,7 +393,7 @@ export default function InventoryManagementSoftwareList() {
                 to="/auth"
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
               >
-                Start Free Trial
+                Join for Free
               </Link>
               <button
                 onClick={() => setIsVideoModalOpen(true)}

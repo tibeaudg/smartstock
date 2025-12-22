@@ -356,6 +356,9 @@ export default function SuppliersPage() {
             <img 
               src="/Inventory-Management.png" 
               alt="StockFlow Supplier Management Dashboard - Track suppliers, automate purchase orders, monitor performance"
+              width={512}
+              height={512}
+              loading="lazy"
               className="w-full rounded-lg"
             />
           </div>

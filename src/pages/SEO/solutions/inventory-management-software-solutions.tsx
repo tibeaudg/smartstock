@@ -31,7 +31,7 @@ const faqData = [
   },
   {
     question: 'How does pricing work?',
-    answer: 'Start free for up to 30 products. Paid tiers unlock advanced automations, analytics, and additional users. Pricing scales predictably with your active SKUs.'
+    answer: 'Join for Free for up to 30 products. Paid tiers unlock advanced automations, analytics, and additional users. Pricing scales predictably with your active SKUs.'
   },
     {
       question: 'Is StockFlow suitable for multi-location inventory?',
@@ -124,7 +124,7 @@ export default function InventoryManagementSoftwareSolutionsPage() {
     >
       <SEO
         title="Inventory Management Software Solutions 2025 - Save 70% Time, 25% Costs | StockFlow"
-        description="Get complete inventory management software solutions 2025. Unify purchasing, warehousing, analytics. Save 70% time, 25% costs. Free plan for up to 100 products. Start free trial - no credit card required."
+        description="Complete inventory management software solutions 2025. Unify purchasing, warehousing, analytics. Save 70% time, 25% costs. Free plan available."
         keywords="inventory management software solutions, inventory solutions, inventory management solution, stock management solution, inventory system software, cloud inventory solution, inventory management systems solutions, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-software-solutions"
         structuredData={structuredData}
@@ -136,15 +136,15 @@ export default function InventoryManagementSoftwareSolutionsPage() {
             <span className="inline-flex items-center text-xs sm:text-sm font-semibold uppercase tracking-wide text-blue-700 bg-white/80 px-3 py-1 rounded-full">
               Complete Inventory Management Solutions
             </span>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-4">
               One solution to control purchasing, stock, and fulfillment
-            </h1>
+            </h2>
             <p className="text-base sm:text-lg text-gray-700 mt-5 leading-relaxed">
               StockFlow gives operations, finance, and sales teams a shared platform for demand planning, warehouse efficiency, and customer fulfillment. Automate routine tasks so you can focus on growth. Our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> provides comprehensive solutions for businesses of all sizes. Explore <Link to="/solutions/inventory-software" className="text-blue-600 hover:underline font-semibold">inventory software</Link> options or learn about <Link to="/solutions/inventory-management-systems-solutions" className="text-blue-600 hover:underline font-semibold">inventory management systems solutions</Link>.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link to="/auth" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg text-center">
-                Start Free
+                Join for Free
               </Link>
               <button onClick={() => setIsVideoModalOpen(true)} className="border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold px-6 py-3 rounded-lg text-center">
                 Explore Solutions Demo

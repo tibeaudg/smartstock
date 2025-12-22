@@ -177,7 +177,7 @@ export default function WarehouseManagementSystem() {
     >
       <SEO
         title="Warehouse Management System (WMS) 2025: Process Flow, Features & Pricing"
-        description="Complete guide to warehouse management systems. Learn WMS process flow, compare inventory and warehouse management systems, explore WMS SaaS pricing, and discover warehouse tracking solutions. Start free trial."
+        description="Complete guide to warehouse management systems. Learn WMS process flow, compare inventory and warehouse management systems, explore WMS SaaS pricing, and discover warehouse tracking solutions. Join for Free."
         keywords="warehouse management system process flow, inventory and warehouse management systems, warehouse management system, wms saas pricing, warehouse inventory systems, warehouse management solutions, warehouse stock management system, warehouse tracking system, warehouse inventory monitoring system, warehouse management system software, WMS software, warehouse automation, warehouse operations, supply chain management software, real-time inventory management, cloud WMS, warehouse optimization, logistics software"
         url="https://www.stockflowsystems.com/warehouse-management-system"
       />
@@ -532,7 +532,7 @@ export default function WarehouseManagementSystem() {
                 to="/auth"
                 className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Start Free Trial
+                Join for Free
               </Link>
             </div>
 
@@ -566,7 +566,7 @@ export default function WarehouseManagementSystem() {
                 to="/auth"
                 className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Start Free Trial
+                Join for Free
               </Link>
             </div>
 
@@ -599,7 +599,7 @@ export default function WarehouseManagementSystem() {
                 to="/auth"
                 className="block w-full text-center bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
-                Start Free Trial
+                Join for Free
               </Link>
             </div>
 

@@ -41,7 +41,7 @@ const industries = [
     ],
     heroTitle: 'Stop Losing Money on Expired Wine',
     heroSubtitle: 'Specialized inventory management for wine shops. Track expiry dates, optimize dead stock, and prevent losses.',
-    ctaText: 'Start Free Trial',
+    ctaText: 'Join for Free',
     stats: {
       primary: '40%',
       primaryLabel: 'Reduction in Dead Stock',
@@ -69,7 +69,7 @@ const industries = [
     ],
     heroTitle: 'Never Run Out of Stock Again',
     heroSubtitle: 'Complete inventory management for retail stores. Track stock levels, prevent stockouts, and optimize ordering.',
-    ctaText: 'Start Free Trial',
+    ctaText: 'Join for Free',
     stats: {
       primary: '25%',
       primaryLabel: 'Reduction in Stockouts',
@@ -97,7 +97,7 @@ const industries = [
     ],
     heroTitle: 'Optimize Your Warehouse Operations',
     heroSubtitle: 'Advanced warehouse management with multi-location support, barcode scanning, and real-time tracking.',
-    ctaText: 'Start Free Trial',
+    ctaText: 'Join for Free',
     stats: {
       primary: '60%',
       primaryLabel: 'Faster Inventory Counts',
@@ -125,7 +125,7 @@ const industries = [
     ],
     heroTitle: 'Reduce Food Waste, Increase Profits',
     heroSubtitle: 'Restaurant inventory management that tracks expiry dates, prevents waste, and optimizes ordering.',
-    ctaText: 'Start Free Trial',
+    ctaText: 'Join for Free',
     stats: {
       primary: '30%',
       primaryLabel: 'Reduction in Food Waste',

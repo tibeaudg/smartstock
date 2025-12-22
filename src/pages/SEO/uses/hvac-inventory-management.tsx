@@ -250,7 +250,7 @@ export default function HvacInventoryManagement() {
     >
       <SEO
         title="HVAC Inventory Management 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
-        description="Complete HVAC inventory management 2025. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Start free trial - no credit card required."
+        description="Complete HVAC inventory management 2025. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Join for Free - no credit card required."
         keywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
         url="https://www.stockflowsystems.com/hvac-inventory-management"
         structuredData={[structuredData, faqStructuredData]}

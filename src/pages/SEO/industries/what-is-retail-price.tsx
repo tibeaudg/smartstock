@@ -113,7 +113,7 @@ export default function WhatIsRetailPrice() {
     >
       <SEO
         title="What is Retail Price | Retail Price Calculator & Formula 2025 | StockFlow"
-        description="Learn what is retail price and how to calculate retail price. Complete guide with retail price formula, markup calculator, and pricing strategies. Free retail price calculator included. Start free trial."
+        description="Learn what is retail price and how to calculate retail price. Complete guide with retail price formula, markup calculator, and pricing strategies. Free retail price calculator included. Join for Free."
         keywords="what is retail price, what are retail prices, what is the retail price, retail price, retail prices, retail price definition, retail price meaning, retail price calculation, retail price formula, retail price vs wholesale price, retail pricing, retail pricing strategy, retail price markup, retail price calculator, stockflow, stock flow"
         url="https://www.stockflowsystems.com/what-is-retail-price"
       />
@@ -491,7 +491,7 @@ export default function WhatIsRetailPrice() {
               to="/auth"
               className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
         </div>

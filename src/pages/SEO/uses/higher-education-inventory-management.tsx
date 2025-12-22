@@ -226,7 +226,7 @@ export default function HigherEducationInventoryManagement() {
     >
       <SEO
         title="Higher Education Inventory Management 2025 - Reduce Loss 85%, Save Time | StockFlow"
-        description="Complete higher education inventory management 2025 for colleges and universities. Track research equipment, lab supplies, technology. Reduce loss by 85%, streamline grant audits. Free plan available. Start free trial - no credit card required."
+        description="Complete higher education inventory management 2025 for colleges and universities. Track research equipment, lab supplies, technology. Reduce loss by 85%, streamline grant audits. Free plan available. Join for Free - no credit card required."
         keywords="higher education inventory management, university inventory management, college inventory management, university asset management, research equipment tracking, lab inventory management, higher education inventory software, university inventory system, college asset tracking, grant compliance inventory, stockflow, stock flow"
         url="https://www.stockflowsystems.com/higher-education-inventory-management"
       />
@@ -463,7 +463,7 @@ export default function HigherEducationInventoryManagement() {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
               <div className="text-4xl font-bold mb-2">€0</div>
-              <div className="text-lg font-semibold mb-2">Start Free</div>
+              <div className="text-lg font-semibold mb-2">Join for Free</div>
               <div className="text-sm opacity-90">Up to 100 items • Perfect for small colleges</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
@@ -524,7 +524,7 @@ export default function HigherEducationInventoryManagement() {
                 className="inline-flex items-center bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl text-lg"
               >
                 <GraduationCap className="w-5 h-5 mr-2" />
-                Start Free - No Credit Card Required
+                Join for Free - No Credit Card Required
               </Link>
               <p className="text-sm text-gray-600 mt-4">Join 200+ colleges and universities using StockFlow</p>
             </div>

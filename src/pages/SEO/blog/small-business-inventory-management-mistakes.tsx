@@ -7,7 +7,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb, AlertCircle, XCircle, Trendi
 
 const topicTitle = "Small Business Inventory Management Mistakes to Avoid";
 const canonicalPath = "/blog/small-business-inventory-management-mistakes";
-const metaDescription = "Common inventory management mistakes small businesses make and how to avoid them. Learn from real examples and improve your inventory processes to reduce costs and improve efficiency.";
+const metaDescription = "Small businesses waste €4,000-8,000 annually on inventory mistakes. Excel past 100 SKUs, skipping reorder points, ignoring accuracy. Here are 10 costly mistakes and how to fix them.";
 const keywords = "small business inventory mistakes, inventory management mistakes, inventory errors small business, common inventory mistakes, inventory problems small business";
 const heroBadge = "Mistakes Guide • Updated December 2024";
 
@@ -101,10 +101,10 @@ export default function SmallBusinessInventoryManagementMistakesPage() {
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            <strong>Inventory management mistakes</strong> cost small businesses thousands of euros annually through stockouts, waste, overstock, and inefficiency. Many small business owners don't realize they're making costly mistakes until it's too late—lost sales, tied-up capital, and frustrated customers are often the first signs.
+            <strong>Inventory mistakes drain €4,000-8,000 annually</strong> from small businesses through stockouts, waste, overstock, and inefficiency. Most owners don't realize the cost until lost sales pile up, capital gets tied in dead stock, and customers switch to competitors.
           </p>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            This comprehensive guide identifies the most common inventory management mistakes small businesses make, explains the real cost of each mistake, and provides actionable solutions. By recognizing and avoiding these mistakes, small businesses can improve inventory accuracy to 99%+, reduce costs by 20-30%, and scale operations more effectively.
+            We've seen the same mistakes repeatedly: sticking with Excel past 100 SKUs, skipping reorder points, ignoring accuracy. This guide covers the 10 most costly mistakes—with real examples and actionable fixes. Businesses that address these see 99%+ accuracy, 20-30% cost reductions, and smoother scaling.
           </p>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
             For a complete overview of inventory management best practices, see our <Link to="/blog/inventory-management-for-small-business-complete-guide" className="text-blue-600 hover:underline font-semibold">complete guide to inventory management for small business</Link>.

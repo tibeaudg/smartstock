@@ -264,7 +264,7 @@ export default function StockFlowVsSortly() {
     >
       <SEO
         title="StockFlow vs Sortly — Compare Features, Pricing, and Migration 2025 | StockFlow"
-        description="Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Start free - no credit card required."
+        description="Compare StockFlow vs Sortly 2025. Free forever vs $25/month, better features. 5-7 day setup vs 30+ days. EU hosting. Save 100% costs."
         keywords="StockFlow vs Sortly, Sortly vs StockFlow, StockFlow comparison, Sortly alternative, inventory software comparison, migrate from Sortly, StockFlow features, Sortly pricing, inventory management software, free inventory software, StockFlow migration, Sortly competitor, best inventory software, StockFlow vs Sortly pricing, StockFlow vs Sortly features"
         url="https://www.stockflowsystems.com/stockflow-vs-sortly"
         locale="en"
@@ -910,7 +910,7 @@ export default function StockFlowVsSortly() {
           "@id": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "name": "StockFlow vs Sortly — Compare Features, Pricing, and Migration",
           "headline": "StockFlow vs Sortly: Free Plan vs $25/month, Better Features, 5-7 Day Setup",
-          "description": "Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Start free - no credit card required.",
+          "description": "Compare StockFlow vs Sortly: Completely free forever vs $25/month, better features, 5-7 day setup vs 30+ days, European hosting. Save 100% costs. Free migration assistance. Join for Free - no credit card required.",
           "url": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "inLanguage": "en",
           "isPartOf": {

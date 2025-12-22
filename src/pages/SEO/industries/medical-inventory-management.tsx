@@ -339,6 +339,9 @@ export default function MedicalInventoryManagement() {
             <img 
               src="/HealthcareInventory.png" 
               alt="StockFlow Medical Inventory Management Dashboard - Track medical supplies with expiration dates, lot/serial numbers, and FDA compliance"
+              width={512}
+              height={512}
+              loading="lazy"
               className="w-full rounded-lg"
             />
             {/* NOTE: Replace this placeholder image with actual StockFlow medical inventory dashboard screenshot showing:

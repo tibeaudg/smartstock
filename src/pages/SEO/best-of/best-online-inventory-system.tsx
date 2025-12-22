@@ -54,7 +54,7 @@ export default function BestOnlineInventorySystem() {
       
       <SEO
         title="Best Online Inventory System 2025 - Top Cloud Solutions | StockFlow"
-        description="Find the best online inventory system 2025. Compare top cloud-based systems with real-time tracking, automated management, multi-location support, and comprehensive features. Free plans available. Start free trial."
+        description="Find the best online inventory system 2025. Compare top cloud-based systems with real-time tracking, automated management, multi-location support, and comprehensive features. Free plans available. Join for Free."
         keywords="best online inventory system, top inventory system, best inventory management system, online stock system, cloud inventory system, inventory system comparison, best stock management system, inventory system reviews, top rated inventory system, best cloud inventory system, stockflow"
         url="https://www.stockflowsystems.com/best-online-inventory-system"
       />
@@ -279,7 +279,7 @@ export default function BestOnlineInventorySystem() {
               to="/auth"
               className="bg-blue-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold shadow-lg hover:bg-blue-700 transition text-sm sm:text-base min-h-[48px] w-full sm:w-auto max-w-xs sm:max-w-none"
             >
-              Start Free Trial
+              Join for Free
             </Link>
           </div>
           <p className="text-sm mt-4 opacity-75">No credit card required • Instant setup • 24/7 support</p>

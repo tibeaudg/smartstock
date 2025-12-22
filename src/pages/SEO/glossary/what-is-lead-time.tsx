@@ -94,7 +94,7 @@ export default function WhatIsLeadTime() {
     >
       <SEO
         title="What Is Lead Time 2025 - Prevent Stockouts, Save 25% Costs | StockFlow"
-        description="Complete guide to lead time in inventory management 2025. Definition, formula, calculation examples. Optimize lead times to prevent stockouts and save 25% costs. Free plan available. Start free trial - no credit card required."
+        description="Complete guide to lead time in inventory management 2025. Definition, formula, calculation examples. Optimize lead times to prevent stockouts and save 25% costs. Free plan available. Join for Free - no credit card required."
         keywords="what is lead time, lead time, lead time definition, lead time meaning, lead time calculation, lead time formula, lead time inventory, lead time management, lead time planning, lead time optimization, supplier lead time, production lead time, order lead time, lead time tracking, stockflow, stock flow"
         url="https://www.stockflowsystems.com/what-is-lead-time"
       />      
@@ -288,13 +288,13 @@ export default function WhatIsLeadTime() {
             Automate Lead Time Tracking with StockFlow
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            StockFlow automatically tracks lead times, calculates averages, and adjusts reorder points to optimize your inventory levels. Start free today with up to 100 products.
+            StockFlow automatically tracks lead times, calculates averages, and adjusts reorder points to optimize your inventory levels. Join for Free today with up to 100 products.
           </p>
           <Link
             to="/auth"
             className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
           >
-            Start Free Trial →
+            Join for Free →
           </Link>
         </div>
       </section>

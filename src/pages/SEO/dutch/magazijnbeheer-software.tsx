@@ -97,7 +97,7 @@ export default function MagazijnbeheerSoftware() {
         "Team samenwerking",
         "Mobiele app toegang"
       ],
-      image: "https://www.stockflow.be/Inventory-Management.png",
+      image: "https://www.stockflowsystems.com/Inventory-Management.png",
       url: location.pathname
     },
     pageType: 'software',
