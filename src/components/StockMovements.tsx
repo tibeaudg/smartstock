@@ -10,14 +10,18 @@ import { format } from 'date-fns';
 import { useMobile } from '@/hooks/use-mobile';
 import { useStockMovements } from '@/hooks/useStockMovements';
 import { TransactionFilters } from '@/types/stockTypes';
-import { CalendarIcon, Download, Filter, Search, X, History } from 'lucide-react';
+import { CalendarIcon, Download, Filter, Search, X, History, Package, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
+import { useProductCount } from '@/hooks/useDashboardData';
+import { useNavigate } from 'react-router-dom';
 
 export const StockMovements = () => {
   console.log('[StockMovements] Component rendering');
   const { isMobile } = useMobile();
+  const navigate = useNavigate();
+  const { productCount, isLoading: productCountLoading } = useProductCount();
   const {
     transactions,
     stats,
@@ -227,8 +231,32 @@ export const StockMovements = () => {
         </div>
       )}
 
-      {/* Empty state */}
-      {!loading && transactions.length === 0 && (
+      {/* Empty state - Check if products exist first */}
+      {!loading && !productCountLoading && productCount === 0 && (
+        <Card className="border-2 border-dashed border-gray-200 bg-gray-50">
+          <CardContent className="py-12 text-center space-y-4">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+              <Package className="h-8 w-8" />
+            </div>
+            <div className="space-y-2">
+              <p className="text-lg font-semibold text-gray-900">You cannot record transactions without products</p>
+              <p className="text-sm text-gray-600">
+                Add your first product to start tracking inventory movements and transactions.
+              </p>
+            </div>
+            <Button
+              onClick={() => navigate('/dashboard/products/new')}
+              className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6 mt-4"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Your First Product
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Empty state - No transactions but products exist */}
+      {!loading && !productCountLoading && productCount > 0 && transactions.length === 0 && (
         <Card className="border-2 border-dashed border-gray-200 bg-gray-50">
           <CardContent className="py-12 text-center space-y-3">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">

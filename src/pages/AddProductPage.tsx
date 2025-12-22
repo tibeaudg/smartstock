@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
+import { safeLocalStorage } from '@/lib/errorHandler';
 import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, ArrowLeft, Package } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -24,6 +25,7 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 // --- Data Interfaces ---
 
@@ -70,6 +72,11 @@ const productSchema = z.object({
   taxInclusive: z.boolean().default(false),
 });
 
+// Draft storage key helper
+const getDraftStorageKey = (branchId: string | undefined) => {
+  return `product-draft-${branchId || 'default'}`;
+};
+
 
 export default function AddProductPage() {
   // --- Hooks and State ---
@@ -95,6 +102,7 @@ export default function AddProductPage() {
   // Re-added for completeness, assuming original code intended to use this state
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false); 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const { isMobile } = useMobile();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
@@ -162,28 +170,63 @@ export default function AddProductPage() {
     },
   });
 
-  // Reset form on mount
+  // Restore draft on mount
   useEffect(() => {
-    // Reset form for new product
-    form.reset({
-      name: '',
-      description: '',
-      categoryId: '',
-      categoryName: '',
-      quantityInStock: 0,
-      minimumStockLevel: 10,
-      purchasePrice: 0,
-      salePrice: 0,
-      location: '',
-      sku: '',
-      taxRate: 0,
-      taxInclusive: false,
-    });
-    setVariants([]);
-    setShowVariantsSection(false);
-    setImagePreview(null);
-    setUploadedImages([]);
-  }, [form]);
+    if (!activeBranch?.branch_id) return;
+    
+    const draftKey = getDraftStorageKey(activeBranch.branch_id);
+    const savedDraft = safeLocalStorage.getItem(draftKey);
+    
+    if (savedDraft) {
+      try {
+        const draft = JSON.parse(savedDraft);
+        // Restore form values
+        if (draft.formValues) {
+          form.reset(draft.formValues);
+        }
+        // Restore variants
+        if (draft.variants && Array.isArray(draft.variants)) {
+          setVariants(draft.variants);
+        }
+        // Restore image previews (URLs only, not File objects)
+        if (draft.imagePreviews && Array.isArray(draft.imagePreviews)) {
+          setUploadedImages(draft.imagePreviews.map((preview: string, index: number) => ({
+            file: new File([], `restored-${index}.png`), // Placeholder file
+            preview,
+            size: 0,
+          })));
+        }
+        if (draft.showVariantsSection) {
+          setShowVariantsSection(draft.showVariantsSection);
+        }
+        toast.info('Draft restored. Continue where you left off.');
+      } catch (error) {
+        console.error('Error restoring draft:', error);
+        // Clear corrupted draft
+        safeLocalStorage.removeItem(draftKey);
+      }
+    } else {
+      // No draft found, reset form for new product
+      form.reset({
+        name: '',
+        description: '',
+        categoryId: '',
+        categoryName: '',
+        quantityInStock: 0,
+        minimumStockLevel: 10,
+        purchasePrice: 0,
+        salePrice: 0,
+        location: '',
+        sku: '',
+        taxRate: 0,
+        taxInclusive: false,
+      });
+      setVariants([]);
+      setShowVariantsSection(false);
+      setImagePreview(null);
+      setUploadedImages([]);
+    }
+  }, [form, activeBranch?.branch_id]);
 
   // Note: fetchExistingVariants removed - this is an Add Product page, not an edit page
 
@@ -242,6 +285,39 @@ export default function AddProductPage() {
       }
     } catch {}
   }, [preFilledName, form]);
+
+  // Auto-save draft to localStorage with debouncing
+  useEffect(() => {
+    if (!activeBranch?.branch_id) return;
+    
+    const subscription = form.watch((value) => {
+      // Debounce saves to localStorage (500ms delay)
+      const timeoutId = setTimeout(() => {
+        try {
+          const draftKey = getDraftStorageKey(activeBranch.branch_id);
+          const draft = {
+            formValues: value,
+            variants: variants,
+            imagePreviews: uploadedImages.map(img => img.preview), // Store preview URLs only
+            showVariantsSection: showVariantsSection,
+            timestamp: Date.now(),
+          };
+          safeLocalStorage.setItem(draftKey, JSON.stringify(draft));
+        } catch (error) {
+          // Handle localStorage quota errors gracefully
+          if (error instanceof Error && error.name === 'QuotaExceededError') {
+            console.warn('localStorage quota exceeded, draft not saved');
+          } else {
+            console.error('Error saving draft:', error);
+          }
+        }
+      }, 500);
+      
+      return () => clearTimeout(timeoutId);
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [form, activeBranch?.branch_id, variants, uploadedImages, showVariantsSection]);
 
   // Check for duplicate product name - debounced
   useEffect(() => {
@@ -824,6 +900,12 @@ export default function AddProductPage() {
       
       toast.success(hasVariants ? 'Product and variants added.' : 'Product successfully added.');
       
+      // Clear draft on successful submission
+      if (activeBranch?.branch_id) {
+        const draftKey = getDraftStorageKey(activeBranch.branch_id);
+        safeLocalStorage.removeItem(draftKey);
+      }
+      
       form.reset();
       setVariants([]);
       setShowVariantsSection(false);
@@ -883,339 +965,332 @@ export default function AddProductPage() {
           </div>
         </div>
 
-        <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'}`}>
+        <div className={`flex-1 overflow-y-auto  ${isMobile ? 'p-4' : 'p-6'}`}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                {/* Product Name - At the top */}
-                <div className="space-y-2">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    rules={{ required: 'Product name is mandatory' }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-lg font-semibold text-gray-900">Product Name *</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="Enter product name" 
-                            disabled={loading} 
-                            className="border-gray-300 focus:border-gray-500 text-lg" 
-                          />
-                        </FormControl>
-                        {duplicateName && !hasVariants && (
-                          <div className="flex items-center text-sm text-red-600 mt-1">
-                            <AlertCircle className="w-4 h-4 mr-1" />
-                            This product name already exists for a main product in this branch.
-                          </div>
-                        )}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Two-Column Layout: Image/Description/Additional Info (Left) and Stock/Pricing (Right) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left Column - Image, Description, Additional Information */}
+                {/* Product Information Card */}
+                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
                   <div className="space-y-4">
-                    {/* Product Image Section - Optimized with thumbnail grid */}
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-gray-600">Product Image</h3>
-                      
-                      {/* Main image preview or thumbnail grid - only show when images are uploaded */}
-                      {uploadedImages.length > 0 && (
-                        <div className="space-y-3">
-                          {/* First image as main preview */}
-                          <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 flex items-center justify-center">
-                            <img
-                              src={uploadedImages[0].preview}
-                              alt="Product preview"
-                              className="max-w-full max-h-48 object-contain"
+                    {/* Product Name */}
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      rules={{ required: 'Product name is mandatory' }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-lg font-semibold text-gray-900">Product Name *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              placeholder="Enter product name" 
+                              disabled={loading} 
+                              className="border-gray-300 focus:border-gray-500 text-lg" 
                             />
-                          </div>
-                          {/* Remaining images as compact thumbnails */}
-                          {uploadedImages.length > 1 && (
-                            <div className="grid grid-cols-4 gap-2">
-                              {uploadedImages.slice(1).map((image, index) => (
-                                <div
-                                  key={index + 1}
-                                  className="relative group"
-                                >
-                                  <img
-                                    src={image.preview}
-                                    alt={`Thumbnail ${index + 2}`}
-                                    className="w-full h-20 object-cover rounded border border-gray-200"
-                                  />
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => removeImage(index + 1)}
-                                    disabled={loading}
-                                    className="absolute top-0 right-0 p-1 h-6 w-6 text-red-600 hover:text-red-700 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
-                                  >
-                                    <X className="w-3 h-3" />
-                                  </Button>
-                                </div>
-                              ))}
+                          </FormControl>
+                          {duplicateName && !hasVariants && (
+                            <div className="flex items-center text-sm text-red-600 mt-1">
+                              <AlertCircle className="w-4 h-4 mr-1" />
+                              This product name already exists for a main product in this branch.
                             </div>
                           )}
-                          {/* Image list with remove buttons */}
-                          <div className="space-y-1">
-                            {uploadedImages.map((image, index) => (
-                              <div
-                                key={index}
-                                className="flex items-center gap-2 p-2 bg-white border border-gray-200 rounded text-xs"
-                              >
-                                <img
-                                  src={image.preview}
-                                  alt={`Preview ${index + 1}`}
-                                  className="w-10 h-10 object-cover rounded"
-                                />
-                                <div className="flex-1 min-w-0">
-                                  <p className="font-medium text-gray-900 truncate">
-                                    {image.file.name}
-                                  </p>
-                                  <p className="text-gray-500">
-                                    {formatFileSize(image.size)}
-                                  </p>
-                                </div>
-                                {index === 0 && uploadedImages.length > 1 && (
-                                  <span className="text-xs text-gray-500">Main</span>
-                                )}
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removeImage(index)}
-                                  disabled={loading}
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50 h-6 px-2"
-                                >
-                                  <X className="w-3 h-3" />
-                                </Button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                      
-                      {/* Upload area - more compact */}
-                      <div
-                        onDragEnter={handleDragEnter}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                        className={cn(
-                          "border-2 border-dashed rounded-lg p-4 text-center transition-colors",
-                          isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
-                        )}
-                      >
-                        <div className="flex flex-col items-center justify-center space-y-2">
-                          <ImageIcon className="w-8 h-8 text-gray-400" />
-                          <div>
-                            <p className="text-xs text-gray-600">
-                              Drop images here or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
-                            </p>
-                            <input
-                              id="image-upload"
-                              type="file"
-                              accept="image/*"
-                              multiple
-                              onChange={handleImageChange}
-                              disabled={loading}
-                              className="hidden"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    />
 
-                    {/* Description Section - Moved to left column */}
-                    <div className="space-y-2">
-                      <h3 className="text-sm font-medium text-gray-600">Description</h3>
-                      <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Textarea 
-                                {...field} 
-                                placeholder="Enter product description" 
-                                disabled={loading}
-                                className="resize-none border-gray-300 focus:border-gray-500"
-                                rows={4}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    {/* Additional Information - Moved to left column */}
-                    <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
-                      <div className="text-sm font-medium text-gray-600 mb-2">Additional Information</div>
-                      
-                      {/* SKU */}
-                      <FormField
-                        control={form.control}
-                        name="sku"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-sm">SKU {hasVariants && '(Parent)'}</FormLabel>
-                            <FormControl>
-                              <div className="flex gap-2">
-                                <Input 
-                                  {...field} 
-                                  placeholder="Enter SKU or scan barcode" 
-                                  disabled={loading || hasVariants}
-                                  className="border-gray-300 focus:border-gray-500 flex-1" 
-                                />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={generateSKU}
-                                  disabled={loading || hasVariants}
-                                  title="Generate SKU"
-                                >
-                                  <Package className="w-4 h-4" />
-                                </Button>
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => setShowScanner(true)}
-                                  disabled={loading || hasVariants}
-                                  title="Scan barcode"
-                                >
-                                  <Scan className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </FormControl>
-                            {hasVariants && (
-                              <p className="text-xs text-gray-500 mt-1">SKU is set per variant when using variants</p>
-                            )}
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      {/* Location */}
-                      {!hasVariants && (
+                    {/* Stock and Minimum Stock */}
+                    {!hasVariants && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
-                          name="location"
+                          name="quantityInStock"
+                          rules={{ 
+                            min: { value: 0, message: 'Stock must be 0 or more' }
+                          }}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-sm">Location</FormLabel>
+                              <FormLabel className="text-lg font-semibold text-gray-900">Stock Quantity</FormLabel>
                               <FormControl>
                                 <Input 
-                                  {...field} 
-                                  placeholder="Enter location (e.g. A1, Shelf 3)" 
+                                  type="number" 
+                                  inputMode="numeric"
+                                  min="0"
+                                  placeholder="0"
                                   disabled={loading}
-                                  className="border-gray-300 focus:border-gray-500"
+                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                  value={field.value === 0 ? '' : field.value.toString()} 
+                                  className="border-gray-300 focus:border-gray-500 text-lg" 
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-                      )}
+                        <FormField
+                          control={form.control}
+                          name="minimumStockLevel"
+                          rules={{ 
+                            min: { value: 0, message: 'Minimum level must be 0 or more' }
+                          }}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-lg font-semibold text-gray-900">Minimum Stock</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  inputMode="numeric"
+                                  min="0"
+                                  placeholder="10"
+                                  disabled={loading}
+                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                  value={field.value.toString()}
+                                  className="border-gray-300 focus:border-gray-500 text-lg"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
 
-                      {/* Category */}
+                    {/* SKU Field */}
+                    {!hasVariants && (
                       <FormField
                         control={form.control}
-                        name="categoryId"
+                        name="sku"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm">Category</FormLabel>
+                            <FormLabel className="text-lg font-semibold text-gray-900">SKU</FormLabel>
                             <FormControl>
-                              <HierarchicalCategorySelector
-                                value={field.value || null}
-                                onValueChange={(categoryId, categoryName) => {
-                                  field.onChange(categoryId || '');
-                                  form.setValue('categoryName', categoryName || '');
-                                }}
-                                placeholder="Select category..."
-                                allowCreate={true}
-                                showPath={true}
-                              />
+                              <div className="flex gap-2">
+                                <Input 
+                                  {...field} 
+                                  placeholder="Enter SKU or scan barcode" 
+                                  disabled={loading || hasVariants}
+                                  className="border-gray-300 focus:border-gray-500 text-lg flex-1" 
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setShowScanner(true)}
+                                  disabled={loading || hasVariants}
+                                  className="px-4"
+                                  title="Scan barcode"
+                                >
+                                  <Scan className="w-4 h-4" />
+                                </Button>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                    </div>
+                    )}
                   </div>
+                </div>
 
-                  {/* Right Column - Stock and Pricing */}
-                  <div className="space-y-4">
-                    {/* Stock Information */}
-                    {!hasVariants && (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                        <div className="text-sm font-medium text-gray-600 mb-3">Stock</div>
-                        <div className="space-y-3">
-                          <FormField
-                            control={form.control}
-                            name="quantityInStock"
-                            rules={{ 
-                              required: 'Stock is mandatory',
-                              min: { value: 0, message: 'Stock must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Stock Quantity</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    inputMode="numeric"
-                                    min="0"
-                                    placeholder="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                    value={field.value === 0 ? '' : field.value.toString()} 
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
+                {/* Collapsible Additional Information Section */}
+                <Collapsible open={showAdditionalInfo} onOpenChange={setShowAdditionalInfo}>
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full justify-between"
+                    >
+                      <span className="font-medium">Additional Information</span>
+                      {showAdditionalInfo ? (
+                        <ChevronUp className="w-4 h-4" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 mt-4">
+                    {/* Top Row: Image and Description side by side */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Left Column - Product Image */}
+                      <div className="space-y-3">
+                        <h3 className="text-sm font-medium text-gray-600">Product Image</h3>
+                      
+                        {/* Main image preview or thumbnail grid - only show when images are uploaded */}
+                        {uploadedImages.length > 0 && (
+                          <div className="space-y-3">
+                            {/* First image as main preview */}
+                            <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 flex items-center justify-center">
+                              <img
+                                src={uploadedImages[0].preview}
+                                alt="Product preview"
+                                className="max-w-full max-h-48 object-contain"
+                              />
+                            </div>
+                            {/* Remaining images as compact thumbnails */}
+                            {uploadedImages.length > 1 && (
+                              <div className="grid grid-cols-4 gap-2">
+                                {uploadedImages.slice(1).map((image, index) => (
+                                  <div
+                                    key={index + 1}
+                                    className="relative group"
+                                  >
+                                    <img
+                                      src={image.preview}
+                                      alt={`Thumbnail ${index + 2}`}
+                                      className="w-full h-20 object-cover rounded border border-gray-200"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => removeImage(index + 1)}
+                                      disabled={loading}
+                                      className="absolute top-0 right-0 p-1 h-6 w-6 text-red-600 hover:text-red-700 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                      <X className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                ))}
+                              </div>
                             )}
-                          />
+                            {/* Image list with remove buttons */}
+                            <div className="space-y-1">
+                              {uploadedImages.map((image, index) => (
+                                <div
+                                  key={index}
+                                  className="flex items-center gap-2 p-2 bg-white border border-gray-200 rounded text-xs"
+                                >
+                                  <img
+                                    src={image.preview}
+                                    alt={`Preview ${index + 1}`}
+                                    className="w-10 h-10 object-cover rounded"
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-medium text-gray-900 truncate">
+                                      {image.file.name}
+                                    </p>
+                                    <p className="text-gray-500">
+                                      {formatFileSize(image.size)}
+                                    </p>
+                                  </div>
+                                  {index === 0 && uploadedImages.length > 1 && (
+                                    <span className="text-xs text-gray-500">Main</span>
+                                  )}
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeImage(index)}
+                                    disabled={loading}
+                                    className="text-red-600 hover:text-red-700 hover:bg-red-50 h-6 px-2"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      
+                        {/* Upload area - more compact */}
+                        <div
+                          onDragEnter={handleDragEnter}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          className={cn(
+                            "border-2 border-dashed rounded-lg p-4 text-center transition-colors",
+                            isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400"
+                          )}
+                        >
+                          <div className="flex flex-col items-center justify-center space-y-2">
+                            <ImageIcon className="w-8 h-8 text-gray-400" />
+                            <div>
+                              <p className="text-xs text-gray-600">
+                                Drop images here or <label htmlFor="image-upload" className="text-blue-600 hover:text-blue-700 cursor-pointer underline">Browse</label>
+                              </p>
+                              <input
+                                id="image-upload"
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleImageChange}
+                                disabled={loading}
+                                className="hidden"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Column - Description */}
+                      <div className="space-y-2">
+                        <h3 className="text-sm font-medium text-gray-600">Description</h3>
+                        <FormField
+                          control={form.control}
+                          name="description"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Textarea 
+                                  {...field} 
+                                  placeholder="Enter product description" 
+                                  disabled={loading}
+                                  className="resize-none border-gray-300 focus:border-gray-500"
+                                  rows={4}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Bottom Row: Additional Information and Pricing cards with matching heights */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                      {/* Left Column - Additional Information */}
+                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3 h-full flex flex-col">
+                        <div className="text-sm font-medium text-gray-600 mb-2">Additional Information</div>
+                        <div className="flex-1 space-y-3">
+                          {/* Location */}
+                          {!hasVariants && (
+                            <FormField
+                              control={form.control}
+                              name="location"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="text-sm">Location</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      {...field} 
+                                      placeholder="Enter location (e.g. A1, Shelf 3)" 
+                                      disabled={loading}
+                                      className="border-gray-300 focus:border-gray-500"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          )}
+
+                          {/* Category */}
                           <FormField
                             control={form.control}
-                            name="minimumStockLevel"
-                            rules={{ 
-                              required: 'Minimum level is mandatory',
-                              min: { value: 0, message: 'Minimum level must be 0 or more' }
-                            }}
+                            name="categoryId"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="flex items-center gap-2">
-                                  Minimum Level
-                                  <TooltipProvider>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <Info className="h-4 w-4 text-gray-400 cursor-help" />
-                                      </TooltipTrigger>
-                                      <TooltipContent className="max-w-xs">
-                                        <p>The minimum stock level triggers low-stock alerts when inventory falls below this threshold</p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                </FormLabel>
+                                <FormLabel className="text-sm">Category</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    inputMode="numeric"
-                                    min="0"
-                                    placeholder="10"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                    value={field.value.toString()}
-                                    className="border-gray-300 focus:border-gray-500"
+                                  <HierarchicalCategorySelector
+                                    value={field.value || null}
+                                    onValueChange={(categoryId, categoryName) => {
+                                      field.onChange(categoryId || '');
+                                      form.setValue('categoryName', categoryName || '');
+                                    }}
+                                    placeholder="Select category..."
+                                    allowCreate={true}
+                                    showPath={true}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -1224,13 +1299,12 @@ export default function AddProductPage() {
                           />
                         </div>
                       </div>
-                    )}
 
-                    {/* Pricing Information with Margin Calculation and Tax */}
-                    {!hasVariants && (
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                        <div className="text-sm font-medium text-gray-600 mb-3">Pricing</div>
-                        <div className="space-y-3">
+                      {/* Right Column - Pricing */}
+                      {!hasVariants && (
+                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 h-full flex flex-col">
+                          <div className="text-sm font-medium text-gray-600 mb-3">Pricing</div>
+                          <div className="space-y-3 flex-1">
                           <FormField
                             control={form.control}
                             name="purchasePrice"
@@ -1401,11 +1475,12 @@ export default function AddProductPage() {
                               </div>
                             )}
                           </div>
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                      )}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
 
                 {/* Variants Section */}
                 <div className="space-y-4">

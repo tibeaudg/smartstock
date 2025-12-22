@@ -142,6 +142,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
     { id: 'export', label: 'Export', path: '/dashboard/analytics/export' },
   ];
 
+  // Determine products path based on product count
+  const getProductsPath = () => {
+    if (isLoading) return '/dashboard/categories'; // Default while loading
+    return productCount === 0 ? '/dashboard/products/new' : '/dashboard/categories';
+  };
+
   const menuItems = isBlocked
     ? [
         { 
@@ -159,7 +165,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
           id: 'products', 
           label: 'Products', 
           icon: Package, 
-          path: '/dashboard/categories',
+          path: getProductsPath(),
           end: true
         },
         { 

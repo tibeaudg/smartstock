@@ -5,14 +5,15 @@ import { Button } from '@/components/ui/button';
 import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
-import { useDashboardData, useBasicDashboardMetrics } from '@/hooks/useDashboardData';
+import { useDashboardData, useBasicDashboardMetrics, useProductCount } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
 import { useCategoryProducts } from '@/hooks/useCategories';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 
 
 
@@ -53,6 +54,7 @@ interface AnalyticsData {
 export const Dashboard = ({ userRole }: DashboardProps) => {
   const { notifications, loading: notificationsLoading, unreadCount, markAllAsRead } = useNotifications();
   const { formatPrice } = useCurrency();
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const handleNotificationClick = () => {
     setShowNotifications((prev) => !prev);
@@ -60,6 +62,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   };
   const { isMobile } = useMobile();
   const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+  const { productCount, isLoading: productCountLoading } = useProductCount();
   
   // Analytics state
   const { user } = useAuth();
@@ -280,6 +283,32 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   return (
     <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6 ">
   {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
+
+      {/* Action-Oriented CTA for First Product */}
+      {!productCountLoading && productCount === 0 && (
+        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-200 shadow-lg">
+          <CardContent className="p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex-1 text-center sm:text-left">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                  Get Started with Your First Product
+                </h2>
+                <p className="text-sm sm:text-base text-gray-700">
+                  Add your first product to start managing your inventory and tracking stock movements.
+                </p>
+              </div>
+              <Button
+                onClick={() => navigate('/dashboard/products/new')}
+                className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6 sm:px-8 whitespace-nowrap"
+                size="lg"
+              >
+                <Plus className="w-5 h-5 mr-2" />
+                Add Your First Product
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

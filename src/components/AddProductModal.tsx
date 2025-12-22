@@ -24,6 +24,7 @@ import { BarcodeScanner } from './BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 // --- Data Interfaces ---
 
@@ -117,8 +118,9 @@ export const AddProductModal = ({
   }>>([]);
   const [isDragging, setIsDragging] = useState(false);
   // Re-added for completeness, assuming original code intended to use this state
-  const [showUpgradeNotice, setShowUpgradeNotice] = useState(false); 
+  const [showUpgradeNotice, setShowUpgradeNotice] = useState(false);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const navigate = useNavigate();
   const { isMobile } = useMobile();
@@ -1056,23 +1058,24 @@ export const AddProductModal = ({
           <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'}`}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                {/* Top Section: Basic Information - Always visible first */}
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-5">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
+                {/* Product Information Card */}
+                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                  <div className="text-sm font-medium text-gray-600 mb-3">Product Information</div>
                   <div className="space-y-4">
+                    {/* Product Name */}
                     <FormField
                       control={form.control}
                       name="name"
                       rules={{ required: 'Product name is mandatory' }}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Product Name *</FormLabel>
+                          <FormLabel className="text-lg font-semibold text-gray-900">Product Name *</FormLabel>
                           <FormControl>
                             <Input 
                               {...field} 
                               placeholder="Enter product name" 
                               disabled={loading} 
-                              className="border-gray-300 focus:border-gray-500" 
+                              className="border-gray-300 focus:border-gray-500 text-lg" 
                             />
                           </FormControl>
                           {duplicateName && !hasVariants && (
@@ -1086,112 +1089,53 @@ export const AddProductModal = ({
                       )}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="sku"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">SKU {hasVariants && '(Parent)'}</FormLabel>
-                            <FormControl>
-                              <div className="flex gap-2">
-                                <Input 
-                                  {...field} 
-                                  placeholder="Enter SKU or scan barcode" 
-                                  disabled={loading || hasVariants}
-                                  className="border-gray-300 focus:border-gray-500 flex-1" 
-                                />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  onClick={() => setShowScanner(true)}
-                                  disabled={loading || hasVariants}
-                                  className="px-4"
-                                >
-                                  <Scan className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </FormControl>
-                            {hasVariants && (
-                              <p className="text-xs text-gray-500 mt-1">SKU is set per variant when using variants</p>
-                            )}
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="categoryId"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Category</FormLabel>
-                            <FormControl>
-                              <HierarchicalCategorySelector
-                                value={field.value || null}
-                                onValueChange={(categoryId, categoryName) => {
-                                  field.onChange(categoryId || '');
-                                  form.setValue('categoryName', categoryName || '');
-                                }}
-                                placeholder="Select category..."
-                                allowCreate={true}
-                                showPath={true}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    {/* Stock Fields - Show only if no variants */}
+                    {/* Stock and Minimum Stock */}
                     {!hasVariants && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
                           name="quantityInStock"
                           rules={{ 
-                            required: 'Stock is mandatory',
                             min: { value: 0, message: 'Stock must be 0 or more' }
                           }}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-gray-700 font-medium">Stock *</FormLabel>
+                              <FormLabel className="text-lg font-semibold text-gray-900">Stock Quantity</FormLabel>
                               <FormControl>
                                 <Input 
                                   type="number" 
+                                  inputMode="numeric"
                                   min="0"
                                   placeholder="0"
                                   disabled={loading}
                                   onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
                                   value={field.value === 0 ? '' : field.value.toString()} 
-                                  className="border-gray-300 focus:border-gray-500"
+                                  className="border-gray-300 focus:border-gray-500 text-lg" 
                                 />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
                         <FormField
                           control={form.control}
                           name="minimumStockLevel"
                           rules={{ 
-                            required: 'Minimum level is mandatory',
                             min: { value: 0, message: 'Minimum level must be 0 or more' }
                           }}
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-gray-700 font-medium">Min. Level *</FormLabel>
+                              <FormLabel className="text-lg font-semibold text-gray-900">Minimum Stock</FormLabel>
                               <FormControl>
                                 <Input 
                                   type="number" 
+                                  inputMode="numeric"
                                   min="0"
                                   placeholder="10"
                                   disabled={loading}
                                   onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
                                   value={field.value.toString()}
-                                  className="border-gray-300 focus:border-gray-500"
+                                  className="border-gray-300 focus:border-gray-500 text-lg"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -1201,96 +1145,34 @@ export const AddProductModal = ({
                       </div>
                     )}
 
-                    {/* Prices - Show only if no variants */}
-                    {!hasVariants && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="purchasePrice"
-                          rules={{ 
-                            min: { value: 0, message: 'Must be 0 or more' }
-                          }}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-gray-700 font-medium">Purchase Price</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="number" 
-                                  step="0.01"
-                                  min="0"
-                                  disabled={loading}
-                                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                  value={field.value.toString()}
-                                  className="border-gray-300 focus:border-gray-500"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="salePrice"
-                          rules={{ 
-                            min: { value: 0, message: 'Must be 0 or more' }
-                          }}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-gray-700 font-medium">Sale Price</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="number" 
-                                  step="0.01"
-                                  min="0"
-                                  disabled={loading}
-                                  onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                  value={field.value.toString()}
-                                  className="border-gray-300 focus:border-gray-500"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    )}
-
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-700 font-medium">Description</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              {...field} 
-                              placeholder="Enter product description" 
-                              disabled={loading}
-                              className="resize-none border-gray-300 focus:border-gray-500"
-                              rows={3}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Location - Only show if no variants (variants have their own locations) */}
+                    {/* SKU Field */}
                     {!hasVariants && (
                       <FormField
                         control={form.control}
-                        name="location"
+                        name="sku"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-gray-700 font-medium">Location</FormLabel>
+                            <FormLabel className="text-lg font-semibold text-gray-900">SKU</FormLabel>
                             <FormControl>
-                              <Input 
-                                {...field} 
-                                placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
-                                disabled={loading}
-                                className="border-gray-300 focus:border-gray-500"
-                              />
+                              <div className="flex gap-2">
+                                <Input 
+                                  {...field} 
+                                  placeholder="Enter SKU or scan barcode" 
+                                  disabled={loading || hasVariants}
+                                  className="border-gray-300 focus:border-gray-500 text-lg flex-1" 
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setShowScanner(true)}
+                                  disabled={loading || hasVariants}
+                                  className="px-4"
+                                  title="Scan barcode"
+                                >
+                                  <Scan className="w-4 h-4" />
+                                </Button>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -1299,6 +1181,127 @@ export const AddProductModal = ({
                     )}
                   </div>
                 </div>
+
+                {/* Collapsible Additional Information Section */}
+                <Collapsible open={showAdditionalInfo} onOpenChange={setShowAdditionalInfo}>
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full justify-between"
+                    >
+                      <span className="font-medium">Additional Information</span>
+                      {showAdditionalInfo ? (
+                        <ChevronUp className="w-4 h-4" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-4 mt-4">
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-5">
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                          <FormField
+                            control={form.control}
+                            name="categoryId"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-700 font-medium">Category</FormLabel>
+                                <FormControl>
+                                  <HierarchicalCategorySelector
+                                    value={field.value || null}
+                                    onValueChange={(categoryId, categoryName) => {
+                                      field.onChange(categoryId || '');
+                                      form.setValue('categoryName', categoryName || '');
+                                    }}
+                                    placeholder="Select category..."
+                                    allowCreate={true}
+                                    showPath={true}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+
+                        {/* Purchase Price */}
+                        {!hasVariants && (
+                          <FormField
+                            control={form.control}
+                            name="purchasePrice"
+                            rules={{ 
+                              min: { value: 0, message: 'Must be 0 or more' }
+                            }}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-700 font-medium">Purchase Price</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    type="number" 
+                                    step="0.01"
+                                    min="0"
+                                    placeholder="0.00"
+                                    disabled={loading}
+                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                    value={field.value.toString()}
+                                    className="border-gray-300 focus:border-gray-500"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        )}
+
+                        <FormField
+                          control={form.control}
+                          name="description"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-700 font-medium">Description</FormLabel>
+                              <FormControl>
+                                <Textarea 
+                                  {...field} 
+                                  placeholder="Enter product description" 
+                                  disabled={loading}
+                                  className="resize-none border-gray-300 focus:border-gray-500"
+                                  rows={3}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* Location - Only show if no variants */}
+                        {!hasVariants && (
+                          <FormField
+                            control={form.control}
+                            name="location"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-700 font-medium">Location</FormLabel>
+                                <FormControl>
+                                  <Input 
+                                    {...field} 
+                                    placeholder="Enter location (e.g. A1, Shelf 3, etc.)" 
+                                    disabled={loading}
+                                    className="border-gray-300 focus:border-gray-500"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
 
                 {/* Two-Column Layout for Image and Variants */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -2,7 +2,6 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { StockQuickActionMenu } from './StockQuickActionMenu';
 import type { StockTrend } from '@/utils/stockTrends';
 
 interface EnhancedStockColumnProps {
@@ -17,8 +16,6 @@ interface EnhancedStockColumnProps {
   isMobile?: boolean;
   trend?: StockTrend | null;
   onAdjustStock: (product: any) => void;
-  onCreatePO: (product: any) => void;
-  onViewHistory: (product: any) => void;
   formatStockQuantity: (qty: number) => string;
 }
 
@@ -34,8 +31,6 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
   isMobile = false,
   trend = null,
   onAdjustStock,
-  onCreatePO,
-  onViewHistory,
   formatStockQuantity,
 }) => {
   const getTrendIcon = () => {
@@ -91,29 +86,26 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
       onClick={(e) => isMobile && e.stopPropagation()}
     >
       {!isMobile ? (
-        <StockQuickActionMenu
-          product={product}
-          onAdjustStock={onAdjustStock}
-          onCreatePO={onCreatePO}
-          onViewHistory={onViewHistory}
-        >
-          <TooltipProvider delayDuration={150}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  data-interactive
-                  className={cn(
-                    compactMode ? "rounded-lg p-1 transition-all" : "space-y-0.5 rounded-lg p-1 transition-all",
-                    "cursor-pointer group hover:shadow-md",
-                    "border-2",
-                    isVariant 
-                      ? "bg-blue-50/20 border-blue-300" 
-                      : isAggregatedTotal 
-                        ? "bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-400 shadow-sm"
-                        : cn(getCellBackgroundColor(), getBadgeBorderColor())
-                  )}
-                  onClick={(e) => e.stopPropagation()}
-                >
+        <TooltipProvider delayDuration={150}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div
+                data-interactive
+                className={cn(
+                  compactMode ? "rounded-lg p-1 transition-all" : "space-y-0.5 rounded-lg p-1 transition-all",
+                  "cursor-pointer group hover:shadow-md",
+                  "border-2",
+                  isVariant 
+                    ? "bg-blue-50/20 border-blue-300" 
+                    : isAggregatedTotal 
+                      ? "bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-400 shadow-sm"
+                      : cn(getCellBackgroundColor(), getBadgeBorderColor())
+                )}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAdjustStock(product);
+                }}
+              >
                   {/* Stock value and status */}
                   <div className={cn(
                     "flex items-center justify-center gap-2"
@@ -193,15 +185,18 @@ export const EnhancedStockColumn: React.FC<EnhancedStockColumnProps> = ({
               )}
             </Tooltip>
           </TooltipProvider>
-        </StockQuickActionMenu>
       ) : (
         <div 
           className={cn(
-            "space-y-0.5 rounded-lg p-1.5 border-2",
+            "space-y-0.5 rounded-lg p-1.5 border-2 cursor-pointer",
             isVariant 
               ? "bg-blue-50/20 border-blue-300" 
               : cn(getCellBackgroundColor(), getBadgeBorderColor())
           )}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdjustStock(product);
+          }}
         >
           <div className="flex items-center justify-center gap-2">
             <div

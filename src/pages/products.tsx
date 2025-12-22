@@ -38,6 +38,7 @@ import { BulkImportModal } from '@/components/BulkImportModal';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { CommandPalette, useCommandPalette, type CommandPaletteAction } from '@/components/CommandPalette';
 import { useColumnPreferences } from '@/hooks/useColumnPreferences';
@@ -138,7 +139,7 @@ export default function CategorysPage() {
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 100;
+  const [itemsPerPage, setItemsPerPage] = useState(50);
   
   // Hover state for row actions
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
@@ -646,6 +647,12 @@ export default function CategorysPage() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedProducts = sortedProducts.slice(startIndex, endIndex);
+
+  // Handle items per page change - reset to page 1
+  const handleItemsPerPageChange = (value: string) => {
+    setItemsPerPage(Number(value));
+    setCurrentPage(1);
+  };
 
   // Reset to page 1 when filters/search change
   React.useEffect(() => {
@@ -1208,7 +1215,7 @@ export default function CategorysPage() {
           config.align === 'center' ? 'text-center' : config.align === 'right' ? 'text-right' : 'text-left',
           config.width || '',
           config.responsive || '',
-          "px-3 sm:px-4 py-0.5 text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap border-r border-gray-200",
+          "px-3 sm:px-4 py-3 text-sm font-bold text-gray-900 uppercase tracking-wider whitespace-nowrap border-r border-gray-200 border-b-2 border-gray-300",
           isSortable && "cursor-pointer hover:bg-gray-100 transition-colors touch-manipulation min-h-[44px] sm:min-h-0"
         )}
         onClick={isSortable ? () => handleSort(sortKey) : undefined}
@@ -1258,7 +1265,7 @@ export default function CategorysPage() {
         
         return (
           <td className={cn(
-            "text-center w-12 px-2 py-0 border-r border-gray-200",
+            "text-center w-12 px-2 py-0 border-r border-gray-100",
             isVariant && "bg-[#F9FAFB]"
           )}>
             <TooltipProvider>
@@ -1299,14 +1306,14 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left relative z-10 bg-blue-50/20",
-              "px-3 sm:px-4 py-0 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
             )}>
               <ActionableSKU
                 product={product}
                 isVariant={true}
                 parentProduct={parentProduct}
                 compactMode={compactMode}
-                onGenerateSKU={handleGenerateSKU}
+                onUpdateSKU={handleUpdateSKU}
               />
             </td>
           );
@@ -1315,7 +1322,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 align-middle",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             <div className="flex items-center gap-1.5">
               {productHasVariants && hasDifferentSKUs ? (
@@ -1330,7 +1337,7 @@ export default function CategorysPage() {
                   product={product}
                   isVariant={false}
                   compactMode={compactMode}
-                  onGenerateSKU={handleGenerateSKU}
+                  onUpdateSKU={handleUpdateSKU}
                 />
               )}
             </div>
@@ -1347,7 +1354,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left relative z-10 hidden md:table-cell align-middle bg-blue-50/40",
-              "pl-8 sm:pl-10 pr-3 sm:pr-4 py-0 border-r border-gray-200"
+              "pl-8 sm:pl-10 pr-3 sm:pr-4 py-0 border-r border-gray-100"
             )}>
               {showNoBarcode ? (
                 <span className={cn(
@@ -1378,7 +1385,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 hidden md:table-cell align-middle",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             {!product.barcode ? (
               <span className={cn(
@@ -1402,7 +1409,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left relative z-10 hidden lg:table-cell align-middle",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             {!isVariant && (
               <span className={cn(
@@ -1422,7 +1429,7 @@ export default function CategorysPage() {
           <td className={cn(
             "text-left relative z-10 align-middle",
             isVariant && "bg-[#F9FAFB]",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             <CategoryColumn
               product={product}
@@ -1446,7 +1453,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "w-1/4 relative z-10 align-middle bg-[#F9FAFB]",
-              "px-3 sm:px-4 py-0 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
             )}>
               <div className="flex items-center relative h-8">
                 {/* Horizontal line connecting to variant name - aligned with vertical center */}
@@ -1474,7 +1481,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "w-1/4 relative z-10 overflow-visible align-middle",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             {/* Expansion chevron - positioned in left padding */}
             {productHasVariants && (
@@ -1577,7 +1584,7 @@ export default function CategorysPage() {
           <td className={cn(
             "text-left w-1/8 hidden md:table-cell relative z-10 align-left",
             isVariant && "bg-[#F9FAFB]",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             <StorageColumn
               product={product}
@@ -1596,7 +1603,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left hidden sm:table-cell",
-            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-200"
+            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-100"
           )}>
             <div className="flex items-center justify-end">
               <span className={cn(
@@ -1634,8 +1641,6 @@ export default function CategorysPage() {
             isMobile={isMobile}
             trend={trend}
             onAdjustStock={(p) => handleStockAction(p, 'in')}
-            onCreatePO={handleCreatePO}
-            onViewHistory={handleViewStockHistory}
             formatStockQuantity={formatStockQuantity}
           />
         );
@@ -1644,7 +1649,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-right w-1/8 hidden sm:table-cell",
-            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-200"
+            "px-3 sm:px-4 py-0.5 align-middle border-r border-gray-100"
           )}>
             <div className={cn(
               "flex items-center justify-left",
@@ -1662,7 +1667,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-right w-1/8 hidden sm:table-cell align-middle bg-blue-50/20",
-              "px-3 sm:px-4 py-0 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
             )}>
               <div className={cn(
                 "flex items-center justify-left gap-2",
@@ -1694,7 +1699,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left w-1/8 hidden sm:table-cell align-middle",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             <div className={cn(
               "flex items-center justify-left gap-2",
@@ -1727,7 +1732,7 @@ export default function CategorysPage() {
         return (
           <td className={cn(
             "text-left hidden lg:table-cell align-middle",
-            "px-3 sm:px-4 py-0 border-r border-gray-200"
+            "px-3 sm:px-4 py-0 border-r border-gray-100"
           )}>
             <div className={cn(
               "flex items-center justify-left",
@@ -1745,7 +1750,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left hidden lg:table-cell align-middle bg-blue-50/20",
-              "px-3 sm:px-4 py-0 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
             )}>
               <span className="text-xs text-gray-400">Inherited</span>
             </td>
@@ -1768,7 +1773,7 @@ export default function CategorysPage() {
           return (
             <td className={cn(
               "text-left hidden lg:table-cell align-middle bg-blue-50/20",
-              "px-3 sm:px-4 py-0 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
             )}>
               <span className="text-xs text-gray-400">Inherited</span>
             </td>
@@ -1778,7 +1783,7 @@ export default function CategorysPage() {
           <td 
             className={cn(
               "text-left hidden lg:table-cell align-middle",
-              "px-3 sm:px-4 py-0 border-r border-gray-200"
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
             )}
             onClick={(e) => {
               if (viewMode === 'daily-ops') {
@@ -2283,29 +2288,34 @@ export default function CategorysPage() {
     }
   };
 
-  const handleGenerateSKU = async (productId: string) => {
+  const handleUpdateSKU = async (productId: string, sku: string) => {
     try {
       const product = sortedProducts.find((p: any) => p.id === productId);
       if (!product) return;
 
-      // Generate SKU based on product name and ID
-      const namePrefix = (product.name || 'PROD').substring(0, 3).toUpperCase().replace(/[^A-Z0-9]/g, '');
-      const idSuffix = productId.substring(0, 8).toUpperCase();
-      const generatedSKU = `${namePrefix}-${idSuffix}`;
+      // Determine if this is a variant and update the appropriate field
+      const updateData: { sku?: string; variant_sku?: string } = {};
+      
+      if (product.is_variant) {
+        updateData.variant_sku = sku || null;
+      } else {
+        updateData.sku = sku || null;
+      }
 
       const { error } = await supabase
         .from('products')
-        .update({ sku: generatedSKU })
+        .update(updateData)
         .eq('id', productId);
 
       if (error) throw error;
 
-      toast.success('SKU generated successfully');
+      toast.success('SKU updated successfully');
       queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
     } catch (error) {
-      console.error('Error generating SKU:', error);
-      toast.error('Failed to generate SKU');
+      console.error('Error updating SKU:', error);
+      toast.error('Failed to update SKU');
+      throw error;
     }
   };
 
@@ -2669,7 +2679,7 @@ export default function CategorysPage() {
   };
 
   return (
-    <div className={`h-screen ${isMobile ? 'm-2 rounded-lg' : 'm-0 rounded-none'} border border-gray-200 flex flex-col overflow-hidden overscroll-none touch-pan-y`} style={{ touchAction: 'pan-y' }}>
+    <div className={`h-screen ${isMobile ? 'm-2 rounded-lg' : 'm-0 rounded-none'} border border-gray-100 flex flex-col overflow-hidden overscroll-none touch-pan-y`} style={{ touchAction: 'pan-y' }}>
 
 
 
@@ -2678,13 +2688,13 @@ export default function CategorysPage() {
 
 
       {/* Main Layout with Product Table */}
-      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none p-6">
+      <div className="flex-1 flex overflow-hidden min-h-0 relative overscroll-none p-3 md:p-4">
         {/* Main Content - Products Table */}
         <div className="flex-1 flex flex-col overflow-hidden  min-w-0 min-h-0 relative ">
           {/* Search Results Info - Above all other elements */}
           
           {searchTerm && (
-            <div className="flex-shrink-0 px-3 md:px-4 lg:px-6 py-0.5 bg-blue-50 border-b border-blue-200 flex items-center justify-between gap-3 relative z-50 ">
+            <div className="flex-shrink-0 px-3 md:px-4 py-1.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between gap-3 relative z-50">
               <div className="text-sm font-medium text-blue-900">
                 {filteredProducts.length > 0 && (
                   <span>{filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found</span>
@@ -2721,8 +2731,8 @@ export default function CategorysPage() {
           {(categoryProducts.length > 0 || productsLoading) ? (
             <>
               {/* Search and Filters Card */}
-              <Card className="mb-6">
-                <CardContent className="p-4 space-y-4">
+              <Card className="mb-4">
+                <CardContent className="p-3 space-y-3">
                   {/* Row A: Control Bar - Search Bar + Action Buttons */}
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                     {/* Multi-Intent Search Bar - Full width on mobile */}
@@ -3041,7 +3051,7 @@ export default function CategorysPage() {
               
               {/* Products Section - Scrollable */}
               <div 
-                className="flex-1 flex flex-col min-h-0 overscroll-contain bg-gray-50" 
+                className="flex-1 flex flex-col min-h-0 overscroll-contain bg-gray-50/30" 
                 style={{ 
                   WebkitOverflowScrolling: 'touch',
                   paddingBottom: selectedProductIds.size > 0 ? '80px' : '0'
@@ -3081,19 +3091,19 @@ export default function CategorysPage() {
                     ))}
                   </div>
                 ) : productViewMode === 'table' ? (
-                  <div className="flex-1 flex flex-col min-h-0 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden relative p-1">
+                  <div className="flex-1 flex flex-col min-h-0 bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden relative">
                     {/* Scroll indicators for mobile */}
                     <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none z-20 sm:hidden" />
                     <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none z-20 sm:hidden" />
                     <div className="flex-1 flex flex-col min-h-0 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" style={{ WebkitOverflowScrolling: 'touch' }}>
-                      <table className={cn("w-full divide-y divide-gray-200", !isMobile && "min-w-[640px]")}>
-                        <thead className="bg-gray-50 sticky top-0 z-10">
+                      <table className={cn("w-full divide-y divide-gray-100", !isMobile && "min-w-[640px]")}>
+                        <thead className="bg-gray-50/80 backdrop-blur-sm sticky top-0 z-10 border-b-2 border-gray-300">
                           {/* Column Headers */}
                           <tr>
                             <th 
                               className={cn(
                                 "text-center w-14 sm:w-12",
-                                "px-3 sm:px-4 py-0 border-r border-gray-200"
+                                "px-3 sm:px-4 py-3 border-r border-gray-200 border-b-2 border-gray-300"
                               )}
                               onClick={(e) => e.stopPropagation()}
                             >
@@ -3178,7 +3188,7 @@ export default function CategorysPage() {
                                   setHoveredRowPosition(null);
                                 }}
                                 className={cn(
-                                  'group transition-all duration-200 relative border-b border-gray-200',
+                                  'group transition-all duration-150 relative border-b border-gray-100 hover:bg-gray-50/50',
                                   hoveredImageProductId === product.id && 'z-50',
                                   // Parent row styling when expanded
                                   hasVariants && isExpanded && 'bg-[#F9FAFB] border-l-2 border-l-blue-600',
@@ -3190,7 +3200,7 @@ export default function CategorysPage() {
                                 <td 
                                   className={cn(
                                     "text-center w-14 sm:w-12 relative z-10",
-                                    "px-3 sm:px-4 py-0 border-r border-gray-200"
+                                    "px-3 sm:px-4 py-0 border-r border-gray-100"
                                   )} 
                                   onClick={(e) => e.stopPropagation()}
                                   data-interactive
@@ -3257,7 +3267,7 @@ export default function CategorysPage() {
                                             setHoveredProductGroupId(null);
                                           }}
                                           className={cn(
-                                            'group transition-all duration-200 relative border-b border-gray-200',
+                                            'group transition-all duration-150 relative border-b border-gray-100 hover:bg-gray-50/30',
                                             'cursor-pointer',
                                             'h-8',
                                             'bg-[#F9FAFB]'
@@ -3269,7 +3279,7 @@ export default function CategorysPage() {
                                           <td 
                                             className={cn(
                                               "text-center w-14 sm:w-12 relative z-10 bg-[#F9FAFB]",
-                                              "px-3 sm:px-4 py-0 border-r border-gray-200"
+                                              "px-3 sm:px-4 py-0 border-r border-gray-100"
                                             )}
                                             onClick={(e) => e.stopPropagation()}
                                             data-interactive
@@ -3316,89 +3326,51 @@ export default function CategorysPage() {
                     </div>
                     
                     {/* Pagination Controls */}
-                    {totalPages > 1 && (
-                      <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3 px-3 sm:px-4 py-1 bg-white border-t border-gray-200">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs sm:text-sm text-gray-700">
-                            Showing {startIndex + 1} to {Math.min(endIndex, totalProducts)} of {totalProducts} products
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setCurrentPage(1)}
-                            disabled={currentPage === 1}
-                            className="h-10 sm:h-8 px-3 min-h-[44px] sm:min-h-0 touch-manipulation"
-                            title="First page"
-                          >
-                            <ChevronLeft className="w-4 h-4 sm:mr-1" />
-                            <ChevronLeft className="w-4 h-4 sm:-ml-1 hidden sm:inline" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                            disabled={currentPage === 1}
-                            className="h-10 sm:h-8 px-3 min-h-[44px] sm:min-h-0 touch-manipulation"
-                            title="Previous page"
-                          >
-                            <ChevronLeft className="w-4 h-4 sm:mr-1" />
-                            <span className="hidden sm:inline">Previous</span>
-                          </Button>
-                          <div className="flex items-center gap-1">
-                            {Array.from({ length: Math.min(isMobile ? 3 : 5, totalPages) }, (_, i) => {
-                              let pageNum: number;
-                              if (totalPages <= (isMobile ? 3 : 5)) {
-                                pageNum = i + 1;
-                              } else if (currentPage <= 2) {
-                                pageNum = i + 1;
-                              } else if (currentPage >= totalPages - 1) {
-                                pageNum = totalPages - (isMobile ? 2 : 4) + i;
-                              } else {
-                                pageNum = currentPage - (isMobile ? 1 : 2) + i;
-                              }
-                              return (
-                                <Button
-                                  key={pageNum}
-                                  variant={currentPage === pageNum ? "default" : "outline"}
-                                  size="sm"
-                                  onClick={() => setCurrentPage(pageNum)}
-                                  className={cn(
-                                    "h-10 sm:h-8 min-w-[44px] sm:min-w-[2rem] touch-manipulation",
-                                    currentPage === pageNum && "bg-blue-600 hover:bg-blue-700 text-white"
-                                  )}
-                                >
-                                  {pageNum}
-                                </Button>
-                              );
-                            })}
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                            disabled={currentPage === totalPages}
-                            className="h-10 sm:h-8 px-3 min-h-[44px] sm:min-h-0 touch-manipulation"
-                            title="Next page"
-                          >
-                            <span className="hidden sm:inline">Next</span>
-                            <ChevronRight className="w-4 h-4 sm:ml-1" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setCurrentPage(totalPages)}
-                            disabled={currentPage === totalPages}
-                            className="h-10 sm:h-8 px-3 min-h-[44px] sm:min-h-0 touch-manipulation"
-                            title="Last page"
-                          >
-                            <ChevronRight className="w-4 h-4 sm:ml-1" />
-                            <ChevronRight className="w-4 h-4 sm:-mr-1 hidden sm:inline" />
-                          </Button>
-                        </div>
+                    <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t border-gray-200">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-700">Results per page:</span>
+                        <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+                          <SelectTrigger className="w-[80px] h-9 rounded-md border-gray-300">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="12">12</SelectItem>
+                            <SelectItem value="25">25</SelectItem>
+                            <SelectItem value="50">50</SelectItem>
+                            <SelectItem value="100">100</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
-                    )}
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                          disabled={currentPage === 1 || totalPages === 0}
+                          className="h-9 px-3 rounded-md border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50"
+                        >
+                          <span className="text-gray-600">&lt; Previous</span>
+                        </Button>
+                        {totalPages > 0 && (
+                          <Button
+                            variant="default"
+                            size="sm"
+                            className="h-9 min-w-[44px] bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                          >
+                            {currentPage}
+                          </Button>
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                          disabled={currentPage === totalPages || totalPages === 0}
+                          className="h-9 px-3 rounded-md border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50"
+                        >
+                          <span className="text-gray-600">Next &gt;</span>
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 ) : null}
                 </div>
