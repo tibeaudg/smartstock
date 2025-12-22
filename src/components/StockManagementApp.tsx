@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
+import { OnboardingWizard } from './OnboardingWizard';
 import { AuthContext } from '@/hooks/useAuth';
 import { useBranches, BranchProvider } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
+import { useOnboardingCheck } from '@/hooks/useOnboardingCheck';
 
 function isLocalStorageAvailable() {
   try {
@@ -24,6 +26,7 @@ export const StockManagementApp: React.FC = () => {
   const userProfile = auth?.userProfile || null;
   const loading = auth?.loading ?? true;
   const { hasNoBranches, hasError } = useBranches();
+  const { shouldShowOnboarding, isLoading: isLoadingOnboarding } = useOnboardingCheck();
   const location = useLocation();
 
   // Show loading state while auth is being determined
@@ -74,6 +77,11 @@ export const StockManagementApp: React.FC = () => {
 
   if (!userProfile) return null;
 
+  const handleOnboardingComplete = () => {
+    // Refresh the page to ensure all data is up to date
+    window.location.reload();
+  };
+
   return (
     <UnreadMessagesProvider>
         <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0 bg-background text-foreground transition-colors">
@@ -91,14 +99,22 @@ export const StockManagementApp: React.FC = () => {
           <Outlet key={location.pathname} />
         </Layout>
 
-        <CreateBranchModal
-          open={hasNoBranches && !hasError}
-          onOpenChange={() => {
-          }}
-          onBranchCreated={() => {
-            // New branch created successfully
-          }}
-        />
+        {/* Onboarding wizard takes precedence over branch modal */}
+        {!isLoadingOnboarding && shouldShowOnboarding ? (
+          <OnboardingWizard
+            open={shouldShowOnboarding}
+            onComplete={handleOnboardingComplete}
+          />
+        ) : (
+          <CreateBranchModal
+            open={hasNoBranches && !hasError}
+            onOpenChange={() => {
+            }}
+            onBranchCreated={() => {
+              // New branch created successfully
+            }}
+          />
+        )}
         </div>
     </UnreadMessagesProvider>
   );

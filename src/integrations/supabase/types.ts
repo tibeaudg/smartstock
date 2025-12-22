@@ -808,6 +808,7 @@ export type Database = {
           last_login: string | null
           is_owner: boolean | null
           onboarding: string | null
+          organization_name: string | null
         }
         Insert: {
           created_at?: string | null
@@ -822,6 +823,7 @@ export type Database = {
           last_login?: string | null
           is_owner?: boolean | null
           onboarding?: string | null
+          organization_name?: string | null
         }
         Update: {
           created_at?: string | null
@@ -836,6 +838,7 @@ export type Database = {
           last_login?: string | null
           is_owner?: boolean | null
           onboarding?: string | null
+          organization_name?: string | null
         }
         Relationships: [        ]
       }

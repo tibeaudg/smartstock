@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw, Trash2, Search, Activity } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw, Trash2, Search, Activity, Sparkles } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -25,6 +25,7 @@ import * as XLSX from 'xlsx';
 import { formatDistanceToNow } from 'date-fns';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
+import { OnboardingWizard } from '@/components/OnboardingWizard';
 
 // User management types
 type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'branches' | 'linkedUsers' | 'cus' | 'created';
@@ -528,6 +529,7 @@ export default function AdminPage() {
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [quickFilter, setQuickFilter] = useState<'all' | 'active' | 'blocked' | 'inactive'>('all');
+  const [showOnboardingWizard, setShowOnboardingWizard] = useState(false);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -799,6 +801,40 @@ export default function AdminPage() {
     }
   }, [userProfile, navigate]);
 
+  const handleTestOnboarding = async () => {
+    if (!currentUser) {
+      toast.error('User not found');
+      return;
+    }
+
+    try {
+      // Reset onboarding status to null for testing
+      const { error } = await supabase
+        .from('profiles')
+        .update({ onboarding: null })
+        .eq('id', currentUser.id);
+
+      if (error) throw error;
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries({ queryKey: ['onboarding-product-count'] });
+      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      
+      // Show the wizard directly (bypassing the product count check for testing)
+      setShowOnboardingWizard(true);
+      toast.success('Onboarding wizard opened for testing!');
+    } catch (error: any) {
+      console.error('Error resetting onboarding:', error);
+      toast.error(`Failed to reset onboarding: ${error.message}`);
+    }
+  };
+
+  const handleOnboardingComplete = () => {
+    setShowOnboardingWizard(false);
+    // Refresh the page to ensure all data is up to date
+    window.location.reload();
+  };
+
   if (!userProfile || userProfile.is_owner !== true) {
     return null;
   }
@@ -917,7 +953,31 @@ export default function AdminPage() {
           {/* Main content area */}
           <div className="w-full flex-grow space-y-8 mb-24">
             {activeTab === 'overview' && (
-              <SystemOverview />
+              <div className="space-y-8">
+                {/* Test Onboarding Button - Development Only */}
+                <Card className="border-2 border-dashed border-orange-300 bg-orange-50/50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-orange-600" />
+                      Test Onboarding Wizard
+                    </CardTitle>
+                    <CardDescription>
+                      Manually trigger the onboarding wizard for testing purposes. This will reset your onboarding status.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button
+                      onClick={handleTestOnboarding}
+                      variant="outline"
+                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Trigger Onboarding Wizard
+                    </Button>
+                  </CardContent>
+                </Card>
+                <SystemOverview />
+              </div>
             )}
             {activeTab === 'errors' && (
               <RecentErrors />
@@ -930,16 +990,7 @@ export default function AdminPage() {
             )}
             {activeTab === 'users' && (
               <div className="space-y-8">
-                {/* Registration Chart */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>User Registration Analytics</CardTitle>
-                    <CardDescription>Track user registrations over time with interactive charts.</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <RegistrationChart users={users} timeRange={chartTimeRange} onTimeRangeChange={setChartTimeRange} />
-                  </CardContent>
-                </Card>
+        
 
                 <div>
                   <PageHeader
@@ -1401,6 +1452,14 @@ export default function AdminPage() {
         </Dialog>
         </>
       </Layout>
+      
+      {/* Onboarding Wizard for Testing */}
+      {showOnboardingWizard && (
+        <OnboardingWizard
+          open={showOnboardingWizard}
+          onComplete={handleOnboardingComplete}
+        />
+      )}
     </BranchProvider>
   );
 }
