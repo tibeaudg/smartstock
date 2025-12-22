@@ -1160,15 +1160,14 @@ export default function CategorysPage() {
 
   // Helper to get ordered visible columns
   const getOrderedVisibleColumns = React.useMemo(() => {
-    // Filter visible columns based on isColumnVisible check
+    // Filter visible columns based on visibility check (inline logic to avoid function dependency)
     let visible = visibleColumns.filter(col => {
+      // Special handling for SKU column - respect showSKUColumn state
       if (col === 'sku' && !showSKUColumn) {
         return false;
       }
       return true;
     });
-
-
 
     // If we have a column order, use it to order the visible columns
     if (columnOrder && columnOrder.length > 0 && viewMode !== 'daily-ops') {
@@ -1193,6 +1192,7 @@ export default function CategorysPage() {
       'category_name': { label: 'Category', sortKey: 'name', align: 'left' }, // Always visible - critical identifier
       'name': { label: 'Product', sortKey: 'name', align: 'left', width: 'w-1/3' }, // Always visible - critical column
       'warehouses': { label: 'Warehouses', sortKey: 'warehouses', align: 'left', responsive: 'hidden md:table-cell', width: 'w-1/8' },
+      'storage': { label: 'Storage', sortKey: 'warehouses', align: 'left', responsive: 'hidden md:table-cell', width: 'w-1/8' },
       'stock': { label: 'Stock', sortKey: 'stock', align: 'left', width: 'w-1/8' }, // Always visible - critical column
       'reorder': { label: 'Reorder', align: 'left', responsive: 'hidden lg:table-cell' },
       'data_health': { label: 'Data Health', align: 'left', responsive: 'hidden lg:table-cell' },
@@ -1203,7 +1203,15 @@ export default function CategorysPage() {
     };
 
     const config = columnConfigs[columnId];
-    if (!config) return null;
+    if (!config) {
+      // Return empty header to maintain column alignment (should not happen if getOrderedVisibleColumns is correct)
+      return (
+        <th
+          key={columnId}
+          className="px-3 sm:px-4 py-3 border-r border-gray-200 border-b-2 border-gray-300"
+        />
+      );
+    }
 
     const isSortable = !!config.sortKey;
     const sortKey = config.sortKey || columnId;
@@ -1247,8 +1255,7 @@ export default function CategorysPage() {
     variantIndex?: number,
     isLastVariant?: boolean
   ): React.ReactNode => {
-    if (!isColumnVisible(columnId)) return null;
-
+    // Note: Visibility is already filtered by getOrderedVisibleColumns
     switch (columnId) {
       case 'urgency': {
         const urgencyScore = getUrgencyScore(product);
@@ -1797,7 +1804,14 @@ export default function CategorysPage() {
         );
 
       default:
-        return null;
+        // Return empty cell to maintain column alignment (should not happen if getOrderedVisibleColumns is correct)
+        return (
+          <td 
+            className={cn(
+              "px-3 sm:px-4 py-0 border-r border-gray-100"
+            )}
+          />
+        );
     }
   };
 

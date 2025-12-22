@@ -948,7 +948,7 @@ export default function AddProductPage() {
   return (
     <>
       {/* Main AddProductPage Content */}
-      <div className="h-full flex flex-col bg-white">
+      <div className="h-full flex flex-col bg-white ">
         {/* Header */}
         <div className="border-b px-6 py-4 bg-white">
           <div className="flex items-center gap-4">
@@ -1481,6 +1481,9 @@ export default function AddProductPage() {
                     </div>
                   </CollapsibleContent>
                 </Collapsible>
+
+                {/* Subtle visual separator */}
+                <div className="border-t border-gray-200 my-6"></div>
 
                 {/* Variants Section */}
                 <div className="space-y-4">
