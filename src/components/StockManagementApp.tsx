@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useLocation, Outlet } from 'react-router-dom';
+import { useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
 import { OnboardingWizard } from './OnboardingWizard';
@@ -28,6 +28,7 @@ export const StockManagementApp: React.FC = () => {
   const { hasNoBranches, hasError } = useBranches();
   const { shouldShowOnboarding, isLoading: isLoadingOnboarding } = useOnboardingCheck();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Show loading state while auth is being determined
   if (loading) {
@@ -78,8 +79,8 @@ export const StockManagementApp: React.FC = () => {
   if (!userProfile) return null;
 
   const handleOnboardingComplete = () => {
-    // Refresh the page to ensure all data is up to date
-    window.location.reload();
+    // Redirect to categories page after onboarding completion
+    navigate('/categories');
   };
 
   return (

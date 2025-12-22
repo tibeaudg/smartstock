@@ -27,6 +27,7 @@ import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface OnboardingWizardProps {
   open: boolean;
@@ -58,6 +59,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
   const { user } = useAuth();
   const { setActiveBranch, refreshBranches } = useBranches();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [createdBranchId, setCreatedBranchId] = useState<string | null>(null);
@@ -242,9 +244,10 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
 
       setIsComplete(true);
 
-      // Auto-close after 2 seconds
+      // Auto-close after 2 seconds and redirect to categories
       setTimeout(() => {
         onComplete();
+        navigate('/categories');
       }, 2000);
     } catch (error: any) {
       console.error('Error creating product:', error);
@@ -271,7 +274,13 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
               Your organization, branch, and first product have been set up successfully.
               You're all set to start managing your inventory!
             </DialogDescription>
-            <Button onClick={onComplete} className="w-full">
+            <Button 
+              onClick={() => {
+                onComplete();
+                navigate('/categories');
+              }} 
+              className="w-full"
+            >
               Get Started
             </Button>
           </div>

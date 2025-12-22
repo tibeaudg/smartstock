@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, ChevronUp, ChevronDown, Download, RotateCcw, Trash2, Search, Activity, Sparkles } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
-import { AdminNotificationManager } from '@/components/AdminNotificationManager';
-import { AdminChatList } from '@/components/AdminChatList';
-import { SystemOverview } from '@/components/admin/SystemOverview';
-import { RecentErrors } from '@/components/admin/RecentErrors';
-import { BackgroundJobs } from '@/components/admin/BackgroundJobs';  
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -26,6 +22,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
 import { OnboardingWizard } from '@/components/OnboardingWizard';
+import { AdminChatList } from '@/components/AdminChatList';
+import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 
 // User management types
 type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'branches' | 'linkedUsers' | 'cus' | 'created';
@@ -518,7 +516,7 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications'>('overview');
+  const [activeTab, setActiveTab] = useState<'users' | 'onboarding' | 'chats' | 'notifications'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -778,20 +776,11 @@ export default function AdminPage() {
     };
   }, [currentUser?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications'; label: string }[] = [
-    { id: 'overview', label: 'System Overview' },
+  const sidebarNavItems: { id: 'users' | 'onboarding' | 'chats' | 'notifications'; label: string }[] = [
     { id: 'users', label: 'User Management' },
-    { id: 'errors', label: 'Recent Errors' },
-    { id: 'jobs', label: 'Background Jobs' },
+    { id: 'onboarding', label: 'Test Onboarding' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
-  ];
-  
-  // Submenu items for System Overview (MVP features)
-  const systemOverviewSubmenu: { id: 'overview' | 'errors' | 'jobs'; label: string; icon?: string }[] = [
-    { id: 'overview', label: 'System Overview' },
-    { id: 'errors', label: 'Recent Errors' },
-    { id: 'jobs', label: 'Background Jobs' },
   ];
   
   // Access control - only owners can view the admin page
@@ -809,8 +798,7 @@ export default function AdminPage() {
 
     try {
       // Reset onboarding status to null for testing
-      const { error } = await supabase
-        .from('profiles')
+      const { error } = await (supabase.from('profiles') as any)
         .update({ onboarding: null })
         .eq('id', currentUser.id);
 
@@ -831,8 +819,8 @@ export default function AdminPage() {
 
   const handleOnboardingComplete = () => {
     setShowOnboardingWizard(false);
-    // Refresh the page to ensure all data is up to date
-    window.location.reload();
+    // Redirect to categories page after onboarding completion
+    navigate('/categories');
   };
 
   if (!userProfile || userProfile.is_owner !== true) {
@@ -859,102 +847,36 @@ export default function AdminPage() {
           {/* Top navigation bar - responsive design */}
           <div className="w-full">
             <div className="mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-6 py-6">
-              {/* Mobile: Vertical tab navigation */}
-              {isMobile ? (
-                <div className="space-y-2">
-                  <nav className="flex flex-col gap-1">
-                    {sidebarNavItems.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => setActiveTab(item.id)}
-                        className={`
-                          w-full text-left px-3 py-2 rounded-lg transition-colors border text-sm
-                          ${
-                            activeTab === item.id
-                              ? 'bg-blue-50 text-blue-700 border-blue-200'
-                              : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
-                          }
-                        `}
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                  </nav>
-                </div>
-              ) : (
-                /* Desktop: Horizontal tab navigation with submenu for System Overview */
-                <>
-                  <nav className="flex flex-wrap items-center gap-2 font-semibold text-sm">
-                    {/* System Overview with submenu */}
-                    <div className="relative group">
-                      <button
-                        onClick={() => setActiveTab('overview')}
-                        className={`
-                          px-3 py-2 rounded-lg transition-colors border flex items-center gap-2
-                          ${
-                            ['overview', 'errors', 'jobs'].includes(activeTab)
-                              ? 'bg-blue-50 text-blue-700 border-blue-200'
-                              : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
-                          }
-                        `}
-                      >
-                        System Overview
-                        <ChevronDown className={`w-4 h-4 transition-transform ${['overview', 'errors', 'jobs'].includes(activeTab) ? 'rotate-180' : ''}`} />
-                      </button>
-                      
-                      {/* Submenu dropdown */}
-                      <div className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        <div className="py-1">
-                          {systemOverviewSubmenu.map((subItem) => (
-                            <button
-                              key={subItem.id}
-                              onClick={() => setActiveTab(subItem.id)}
-                              className={`
-                                w-full text-left px-4 py-2 text-sm transition-colors
-                                ${
-                                  activeTab === subItem.id
-                                    ? 'bg-blue-50 text-blue-700 font-medium'
-                                    : 'text-gray-700 hover:bg-gray-50'
-                                }
-                              `}
-                            >
-                              {subItem.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Other main navigation items */}
-                    {sidebarNavItems
-                      .filter(item => !['overview', 'errors', 'jobs'].includes(item.id))
-                      .map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => setActiveTab(item.id)}
-                          className={`
-                            px-3 py-2 rounded-lg transition-colors border
-                            ${
-                              activeTab === item.id
-                                ? 'bg-blue-50 text-blue-700 border-blue-200'
-                                : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
-                            }
-                          `}
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                  </nav>
-                </>
-              )}
+              {/* Tab navigation */}
+              <nav className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2 font-semibold text-sm`}>
+                {sidebarNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`
+                      ${isMobile ? 'w-full text-left' : ''} px-3 py-2 rounded-lg transition-colors border
+                      ${
+                        activeTab === item.id
+                          ? 'bg-blue-50 text-blue-700 border-blue-200'
+                          : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
+                      }
+                    `}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
             </div>
           </div>
 
           {/* Main content area */}
           <div className="w-full flex-grow space-y-8 mb-24">
-            {activeTab === 'overview' && (
+            {activeTab === 'onboarding' && (
               <div className="space-y-8">
-                {/* Test Onboarding Button - Development Only */}
+                <PageHeader
+                  title="Test Onboarding Flow"
+                  description="Manually trigger the onboarding wizard for testing purposes. This will reset your onboarding status."
+                />
                 <Card className="border-2 border-dashed border-orange-300 bg-orange-50/50">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -962,7 +884,7 @@ export default function AdminPage() {
                       Test Onboarding Wizard
                     </CardTitle>
                     <CardDescription>
-                      Manually trigger the onboarding wizard for testing purposes. This will reset your onboarding status.
+                      Click the button below to reset your onboarding status and trigger the onboarding wizard. This is useful for testing the onboarding flow.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -976,17 +898,7 @@ export default function AdminPage() {
                     </Button>
                   </CardContent>
                 </Card>
-                <SystemOverview />
               </div>
-            )}
-            {activeTab === 'errors' && (
-              <RecentErrors />
-            )}
-            {activeTab === 'jobs' && (
-              <BackgroundJobs />
-            )}
-            {activeTab === 'notifications' && (
-              <AdminNotificationManager />
             )}
             {activeTab === 'users' && (
               <div className="space-y-8">
@@ -1426,9 +1338,12 @@ export default function AdminPage() {
               </div>
             )}
 
-   
             {activeTab === 'chats' && (
               <AdminChatList />
+            )}
+
+            {activeTab === 'notifications' && (
+              <AdminNotificationManager />
             )}
 
           </div>

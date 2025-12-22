@@ -26,11 +26,17 @@ export function useOnboardingCheck() {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
+  // Only show onboarding if:
+  // 1. User is authenticated
+  // 2. User profile exists
+  // 3. User has 0 products (new user)
+  // 4. Onboarding status is null (not started) - NOT 'done' or 'in_progress'
+  // This ensures onboarding only triggers once right after signup
   const shouldShowOnboarding =
     !!user &&
     !!userProfile &&
     (productCount ?? 0) === 0 &&
-    (userProfile.onboarding === null || userProfile.onboarding !== 'done');
+    userProfile.onboarding === null;
 
   const isLoading = isLoadingProducts || !user || !userProfile;
 
