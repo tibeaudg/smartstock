@@ -49,28 +49,12 @@ export interface UsageTracking {
 }
 
 export interface UseSubscriptionReturn {
-  pricingTiers: PricingTier[];
-  currentSubscription: UserSubscription | null;
-  usageTracking: UsageTracking | null;
   currentTier: PricingTier | null;
   nextTier: PricingTier | null;
   productCount: number;
   isLoading: boolean;
   error: unknown;
-  startTrial: () => void;
-  subscribe: () => void;
-  cancelSubscription: () => void;
-  updateUsage: (updates: Partial<UsageTracking>) => void;
-  isStartingTrial: boolean;
-  isSubscribing: boolean;
-  isCancelling: boolean;
-  isUpdatingUsage: boolean;
-  isTrialActive: boolean;
-  isSubscriptionActive: boolean;
   canUseFeature: (featureName: string) => boolean;
-  isWithinLimits: (type: 'products' | 'users' | 'branches' | 'orders') => boolean;
-  getRemainingLimit: (type: 'products' | 'users' | 'branches' | 'orders') => number | null;
-  shouldContactSales: () => boolean;
 }
 
 // Free tier configuration - all features are free
@@ -140,39 +124,12 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
 
   // All features are free - return free tier for everyone
   const result: UseSubscriptionReturn = {
-    // Data - all users get free tier
-    pricingTiers: [FREE_TIER],
-    currentSubscription: null, // No subscriptions needed
-    usageTracking: null, // No usage tracking needed
     currentTier: FREE_TIER,
     nextTier: null, // No upgrades needed
     productCount: productCountFallback ?? 0,
-
-    // Loading states
     isLoading: false,
-
-    // Errors
     error: null,
-
-    // Mutations - no-op functions since everything is free
-    startTrial: () => {},
-    subscribe: () => {},
-    cancelSubscription: () => {},
-    updateUsage: () => {},
-
-    // Mutation states
-    isStartingTrial: false,
-    isSubscribing: false,
-    isCancelling: false,
-    isUpdatingUsage: false,
-
-    // Helper functions - everything is always available
-    isTrialActive: false,
-    isSubscriptionActive: true, // Always active since it's free
     canUseFeature: () => true, // All features are free
-    isWithinLimits: () => true, // No limits
-    getRemainingLimit: () => null, // Unlimited
-    shouldContactSales: () => false,
   };
 
   return result;

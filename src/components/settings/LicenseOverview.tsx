@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { Loader2, Package, Sparkles } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -10,9 +9,7 @@ export const LicenseOverview = () => {
   const { formatPrice } = useCurrency();
   const {
     currentTier,
-    nextTier,
     productCount,
-    usageTracking,
     isLoading,
     error,
   } = useSubscription();
@@ -21,7 +18,7 @@ export const LicenseOverview = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[240px] text-center">
         <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-2" />
-        <p className="text-sm text-muted-foreground">Loading your subscription details…</p>
+        <p className="text-sm text-muted-foreground">Loading your plan details…</p>
       </div>
     );
   }
@@ -30,7 +27,7 @@ export const LicenseOverview = () => {
     return (
       <Card className="border-red-200 bg-red-50">
         <CardHeader>
-          <CardTitle className="text-red-700">Unable to load subscription</CardTitle>
+          <CardTitle className="text-red-700">Unable to load plan details</CardTitle>
           <CardDescription className="text-red-600">
             Please refresh the page or contact support if the issue persists.
           </CardDescription>
@@ -40,20 +37,6 @@ export const LicenseOverview = () => {
   }
 
   const currentProducts = productCount ?? 0;
-  const includedProducts = currentTier?.included_products ?? null;
-  const isUnlimited = includedProducts === null;
-  const planPrice = currentTier?.price_monthly ?? 0;
-  const progressValue = isUnlimited || includedProducts === 0
-    ? 0
-    : Math.min(100, (currentProducts / includedProducts) * 100);
-
-  const remainingProducts = !isUnlimited && includedProducts !== null
-    ? Math.max(0, includedProducts - currentProducts)
-    : null;
-
-  const nextPlanMessage = nextTier
-    ? `${nextTier.display_name} • ${nextTier.included_products ?? 'Unlimited'} products • ${formatPrice(nextTier.price_monthly)}`
-    : 'You are on the highest available plan.';
 
   return (
     <div className="space-y-6">
@@ -65,11 +48,11 @@ export const LicenseOverview = () => {
             </div>
             <div>
               <CardTitle>Plan</CardTitle>
-              <CardDescription>Current monthly estimate</CardDescription>
+              <CardDescription>Completely free with unlimited usage</CardDescription>
             </div>
           </div>
-          <Badge variant="outline" className="mt-2 sm:mt-0">
-            {currentTier?.display_name ?? 'No plan'} plan
+          <Badge variant="outline" className="mt-2 sm:mt-0 bg-green-100 text-green-800">
+            {currentTier?.display_name ?? 'Free'} Forever
           </Badge>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -79,32 +62,20 @@ export const LicenseOverview = () => {
               <p className="text-xl font-semibold text-foreground">{currentTier?.display_name ?? 'Free'}</p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-muted-foreground">Estimated monthly charge</p>
-              <p className="text-xl font-semibold text-foreground">{formatPrice(planPrice)}</p>
+              <p className="text-sm text-muted-foreground">Monthly cost</p>
+              <p className="text-xl font-semibold text-foreground">{formatPrice(0)}</p>
             </div>
           </div>
 
-          <div className="rounded-lg border bg-slate-50 p-4">
+          <div className="rounded-lg border bg-green-50 p-4">
             <div className="flex items-center justify-between text-sm font-medium text-foreground">
-              <span>{currentProducts} products</span>
-              <span>
-                {isUnlimited
-                  ? 'Unlimited'
-                  : `${includedProducts} included`}
-              </span>
+              <span>{currentProducts.toLocaleString()} products</span>
+              <span className="text-green-700">Unlimited</span>
             </div>
-            <Progress value={progressValue} className="mt-2" />
-            <div className="mt-3 flex items-center justify-between text-sm text-muted-foreground">
-              <span>
-                {isUnlimited
-                  ? 'Plan includes unlimited products.'
-                  : remainingProducts !== null && remainingProducts > 0
-                    ? `${remainingProducts} products left before automatic upgrade`
-                    : 'Limit reached — your plan will automatically upgrade to accommodate your growing inventory.'}
-              </span>
+            <div className="mt-3 text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
-                <Sparkles className="h-4 w-4 text-blue-500" />
-                <span>{nextPlanMessage}</span>
+                <Sparkles className="h-4 w-4 text-green-600" />
+                <span>All features included at no cost. No limits, no subscriptions, free forever.</span>
               </span>
             </div>
           </div>

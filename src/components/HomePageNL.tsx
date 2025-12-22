@@ -19,7 +19,6 @@ import { logger } from '../lib/logger';
 import { useCurrency } from '@/hooks/useCurrency';
 import { generateComprehensiveStructuredData } from '../lib/structuredData';
 import { useAuth } from '@/hooks/useAuth';
-import { useSubscription } from '@/hooks/useSubscription';
 import { useIsMobile } from '@/hooks/useWindowSize';
 import { SavingsCalculator } from './SavingsCalculator';
 import Footer from './Footer';

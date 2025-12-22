@@ -9,8 +9,6 @@ import {
   Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
-import { useSubscription } from '@/hooks/useSubscription';
 import { toast } from 'sonner';
 
 interface SupportModalProps {
@@ -35,11 +33,6 @@ export const SupportModal: React.FC<SupportModalProps> = ({
   'aria-describedby': ariaDescribedBy
 }) => {
   const [phoneOpen, setPhoneOpen] = useState(false);
-  const { userProfile } = useAuth();
-  const { currentTier } = useSubscription();
-
-  // Check plan access based on current tier
-  const isPremiumOnly = currentTier?.name === 'premium';
 
   const supportOptions: SupportOption[] = [
     {
@@ -59,8 +52,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
       description: 'Direct phone contact with our support team',
       icon: Phone,
       action: () => setPhoneOpen(true),
-      color: 'bg-orange-500',
-      disabled: !isPremiumOnly
+      color: 'bg-orange-500'
     },
     {
       id: 'email',
@@ -111,7 +103,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
           style={{ left: '50%', transform: 'translate(-50%, -50%)', width: '600px' }}
           onClick={(e) => e.stopPropagation()}
         >
-        <SupportContent onClose={onClose} supportOptions={supportOptions} isPremiumOnly={isPremiumOnly} />
+        <SupportContent onClose={onClose} supportOptions={supportOptions} />
       </div>
 
       {/* Mobile Position */}
@@ -119,12 +111,12 @@ export const SupportModal: React.FC<SupportModalProps> = ({
         className="absolute inset-x-4 top-1/2 -translate-y-1/2 md:hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <SupportContent onClose={onClose} supportOptions={supportOptions} isPremiumOnly={isPremiumOnly} />
+        <SupportContent onClose={onClose} supportOptions={supportOptions} />
         </div>
       </div>
 
-      {/* Phone Modal - Only show for Premium users */}
-      {phoneOpen && isPremiumOnly && (
+      {/* Phone Modal */}
+      {phoneOpen && (
         <PhoneModal 
           open={phoneOpen} 
           onClose={() => setPhoneOpen(false)} 
@@ -138,10 +130,9 @@ export const SupportModal: React.FC<SupportModalProps> = ({
 interface SupportContentProps {
   onClose: () => void;
   supportOptions: SupportOption[];
-  isPremiumOnly: boolean;
 }
 
-const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions, isPremiumOnly }) => {
+const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions }) => {
   return (
     <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-auto flex flex-col max-h-[700px] overflow-hidden">
       {/* Header */}
@@ -187,54 +178,25 @@ const SupportContent: React.FC<SupportContentProps> = ({ onClose, supportOptions
                       : 'border-gray-200 hover:border-gray-300 hover:shadow-md bg-white hover:bg-gray-50'
                     }
                   `}
-                  title={isDisabled ? 'Available on Premium plan - Upgrade as you grow' : undefined}
                 >
                   <div className="flex items-start gap-4">
                     <div className={`
                       w-10 h-10 ${option.color} rounded-lg flex items-center justify-center flex-shrink-0 
-                      ${!isDisabled ? 'group-hover:scale-105' : ''} transition-transform
+                      group-hover:scale-105 transition-transform
                     `}>
                       <Icon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className={`
-                        font-semibold transition-colors
-                        ${isDisabled 
-                          ? 'text-gray-500' 
-                          : 'text-gray-900 group-hover:text-blue-600'
-                        }
-                      `}>
+                      <h3 className="font-semibold transition-colors text-gray-900 group-hover:text-blue-600">
                         {option.title}
-                        {isDisabled && (
-                          <span className="ml-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">
-                            Premium
-                          </span>
-                        )}
                       </h3>
-                      <p className={`
-                        text-sm mt-1 leading-relaxed
-                        ${isDisabled ? 'text-gray-500' : 'text-gray-600'}
-                      `}>
+                      <p className="text-sm mt-1 leading-relaxed text-gray-600">
                         {option.description}
                       </p>
                     </div>
-                    <ChevronRight className={`
-                      w-5 h-5 flex-shrink-0 transition-colors
-                      ${isDisabled 
-                        ? 'text-gray-300' 
-                        : 'text-gray-400 group-hover:text-blue-500'
-                      }
-                    `} />
+                    <ChevronRight className="w-5 h-5 flex-shrink-0 transition-colors text-gray-400 group-hover:text-blue-500" />
                   </div>
                 </button>
-                
-                {/* Tooltip for disabled options */}
-                {isDisabled && (
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
-                    Available on Premium plan - Upgrade as you grow
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                  </div>
-                )}
               </div>
             );
           })}

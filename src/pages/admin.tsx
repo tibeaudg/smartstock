@@ -10,7 +10,6 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import { AdminChatList } from '@/components/AdminChatList';
-import { AdminSubscriptionManagement } from '@/components/admin/SubscriptionManagement';
 import { SystemOverview } from '@/components/admin/SystemOverview';
 import { RecentErrors } from '@/components/admin/RecentErrors';
 import { BackgroundJobs } from '@/components/admin/BackgroundJobs';  
@@ -518,7 +517,7 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications' | 'subscription-management'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications'>('overview');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -777,14 +776,13 @@ export default function AdminPage() {
     };
   }, [currentUser?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications' | 'subscription-management'; label: string }[] = [
+  const sidebarNavItems: { id: 'overview' | 'users' | 'errors' | 'jobs' | 'chats' | 'notifications'; label: string }[] = [
     { id: 'overview', label: 'System Overview' },
     { id: 'users', label: 'User Management' },
     { id: 'errors', label: 'Recent Errors' },
     { id: 'jobs', label: 'Background Jobs' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
-    { id: 'subscription-management', label: 'Subscription Management' },
   ];
   
   // Submenu items for System Overview (MVP features)
@@ -1380,9 +1378,6 @@ export default function AdminPage() {
    
             {activeTab === 'chats' && (
               <AdminChatList />
-            )}
-            {activeTab === 'subscription-management' && (
-              <AdminSubscriptionManagement />
             )}
 
           </div>

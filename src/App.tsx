@@ -62,7 +62,6 @@ import ResourcesPage from './pages/resources';
 import CustomersPage from './pages/customers';
 import CustomerDetailPage from './pages/customers/[id]';
 import ReportingPage from './pages/reporting';
-import { AdminSubscriptionManagement } from './components/admin/SubscriptionManagement';
 import { AuthContext } from './hooks/useAuth';
 import WarehousePage from "./pages/WarehousePage";
 
@@ -454,10 +453,9 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         >
-          <Route element={<Admin />}>
+            <Route element={<Admin />}>
             <Route path="notifications" element={<AdminNotificationsPage />} />
             <Route path="chat" element={<AdminChatList />} />
-            <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
 
             <Route path="user/:id" element={<AdminUserDetailPage />} />
           </Route>

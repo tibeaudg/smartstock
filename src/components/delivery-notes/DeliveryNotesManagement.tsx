@@ -27,7 +27,7 @@ export const DeliveryNotesManagement: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (isLoading || statsLoading) {
+  if (statsLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -37,24 +37,14 @@ export const DeliveryNotesManagement: React.FC = () => {
   }
 
   return (
-    <ModuleFeatureGate
-      moduleId="delivery-notes"
-      moduleTitle="Leveringsbonnen Beheer"
-      moduleDescription="Volledig beheer van inkomende en uitgaande leveringsbonnen met automatische voorraad updates"
-      modulePrice={14.99}
-    >
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Leveringsbonnen Beheer</h1>
-            <p className="text-gray-600 mt-2">Beheer inkomende en uitgaande leveringsbonnen</p>
-          </div>
-          <Badge className="bg-green-100 text-green-800">
-            <Package className="w-3 h-3 mr-1" />
-            Premium Module
-          </Badge>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Leveringsbonnen Beheer</h1>
+          <p className="text-gray-600 mt-2">Beheer inkomende en uitgaande leveringsbonnen</p>
         </div>
+      </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -140,7 +130,6 @@ export const DeliveryNotesManagement: React.FC = () => {
             <Outlet />
           </TabsContent>
         </Tabs>
-      </div>
-    </ModuleFeatureGate>
+    </div>
   );
 };
