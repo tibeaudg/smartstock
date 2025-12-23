@@ -6,10 +6,10 @@ import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
-const topicTitle = "Using Barcodes In Manufacturing";
+const topicTitle = "Barcode System for Manufacturing: Benefits & How it Works";
 const canonicalPath = "/using-barcodes-in-manufacturing";
-const metaDescription = "Complete guide to using barcodes in manufacturing. Learn how barcode systems improve production tracking, inventory accuracy, quality control, and manufacturing efficiency.";
-const keywords = "barcodes in manufacturing, manufacturing barcodes, barcode manufacturing, barcode production tracking, manufacturing barcode system, barcode manufacturing process";
+const metaDescription = "Barcode system for manufacturing improves inventory management, production tracking, and order fulfilment. Learn how barcode systems work with real-time data.";
+const keywords = "barcode system for manufacturing, barcode systems for manufacturing, manufacturing barcode system, inventory management, production process, real-time data, order fulfilment, barcode manufacturing";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Using barcodes in manufacturing improves production tracking, inventory accuracy, quality control, and efficiency. Barcodes track raw materials, work-in-progress (WIP), finished goods, and components throughout the manufacturing process. Benefits include: real-time production tracking, improved inventory accuracy (95-99%), faster data entry, reduced errors, better quality control, and traceability. Barcodes enable manufacturers to track materials from receipt through production to finished goods, ensuring accurate records and efficient operations.";
 const takeaways = [
@@ -67,8 +67,8 @@ const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Using Barcodes In Manufacturing",
-    "description": "Deep dive into Using Barcodes In Manufacturing. Learn practical ideas, implementation steps, and metrics so your team can apply Using Barcodes In Manufacturing with StockFlow.",
+    "headline": "Barcode System for Manufacturing: Benefits & How it Works",
+    "description": "Complete guide to barcode systems for manufacturing. Learn how barcode systems improve inventory management, production tracking, order fulfilment, and manufacturing efficiency with real-time data.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -110,7 +110,7 @@ export default function SeoUsingBarcodesInManufacturingPage() {
       
     >
       <SEO
-        title={`Using Barcodes In Manufacturing 2025 - Complete Guide | StockFlow`}
+        title={`Barcode System for Manufacturing: How it Works | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -123,7 +123,7 @@ export default function SeoUsingBarcodesInManufacturingPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Using Barcodes in Manufacturing</h2>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a barcode system for manufacturing?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Manual tracking in manufacturing doesn't just slow things down—it creates errors that cascade through production. One manufacturer we worked with reduced production errors by 85% simply by implementing barcode scanning. The improvement wasn't just in accuracy; it was in speed—tracking that took 3 hours daily now takes 15 minutes.
             </p>

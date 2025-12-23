@@ -117,8 +117,8 @@ export default function BillOfMaterialsManagementSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="BOM Software 2025: Save 30% Waste, 5-10h/Week | StockFlow"
-        description="Get bill of materials management software for manufacturing. Create BOMs, track components, calculate requirements. FREE plan (30 products). Reduce waste 30%, save 5-10 hours/week. Join for Free - no credit card required."
+        title="BOM Software 2025: Free Plan + Save 30% Waste | StockFlow"
+        description="Get bill of materials management software with FREE plan. Create BOMs, track components, calculate requirements. Reduce waste 30%, save 5-10 hours/week. Join for Free - no credit card required."
         keywords="bill of materials management software, bom management software, bill of materials software, bom software, bill of materials system, bom management system, manufacturing bom software, assembly bom software, production bom software, multi-level bom software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/bill-of-materials-management-software"
       />

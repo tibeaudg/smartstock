@@ -135,8 +135,8 @@ export default function InventoryOptimizationServices() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Optimization Services 2025 | Expert Consulting | StockFlow"
-        description="Professional inventory optimization services , improve cash flow, and optimize stock levels. Expert analysis, demand forecasting, and strategic recommendations. Free software alternative available."
+        title="Inventory Optimization 2025: Free Software | StockFlow"
+        description="Professional inventory optimization services to reduce costs 20-30%, improve cash flow, and optimize stock levels. FREE software alternative available. Join for Free - no credit card required."
         keywords="inventory optimization services, inventory optimization consulting, inventory optimization company, inventory optimization experts, professional inventory optimization, inventory optimization analysis, inventory optimization solutions, inventory management optimization, stock optimization services, stockflow, stock flow"
         url="https://www.stockflowsystems.com/inventory-optimization-services"
       />

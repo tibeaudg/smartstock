@@ -106,17 +106,17 @@ export default function BillOfMaterialsInventoryManagement() {
 
   return (
     <SeoPageLayout
-      title="Bill of Materials Inventory Management | BOM & Inventory Integration"
+      title="Bill of Materials Inventory Management | StockFlow"
       heroTitle="Bill of Materials Inventory Management"
       description="Complete bill of materials inventory management system. Track components and finished goods, calculate material requirements, and manage production with integrated BOM and inventory tracking."
       updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
-        title="BOM Inventory Management 2025 | Integrated System | StockFlow"
-        description="Integrated bill of materials inventory management tracks components and finished goods in one system. Calculate material requirements automatically, prevent production delays, and optimize purchasing. Free plan available."
+        title="Free Bill of Materials Inventory Management 2025 | StockFlow"
+        description="Integrated BOM and inventory management software. Track components and finished goods, calculate requirements automatically. FREE plan - no credit card."
         keywords="bill of materials inventory management, bom inventory management, inventory management with bill of materials, bom and inventory management, bill of materials stock management, manufacturing inventory with bom, production inventory management, assembly inventory with bom, integrated bom inventory, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/bill-of-materials-inventory-management"
+        url="https://www.stockflow.be/bill-of-materials-inventory-management"
       />
 
       {/* Proprietary Metrics */}
@@ -143,12 +143,8 @@ export default function BillOfMaterialsInventoryManagement() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
-              Bill of Materials Inventory Management
-            </h2>
-            
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              Integrate <strong>bill of materials</strong> with <strong>inventory management</strong> to track components and finished goods in one unified system. Automatically calculate material requirements, check component availability, and optimize production planning based on real-time inventory levels.
+              Complete <strong>bill of materials inventory management</strong> solution that integrates BOM structures with real-time inventory tracking. Track components and finished goods in one unified system, automatically calculate material requirements, check component availability, and optimize production planning based on current inventory levels. Perfect for manufacturers who need <strong>inventory management software with bill of materials</strong> capabilities.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
@@ -188,7 +184,7 @@ export default function BillOfMaterialsInventoryManagement() {
           </p>
 
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            For manufacturing businesses, <strong>bill of materials inventory management</strong> is essential because it eliminates the disconnect between production planning and inventory availability. Instead of manually calculating material needs and checking inventory separately, the integrated system does both automatically, ensuring you always have the right materials available when needed. StockFlow combines comprehensive <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with powerful <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">BOM management software</Link> functionality for complete production control. Learn more about <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link> integration.
+            For manufacturing businesses, <strong>bill of materials inventory management</strong> is essential because it eliminates the disconnect between production planning and inventory availability. Instead of manually calculating material needs and checking inventory separately, the integrated system does both automatically, ensuring you always have the right materials available when needed. StockFlow provides <strong>inventory management software with bill of materials</strong> integration that combines comprehensive <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with powerful <Link to="/bill-of-materials-management-software" className="text-blue-600 hover:underline font-semibold">BOM management software</Link> functionality for complete production control. Our <strong>inventory management software bill of materials</strong> solution helps manufacturers streamline operations and reduce production delays. Learn more about <Link to="/solutions/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline font-semibold">inventory management software with bill of materials</Link> integration.
           </p>
         </div>
       </section>
@@ -308,7 +304,7 @@ export default function BillOfMaterialsInventoryManagement() {
           ],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflowsystems.com/bill-of-materials-inventory-management"
+            "@id": "https://www.stockflow.be/bill-of-materials-inventory-management"
           }
         },
         {
@@ -325,14 +321,14 @@ export default function BillOfMaterialsInventoryManagement() {
             "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://www.stockflowsystems.com/logo.png"
+              "url": "https://www.stockflow.be/logo.png"
             }
           },
           "datePublished": "2024-01-01",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflowsystems.com/bill-of-materials-inventory-management"
+            "@id": "https://www.stockflow.be/bill-of-materials-inventory-management"
           }
         }
       ]} />

@@ -53,14 +53,14 @@ export default function BestInventoryManagementSoftware() {
 
   return (
     <SeoPageLayout
-      title="Best Inventory Management Software 2025: Free vs Paid"
+      title="Best Inventory Management Software 2025: Top 10 Compared"
       heroTitle="Best Inventory Management Software 2025"
       updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
-        title="Best Inventory Software 2025: Completely Free Forever | StockFlow"
-        description="Best inventory management software 2025. Free forever - unlimited products, all features. Compare solutions: resilience, offline mode, unit-of-measure. Trusted by 1,000+."
+        title="Best Inventory Software 2025: Free Forever | StockFlow"
+        description="Best inventory management software 2025. Free forever - unlimited products, all features. Compare top 10 solutions with pricing, features, pros & cons. Join for Free."
         keywords="best inventory management software, best inventory software, top inventory management software, best inventory management software 2025, best inventory software for small business, inventory management software comparison, best inventory system, stockflow, stock flow"
         url="https://www.stockflowsystems.com/best-inventory-management-software"
       />

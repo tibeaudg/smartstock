@@ -5,6 +5,7 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Check, Package, BarChart3, RefreshCw, Users, Smartphone, Cloud, TrendingUp, AlertCircle, Zap, X } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { getRelatedPages } from '@/config/topicClusters';
+import { generateSoftwareApplicationSchema } from '@/lib/structuredData';
 
 export default function WatIsVoorraadbeheerSoftware() {
   usePageRefresh();
@@ -154,13 +155,13 @@ export default function WatIsVoorraadbeheerSoftware() {
   return (
     <SeoPageLayout 
       title="Wat is Voorraadbeheer Software?"
-      heroTitle="Wat is Voorraadbeheer Software?"
+      heroTitle="Wat is Voorraadbeheer Software? Complete Gids 2025"
       updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
-        title="Wat Is Voorraadbeheer Software 2025: Complete Gids | StockFlow"
-        description="Ontdek wat voorraadbeheer software is en hoe het werkt. Complete gids met uitleg. Bespaar 70% tijd, 25% kosten. GRATIS plan beschikbaar. Start gratis - geen creditcard vereist."
+        title="Wat Is Voorraadbeheer Software? | StockFlow"
+        description="Wat is voorraadbeheer software? Complete uitleg hoe het werkt. Bespaar 70% tijd en 25% kosten. Gratis plan. Start gratis."
         keywords="wat is voorraadbeheer software, voorraadbeheer software uitleg, hoe werkt voorraadbeheer, wat is voorraadbeheer, stockbeheer software, stockbeheer programma, programma stockbeheer, digitaal voorraadbeheer, automatisch voorraadbeheer, geautomatiseerd voorraadbeheer, voorraadbeheer bijhouden, werken met voorraadbeheer, voorraadbeheer software kiezen, voorraadbeheer belangrijk, stockbeheer betekenis, stockbeheer definitie, voorraadbeheer programma, software stockbeheer, voorraadbeheer in kleinhandel, stock beheer, stock programma, voorraadbeheer software gratis, software voor voorraadbeheer, voorraadbeheer voorbeeld, voorraadbeheer webshop, inventory management software, voorraad software, voorraadbeheer systeem"
         url="https://www.stockflowsystems.com/wat-is-voorraadbeheer-software"
       />
@@ -188,10 +189,10 @@ export default function WatIsVoorraadbeheerSoftware() {
           </div>
         </div>
         <p className="text-lg text-slate-800 leading-relaxed mb-6">
-          <strong>Voorraadbeheer software</strong> (ook wel <Link to="/stockbeheer-software" className="text-blue-600 hover:underline">stockbeheer software</Link> of <Link to="/stockbeheer-programma" className="text-blue-600 hover:underline">stockbeheer programma</Link> genoemd) automatiseert het bijhouden van je producten, voorraad en bestellingen. In deze complete gids leggen we uit wat <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline">voorraadbeheer software</Link> is, hoe het werkt en waarom je het nodig hebt.
+          <strong>Voorraadbeheer software</strong> (ook wel <Link to="/stockbeheer-software" className="text-blue-600 hover:underline">stockbeheer software</Link> of <Link to="/stockbeheer-programma" className="text-blue-600 hover:underline">stockbeheer programma</Link> genoemd) automatiseert het bijhouden van je producten, voorraad en bestellingen. <strong>Wat is voorraadbeheer software?</strong> Het is een <strong>digitaal voorraadbeheer</strong> systeem dat bedrijven helpt om hun voorraad automatisch te beheren, bij te houden en te optimaliseren. In deze complete gids leggen we uit wat <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline">voorraadbeheer software</Link> is, hoe het werkt en waarom je het nodig hebt.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          <strong>Digitaal voorraadbeheer</strong> betekent dat software automatisch je voorraad bijhoudt en beheert. Het registreert elke beweging en update je voorraad real-time, wat leidt tot <strong>70% tijdsbesparing</strong> en <strong>25% lagere voorraadkosten</strong>. In plaats van handmatig <Link to="/voorraadbeheer-excel" className="text-blue-600 hover:underline">voorraadbeheer met Excel</Link>, doe je dit nu automatisch met professionele software.
+          <strong>Digitaal voorraadbeheer</strong> betekent dat software automatisch je voorraad bijhoudt en beheert. Het registreert elke beweging en update je voorraad real-time, wat leidt tot <strong>70% tijdsbesparing</strong> en <strong>25% lagere voorraadkosten</strong>. In plaats van handmatig <Link to="/voorraadbeheer-excel" className="text-blue-600 hover:underline">voorraadbeheer met Excel</Link>, doe je dit nu automatisch met professionele software. <strong>Automatisch voorraadbeheer</strong> of <strong>geautomatiseerd voorraadbeheer</strong> werkt door middel van integraties met je verkoopkanalen, waardoor elke verkoop, inkoop of verplaatsing automatisch wordt geregistreerd.
         </p>
       </div>
 
@@ -208,19 +209,21 @@ export default function WatIsVoorraadbeheerSoftware() {
           </div>
 
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl mb-12">
-            <h3 className="text-2xl font-bold mb-4">Definitie</h3>
+            <h3 className="text-2xl font-bold mb-4">Wat is Voorraadbeheer Software? Definitie</h3>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
               <strong>Voorraadbeheer software</strong> (ook wel inventory management software, <Link to="/stockbeheer-software" className="text-blue-600 hover:underline">stockbeheer software</Link> of <Link to="/programma-stockbeheer" className="text-blue-600 hover:underline">programma stockbeheer</Link> genoemd) 
               is een <strong>digitaal voorraadbeheer</strong> systeem dat bedrijven helpt om hun voorraad te beheren, bij te houden en te optimaliseren. 
-              Het automatiseert het proces van voorraad tellen, registreren en analyseren.
+              Het automatiseert het proces van voorraad tellen, registreren en analyseren. <strong>Wat is voorraadbeheer?</strong> Het is het proces van het beheren van goederenstromen, van inkoop tot distributie, met als doel de juiste hoeveelheid producten op het juiste moment beschikbaar te hebben.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
               In plaats van handmatig met Excel of op papier je voorraad bij te houden, doet <strong>automatisch voorraadbeheer</strong> software dit automatisch. 
-              Het houdt bij wat je hebt, waar het zich bevindt, wanneer je moet bijbestellen en welke producten goed of slecht draaien.
+              Het houdt bij wat je hebt, waar het zich bevindt, wanneer je moet bijbestellen en welke producten goed of slecht draaien. 
+              <strong>Voorraadbeheer bijhouden</strong> wordt zo eenvoudig dat je 70% tijd bespaart op administratie.
             </p>
             <p className="text-gray-700 leading-relaxed">
               <strong>Geautomatiseerd voorraadbeheer</strong> betekent dat elke verkoop, inkoop of verplaatsing automatisch wordt geregistreerd. 
-              Je hoeft niet meer handmatig te tellen of Excel-bestanden bij te werken. De software doet dit voor je, waardoor je 70% tijd bespaart en 90% minder fouten maakt.
+              Je hoeft niet meer handmatig te tellen of Excel-bestanden bij te werken. De software doet dit voor je, waardoor je 70% tijd bespaart en 90% minder fouten maakt. 
+              Dit is wat <strong>digitaal voorraadbeheer</strong> onderscheidt van traditionele methoden zoals <Link to="/voorraadbeheer-excel" className="text-blue-600 hover:underline">voorraadbeheer met Excel</Link>.
             </p>
           </div>
 
@@ -386,8 +389,42 @@ export default function WatIsVoorraadbeheerSoftware() {
         </div>
       </section>
 
-      {/* Wat is Stockbeheer Section */}
+      {/* Wat is Voorraadbeheer Section - Direct Answer */}
       <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Wat is <span className="text-blue-600">Voorraadbeheer</span>?
+            </h2>
+            <p className="text-lg text-gray-600">
+              Een duidelijke uitleg van voorraadbeheer en waarom het belangrijk is
+            </p>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl mb-8">
+            <h3 className="text-2xl font-bold mb-4">Voorraadbeheer: Definitie en Betekenis</h3>
+            <p className="text-lg text-gray-700 leading-relaxed mb-4">
+              <strong>Wat is voorraadbeheer?</strong> Voorraadbeheer is het proces van het beheren van goederenstromen, van inkoop tot distributie, 
+              met als doel de juiste hoeveelheid producten op het juiste moment beschikbaar te hebben, zonder te veel of te weinig op voorraad te hebben. 
+              Het omvat het monitoren, beheren en controleren van je productvoorraad om te voorkomen dat je zonder voorraad komt te zitten (stockouts) 
+              of te veel voorraad hebt (overstock).
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              <strong>Voorraadbeheer betekenis:</strong> Het betekent inzicht hebben in je voorraden, weten wat je hebt, waar het zich bevindt, 
+              en hoe snel het verkoopt. Goed voorraadbeheer helpt je om kosten te beheersen, klanttevredenheid te verhogen en efficiënter te werken. 
+              Zonder goed voorraadbeheer loop je het risico op lege schappen, ontevreden klanten en verspilling van tijd en geld.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              <strong>Waarom is voorraadbeheer belangrijk?</strong> Het is belangrijk omdat het direct impact heeft op je winstgevendheid. 
+              Bedrijven die goed voorraadbeheer implementeren, besparen gemiddeld 25% op voorraadkosten en 70% tijd op administratie. 
+              Dit maakt het verschil tussen een winstgevend en een verliesgevend bedrijf.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Wat is Stockbeheer Section */}
+      <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -399,24 +436,31 @@ export default function WatIsVoorraadbeheerSoftware() {
           </div>
 
           <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl mb-8">
+            <h3 className="text-2xl font-bold mb-4">Wat is Stockbeheer? Stockbeheer Betekenis</h3>
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              <strong>Stockbeheer</strong> (ook wel <strong>stockbeheer definitie</strong>) is een andere term voor voorraadbeheer. 
+              <strong>Stockbeheer</strong> (ook wel <strong>stockbeheer definitie</strong> of <strong>stockbeheer betekenis</strong>) is een andere term voor voorraadbeheer. 
               In de praktijk betekenen <Link to="/stockbeheer-software" className="text-blue-600 hover:underline">stockbeheer</Link> en 
               <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline"> voorraadbeheer</Link> hetzelfde: 
-              het beheren en bijhouden van je productvoorraad.
+              het beheren en bijhouden van je productvoorraad. <strong>Wat is stockbeheer?</strong> Het is het proces van het beheren van je stock of voorraad, waarbij je bijhoudt wat je hebt, waar het zich bevindt en wanneer je moet bijbestellen.
             </p>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed mb-4">
               De term "stockbeheer" wordt vaker gebruikt in België, terwijl "voorraadbeheer" meer gebruikt wordt in Nederland. 
               Beide hebben dezelfde betekenis en verwijzen naar het proces van het bijhouden, beheren en optimaliseren van je voorraad. 
               Een <Link to="/stockbeheer-programma" className="text-blue-600 hover:underline">stockbeheer programma</Link> of 
-              <Link to="/programma-stockbeheer" className="text-blue-600 hover:underline"> programma stockbeheer</Link> is dus hetzelfde als voorraadbeheer software.
+              <Link to="/programma-stockbeheer" className="text-blue-600 hover:underline"> programma stockbeheer</Link> is dus hetzelfde als voorraadbeheer software. 
+              <strong>Stock beheer</strong> en <strong>voorraadbeheer</strong> zijn dus synoniemen.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              <strong>Stockbeheer belangrijk</strong> is het omdat het direct impact heeft op je winstgevendheid. Bedrijven die goed stockbeheer implementeren, 
+              besparen gemiddeld 25% op voorraadkosten. Of je nu kiest voor <strong>stockbeheer software</strong> of <strong>voorraadbeheer software</strong>, 
+              het doel is hetzelfde: efficiënt en automatisch je voorraad beheren.
             </p>
           </div>
         </div>
       </section>
 
       {/* Waarom Belangrijk Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -482,17 +526,23 @@ export default function WatIsVoorraadbeheerSoftware() {
           </div>
 
           <div className="bg-blue-50 p-6 rounded-xl">
-            <p className="text-gray-700 leading-relaxed">
+            <h3 className="text-xl font-bold mb-3">Waarom is Voorraadbeheer Belangrijk?</h3>
+            <p className="text-gray-700 leading-relaxed mb-3">
               <strong>Voorraadbeheer is belangrijk</strong> omdat het direct impact heeft op je winstgevendheid, klanttevredenheid en operationele efficiëntie. 
               Bedrijven die goed voorraadbeheer implementeren, besparen gemiddeld 25% op voorraadkosten en 70% tijd op administratie. 
               Dit maakt het verschil tussen een winstgevend en een verliesgevend bedrijf.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              <strong>Waarom is voorraadbeheer belangrijk?</strong> Zonder goed voorraadbeheer loop je het risico op stockouts (geen voorraad), 
+              overstock (te veel voorraad), en verspilling van tijd en geld. Goed voorraadbeheer helpt je om kosten te besparen, 
+              klanttevredenheid te verhogen en efficiënter te werken. Het is de basis voor een succesvol bedrijf.
             </p>
           </div>
         </div>
       </section>
 
       {/* Automatisch vs Handmatig Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -601,6 +651,8 @@ export default function WatIsVoorraadbeheerSoftware() {
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
               <strong>Voorraadbeheer in kleinhandel</strong> heeft specifieke uitdagingen: meerdere locaties, seizoensgebonden vraag, 
               snelle productrotatie en de noodzaak om altijd voldoende voorraad te hebben zonder overstock. 
+              <strong>Hoe werkt voorraadbeheer in kleinhandel?</strong> Het werkt door real-time tracking van voorraad in je winkel(s), 
+              waarbij je meerdere locaties kunt beheren en automatisch kunt bijbestellen wanneer voorraad laag is. 
               Goede <Link to="/voorraadbeheer-software" className="text-blue-600 hover:underline">voorraadbeheer software</Link> helpt retailbedrijven om:
             </p>
             <ul className="grid md:grid-cols-2 gap-4 text-gray-700">
@@ -983,11 +1035,11 @@ export default function WatIsVoorraadbeheerSoftware() {
           "description": "Complete uitleg over wat voorraadbeheer software is, hoe het werkt en waarom je het nodig hebt. Met praktische voorbeelden en tips.",
           "author": {
             "@type": "Organization",
-            "name": "stockflow"
+            "name": "StockFlow"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "stockflow",
+            "name": "StockFlow",
             "logo": {
               "@type": "ImageObject",
               "url": "https://www.stockflowsystems.com/logo.png"
@@ -999,7 +1051,35 @@ export default function WatIsVoorraadbeheerSoftware() {
             "@type": "WebPage",
             "@id": "https://www.stockflowsystems.com/wat-is-voorraadbeheer-software"
           }
-        }
+        },
+        generateSoftwareApplicationSchema({
+          name: "StockFlow Voorraadbeheer Software",
+          description: "Voorraadbeheer software voor automatisch stockbeheer. Bespaar 70% tijd en 25% kosten. Real-time tracking, automatische updates, mobiele app.",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web, iOS, Android",
+          offers: [
+            {
+              price: "0",
+              priceCurrency: "EUR",
+              description: "Gratis plan voor kleine bedrijven (tot 30 producten)",
+              availability: "https://schema.org/InStock"
+            }
+          ],
+          aggregateRating: {
+            ratingValue: "4.8",
+            reviewCount: "250"
+          },
+          featureList: [
+            "Real-time voorraad tracking",
+            "Automatische voorraad updates",
+            "Lage voorraad waarschuwingen",
+            "Rapportages & inzichten",
+            "Multi-user toegang",
+            "Mobiele app met barcode scanning"
+          ],
+          screenshot: "https://www.stockflowsystems.com/dashboard.png",
+          baseUrl: "https://www.stockflowsystems.com"
+        })
       ]} />
     </SeoPageLayout>
   );
