@@ -2939,8 +2939,6 @@ export default function CategorysPage() {
         {category.name}
       </span>
     </label>
-  );
-})}
 
 {selectedCategoryIds.length > 0 && (
   <div className="pt-1 border-t mt-1">
