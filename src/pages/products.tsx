@@ -2911,21 +2911,7 @@ export default function CategorysPage() {
                               filteredCategories.map((category) => {
                                 const isSelected = selectedCategoryIds.includes(category.id);
                                 return (
-                                  
-<div className="pb-1 border-b mb-1">
-  <Button
-    variant="primary"
-    size="sm"
-    onClick={handleCreateNewCategory}
-    className="w-full h-7 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-  >
-Nieuwe categorie
-  </Button>
-</div>
-
-{categories.map(category => {
-  const isSelected = selectedCategoryIds.includes(category.id);
-  return (
+                                
     <label
       key={category.id}
       className={cn(
