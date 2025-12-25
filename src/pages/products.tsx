@@ -2924,66 +2924,66 @@ export default function CategorysPage() {
                                 const isSelected = selectedCategoryIds.includes(category.id);
                                 return (
                                   
-<button
-                                onClick={() => {
-                                  setSelectedWarehouse(null);
+<div className="pb-1 border-b mb-1">
+  <Button
+    variant="primary"
+    size="sm"
+    onClick={handleCreateNewCategory}
+    className="w-full h-7 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+  >
+Nieuwe categorie
+  </Button>
+</div>
 
-                                  setIsWarehousePopoverOpen(false);
-                                }}
-                                className={cn(
-                                  "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
-                                  !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
-                                )}
-                              >
-                                Create New
-                              </button>
+{categories.map(category => {
+  const isSelected = selectedCategoryIds.includes(category.id);
+  return (
+    <label
+      key={category.id}
+      className={cn(
+        "flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
+        isSelected && "bg-blue-50"
+      )}
+    >
+      <Checkbox
+        checked={isSelected}
+        onCheckedChange={() => {
+          if (selectedCategoryIds.includes(category.id)) {
+            handleCategorySelectionChange(selectedCategoryIds.filter(id => id !== category.id));
+          } else {
+            handleCategorySelectionChange([...selectedCategoryIds, category.id]);
+          }
+        }}
+        className="w-4 h-4 data-[state=checked]:bg-blue-600"
+      />
+      <span
+        className={cn(
+          "flex-1 text-xs truncate",
+          isSelected ? "font-medium text-blue-900" : "text-gray-700"
+        )}
+      >
+        {category.name}
+      </span>
+    </label>
+  );
+})}
 
-<label
-                                    key={category.id}
-                                    className={cn(
-                                      "flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
-                                      isSelected && "bg-blue-50"
-                                    )}
-                                  >
-                                    
-
-
-<Checkbox
-                                      checked={isSelected}
-                                      onCheckedChange={() => {
-                                        if (selectedCategoryIds.includes(category.id)) {
-                                          handleCategorySelectionChange(selectedCategoryIds.filter(id => id !== category.id));
-                                        } else {
-                                          handleCategorySelectionChange([...selectedCategoryIds, category.id]);
-                                        }
-                                      }}
-                                      className="w-4 h-4 data-[state=checked]:bg-blue-600"
-                                    />
-                                    <span className={cn(
-                                      "flex-1 text-xs truncate",
-                                      isSelected ? "font-medium text-blue-900" : "text-gray-700"
-                                    )}>
-                                      {category.name}
-                                    </span>
-                                  </label>
-                                );
-                              })
-                            )}
-                          </div>
-                          {selectedCategoryIds.length > 0 && (
-                            <div className="pt-1 border-t mt-1">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => {
-                                  handleCategorySelectionChange([]);
-                                  setIsCategoryPopoverOpen(false);
-                                }}
-                                className="w-full h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                <X className="w-3 h-3 mr-1" />
-                                Clear Selection
-                              </Button>
+{selectedCategoryIds.length > 0 && (
+  <div className="pt-1 border-t mt-1">
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={() => {
+        handleCategorySelectionChange([]);
+        setIsCategoryPopoverOpen(false);
+      }}
+      className="w-full h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+    >
+      <X className="w-3 h-3 mr-1" />
+      Clear Selection
+    </Button>
+  </div>
+)}
                             </div>
                           )}
                         </div>
