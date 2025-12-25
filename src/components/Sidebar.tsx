@@ -168,20 +168,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
           path: getProductsPath(),
           end: true
         },
-        { 
-          id: 'categories', 
-          label: 'Categories', 
-          icon: Tags, 
-          path: '/dashboard/categories-management',
-          end: true
-        },
-        { 
-          id: 'warehouses', 
-          label: 'Warehouses', 
-          icon: Warehouse, 
-          path: '/dashboard/warehouses',
-          end: true
-        },
+
+
         { id: 'bom', label: 'Bill of Materials', icon: Layers, path: '/dashboard/bom', end: true },
         { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
         ...(hasAnalytics
