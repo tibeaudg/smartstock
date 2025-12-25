@@ -1065,14 +1065,7 @@ export default function CategorysPage() {
   };
 
 
-  // Helper functions for table view
-  const getStockStatus = (quantity: number, minLevel: number) => {
-    const qty = Number(quantity);
-    const min = Number(minLevel);
-    if (qty === 0) return 'Out of Stock';
-    if (qty > 0 && qty <= min) return 'Low Stock';
-    return 'In Stock';
-  };
+
 
   // Format variant label from attributes or fall back to variant_name
   const formatVariantLabel = (variant: any): string => {
@@ -1113,12 +1106,7 @@ export default function CategorysPage() {
     const qty = Number(product.quantity_in_stock) || 0;
     const minLevel = Number(product.minimum_stock_level) || 0;
     
-    // Low stock indicator
-    if (qty === 0) {
-      indicators.push({ type: 'out-of-stock', color: 'bg-red-500', label: 'Out of Stock' });
-    } else if (qty > 0 && qty <= minLevel) {
-      indicators.push({ type: 'low-stock', color: 'bg-orange-500', label: 'Low Stock' });
-    }
+
     
     // Missing SKU
     if (!product.sku || product.sku === '---') {
