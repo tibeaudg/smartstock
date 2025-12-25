@@ -2923,14 +2923,7 @@ export default function CategorysPage() {
                               filteredCategories.map((category) => {
                                 const isSelected = selectedCategoryIds.includes(category.id);
                                 return (
-                                  <label
-                                    key={category.id}
-                                    className={cn(
-                                      "flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
-                                      isSelected && "bg-blue-50"
-                                    )}
-                                  >
-                                    
+                                  
 <button
                                 onClick={() => {
                                   setSelectedWarehouse(null);
@@ -2944,6 +2937,16 @@ export default function CategorysPage() {
                               >
                                 Create New
                               </button>
+
+<label
+                                    key={category.id}
+                                    className={cn(
+                                      "flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
+                                      isSelected && "bg-blue-50"
+                                    )}
+                                  >
+                                    
+
 
 <Checkbox
                                       checked={isSelected}
