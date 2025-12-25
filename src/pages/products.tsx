@@ -2912,33 +2912,34 @@ export default function CategorysPage() {
                                 const isSelected = selectedCategoryIds.includes(category.id);
                                 return (
                                 
-    <label
-      key={category.id}
-      className={cn(
-        "flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
-        isSelected && "bg-blue-50"
-      )}
-    >
-      <Checkbox
-        checked={isSelected}
-        onCheckedChange={() => {
-          if (selectedCategoryIds.includes(category.id)) {
-            handleCategorySelectionChange(selectedCategoryIds.filter(id => id !== category.id));
-          } else {
-            handleCategorySelectionChange([...selectedCategoryIds, category.id]);
-          }
-        }}
-        className="w-4 h-4 data-[state=checked]:bg-blue-600"
-      />
-      <span
-        className={cn(
-          "flex-1 text-xs truncate",
-          isSelected ? "font-medium text-blue-900" : "text-gray-700"
-        )}
-      >
-        {category.name}
-      </span>
-    </label>
+
+<label
+  key={category.id}
+  className={cn(
+    "group flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
+    isSelected && "bg-blue-50"
+  )}
+>
+  <Checkbox
+    checked={isSelected}
+    onCheckedChange={() => toggleCategory(category.id)}
+    // Prevent event bubbling if label triggers twice
+    onClick={(e) => e.stopPropagation()} 
+    className="w-4 h-4 data-[state=checked]:bg-blue-600"
+  />
+  <span
+    className={cn(
+      "flex-1 text-xs truncate select-none",
+      isSelected ? "font-medium text-blue-900" : "text-gray-700"
+    )}
+  >
+    {category.name}
+  </span>
+</label>
+
+
+
+
 
 {selectedCategoryIds.length > 0 && (
   <div className="pt-1 border-t mt-1">
