@@ -3004,6 +3004,19 @@ export default function CategorysPage() {
                             </div>
                             
                             <div className="max-h-[200px] overflow-y-auto space-y-1">
+
+<button
+                                onClick={() => {
+                                  setSelectedWarehouse(null);
+                                  setIsWarehousePopoverOpen(false);
+                                }}
+                                className={cn(
+                                  "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
+                                  !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
+                                )}
+                              >
+                                Create New
+                              </button>
                               <button
                                 onClick={() => {
                                   setSelectedWarehouse(null);
