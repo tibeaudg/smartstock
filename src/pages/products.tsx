@@ -2930,7 +2930,22 @@ export default function CategorysPage() {
                                       isSelected && "bg-blue-50"
                                     )}
                                   >
-                                    <Checkbox
+                                    
+<button
+                                onClick={() => {
+                                  setSelectedWarehouse(null);
+
+                                  setIsWarehousePopoverOpen(false);
+                                }}
+                                className={cn(
+                                  "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
+                                  !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
+                                )}
+                              >
+                                Create New
+                              </button>
+
+<Checkbox
                                       checked={isSelected}
                                       onCheckedChange={() => {
                                         if (selectedCategoryIds.includes(category.id)) {
@@ -3008,6 +3023,7 @@ export default function CategorysPage() {
 <button
                                 onClick={() => {
                                   setSelectedWarehouse(null);
+
                                   setIsWarehousePopoverOpen(false);
                                 }}
                                 className={cn(
@@ -3017,18 +3033,7 @@ export default function CategorysPage() {
                               >
                                 Create New
                               </button>
-                              <button
-                                onClick={() => {
-                                  setSelectedWarehouse(null);
-                                  setIsWarehousePopoverOpen(false);
-                                }}
-                                className={cn(
-                                  "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
-                                  !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
-                                )}
-                              >
-                                All Warehouses
-                              </button>
+
                               {filteredWarehouses.length > 0 ? (
                                 filteredWarehouses.map((warehouse) => (
                                   <button
