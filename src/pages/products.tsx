@@ -2910,199 +2910,175 @@ export default function CategorysPage() {
                             ) : (
                               filteredCategories.map((category) => {
                                 const isSelected = selectedCategoryIds.includes(category.id);
-                                <Popover open={isCategoryPopoverOpen} onOpenChange={setIsCategoryPopoverOpen}>
-  <PopoverTrigger asChild>
-    <Button variant="outline" size="sm" className="h-8 gap-2">
-      Categories
-      {selectedCategoryIds.length > 0 && (
-        <span className="ml-1 px-1.5 py-0.5 text-[10px] bg-blue-100 text-blue-700 rounded-full">
-          {selectedCategoryIds.length}
-        </span>
-      )}
-    </Button>
-  </PopoverTrigger>
-  <PopoverContent className="w-56 p-2" align="start">
-    <div className="flex flex-col gap-1">
-      {/* Category List */}
-      <div className="max-h-60 overflow-y-auto space-y-0.5">
-        {categories.map((category) => {
-          const isSelected = selectedCategoryIds.includes(category.id);
-
-
-
-
-return (
-            <label
-              key={category.id}
-              className={cn(
-                "group flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
-                isSelected && "bg-blue-50"
-              )}
-            >
-              <Checkbox
-                checked={isSelected}
-                onCheckedChange={() => {
-                  const next = isSelected
-                    ? selectedCategoryIds.filter((id) => id !== category.id)
-                    : [...selectedCategoryIds, category.id];
-                  handleCategorySelectionChange(next);
-                }}
-                className="w-4 h-4"
-              />
-              <span
-                className={cn(
-                  "flex-1 text-xs truncate select-none",
-                  isSelected ? "font-medium text-blue-900" : "text-gray-700"
-                )}
-              >
-                {category.name}
+<Card>
+  <CardContent className="p-4">
+    <div className="flex flex-col gap-4">
+      {/* Filters Toolbar */}
+      <div className="flex flex-wrap items-center gap-2">
+        
+        {/* Category Selector */}
+        <Popover open={isCategoryPopoverOpen} onOpenChange={setIsCategoryPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="sm" className="h-8 gap-2">
+              <span className="text-xs text-gray-500 font-normal">Category:</span>
+              <span className="text-xs truncate max-w-[100px]">
+                {selectedCategoryIds.length === 0 
+                  ? "All" 
+                  : `${selectedCategoryIds.length} Selected`}
               </span>
-            </label>
-          );
-        })}
-      </div>
+              {selectedCategoryIds.length > 0 && (
+                <span className="px-1.5 py-0.5 text-[10px] bg-blue-100 text-blue-700 rounded-full font-bold">
+                  {selectedCategoryIds.length}
+                </span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-56 p-2" align="start">
+            <div className="flex flex-col gap-1">
+              <div className="max-h-60 overflow-y-auto space-y-0.5">
+                {categories.map((category) => {
+                  const isSelected = selectedCategoryIds.includes(category.id);
+                  return (
+                    <label
+                      key={category.id}
+                      className={cn(
+                        "group flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
+                        isSelected && "bg-blue-50"
+                      )}
+                    >
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={() => {
+                          const next = isSelected
+                            ? selectedCategoryIds.filter((id) => id !== category.id)
+                            : [...selectedCategoryIds, category.id];
+                          handleCategorySelectionChange(next);
+                        }}
+                        className="w-4 h-4"
+                      />
+                      <span className={cn(
+                        "flex-1 text-xs truncate select-none",
+                        isSelected ? "font-medium text-blue-900" : "text-gray-700"
+                      )}>
+                        {category.name}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
 
-      <div className="pt-1 mt-1 border-t flex flex-col gap-1">
-        {/* Create New Action */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => {
-            // Logic for triggering creation modal/input
-            handleCreateNewCategory();
-            setIsCategoryPopoverOpen(false);
-          }}
-          className="w-full h-8 justify-start text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-blue-50"
-        >
-          <Plus className="w-3.5 h-3.5 mr-2" />
-          Create new category
-        </Button>
+              <div className="pt-1 mt-1 border-t flex flex-col gap-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setIsCategoryPopoverOpen(false);
+                    handleCreateNewCategory();
+                  }}
+                  className="w-full h-8 justify-start text-xs font-normal text-blue-600 hover:bg-blue-50"
+                >
+                  <Plus className="w-3.5 h-3.5 mr-2" />
+                  Create new category
+                </Button>
+                {selectedCategoryIds.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      handleCategorySelectionChange([]);
+                      setIsCategoryPopoverOpen(false);
+                    }}
+                    className="w-full h-8 justify-start text-xs font-normal text-red-600 hover:bg-red-50"
+                  >
+                    <X className="w-3.5 h-3.5 mr-2" />
+                    Clear selection
+                  </Button>
+                )}
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
 
-        {/* Clear Selection Action */}
-        {selectedCategoryIds.length > 0 && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              handleCategorySelectionChange([]);
-              setIsCategoryPopoverOpen(false);
-            }}
-            className="w-full h-8 justify-start text-xs font-normal text-red-600 hover:text-red-700 hover:bg-red-50"
-          >
-            <X className="w-3.5 h-3.5 mr-2" />
-            Clear selection
-          </Button>
+        {/* Warehouse Selector */}
+        {warehouses.length > 0 && (
+          <Popover open={isWarehousePopoverOpen} onOpenChange={setIsWarehousePopoverOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 text-xs justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <Warehouse className="w-3 h-3 flex-shrink-0 text-gray-500" />
+                  <span className="truncate max-w-[120px]">
+                    {selectedWarehouse || 'All Warehouses'}
+                  </span>
+                </div>
+                <ChevronDown className="w-3 h-3 text-gray-400" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-52 p-2" align="start">
+              <div className="space-y-1">
+                <div className="relative mb-2">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400" />
+                  <Input
+                    placeholder="Search..."
+                    value={warehouseSearchQuery}
+                    onChange={(e) => setWarehouseSearchQuery(e.target.value)}
+                    className="h-8 pl-7 text-xs"
+                  />
+                </div>
+                
+                <div className="max-h-48 overflow-y-auto space-y-0.5">
+                  <button
+                    onClick={() => {
+                      setSelectedWarehouse(null);
+                      setIsWarehousePopoverOpen(false);
+                    }}
+                    className={cn(
+                      "w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50",
+                      !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
+                    )}
+                  >
+                    All Warehouses
+                  </button>
+
+                  {filteredWarehouses.map((warehouse) => (
+                    <button
+                      key={warehouse.id}
+                      onClick={() => {
+                        setSelectedWarehouse(warehouse.name);
+                        setIsWarehousePopoverOpen(false);
+                      }}
+                      className={cn(
+                        "w-full text-left px-2 py-1.5 rounded-md text-xs hover:bg-gray-50",
+                        selectedWarehouse === warehouse.name && "bg-blue-50 font-medium text-blue-900"
+                      )}
+                    >
+                      {warehouse.name}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="pt-1 border-t mt-1 flex flex-col gap-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setIsWarehousePopoverOpen(false);
+                      handleCreateNewWarehouse();
+                    }}
+                    className="w-full h-8 justify-start text-xs font-normal text-blue-600 hover:bg-blue-50"
+                  >
+                    <Plus className="w-3.5 h-3.5 mr-2" />
+                    Create new warehouse
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         )}
       </div>
     </div>
-  </PopoverContent>
-          </Popover>
-          {/* Ensure the conditional block above is correctly closed */}
-        </div>
-      )}
-    </div>
-  ); // End of Return
-};
+  </CardContent>
+</Card>
 
-
-
-
-
-                    {/* Warehouse Quick Selector */}
-                    {warehouses.length > 0 && (
-                      <Popover open={isWarehousePopoverOpen} onOpenChange={setIsWarehousePopoverOpen}>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="h-8 text-xs justify-between"
-                          >
-                            <div className="flex items-center gap-1.5">
-                              <Warehouse className="w-3 h-3 flex-shrink-0" />
-                              <span className="truncate max-w-[120px]">
-                                {selectedWarehouse || 'All Warehouses'}
-                              </span>
-                            </div>
-                            <ChevronDown className="w-3 h-3 ml-1.5 flex-shrink-0" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-48 p-2" align="end">
-                          <div className="space-y-1">
-                            <div className="relative mb-2">
-                              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" />
-                              <Input
-                                type="text"
-                                placeholder="Search warehouses..."
-                                value={warehouseSearchQuery}
-                                onChange={(e) => setWarehouseSearchQuery(e.target.value)}
-                                className="h-8 pl-7 text-xs"
-                              />
-                            </div>
-                            
-                            <div className="max-h-[200px] overflow-y-auto space-y-1">
-
-<button
-                                onClick={() => {
-                                  setSelectedWarehouse(null);
-
-                                  setIsWarehousePopoverOpen(false);
-                                }}
-                                className={cn(
-                                  "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
-                                  !selectedWarehouse && "bg-blue-50 font-medium text-blue-900"
-                                )}
-                              >
-                                Create New
-                              </button>
-
-                              {filteredWarehouses.length > 0 ? (
-                                filteredWarehouses.map((warehouse) => (
-                                  <button
-                                    key={warehouse.id}
-                                    onClick={() => {
-                                      setSelectedWarehouse(warehouse.name);
-                                      setIsWarehousePopoverOpen(false);
-                                    }}
-                                    className={cn(
-                                      "w-full text-left px-2 py-0.5 rounded-md text-xs hover:bg-gray-50 transition-colors",
-                                      selectedWarehouse === warehouse.name && "bg-blue-50 font-medium text-blue-900"
-                                    )}
-                                  >
-                                    {warehouse.name}
-                                  </button>
-                                ))
-                              ) : (
-                                <div className="px-2 py-0.5 text-xs text-gray-500 text-center">
-                                  No warehouses found
-                                </div>
-                              )}
-                            </div>
-                            {selectedWarehouse && (
-                              <div className="pt-1 border-t mt-1">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    setSelectedWarehouse(null);
-                                  }}
-                                  className="w-full h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-                                >
-                                  <X className="w-3 h-3 mr-1" />
-                                  Clear Selection
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </div>
-                </div>
-                  )}
-              </CardContent>
-            </Card>
-              
-              {/* Products Section - Scrollable */}
               <div 
                 className="flex-1 flex flex-col min-h-0 overscroll-contain bg-gray-50/30" 
                 style={{ 
