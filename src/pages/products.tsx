@@ -2927,7 +2927,11 @@ export default function CategorysPage() {
       <div className="max-h-60 overflow-y-auto space-y-0.5">
         {categories.map((category) => {
           const isSelected = selectedCategoryIds.includes(category.id);
-          return (
+
+
+
+
+return (
             <label
               key={category.id}
               className={cn(
@@ -2992,7 +2996,17 @@ export default function CategorysPage() {
       </div>
     </div>
   </PopoverContent>
-</Popover>
+          </Popover>
+          {/* Ensure the conditional block above is correctly closed */}
+        </div>
+      )}
+    </div>
+  ); // End of Return
+};
+
+
+
+
 
                     {/* Warehouse Quick Selector */}
                     {warehouses.length > 0 && (
