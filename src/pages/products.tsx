@@ -2910,58 +2910,89 @@ export default function CategorysPage() {
                             ) : (
                               filteredCategories.map((category) => {
                                 const isSelected = selectedCategoryIds.includes(category.id);
-                                return (
-                                
-
-<label
-  key={category.id}
-  className={cn(
-    "group flex items-center gap-2 px-2 py-0.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
-    isSelected && "bg-blue-50"
-  )}
->
-  <Checkbox
-    checked={isSelected}
-    onCheckedChange={() => toggleCategory(category.id)}
-    // Prevent event bubbling if label triggers twice
-    onClick={(e) => e.stopPropagation()} 
-    className="w-4 h-4 data-[state=checked]:bg-blue-600"
-  />
-  <span
-    className={cn(
-      "flex-1 text-xs truncate select-none",
-      isSelected ? "font-medium text-blue-900" : "text-gray-700"
-    )}
-  >
-    {category.name}
-  </span>
-</label>
-
-
-
-
-
-{selectedCategoryIds.length > 0 && (
-  <div className="pt-1 border-t mt-1">
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={() => {
-        handleCategorySelectionChange([]);
-        setIsCategoryPopoverOpen(false);
-      }}
-      className="w-full h-7 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-    >
-      <X className="w-3 h-3 mr-1" />
-      Clear Selection
+                                <Popover open={isCategoryPopoverOpen} onOpenChange={setIsCategoryPopoverOpen}>
+  <PopoverTrigger asChild>
+    <Button variant="outline" size="sm" className="h-8 gap-2">
+      Categories
+      {selectedCategoryIds.length > 0 && (
+        <span className="ml-1 px-1.5 py-0.5 text-[10px] bg-blue-100 text-blue-700 rounded-full">
+          {selectedCategoryIds.length}
+        </span>
+      )}
     </Button>
-  </div>
-)}
-                            </div>
-                          )}
-                        </div>
-                      </PopoverContent>
-                    </Popover>
+  </PopoverTrigger>
+  <PopoverContent className="w-56 p-2" align="start">
+    <div className="flex flex-col gap-1">
+      {/* Category List */}
+      <div className="max-h-60 overflow-y-auto space-y-0.5">
+        {categories.map((category) => {
+          const isSelected = selectedCategoryIds.includes(category.id);
+          return (
+            <label
+              key={category.id}
+              className={cn(
+                "group flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 transition-colors",
+                isSelected && "bg-blue-50"
+              )}
+            >
+              <Checkbox
+                checked={isSelected}
+                onCheckedChange={() => {
+                  const next = isSelected
+                    ? selectedCategoryIds.filter((id) => id !== category.id)
+                    : [...selectedCategoryIds, category.id];
+                  handleCategorySelectionChange(next);
+                }}
+                className="w-4 h-4"
+              />
+              <span
+                className={cn(
+                  "flex-1 text-xs truncate select-none",
+                  isSelected ? "font-medium text-blue-900" : "text-gray-700"
+                )}
+              >
+                {category.name}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+
+      <div className="pt-1 mt-1 border-t flex flex-col gap-1">
+        {/* Create New Action */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            // Logic for triggering creation modal/input
+            handleCreateNewCategory();
+            setIsCategoryPopoverOpen(false);
+          }}
+          className="w-full h-8 justify-start text-xs font-normal text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+        >
+          <Plus className="w-3.5 h-3.5 mr-2" />
+          Create new category
+        </Button>
+
+        {/* Clear Selection Action */}
+        {selectedCategoryIds.length > 0 && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              handleCategorySelectionChange([]);
+              setIsCategoryPopoverOpen(false);
+            }}
+            className="w-full h-8 justify-start text-xs font-normal text-red-600 hover:text-red-700 hover:bg-red-50"
+          >
+            <X className="w-3.5 h-3.5 mr-2" />
+            Clear selection
+          </Button>
+        )}
+      </div>
+    </div>
+  </PopoverContent>
+</Popover>
 
                     {/* Warehouse Quick Selector */}
                     {warehouses.length > 0 && (
