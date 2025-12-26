@@ -108,6 +108,76 @@ export default function InventoryManagementSoftwareList() {
       bestFor: "Small to medium businesses looking for affordable, comprehensive inventory management"
     },
     {
+      name: "inFlow Inventory",
+      category: "Best for Small to Mid-Sized Businesses",
+      price: "€71-199/month",
+      rating: 4.5,
+      features: [
+        "User-friendly interface",
+        "Barcode scanning",
+        "Inventory tracking",
+        "Reporting",
+        "Multi-location support"
+      ],
+      pros: [
+        "Easy to use",
+        "Good for small businesses",
+        "Strong barcode scanning"
+      ],
+      cons: [
+        "Limited advanced features",
+        "Higher pricing for small businesses"
+      ],
+      bestFor: "Small to mid-sized businesses needing user-friendly inventory tracking"
+    },
+    {
+      name: "Katana",
+      category: "Best for Manufacturing",
+      price: "€99-299/month",
+      rating: 4.5,
+      features: [
+        "Manufacturing focus",
+        "Production management",
+        "Cloud-based",
+        "E-commerce integration",
+        "Real-time tracking"
+      ],
+      pros: [
+        "Excellent for manufacturing",
+        "Strong production management",
+        "Good e-commerce integration"
+      ],
+      cons: [
+        "Higher pricing",
+        "Manufacturing-focused (less versatile)"
+      ],
+      bestFor: "Manufacturing and e-commerce businesses with production needs"
+    },
+    {
+      name: "Fishbowl Inventory",
+      category: "Best for Warehouse Management",
+      price: "€4,395-8,790/year",
+      rating: 4.5,
+      features: [
+        "Warehouse management",
+        "QuickBooks integration",
+        "Advanced reporting",
+        "Multi-location",
+        "Barcode scanning"
+      ],
+      pros: [
+        "Strong warehouse management",
+        "Excellent QuickBooks integration",
+        "Comprehensive features"
+      ],
+      cons: [
+        "Higher cost",
+        "Requires QuickBooks",
+        "Complex setup"
+      ],
+      bestFor: "Warehouse operations needing strong QuickBooks integration"
+    },
+    {
       name: "Zoho Inventory",
       category: "Best for E-commerce",
       price: "€29-249/month",
@@ -129,6 +199,261 @@ export default function InventoryManagementSoftwareList() {
         "Higher pricing for advanced features"
       ],
       bestFor: "E-commerce businesses needing multi-channel integration"
+    },
+    {
+      name: "Ordoro",
+      category: "Best for E-commerce Logistics",
+      price: "€49-199/month",
+      rating: 4,
+      features: [
+        "E-commerce focus",
+        "Shipping management",
+        "Logistics control",
+        "Inventory control",
+        "Multi-channel"
+      ],
+      pros: [
+        "Excellent for e-commerce",
+        "Strong shipping features",
+        "Good logistics management"
+      ],
+      cons: [
+        "E-commerce focused",
+        "Limited for other industries"
+      ],
+      bestFor: "E-commerce businesses needing shipping and logistics control"
+    },
+    {
+      name: "Veeqo",
+      category: "Best for E-commerce Retailers",
+      price: "€99-299/month",
+      rating: 4,
+      features: [
+        "E-commerce shipping",
+        "Inventory for retailers",
+        "Multi-channel",
+        "Order management",
+        "Reporting"
+      ],
+      pros: [
+        "Strong e-commerce features",
+        "Good for retailers",
+        "Multi-channel support"
+      ],
+      cons: [
+        "E-commerce focused",
+        "Higher pricing"
+      ],
+      bestFor: "E-commerce retailers managing multiple sales channels"
+    },
+    {
+      name: "Sortly",
+      category: "Best for Visual Asset Tracking",
+      price: "€0-99/month",
+      rating: 4,
+      features: [
+        "Visual inventory management",
+        "Asset tracking",
+        "Mobile app",
+        "Photo support",
+        "Simple interface"
+      ],
+      pros: [
+        "Visual approach",
+        "Easy to use",
+        "Good for asset tracking"
+      ],
+      cons: [
+        "Limited advanced features",
+        "Best for simple tracking"
+      ],
+      bestFor: "Businesses needing visual inventory and asset tracking"
+    },
+    {
+      name: "Odoo Inventory",
+      category: "Best for Warehouse Efficiency",
+      price: "€0-24.90/user/month",
+      rating: 4,
+      features: [
+        "Flexible system",
+        "Warehouse optimization",
+        "Open source option",
+        "Modular approach",
+        "Multi-location"
+      ],
+      pros: [
+        "Flexible and customizable",
+        "Open source available",
+        "Good warehouse features"
+      ],
+      cons: [
+        "Can be complex",
+        "Requires technical knowledge"
+      ],
+      bestFor: "Businesses needing flexible warehouse optimization"
+    },
+    {
+      name: "QuickBooks Online",
+      category: "Best for Accounting Integration",
+      price: "€25-150/month",
+      rating: 4.5,
+      features: [
+        "Built-in inventory tracking",
+        "Accounting software",
+        "Financial reporting",
+        "Integration",
+        "Cloud-based"
+      ],
+      pros: [
+        "Integrated accounting",
+        "Widely used",
+        "Good financial features"
+      ],
+      cons: [
+        "Limited inventory features",
+        "Accounting-focused"
+      ],
+      bestFor: "Businesses needing integrated accounting and inventory"
+    },
+    {
+      name: "SAP Inventory Management",
+      category: "Best for Large Enterprise",
+      price: "Custom pricing",
+      rating: 4.5,
+      features: [
+        "Enterprise-level",
+        "Real-time tracking",
+        "Advanced analytics",
+        "Large-scale operations",
+        "Custom integrations"
+      ],
+      pros: [
+        "Enterprise features",
+        "Real-time analytics",
+        "Scalable"
+      ],
+      cons: [
+        "Very expensive",
+        "Complex implementation",
+        "Overkill for small businesses"
+      ],
+      bestFor: "Large enterprises needing high-level real-time tracking and analytics"
+    },
+    {
+      name: "BlueYonder",
+      category: "Best for Supply Chain",
+      price: "Custom pricing",
+      rating: 4.5,
+      features: [
+        "Supply chain focus",
+        "Advanced analytics",
+        "Demand planning",
+        "Enterprise features",
+        "AI-powered"
+      ],
+      pros: [
+        "Advanced supply chain",
+        "AI-powered insights",
+        "Enterprise-grade"
+      ],
+      cons: [
+        "Very expensive",
+        "Enterprise only",
+        "Complex setup"
+      ],
+      bestFor: "Large enterprises with complex supply chain needs"
+    },
+    {
+      name: "Brightpearl",
+      category: "Best for Retail Operations",
+      price: "€99-399/month",
+      rating: 4,
+      features: [
+        "Retail operations",
+        "Multi-channel",
+        "Order management",
+        "Inventory control",
+        "Reporting"
+      ],
+      pros: [
+        "Strong retail features",
+        "Multi-channel support",
+        "Good operations management"
+      ],
+      cons: [
+        "Retail focused",
+        "Higher pricing"
+      ],
+      bestFor: "Retail businesses managing complex operations"
+    },
+    {
+      name: "ChannelAdvisor",
+      category: "Best for Marketplace Management",
+      price: "Custom pricing",
+      rating: 4,
+      features: [
+        "Marketplace management",
+        "Multi-channel",
+        "E-commerce integration",
+        "Inventory sync",
+        "Analytics"
+      ],
+      pros: [
+        "Excellent marketplace features",
+        "Multi-channel sync",
+        "Strong analytics"
+      ],
+      cons: [
+        "Expensive",
+        "Marketplace focused"
+      ],
+      bestFor: "Businesses selling across multiple marketplaces"
+    },
+    {
+      name: "Cin7",
+      category: "Best for Omnichannel Retail",
+      price: "€325-1,200/month",
+      rating: 4.5,
+      features: [
+        "Omnichannel retail",
+        "Multi-channel integration",
+        "Order management",
+        "Inventory sync",
+        "Advanced reporting"
+      ],
+      pros: [
+        "Strong omnichannel features",
+        "Comprehensive integration",
+        "Advanced capabilities"
+      ],
+      cons: [
+        "Higher pricing",
+        "Complex for small businesses"
+      ],
+      bestFor: "Omnichannel retail businesses with complex needs"
+    },
+    {
+      name: "Finale Inventory",
+      category: "Best for Multi-Location",
+      price: "€99-299/month",
+      rating: 4,
+      features: [
+        "Multi-location support",
+        "Barcode scanning",
+        "Order management",
+        "Reporting",
+        "Cloud-based"
+      ],
+      pros: [
+        "Excellent multi-location",
+        "Good barcode features",
+        "Cloud-based"
+      ],
+      cons: [
+        "Higher pricing",
+        "Limited free options"
+      ],
+      bestFor: "Businesses with multiple locations needing centralized control"
     },
     {
       name: "QuickBooks Commerce",
@@ -175,21 +500,207 @@ export default function InventoryManagementSoftwareList() {
         "May be overkill for small businesses"
       ],
       bestFor: "Growing businesses with complex multi-channel operations"
+    },
+    {
+      name: "Xero",
+      category: "Best for Accounting Integration",
+      price: "€13-70/month",
+      rating: 4,
+      features: [
+        "Accounting integration",
+        "Inventory tracking",
+        "Financial reporting",
+        "Cloud-based",
+        "Multi-currency"
+      ],
+      pros: [
+        "Good accounting features",
+        "Affordable pricing",
+        "Cloud-based"
+      ],
+      cons: [
+        "Limited inventory features",
+        "Accounting-focused"
+      ],
+      bestFor: "Small businesses using Xero for accounting"
+    },
+    {
+      name: "Monday.com",
+      category: "Best for Project-Based Inventory",
+      price: "€8-16/user/month",
+      rating: 4,
+      features: [
+        "Project management",
+        "Inventory tracking",
+        "Workflow automation",
+        "Collaboration",
+        "Customizable"
+      ],
+      pros: [
+        "Project management integration",
+        "Highly customizable",
+        "Good collaboration"
+      ],
+      cons: [
+        "Not inventory-focused",
+        "Per-user pricing"
+      ],
+      bestFor: "Project-based businesses needing inventory tracking"
+    },
+    {
+      name: "MRPeasy",
+      category: "Best for Manufacturing SMBs",
+      price: "€49-149/month",
+      rating: 4,
+      features: [
+        "Manufacturing focus",
+        "MRP capabilities",
+        "Production planning",
+        "Inventory control",
+        "Cloud-based"
+      ],
+      pros: [
+        "Good for manufacturing",
+        "Affordable MRP",
+        "Cloud-based"
+      ],
+      cons: [
+        "Manufacturing focused",
+        "Limited for other industries"
+      ],
+      bestFor: "Small to medium manufacturing businesses"
+    },
+    {
+      name: "Lightspeed",
+      category: "Best for Retail Stores",
+      price: "€69-229/month",
+      rating: 4.5,
+      features: [
+        "Retail POS integration",
+        "Inventory management",
+        "Multi-location",
+        "Reporting",
+        "E-commerce"
+      ],
+      pros: [
+        "Strong retail features",
+        "POS integration",
+        "Good for retail stores"
+      ],
+      cons: [
+        "Retail focused",
+        "Higher pricing"
+      ],
+      bestFor: "Retail stores needing POS and inventory integration"
+    },
+    {
+      name: "Square for Retail",
+      category: "Best for Small Retail",
+      price: "€0-60/month",
+      rating: 4,
+      features: [
+        "Retail POS",
+        "Inventory management",
+        "Free plan available",
+        "Mobile-friendly",
+        "Reporting"
+      ],
+      pros: [
+        "Free plan available",
+        "Easy to use",
+        "Good for small retail"
+      ],
+      cons: [
+        "Limited advanced features",
+        "Retail focused"
+      ],
+      bestFor: "Small retail businesses needing POS and inventory"
+    },
+    {
+      name: "Oracle NetSuite",
+      category: "Best for Enterprise ERP",
+      price: "Custom pricing",
+      rating: 4.5,
+      features: [
+        "Enterprise ERP",
+        "Inventory management",
+        "Financial management",
+        "Advanced analytics",
+        "Customizable"
+      ],
+      pros: [
+        "Comprehensive ERP",
+        "Enterprise features",
+        "Highly customizable"
+      ],
+      cons: [
+        "Very expensive",
+        "Complex implementation",
+        "Enterprise only"
+      ],
+      bestFor: "Large enterprises needing comprehensive ERP with inventory"
+    },
+    {
+      name: "Acumatica",
+      category: "Best for Cloud ERP",
+      price: "Custom pricing",
+      rating: 4,
+      features: [
+        "Cloud ERP",
+        "Inventory management",
+        "Financial management",
+        "Multi-location",
+        "Advanced reporting"
+      ],
+      pros: [
+        "Cloud-based ERP",
+        "Good inventory features",
+        "Scalable"
+      ],
+      cons: [
+        "Expensive",
+        "Complex setup",
+        "ERP-focused"
+      ],
+      bestFor: "Businesses needing cloud ERP with inventory management"
+    },
+    {
+      name: "DEAR Systems",
+      category: "Best for Inventory & Accounting",
+      price: "€99-399/month",
+      rating: 4,
+      features: [
+        "Inventory management",
+        "Accounting integration",
+        "Multi-location",
+        "Barcode scanning",
+        "Reporting"
+      ],
+      pros: [
+        "Good accounting integration",
+        "Comprehensive features",
+        "Multi-location support"
+      ],
+      cons: [
+        "Higher pricing",
+        "Can be complex"
+      ],
+      bestFor: "Businesses needing integrated inventory and accounting"
     }
   ];
 
   return (
     <SeoPageLayout
-      title="Inventory Management Software List | Best Inventory Software 2025"
-      heroTitle="Inventory Management Software List"
-      description="Complete inventory management software list with reviews, features, and pricing. Compare the best inventory management software options for your business. Free plan available."
+      title="Complete list of inventory management software systems"
+      heroTitle="Complete list of inventory management software systems"
+      description="Retail inventory management software can help drive more sales while reducing shrinkage and wastage. Here are 26 IMS options to consider."
       updatedDate="3/12/2025"
       faqData={faqData}
     >
       <SEO
-        title="Inventory Software List 2025: Free Options Included | StockFlow"
-        description="Complete inventory management software list with FREE options. Compare reviews, features, pricing for small businesses, e-commerce, and enterprise. Free plan for up to 100 products. Join for Free now."
-        keywords="inventory management software list, best inventory management software, inventory software list, inventory management software comparison, top inventory software, inventory management software reviews, inventory software recommendations, best inventory software 2025, inventory software comparison, stockflow, stock flow"
+        title="Complete list of inventory management software systems"
+        description="Retail inventory management software can help drive more sales while reducing shrinkage and wastage. Here are 26 IMS options to consider."
+        keywords="inventory management software list, best inventory management software, inventory software list, inventory management software comparison, top inventory software, inventory management software reviews, inventory software recommendations, best inventory software 2025, inventory software comparison, inventory management software systems, compare inventory management software, inventory management provider, stockflow, stock flow"
         url="https://www.stockflowsystems.com/solutions/inventory-management-software-list"
       />
 
@@ -197,12 +708,8 @@ export default function InventoryManagementSoftwareList() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
-              Inventory Management Software List
-            </h2>
-            
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              Compare the best <strong>inventory management software</strong> options for your business. This comprehensive <strong>inventory management software list</strong> includes reviews, features, pricing, and recommendations to help you choose the right solution. Whether you're a small business, e-commerce store, or growing enterprise, find the perfect inventory management software for your needs. Explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions or see our <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> guide.
+              Retail <strong>inventory management software</strong> can help drive more sales while reducing shrinkage and wastage. This comprehensive <strong>inventory management software list</strong> includes 26 inventory management software systems to consider for your business. Whether you're a small business, e-commerce store, retail operation, or growing enterprise, find the perfect <strong>inventory management system</strong> for your needs.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
@@ -210,11 +717,11 @@ export default function InventoryManagementSoftwareList() {
               <ul className="space-y-2 text-blue-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                  <span>Compare features, pricing, and ratings</span>
+                  <span>Compare features, pricing, and ratings across 26 inventory management software systems</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                  <span>Identify software that matches your business needs</span>
+                  <span>Identify software that matches your business needs and industry requirements</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
@@ -222,9 +729,48 @@ export default function InventoryManagementSoftwareList() {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                  <span>Consider scalability for future growth</span>
+                  <span>Consider scalability for future growth and multi-location expansion</span>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Features Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+            Key Features to Consider in Inventory Management Software
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <Zap className="w-6 h-6 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Real-time Tracking</h3>
+              </div>
+              <p className="text-gray-700 text-sm">Updates stock levels instantly across channels, ensuring accurate inventory counts and preventing overselling.</p>
+            </div>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <Camera className="w-6 h-6 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Barcode Scanning</h3>
+              </div>
+              <p className="text-gray-700 text-sm">Accelerates receiving and picking processes, reducing errors and improving warehouse efficiency.</p>
+            </div>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <Globe className="w-6 h-6 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Integration</h3>
+              </div>
+              <p className="text-gray-700 text-sm">Connects with e-commerce platforms (Shopify, WooCommerce) and accounting software for seamless operations.</p>
+            </div>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <BarChart3 className="w-6 h-6 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Reporting & Analytics</h3>
+              </div>
+              <p className="text-gray-700 text-sm">Provides insights for demand planning and reducing excess inventory through data-driven decisions.</p>
             </div>
           </div>
         </div>
@@ -234,8 +780,11 @@ export default function InventoryManagementSoftwareList() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
-            Top Inventory Management Software Options
+            Complete Inventory Management Software List
           </h2>
+          <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+            Below is a comprehensive list of 26 inventory management software systems, including cloud-based solutions, enterprise platforms, and free options. Each system offers unique features for different business sizes and industries.
+          </p>
           
           <div className="space-y-8">
             {softwareList.map((software, index) => (
@@ -309,8 +858,107 @@ export default function InventoryManagementSoftwareList() {
         </div>
       </section>
 
-      {/* Comparison Section */}
+      {/* Choosing the Right Software Section */}
       <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+            Choosing the Right Inventory Management Software
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Users className="w-6 h-6 text-blue-600" />
+                Small Businesses & Retail
+              </h3>
+              <p className="text-gray-700 mb-4">For small businesses and retail operations, prioritize ease of use, affordability, and essential features.</p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>StockFlow</strong> - Free plan available, affordable pricing</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Sortly</strong> - Visual inventory management solution</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Zoho Inventory</strong> - Versatile cloud-based platform</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Square for Retail</strong> - Free plan for small retail</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <TrendingUp className="w-6 h-6 text-green-600" />
+                Manufacturing
+              </h3>
+              <p className="text-gray-700 mb-4">Manufacturing businesses need production management, BOM tracking, and material planning capabilities.</p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Katana</strong> - Cloud-based production management</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Fishbowl Inventory</strong> - Top choice for warehouse management</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>MRPeasy</strong> - Manufacturing-focused MRP system</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Globe className="w-6 h-6 text-purple-600" />
+                E-commerce & Logistics
+              </h3>
+              <p className="text-gray-700 mb-4">E-commerce businesses require multi-channel integration, shipping management, and order fulfillment.</p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Ordoro</strong> - Shipping, logistics, and inventory control</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Veeqo</strong> - E-commerce shipping and inventory</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Cin7</strong> - Omnichannel retail management</span>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Database className="w-6 h-6 text-amber-600" />
+                Large Enterprise
+              </h3>
+              <p className="text-gray-700 mb-4">Enterprise solutions offer advanced analytics, custom integrations, and scalable infrastructure.</p>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>SAP Inventory Management</strong> - High-level real-time tracking</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>Oracle NetSuite</strong> - Comprehensive ERP solution</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <span><strong>BlueYonder</strong> - AI-powered supply chain management</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Section */}
+      <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
             Quick Comparison Guide
