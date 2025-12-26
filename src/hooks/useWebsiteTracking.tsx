@@ -20,13 +20,34 @@ interface TrackingEvent {
 export const useWebsiteTracking = () => {
   const location = useLocation();
   const { user } = useAuth();
-  const sessionId = useRef<string>(generateSessionId());
+  const sessionId = useRef<string>(getOrCreateSessionId());
   const lastPageView = useRef<number>(0);
   const pageStartTime = useRef<number>(Date.now());
 
   // Generate unique session ID
   function generateSessionId(): string {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  }
+
+  // Get existing session ID from localStorage or create new one
+  function getOrCreateSessionId(): string {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return generateSessionId();
+    }
+
+    try {
+      let storedSessionId = localStorage.getItem('tracking_session_id');
+      
+      if (!storedSessionId) {
+        storedSessionId = generateSessionId();
+        localStorage.setItem('tracking_session_id', storedSessionId);
+      }
+      
+      return storedSessionId;
+    } catch (e) {
+      console.warn('[Tracking] Error getting/setting session ID:', e);
+      return generateSessionId();
+    }
   }
 
   // Check if tracking should be disabled
@@ -312,7 +333,45 @@ export const useWebsiteTracking = () => {
       console.error('[Tracking] Error tracking time on page:', error);
       // Don't throw - tracking failures shouldn't break the app
     }
-  }, [shouldTrack]);
+  }, [shouldTrack, user?.id]);
+
+  // Track custom events (e.g., branch_created, product_created, login, etc.)
+  const trackCustomEvent = useCallback(async (
+    eventType: string,
+    metadata?: Record<string, any>,
+    elementText?: string
+  ) => {
+    if (!(await shouldTrack())) return;
+    
+    const trackingEvent: TrackingEvent = {
+      event_type: eventType,
+      page_url: window.location.href,
+      user_agent: navigator.userAgent,
+      referrer: document.referrer,
+      session_id: sessionId.current,
+      user_id: user?.id,
+      element_text: elementText,
+      metadata: {
+        timestamp: Date.now(),
+        ...metadata
+      }
+    };
+
+    try {
+      const { error } = await supabase.from('website_events').insert([trackingEvent]);
+      if (error) {
+        console.error(`[Tracking] Error tracking custom event ${eventType}:`, error);
+      } else {
+        console.log(`[Tracking] Custom event tracked: ${eventType}`, { 
+          userId: user?.id || 'anonymous',
+          sessionId: sessionId.current 
+        });
+      }
+    } catch (error) {
+      console.error(`[Tracking] Error tracking custom event ${eventType}:`, error);
+      // Don't throw - tracking failures shouldn't break the app
+    }
+  }, [shouldTrack, user?.id]);
 
   // Setup global click tracking
   useEffect(() => {
@@ -516,6 +575,7 @@ export const useWebsiteTracking = () => {
     trackPageExit,
     trackScrollDepth,
     trackTimeOnPage,
+    trackCustomEvent,
     sessionId: sessionId.current
   };
 };

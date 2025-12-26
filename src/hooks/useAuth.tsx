@@ -10,6 +10,8 @@ import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 import { useSessionRevalidation } from './useSessionRevalidation';
 import { useTabSyncSession } from './useTabSyncSession';
+import { captureReferralInfo } from '@/utils/referralTracking';
+import { linkAnonymousEventsToUser, getSessionId } from '@/utils/eventLinking';
 
 // UserProfile type from database schema
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
@@ -413,15 +415,47 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(newSession?.user ?? null);
 
         if (newSession?.user) {
-          // Update last_login for any sign-in event
+          // Update last_login and link events for any sign-in event
           if (event === 'SIGNED_IN') {
             try {
+              // Update last_login
               const updateData: Database['public']['Tables']['profiles']['Update'] = { 
                 last_login: new Date().toISOString() 
               };
               const { error: updateError } = await supabase.from('profiles').update(updateData).eq('id', newSession.user.id);
               if (updateError) {
                 console.error('Error updating last_login:', updateError);
+              }
+
+              // Link anonymous events to user based on session ID
+              const sessionId = getSessionId();
+              const { linked } = await linkAnonymousEventsToUser(newSession.user.id, sessionId);
+              console.log(`[Auth] Linked ${linked} anonymous events to user after login`);
+
+              // Track login event
+              try {
+                const loginEvent = {
+                  event_type: 'login',
+                  page_url: typeof window !== 'undefined' ? window.location.href : '',
+                  user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+                  referrer: typeof document !== 'undefined' ? document.referrer : '',
+                  session_id: sessionId,
+                  user_id: newSession.user.id,
+                  metadata: {
+                    timestamp: Date.now(),
+                    login_method: 'email', // or 'google' if from OAuth
+                    linked_events: linked
+                  }
+                };
+                
+                const { error: loginTrackError } = await supabase.from('website_events').insert([loginEvent]);
+                if (loginTrackError) {
+                  console.error('Error tracking login event:', loginTrackError);
+                } else {
+                  console.log('[Auth] Login event tracked');
+                }
+              } catch (trackError) {
+                console.error('Exception tracking login event:', trackError);
               }
             } catch (error) {
               console.error('Error updating last_login:', error);
@@ -442,6 +476,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                               newSession.user.user_metadata?.family_name || 
                               newSession.user.user_metadata?.name?.split(' ').slice(1).join(' ') || '';
 
+              // Capture referral information for Google sign-in
+              const referralSource = captureReferralInfo();
+
               // Create profile for Google user
               const profileData: Database['public']['Tables']['profiles']['Insert'] = {
                 id: newSession.user.id,
@@ -452,6 +489,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
                 is_owner: false,
                 updated_at: new Date().toISOString(),
                 last_login: new Date().toISOString(),
+                referral_source: referralSource, // Store referral information
               };
               const { error: profileError } = await supabase.from('profiles').upsert(profileData, { 
                 onConflict: 'id',
@@ -461,6 +499,37 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               if (profileError) {
                 console.error('Error creating profile for Google user:', profileError);
               } else {
+                // Link anonymous events to user
+                const sessionId = getSessionId();
+                const { linked } = await linkAnonymousEventsToUser(newSession.user.id, sessionId);
+                console.log(`[Auth] Linked ${linked} anonymous events to Google user after sign-in`);
+
+                // Track login event for Google sign-in
+                try {
+                  const loginEvent = {
+                    event_type: 'login',
+                    page_url: typeof window !== 'undefined' ? window.location.href : '',
+                    user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+                    referrer: typeof document !== 'undefined' ? document.referrer : '',
+                    session_id: sessionId,
+                    user_id: newSession.user.id,
+                    metadata: {
+                      timestamp: Date.now(),
+                      login_method: 'google',
+                      linked_events: linked
+                    }
+                  };
+                  
+                  const { error: loginTrackError } = await supabase.from('website_events').insert([loginEvent]);
+                  if (loginTrackError) {
+                    console.error('Error tracking Google login event:', loginTrackError);
+                  } else {
+                    console.log('[Auth] Google login event tracked');
+                  }
+                } catch (trackError) {
+                  console.error('Exception tracking Google login event:', trackError);
+                }
+
                 // Fetch the newly created profile
                 const newProfile = await fetchUserProfile(newSession.user.id, newSession.user.email);
                 if (!cancelled.current) setUserProfile(newProfile);
@@ -602,6 +671,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return { error: new Error('Geen user ID gevonden na registratie') };
       }
 
+      // Capture referral information at signup
+      const referralSource = captureReferralInfo();
+
       // Profiel aanmaken in de 'profiles' tabel
       const profileData: Database['public']['Tables']['profiles']['Insert'] = {
         id: userId,
@@ -612,6 +684,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         is_owner: false, // Nieuwe gebruikers zijn standaard GEEN eigenaar
         updated_at: new Date().toISOString(),
         onboarding: null, // New signups start with onboarding not completed
+        referral_source: referralSource, // Store referral information
       };
       const { error: profileError } = await supabase.from('profiles').upsert(profileData, { 
         onConflict: 'id',

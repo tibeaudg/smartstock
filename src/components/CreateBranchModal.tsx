@@ -25,6 +25,7 @@ import { CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useBranches } from '@/hooks/useBranches';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 interface CreateBranchModalProps {
   open: boolean;
@@ -57,6 +58,7 @@ export const CreateBranchModal = ({
   const [loading, setLoading] = useState(false);
   const [licenseInfo, setLicenseInfo] = useState<LicenseInfo | null>(null);
   const [showPaymentWarning, setShowPaymentWarning] = useState(false);
+  const { trackCustomEvent } = useWebsiteTracking();
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -151,6 +153,14 @@ export const CreateBranchModal = ({
           is_main: branchData.is_main,
           user_role: 'admin', // of haal uit branchData als beschikbaar
         });
+
+        // Track branch creation event
+        await trackCustomEvent('branch_created', {
+          branch_id: branchData.id,
+          branch_name: branchData.name,
+          is_main: branchData.is_main,
+          is_additional: isAdditionalBranch,
+        }, `Branch created: ${branchData.name}`);
       }
 
       toast.success(

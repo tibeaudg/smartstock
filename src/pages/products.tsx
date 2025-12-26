@@ -1087,6 +1087,14 @@ export default function CategorysPage() {
     return variant.variant_name || 'Unnamed variant';
   };
 
+  const getStockStatus = (quantity: number, minLevel: number) => {
+    const qty = Number(quantity);
+    const min = Number(minLevel);
+    if (qty === 0) return 'Out of Stock';
+    if (qty > 0 && qty <= min) return 'Low Stock';
+    return 'In Stock';
+  };
+
   const getStockStatusDotColor = (quantity: number, minLevel: number) => {
     const qty = Number(quantity);
     const min = Number(minLevel);

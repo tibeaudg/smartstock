@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, MousePointerClick, Eye, Scroll, LogOut, Clock, FileText, Filter } from 'lucide-react';
+import { Loader2, MousePointerClick, Eye, Scroll, LogOut, Clock, FileText, Filter, Building2 } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 
 interface WebsiteEvent {
@@ -47,6 +47,8 @@ const EVENT_TYPE_LABELS: Record<string, { label: string; icon: React.ReactNode; 
   site_exit: { label: 'Site Exit', icon: <LogOut className="w-4 h-4" />, color: 'bg-red-200 text-red-900 border-2 border-red-400' },
   form_abandonment: { label: 'Form Abandonment', icon: <FileText className="w-4 h-4" />, color: 'bg-orange-100 text-orange-800' },
   time_on_page: { label: 'Time on Page', icon: <Clock className="w-4 h-4" />, color: 'bg-gray-100 text-gray-800' },
+  login: { label: 'Login', icon: <LogOut className="w-4 h-4" />, color: 'bg-indigo-100 text-indigo-800' },
+  branch_created: { label: 'Branch Created', icon: <Building2 className="w-4 h-4" />, color: 'bg-teal-100 text-teal-800' },
 };
 
 export const UserActivityView: React.FC<UserActivityViewProps> = ({ userId, userEmail }) => {
@@ -215,6 +217,32 @@ export const UserActivityView: React.FC<UserActivityViewProps> = ({ userId, user
         return (
           <div className="text-sm text-gray-600">
             <div>Time Spent: {event.metadata?.timeSpent ? Math.round(event.metadata.timeSpent / 1000) : 0}s</div>
+          </div>
+        );
+      case 'login':
+        return (
+          <div className="text-sm text-gray-600">
+            <div className="font-semibold text-indigo-700">User logged in</div>
+            {event.metadata?.login_method && (
+              <div>Method: {event.metadata.login_method}</div>
+            )}
+            {event.metadata?.linked_events !== undefined && event.metadata.linked_events > 0 && (
+              <div className="text-xs text-gray-500">Linked {event.metadata.linked_events} anonymous events</div>
+            )}
+          </div>
+        );
+      case 'branch_created':
+        return (
+          <div className="text-sm text-gray-600">
+            <div className="font-semibold text-teal-700">{event.element_text || 'Branch created'}</div>
+            {event.metadata?.branch_name && (
+              <div>Branch: {event.metadata.branch_name}</div>
+            )}
+            {event.metadata?.is_main !== undefined && (
+              <div className="text-xs text-gray-500">
+                {event.metadata.is_main ? 'Main branch' : 'Additional branch'}
+              </div>
+            )}
           </div>
         );
       case 'page_view':

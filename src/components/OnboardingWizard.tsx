@@ -28,6 +28,7 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 interface OnboardingWizardProps {
   open: boolean;
@@ -60,6 +61,7 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
   const { setActiveBranch, refreshBranches } = useBranches();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { trackCustomEvent } = useWebsiteTracking();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [createdBranchId, setCreatedBranchId] = useState<string | null>(null);
@@ -153,6 +155,15 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
         is_main: branchData.is_main,
         user_role: 'admin',
       });
+
+      // Track branch creation event
+      await trackCustomEvent('branch_created', {
+        branch_id: branchData.id,
+        branch_name: branchData.name,
+        is_main: branchData.is_main,
+        is_additional: false,
+        source: 'onboarding',
+      }, `Branch created: ${branchData.name}`);
 
       setCreatedBranchId(branchData.id);
       setCurrentStep(3);

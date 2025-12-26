@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { UserActivityView } from '@/components/admin/UserActivityView';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
@@ -40,6 +40,7 @@ interface UserProfile {
   selected_plan: string | null;
   blocked: boolean | null;
   last_login?: string | null;
+  referral_source?: string | null;
 }
 
 interface UserStats {
@@ -1356,6 +1357,29 @@ export default function AdminPage() {
               <DialogTitle>
                 User Activity: {selectedUser?.email}
               </DialogTitle>
+              {selectedUser?.referral_source && (
+                <DialogDescription>
+                  Referral: {(() => {
+                    try {
+                      const refInfo = JSON.parse(selectedUser.referral_source);
+                      const parts: string[] = [];
+                      if (refInfo.utm_source) parts.push(`Source: ${refInfo.utm_source}`);
+                      if (refInfo.utm_medium) parts.push(`Medium: ${refInfo.utm_medium}`);
+                      if (refInfo.referrer && !refInfo.referrer.startsWith(window.location.origin)) {
+                        try {
+                          const url = new URL(refInfo.referrer);
+                          parts.push(`From: ${url.hostname}`);
+                        } catch {
+                          parts.push(`From: ${refInfo.referrer}`);
+                        }
+                      }
+                      return parts.length > 0 ? parts.join(', ') : (refInfo.referrer || 'Direct');
+                    } catch {
+                      return selectedUser.referral_source;
+                    }
+                  })()}
+                </DialogDescription>
+              )}
             </DialogHeader>
             {selectedUser && (
               <UserActivityView 

@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Building2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 interface FormData {
   branchName: string;
@@ -23,6 +24,7 @@ export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCrea
   const { user, signOut } = useAuth();
   const { setActiveBranch, refreshBranches } = useBranches();
   const navigate = useNavigate();
+  const { trackCustomEvent } = useWebsiteTracking();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     branchName: '',
@@ -73,6 +75,15 @@ export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCrea
           is_main: branchData.is_main,
           user_role: 'admin',
         });
+
+        // Track branch creation event
+        await trackCustomEvent('branch_created', {
+          branch_id: branchData.id,
+          branch_name: branchData.name,
+          is_main: branchData.is_main,
+          is_additional: false,
+          source: 'first_branch_setup',
+        }, `Branch created: ${branchData.name}`);
       }
 
       toast.success('Your first branch has been successfully created!');
