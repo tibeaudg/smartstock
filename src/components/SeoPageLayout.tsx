@@ -13,6 +13,7 @@ import HeaderPublic from '@/components/HeaderPublic';
 import FooterLanding from './Footer';
 import { TableOfContents } from './TableOfContents';
 import { KeyTakeaways } from './KeyTakeaways';
+import { SEOPageHero } from './SeoPageHero';
 
 // Constants
 const SCROLL_OFFSET = 120;
