@@ -101,7 +101,7 @@ export default function ElectricalInventoryManagement() {
     {
       icon: Camera,
       title: "Mobile Barcode Scanning",
-      description: "Scan items in/out using smartphones—perfect for field technicians and job sites without Wi-Fi."
+      description: "Scan items in/out using smartphones perfect for field technicians and job sites without Wi-Fi."
     },
     {
       icon: Zap,
@@ -116,7 +116,7 @@ export default function ElectricalInventoryManagement() {
     {
       icon: AlertCircle,
       title: "Automated Reorder Alerts",
-      description: "Never run out of frequently used items—set minimum stock levels for automatic notifications."
+      description: "Never run out of frequently used items set minimum stock levels for automatic notifications."
     },
     {
       icon: Shield,
@@ -273,19 +273,19 @@ export default function ElectricalInventoryManagement() {
     {
       title: "Reduced Material Waste",
       before: "€2,500/month lost to overordering and waste",
-      after: "€750/month—70% reduction",
+      after: "€750/month 70% reduction",
       savings: "€21,000/year"
     },
     {
       title: "Prevented Theft",
       before: "€1,200/month in missing materials",
-      after: "€300/month—75% reduction",
+      after: "€300/month 75% reduction",
       savings: "€10,800/year"
     },
     {
       title: "Time Savings",
       before: "12 hours/week on inventory management",
-      after: "3 hours/week—75% reduction",
+      after: "3 hours/week 75% reduction",
       savings: "Worth €18,000/year at €50/hr"
     },
     {
@@ -350,13 +350,13 @@ export default function ElectricalInventoryManagement() {
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Electrical Contractors Need Specialized Inventory Management</h2>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Why Electrical Contractors Need Specialized Inventory Management</h1>
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
               Electrical contractors face unique inventory challenges that general inventory systems can't handle. You're managing <strong>hundreds of SKUs</strong> with specific voltage, gauge, and amperage requirements across <strong>multiple job sites and service vehicles</strong>, dealing with <strong>high-value materials</strong> like copper wire that are prone to theft, and need to track materials per job for accurate costing and bidding.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              A specialized electrical inventory management system solves these challenges by providing <strong>real-time visibility</strong> into what's in your warehouse, what's in each truck, and what's allocated to each job—all from your mobile device.
+              A specialized electrical inventory management system solves these challenges by providing <strong>real-time visibility</strong> into what's in your warehouse, what's in each truck, and what's allocated to each job all from your mobile device.
             </p>
           </div>
 
@@ -635,7 +635,7 @@ export default function ElectricalInventoryManagement() {
             <Zap className="w-16 h-16 mx-auto mb-6 opacity-90" />
             <h2 className="text-4xl md:text-5xl font-bold mb-6">StockFlow for Electrical Contractors</h2>
             <p className="text-xl opacity-90 max-w-3xl mx-auto">
-              Purpose-built inventory management for electricians who need mobile access, multi-location tracking, and job costing—all at an affordable price.
+              Purpose-built inventory management for electricians who need mobile access, multi-location tracking, and job costing all at an affordable price.
             </p>
           </div>
 

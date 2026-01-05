@@ -123,7 +123,7 @@ export default function SeoCommonInventoryMistakesAndHowToAvoidThemPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Common Inventory Mistakes and How to Avoid Them</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Common Inventory Mistakes and How to Avoid Them</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Common inventory mistakes cost businesses €4,000-8,000 annually</strong> through stockouts, waste, overstock, and inefficiency. We've seen the same mistakes repeatedly across hundreds of businesses: sticking with Excel past 100 SKUs (error rates jump to 10-15%), skipping reorder points (leading to stockouts), and ignoring expiration dates (causing waste). Most businesses don't realize the cost until lost sales pile up.
             </p>

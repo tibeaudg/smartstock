@@ -268,9 +268,9 @@ export default function InventoryPhotosPage() {
               <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
                 Product Photo Management
               </Badge>
-              <h2 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
                 Inventory Photos for Better Product Identification
-              </h2>
+              </h1>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
                 Add unlimited photos to your inventory items for visual identification, reduced errors, and improved e-commerce listings. Upload from any device, organize with tags, and sync automatically to your online stores.
               </p>

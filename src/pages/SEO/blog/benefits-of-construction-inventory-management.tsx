@@ -123,7 +123,7 @@ export default function SeoBenefitsOfConstructionInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Benefits of Construction Inventory Management</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Benefits of Construction Inventory Management</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Construction inventory waste is expensive materials sit unused between projects, weather damage destroys stock, and theft goes unnoticed. One contractor we worked with saved €45,000 annually by implementing proper inventory management. The benefits weren't just financial projects ran smoother because materials were available when needed, not buried in storage or lost to theft.
             </p>

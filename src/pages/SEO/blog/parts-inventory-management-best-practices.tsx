@@ -123,7 +123,7 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Parts Inventory Management Best Practices</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Parts Inventory Management Best Practices</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Parts inventory is different a stockout doesn't just lose a sale, it stops production. One manufacturer lost €25,000 in a single week when critical parts ran out and production halted. Parts inventory management requires different strategies than regular inventory, with focus on preventing downtime.
             </p>

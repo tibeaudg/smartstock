@@ -314,9 +314,9 @@ export default function InventoryOptimization() {
       {/* What is Inventory Optimization Section */}
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             What is Inventory Optimization?
-          </h2>
+          </h1>
           
           <p className="text-lg text-gray-700 leading-relaxed mb-6">
             <strong>Inventory optimization</strong> occurs when a business maintains a "just right" amount of inventory to satisfy customer demand. By optimizing inventory, a business reduces costs while avoiding stockouts, excess inventory, and inventory obsolescence. This involves analyzing demand patterns, setting appropriate <Link to="/glossary/reorder-point" className="text-blue-600 hover:underline font-semibold">reorder points</Link> and <Link to="/glossary/safety-stock" className="text-blue-600 hover:underline font-semibold">safety stock</Link> levels, implementing <Link to="/glossary/80-20-inventory-rule" className="text-blue-600 hover:underline font-semibold">ABC analysis</Link>, and using data-driven decision-making to balance service levels with inventory investment.

@@ -123,7 +123,7 @@ export default function Seo10ReasonsToUpgradeYourITAssetManagementStrategyPage()
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">10 Reasons to Upgrade Your IT Asset Management Strategy</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">10 Reasons to Upgrade Your IT Asset Management Strategy</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Outdated IT asset management wastes money and creates security risks. One company we worked with discovered they were paying for 47 unused software licenses costing €15,000 annually. They also couldn't track which devices had critical security updates, creating compliance risks. Modern IT asset management fixes both.
             </p>

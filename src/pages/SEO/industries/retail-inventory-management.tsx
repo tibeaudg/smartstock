@@ -89,7 +89,7 @@ export default function RetailInventoryManagement() {
     {
       icon: ShoppingCart,
       title: "Real-time Stock Tracking",
-      description: "See stock levels update instantly as sales happen. Know exactly what's available right now—not tomorrow morning."
+      description: "See stock levels update instantly as sales happen. Know exactly what's available right now not tomorrow morning."
     },
     {
       icon: Smartphone,
@@ -99,7 +99,7 @@ export default function RetailInventoryManagement() {
     {
       icon: AlertTriangle,
       title: "Low Stock Alerts",
-      description: "Get alerts when items hit reorder points. No more guessing—the system tells you exactly when to order."
+      description: "Get alerts when items hit reorder points. No more guessing the system tells you exactly when to order."
     },
     {
       icon: BarChart3,
@@ -307,9 +307,9 @@ export default function RetailInventoryManagement() {
       <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-green-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               Proven Results for <span className="text-blue-600">Retail Shops</span>
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               See the measurable impact retail inventory management has on shop operations.
             </p>

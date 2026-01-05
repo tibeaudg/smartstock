@@ -123,7 +123,7 @@ export default function Seo10MostCommonInventoryManagementMistakesSmallBusinesse
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">10 Most Common Inventory Management Mistakes Small Businesses Make</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">10 Most Common Inventory Management Mistakes Small Businesses Make</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Small businesses make the same inventory mistakes repeatedly and it costs them €4,000-8,000 annually. We've worked with hundreds of small businesses, and we see these 10 mistakes everywhere. The good news? They're all fixable. The bad news? Most businesses don't realize they're making them until the damage is done.
             </p>

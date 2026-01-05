@@ -133,9 +133,9 @@ export default function VendorManagedStock() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
               Vendor Managed Stock
-            </h2>
+            </h1>
             
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
               <strong>Vendor managed stock (VMS)</strong> is an inventory management arrangement where the supplier or vendor is responsible for monitoring, managing, and replenishing inventory levels at the customer's location. The vendor takes ownership of inventory planning, ordering, and stock management, typically maintaining agreed-upon stock levels while the customer pays for products as they are consumed.

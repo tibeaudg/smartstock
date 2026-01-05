@@ -123,7 +123,7 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Good Inventory Turnover Ratio?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Good Inventory Turnover Ratio?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Turnover ratio shows how many times you sell and replace inventory per year: <strong>Cost of Goods Sold ÷ Average Inventory</strong>. Retail typically sees 4-6x. Manufacturing 6-8x. Fast-moving goods 8-12x. One hardware store improved from 3.2x to 6.8x by cutting slow-moving items freeing €15,000 in capital.
             </p>

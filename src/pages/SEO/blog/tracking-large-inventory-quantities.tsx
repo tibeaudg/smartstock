@@ -123,7 +123,7 @@ export default function SeoTrackingLargeInventoryQuantitiesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Tracking Large Inventory Quantities</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Tracking Large Inventory Quantities</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               At scale, manual inventory tracking breaks down completely. One distributor we worked with tried to track 8,000+ items with spreadsheets staff spent 20+ hours weekly just on counting, and accuracy dropped to 65%. When they switched to barcode scanning with software, time dropped to 6 hours weekly and accuracy improved to 98%.
             </p>

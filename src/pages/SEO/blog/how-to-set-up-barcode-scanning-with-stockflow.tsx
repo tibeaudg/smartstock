@@ -140,7 +140,7 @@ export default function HowToSetUpBarcodeScanningWithStockFlowPage() {
       {/* Step-by-Step Setup */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Step-by-Step Setup Guide</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Step-by-Step Setup Guide</h1>
           <p className="text-lg leading-relaxed text-gray-700 mb-8">
             Follow these steps to set up barcode scanning in StockFlow:
           </p>

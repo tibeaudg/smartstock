@@ -123,7 +123,7 @@ export default function SeoWhatIsAStockoutPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Stockout?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Stockout?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               A <strong>stockout</strong> means you're out of inventory when a customer wants to buy. That costs 10-20% of revenue on affected items. Worse, 30-40% of customers shop elsewhere after experiencing a stockout and many don't come back. One fashion retailer lost €8,500 in sales over three months from repeated stockouts on bestsellers. Customers switched to competitors, and the business never recovered those relationships.
             </p>

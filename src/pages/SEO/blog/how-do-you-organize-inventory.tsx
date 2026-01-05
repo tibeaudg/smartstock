@@ -123,7 +123,7 @@ export default function SeoHowDoYouOrganizeInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How Do You Organize Inventory?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How Do You Organize Inventory?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Organizing inventory effectively</strong> means finding any item in under 30 seconds. Most businesses fail at this we've seen warehouses where staff waste 2-3 hours daily just searching for items. Proper organization cuts this time by 50-70%, prevents picking errors, and makes scaling possible.
             </p>

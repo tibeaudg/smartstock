@@ -123,7 +123,7 @@ export default function Seo6WaysQRCodesWillBoostInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">6 Ways QR Codes Will Boost Inventory Management</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">6 Ways QR Codes Will Boost Inventory Management</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               QR codes aren't just for menus anymore they're transforming inventory management. One warehouse we worked with switched from traditional barcodes to QR codes and cut scanning time by 40% because staff could scan from any angle. Plus, QR codes can store maintenance history, expiration dates, and serial numbers all in one scan.
             </p>

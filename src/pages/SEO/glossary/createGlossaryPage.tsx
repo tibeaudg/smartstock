@@ -111,9 +111,9 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
       )}
 
       {/* Main Content Section */}
-      <h2 className="text-5xl font-bold text-black mt-16 mb-6 pb-3 border-b-2 border-slate-200">
+      <h1 className="text-5xl font-bold text-black mt-16 mb-6 pb-3 border-b-2 border-slate-200">
         What is {title}?
-      </h2>
+      </h1>
       <p className="text-lg text-black font-medium leading-relaxed mb-8">
         {shortDescription}
       </p>

@@ -265,9 +265,9 @@ export default function PurchaseRequisitionSoftware() {
 
       <section className="py-12 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">
+          <h1 className="text-3xl font-bold text-slate-900 mb-8 text-center">
             Key Features of Purchase Requisition Software
-          </h2>
+          </h1>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {keyFeatures.map((feature, index) => (
               <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">

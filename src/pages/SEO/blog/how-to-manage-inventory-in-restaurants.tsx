@@ -123,7 +123,7 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Manage Inventory in Restaurants</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Manage Inventory in Restaurants</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Restaurant inventory mistakes cost 4-10% of revenue through waste and over-ordering. One restaurant we worked with reduced food costs by 24% simply by tracking expiration dates and implementing FIFO rotation. The difference? They could see what was expiring before it spoiled, instead of discovering expired food during cleanup.
             </p>

@@ -236,9 +236,9 @@ export default function StockManagementSoftware() {
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               What is <span className="text-blue-600">Stock Management Software</span>?
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
               Stock management software is a digital tool that helps businesses track, monitor, and optimize inventory levels in real-time. It automates stock counting, reordering, and reporting processes, enabling businesses to maintain optimal inventory levels, reduce costs, and prevent stockouts or overstock situations. Modern stock management software combines real-time visibility, automation, and analytics to provide comprehensive inventory control.
             </p>

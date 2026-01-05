@@ -140,7 +140,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Cycle Counting?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Cycle Counting?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Cycle counting is an inventory auditing method where you count specific items or locations on a rotating schedule throughout the year, rather than doing a full physical inventory count all at once. This approach is more efficient, less disruptive to operations, and provides continuous accuracy monitoring compared to annual full counts.
             </p>

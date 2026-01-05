@@ -123,7 +123,7 @@ export default function SeoWhatIsAGS1BarcodePage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a GS1 Barcode?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a GS1 Barcode?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               A <strong>GS1 barcode</strong> uses globally unique identification numbers (GTINs) set by GS1, a global standards organization. These barcodes ensure products are identified consistently worldwide required if you sell through major retailers (Walmart, Amazon, etc.) or internationally. Formats include UPC (12 digits, North America), EAN-13 (13 digits, worldwide), and EAN-8 (8 digits, small products).
             </p>

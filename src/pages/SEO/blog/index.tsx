@@ -396,9 +396,9 @@ export default function SeoBlogIndexPage() {
                   <div key={category} className="space-y-6">
                     {/* Category Title */}
                     <div className="border-b border-gray-200 pb-4">
-                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
                         {formatCategoryName(category)}
-                      </h2>
+                      </h1>
                       <p className="text-sm text-gray-500 mt-1">
                         {pagesInCategory.length} {pagesInCategory.length === 1 ? 'article' : 'articles'}
                       </p>

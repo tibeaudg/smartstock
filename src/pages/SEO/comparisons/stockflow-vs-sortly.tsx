@@ -266,11 +266,11 @@ export default function StockFlowVsSortly() {
       <section className="bg-gradient-to-br from-blue-50 via-white to-white py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
               StockFlow vs Sortly
               <br />
               <span className="text-blue-600">Compare Features, Pricing, and Migration</span>
-            </h2>
+            </h1>
             <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
               Completely free forever vs $25/month • 5-7 day setup vs 30+ days • Save 100% costs • Free migration assistance
             </p>

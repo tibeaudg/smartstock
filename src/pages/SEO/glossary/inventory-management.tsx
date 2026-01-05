@@ -362,7 +362,7 @@ export default function InventoryManagementGuide() {
       {/* What is Section */}
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">What is Inventory Management?</h2>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">What is Inventory Management?</h1>
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
               <strong>Inventory management</strong> covers the processes businesses use to order, store, track, and sell stock from raw materials to finished goods. Most small businesses do this poorly, leading to stockouts, overstock, and wasted capital.

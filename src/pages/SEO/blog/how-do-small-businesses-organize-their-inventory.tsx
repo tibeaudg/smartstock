@@ -123,7 +123,7 @@ export default function SeoHowDoSmallBusinessesOrganizeTheirInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How Do Small Businesses Organize Their Inventory?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How Do Small Businesses Organize Their Inventory?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Small businesses organize inventory</strong> by categorizing items (by type, value, or movement), using simple storage systems (bins, shelves), labeling clearly, and using free or affordable inventory management software. Key strategies include ABC analysis for high-value items, organizing by product type, grouping fast-moving items together, and using consistent naming.
             </p>

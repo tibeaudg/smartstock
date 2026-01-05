@@ -123,7 +123,7 @@ export default function SeoHowToOperateAnASchoolInventoryManagementSystemPage() 
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Operate a School Inventory Management System</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Operate a School Inventory Management System</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Schools manage thousands of items across classrooms, labs, and storage without proper tracking, supplies disappear, equipment gets misplaced, and budgets get wasted. One school district we worked with saved €12,000 annually simply by tracking where equipment actually was, instead of buying replacements for "lost" items that were just in different classrooms.
             </p>

@@ -233,9 +233,9 @@ export default function InventorySoftware() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               Why Choose <span className="text-blue-600">StockFlow</span> Inventory Software?
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               StockFlow is designed specifically for growing businesses that need powerful inventory management without the complexity.
             </p>

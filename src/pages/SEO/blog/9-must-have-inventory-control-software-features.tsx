@@ -128,9 +128,9 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">9 Must-Have Inventory Control Software Features</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">9 Must-Have Inventory Control Software Features</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Choosing inventory software feels overwhelming—there are dozens of features, and most vendors claim theirs are "essential." Based on data from {metrics.customerCount} businesses, we've identified the 9 features that actually matter. Skip any of these, and you'll struggle with accuracy, efficiency, or scalability. Get them all, and you'll see measurable results: customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings and significant cost reductions.
+              Choosing inventory software feels overwhelming there are dozens of features, and most vendors claim theirs are "essential." Based on data from {metrics.customerCount} businesses, we've identified the 9 features that actually matter. Skip any of these, and you'll struggle with accuracy, efficiency, or scalability. Get them all, and you'll see measurable results: customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings and significant cost reductions.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               The 9 must-have features are: <strong>1) Real-time tracking</strong> (instant visibility into inventory levels and movements), <strong>2) Barcode scanning</strong> (fast, accurate scanning with smartphones or scanners), <strong>3) Automated reorder alerts</strong> (prevent stockouts with automatic notifications), <strong>4) Multi-location support</strong> (track inventory across multiple warehouses or sites), <strong>5) Mobile apps</strong> (access from smartphones and tablets), <strong>6) Reporting and analytics</strong> (insights into usage, trends, and costs), <strong>7) Integration capabilities</strong> (connect with other business systems), <strong>8) User permissions</strong> (control access and maintain security), and <strong>9) Cloud-based access</strong> (work from anywhere, automatic updates).
@@ -141,7 +141,7 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why these features matter</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                These 9 features form the foundation for effective inventory control. Missing any of them limits functionality, reduces efficiency, or prevents scalability. Software with all 9 features typically improves accuracy from 60-80% to 95-99% and reduces time spent by 50-70%. They're not optional—they're essential for businesses with 50+ items.
+                These 9 features form the foundation for effective inventory control. Missing any of them limits functionality, reduces efficiency, or prevents scalability. Software with all 9 features typically improves accuracy from 60-80% to 95-99% and reduces time spent by 50-70%. They're not optional they're essential for businesses with 50+ items.
               </p>
             </div>
           </div>

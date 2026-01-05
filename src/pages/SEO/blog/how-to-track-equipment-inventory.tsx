@@ -123,7 +123,7 @@ export default function SeoHowToTrackEquipmentInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Track Equipment Inventory</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Track Equipment Inventory</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Equipment tracking isn't optional it's essential. One construction company we worked with lost €15,000 in tools over six months because they couldn't track who had what or where it was. Proper equipment tracking prevents these losses and extends equipment life through scheduled maintenance.
             </p>

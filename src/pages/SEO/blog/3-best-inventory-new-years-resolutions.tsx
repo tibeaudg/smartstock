@@ -122,7 +122,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">3 Best Inventory New Year's Resolutions</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">3 Best Inventory New Year's Resolutions</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Most New Year's resolutions fail because they're vague or unrealistic. But inventory resolutions are different they're measurable, achievable, and directly impact your bottom line. We've seen businesses save €10,000+ annually by setting just one of these resolutions and sticking to it. The key? Pick one and execute it fully before moving to the next.
             </p>

@@ -101,9 +101,9 @@ export default function WhatIsLeadTime() {
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               What is <span className="text-blue-600">Lead Time</span>?
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Lead time is the period between placing an order and receiving it. Understanding what is lead time is essential for effective inventory planning and preventing stockouts.
             </p>

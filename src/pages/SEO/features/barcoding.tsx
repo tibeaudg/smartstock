@@ -156,7 +156,7 @@ const faqData = [
   {
     question: 'Do I need dedicated hardware for barcoding?',
     answer:
-      'No special hardware is required. Any modern device with a camera—iOS, Android, Zebra, Windows, or macOS—can run the StockFlow barcode scanner securely in the browser. You can use your smartphone or tablet as a barcode scanner.'
+      'No special hardware is required. Any modern device with a camera iOS, Android, Zebra, Windows, or macOS can run the StockFlow barcode scanner securely in the browser. You can use your smartphone or tablet as a barcode scanner.'
   },
   {
     question: 'Can barcoding work offline?',
@@ -274,9 +274,9 @@ export default function BarcodingPage() {
               <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
                 PWA Barcode Scanner
               </Badge>
-              <h2 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
                 StockFlow Barcoding for Real-Time Inventory Accuracy
-              </h2>
+              </h1>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
                 Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
               </p>
@@ -312,7 +312,7 @@ export default function BarcodingPage() {
               Barcode Scanning Built for High-Velocity Operations
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow Barcoding powers inventory teams with rapid data capture, validation, and automation—without the friction of installing traditional scanning apps.
+              StockFlow Barcoding powers inventory teams with rapid data capture, validation, and automation without the friction of installing traditional scanning apps.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

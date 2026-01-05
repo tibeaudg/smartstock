@@ -325,7 +325,7 @@ export default function GlossaryHomePage() {
       </section>
 
       <section id="letters" className="mt-16">
-        <h2 className="text-2xl font-bold text-slate-900">Browse by Letter</h2>
+        <h1 className="text-2xl font-bold text-slate-900">Browse by Letter</h1>
         <p className="mt-3 text-base text-slate-600">
           Scroll to terms starting with:
         </p>

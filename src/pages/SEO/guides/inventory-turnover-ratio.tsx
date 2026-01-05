@@ -153,9 +153,9 @@ export default function InventoryTurnoverRatio() {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h1 className="text-3xl md:text-4xl font-bold mb-6">
                 What is <span className="text-blue-600">Inventory Turnover Ratio</span>?
-              </h2>
+              </h1>
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
                 The inventory turnover ratio is a critical financial metric that measures how efficiently a company manages its inventory. It indicates how many times inventory is sold and replaced during a specific period, typically one year.
               </p>

@@ -136,7 +136,7 @@ export default function SeoInventoryManagement101Page() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Management?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Management?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Inventory management means ordering, storing, tracking, and controlling stock so you have the right products at the right time without wasting capital on overstock or losing sales from stockouts. Small businesses lose €4,000-8,000 annually when they skip this. Get it right, and you'll prevent stockouts, free up cash, and slash waste.
             </p>

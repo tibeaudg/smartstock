@@ -138,9 +138,9 @@ export default function CycleCount() {
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               What is <span className="text-blue-600">Cycle Count</span>?
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Cycle count is an inventory auditing technique where inventory is counted on a rotating schedule throughout the year, rather than counting everything at once. This maintains inventory accuracy continuously without major disruptions. For more details, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/perpetual-inventory-and-physical-inventory" className="text-blue-600 hover:underline font-semibold">perpetual inventory vs physical inventory</Link> comparison.
             </p>

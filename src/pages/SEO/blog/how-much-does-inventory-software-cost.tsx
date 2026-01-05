@@ -123,7 +123,7 @@ export default function SeoHowMuchDoesInventorySoftwareCostPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Most inventory software costs €20-500/month but <strong>StockFlow is completely free forever</strong> with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, branches, and orders. Other software charges per-user (€10-50/user/month), flat-rate (€50-500/month), or usage-based pricing. StockFlow eliminates all costs.
             </p>

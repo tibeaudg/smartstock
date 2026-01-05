@@ -123,7 +123,7 @@ export default function SeoMultipleLocationInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Multiple Location Inventory Management</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Multiple Location Inventory Management</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Multiple location inventory management</strong> tracks and manages inventory across multiple stores, warehouses, or facilities from a centralized system. It provides visibility across all locations, enables transfers between locations, optimizes allocation based on demand, and maintains accuracy at each site.
             </p>

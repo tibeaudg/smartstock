@@ -109,7 +109,7 @@ export default function StockFlowVsCin7() {
           Cin7 costs $300+/month plus $2,000-5,000 setup fees and takes 45-90 days to implement. StockFlow is free forever, goes live in 5-7 days, and stores data in Europe (GDPR compliant). For most businesses, that's €5,600-8,600 saved in year one.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Cin7 works for large enterprises with complex omnichannel needs. For growing businesses, StockFlow delivers the same core features—multi-channel sales, barcode scanning, multi-warehouse—without the enterprise price tag or implementation timeline.
+          Cin7 works for large enterprises with complex omnichannel needs. For growing businesses, StockFlow delivers the same core features multi-channel sales, barcode scanning, multi-warehouse without the enterprise price tag or implementation timeline.
         </p>
       </div>
 
@@ -126,7 +126,7 @@ export default function StockFlowVsCin7() {
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Feature Comparison: StockFlow vs Cin7</h2>
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">Feature Comparison: StockFlow vs Cin7</h1>
           <ComparisonTable competitorName="Cin7" features={comparisonFeatures} />
         </div>
       </section>

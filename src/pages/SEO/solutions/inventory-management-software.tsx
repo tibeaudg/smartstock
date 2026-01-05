@@ -183,7 +183,7 @@ export default function InventoryManagementSoftware() {
       {/* Enhanced Introduction Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses</h1>
           <div className="prose prose-lg max-w-none">
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
               <strong>Inventory management software</strong> is essential for three critical business verticals: <strong>Independent Medical Device Distributors</strong> managing FDA compliance and traceability, <strong>Local Event & AV Production Companies</strong> tracking equipment across multiple venues and events, and <strong>Rental Businesses</strong> (machinery, party equipment, etc.) scheduling and managing high-value assets. Based on data from {metrics.customerCount} businesses, StockFlow customers average {metrics.averageTimeSaved || '6 hours per week'} in time savings. Unlike manual methods like Excel spreadsheets or paper-based systems, modern <strong>inventory management software</strong> provides up-to-the-minute visibility into inventory levels, automates reordering processes, and helps prevent costly stockouts or overstock situations.

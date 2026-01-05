@@ -133,9 +133,9 @@ export default function BarcodeInventoryPage() {
         <div className="mx-auto max-w-7xl">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
               Why Switch to Barcode Scanning?
-            </h2>
+            </h1>
             <p className="text-lg text-slate-600">
               Manual entry is the bottleneck of modern logistics. Automating with barcodes delivers measurable impact across six key operational metrics.
             </p>

@@ -123,7 +123,7 @@ export default function SeoInventoryManagementBestPracticesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Inventory Management Best Practices</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Inventory Management Best Practices</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Best practices separate profitable inventory management from chaos.</strong> Most businesses start at 60-80% accuracy meaning 2-4 out of 10 inventory records are wrong. That causes stockouts, overstock, and wasted capital. These practices push accuracy to 95-99%: cycle counts, barcode scanning, automated reorder points, safety stock, and proper software.
             </p>

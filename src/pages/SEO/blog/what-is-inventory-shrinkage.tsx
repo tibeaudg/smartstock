@@ -141,7 +141,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Understanding Inventory Shrinkage</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Understanding Inventory Shrinkage</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Shrinkage</strong> is the gap between what your records say you have and what's actually on shelves. It costs 1-2% of inventory value annually that's €4,000-8,000 on €400,000 inventory. One retailer discovered €12,000 missing after implementing proper tracking. Employee theft causes 30% of losses. Administrative errors cause 25%. The rest comes from damage, supplier fraud, and shoplifting.
             </p>

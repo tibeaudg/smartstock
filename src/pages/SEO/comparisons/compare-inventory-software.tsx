@@ -76,7 +76,7 @@ const differentiators = [
 
 const evaluationChecklist = [
   'Confirm the vendor’s pricing model covers your projected order volume, locations, and integrations for at least 18 months.',
-  'Validate native workflows with frontline users—especially pick/pack and cycle counting—before you map automations.',
+  'Validate native workflows with frontline users especially pick/pack and cycle counting before you map automations.',
   'Audit how forecasts, replenishment, and purchasing talk to your ERP or accounting system to prevent double work.',
   'Ask for a realistic implementation timeline, including data migration, testing, and user onboarding milestones.',
   'Review support SLAs, change request policies, and roadmap transparency so you’re not surprised after go-live.',
@@ -173,11 +173,11 @@ export default function CompareInventorySoftware() {
               <Sparkles className="w-4 h-4" />
               2025 Inventory Management Buyer’s Guide
             </span>
-            <h2 className="mt-6 text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
+            <h1 className="mt-6 text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
               Compare Inventory Software and choose the platform that scales with you
-            </h2>
+            </h1>
             <p className="mt-5 text-lg text-slate-600">
-              We did the legwork on real pricing and packaged capabilities from leading systems—so you can benchmark
+              We did the legwork on real pricing and packaged capabilities from leading systems so you can benchmark
               against StockFlow, shortlist faster, and avoid costly mismatches.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -229,7 +229,7 @@ export default function CompareInventorySoftware() {
                 How top inventory platforms price and position themselves
               </h2>
               <p className="mt-3 text-slate-600">
-                Use the table as a fact-based starting point. Every team’s process looks different—validate the details
+                Use the table as a fact-based starting point. Every team’s process looks different validate the details
                 with vendors before you commit budget or timelines.
               </p>
             </div>
@@ -351,7 +351,7 @@ export default function CompareInventorySoftware() {
             Ready to see StockFlow handle your edge cases?
           </h2>
           <p className="mt-4 text-lg text-blue-100">
-            Bring a messy SKU catalog, multi-location fulfillment, or supplier constraints—we’ll map it in a live
+            Bring a messy SKU catalog, multi-location fulfillment, or supplier constraints we’ll map it in a live
             workspace so you can compare results against your current stack.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">

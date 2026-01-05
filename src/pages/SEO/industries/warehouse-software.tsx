@@ -150,7 +150,7 @@ export default function WarehouseSoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-4xl font-bold mb-6">What Is Warehouse Management Software?</h2>
+          <h1 className="text-4xl font-bold mb-6">What Is Warehouse Management Software?</h1>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             Warehouse management software (WMS) is the digital backbone of the supply chain. It provides the visibility and tools necessary to control every movement within a distribution center. By utilizing <strong>WMS software</strong>, companies move away from paper-based tracking toward high-velocity fulfillment.
           </p>
@@ -228,7 +228,7 @@ export default function WarehouseSoftwarePage() {
               While SAP offers a module called Extended Warehouse Management (EWM), it is not "the same" as a standalone WMS. Standalone <strong>WMS software</strong> is often "best-of-breed," meaning it is built from the ground up to solve specific warehouse problems without the bloat of an ERP. 
             </p>
             <p className="text-lg">
-              For many businesses, using a dedicated WMS like StockFlow alongside an ERP provides better flexibility. This allow the warehouse to operate at peak efficiency with specialized workflows—like wave picking or zone-skipping—that generic ERP modules often struggle to execute natively.
+              For many businesses, using a dedicated WMS like StockFlow alongside an ERP provides better flexibility. This allow the warehouse to operate at peak efficiency with specialized workflows like wave picking or zone-skipping that generic ERP modules often struggle to execute natively.
             </p>
           </div>
         </div>

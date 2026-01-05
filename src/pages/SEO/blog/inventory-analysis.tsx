@@ -123,7 +123,7 @@ export default function SeoInventoryAnalysisPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Analysis?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Analysis?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Inventory analysis</strong> transforms raw data into actionable insights. Most businesses track inventory, but they don't analyze it leading to overstock of slow-moving items and stockouts of fast-moving ones. One retailer we worked with discovered €8,500 tied up in items that hadn't sold in 18 months, simply because they weren't analyzing their data.
             </p>

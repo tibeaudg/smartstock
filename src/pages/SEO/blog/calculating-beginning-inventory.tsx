@@ -123,7 +123,7 @@ export default function SeoCalculatingBeginningInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Calculate Beginning Inventory</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Calculate Beginning Inventory</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Beginning inventory</strong> is the starting point for all inventory calculations and getting it wrong throws off your entire cost of goods sold (COGS) calculation. We've seen businesses misreport profits by thousands simply because they calculated beginning inventory incorrectly. The good news? It's straightforward once you understand the concept.
             </p>

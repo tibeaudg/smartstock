@@ -123,7 +123,7 @@ export default function SeoYearEndInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Year End Inventory</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Year End Inventory</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Year-end inventory</strong> means counting and valuing all stock at fiscal year-end for accounting and taxes. Without preparation, it takes 2-3 days and disrupts operations. One hardware store spent 3 days counting 2,500 SKUs manually then found €8,500 in discrepancies to reconcile.
             </p>

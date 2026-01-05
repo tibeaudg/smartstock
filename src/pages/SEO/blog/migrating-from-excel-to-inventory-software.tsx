@@ -129,7 +129,7 @@ export default function MigratingFromExcelToInventorySoftwarePage() {
       {/* Step-by-Step Migration */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Step-by-Step Migration Process</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Step-by-Step Migration Process</h1>
 
           <div className="space-y-6">
             <div className="bg-white rounded-lg p-6 border-l-4 border-blue-600">

@@ -123,7 +123,7 @@ export default function SeoEquipmentInventoryManagementBestPracticesPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Equipment Inventory Management Best Practices</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Equipment Inventory Management Best Practices</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Equipment tracking is where most businesses fail until they lose a €5,000 piece of machinery. One construction company we worked with lost €12,000 worth of tools over six months simply because they couldn't track who had what and where it was. Proper equipment management prevents these losses and extends equipment life significantly.
             </p>

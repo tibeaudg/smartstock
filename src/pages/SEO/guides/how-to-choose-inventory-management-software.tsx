@@ -123,9 +123,9 @@ const HowToChooseInventoryManagementSoftware = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             How to Choose Inventory Management Software: Complete Buyer Guide
-          </h2>
+          </h1>
           
           <p className="text-xl text-gray-600 mb-8">
             Pick the wrong inventory software, and you'll waste €500+/month on tools you'll barely use. Pick right, and you'll cut counting time by 75% and eliminate stockouts. This guide shows you how to evaluate options without overthinking it. For deeper dives, see our <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> guide and <Link to="/best-of/best-inventory-management-software" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> comparison.

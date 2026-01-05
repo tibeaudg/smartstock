@@ -123,7 +123,7 @@ export default function Seo5SignsYourInventoryManagementNeedsAnOverhaulPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">5 Signs Your Inventory Management Needs an Overhaul</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">5 Signs Your Inventory Management Needs an Overhaul</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Your inventory management system is broken you just haven't realized it yet. We've seen businesses waste thousands monthly because they didn't recognize the warning signs. One hardware store lost €12,000 in sales over three months before they realized their spreadsheet-based system couldn't handle growth.
             </p>

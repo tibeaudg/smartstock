@@ -123,7 +123,7 @@ export default function SeoHowToLabelInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Label Inventory</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Label Inventory</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Poor labeling causes confusion, wasted time, and errors. We've seen businesses spend 30+ minutes searching for unlabeled items, only to find them misidentified later. Good labeling with barcodes eliminates this staff can scan and instantly identify items, reducing search time by 50-70% and errors by 80-90%.
             </p>

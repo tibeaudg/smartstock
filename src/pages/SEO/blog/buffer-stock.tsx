@@ -123,7 +123,7 @@ export default function SeoBufferStockPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Buffer Stock?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Buffer Stock?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Buffer stock</strong> (also called safety stock) is extra inventory kept on hand to prevent stockouts due to demand variability, supplier delays, or unexpected issues. Most businesses set buffer stock too low leading to stockouts when demand spikes or too high tying up capital unnecessarily. One retailer we worked with lost €3,200 in sales during a single week because their buffer stock was calculated incorrectly.
             </p>

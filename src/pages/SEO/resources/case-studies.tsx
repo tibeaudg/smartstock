@@ -174,9 +174,9 @@ export default function SEOCaseStudiesPage() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               Real Results from <span className="text-blue-600">Real Businesses</span>
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
               See how businesses across industries use StockFlow to transform their inventory management, reduce costs, save time, and grow revenue. These case studies showcase real-world results from companies just like yours.
             </p>

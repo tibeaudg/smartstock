@@ -123,7 +123,7 @@ export default function SeoRawMaterialsInventoryPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Raw Materials Inventory?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Raw Materials Inventory?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Raw materials inventory is procured, stored, and received before any other products in the supply chain</strong>, and is absolutely integral to producing enough high-quality finished goods. Raw materials inventory represents stock that hasn't yet been used for manufacturing - the component parts or materials your business purchases but hasn't yet transformed into products. Without proper raw materials inventory management, production grinds to a halt.
             </p>

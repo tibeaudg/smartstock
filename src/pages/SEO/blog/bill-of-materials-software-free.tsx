@@ -124,9 +124,9 @@ export default function BillOfMaterialsManagementPage() {
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 What is a Bill of Materials (BOM)?
-              </h2>
+              </h1>
               <p className="mt-6 text-lg leading-relaxed text-gray-700">
                 A <strong>Bill of Materials (BOM)</strong> is a comprehensive, hierarchical list of raw materials, components, sub-assemblies, and instructions required to manufacture a product. Think of it as the ultimate blueprint or recipe that ensures your production team has exactly what they need, when they need it.
               </p>

@@ -123,7 +123,7 @@ export default function SeoWhatIsDemandForecastingPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Demand Forecasting?</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Demand Forecasting?</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Demand forecasting</strong> predicts future customer demand using historical sales, trends, and statistical models. One fashion retailer reduced stockouts by 75% and overstock by €12,000 after implementing proper forecasting. It helps you order the right quantities not too much (ties up capital) or too little (lost sales).
             </p>

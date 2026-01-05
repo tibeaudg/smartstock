@@ -123,7 +123,7 @@ export default function SeoTheFutureOfQRCodesWhatLiesAheadForInventoryManagement
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">The Future of QR Codes in Inventory Management</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">The Future of QR Codes in Inventory Management</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               QR codes aren't new, but what's coming is transformative. We're seeing businesses already use QR codes to store more data than barcodes serial numbers, maintenance history, expiration dates all in one scan. The future brings even more: dynamic updates, IoT integration, and AI-powered insights.
             </p>

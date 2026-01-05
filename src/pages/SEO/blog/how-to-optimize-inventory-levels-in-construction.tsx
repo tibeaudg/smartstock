@@ -123,7 +123,7 @@ export default function SeoHowToOptimizeInventoryLevelsInConstructionPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Optimize Inventory Levels in Construction</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Optimize Inventory Levels in Construction</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Construction inventory waste is brutal materials sit unused between projects, weather damage destroys stock, and theft goes unnoticed. One contractor optimized their inventory and reduced waste by 28%, freeing up €45,000 in tied-up capital. Optimization isn't just about counting it's about timing orders with projects and maintaining safety stock for critical items.
             </p>

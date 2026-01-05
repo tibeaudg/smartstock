@@ -123,7 +123,7 @@ export default function SeoInventoryFormulasAndRatiosPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Essential Inventory Formulas and Ratios</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Essential Inventory Formulas and Ratios</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Most businesses manage inventory by guesswork and lose thousands as a result. The right formulas eliminate the guesswork, providing data-driven decisions that optimize stock levels and prevent costly mistakes. One hardware store saved €12,000 annually simply by calculating reorder points correctly instead of ordering "when it feels low."
             </p>

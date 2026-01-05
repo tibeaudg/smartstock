@@ -162,7 +162,7 @@ export default function StockFlowVsSpreadsheets() {
       {/* Introduction */}
       <div className="mb-12">
         <p className="text-lg text-slate-900 leading-relaxed mb-6">
-          Spreadsheets feel free—until you calculate the real cost. Manual data entry wastes 10-20 hours weekly. Error rates hover around 10-15%. Multi-user access causes version conflicts. StockFlow eliminates these problems with real-time tracking, barcode scanning, and automation that spreadsheets can't match.
+          Spreadsheets feel free until you calculate the real cost. Manual data entry wastes 10-20 hours weekly. Error rates hover around 10-15%. Multi-user access causes version conflicts. StockFlow eliminates these problems with real-time tracking, barcode scanning, and automation that spreadsheets can't match.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
           Hundreds of businesses have migrated from Excel to StockFlow. Here's what changed: 75% reduction in counting time, 90% fewer errors, real-time sync across locations, automated reorder alerts. The comparison below shows exactly where spreadsheets fail.
@@ -174,7 +174,7 @@ export default function StockFlowVsSpreadsheets() {
       {/* Feature Comparison */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Feature Comparison: StockFlow vs Spreadsheets</h2>
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">Feature Comparison: StockFlow vs Spreadsheets</h1>
           <ComparisonTable competitorName="Spreadsheets (Excel/Sheets)" features={comparisonFeatures} />
         </div>
       </section>

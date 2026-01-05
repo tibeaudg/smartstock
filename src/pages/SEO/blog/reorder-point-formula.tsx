@@ -123,7 +123,7 @@ export default function SeoReorderPointFormulaPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Reorder Point Formula: Complete Guide</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Reorder Point Formula: Complete Guide</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Most businesses set reorder points by guesswork and lose thousands in stockouts as a result. The <strong>reorder point formula</strong> eliminates the guesswork. It calculates exactly when to place a new order to prevent stockouts. The formula is: <strong>Reorder Point = (Lead Time × Average Daily Usage) + Safety Stock</strong>.
             </p>

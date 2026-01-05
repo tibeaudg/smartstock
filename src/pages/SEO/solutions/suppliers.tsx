@@ -224,9 +224,9 @@ export default function SuppliersSolutionPage() {
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">
               What is <span className="text-blue-600">Supplier Management Software</span>?
-            </h2>
+            </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
               Supplier management software helps businesses centralize vendor information, automate purchasing workflows, track supplier performance, and streamline procurement processes. It enables better supplier relationships and reduces procurement costs by providing a unified platform for managing all supplier-related operations. Modern supplier management software integrates seamlessly with inventory systems to create efficient supply chain operations.
             </p>

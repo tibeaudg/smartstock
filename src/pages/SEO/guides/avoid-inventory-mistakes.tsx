@@ -180,9 +180,9 @@ export default function AvoidInventoryMistakes() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
               The 7 Most Common Inventory Mistakes
-            </h2>
+            </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               These mistakes cost businesses 10-20% of their inventory value annually. Learn how to prevent them.
             </p>

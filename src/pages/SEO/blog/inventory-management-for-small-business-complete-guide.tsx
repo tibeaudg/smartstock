@@ -150,7 +150,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
       {/* What is Inventory Management for Small Business */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management for Small Business?</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management for Small Business?</h1>
           <p className="text-lg leading-relaxed text-gray-700 mb-4">
             <strong>Inventory management for small business</strong> is the systematic approach to tracking, controlling, and optimizing your stock levels to ensure you have the right products in the right quantities at the right time. It encompasses everything from monitoring stock levels and automating reordering to preventing stockouts, reducing overstock, and maintaining accurate records.
           </p>

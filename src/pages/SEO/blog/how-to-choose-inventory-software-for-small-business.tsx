@@ -133,7 +133,7 @@ export default function HowToChooseInventorySoftwareForSmallBusinessPage() {
       {/* Step 1: Assess Your Needs */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Step 1: Assess Your Current Needs</h2>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Step 1: Assess Your Current Needs</h1>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
             Don't start comparing software yet. First, document what's broken: Are you losing sales to stockouts? Spending 10+ hours weekly on counting? Seeing 15%+ error rates? Those pain points determine which features actually matter.
           </p>

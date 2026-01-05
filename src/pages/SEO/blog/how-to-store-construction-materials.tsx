@@ -123,7 +123,7 @@ export default function SeoHowToStoreConstructionMaterialsPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Store Construction Materials</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Store Construction Materials</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Construction sites lose thousands annually to damaged materials and theft problems that proper storage solves. One contractor we worked with lost €6,800 in materials during a single project because they stored items improperly and couldn't track what was stolen. The fix? Proper storage combined with inventory tracking.
             </p>

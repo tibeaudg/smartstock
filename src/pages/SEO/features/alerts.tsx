@@ -279,11 +279,11 @@ export default function AlertsPage() {
       <div className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
               Automated Inventory Alerts for Better Control
-            </h2>
+            </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              StockFlow's alert system provides real-time notifications for low stock, reorder points, stockouts, expiration dates, and custom conditions—helping you maintain optimal inventory levels and prevent costly stockouts.
+              StockFlow's alert system provides real-time notifications for low stock, reorder points, stockouts, expiration dates, and custom conditions helping you maintain optimal inventory levels and prevent costly stockouts.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

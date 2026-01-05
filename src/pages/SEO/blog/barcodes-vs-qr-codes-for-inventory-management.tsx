@@ -135,7 +135,7 @@ export default function SeoBarcodesVsQRCodesForInventoryManagementPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Barcodes vs QR Codes: Complete Comparison</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Barcodes vs QR Codes: Complete Comparison</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               Choosing between <strong>barcodes and QR codes for inventory management</strong> is a critical decision that impacts accuracy, speed, and operational efficiency. Both technologies dramatically improve inventory tracking compared to manual methods, but each has distinct advantages depending on your specific needs.
             </p>

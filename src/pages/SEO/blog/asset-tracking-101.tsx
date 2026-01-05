@@ -123,7 +123,7 @@ export default function SeoAssetTracking101Page() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Asset Tracking 101: The Complete Beginner's Guide</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Asset Tracking 101: The Complete Beginner's Guide</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Asset tracking</strong> is what separates organized businesses from chaotic ones. We've seen construction companies lose €5,000+ in tools annually simply because they couldn't track what they had or where it was. Unlike inventory that you sell or consume, assets (equipment, tools, furniture, vehicles) stick around and they need different management.
             </p>

@@ -260,7 +260,7 @@ export default function BestInventoryManagementSoftware() {
                 A cross-dock warehouse is a logistics center where goods are transferred directly from incoming trucks to outgoing trucks, with minimal or no storage. The goal is to accelerate turnaround time and reduce storage costs by moving products directly from receiving to shipping. These facilities are often designed with an incoming and outgoing dock side and have little to no storage space.
               </p>
 
-              <h2 className="text-3xl font-bold text-gray-900 mt-8 mb-4">Features of a Cross-Dock Warehouse</h2>
+              <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">Features of a Cross-Dock Warehouse</h1>
               
               <ul className="list-disc pl-6 space-y-3 text-gray-700">
                 <li><strong>Direct transfer:</strong> Products are unloaded and loaded onto another vehicle almost immediately.</li>

@@ -134,7 +134,7 @@ export default function SeoAGuideToVisualInventoryControlPage() {
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">A Guide to Visual Inventory Control</h2>
+            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">A Guide to Visual Inventory Control</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
               <strong>Visual inventory control</strong> uses visual cues color coding, labels, photos, and organized layouts to make inventory management faster and more accurate. One warehouse we worked with reduced picking errors by 45% simply by implementing a visual color-coding system. Staff could instantly identify product categories without reading labels.
             </p>

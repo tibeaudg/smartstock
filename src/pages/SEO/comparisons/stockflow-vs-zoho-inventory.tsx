@@ -99,7 +99,7 @@ export default function StockFlowVsZohoInventory() {
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Feature Comparison</h2>
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">Feature Comparison</h1>
           <ComparisonTable competitorName="Zoho Inventory" features={comparisonFeatures} />
         </div>
       </section>
