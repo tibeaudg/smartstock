@@ -123,16 +123,7 @@ export default function BillOfMaterialsManagementSoftware() {
         url="https://www.stockflowsystems.com/bill-of-materials-management-software"
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "5-10 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "30% reduction in material waste",
-          keyMetric: "Complete BOM management",
-          feature: "BOM Management"
-        }}
-      />
+
 
       {/* Real Customer Results */}
       {relevantTestimonials.length > 0 && (

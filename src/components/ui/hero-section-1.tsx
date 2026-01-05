@@ -9,6 +9,7 @@ import { ParticleSystem } from '@/components/ui/particle-system'
 import { FloatingUICards } from '@/components/ui/floating-ui-cards'
 import { CustomerLogos } from '@/components/trust/CustomerLogos'
 import { ShaderGradient } from '@/components/ShaderGradient'
+import { Card } from './container-scroll-animation'
 
 const transitionVariants = {
     item: {
@@ -30,15 +31,13 @@ const transitionVariants = {
     },
 }
 
-// Text reveal animation for headline
-const headlineWords = "Stop Wasting Money on Inventory".split(" ")
 
 export function HeroSection() {
     return (
         <>
             <main>
                 <section className="relative overflow-visible">
-                    <div className="relative pt-24 md:pt-36 min-h-[600px] md:min-h-[800px]" style={{ background: 'transparent' }}>
+                    <div className="relative pt-24 md:pt-36 min-h-screen md:min-h-screen" style={{ background: 'transparent' }}>
                         {/* Background Layer: ShaderGradient */}
                         <div className="absolute inset-0 z-0">
                             <ShaderGradient className="w-full h-full" />
@@ -55,42 +54,50 @@ export function HeroSection() {
 
                         {/* Content Container */}
                         <div className="mx-auto max-w-7xl px-6 relative" style={{ zIndex: 2 }}>
-                            <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
+                            <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0 items-center flex flex-col justify-center align-center pt-16">
                                 <AnimatedGroup variants={transitionVariants} className="mt-20">
                                     {/* Headline with gradient text and staggered word reveal */}
                                     <h1 
-                                        className="max-w-4xl mx-auto text-balance text-5xl leading-tight font-bold sm:text-8xl md:text-8xl lg:text-8xl"
+                                        className="max-w-screen mx-auto text-balance items-center text-8xl leading-tight font-bold tracking-tight text-white"
                                         style={{ textShadow: '0 4px 15px rgba(0, 0, 0, 0.2)' }}
-                                    >
-                                        {headlineWords.map((word, index) => (
-                                            <motion.span
-                                                key={index}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{
-                                                    duration: 0.5,
-                                                    delay: index * 0.1,
-                                                    ease: "easeOut"
-                                                }}
-                                                className={`inline-block mr-2 ${
-                                                    index === headlineWords.length - 1 
-                                                        ? 'text-white' 
-                                                        : 'bg-white bg-clip-text text-white'
-                                                }`}
-                                            >
-                                                {word}
-                                            </motion.span>
-                                        ))}
+                                    >    
+                                        Stop Wasting Money on Inventory
+                                        
                                     </h1>
                                     <motion.p
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.6, delay: 0.5 }}
-                                        className="mx-auto mt-8 max-w-2xl text-balance text-lg text-white/90"
+                                        className="mx-auto mt-8 text-balance text-lg text-white/90"
                                     >
-                                        Scan barcodes with your phone. Track stock in real-time. Prevent stockouts. Recover capital tied in dead inventory. 500+ businesses already using StockFlow—free forever.
+                                        Scan barcodes with your phone. Track stock in real-time. Prevent stockouts. Recover capital tied in dead inventory. 500+ businesses already using StockFlow free forever.
                                     </motion.p>
                                 </AnimatedGroup>
+                                    <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                                        {/* Card 1 */}
+                                        <div className="p-6 bg-white/20  rounded-lg shadow-md border border-gray-200 flex flex-col">
+                                            <h3 className="text-xl font-semibold text-white mb-4">Real-Time Tracking</h3>
+                                            <p className="text-white">
+                                                Monitor stock levels across multiple locations with live updates, ensuring you always know what’s in stock.
+                                            </p>
+                                        </div>
+
+                                        {/* Card 2 */}
+                                        <div className="p-6 bg-white/20 rounded-lg shadow-md border border-gray-200 flex flex-col">
+                                            <h3 className="text-xl font-semibold text-white mb-4">Capital Recovery</h3>
+                                            <p className="text-white">
+                                                Recover capital tied up in dead inventory by identifying slow-moving items and optimizing stock levels.
+                                            </p>
+                                        </div>
+
+                                        {/* Card 3 */}
+                                        <div className="p-6 bg-white/20 rounded-lg shadow-md border border-gray-200 flex flex-col">
+                                            <h3 className="text-xl font-semibold text-white mb-4">Intelligent Alerts</h3>
+                                            <p className="text-white">
+                                                Prevent stockouts and overstock situations with automated reorder suggestions based on sales trends.
+                                            </p>
+                                        </div>
+                                    </div>
 
                                 <AnimatedGroup
                                     variants={{
@@ -109,10 +116,10 @@ export function HeroSection() {
                                         <Button
                                             asChild
                                             size="lg"
-                                            className="rounded-xl px-5 text-base bg-blue-700 text-white border border-white relative overflow-hidden group shadow-[0_0_20px_rgba(29,78,216,0.5)] hover:shadow-[0_0_30px_rgba(29,78,216,0.7)] transition-shadow duration-300 cta-shimmer"
+                                            className="rounded-xl px-16 py-8 text-base bg-blue-700 text-white border border-white relative overflow-hidden group shadow-[0_0_20px_rgba(29,78,216,0.5)] hover:shadow-[0_0_30px_rgba(29,78,216,0.7)] transition-shadow duration-300 cta-shimmer"
                                         >
-                                            <Link to="/pricing">
-                                                <span className="text-nowrap relative z-10 font-bold" style={{ fontWeight: 700 }}>Join for Free</span>
+                                            <Link to="/auth">
+                                                <span className="text-nowrap relative z-10 font-bold text-xl" >Join for Free</span>
                                             </Link>
                                         </Button>
                                     </div>
@@ -120,10 +127,6 @@ export function HeroSection() {
                             </div>
                         </div>
 
-                        {/* Floating UI Cards */}
-                        <div className="relative" style={{ zIndex: 2 }}>
-                            <FloatingUICards />
-                        </div>
 
                     
                     </div>

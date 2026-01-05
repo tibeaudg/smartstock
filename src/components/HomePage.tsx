@@ -161,7 +161,7 @@ const Gallery4 = ({
     <section className="py-32">
       <div className="container mx-auto">
         <div className="mb-8 w-full flex items-end justify-between md:mb-14 lg:mb-16">
-          <div className="hidden shrink-0 gap-2 md:flex justify-center items-center bg-gray-100 rounded-2xl p-2 w-full max-w-xs mx-auto">
+          <div className="hidden shrink-0 gap-2 md:flex justify-center items-center bg-blue-100 rounded-2xl p-2 w-full max-w-xs mx-auto">
             <Button
               size="icon"
               variant="ghost"
@@ -1306,7 +1306,7 @@ export const HomePage = () => {
           {/* Header Section */}
             <div className="text-center mb-12 sm:mb-16 md:mb-20">
               {/* Main Title */}
-              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none text-blue-800 font-bold">
                 Start Tracking In 3 Simple Steps
               </h2>
               
@@ -1396,10 +1396,10 @@ export const HomePage = () => {
       </section>
 
       {/* Testimonial Quotes Section */}
-      <section className="py-16 sm:py-20 md:py-24 bg-gray-50">
+      <section className="py-16 sm:py-20 md:py-24 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="max-w-3xl mx-auto text-balance text-4xl sm:text-5xl md:text-6xl leading-none font-bold text-center mb-4">
+            <h2 className="max-w-3xl mx-auto text-balance text-4xl sm:text-5xl md:text-6xl lg:text-6xl text-blue-800 leading-none font-bold text-center mb-4">
               What Our Customers Say
             </h2>
             <p className="text-md text-gray-600 max-w-2xl mx-auto">
@@ -1416,7 +1416,7 @@ export const HomePage = () => {
       </section>
 
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white ">
-        <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center">
+        <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl text-blue-800 leading-none font-bold text-center">
           Case Studies
         </h2>
         <p className="text-md pt-4 text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed text-center">
@@ -1443,9 +1443,9 @@ export const HomePage = () => {
                   CONNECT YOUR TOOLS
                 </span>
               </div>
-              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center">
+              <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center text-blue-800">
                 Connect with Your Tools<br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-blue-600">
+                <span>
                   
                 </span>
               </h2>
@@ -1654,69 +1654,7 @@ export const HomePage = () => {
 
 
 
-          {/* Final Call-to-Action Section */}
-            <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800  shadow-2xl overflow-hidden">
-              <div className="relative px-6 sm:px-8 md:px-12 lg:px-16 py-12 sm:py-14 md:py-16 lg:py-20">
-                {/* Decorative background elements */}
-                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(white,transparent_80%)]"></div>
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
-                
-                {/* Content */}
-                <div className="relative z-10 text-center max-w-4xl mx-auto">
-                  {/* Main Headline */}
-                  <h2 className="max-w-3xl mx-auto text-balance text-5xl sm:text-6xl md:text-6xl lg:text-6xl leading-none font-bold text-center text-white">
-                    Stop wasting money on inventory mistakes
-                  </h2>
-                  
-                  {/* Subheadline */}
-                  <p className="text-md pt-4 pb-8 text-blue-100 max-w-3xl mx-auto px-4 leading-relaxed">
-                    Stockouts kill sales. Overstock ties up capital. Track everything with your phone, get instant alerts, eliminate errors. Free forever.
-                  </p>
-                  
-                  {/* CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-stretch sm:items-center mb-6 sm:mb-8 px-4">
-                  <ScrollTriggeredButton
-                    as="button"
-                    data-analytics-id="homepage-cta-primary"
-                    data-conversion-tracking="true"
-                    onClick={() => {
-                      // Track conversion event
-                      if (window.gtag) {
-                        window.gtag('event', 'conversion', {
-                          'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
-                          'value': 0,
-                          'currency': 'EUR'
-                        });
-                      }
-                      navigate('/auth');
-                    }}
-                    className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50
-                      px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 lg:px-12
-                      text-base sm:text-lg md:text-xl lg:text-2xl
-                      font-bold rounded-lg transform hover:scale-105
-                      
-                      shadow-2xl hover:shadow-3xl
-                      ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                      min-h-[48px] sm:min-h-[56px] touch-manipulation"
-              >
-                Create a Free Account
-                </ScrollTriggeredButton>
 
-                  </div>
-                  
-                  {/* Supporting Text */}
-                  <div className="space-y-2">
-                    <p className="text-blue-100 text-sm sm:text-base font-medium">
-                      No credit card required. Cancel anytime.
-                    </p>
-                    <p className="text-blue-200/80 text-xs sm:text-sm">
-                      Get started in 2 minutes.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
 
       <Footer />
 
