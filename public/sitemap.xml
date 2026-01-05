@@ -1,1353 +1,748 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.stockflowsystems.com/</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/case-studies</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/contact</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/features</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/pricing</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/10-most-common-inventory-management-mistakes-small-businesses</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/10-reasons-to-consider-cloud-based-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/10-reasons-to-upgrade-your-it-asset-management-strategy</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/3-best-inventory-new-years-resolutions</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/3-ways-barcodes-and-qr-codes-reduce-human-error</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/5-inventory-hacks-for-very-small-businesses</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/5-signs-your-inventory-management-needs-an-overhaul</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/6-inventory-management-tips-when-times-are-tight</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/6-ways-qr-codes-will-boost-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/9-must-have-inventory-control-software-features</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/a-guide-to-visual-inventory-control</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/alerts</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/asset-tracking-101</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/assets-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/avoid-inventory-mistakes</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/barcode-inventory-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/barcode-scanning-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/barcodes-vs-qr-codes-for-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/barcoding</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/benefits-of-construction-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/best-inventory-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/best-online-inventory-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/best-online-inventory-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/bill-of-material-management-software-free</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/bill-of-materials-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/bill-of-materials-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/bill-of-materials-management-software-free</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/blog</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/about</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/buffer-stock</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/calculating-beginning-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/calculating-raw-materials-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/can-i-use-qr-codes-for-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/common-inventory-mistakes-and-how-to-avoid-them</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/compare-inventory-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/contractor-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/creative-inventory-hacks-for-small-businesses</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/cross-dock-warehouse</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/cycle-count</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/ecommerce-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/education-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/electrical-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/enterprise-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/equipment-inventory-management-best-practices</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/excel-vs-software-voorraadbeheer</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/asset-controller-meaning</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/createGlossaryPage</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-automation</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-optimization</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-turnover</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/just-in-time-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/minimum-order-quantity</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/vendor-managed-stock</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/warehouse-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/warehouse-management-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/glossary/what-is-lead-time</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/higher-education-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/horeca-voorraadbeheer-tips</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-can-you-make-inventory-more-efficient</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-do-small-businesses-keep-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-do-small-businesses-organize-their-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-do-you-categorize-inventory-items</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-do-you-control-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-do-you-organize-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-do-you-set-up-an-inventory-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-inventory-management-changes-with-multiple-locations</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-much-does-inventory-software-cost</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-choose-inventory-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-implement-a-barcode-system-in-a-warehouse</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-improve-inventory-control</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-inventory-your-tools</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-label-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-manage-inventory-in-restaurants</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-operate-an-a-school-inventory-management-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-optimize-inventory-levels-in-construction</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-perform-an-inventory-cycle-count</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-store-construction-materials</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-store-medical-supplies</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-take-inventory-for-small-businesses</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-track-equipment-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/how-to-track-raw-materials</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/hvac-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/importance-of-inventory-management-manufacturing</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/integrations</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-analysis</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-control-101</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-control-systems</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-for-hospitality</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-formulas-and-ratios</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-management-101</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-management-best-practices</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-management-challenges-and-solutions</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-management-purpose</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-management-tips</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-optimization-services</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-photos</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-turnover-ratio</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/inventory-vs-supplies</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/is-there-an-app-to-keep-track-of-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/magazijnbeheer-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/manual-vs-automated-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/medical-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/medical-supply-inventory-control-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/mobiel-voorraadbeheer</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/mobile-app</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/multiple-location-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/multiple-warehouse-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/parts-inventory-management-best-practices</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/perpetual-inventory-and-physical-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/pharmacy-inventory-management-best-practices</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/physical-asset-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/plumbing-inventory-list</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/privacy-policy</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/programma-stockbeheer</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/purchase-requisition-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/reorder-point-formula</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/retail-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/retail-price</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/rfid-vs-barcode-for-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/simplify-inventory-control</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/solutions/asset-tracking</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/AddProductPage</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/construction-inventory-app</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/admin</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/construction-inventory-management-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/AdminNotificationsPage</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-online</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/AdminUserDetailPage</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-provider</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/BillOfMaterialsPage</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/case-studies</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software-bill-of-materials</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/CategoriesPage</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software-cloud-based</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/checkout</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software-list</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/contact</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software-online</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/customers</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software-solutions</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/cycle-count</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-software-with-bill-of-materials</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/demo</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-management-systems-solutions</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/features</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-optimization-services</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/GuestSandbox</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-platform</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/help-center</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-scanning-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/integrations</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/legal/privacy-policy</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-software-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/legal/terms-conditions</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-system-for-small-business</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/NotFound</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-tracker</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/pricing</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/inventory-tracking-programs</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/ProductDetailPage</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/mobile-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/products</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/online-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/purchase-orders</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/online-inventory-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/reporting</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/shopify-plus-wms-integration</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/resources</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/simple-stock-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/sales-orders</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/software-for-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/scan</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/software-stockbeheer</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/scan_translated</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/stock-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/SEO/blog/10-most-common-inventory-management-mistakes-small-businesses</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/stock-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/SEO/blog/10-reasons-to-consider-cloud-based-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/suppliers</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/SEO/blog/10-reasons-to-upgrade-your-it-asset-management-strategy</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/solutions/warehouse-modeling-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://yourdomain.com/SEO/blog/3-best-inventory-new-years-resolutions</loc>
+    <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockbeheer-programma</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/3-ways-barcodes-and-qr-codes-reduce-human-error</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockbeheer-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/5-signs-your-inventory-management-needs-an-overhaul</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockflow-vs-cin7</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/6-ways-qr-codes-will-boost-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockflow-vs-katana</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/9-must-have-inventory-control-software-features</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockflow-vs-sortly</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/a-guide-to-visual-inventory-control</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockflow-vs-tradegecko</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/asset-tracking-101</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/stockflow-vs-zoho-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/barcode-inventory-system</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/supply-chain-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/barcodes-vs-qr-codes-for-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/team-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/benefits-of-construction-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/terms-conditions</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/buffer-stock</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/the-best-inventory-tracking-methods-for-businesses</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/calculating-beginning-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/the-future-of-qr-codes-what-lies-ahead-for-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/common-inventory-mistakes-and-how-to-avoid-them</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/the-role-of-asset-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/equipment-inventory-management-best-practices</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/tracking-large-inventory-quantities</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-do-small-businesses-organize-their-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/using-barcodes-in-manufacturing</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-do-you-categorize-inventory-items</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/voorraadbeheer-automatiseren-5-stappen</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-do-you-control-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/voorraadbeheer-fouten-voorkomen</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-do-you-organize-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/voorraadbeheer-horeca</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-do-you-set-up-an-inventory-system</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/voorraadbeheer-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-much-does-inventory-software-cost</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/voorraadbeheer-software-vergelijken</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-choose-inventory-software-for-small-business</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/voorraadbeheer-tips</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-implement-a-barcode-system-in-a-warehouse</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/warehouse-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-inventory-your-tools</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/warehouse-material-handling</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-label-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/warehouse-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-manage-inventory-in-restaurants</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/wat-is-voorraadbeheer-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-operate-an-a-school-inventory-management-system</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-are-the-3-major-inventory-management-techniques</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-optimize-inventory-levels-in-construction</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-a-barcode-inventory-system</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-perform-an-inventory-cycle-count</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-a-good-inventory-turnover-ratio</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-set-up-barcode-scanning-with-stockflow</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-a-gs1-barcode</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-store-construction-materials</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-a-stockout</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-store-medical-supplies</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-demand-forecasting</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/how-to-track-equipment-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-inventory-shrinkage</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/importance-of-inventory-management-manufacturing</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-lifo-last-in-first-out-inventory-method-101</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-retail-price</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-analysis</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-the-best-free-inventory-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-control-systems</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-the-best-software-for-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-formulas-and-ratios</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-the-best-way-to-count-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-management-101</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-the-best-way-to-keep-track-of-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-management-best-practices</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-is-the-point-of-inventory-control</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-management-for-contractors</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/what-software-is-best-for-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/inventory-management-for-small-business-complete-guide</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/wholesaler-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/migrating-from-excel-to-inventory-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/why-is-inventory-management-important</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/multiple-location-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/why-photos-are-vital-in-inventory-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/parts-inventory-management-best-practices</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/why-supply-chain-traceability-matters-to-small-businesses</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/raw-materials-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/why-you-need-medical-inventory-management-software</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/reorder-point-formula</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/why-your-business-should-track-assets-too</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/supply-chain-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/year-end-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/the-best-inventory-tracking-methods-for-businesses</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/nl</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://yourdomain.com/SEO/blog/the-future-of-qr-codes-what-lies-ahead-for-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/80-20-inventory-rule</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/tracking-large-inventory-quantities</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/asset-control</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-are-the-3-major-inventory-management-techniques</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/consignment-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-is-a-good-inventory-turnover-ratio</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/economic-order-quantity</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-is-a-gs1-barcode</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/hedging-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-is-a-stockout</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-is-demand-forecasting</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-asset</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-is-inventory-shrinkage</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-cycle-counting</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/what-is-the-best-free-inventory-management-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/inventory-list</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/blog/year-end-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/kitting</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/compare-inventory-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/landed-cost</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-cin7</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/moving-average-cost</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-inflow</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/mro-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-katana</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/pick-list</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-sortly</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/purchase-requisition</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-spreadsheets</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/safety-stock</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-tradegecko</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/supplier-relationship-management</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/comparisons/stockflow-vs-zoho-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/uom-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/features/alerts</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/glossary/vendor-managed-inventory</loc>
-    <lastmod>2025-12-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://yourdomain.com/SEO/features/barcoding</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/features/cycle-count</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/features/integrations</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/features/purchase-requisition-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/asset-controller-meaning</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/consignment-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/createGlossaryPage</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/inventory-automation</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/inventory-optimization</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/inventory-turnover</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/just-in-time-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/minimum-order-quantity</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/vendor-managed-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/vendor-managed-stock</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/warehouse-management-system</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/warehouse-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/glossary/what-is-lead-time</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/guides/avoid-inventory-mistakes</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/guides/how-to-choose-inventory-management-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/guides/inventory-turnover-ratio</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/industries/contractor-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/industries/medical-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/industries/retail-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/industries/warehouse-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/industries/wholesaler-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/resources/blog</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/resources/case-studies</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/resources/inventory-photos</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/asset-tracking</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/assets-inventory</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/construction-inventory-management-system</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/inventory-management-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/inventory-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/mobile-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/simple-stock-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/stock-management-software</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/solutions/suppliers</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/suppliers</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/contractor-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/cross-dock-warehouse</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/ecommerce-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/electrical-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/enterprise-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/hvac-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/SEO/uses/medical-inventory-management</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/ServerError</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/WarehousePage</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yourdomain.com/WorkOrdersPage</loc>
+    <lastmod>2026-01-05</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>
