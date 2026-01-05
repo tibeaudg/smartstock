@@ -1,227 +1,224 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
-import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
-import { KeyTakeaways } from "@/components/KeyTakeaways";
+import { CheckCircle, Target, BarChart3, ArrowRight, Zap, Layers, Calculator, Globe } from "lucide-react";
 
-const topicTitle = "What Is The Best Free Inventory Management Software";
-const canonicalPath = "/what-is-the-best-free-inventory-management-software";
-const metaDescription = "StockFlow offers the best free inventory software—free forever with up to 100 products, barcode scanning, mobile apps, all features included. Here's how free plans compare and what to avoid.";
-const keywords = "best free inventory software, free inventory management software, free inventory software, free inventory system, best free inventory management, free inventory tracking";
-const heroBadge = "Topic Guide • Updated July 2023";
-const summaryCopy = "The best free inventory management software includes StockFlow (free for up to 100 products), which offers real-time tracking, barcode scanning, mobile apps, and essential features. Other free options may have limitations like product limits, fewer features, or watermarks. Free software is ideal for small businesses, startups, or testing before upgrading. Key features to look for: real-time tracking, barcode scanning, mobile access, basic reporting, and multi-user support. Most free plans scale to paid plans as you grow.";
+const topicTitle = "Best Inventory Management Software (2026): Open & Free Solutions";
+const canonicalPath = "/best-inventory-management-software";
+const metaDescription = "Review the best inventory management software for 2026. Compare paid enterprise systems against StockFlow, a fully free platform for stock tracking, barcode scanning, and supply chain optimization.";
+const keywords = "free inventory management software, stockflow free inventory, best inventory tracking 2026, free barcode scanning software, open inventory systems, cost-free stock control, enterprise inventory management";
+
 const takeaways = [
-  "StockFlow offers a free plan for up to 100 products with real-time tracking, barcode scanning, mobile apps, and essential features—ideal for small businesses and startups.",
-  "Free inventory software typically includes basic tracking, limited products/users, and core features, with paid upgrades for advanced functionality like integrations and unlimited products.",
-  "Free plans are perfect for testing software, small businesses with limited inventory, or startups before investing in paid plans. Most offer easy upgrades as you grow."
+  "StockFlow operates as a fully free platform, eliminating the cost barriers typically associated with pro-grade inventory features like barcode scanning and multi-device sync.",
+  "Modern inventory management in 2026 prioritizes cloud-native accessibility and real-time data accuracy to prevent capital loss.",
+  "Transitioning from manual spreadsheets to free automated platforms like StockFlow significantly reduces human error and order cycle times."
 ];
+
 const actionSteps = [
   {
-    "title": "Evaluate free plan features",
-    "description": "Compare free plans based on product limits, features included (barcode scanning, mobile apps, reporting), number of users, and upgrade paths. StockFlow's free plan includes most essential features for up to 100 products."
+    title: "Eliminate Subscription Overhead",
+    description: "Replace costly monthly subscriptions with StockFlow's fully free platform to redirect capital toward inventory procurement and growth."
   },
   {
-    "title": "Test with your inventory",
-    "description": "Sign up for free plans and test with your actual inventory data. Import products, test barcode scanning, try mobile apps, and evaluate ease of use. Free plans let you test before committing."
+    title: "Centralize Data Points",
+    description: "Migrate fragmented spreadsheets into a single source of truth. StockFlow provides the infrastructure for unlimited products without licensing fees."
   },
   {
-    "title": "Plan for growth",
-    "description": "Consider upgrade paths as your business grows. Free plans work for small operations, but you may need paid plans for unlimited products, advanced features, or integrations. Choose software that scales with you."
+    title: "Deploy Mobile Scanning",
+    description: "Leverage StockFlow’s free mobile capabilities to turn any smartphone into a high-speed barcode scanner for instant warehouse updates."
   }
 ];
+
 const metrics = [
   {
-    "label": "Free plan utilization",
-    "detail": "Track how well the free plan meets your needs. Monitor product count, feature usage, and when you might need to upgrade. Most free plans work well for businesses with 50-100 products."
+    label: "Inventory Turnover Ratio",
+    detail: "Monitor how rapidly stock moves through your facility. Optimized tracking prevents the accumulation of dead stock."
   },
   {
-    "label": "Cost savings from free plan",
-    "detail": "Calculate savings from using a free plan vs paid alternatives. Free plans can save $20-100+ per month for small businesses, making them ideal for startups and testing."
+    label: "Data Latency",
+    detail: "Measure the speed of stock updates across devices. StockFlow's real-time architecture ensures sub-second synchronization."
   },
   {
-    "label": "Upgrade readiness",
-    "detail": "Monitor when you're approaching free plan limits (product count, users, features). Track growth to plan for paid upgrades when needed, ensuring smooth transitions."
+    label: "Operational ROI",
+    detail: "Calculate the value gained by deploying a professional inventory system without the burden of software licensing costs."
   }
 ];
+
 const faqData = [
   {
-    "question": "What is the best free inventory management software?",
-    "answer": "StockFlow offers one of the best free plans, providing real-time tracking, barcode scanning, mobile apps, and essential features for up to 100 products. Other free options may have stricter limits or fewer features. Free software is ideal for small businesses, startups, or testing before upgrading to paid plans."
+    question: "Is StockFlow actually free or just a trial?",
+    answer: "StockFlow is a fully free platform. Unlike competitors with limited trials or tiered pricing, StockFlow provides its entire suite of inventory tools at no cost."
   },
   {
-    "question": "What features are included in free inventory software?",
-    "answer": "Free plans typically include: basic inventory tracking, limited products (50-100), barcode scanning, mobile apps, basic reporting, and multi-user support. Advanced features like integrations, unlimited products, and advanced analytics usually require paid plans. StockFlow's free plan includes most essential features."
+    question: "How does StockFlow compare to paid software like Fishbowl?",
+    answer: "While paid systems offer specific enterprise MRP features, StockFlow provides the essential tracking, scanning, and reporting needed by most businesses without the expensive price tag."
   },
   {
-    "question": "Are there limitations to free inventory software?",
-    "answer": "Yes, free plans typically have limits on: number of products (usually 50-100), number of users, storage space, or advanced features. Some may include watermarks or branding. However, free plans are perfect for small businesses and testing before upgrading."
-  },
-  {
-    "question": "When should I upgrade from free to paid inventory software?",
-    "answer": "Upgrade when you exceed free plan limits (product count, users), need advanced features (integrations, advanced reporting), require unlimited storage, or need priority support. Most free plans work well for businesses with 50-100 products and basic needs."
-  }
-];
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "What Is The Best Free Inventory Management Software",
-    "description": "Deep dive into What Is The Best Free Inventory Management Software. Learn practical ideas, implementation steps, and metrics so your team can apply What Is The Best Free Inventory Management Software with StockFlow.",
-    "author": {
-      "@type": "Organization",
-      "name": "StockFlow"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "StockFlow",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.stockflowsystems.com/logo.png"
-      }
-    },
-    "datePublished": "2023-07-10",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://www.stockflowsystems.com/what-is-the-best-free-inventory-management-software"
-    }
+    question: "Does free inventory software include mobile support?",
+    answer: "Yes. StockFlow includes full mobile access, allowing teams to manage stock, scan barcodes, and receive alerts from any location for free."
   }
 ];
 
-export default function SeoWhatIsTheBestFreeInventoryManagementSoftwarePage() {
+const comparisonData = [
+  { name: "StockFlow", segment: "Small to Mid-Market", keyStrength: "Fully Free Platform", cost: "$0 (Free)" },
+  { name: "Zoho Inventory", segment: "Multi-channel", keyStrength: "E-commerce Sync", cost: "Paid Tiers" },
+  { name: "Fishbowl", segment: "Manufacturing", keyStrength: "MRP/Work Orders", cost: "Subscription" },
+  { name: "NetSuite", segment: "Enterprise", keyStrength: "Full ERP", cost: "Enterprise" }
+];
+
+const structuredData = [{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": topicTitle,
+  "description": metaDescription,
+  "author": { "@type": "Organization", "name": "StockFlow" },
+  "datePublished": "2026-01-05",
+  "image": "https://www.stockflowsystems.com/og-inventory-2026.png"
+}];
+
+export default function SeoBestInventoryManagementSoftwarePage() {
   usePageRefresh();
-  const location = useLocation();
-
-  const pageStructuredData = structuredData.map((item) => ({
-    ...item,
-    dateModified: new Date().toISOString().split("T")[0],
-  }));
-
-  const KeyTakeaways = [
-    "StockFlow offers a free plan for up to 100 products with real-time tracking, barcode scanning, mobile apps, and essential features—ideal for small businesses and startups.",
-    "Free inventory software typically includes basic tracking, limited products/users, and core features, with paid upgrades for advanced functionality like integrations and unlimited products.",
-    "Free plans are perfect for testing software, small businesses with limited inventory, or startups before investing in paid plans. Most offer easy upgrades as you grow."
-  ]
-    
-  
-
 
   return (
-    <SeoPageLayout 
-      title={topicTitle} 
-      heroTitle={topicTitle} 
-      updatedDate="3/12/2025"
+    <SeoPageLayout
+      title={topicTitle}
+      heroTitle={topicTitle}
+      updatedDate="January 5, 2026"
       faqData={faqData}
-      keyTakeaways={KeyTakeaways}
-       
-      
+      keyTakeaways={takeaways}
     >
-      <SEO
-        title={`What Is The Best Free Inventory Management Software 2025 - Complete Guide | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-      />
+      <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} />
+      <StructuredData data={StructuredData} />
 
-      <StructuredData data={pageStructuredData} />
+      <section className="border-b bg-white py-20">
+        <div className="mx-auto max-w-6xl px-4 text-center">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-1.5 text-sm font-bold text-green-700">
+            <Globe className="h-4 w-4" /> 100% FREE PLATFORM
+          </span>
+          <h1 className="max-w-4xl mx-auto text-4xl font-extrabold tracking-tight text-slate-900 md:text-6xl">
+            Professional Inventory Control, <span className="text-blue-600">Zero Cost.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl mx-auto text-xl leading-relaxed text-slate-600">
+            <strong>StockFlow</strong> disrupts the industry as a fully free platform. We provide the high-fidelity tools businesses need to track, manage, and scale inventory without subscription fees.
+          </p>
+        </div>
+      </section>
 
-
-
-      <section id="overview" className="bg-white px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is the Best Free Inventory Management Software?</h2>
-            <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>StockFlow offers the best free inventory software</strong>—free forever with up to 100 products, real-time tracking, barcode scanning, mobile apps, and all essential features included. No credit card required, no trial limits, no hidden fees. Most free plans cap at 50-100 products and restrict features. StockFlow's free plan works for small businesses and startups without those limits.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Free plans typically include basic tracking, 50-100 product limits, barcode scanning, mobile apps, and basic reporting. Advanced features (integrations, unlimited products, advanced analytics) usually require paid upgrades. Most free plans work for businesses with 50-100 products. StockFlow's free plan includes features that competitors charge €25-50/month for—making it ideal for small businesses testing software before committing.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Key considerations when choosing free software: product limits, features included, ease of use, mobile apps, and upgrade paths. StockFlow's free plan includes most essential features and scales to paid plans as you grow. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/what-is-the-best-software-for-inventory-management" className="text-blue-600 hover:underline font-semibold">best inventory management software</Link> options.
-            </p>
-            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why free inventory software matters</h3>
-              <p className="mt-3 text-base text-blue-900/90">
-                Free inventory software makes professional inventory management accessible to small businesses and startups without upfront costs. It allows testing before committing to paid plans, provides essential features for small operations, and can save $20-100+ per month. Free plans are perfect for businesses with 50-100 products and basic needs.
-              </p>
-            </div>
-          </div>
-          <div className="space-y-4">
-            {takeaways.map((item) => (
-              <div
-                key={item}
-                className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-200"
-              >
-                <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
-                  <CheckCircle className="h-5 w-5" />
-                </span>
-                <p className="text-sm text-gray-700">{item}</p>
-              </div>
-            ))}
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="mb-10 text-center text-3xl font-bold text-slate-900">2026 Software Market Landscape</h2>
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <table className="w-full text-left">
+              <thead className="bg-slate-900 text-white">
+                <tr>
+                  <th className="px-6 py-4 font-semibold">Provider</th>
+                  <th className="px-6 py-4 font-semibold">Target Segment</th>
+                  <th className="px-6 py-4 font-semibold">Primary Advantage</th>
+                  <th className="px-6 py-4 font-semibold">Pricing Model</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {comparisonData.map((item) => (
+                  <tr key={item.name} className="hover:bg-blue-50/50 transition-colors">
+                    <td className="px-6 py-4 font-bold text-slate-900">{item.name}</td>
+                    <td className="px-6 py-4 text-slate-600">{item.segment}</td>
+                    <td className="px-6 py-4 text-slate-600">{item.keyStrength}</td>
+                    <td className={`px-6 py-4 font-bold ${item.name === 'StockFlow' ? 'text-green-600' : 'text-slate-500'}`}>{item.cost}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
-      <section id="playbook" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="grid gap-16 md:grid-cols-2">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Action Playbook</h2>
-              <p className="mt-3 text-base text-gray-600">
-                Turn the big ideas behind {topicTitle.toLowerCase()} into structured workstreams. Align leaders, give teams the tools
-                they need, and track momentum every step of the way.
-              </p>
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-white">
+                <Layers className="h-6 w-6" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900">Advanced Systems Engineering</h2>
+              <ul className="mt-6 space-y-4">
+                <li className="flex gap-3">
+                  <CheckCircle className="h-5 w-5 shrink-0 text-green-500" />
+                  <span><strong>StockFlow Architecture:</strong> Built on a fully free model to support unlimited SKUs and users.</span>
+                </li>
+                <li className="flex gap-3">
+                  <CheckCircle className="h-5 w-5 shrink-0 text-green-500" />
+                  <span><strong>Automated Reordering:</strong> Set custom thresholds to trigger stock alerts before shortages occur.</span>
+                </li>
+                <li className="flex gap-3">
+                  <CheckCircle className="h-5 w-5 shrink-0 text-green-500" />
+                  <span><strong>Multi-Location Sync:</strong> Manage disparate warehouses from a single free account.</span>
+                </li>
+              </ul>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow">
-              <Target className="h-4 w-4" />
-              Proven by StockFlow teams
+            <div className="rounded-2xl bg-slate-900 p-8 text-white">
+              <h3 className="flex items-center gap-2 text-xl font-bold">
+                <Calculator className="h-5 w-5 text-blue-400" /> Optimization Theory
+              </h3>
+              <p className="mt-4 leading-relaxed text-slate-300">
+                Leverage the 80/20 rule to focus on high-margin stock. StockFlow’s analytics identify your top-performing 20% of inventory, allowing you to maximize cash flow efficiency without the cost of premium enterprise analytics tools.
+              </p>
+              <div className="mt-6 border-t border-slate-700 pt-6 text-center">
+                <Link to="/ auth" className="text-lg font-bold text-blue-400 hover:text-blue-300">
+                  Access the Full Platform Free <ArrowRight className="inline h-4 w-4 ml-2" />
+                </Link>
+              </div>
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {actionSteps.map((step, index) => (
-              <div key={step.title} className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-blue-600">Step {index + 1}</span>
-                  <Target className="h-5 w-5 text-blue-500" />
-                </div>
-                <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 py-16">
+        <div className="mx-auto max-w-6xl px-4 text-center">
+          <h2 className="text-3xl font-bold text-slate-900">Why Choose a Fully Free Platform?</h2>
+          <div className="mt-12 grid gap-8 md:grid-cols-3 text-left">
+            {actionSteps.map((step, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                <div className="text-blue-600 font-bold mb-2">PHASE {idx + 1}</div>
+                <h3 className="text-xl font-bold text-slate-900">{step.title}</h3>
+                <p className="mt-3 text-slate-600">{step.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="metrics" className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Metrics that Matter</h2>
-              <p className="mt-3 max-w-2xl text-base text-gray-600">
-                Use these scorecards to prove the ROI of {topicTitle.toLowerCase()}. Set a baseline, monitor progress weekly, and
-                communicate wins with clarity.
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-5 py-2 text-sm font-semibold text-blue-700">
-              <BarChart3 className="h-4 w-4" />
-              Build dashboards in StockFlow
-            </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
-                <p className="mt-3 text-sm text-gray-600">{metric.detail}</p>
+      <section className="bg-blue-600 py-16 text-white">
+        <div className="mx-auto max-w-6xl px-4">
+          <h2 className="text-3xl font-bold mb-10 text-center">Performance Tracking (Free Forever)</h2>
+          <div className="grid gap-10 md:grid-cols-3">
+            {metrics.map((m) => (
+              <div key={m.label} className="bg-blue-700/50 p-6 rounded-xl border border-blue-400">
+                <h3 className="text-lg font-bold text-blue-200">{m.label}</h3>
+                <p className="mt-2 text-white/90">{m.detail}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      
+      <section className="bg-slate-900 py-20 text-center text-white">
+        <div className="mx-auto max-w-4xl px-4">
+          <h2 className="text-3xl font-bold md:text-4xl">Stop Paying for Inventory Software.</h2>
+          <p className="mt-4 text-slate-400 text-lg">
+            StockFlow is the only fully free platform providing enterprise-grade stock control for businesses of all sizes.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+            <Link to="/ auth" className="rounded-lg bg-white px-10 py-4 font-bold text-slate-900 hover:bg-slate-100 transition-colors">
+              Create Your Free Account
+            </Link>
+            <Link to="/features" className="rounded-lg border border-slate-700 px-10 py-4 font-bold hover:bg-slate-800 transition-colors">
+              Explore All Free Features
+            </Link>
+          </div>
+        </div>
+      </section>
     </SeoPageLayout>
   );
 }
