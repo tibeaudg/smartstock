@@ -211,7 +211,7 @@ export default function WarehouseManagementSystem() {
         title="Warehouse Management System (WMS): Complete Guide 2025"
         description="What is a warehouse management system? Complete WMS guide with process flow, features, pricing ($0-$199/mo), and comparison. Learn how WMS software optimizes warehouse operations, inventory tracking, and logistics. Free plan available."
         keywords="warehouse management system, WMS, warehousing management system, what is a warehouse management system, warehouse management system software, WMS software, warehouse management systems, wms system, warehouse management system process flow, inventory and warehouse management systems, wms saas pricing, warehouse inventory systems, warehouse management solutions, warehouse stock management system, warehouse tracking system, warehouse inventory monitoring system, warehouse automation, warehouse operations, supply chain management software, real-time inventory management, cloud WMS, warehouse optimization, logistics software, warehouse management system cost, warehouse management system workflow, warehouse management system functions, key features of warehouse management system, process flow warehouse management system, wms warehouse management system, warehouse management system wms, best warehouse management system, types of warehouse management systems, SAP WMS, Oracle WMS, cloud based warehouse management system"
-        url="https://www.stockflow.be/warehouse-management-system"
+        url="https://www.stockflowsystems.com/warehouse-management-system"
       />
 
       {/* Introduction - Comprehensive Definition */}
@@ -941,7 +941,7 @@ export default function WarehouseManagementSystem() {
             },
             "datePublished": pageMetadata.published,
             "dateModified": pageMetadata.updated,
-            "image": "https://www.stockflow.be/Inventory-Management.png",
+            "image": "https://www.stockflowsystems.com/Inventory-Management.png",
             "keywords": [
               "warehouse management system process flow",
               "inventory and warehouse management systems",
@@ -974,12 +974,12 @@ export default function WarehouseManagementSystem() {
               "name": "StockFlow",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://www.stockflow.be/logo.png"
+                "url": "https://www.stockflowsystems.com/logo.png"
               }
             },
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": "https://www.stockflow.be/warehouse-management-system"
+              "@id": "https://www.stockflowsystems.com/warehouse-management-system"
             },
             "about": {
               "@type": "Thing",
@@ -1049,10 +1049,10 @@ export default function WarehouseManagementSystem() {
               "name": "StockFlow",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://www.stockflow.be/logo.png"
+                "url": "https://www.stockflowsystems.com/logo.png"
               }
             },
-            "url": "https://www.stockflow.be/warehouse-management-system",
+            "url": "https://www.stockflowsystems.com/warehouse-management-system",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Web Browser, iOS, Android"
           },
@@ -1097,19 +1097,19 @@ export default function WarehouseManagementSystem() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://www.stockflow.be"
+                "item": "https://www.stockflowsystems.com"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Glossary",
-                "item": "https://www.stockflow.be/glossary"
+                "item": "https://www.stockflowsystems.com/glossary"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Warehouse Management System",
-                "item": "https://www.stockflow.be/warehouse-management-system"
+                "item": "https://www.stockflowsystems.com/warehouse-management-system"
               }
             ]
           }

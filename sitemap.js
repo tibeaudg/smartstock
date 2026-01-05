@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const BASE_URL = 'https://yourdomain.com'; // Change this to your actual domain
+const BASE_URL = 'https://stockflowsystems.com'; // Change this to your actual domain
 const TARGET_DIR = path.join(__dirname, 'src', 'pages');
 const OUTPUT_FILE = path.join(__dirname, 'public', 'sitemap.xml');
 

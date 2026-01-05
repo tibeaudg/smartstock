@@ -57,7 +57,7 @@ export default async function contactHandler(req, res) {
 
     const info = await transporter.sendMail({
       from: `Stockflow Contact <${smtpUser}>`,
-      to: 'info@stockflow.be',
+      to: 'info@stockflowsystems.com',
       replyTo: sanitizedEmail,
       subject: emailSubject,
       text: `Name: ${sanitizedName}\nEmail: ${sanitizedEmail}\n${sanitizedSubject ? `Subject: ${sanitizedSubject}\n` : ''}\n\nMessage:\n${sanitizedMessage.replace(/<br>/g, '\n')}`,
