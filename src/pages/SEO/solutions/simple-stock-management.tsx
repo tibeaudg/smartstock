@@ -13,22 +13,12 @@ import {
   Star
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function SimpleStockManagement() {
   usePageRefresh();
   
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('stock management');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('stock management');
-  
+
   const faqData = [
     {
       question: "What is simple stock management?",
@@ -282,13 +272,7 @@ export default function SimpleStockManagement() {
           ]
         }
       ]} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

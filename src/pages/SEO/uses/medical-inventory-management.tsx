@@ -831,13 +831,7 @@ export default function MedicalInventoryManagement() {
           ]
         }
       ]} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

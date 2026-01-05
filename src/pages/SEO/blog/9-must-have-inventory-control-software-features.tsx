@@ -5,13 +5,7 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 const topicTitle = "9 Must Have Inventory Control Software Features";
 const canonicalPath = "/9-must-have-inventory-control-software-features";
@@ -100,10 +94,7 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
   usePageRefresh();
   const location = useLocation();
 
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('inventory control software features');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory control');
+
 
   const pageStructuredData = structuredData.map((item) => ({
     ...item,
@@ -226,22 +217,7 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
         </div>
       </section>
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="carousel"
-          maxItems={2}
-        />
-      )}
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="default"
-        />
-      )}
       
     </SeoPageLayout>
   );

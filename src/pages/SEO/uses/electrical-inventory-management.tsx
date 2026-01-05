@@ -29,23 +29,13 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 import { Link } from 'react-router-dom';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function ElectricalInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
-  
-  // Get real customer data for electrical contractor use case
-  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
-  const relevantTestimonials = getRelevantTestimonials('construction');
-  const metrics = getProprietaryMetrics('construction inventory');
+
   
   const faqData = [
     {
@@ -861,13 +851,7 @@ export default function ElectricalInventoryManagement() {
           ]
         }
       ]} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

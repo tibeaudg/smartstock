@@ -4,21 +4,12 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
 import { Building, Shield, Zap, TrendingUp, CheckCircle } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function EnterpriseInventoryManagement() {
   usePageRefresh();
   
-  // Get real customer data for enterprise use case
-  const relevantCaseStudies = getRelevantCaseStudies('inventory management');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory management');
+
   
   const faqData = [
     {
@@ -212,13 +203,7 @@ export default function EnterpriseInventoryManagement() {
           }))
         }
       ]} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

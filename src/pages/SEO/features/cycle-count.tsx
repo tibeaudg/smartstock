@@ -13,21 +13,12 @@ import {
   TrendingUp,
   CheckCircle
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function CycleCount() {
   usePageRefresh();
   
-  // Get real customer data for cycle count feature
-  const relevantCaseStudies = getRelevantCaseStudies('cycle count');
-  const relevantTestimonials = getRelevantTestimonials('cycle count');
-  const metrics = getProprietaryMetrics('cycle count');
+
   const location = useLocation();
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,
@@ -216,13 +207,7 @@ export default function CycleCount() {
 
  
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
 
       <StructuredData data={generateSeoPageStructuredData({
         title: "Cycle Count - Inventory Management Feature | StockFlow",

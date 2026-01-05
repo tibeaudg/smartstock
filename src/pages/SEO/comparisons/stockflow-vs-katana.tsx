@@ -16,13 +16,7 @@ import {
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 const comparisonRows = [
   {
@@ -54,11 +48,7 @@ const comparisonRows = [
 
 export default function StockflowVsKatana() {
   usePageRefresh();
-  
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory software');
+
 
   const faqData = [
     {
@@ -262,13 +252,6 @@ export default function StockflowVsKatana() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="default"
-        />
-      )}
 
       {/* Structured Data */}
       <StructuredData data={[

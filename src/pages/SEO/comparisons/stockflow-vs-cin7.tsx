@@ -7,34 +7,12 @@ import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsCin7() {
   usePageRefresh();
   
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory software');
-  const [roiInputs, setRoiInputs] = useState({
-    inventoryValue: '',
-    hoursPerWeek: '',
-    hourlyRate: '',
-    stockoutLosses: ''
-  });
-  const [roiResult, setRoiResult] = useState<{
-    carryingCostSavings: number;
-    timeSavings: number;
-    stockoutSavings: number;
-    netSavings: number;
-    roi: number;
-  } | null>(null);
+
 
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Completely Free Forever', competitor: '14-day trial only' },
@@ -236,13 +214,6 @@ export default function StockFlowVsCin7() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="default"
-        />
-      )}
 
     </SeoPageLayout>
   );

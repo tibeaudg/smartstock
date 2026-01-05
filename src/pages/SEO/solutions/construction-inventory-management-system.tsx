@@ -21,22 +21,13 @@ import {
   Building2
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function ConstructionInventoryManagementSystem() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
   
-  // Get real customer data for construction use case
-  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
-  const relevantTestimonials = getRelevantTestimonials('construction');
-  const metrics = getProprietaryMetrics('construction inventory');
+
 
   const faqData = [
     {

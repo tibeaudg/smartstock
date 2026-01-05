@@ -24,13 +24,7 @@ import {
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 const features = [
   {
@@ -215,10 +209,7 @@ const faqData = [
 ];
 
 export default function AlertsPage() {
-  // Get real customer data for alerts feature
-  const relevantCaseStudies = getRelevantCaseStudies('inventory alerts');
-  const relevantTestimonials = getRelevantTestimonials('alerts');
-  const metrics = getProprietaryMetrics('inventory alerts');
+
   
   const structuredData = {
     '@context': 'https://schema.org',
@@ -480,13 +471,7 @@ export default function AlertsPage() {
         </div>
       </div>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
 
     </SeoPageLayout>
   );

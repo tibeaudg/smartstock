@@ -17,23 +17,14 @@ import {
 } from 'lucide-react';
 
 import { StructuredData } from '@/components/StructuredData';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function BestInventoryManagementSoftware() {
   usePageRefresh();
   const location = useLocation();
   const { formatPrice } = useCurrency();
   
-  // Get real customer data for cross-dock warehouse use case
-  const relevantCaseStudies = getRelevantCaseStudies('warehouse inventory');
-  const relevantTestimonials = getRelevantTestimonials('warehouse');
-  const metrics = getProprietaryMetrics('warehouse inventory');
+
   
   const faqData = [
     {
@@ -606,13 +597,7 @@ export default function BestInventoryManagementSoftware() {
           "reviewBody": testimonial.content
         }))
       ]} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

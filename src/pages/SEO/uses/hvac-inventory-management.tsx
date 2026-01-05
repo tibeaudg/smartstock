@@ -20,22 +20,12 @@ import {
   Truck
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function HvacInventoryManagement() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
-  
-  // Get real customer data for HVAC contractor use case
-  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
-  const relevantTestimonials = getRelevantTestimonials('construction');
-  const metrics = getProprietaryMetrics('construction inventory');
+
 
   const faqData = [
     {
@@ -402,13 +392,7 @@ export default function HvacInventoryManagement() {
           </p>
         </div>
       </section>
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

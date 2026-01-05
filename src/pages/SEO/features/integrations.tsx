@@ -16,13 +16,7 @@ import {
   TrendingUp,
   Clock
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 const faqData = [
   {
@@ -154,10 +148,7 @@ const structuredData = [
 export default function SEOIntegrationsPage() {
   usePageRefresh();
   
-  // Get real customer data for integrations feature
-  const relevantCaseStudies = getRelevantCaseStudies('integrations');
-  const relevantTestimonials = getRelevantTestimonials('integrations');
-  const metrics = getProprietaryMetrics('integrations');
+  
 
   return (
     <SeoPageLayout 
@@ -350,13 +341,7 @@ export default function SEOIntegrationsPage() {
       {/* Component Wrapper */}
       <IntegrationsPage />
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

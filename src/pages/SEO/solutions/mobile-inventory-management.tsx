@@ -16,21 +16,11 @@ import {
   Wifi,
   WifiOff
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function MobileInventoryManagement() {
   usePageRefresh();
-  
-  // Get real customer data for mobile inventory management
-  const relevantCaseStudies = getRelevantCaseStudies('mobile inventory');
-  const relevantTestimonials = getRelevantTestimonials('mobile');
-  const metrics = getProprietaryMetrics('mobile inventory');
+
   
   const faqData = [
     {
@@ -505,13 +495,7 @@ export default function MobileInventoryManagement() {
 
       {/* Structured Data */}
       <StructuredData data={structuredData} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

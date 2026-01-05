@@ -23,22 +23,14 @@ import {
   Zap,
   Globe
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function SuppliersPage() {
   usePageRefresh();
   const location = useLocation();
   
   // Get real customer data for supplier management
-  const relevantCaseStudies = getRelevantCaseStudies('supplier management');
-  const relevantTestimonials = getRelevantTestimonials('supplier');
-  const metrics = getProprietaryMetrics('supplier management');
+ 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,
     url: item.path,
@@ -426,20 +418,7 @@ export default function SuppliersPage() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

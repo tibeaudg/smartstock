@@ -233,6 +233,7 @@ export const SEOPageLayout = memo(({
   recentArticles = [],
   pageLanguage = 'en',
 }: SEOPageLayoutProps) => {
+  const location = useLocation();
   const layoutRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const tocRef = useRef<HTMLDivElement>(null);
@@ -241,6 +242,11 @@ export const SEOPageLayout = memo(({
   const [activeId, setActiveId] = useState('');
   const [tocMode, setTocMode] = useState<TocMode>('before');
   const [tocOffset, setTocOffset] = useState(0);
+
+  // Scroll to top on page navigation
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location.pathname]);
 
   // Extract TOC items from headings
   useEffect(() => {

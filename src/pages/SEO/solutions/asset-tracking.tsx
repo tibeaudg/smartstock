@@ -28,22 +28,12 @@ import {
   History,
   Target
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function AssetTracking() {
   usePageRefresh();
   const location = useLocation();
-  
-  // Get real customer data for asset tracking
-  const relevantCaseStudies = getRelevantCaseStudies('asset tracking');
-  const relevantTestimonials = getRelevantTestimonials('asset');
-  const metrics = getProprietaryMetrics('asset tracking');
+
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,
     url: item.path,
@@ -631,13 +621,7 @@ export default function AssetTracking() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

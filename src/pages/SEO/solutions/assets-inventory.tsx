@@ -21,22 +21,13 @@ import {
   Target
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function AssetsInventory() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
   
-  // Get real customer data for assets inventory
-  const relevantCaseStudies = getRelevantCaseStudies('asset tracking');
-  const relevantTestimonials = getRelevantTestimonials('asset');
-  const metrics = getProprietaryMetrics('asset tracking');
+
 
   const faqData = [
     {
@@ -336,13 +327,7 @@ export default function AssetsInventory() {
           </div>
         </div>
       </section>
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

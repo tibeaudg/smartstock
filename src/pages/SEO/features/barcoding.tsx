@@ -23,13 +23,7 @@ import {
   Truck
 } from 'lucide-react';
 import SEO from '@/components/SEO';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 const features = [
   {
@@ -218,10 +212,7 @@ const faqData = [
 ];
 
 export default function BarcodingPage() {
-  // Get real customer data for barcoding feature
-  const relevantCaseStudies = getRelevantCaseStudies('barcoding');
-  const relevantTestimonials = getRelevantTestimonials('barcode');
-  const metrics = getProprietaryMetrics('barcoding');
+
   
   const structuredData = {
     '@context': 'https://schema.org',
@@ -509,13 +500,7 @@ export default function BarcodingPage() {
         </div>
       </div>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
 
     </SeoPageLayout>
   );

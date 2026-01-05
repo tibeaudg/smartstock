@@ -15,21 +15,12 @@ import {
   TrendingUp,
   Building2
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function StockManagementSoftware() {
   usePageRefresh();
   
-  // Get real customer data for stock management
-  const relevantCaseStudies = getRelevantCaseStudies('stock management');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('stock management');
+
   
   const faqData = [
     {
@@ -426,13 +417,7 @@ export default function StockManagementSoftware() {
 
       {/* Structured Data */}
       <StructuredData data={structuredData} />
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

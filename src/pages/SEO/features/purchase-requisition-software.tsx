@@ -18,22 +18,12 @@ import {
   CheckSquare,
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function PurchaseRequisitionSoftware() {
   usePageRefresh();
   const { formatPrice } = useCurrency();
-  
-  // Get real customer data for purchase requisition feature
-  const relevantCaseStudies = getRelevantCaseStudies('purchase requisition');
-  const relevantTestimonials = getRelevantTestimonials('purchase');
-  const metrics = getProprietaryMetrics('purchase requisition');
+
 
   const faqData = [
     {
@@ -363,21 +353,9 @@ export default function PurchaseRequisitionSoftware() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
+
     </SeoPageLayout>
   );
 }

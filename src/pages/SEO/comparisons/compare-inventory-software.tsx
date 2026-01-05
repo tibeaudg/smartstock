@@ -18,13 +18,7 @@ import {
   Sparkles,
   CheckCircle2,
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 const competitors = [
   {
@@ -98,10 +92,7 @@ export default function CompareInventorySoftware() {
   }));
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory software');
+
 
   const faqData = [
     {
@@ -352,13 +343,6 @@ export default function CompareInventorySoftware() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
 
       {/* CTA */}
       <section className="py-20 px-4 bg-blue-600 text-white">

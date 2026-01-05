@@ -10,21 +10,12 @@ import {
   TrendingUp,
   CheckCircle
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function EcommerceInventoryManagement() {
   usePageRefresh();
   
-  // Get real customer data for ecommerce use case
-  const relevantCaseStudies = getRelevantCaseStudies('ecommerce inventory');
-  const relevantTestimonials = getRelevantTestimonials('ecommerce');
-  const metrics = getProprietaryMetrics('ecommerce inventory');
+
   
   const faqData = [
     {
@@ -371,13 +362,7 @@ export default function EcommerceInventoryManagement() {
         }
       ]} />
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
     </SeoPageLayout>
   );
 }

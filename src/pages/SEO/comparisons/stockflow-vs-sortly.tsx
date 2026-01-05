@@ -27,22 +27,12 @@ import {
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 
 export default function StockFlowVsSortly() {
   usePageRefresh();
-  const { formatPrice } = useCurrency();
   
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('inventory software');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory software');
+
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const toggleFaq = (index: number) => {
@@ -825,13 +815,6 @@ export default function StockFlowVsSortly() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="default"
-        />
-      )}
 
       {/* Final CTA Section */}
       <section className="py-16 px-4 bg-blue-600 text-white">

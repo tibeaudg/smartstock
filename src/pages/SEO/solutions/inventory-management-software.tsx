@@ -28,13 +28,7 @@ import { StructuredData } from '@/components/StructuredData';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
-import { 
-  CaseStudySection, 
 
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics
-} from '@/components/seo/EnhancedContent';
 export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -44,10 +38,7 @@ export default function InventoryManagementSoftware() {
   // Get related pages from topic cluster
   const relatedPages = getRelatedPages('/inventory-management-software', 6);
 
-  // Get real customer data
-  const relevantCaseStudies = getRelevantCaseStudies('inventory management software');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('inventory management software');
+
 
   // FAQ Accordion state
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
@@ -233,13 +224,7 @@ export default function InventoryManagementSoftware() {
         </div>
       </section>
 
-      {/* Case Study Section */}
-      {relevantCaseStudies.length > 0 && (
-        <CaseStudySection 
-          caseStudy={relevantCaseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+
 
 
 
