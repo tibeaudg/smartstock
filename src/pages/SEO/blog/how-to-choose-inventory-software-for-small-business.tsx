@@ -18,7 +18,7 @@ const faqData = [
   },
   {
     question: "What features should small businesses look for in inventory software?",
-    answer: "Essential features include: real-time inventory tracking, automated reorder points, mobile access, basic reporting, ease of use, and affordability. Nice-to-have features: barcode scanning, multi-location support, integration with sales channels, advanced analytics, and demand forecasting. Avoid over-complicated enterprise solutions—focus on features that solve your immediate problems and scale as needed."
+    answer: "Essential features include: real-time inventory tracking, automated reorder points, mobile access, basic reporting, ease of use, and affordability. Nice-to-have features: barcode scanning, multi-location support, integration with sales channels, advanced analytics, and demand forecasting. Avoid over-complicated enterprise solutions focus on features that solve your immediate problems and scale as needed."
   },
   {
     question: "How much should small businesses spend on inventory software?",
@@ -34,7 +34,7 @@ const faqData = [
   },
   {
     question: "Do small businesses need barcode scanning in inventory software?",
-    answer: "Barcode scanning is highly recommended as inventory grows beyond 50-100 items. It improves accuracy to 99%+ (vs 60-80% manual), speeds up operations 10-20x, and reduces errors dramatically. Modern inventory software includes mobile barcode scanning using smartphone cameras—no expensive hardware needed. For setup guidance, see our <Link to=\"/blog/how-to-set-up-barcode-scanning-with-stockflow\" className=\"text-blue-600 hover:underline\">barcode scanning setup guide</Link>."
+    answer: "Barcode scanning is highly recommended as inventory grows beyond 50-100 items. It improves accuracy to 99%+ (vs 60-80% manual), speeds up operations 10-20x, and reduces errors dramatically. Modern inventory software includes mobile barcode scanning using smartphone cameras no expensive hardware needed. For setup guidance, see our <Link to=\"/blog/how-to-set-up-barcode-scanning-with-stockflow\" className=\"text-blue-600 hover:underline\">barcode scanning setup guide</Link>."
   },
   {
     question: "What questions should I ask when evaluating inventory software?",
@@ -104,26 +104,26 @@ export default function HowToChooseInventorySoftwareForSmallBusinessPage() {
             <strong>Pick wrong inventory software, and you'll waste €500+/month on tools you barely use.</strong> Pick right, and you'll cut counting time by 75%, eliminate stockouts, and free up capital. The problem? Most small businesses choose enterprise software they don't need, or free tools that don't scale. This guide helps you pick what actually fits.
           </p>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            We've watched hundreds of businesses choose software. The successful ones: test multiple options with free trials, focus on ease of use over feature lists, verify mobile access works, and start with free plans when available. This structured approach avoids common pitfalls—like paying €150/month for features you'll never touch. For inventory fundamentals first, see our <Link to="/blog/inventory-management-for-small-business-complete-guide" className="text-blue-600 hover:underline font-semibold">complete guide to inventory management for small business</Link>.
+            We've watched hundreds of businesses choose software. The successful ones: test multiple options with free trials, focus on ease of use over feature lists, verify mobile access works, and start with free plans when available. This structured approach avoids common pitfalls like paying €150/month for features you'll never touch. For inventory fundamentals first, see our <Link to="/blog/inventory-management-for-small-business-complete-guide" className="text-blue-600 hover:underline font-semibold">complete guide to inventory management for small business</Link>.
           </p>
           <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg">
             <h3 className="text-xl font-semibold text-gray-900 mb-3">What Actually Matters</h3>
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>Ease of use</strong>—if your team can't figure it out in a week, they won't use it</span>
+                <span><strong>Ease of use</strong> if your team can't figure it out in a week, they won't use it</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>Affordability</strong>—start free, pay only when you see clear ROI</span>
+                <span><strong>Affordability</strong> start free, pay only when you see clear ROI</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>Core features</strong>—real-time tracking, barcode scanning, automated alerts. Skip the rest until you need it</span>
+                <span><strong>Core features</strong> real-time tracking, barcode scanning, automated alerts. Skip the rest until you need it</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>Scales without breaking</strong>—handles 100 SKUs or 10,000 without migration</span>
+                <span><strong>Scales without breaking</strong> handles 100 SKUs or 10,000 without migration</span>
               </li>
             </ul>
           </div>
@@ -191,37 +191,37 @@ export default function HowToChooseInventorySoftwareForSmallBusinessPage() {
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Real-time tracking</strong>—know current stock levels instantly</span>
+                    <span><strong>Real-time tracking</strong> know current stock levels instantly</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Automated reorder points</strong>—prevent stockouts automatically</span>
+                    <span><strong>Automated reorder points</strong> prevent stockouts automatically</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Mobile access</strong>—check/update from anywhere</span>
+                    <span><strong>Mobile access</strong> check/update from anywhere</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Basic reporting</strong>—understand inventory performance</span>
+                    <span><strong>Basic reporting</strong> understand inventory performance</span>
                   </li>
                 </ul>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Ease of use</strong>—team can learn quickly</span>
+                    <span><strong>Ease of use</strong> team can learn quickly</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Affordability</strong>—fits your budget</span>
+                    <span><strong>Affordability</strong> fits your budget</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Cloud-based</strong>—no hardware needed</span>
+                    <span><strong>Cloud-based</strong> no hardware needed</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span><strong>Scalability</strong>—grows with your business</span>
+                    <span><strong>Scalability</strong> grows with your business</span>
                   </li>
                 </ul>
               </div>
@@ -247,7 +247,7 @@ export default function HowToChooseInventorySoftwareForSmallBusinessPage() {
           </div>
 
           <p className="text-lg leading-relaxed text-gray-700 mt-6">
-            Focus on must-have features first. You can add nice-to-have features as your business grows. Avoid over-complicated enterprise solutions with features you'll never use—they're expensive and hard to use.
+            Focus on must-have features first. You can add nice-to-have features as your business grows. Avoid over-complicated enterprise solutions with features you'll never use they're expensive and hard to use.
           </p>
         </div>
       </section>

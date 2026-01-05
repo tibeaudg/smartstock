@@ -45,7 +45,7 @@ const metrics = [
 const faqData = [
   {
     "question": "What is visual inventory management?",
-    "answer": "Visual inventory management uses visual cues—such as photos, color-coded labels, and 3D maps—to instantly track, locate, and manage stock, enhancing accuracy over text-based systems. It enables teams to quickly identify items, reduce human error by 40-60%, and automate replenishment via tools like Kanban cards or AI-driven camera systems."
+    "answer": "Visual inventory management uses visual cues such as photos, color-coded labels, and 3D maps to instantly track, locate, and manage stock, enhancing accuracy over text-based systems. It enables teams to quickly identify items, reduce human error by 40-60%, and automate replenishment via tools like Kanban cards or AI-driven camera systems."
   },
   {
     "question": "What is a visual inventory system?",
@@ -136,7 +136,7 @@ export default function SeoAGuideToVisualInventoryControlPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">A Guide to Visual Inventory Control</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Visual inventory control</strong> uses visual cues—color coding, labels, photos, and organized layouts—to make inventory management faster and more accurate. One warehouse we worked with reduced picking errors by 45% simply by implementing a visual color-coding system. Staff could instantly identify product categories without reading labels.
+              <strong>Visual inventory control</strong> uses visual cues color coding, labels, photos, and organized layouts to make inventory management faster and more accurate. One warehouse we worked with reduced picking errors by 45% simply by implementing a visual color-coding system. Staff could instantly identify product categories without reading labels.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Visual control methods include: <strong>color coding</strong> (different colors for categories or zones), <strong>clear labeling</strong> (large, readable labels with barcodes), <strong>photos</strong> (visual identification of items), <strong>organized layouts</strong> (logical placement, fast-moving items easily accessible), <strong>visual indicators</strong> (flags or markers for low stock), and <strong>zone markers</strong> (clear section divisions).

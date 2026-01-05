@@ -39,7 +39,7 @@ export default function FeaturesPage() {
     {
       icon: <Smartphone className="h-8 w-8" />,
       title: "Mobile Barcode Scanning",
-      description: "Use your phone's camera—no scanner needed. Count 100 items in 3 minutes instead of 30.",
+      description: "Use your phone's camera no scanner needed. Count 100 items in 3 minutes instead of 30.",
       benefits: [
         "Works offline",
         "iOS & Android compatible", 
@@ -50,7 +50,7 @@ export default function FeaturesPage() {
     {
       icon: <Package className="h-8 w-8" />,
       title: "Inventory Tracking",
-      description: "See stock levels update instantly. Know exactly what's where, right now—not tomorrow.",
+      description: "See stock levels update instantly. Know exactly what's where, right now not tomorrow.",
       benefits: [
         "Multi-location support",
         "Low stock alerts",
@@ -152,7 +152,7 @@ export default function FeaturesPage() {
               Inventory Tools That Actually Save Time
             </h1>
             <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-              Skip the clipboard. Ditch the spreadsheets. Scan barcodes with your phone, get instant stock alerts, track dead inventory automatically. Our users cut counting time by 75%—here's how.
+              Skip the clipboard. Ditch the spreadsheets. Scan barcodes with your phone, get instant stock alerts, track dead inventory automatically. Our users cut counting time by 75% here's how.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
@@ -247,7 +247,7 @@ export default function FeaturesPage() {
               Real-World Use Cases
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Real scenarios from actual users. These aren't hypothetical use cases—they're patterns we see daily from businesses using StockFlow.
+              Real scenarios from actual users. These aren't hypothetical use cases they're patterns we see daily from businesses using StockFlow.
             </p>
           </div>
 
@@ -297,7 +297,7 @@ export default function FeaturesPage() {
             <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-xl">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Manufacturing Company</h3>
               <p className="text-gray-700 mb-4">
-                A small manufacturer tracks raw materials, WIP, and finished goods. The dead stock optimizer flagged €8,500 in slow-moving inventory—they liquidated it at 30% margin instead of letting it sit. Capital freed up for fast-moving items.
+                A small manufacturer tracks raw materials, WIP, and finished goods. The dead stock optimizer flagged €8,500 in slow-moving inventory they liquidated it at 30% margin instead of letting it sit. Capital freed up for fast-moving items.
               </p>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start">
@@ -318,7 +318,7 @@ export default function FeaturesPage() {
             <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-8 rounded-xl">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Multi-Location Retail Chain</h3>
               <p className="text-gray-700 mb-4">
-                A three-store fashion chain tracks inventory across locations. When Store A runs low, they transfer from Store B with a few taps. Centralized dashboard shows all stores at once—no more phone calls checking availability. Stock balancing improved by 70%.
+                A three-store fashion chain tracks inventory across locations. When Store A runs low, they transfer from Store B with a few taps. Centralized dashboard shows all stores at once no more phone calls checking availability. Stock balancing improved by 70%.
               </p>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start">
@@ -347,7 +347,7 @@ export default function FeaturesPage() {
               Explore More About StockFlow
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Deep dives on specific solutions, industry workflows, and transparent pricing—no hidden costs.
+              Deep dives on specific solutions, industry workflows, and transparent pricing no hidden costs.
             </p>
           </div>
           

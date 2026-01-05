@@ -5,7 +5,7 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb, TrendingUp, Shield, Users, Zap } from "lucide-react";
 
-const topicTitle = "Inventory Management for Small Business — Complete Guide";
+const topicTitle = "Inventory Management for Small Business   Complete Guide";
 const canonicalPath = "/blog/inventory-management-for-small-business-complete-guide";
 const metaDescription = "Complete guide to inventory management for small businesses. Learn fundamentals, software selection, implementation strategies, best practices, common mistakes, ROI calculation, and actionable next steps for success.";
 const keywords = "inventory management for small business, small business inventory, inventory software small business, inventory management guide, small business inventory management, inventory control small business";
@@ -67,7 +67,7 @@ const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Inventory Management for Small Business — Complete Guide",
+    "headline": "Inventory Management for Small Business   Complete Guide",
     "description": "Complete guide to inventory management for small businesses covering fundamentals, software selection, implementation, best practices, and ROI calculation.",
     "author": {
       "@type": "Organization",
@@ -106,7 +106,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
       faqData={faqData}
     >
       <SEO
-        title={`Inventory Management for Small Business — Complete Guide 2024 | StockFlow`}
+        title={`Inventory Management for Small Business   Complete Guide 2024 | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -388,7 +388,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
           </div>
 
           <p className="text-lg leading-relaxed text-gray-700 mb-4">
-            Start with essential features that address your immediate pain points, then scale up as your business grows. Avoid over-complicated enterprise solutions designed for large companies—they're expensive, difficult to use, and include features you don't need.
+            Start with essential features that address your immediate pain points, then scale up as your business grows. Avoid over-complicated enterprise solutions designed for large companies they're expensive, difficult to use, and include features you don't need.
           </p>
           <p className="text-lg leading-relaxed text-gray-700">
             Look for solutions like StockFlow that offer free plans for small businesses, allowing you to start without financial commitment and upgrade as you scale. Test the software with a free trial to ensure it meets your needs and your team can use it effectively.
@@ -423,7 +423,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Set Up Your System</h3>
                   <p className="text-gray-700">
-                    Create your account and configure basic settings (locations, users, permissions). Import your inventory data (most software supports CSV import from Excel). Set up product categories, suppliers, and initial reorder points. This is also a good time to set up barcode scanning if you're using it—see our guide on <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">how to set up barcode scanning with StockFlow</Link>.
+                    Create your account and configure basic settings (locations, users, permissions). Import your inventory data (most software supports CSV import from Excel). Set up product categories, suppliers, and initial reorder points. This is also a good time to set up barcode scanning if you're using it see our guide on <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">how to set up barcode scanning with StockFlow</Link>.
                   </p>
                 </div>
               </div>

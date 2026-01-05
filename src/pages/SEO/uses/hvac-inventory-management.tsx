@@ -22,8 +22,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -258,25 +257,9 @@ export default function HvacInventoryManagement() {
 
       <StructuredData data={[structuredData, faqStructuredData]} />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "30-40% reduction in callbacks",
-          keyMetric: "Optimized seasonal demand",
-          feature: "HVAC Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
+
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto">

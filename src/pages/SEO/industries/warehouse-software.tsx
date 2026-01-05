@@ -20,16 +20,7 @@ import {
   Zap
 } from 'lucide-react';
 
-import {
-  CaseStudySection,
-  ProprietaryMetrics,
-  RealCustomerResults,
-  IndustryBenchmarks,
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics,
-  getIndustryBenchmarks,
-} from '@/components/seo/EnhancedContent';
+
 
 import { KeyTakeaways } from '@/components/KeyTakeaways';
 
@@ -138,10 +129,6 @@ export default function WarehouseSoftwarePage() {
     'StockFlow scales from small warehouses to complex distribution centers.',
   ];
 
-  const metrics = getProprietaryMetrics('warehouse software');
-  const benchmarks = getIndustryBenchmarks('Retail');
-  const testimonials = getRelevantTestimonials('inventory');
-  const caseStudies = getRelevantCaseStudies('warehouse software');
 
   return (
     <SeoPageLayout
@@ -152,14 +139,13 @@ export default function WarehouseSoftwarePage() {
       keyTakeaways={<KeyTakeaways items={keyTakeaways} />}
     >
       <SEO
-        title="Warehouse Software (WMS) 2025 | Inventory & Fulfillment | StockFlow"
+        title="Warehouse Software (WMS) 2026 | Inventory & Fulfillment | StockFlow"
         description="Comprehensive list of warehouse management software and systems. Find the best warehouse inventory management software for small business and enterprise."
         keywords="warehouse software, WMS, warehouse management system, list of warehouse management software, WMS software, warehouse software systems"
         url="https://www.stockflowsystems.com/warehouse-software"
         structuredData={structuredData}
       />
 
-      <IndustryBenchmarks industry="Retail" benchmarks={benchmarks} />
 
       {/* Core Explanation */}
       <section className="py-20 border-b">

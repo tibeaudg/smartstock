@@ -19,16 +19,7 @@ import {
   AlertTriangle,
   Smartphone
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
-  IndustryBenchmarks,
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics,
-  getIndustryBenchmarks
-} from '@/components/seo/EnhancedContent';
+
 
 export default function RetailInventoryManagement() {
   // Use the page refresh hook
@@ -40,11 +31,7 @@ export default function RetailInventoryManagement() {
     position: index + 1
   }));
 
-  // Get real customer data for retail industry
-  const relevantCaseStudies = getRelevantCaseStudies('retail inventory', 'Retail');
-  const relevantTestimonials = getRelevantTestimonials('retail');
-  const metrics = getProprietaryMetrics('retail inventory');
-  const benchmarks = getIndustryBenchmarks('Retail');
+
 
   const faqData = [
     {
@@ -300,31 +287,8 @@ export default function RetailInventoryManagement() {
         structuredData={structuredData}
       />
 
-      {/* Industry Benchmarks */}
-      <IndustryBenchmarks 
-        industry="Retail"
-        benchmarks={benchmarks}
-      />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "6 hours/week",
-          averageCostSaved: benchmarks.averageSavings,
-          keyMetric: benchmarks.typicalResult,
-          feature: "Retail Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
 
       {/* Introduction */}
       <div className="mb-12">

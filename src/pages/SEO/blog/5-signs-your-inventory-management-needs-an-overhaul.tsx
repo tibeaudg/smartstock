@@ -125,7 +125,7 @@ export default function Seo5SignsYourInventoryManagementNeedsAnOverhaulPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">5 Signs Your Inventory Management Needs an Overhaul</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Your inventory management system is broken—you just haven't realized it yet. We've seen businesses waste thousands monthly because they didn't recognize the warning signs. One hardware store lost €12,000 in sales over three months before they realized their spreadsheet-based system couldn't handle growth.
+              Your inventory management system is broken you just haven't realized it yet. We've seen businesses waste thousands monthly because they didn't recognize the warning signs. One hardware store lost €12,000 in sales over three months before they realized their spreadsheet-based system couldn't handle growth.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               The 5 warning signs your inventory management needs an overhaul: <strong>1) Frequent stockouts</strong> (items unavailable when needed, indicates poor tracking), <strong>2) High error rates</strong> (inventory accuracy below 90%, records don't match reality), <strong>3) Using spreadsheets for 50+ items</strong> (becomes error-prone, can't scale), <strong>4) Spending too much time on inventory</strong> (10+ hours weekly indicates inefficiency), and <strong>5) Can't find items</strong> (poor organization, no location tracking).

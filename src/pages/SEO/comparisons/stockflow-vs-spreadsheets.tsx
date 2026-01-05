@@ -9,8 +9,7 @@ import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clo
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -180,25 +179,7 @@ export default function StockFlowVsSpreadsheets() {
         </p>
       </div>
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10-20 hours/week",
-          averageCostSaved: metrics.averageCostSaved,
-          keyMetric: "75% reduction in counting time",
-          feature: "Inventory Software vs Spreadsheets"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={2}
-        />
-      )}
 
       {/* Feature Comparison */}
       <section className="py-16 px-4 bg-white">

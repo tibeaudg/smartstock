@@ -125,7 +125,7 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Parts Inventory Management Best Practices</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Parts inventory is different—a stockout doesn't just lose a sale, it stops production. One manufacturer lost €25,000 in a single week when critical parts ran out and production halted. Parts inventory management requires different strategies than regular inventory, with focus on preventing downtime.
+              Parts inventory is different a stockout doesn't just lose a sale, it stops production. One manufacturer lost €25,000 in a single week when critical parts ran out and production halted. Parts inventory management requires different strategies than regular inventory, with focus on preventing downtime.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Parts inventory management best practices include: <strong>ABC analysis</strong> (prioritize critical parts that cause downtime if unavailable), <strong>accurate tracking with barcode scanning</strong> (95-99% accuracy), <strong>setting appropriate reorder points</strong> (prevent stockouts), <strong>maintaining safety stock for critical parts</strong> (buffer against variability), <strong>organizing parts by equipment/application</strong> (easy to find), <strong>tracking usage patterns</strong> (improve forecasting), and <strong>managing supplier relationships</strong> (reliable sources for critical parts).
@@ -136,7 +136,7 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why parts inventory management matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Parts stockouts cause expensive production downtime—often costing thousands per hour. Effective parts management prevents stockouts, optimizes inventory investment, reduces downtime, and improves maintenance efficiency. ABC analysis helps prioritize critical parts that matter most, ensuring they're always available when needed.
+                Parts stockouts cause expensive production downtime often costing thousands per hour. Effective parts management prevents stockouts, optimizes inventory investment, reduces downtime, and improves maintenance efficiency. ABC analysis helps prioritize critical parts that matter most, ensuring they're always available when needed.
               </p>
             </div>
           </div>

@@ -17,8 +17,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -227,25 +226,8 @@ export default function InventorySoftware() {
         url="https://www.stockflowsystems.com/solutions/inventory-software"
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "30% reduction in costs",
-          keyMetric: "Real-time inventory tracking",
-          feature: "Inventory Software"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Introduction */}
       <div className="mb-12">

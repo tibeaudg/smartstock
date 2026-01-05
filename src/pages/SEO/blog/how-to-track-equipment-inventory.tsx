@@ -125,7 +125,7 @@ export default function SeoHowToTrackEquipmentInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Track Equipment Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Equipment tracking isn't optional—it's essential. One construction company we worked with lost €15,000 in tools over six months because they couldn't track who had what or where it was. Proper equipment tracking prevents these losses and extends equipment life through scheduled maintenance.
+              Equipment tracking isn't optional it's essential. One construction company we worked with lost €15,000 in tools over six months because they couldn't track who had what or where it was. Proper equipment tracking prevents these losses and extends equipment life through scheduled maintenance.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Track equipment inventory by: <strong>creating an equipment register</strong> (list all equipment with details: name, serial number, purchase date, value, location), <strong>using barcode or QR code labels</strong> for easy scanning, <strong>tracking locations and movements</strong> (who has what, where it is), <strong>scheduling maintenance</strong> (extends equipment life, prevents breakdowns), <strong>monitoring utilization</strong> (identify underused equipment), and <strong>using asset management software</strong> (comprehensive tracking solution).

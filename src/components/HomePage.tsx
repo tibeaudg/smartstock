@@ -663,7 +663,7 @@ export const HomePage = () => {
     },
     {
       question: "Does StockFlow work with my POS system or cash register?",
-      answer: "Yes! StockFlow integrates with most modern POS systems including Square, Shopify POS, Lightspeed, and Clover. You can also use StockFlow standalone — many retailers use it to track backroom inventory while their POS handles the shop floor. We offer CSV export/import to sync with any system. If you have a specific POS, contact us and we'll confirm compatibility.",
+      answer: "Yes! StockFlow integrates with most modern POS systems including Square, Shopify POS, Lightspeed, and Clover. You can also use StockFlow standalone   many retailers use it to track backroom inventory while their POS handles the shop floor. We offer CSV export/import to sync with any system. If you have a specific POS, contact us and we'll confirm compatibility.",
       category: "POS Integration",
       benefit: "Works with major POS systems"
     },
@@ -687,7 +687,7 @@ export const HomePage = () => {
     },
     {
       question: "Will you help me get started? I'm not great with technology.",
-      answer: "Yes, we'll guide you every step! Every new customer gets a free 30-minute onboarding call where we help you import products, set up scanning, and configure alerts. We also have video tutorials and live chat support. Most shop owners are fully set up in under 10 minutes. If you get stuck, we're just a message away — real people, not bots.",
+      answer: "Yes, we'll guide you every step! Every new customer gets a free 30-minute onboarding call where we help you import products, set up scanning, and configure alerts. We also have video tutorials and live chat support. Most shop owners are fully set up in under 10 minutes. If you get stuck, we're just a message away   real people, not bots.",
       category: "Onboarding Help",
       benefit: "Free 1-on-1 setup assistance included"
     },
@@ -705,7 +705,7 @@ export const HomePage = () => {
     },
     {
       question: "Can I try it free? What if it doesn't work for my shop?",
-      answer: "Absolutely! StockFlow is completely free forever — no credit card required, no subscriptions, no hidden fees. All features are included with unlimited usage. Try it with your actual products - if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them.",
+      answer: "Absolutely! StockFlow is completely free forever   no credit card required, no subscriptions, no hidden fees. All features are included with unlimited usage. Try it with your actual products - if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them.",
       category: "Free Forever",
       benefit: "Completely free forever, no commitment"
     }
@@ -1270,8 +1270,8 @@ export const HomePage = () => {
         `}</script>
       </Helmet>
       <SEO
-        title="Free Inventory Management — StockFlow | Barcode, Mobile, Reporting"
-        description="Free inventory management that actually works. Scan barcodes with your phone, track stock in real-time, prevent stockouts, recover dead stock capital. 500+ businesses trust StockFlow—free forever."
+        title="Free Inventory Management   StockFlow | Barcode, Mobile, Reporting"
+        description="Free inventory management that actually works. Scan barcodes with your phone, track stock in real-time, prevent stockouts, recover dead stock capital. 500+ businesses trust StockFlow free forever."
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflowsystems.com/"
         hreflang={[

@@ -125,7 +125,7 @@ export default function SeoAssetTracking101Page() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Asset Tracking 101: The Complete Beginner's Guide</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Asset tracking</strong> is what separates organized businesses from chaotic ones. We've seen construction companies lose €5,000+ in tools annually simply because they couldn't track what they had or where it was. Unlike inventory that you sell or consume, assets (equipment, tools, furniture, vehicles) stick around—and they need different management.
+              <strong>Asset tracking</strong> is what separates organized businesses from chaotic ones. We've seen construction companies lose €5,000+ in tools annually simply because they couldn't track what they had or where it was. Unlike inventory that you sell or consume, assets (equipment, tools, furniture, vehicles) stick around and they need different management.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Asset tracking monitors and manages business assets throughout their lifecycle. Key activities include: tracking locations (where is each asset?), scheduling maintenance (when does equipment need servicing?), managing depreciation (accounting for asset value over time), monitoring utilization (are assets being used efficiently?), preventing loss (reducing theft and misplacement), and ensuring compliance (meeting regulatory requirements).

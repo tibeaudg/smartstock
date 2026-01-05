@@ -125,7 +125,7 @@ export default function SeoReorderPointFormulaPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Reorder Point Formula: Complete Guide</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Most businesses set reorder points by guesswork—and lose thousands in stockouts as a result. The <strong>reorder point formula</strong> eliminates the guesswork. It calculates exactly when to place a new order to prevent stockouts. The formula is: <strong>Reorder Point = (Lead Time × Average Daily Usage) + Safety Stock</strong>.
+              Most businesses set reorder points by guesswork and lose thousands in stockouts as a result. The <strong>reorder point formula</strong> eliminates the guesswork. It calculates exactly when to place a new order to prevent stockouts. The formula is: <strong>Reorder Point = (Lead Time × Average Daily Usage) + Safety Stock</strong>.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Here's what each component means: <strong>Lead time</strong> is the number of days from placing an order to receiving stock. <strong>Average daily usage</strong> is units sold per day (calculated from sales history). <strong>Safety stock</strong> buffers against demand variability and supplier delays. Example: If lead time is 7 days, average daily usage is 10 units, and safety stock is 20 units, the reorder point = (7 × 10) + 20 = 90 units. When inventory reaches 90 units, place a new order.

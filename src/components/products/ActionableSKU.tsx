@@ -169,7 +169,7 @@ export const ActionableSKU: React.FC<ActionableSKUProps> = ({
                 compactMode ? "text-xs h-5 px-1" : "text-sm h-6 px-2"
               )}
             >
-              {product.variant_sku || product.sku || '—'}
+              {product.variant_sku || product.sku || ' '}
             </Button>
           </TooltipTrigger>
           <TooltipContent>

@@ -125,10 +125,10 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Good Inventory Turnover Ratio?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Turnover ratio shows how many times you sell and replace inventory per year: <strong>Cost of Goods Sold ÷ Average Inventory</strong>. Retail typically sees 4-6x. Manufacturing 6-8x. Fast-moving goods 8-12x. One hardware store improved from 3.2x to 6.8x by cutting slow-moving items—freeing €15,000 in capital.
+              Turnover ratio shows how many times you sell and replace inventory per year: <strong>Cost of Goods Sold ÷ Average Inventory</strong>. Retail typically sees 4-6x. Manufacturing 6-8x. Fast-moving goods 8-12x. One hardware store improved from 3.2x to 6.8x by cutting slow-moving items freeing €15,000 in capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Very high turnover (above 12-15x) might mean stockouts—you're running out too fast. Very low (below 2-3x) means overstock or dead items. The ideal balances having enough stock to meet demand without tying up capital. One fashion retailer had 2.1x turnover (bad) and €12,000 in dead stock. After optimizing, they hit 5.8x and recovered that capital.
+              Very high turnover (above 12-15x) might mean stockouts you're running out too fast. Very low (below 2-3x) means overstock or dead items. The ideal balances having enough stock to meet demand without tying up capital. One fashion retailer had 2.1x turnover (bad) and €12,000 in dead stock. After optimizing, they hit 5.8x and recovered that capital.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Improving inventory turnover requires optimizing stock levels, improving demand forecasting, and eliminating slow-moving items. Learn more about <Link to="/inventory-management-101" className="text-blue-600 hover:underline font-semibold">inventory management basics</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> with turnover analytics.
@@ -136,7 +136,7 @@ export default function SeoWhatIsAGoodInventoryTurnoverRatioPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">What low turnover costs</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Low turnover ties up capital. On €200,000 inventory, a 3x ratio means €66,667 tied up at any time. At 6x, that drops to €33,333—€33,000 freed for growth. Higher turnover also cuts carrying costs (storage, insurance, obsolescence). One retailer reduced carrying costs by €8,400 annually after improving turnover from 3.5x to 6.2x.
+                Low turnover ties up capital. On €200,000 inventory, a 3x ratio means €66,667 tied up at any time. At 6x, that drops to €33,333 €33,000 freed for growth. Higher turnover also cuts carrying costs (storage, insurance, obsolescence). One retailer reduced carrying costs by €8,400 annually after improving turnover from 3.5x to 6.2x.
               </p>
             </div>
           </div>

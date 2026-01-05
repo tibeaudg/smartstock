@@ -16,7 +16,7 @@ const canonicalPath = "/what-is-inventory-shrinkage";
 const metaDescription = "Shrinkage costs businesses 1-2% of inventory value annually. Employee theft causes 30% of losses. Here's what causes shrinkage, what it really costs, and how to cut losses by 85%.";
 const keywords = "inventory shrinkage, stock shrinkage, inventory loss, inventory theft, reduce shrinkage, inventory accuracy, inventory control, shrinkage prevention, inventory management";
 const heroBadge = "Inventory Management Guide • Updated October 2025";
-const summaryCopy = "Shrinkage means inventory disappears between your records and physical count. It costs 1-2% of inventory value annually—€4,000 on €200,000 inventory. Employee theft causes 30% of losses. Administrative errors cause another 25%. Here's how to cut shrinkage by 85% through barcode scanning, cycle counts, and proper tracking.";
+const summaryCopy = "Shrinkage means inventory disappears between your records and physical count. It costs 1-2% of inventory value annually €4,000 on €200,000 inventory. Employee theft causes 30% of losses. Administrative errors cause another 25%. Here's how to cut shrinkage by 85% through barcode scanning, cycle counts, and proper tracking.";
 const takeaways = [
   "Inventory shrinkage costs businesses billions annually and typically ranges from 1-2% of total inventory value.",
   "The main causes are employee theft, shoplifting, administrative errors, supplier fraud, and damage.",
@@ -143,7 +143,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Understanding Inventory Shrinkage</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Shrinkage</strong> is the gap between what your records say you have and what's actually on shelves. It costs 1-2% of inventory value annually—that's €4,000-8,000 on €400,000 inventory. One retailer discovered €12,000 missing after implementing proper tracking. Employee theft causes 30% of losses. Administrative errors cause 25%. The rest comes from damage, supplier fraud, and shoplifting.
+              <strong>Shrinkage</strong> is the gap between what your records say you have and what's actually on shelves. It costs 1-2% of inventory value annually that's €4,000-8,000 on €400,000 inventory. One retailer discovered €12,000 missing after implementing proper tracking. Employee theft causes 30% of losses. Administrative errors cause 25%. The rest comes from damage, supplier fraud, and shoplifting.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Most businesses don't notice shrinkage until it's significant. Without regular cycle counts and barcode scanning, errors compound. One electronics shop lost €6,500 to shrinkage over six months before realizing it. The impact hits cash flow, profitability, and can signal deeper operational problems. Businesses with proper <Link to="/inventory-control-101" className="text-blue-600 hover:underline font-semibold">inventory control</Link> keep shrinkage under 0.5%.

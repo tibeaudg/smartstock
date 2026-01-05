@@ -22,26 +22,13 @@ import {
   FileText,
   Search
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
-  IndustryBenchmarks,
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics,
-  getIndustryBenchmarks
-} from '@/components/seo/EnhancedContent';
+
 
 export default function MedicalInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   
   // Get real customer data for medical industry
-  const relevantCaseStudies = getRelevantCaseStudies('medical inventory', 'Healthcare');
-  const relevantTestimonials = getRelevantTestimonials('medical');
-  const metrics = getProprietaryMetrics('medical inventory');
-  const benchmarks = getIndustryBenchmarks('Healthcare');
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,
     url: item.path,
@@ -257,31 +244,9 @@ export default function MedicalInventoryManagement() {
         structuredData={structuredData}
       />
 
-      {/* Industry Benchmarks */}
-      <IndustryBenchmarks 
-        industry="Healthcare"
-        benchmarks={benchmarks}
-      />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "6 hours/week",
-          averageCostSaved: benchmarks.averageSavings,
-          keyMetric: benchmarks.typicalResult,
-          feature: "Medical Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Introduction */}
       <div className="mb-12">

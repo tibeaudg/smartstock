@@ -7,8 +7,7 @@ import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -133,18 +132,7 @@ export default function Seo9MustHaveInventoryControlSoftwareFeaturesPage() {
 
 
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved,
-          averageCostSaved: metrics.averageCostSaved,
-          keyMetric: "75% reduction in counting time",
-          feature: "Inventory Control Features"
-        }}
-        variant="compact"
-        className="mb-8"
-      />
+
 
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">

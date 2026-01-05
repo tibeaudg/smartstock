@@ -125,7 +125,7 @@ export default function SeoYearEndInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Year End Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Year-end inventory</strong> means counting and valuing all stock at fiscal year-end for accounting and taxes. Without preparation, it takes 2-3 days and disrupts operations. One hardware store spent 3 days counting 2,500 SKUs manually—then found €8,500 in discrepancies to reconcile.
+              <strong>Year-end inventory</strong> means counting and valuing all stock at fiscal year-end for accounting and taxes. Without preparation, it takes 2-3 days and disrupts operations. One hardware store spent 3 days counting 2,500 SKUs manually then found €8,500 in discrepancies to reconcile.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Year-end counts are required for financial statements and tax reporting. The ending inventory value goes into cost of goods sold calculations. Smart businesses use cycle counts throughout the year (so year-end is mostly verification) and inventory software for accuracy. One retailer cut year-end counting from 3 days to 4 hours by doing monthly cycle counts and using barcode scanning.

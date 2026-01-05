@@ -18,8 +18,7 @@ import {
 } from 'lucide-react';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -176,25 +175,8 @@ export default function SEOIntegrationsPage() {
       />
       <StructuredData data={structuredData} />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "99%+ inventory accuracy",
-          keyMetric: "45+ integrations available",
-          feature: "Integrations"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Introduction Section */}
       <section className="py-16 px-4 bg-white">

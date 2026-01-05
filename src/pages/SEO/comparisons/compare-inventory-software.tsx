@@ -20,8 +20,7 @@ import {
 } from 'lucide-react';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -227,25 +226,8 @@ export default function CompareInventorySoftware() {
         </div>
       </section>
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved,
-          averageCostSaved: metrics.averageCostSaved,
-          keyMetric: metrics.keyMetric,
-          feature: "Inventory Software"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Competitor snapshot */}
       <section className="py-20 px-4 bg-white">

@@ -23,8 +23,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics

@@ -17,8 +17,7 @@ import {
 } from 'lucide-react';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -239,25 +238,8 @@ export default function StockManagementSoftware() {
         structuredData={structuredData}
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "90% fewer errors",
-          keyMetric: "Real-time stock control",
-          feature: "Stock Management Software"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* What is Stock Management Software Section */}
       <section id="what-is" className="py-16 px-4 bg-white">

@@ -121,7 +121,7 @@ export default function BarcodeInventoryPage() {
           <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6 mb-12">
             <h3 className="text-xl font-semibold text-blue-900 mb-3">Why Barcode Inventory Systems Matter</h3>
             <p className="text-base text-blue-900/90">
-              Every inventory transaction—from receiving shipments to fulfilling orders—benefits from barcode scanning automation. A <strong>barcode inventory system</strong> transforms slow, error-prone manual counting into fast, accurate, auditable operations. Teams using barcode inventory systems typically reduce inventory counting time by 35-50% and eliminate 90% of data entry errors, leading to better customer service, reduced carrying costs, and improved cash flow.
+              Every inventory transaction from receiving shipments to fulfilling orders benefits from barcode scanning automation. A <strong>barcode inventory system</strong> transforms slow, error-prone manual counting into fast, accurate, auditable operations. Teams using barcode inventory systems typically reduce inventory counting time by 35-50% and eliminate 90% of data entry errors, leading to better customer service, reduced carrying costs, and improved cash flow.
             </p>
           </div>
         </div>

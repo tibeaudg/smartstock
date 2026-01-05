@@ -125,7 +125,7 @@ export default function SeoHowDoYouSetUpAnInventorySystemPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How Do You Set Up an Inventory System?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Setting up an inventory system doesn't have to be overwhelming. One small retailer we worked with had their system fully operational in 5 days—they started with 50 items, added barcode scanning on day 2, and were tracking everything accurately by day 5. The key? Starting with the right software and following a clear process.
+              Setting up an inventory system doesn't have to be overwhelming. One small retailer we worked with had their system fully operational in 5 days they started with 50 items, added barcode scanning on day 2, and were tracking everything accurately by day 5. The key? Starting with the right software and following a clear process.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Set up an inventory system by: <strong>choosing inventory management software</strong> (free plans available for small businesses like StockFlow), <strong>creating item records</strong> (name, SKU, description, location, initial quantity), <strong>organizing items by category</strong> (easier management), <strong>setting up locations</strong> (warehouses, shelves, bins), <strong>implementing barcode scanning</strong> (generate and print labels), <strong>establishing processes</strong> (receiving, picking, shipping, counting), and <strong>training staff</strong> on proper procedures.

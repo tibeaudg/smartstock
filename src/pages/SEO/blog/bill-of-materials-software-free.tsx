@@ -131,7 +131,7 @@ export default function BillOfMaterialsManagementPage() {
                 A <strong>Bill of Materials (BOM)</strong> is a comprehensive, hierarchical list of raw materials, components, sub-assemblies, and instructions required to manufacture a product. Think of it as the ultimate blueprint or recipe that ensures your production team has exactly what they need, when they need it.
               </p>
               <p className="mt-4 text-lg leading-relaxed text-gray-700">
-                Whether you’re in manufacturing, electronics, or hardware development, an accurate BOM is the backbone of efficient production. Without a centralized <strong>BOM management system</strong>, businesses often face "phantom inventory," production delays, and costly errors. Modern BOM software integrates with ERP, MRP, and PLM systems, providing real-time updates, version control, and automated error checking—reducing manual data entry errors by up to 40% :refs[4-0,2].
+                Whether you’re in manufacturing, electronics, or hardware development, an accurate BOM is the backbone of efficient production. Without a centralized <strong>BOM management system</strong>, businesses often face "phantom inventory," production delays, and costly errors. Modern BOM software integrates with ERP, MRP, and PLM systems, providing real-time updates, version control, and automated error checking reducing manual data entry errors by up to 40% :refs[4-0,2].
               </p>
               <p className="mt-4 text-lg leading-relaxed text-gray-700">
                 <strong>Key benefits of a well-managed BOM:</strong>

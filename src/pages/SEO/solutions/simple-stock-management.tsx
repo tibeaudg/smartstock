@@ -15,8 +15,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -100,25 +99,8 @@ export default function SimpleStockManagement() {
         url="https://www.stockflowsystems.com/solutions/simple-stock-management"
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "70% time savings",
-          averageCostSaved: metrics.averageCostSaved || "Easy to use",
-          keyMetric: "Simple and intuitive",
-          feature: "Simple Stock Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* What is Simple Stock Management Section */}
       <section id="what-is" className="py-16 px-4 bg-white">

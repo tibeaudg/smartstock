@@ -20,8 +20,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -256,25 +255,7 @@ export default function PurchaseRequisitionSoftware() {
 
       <StructuredData data={[structuredData, faqStructuredData]} />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "12 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "50-70% reduction in procurement time",
-          keyMetric: "Complete spending control",
-          feature: "Purchase Requisition"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto">

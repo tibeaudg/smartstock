@@ -125,7 +125,7 @@ export default function SeoHowToStoreConstructionMaterialsPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Store Construction Materials</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Construction sites lose thousands annually to damaged materials and theft—problems that proper storage solves. One contractor we worked with lost €6,800 in materials during a single project because they stored items improperly and couldn't track what was stolen. The fix? Proper storage combined with inventory tracking.
+              Construction sites lose thousands annually to damaged materials and theft problems that proper storage solves. One contractor we worked with lost €6,800 in materials during a single project because they stored items improperly and couldn't track what was stolen. The fix? Proper storage combined with inventory tracking.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Store construction materials by: <strong>protecting from weather</strong> (cover outdoor storage, use weatherproof containers to prevent damage from rain, sun, and moisture), <strong>organizing by type and size</strong> (easy to find and access), <strong>using proper storage systems</strong> (racks, shelves, bins for organization), <strong>securing against theft</strong> (locked storage, site security), <strong>tracking locations with inventory software</strong> (know what's where across job sites), and <strong>maintaining clean, organized storage areas</strong>.

@@ -18,8 +18,7 @@ import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -108,7 +107,7 @@ export default function StockflowVsKatana() {
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>              <p className="text-xl text-gray-600 mb-8">
-                Katana excels at shop-floor scheduling for manufacturers. StockFlow unifies inventory, procurement, and fulfillment across e-commerce, retail, and wholesale. If you're manufacturing-focused with complex production routing, consider Katana. If you're managing multiple sales channels and need fast setup, StockFlow fits better—and it's free forever.
+                Katana excels at shop-floor scheduling for manufacturers. StockFlow unifies inventory, procurement, and fulfillment across e-commerce, retail, and wholesale. If you're manufacturing-focused with complex production routing, consider Katana. If you're managing multiple sales channels and need fast setup, StockFlow fits better and it's free forever.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -148,17 +147,7 @@ export default function StockflowVsKatana() {
         </div>
       </section>
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved,
-          averageCostSaved: metrics.averageCostSaved,
-          keyMetric: metrics.keyMetric,
-          feature: "Inventory Software"
-        }}
-        variant="compact"
-      />
+
 
       {/* Real Customer Results */}
       {relevantTestimonials.length > 0 && (

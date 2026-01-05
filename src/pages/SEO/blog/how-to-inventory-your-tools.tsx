@@ -125,7 +125,7 @@ export default function SeoHowToInventoryYourToolsPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Inventory Your Tools</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Lost or misplaced tools cost businesses thousands annually. One contractor we worked with tracked down €8,500 in "missing" tools simply by implementing proper tool inventory—they were in job site trailers, employee vehicles, and storage units. Without tracking, tools disappear, maintenance gets skipped, and costs add up quickly.
+              Lost or misplaced tools cost businesses thousands annually. One contractor we worked with tracked down €8,500 in "missing" tools simply by implementing proper tool inventory they were in job site trailers, employee vehicles, and storage units. Without tracking, tools disappear, maintenance gets skipped, and costs add up quickly.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Inventory your tools by: <strong>creating a tool register</strong> (list all tools with details: name, serial number, purchase date, value, location), <strong>labeling tools with barcodes</strong> or asset tags for easy scanning, <strong>tracking locations and assignments</strong> (who has which tools), <strong>scheduling maintenance</strong> (extend tool life), <strong>monitoring utilization</strong> (identify needs), and <strong>using asset management software</strong> with mobile apps for tracking across locations.

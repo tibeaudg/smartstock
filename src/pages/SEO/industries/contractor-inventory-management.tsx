@@ -23,26 +23,13 @@ import {
   Building2,
   ArrowRight
 } from 'lucide-react';
-import { 
-  CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
-  IndustryBenchmarks,
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics,
-  getIndustryBenchmarks
-} from '@/components/seo/EnhancedContent';
+
 
 export default function ContractorInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   
   // Get real customer data for construction industry
-  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
-  const relevantTestimonials = getRelevantTestimonials('construction');
-  const metrics = getProprietaryMetrics('construction inventory');
-  const benchmarks = getIndustryBenchmarks('Construction');
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,
     url: item.path,
@@ -286,31 +273,9 @@ export default function ContractorInventoryManagement() {
         structuredData={structuredData}
       />
 
-      {/* Industry Benchmarks */}
-      <IndustryBenchmarks 
-        industry="Construction"
-        benchmarks={benchmarks}
-      />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
-          averageCostSaved: benchmarks.averageSavings,
-          keyMetric: benchmarks.typicalResult,
-          feature: "Construction Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Introduction */}
       <div className="mb-12">

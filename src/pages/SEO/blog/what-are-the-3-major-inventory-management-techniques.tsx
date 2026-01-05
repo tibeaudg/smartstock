@@ -125,7 +125,7 @@ export default function SeoWhatAreThe3MajorInventoryManagementTechniquesPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Most businesses use three inventory techniques—often without knowing it. <strong>ABC Analysis</strong> helps you focus on high-value items (20% of products = 80% of value). <strong>Just-in-Time (JIT)</strong> orders inventory only when needed to minimize holding costs. <strong>Economic Order Quantity (EOQ)</strong> calculates the optimal order size to minimize total costs. Here's when each works and how successful businesses combine them.
+              Most businesses use three inventory techniques often without knowing it. <strong>ABC Analysis</strong> helps you focus on high-value items (20% of products = 80% of value). <strong>Just-in-Time (JIT)</strong> orders inventory only when needed to minimize holding costs. <strong>Economic Order Quantity (EOQ)</strong> calculates the optimal order size to minimize total costs. Here's when each works and how successful businesses combine them.
             </p>
             
           </div>

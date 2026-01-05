@@ -155,7 +155,7 @@ export const RealCustomerResults: React.FC<RealCustomerResultsProps> = ({
               )}
               
               <p className="text-sm text-gray-600">
-                — {testimonial.author}, {testimonial.role} at {testimonial.company}
+                  {testimonial.author}, {testimonial.role} at {testimonial.company}
               </p>
             </div>
           ))}

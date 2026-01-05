@@ -18,8 +18,7 @@ import {
 } from 'lucide-react';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -216,25 +215,8 @@ export default function MobileInventoryManagement() {
         structuredData={structuredData}
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "40-60% productivity increase",
-          averageCostSaved: metrics.averageCostSaved || "99.9% accuracy",
-          keyMetric: "Mobile-first inventory management",
-          feature: "Mobile Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Introduction */}
       <div className="mb-12">

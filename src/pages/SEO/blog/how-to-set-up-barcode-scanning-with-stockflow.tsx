@@ -14,7 +14,7 @@ const heroBadge = "Tutorial Guide • Updated December 2024";
 const faqData = [
   {
     question: "How do I set up barcode scanning in StockFlow?",
-    answer: "Setting up barcode scanning in StockFlow is straightforward: 1) Access settings in your StockFlow dashboard, 2) Enable barcode scanning feature, 3) Generate or import barcodes for your products, 4) Download the mobile app on your smartphone/tablet, 5) Grant camera permissions for scanning, 6) Test scanning with a sample product. StockFlow supports both barcodes and QR codes and works with any smartphone camera—no special hardware needed."
+    answer: "Setting up barcode scanning in StockFlow is straightforward: 1) Access settings in your StockFlow dashboard, 2) Enable barcode scanning feature, 3) Generate or import barcodes for your products, 4) Download the mobile app on your smartphone/tablet, 5) Grant camera permissions for scanning, 6) Test scanning with a sample product. StockFlow supports both barcodes and QR codes and works with any smartphone camera no special hardware needed."
   },
   {
     question: "Do I need special hardware for barcode scanning in StockFlow?",
@@ -108,7 +108,7 @@ export default function HowToSetUpBarcodeScanningWithStockFlowPage() {
             <strong>Setting up barcode scanning with StockFlow</strong> transforms your inventory management by dramatically improving speed and accuracy. Instead of manually typing product codes or quantities, simply scan barcodes to instantly update inventory levels, receive stock, record sales, or check quantities.
           </p>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            This step-by-step guide walks you through setting up barcode scanning in StockFlow, from initial configuration to optimizing your scanning workflow. StockFlow's mobile-first approach means you can use any smartphone or tablet—no expensive barcode scanners required. Whether you're new to barcode scanning or looking to optimize your setup, this guide provides everything you need.
+            This step-by-step guide walks you through setting up barcode scanning in StockFlow, from initial configuration to optimizing your scanning workflow. StockFlow's mobile-first approach means you can use any smartphone or tablet no expensive barcode scanners required. Whether you're new to barcode scanning or looking to optimize your setup, this guide provides everything you need.
           </p>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
             For more background on barcode options, see our comparison of <Link to="/blog/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 hover:underline font-semibold">barcodes vs QR codes for inventory management</Link>. For small businesses getting started, check our <Link to="/blog/inventory-management-for-small-business-complete-guide" className="text-blue-600 hover:underline font-semibold">complete guide to inventory management for small business</Link>.
@@ -126,7 +126,7 @@ export default function HowToSetUpBarcodeScanningWithStockFlowPage() {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>No special hardware</strong>—uses your smartphone camera</span>
+                <span><strong>No special hardware</strong> uses your smartphone camera</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -194,7 +194,7 @@ export default function HowToSetUpBarcodeScanningWithStockFlowPage() {
                     <h3 className="text-xl font-semibold text-gray-900">Download Mobile App</h3>
                   </div>
                   <p className="text-gray-700 mb-3">
-                    Download the StockFlow mobile app from the App Store (iOS) or Google Play Store (Android). The mobile app includes built-in barcode scanning that uses your device's camera—no additional hardware needed.
+                    Download the StockFlow mobile app from the App Store (iOS) or Google Play Store (Android). The mobile app includes built-in barcode scanning that uses your device's camera no additional hardware needed.
                   </p>
                   <p className="text-gray-700 mb-3">
                     After downloading, log into your StockFlow account using the same credentials as your web dashboard. Your inventory data syncs automatically between web and mobile.
@@ -218,7 +218,7 @@ export default function HowToSetUpBarcodeScanningWithStockFlowPage() {
                     When you first open the scanning feature in the mobile app, your device will prompt for camera permissions. Grant camera access to enable barcode scanning functionality.
                   </p>
                   <p className="text-gray-700">
-                    Camera permissions are required only for scanning—your camera isn't accessed at other times. If you denied permissions initially, you can enable them later in your device settings under Apps → StockFlow → Permissions.
+                    Camera permissions are required only for scanning your camera isn't accessed at other times. If you denied permissions initially, you can enable them later in your device settings under Apps → StockFlow → Permissions.
                   </p>
                 </div>
               </div>

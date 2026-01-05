@@ -31,8 +31,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@r
 import { Link } from 'react-router-dom';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -344,25 +343,9 @@ export default function ElectricalInventoryManagement() {
         url="https://www.stockflowsystems.com/electrical-inventory-management"
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "12 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "60% reduction in material loss",
-          keyMetric: "Improved job site efficiency",
-          feature: "Electrical Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
+
 
       {/* Introduction */}
       <div className="mb-12">

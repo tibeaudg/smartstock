@@ -125,7 +125,7 @@ export default function SeoCalculatingBeginningInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Calculate Beginning Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Beginning inventory</strong> is the starting point for all inventory calculations—and getting it wrong throws off your entire cost of goods sold (COGS) calculation. We've seen businesses misreport profits by thousands simply because they calculated beginning inventory incorrectly. The good news? It's straightforward once you understand the concept.
+              <strong>Beginning inventory</strong> is the starting point for all inventory calculations and getting it wrong throws off your entire cost of goods sold (COGS) calculation. We've seen businesses misreport profits by thousands simply because they calculated beginning inventory incorrectly. The good news? It's straightforward once you understand the concept.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Calculate beginning inventory by: taking ending inventory from the previous period (this becomes beginning inventory for the current period), conducting a physical count at the period start, using inventory management software records, or using the formula: <strong>Beginning Inventory = Ending Inventory (previous period)</strong>. For the first period: Beginning Inventory = Initial purchases/stock.

@@ -125,7 +125,7 @@ export default function SeoInventoryAnalysisPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is Inventory Analysis?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Inventory analysis</strong> transforms raw data into actionable insights. Most businesses track inventory, but they don't analyze it—leading to overstock of slow-moving items and stockouts of fast-moving ones. One retailer we worked with discovered €8,500 tied up in items that hadn't sold in 18 months, simply because they weren't analyzing their data.
+              <strong>Inventory analysis</strong> transforms raw data into actionable insights. Most businesses track inventory, but they don't analyze it leading to overstock of slow-moving items and stockouts of fast-moving ones. One retailer we worked with discovered €8,500 tied up in items that hadn't sold in 18 months, simply because they weren't analyzing their data.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Inventory analysis is the process of examining inventory data to identify trends, optimize stock levels, identify slow-moving items, and make data-driven decisions. Key analyses include: <strong>inventory turnover analysis</strong> (how many times inventory is sold per year), <strong>ABC analysis</strong> (classifying items by value), <strong>days sales of inventory (DSI)</strong> (how many days of inventory you hold), <strong>slow-moving item identification</strong> (items that haven't sold), and <strong>stockout analysis</strong> (when and why items run out).

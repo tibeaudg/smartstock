@@ -125,7 +125,7 @@ export default function Seo3WaysBarcodesAndQRCodesReduceHumanErrorPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">3 Ways Barcodes and QR Codes Reduce Human Error</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Human error in manual inventory entry causes 20-40% of mistakes—typos, transposed numbers, item confusion. One business reduced inventory errors by 87% simply by switching from manual entry to barcode scanning. The improvement wasn't just in accuracy—it eliminated hours of correcting mistakes.
+              Human error in manual inventory entry causes 20-40% of mistakes typos, transposed numbers, item confusion. One business reduced inventory errors by 87% simply by switching from manual entry to barcode scanning. The improvement wasn't just in accuracy it eliminated hours of correcting mistakes.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               3 ways barcodes and QR codes reduce human error: <strong>1) Eliminate manual data entry</strong> (scanning is automatic, no typing mistakes), <strong>2) Prevent misidentification</strong> (codes are unique, can't confuse items), <strong>3) Built-in error correction</strong> (QR codes have error correction, barcodes are validated). Human error in manual entry causes 20-40% of inventory mistakes.

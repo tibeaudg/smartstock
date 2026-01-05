@@ -5,26 +5,12 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { StructuredData } from '@/components/StructuredData';
 import { Building, Camera, Wrench, BarChart3, Shield, Zap, CheckCircle, Star } from 'lucide-react';
-import { 
-  CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
-  IndustryBenchmarks,
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics,
-  getIndustryBenchmarks
-} from '@/components/seo/EnhancedContent';
+
 
 export default function ContractorInventoryManagement() {
   usePageRefresh();
-  const { formatPrice } = useCurrency();
   
-  // Get real customer data for contractor use case
-  const relevantCaseStudies = getRelevantCaseStudies('construction inventory', 'Construction');
-  const relevantTestimonials = getRelevantTestimonials('construction');
-  const metrics = getProprietaryMetrics('construction inventory');
-  const benchmarks = getIndustryBenchmarks('Construction');
+
   
   const faqData = [
     {
@@ -187,37 +173,12 @@ export default function ContractorInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Software for Contractors — StockFlow"
+        title="Inventory Software for Contractors   StockFlow"
         description="Contractor inventory management software. Track tools, equipment & materials across job sites. Barcode scanning, tool checkout. Reduce loss 60%. Free plan."
         keywords="contractor inventory management, contractor inventory software, construction inventory management, tool tracking software, equipment inventory management, contractor inventory system, construction inventory software, tool management software, contractor equipment tracking, construction inventory tracking, contractor inventory app, construction tool tracking, contractor material management, contractor inventory solution, contractor inventory platform, construction equipment management, contractor inventory control, construction inventory app, contractor tool management, construction material tracking, stockflow, stock flow"
         url="https://www.stockflowsystems.com/contractor-inventory-management"
       />
 
-      {/* Industry Benchmarks */}
-      <IndustryBenchmarks 
-        industry="Construction"
-        benchmarks={benchmarks}
-      />
-
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
-          averageCostSaved: benchmarks.averageSavings,
-          keyMetric: benchmarks.typicalResult,
-          feature: "Contractor Inventory Management"
-        }}
-      />
-
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4 bg-white">

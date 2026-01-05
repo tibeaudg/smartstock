@@ -30,8 +30,7 @@ import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -189,16 +188,6 @@ export default function InventoryManagementSoftware() {
         ]}
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved,
-          averageCostSaved: metrics.averageCostSaved,
-          keyMetric: metrics.keyMetric,
-          feature: "Inventory Management Software"
-        }}
-      />
 
       {/* Enhanced Introduction Section */}
       <section className="py-16 px-4 bg-white">
@@ -219,14 +208,7 @@ export default function InventoryManagementSoftware() {
 
 
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       {/* Use Cases Section */}
       <section className="py-16 px-4 ">

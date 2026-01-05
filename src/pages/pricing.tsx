@@ -152,7 +152,7 @@ export default function PricingPage() {
             Zero Cost. All Features. Forever.
           </h1>
           <p className="text-lg md:text-xl text-gray-600 mb-8">
-            No credit cards. No subscriptions. No "free trial then pay" schemes. Everything included—barcode scanning, multi-location tracking, analytics, API access—at zero cost.
+            No credit cards. No subscriptions. No "free trial then pay" schemes. Everything included barcode scanning, multi-location tracking, analytics, API access at zero cost.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
@@ -185,7 +185,7 @@ export default function PricingPage() {
                 $0 Forever
               </CardTitle>
               <CardDescription className="text-lg text-gray-700">
-                Enterprise inventory management features—without the enterprise price tag
+                Enterprise inventory management features without the enterprise price tag
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -283,13 +283,13 @@ export default function PricingPage() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">Why Free?</h3>
               <p className="text-gray-600">
-                Small businesses waste €4,000-8,000 annually on inventory mistakes. Enterprise software costs €500/month—more than many monthly margins. We built StockFlow to eliminate both problems: professional tools, zero cost.
+                Small businesses waste €4,000-8,000 annually on inventory mistakes. Enterprise software costs €500/month more than many monthly margins. We built StockFlow to eliminate both problems: professional tools, zero cost.
               </p>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-3">Seriously, No Catch</h3>
               <p className="text-gray-600">
-                We've been free since 2020. No credit cards. No hidden fees. No usage limits. No feature restrictions. 500+ businesses trust us because we've proven our model works—for them and for us.
+                We've been free since 2020. No credit cards. No hidden fees. No usage limits. No feature restrictions. 500+ businesses trust us because we've proven our model works for them and for us.
               </p>
             </div>
           </div>
@@ -302,7 +302,7 @@ export default function PricingPage() {
               What Our Customers Say
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Real results from businesses using StockFlow—reduced stockouts, recovered capital, saved time
+              Real results from businesses using StockFlow reduced stockouts, recovered capital, saved time
             </p>
           </div>
           <TestimonialQuotes 
@@ -344,7 +344,7 @@ export default function PricingPage() {
             <div>
               <h4 className="text-lg font-semibold text-blue-900 mb-2">Is StockFlow really free?</h4>
               <p className="text-sm text-gray-600">
-                Yes. Free since 2020. No credit cards. No subscriptions. No hidden fees. Everything included—unlimited products, users, locations, orders. We're not changing this model.
+                Yes. Free since 2020. No credit cards. No subscriptions. No hidden fees. Everything included unlimited products, users, locations, orders. We're not changing this model.
               </p>
             </div>
             <div>
@@ -356,7 +356,7 @@ export default function PricingPage() {
             <div>
               <h4 className="text-lg font-semibold text-blue-900 mb-2">Do I need a credit card?</h4>
               <p className="text-sm text-gray-600">
-                No payment info needed. Sign up with email, start tracking inventory immediately. We've never asked for credit cards—and we never will.
+                No payment info needed. Sign up with email, start tracking inventory immediately. We've never asked for credit cards and we never will.
               </p>
             </div>
             <div>
@@ -368,7 +368,7 @@ export default function PricingPage() {
             <div>
               <h4 className="text-lg font-semibold text-blue-900 mb-2">Will it stay free?</h4>
               <p className="text-sm text-gray-600">
-                Yes. Five years running, zero plans to charge. Our business model works without subscriptions. Free forever isn't a marketing promise—it's our core principle.
+                Yes. Five years running, zero plans to charge. Our business model works without subscriptions. Free forever isn't a marketing promise it's our core principle.
               </p>
             </div>
             <div>

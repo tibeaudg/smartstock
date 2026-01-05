@@ -125,7 +125,7 @@ export default function SeoEquipmentInventoryManagementBestPracticesPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Equipment Inventory Management Best Practices</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Equipment tracking is where most businesses fail—until they lose a €5,000 piece of machinery. One construction company we worked with lost €12,000 worth of tools over six months simply because they couldn't track who had what and where it was. Proper equipment management prevents these losses and extends equipment life significantly.
+              Equipment tracking is where most businesses fail until they lose a €5,000 piece of machinery. One construction company we worked with lost €12,000 worth of tools over six months simply because they couldn't track who had what and where it was. Proper equipment management prevents these losses and extends equipment life significantly.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Equipment inventory management best practices include: <strong>creating a comprehensive asset register</strong> (list all equipment with details: name, serial number, purchase date, value, location), <strong>labeling with barcodes or asset tags</strong> (easy scanning for tracking), <strong>tracking locations and assignments</strong> (who has what, where), <strong>scheduling maintenance</strong> (extends equipment life, prevents breakdowns), <strong>monitoring utilization</strong> (optimize allocation, identify underused equipment), and <strong>using asset management software</strong> (comprehensive tracking solution).

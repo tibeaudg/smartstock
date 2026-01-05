@@ -66,10 +66,10 @@ export default function About() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
               <p className="text-lg text-gray-700 mb-6">
-                Small businesses waste $4,000-8,000 annually on inventory mistakes. Stockouts kill sales. Overstock ties up capital. We built StockFlow to stop this cycle—without the enterprise software price tag.
+                Small businesses waste $4,000-8,000 annually on inventory mistakes. Stockouts kill sales. Overstock ties up capital. We built StockFlow to stop this cycle without the enterprise software price tag.
               </p>
               <p className="text-lg text-gray-700 mb-6">
-                After working with hundreds of retailers, we noticed a pattern: businesses either overpaid for complex systems they barely used, or limped along with spreadsheets that caused costly errors. StockFlow bridges that gap—professional features, zero cost, intuitive interface.
+                After working with hundreds of retailers, we noticed a pattern: businesses either overpaid for complex systems they barely used, or limped along with spreadsheets that caused costly errors. StockFlow bridges that gap professional features, zero cost, intuitive interface.
               </p>
               <div className="mt-6 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-600">
                 <p className="text-sm text-gray-600 italic">
@@ -80,7 +80,7 @@ export default function About() {
             <div className="bg-blue-50 p-8 rounded-lg">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Why We Started</h3>
               <p className="text-gray-700 mb-4">
-                Launched in 2020 after watching a Brussels retailer lose €12,000 in a month from stockouts and expired goods. Existing solutions cost €150-500/month—more than their monthly profit margin. That's when we realized: small businesses need enterprise power without enterprise pricing.
+                Launched in 2020 after watching a Brussels retailer lose €12,000 in a month from stockouts and expired goods. Existing solutions cost €150-500/month more than their monthly profit margin. That's when we realized: small businesses need enterprise power without enterprise pricing.
               </p>
               <p className="text-gray-700">
                 Today, 500+ businesses trust StockFlow. Our data shows average users save 10-20 hours weekly on counting and reporting. One retail chain eliminated 85% of their stockouts in the first quarter.
@@ -109,7 +109,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Accessibility</h3>
               <p className="text-gray-700">
-                Enterprise inventory features shouldn't cost €500/month. We've made barcode scanning, multi-location tracking, and advanced analytics free—because every business deserves professional tools.
+                Enterprise inventory features shouldn't cost €500/month. We've made barcode scanning, multi-location tracking, and advanced analytics free because every business deserves professional tools.
               </p>
             </div>
 
@@ -133,7 +133,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Innovation</h3>
               <p className="text-gray-700">
-                Dead stock optimizer, mobile-first scanning, real-time multi-location sync—we ship features monthly based on actual customer requests. No roadmap theater. Just tools that solve real problems.
+                Dead stock optimizer, mobile-first scanning, real-time multi-location sync we ship features monthly based on actual customer requests. No roadmap theater. Just tools that solve real problems.
               </p>
             </div>
 
@@ -157,7 +157,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Security</h3>
               <p className="text-gray-700">
-                SOC 2 compliant infrastructure, encrypted data at rest and in transit, role-based access controls. Your inventory data stays private. We've never had a security breach—and we're working to keep that record intact.
+                SOC 2 compliant infrastructure, encrypted data at rest and in transit, role-based access controls. Your inventory data stays private. We've never had a security breach and we're working to keep that record intact.
               </p>
             </div>
 
@@ -169,7 +169,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Community</h3>
               <p className="text-gray-700">
-                Retailers share barcode scanning workflows. Contractors exchange multi-location setup tips. Our users help each other optimize processes—we just provide the platform and listen.
+                Retailers share barcode scanning workflows. Contractors exchange multi-location setup tips. Our users help each other optimize processes we just provide the platform and listen.
               </p>
             </div>
           </div>
@@ -195,7 +195,7 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Development Team</h3>
               <p className="text-gray-600">
-                Former engineers from Shopify, Zendesk, and regional inventory software companies. We know how to build systems that handle 10,000+ SKUs without breaking—or charging enterprise prices.
+                Former engineers from Shopify, Zendesk, and regional inventory software companies. We know how to build systems that handle 10,000+ SKUs without breaking or charging enterprise prices.
               </p>
             </div>
 
@@ -262,7 +262,7 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Get in Touch</h2>
           <p className="text-lg text-gray-600 mb-8">
-            Questions about setup? Need help migrating from spreadsheets? Want to discuss custom integrations? Reach out—we respond within hours, not days.
+            Questions about setup? Need help migrating from spreadsheets? Want to discuss custom integrations? Reach out we respond within hours, not days.
           </p>
           <div className="bg-gray-50 p-8 rounded-lg">
             <p className="text-gray-700 mb-4"><strong>Email:</strong> hello@stockflowsystems.com</p>

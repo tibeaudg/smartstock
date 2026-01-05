@@ -96,7 +96,7 @@ const faqData = [
   {
     question: 'Is it possible to collaborate with suppliers directly?',
     answer:
-      'You can share purchase orders, delivery schedules, and shipment updates with suppliers via secure portals and email automation—no extra logins required for them.',
+      'You can share purchase orders, delivery schedules, and shipment updates with suppliers via secure portals and email automation no extra logins required for them.',
   },
   {
     question: 'Do you support multi-location purchasing teams?',

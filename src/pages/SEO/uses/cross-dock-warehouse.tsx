@@ -19,8 +19,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -258,25 +257,7 @@ export default function BestInventoryManagementSoftware() {
         url="https://www.stockflowsystems.com/best-inventory-management-software"
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "50% reduction in storage time",
-          keyMetric: "Optimized logistics flow",
-          feature: "Cross-Dock Warehouse"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
 
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">

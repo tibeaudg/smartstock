@@ -125,7 +125,7 @@ export default function SeoHowToStoreMedicalSuppliesPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Store Medical Supplies</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Improper storage of medical supplies isn't just wasteful—it's dangerous. We've seen clinics lose thousands in expired medications because they didn't follow FIFO (first in, first out) rotation. More critically, expired supplies can't be used, potentially compromising patient care. Proper storage ensures supplies remain safe, effective, and compliant with healthcare regulations.
+              Improper storage of medical supplies isn't just wasteful it's dangerous. We've seen clinics lose thousands in expired medications because they didn't follow FIFO (first in, first out) rotation. More critically, expired supplies can't be used, potentially compromising patient care. Proper storage ensures supplies remain safe, effective, and compliant with healthcare regulations.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Store medical supplies by: <strong>following temperature requirements</strong> (refrigerated items in proper temperature-controlled storage), <strong>using FIFO rotation</strong> (first in, first out for expiration management), <strong>organizing by category and expiration date</strong> (use oldest items first), <strong>maintaining clean and secure storage</strong> (clean areas, secure storage for controlled substances), <strong>tracking expiration dates</strong>, and <strong>using inventory management software</strong> (for compliance and accuracy).

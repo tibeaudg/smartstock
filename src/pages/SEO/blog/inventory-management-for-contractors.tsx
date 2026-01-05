@@ -105,7 +105,7 @@ export default function InventoryManagementForContractorsPage() {
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            <strong>Inventory management for contractors</strong> presents unique challenges that traditional inventory systems can't handle. Unlike retail or warehouse operations, contractors manage inventory across multiple job sites, service vehicles, warehouses, and locations—often simultaneously. Materials, tools, and equipment are constantly moving between locations, making real-time visibility and mobile access essential.
+            <strong>Inventory management for contractors</strong> presents unique challenges that traditional inventory systems can't handle. Unlike retail or warehouse operations, contractors manage inventory across multiple job sites, service vehicles, warehouses, and locations often simultaneously. Materials, tools, and equipment are constantly moving between locations, making real-time visibility and mobile access essential.
           </p>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
             This comprehensive guide covers everything contractors need to know about inventory management: from understanding unique contractor challenges to selecting the right software, implementing mobile solutions, and maximizing efficiency across dispersed operations. Whether you're a construction contractor, electrician, plumber, HVAC technician, or general contractor, this guide provides actionable strategies for effective inventory management.
@@ -230,7 +230,7 @@ export default function InventoryManagementForContractorsPage() {
                 <li>Photo documentation for proof of delivery/usage</li>
               </ul>
               <p className="text-gray-700 mt-3">
-                Modern inventory software includes built-in scanning that works on smartphones—no expensive hardware needed. Learn more about <Link to="/blog/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 hover:underline font-semibold">barcode vs QR code options</Link> or follow our <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">setup guide</Link>.
+                Modern inventory software includes built-in scanning that works on smartphones no expensive hardware needed. Learn more about <Link to="/blog/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 hover:underline font-semibold">barcode vs QR code options</Link> or follow our <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">setup guide</Link>.
               </p>
             </div>
 

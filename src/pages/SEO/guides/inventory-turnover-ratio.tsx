@@ -117,28 +117,7 @@ export default function InventoryTurnoverRatio() {
     "Leverage inventory management software for automation"
   ];
 
-  const industryBenchmarks = [
-    {
-      industry: "Retail",
-      range: "4-6 times/year",
-      description: "Retail businesses typically aim for moderate turnover to balance availability with cost efficiency."
-    },
-    {
-      industry: "FMCG",
-      range: "10-15 times/year",
-      description: "Fast-moving consumer goods have high turnover due to perishable or frequently purchased items."
-    },
-    {
-      industry: "Manufacturing",
-      range: "6-8 times/year",
-      description: "Manufacturing companies balance production cycles with inventory costs."
-    },
-    {
-      industry: "E-commerce",
-      range: "8-12 times/year",
-      description: "Online retailers typically achieve higher turnover through efficient logistics and demand matching."
-    }
-  ];
+
 
   return (
     <SeoPageLayout 
@@ -303,33 +282,7 @@ export default function InventoryTurnoverRatio() {
         </div>
       </section>
 
-      {/* Industry Benchmarks Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Industry <span className="text-blue-600">Benchmarks</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Compare your inventory turnover ratio to industry standards to understand your performance.
-            </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {industryBenchmarks.map((benchmark, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold">{benchmark.industry}</h3>
-                  <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-bold">
-                    {benchmark.range}
-                  </span>
-                </div>
-                <p className="text-gray-600">{benchmark.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Improvement Tips Section */}
       <section className="py-16 px-4 bg-white">

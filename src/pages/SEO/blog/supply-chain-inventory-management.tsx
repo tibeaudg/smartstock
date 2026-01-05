@@ -125,7 +125,7 @@ export default function SeoSupplyChainInventoryManagementPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Supply Chain Inventory Management</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Most businesses manage inventory in isolation—and lose thousands as a result. One manufacturer we worked with reduced total inventory costs by €45,000 annually simply by coordinating with suppliers and distributors. Supply chain inventory management optimizes inventory across the entire chain, not just your warehouse.
+              Most businesses manage inventory in isolation and lose thousands as a result. One manufacturer we worked with reduced total inventory costs by €45,000 annually simply by coordinating with suppliers and distributors. Supply chain inventory management optimizes inventory across the entire chain, not just your warehouse.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               <strong>Supply chain inventory management</strong> optimizes inventory levels across the entire supply chain (suppliers, warehouses, distribution centers, retailers) to reduce costs, improve efficiency, and meet demand. Key strategies include: <strong>demand forecasting</strong> (predict needs across the chain), <strong>safety stock optimization</strong> (balance service levels with costs), <strong>vendor management</strong> (coordinate with suppliers), <strong>cross-chain visibility</strong> (real-time data sharing), and <strong>coordinated planning</strong> (align ordering schedules).
@@ -136,7 +136,7 @@ export default function SeoSupplyChainInventoryManagementPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why supply chain inventory management matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Managing inventory in isolation means you're optimizing only one part of the chain—missing opportunities for cost savings. Effective supply chain management reduces total costs by 20-30%, improves service levels, and optimizes working capital. Coordination and visibility across the entire chain deliver results that isolated management can't match.
+                Managing inventory in isolation means you're optimizing only one part of the chain missing opportunities for cost savings. Effective supply chain management reduces total costs by 20-30%, improves service levels, and optimizes working capital. Coordination and visibility across the entire chain deliver results that isolated management can't match.
               </p>
             </div>
           </div>

@@ -1101,7 +1101,7 @@ export const extendedComparisonCluster: TopicCluster = {
 export const smallBusinessInventoryCluster: TopicCluster = {
   pillar: {
     path: '/blog/inventory-management-for-small-business-complete-guide',
-    title: 'Inventory Management for Small Business — Complete Guide',
+    title: 'Inventory Management for Small Business   Complete Guide',
     language: 'en',
     category: 'Blog',
     description: 'Complete guide to inventory management for small businesses covering fundamentals, software selection, implementation, best practices, and ROI',

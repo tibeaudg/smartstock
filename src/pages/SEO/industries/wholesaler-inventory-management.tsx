@@ -5,26 +5,12 @@ import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { StructuredData } from '@/components/StructuredData';
 import { Package, TrendingUp, Truck, BarChart3, Users, Zap, CheckCircle, Star } from 'lucide-react';
-import { 
-  CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
-  IndustryBenchmarks,
-  getRelevantCaseStudies,
-  getRelevantTestimonials,
-  getProprietaryMetrics,
-  getIndustryBenchmarks
-} from '@/components/seo/EnhancedContent';
+
 
 export default function WholesalerInventoryManagement() {
   usePageRefresh();
-  const { formatPrice } = useCurrency();
   
-  // Get real customer data for wholesale industry
-  const relevantCaseStudies = getRelevantCaseStudies('wholesale inventory');
-  const relevantTestimonials = getRelevantTestimonials('inventory');
-  const metrics = getProprietaryMetrics('wholesale inventory');
-  const benchmarks = getIndustryBenchmarks('Retail');
+ 
   
   const faqData = [
     {
@@ -173,31 +159,6 @@ export default function WholesalerInventoryManagement() {
         url="https://www.stockflowsystems.com/wholesaler-inventory-management"
       />
 
-      {/* Industry Benchmarks */}
-      <IndustryBenchmarks 
-        industry="Retail"
-        benchmarks={benchmarks}
-      />
-
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
-          averageCostSaved: benchmarks.averageSavings,
-          keyMetric: benchmarks.typicalResult,
-          feature: "Wholesale Inventory Management"
-        }}
-      />
-
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4 bg-white">

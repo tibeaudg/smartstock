@@ -125,7 +125,7 @@ export default function SeoHowToOperateAnASchoolInventoryManagementSystemPage() 
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Operate a School Inventory Management System</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Schools manage thousands of items across classrooms, labs, and storage—without proper tracking, supplies disappear, equipment gets misplaced, and budgets get wasted. One school district we worked with saved €12,000 annually simply by tracking where equipment actually was, instead of buying replacements for "lost" items that were just in different classrooms.
+              Schools manage thousands of items across classrooms, labs, and storage without proper tracking, supplies disappear, equipment gets misplaced, and budgets get wasted. One school district we worked with saved €12,000 annually simply by tracking where equipment actually was, instead of buying replacements for "lost" items that were just in different classrooms.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Operate a school inventory management system by: <strong>setting up item records</strong> (supplies, equipment, textbooks, furniture, technology), <strong>organizing by location</strong> (classrooms, labs, library), <strong>tracking assignments</strong> (who has what equipment), <strong>scheduling maintenance</strong> (for equipment), <strong>monitoring usage</strong> (identify needs), and <strong>using mobile apps</strong> for tracking from anywhere in the school.

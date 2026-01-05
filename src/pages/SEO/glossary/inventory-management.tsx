@@ -34,7 +34,7 @@ export default function InventoryManagementGuide() {
   const faqData = [
     {
       question: "What is inventory management?",
-      answer: "Inventory management is the systematic approach to sourcing, storing, and tracking inventory—from raw materials to finished goods. It ensures businesses have the right products, in the right quantities, at the right time, while minimizing costs and maximizing efficiency."
+      answer: "Inventory management is the systematic approach to sourcing, storing, and tracking inventory from raw materials to finished goods. It ensures businesses have the right products, in the right quantities, at the right time, while minimizing costs and maximizing efficiency."
     },
     {
       question: "What are the main types of inventory?",
@@ -348,7 +348,7 @@ export default function InventoryManagementGuide() {
           Complete guide to optimizing inventory operations: proven methods, essential KPIs, accounting principles, and actionable strategies to reduce costs and improve efficiency.
         </p>
         <p className="text-lg text-slate-600 leading-relaxed">
-          Inventory management is the systematic discipline of ordering, storing, tracking, and controlling inventory—from raw materials to finished goods. When executed properly, it reduces costs by 20-35%, prevents stockouts, improves cash flow, and increases profitability.
+          Inventory management is the systematic discipline of ordering, storing, tracking, and controlling inventory from raw materials to finished goods. When executed properly, it reduces costs by 20-35%, prevents stockouts, improves cash flow, and increases profitability.
         </p>
       </div>
 
@@ -365,14 +365,14 @@ export default function InventoryManagementGuide() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">What is Inventory Management?</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
-              <strong>Inventory management</strong> covers the processes businesses use to order, store, track, and sell stock—from raw materials to finished goods. Most small businesses do this poorly, leading to stockouts, overstock, and wasted capital.
+              <strong>Inventory management</strong> covers the processes businesses use to order, store, track, and sell stock from raw materials to finished goods. Most small businesses do this poorly, leading to stockouts, overstock, and wasted capital.
             </p>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
               It includes both operational work (receiving shipments, storing items, picking orders, shipping) and strategic planning (predicting demand, setting reorder points, maintaining safety stock, managing suppliers). Get both right, and you'll prevent stockouts while freeing up cash. Get them wrong, and you'll lose sales or tie up capital unnecessarily.
             </p>
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg my-8">
               <p className="text-xl font-semibold text-gray-900">
-                The goal: <span className="text-blue-600">Right products. Right quantities. Right time. Right cost.</span> Most businesses fail at one of these—usually quantity (overstock) or time (stockouts). Good inventory management prevents both.
+                The goal: <span className="text-blue-600">Right products. Right quantities. Right time. Right cost.</span> Most businesses fail at one of these usually quantity (overstock) or time (stockouts). Good inventory management prevents both.
               </p>
             </div>
           </div>
@@ -509,7 +509,7 @@ export default function InventoryManagementGuide() {
               <div className="border-l-4 border-blue-500 pl-6">
                 <h3 className="text-3xl font-bold mb-4">Just-in-Time Example</h3>
                 <p className="text-gray-700">
-                  An electronics assembler schedules incoming PCB assemblies to arrive 2 hours before they hit the production line, minimizing storage space and handling costs—but relies heavily on reliable carriers and stable supply chains.
+                  An electronics assembler schedules incoming PCB assemblies to arrive 2 hours before they hit the production line, minimizing storage space and handling costs but relies heavily on reliable carriers and stable supply chains.
                 </p>
               </div>
               <div className="border-l-4 border-purple-500 pl-6">
@@ -936,7 +936,7 @@ export default function InventoryManagementGuide() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">The Bottom Line</h2>
             <div className="prose prose-lg max-w-none">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Inventory management is both an <strong>operational discipline</strong> and a <strong>strategic lever</strong>. When you treat it as a continuous improvement process—backed by accurate data, appropriate methods (JIT, MRP, EOQ, DSI), clear KPIs, and fit-for-purpose software—you reduce costs, improve service levels, and free up cash for growth.
+                Inventory management is both an <strong>operational discipline</strong> and a <strong>strategic lever</strong>. When you treat it as a continuous improvement process backed by accurate data, appropriate methods (JIT, MRP, EOQ, DSI), clear KPIs, and fit-for-purpose software you reduce costs, improve service levels, and free up cash for growth.
               </p>
               <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg">
                 <p className="text-lg font-semibold text-gray-900 mb-2">Start with these fundamentals:</p>
@@ -959,7 +959,7 @@ export default function InventoryManagementGuide() {
           "@context": "https://schema.org",
           "@type": "DefinedTerm",
           "name": "Inventory Management",
-          "description": "Inventory management is the systematic discipline of ordering, storing, tracking, and controlling inventory—from raw materials to finished goods. It ensures businesses have the right products, in the right quantities, at the right time, while minimizing costs and maximizing efficiency.",
+          "description": "Inventory management is the systematic discipline of ordering, storing, tracking, and controlling inventory from raw materials to finished goods. It ensures businesses have the right products, in the right quantities, at the right time, while minimizing costs and maximizing efficiency.",
           "inDefinedTermSet": {
             "@type": "DefinedTermSet",
             "name": "StockFlow Inventory Glossary"

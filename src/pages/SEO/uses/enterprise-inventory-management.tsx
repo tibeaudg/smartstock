@@ -6,8 +6,7 @@ import { StructuredData } from '@/components/StructuredData';
 import { Building, Shield, Zap, TrendingUp, CheckCircle } from 'lucide-react';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -124,25 +123,8 @@ export default function EnterpriseInventoryManagement() {
         url="https://www.stockflowsystems.com/enterprise-inventory-management"
       />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "15 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "30-40% reduction in carrying costs",
-          keyMetric: "Enterprise scalability",
-          feature: "Enterprise Inventory Management"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

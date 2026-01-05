@@ -125,7 +125,7 @@ export default function SeoHowDoYouControlInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Control inventory</strong> by tracking all movements (receipts, shipments, adjustments), maintaining accurate records, setting reorder points, and conducting regular counts. Most businesses do this manually and achieve 60-80% accuracy. Using proper software with barcode scanning pushes accuracy to 95-99%. One hardware retailer improved from 72% to 98% accuracy after implementing proper control systems—stockouts dropped by 85%.
+              <strong>Control inventory</strong> by tracking all movements (receipts, shipments, adjustments), maintaining accurate records, setting reorder points, and conducting regular counts. Most businesses do this manually and achieve 60-80% accuracy. Using proper software with barcode scanning pushes accuracy to 95-99%. One hardware retailer improved from 72% to 98% accuracy after implementing proper control systems stockouts dropped by 85%.
             </p>
             
           </div>

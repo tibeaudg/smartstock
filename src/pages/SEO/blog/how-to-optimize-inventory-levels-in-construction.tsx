@@ -125,7 +125,7 @@ export default function SeoHowToOptimizeInventoryLevelsInConstructionPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Optimize Inventory Levels in Construction</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Construction inventory waste is brutal—materials sit unused between projects, weather damage destroys stock, and theft goes unnoticed. One contractor optimized their inventory and reduced waste by 28%, freeing up €45,000 in tied-up capital. Optimization isn't just about counting—it's about timing orders with projects and maintaining safety stock for critical items.
+              Construction inventory waste is brutal materials sit unused between projects, weather damage destroys stock, and theft goes unnoticed. One contractor optimized their inventory and reduced waste by 28%, freeing up €45,000 in tied-up capital. Optimization isn't just about counting it's about timing orders with projects and maintaining safety stock for critical items.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Optimize construction inventory levels by: <strong>tracking usage patterns</strong> (identify fast/slow-moving items), <strong>setting appropriate reorder points</strong> (based on lead times and usage), <strong>maintaining safety stock</strong> for critical items (prevent project delays), <strong>coordinating with project schedules</strong> (order when needed), <strong>reducing waste</strong> (prevent damage, theft, expiration), and <strong>using inventory management software</strong> for real-time tracking across job sites.

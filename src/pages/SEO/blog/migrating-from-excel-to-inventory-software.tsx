@@ -18,7 +18,7 @@ const faqData = [
   },
   {
     question: "Can I import my Excel inventory data into inventory software?",
-    answer: "Yes, most inventory software (including StockFlow) supports CSV import from Excel. Export your Excel data to CSV format, ensure columns are properly formatted (product name, SKU, quantity, price, etc.), and import into the software. The software may require specific column formats—check import templates or documentation. Clean your data before importing to avoid errors."
+    answer: "Yes, most inventory software (including StockFlow) supports CSV import from Excel. Export your Excel data to CSV format, ensure columns are properly formatted (product name, SKU, quantity, price, etc.), and import into the software. The software may require specific column formats check import templates or documentation. Clean your data before importing to avoid errors."
   },
   {
     question: "How long does it take to migrate from Excel to inventory software?",
@@ -26,7 +26,7 @@ const faqData = [
   },
   {
     question: "What data should I migrate from Excel to inventory software?",
-    answer: "Migrate: product names/descriptions, SKUs/product codes, current quantities, pricing, supplier information, category/classification, location (if multi-location), and any custom fields. Don't migrate historical data initially—start with current inventory. You can add historical data later if needed. Focus on getting current inventory accurate first."
+    answer: "Migrate: product names/descriptions, SKUs/product codes, current quantities, pricing, supplier information, category/classification, location (if multi-location), and any custom fields. Don't migrate historical data initially start with current inventory. You can add historical data later if needed. Focus on getting current inventory accurate first."
   },
   {
     question: "Will I lose data when migrating from Excel?",
@@ -38,7 +38,7 @@ const faqData = [
   },
   {
     question: "What are the benefits of migrating from Excel to inventory software?",
-    answer: "Benefits include: 99%+ accuracy (vs 60-80% with Excel), 70% time savings, automated reorder points, real-time updates, mobile access, barcode scanning, multi-user collaboration, integration with sales channels, better reporting, and scalability. Excel becomes error-prone with 50+ items—software handles growth better. Calculate your ROI with our <Link to=\"/blog/roi-calculator-for-inventory-software\" className=\"text-blue-600 hover:underline\">ROI calculator</Link>."
+    answer: "Benefits include: 99%+ accuracy (vs 60-80% with Excel), 70% time savings, automated reorder points, real-time updates, mobile access, barcode scanning, multi-user collaboration, integration with sales channels, better reporting, and scalability. Excel becomes error-prone with 50+ items software handles growth better. Calculate your ROI with our <Link to=\"/blog/roi-calculator-for-inventory-software\" className=\"text-blue-600 hover:underline\">ROI calculator</Link>."
   }
 ];
 
@@ -198,7 +198,7 @@ export default function MigratingFromExcelToInventorySoftwarePage() {
                     Set up software settings: configure locations, set reorder points based on your Excel data patterns, add supplier information, set up user accounts and permissions, and configure any integrations needed.
                   </p>
                   <p className="text-gray-700">
-                    Take time to configure properly—good setup prevents issues later. Use your Excel data patterns (like typical reorder quantities) to inform settings.
+                    Take time to configure properly good setup prevents issues later. Use your Excel data patterns (like typical reorder quantities) to inform settings.
                   </p>
                 </div>
               </div>

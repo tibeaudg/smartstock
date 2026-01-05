@@ -125,10 +125,10 @@ export default function SeoWhatIsAStockoutPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Stockout?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              A <strong>stockout</strong> means you're out of inventory when a customer wants to buy. That costs 10-20% of revenue on affected items. Worse, 30-40% of customers shop elsewhere after experiencing a stockout—and many don't come back. One fashion retailer lost €8,500 in sales over three months from repeated stockouts on bestsellers. Customers switched to competitors, and the business never recovered those relationships.
+              A <strong>stockout</strong> means you're out of inventory when a customer wants to buy. That costs 10-20% of revenue on affected items. Worse, 30-40% of customers shop elsewhere after experiencing a stockout and many don't come back. One fashion retailer lost €8,500 in sales over three months from repeated stockouts on bestsellers. Customers switched to competitors, and the business never recovered those relationships.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Stockouts happen when demand spikes or suppliers delay—and you have no safety stock buffer. Most businesses cause their own stockouts: inaccurate forecasting, ignoring reorder points, poor tracking that shows inventory that isn't there. The true cost includes lost sales, rush shipping fees (€50-200 per emergency order), and brand damage. One hardware store lost 15% of regular customers after holiday stockouts.
+              Stockouts happen when demand spikes or suppliers delay and you have no safety stock buffer. Most businesses cause their own stockouts: inaccurate forecasting, ignoring reorder points, poor tracking that shows inventory that isn't there. The true cost includes lost sales, rush shipping fees (€50-200 per emergency order), and brand damage. One hardware store lost 15% of regular customers after holiday stockouts.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Preventing stockouts requires accurate inventory tracking, automated reorder points, safety stock buffers, reliable supplier relationships, and real-time visibility. Learn more about <Link to="/how-to-improve-inventory-control" className="text-blue-600 hover:underline font-semibold">how to improve inventory control</Link> or explore <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> solutions.
@@ -136,7 +136,7 @@ export default function SeoWhatIsAStockoutPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">The hidden cost</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                Lost sales are just the start. Rush shipping adds €50-200 per emergency order. Customer churn hits hard—30-40% switch to competitors after one stockout. One retailer calculated €12,000 in lost revenue over six months from stockouts on just 10 SKUs. Preventing them through proper reorder points and safety stock costs a fraction of that.
+                Lost sales are just the start. Rush shipping adds €50-200 per emergency order. Customer churn hits hard 30-40% switch to competitors after one stockout. One retailer calculated €12,000 in lost revenue over six months from stockouts on just 10 SKUs. Preventing them through proper reorder points and safety stock costs a fraction of that.
               </p>
             </div>
           </div>

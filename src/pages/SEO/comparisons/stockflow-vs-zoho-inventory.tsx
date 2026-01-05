@@ -9,8 +9,7 @@ import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -111,17 +110,7 @@ export default function StockFlowVsZohoInventory() {
         </div>
       </section>
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved,
-          averageCostSaved: metrics.averageCostSaved,
-          keyMetric: metrics.keyMetric,
-          feature: "Inventory Software"
-        }}
-        variant="compact"
-      />
+
 
       {/* Real Customer Results */}
       {relevantTestimonials.length > 0 && (

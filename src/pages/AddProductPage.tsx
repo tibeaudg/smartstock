@@ -1879,7 +1879,7 @@ export default function AddProductPage() {
             <div className="text-center">
               <div className="font-bold text-blue-700 text-lg mb-2">Plan automatically upgraded</div>
               <div className="text-blue-900 text-sm mb-3">
-                StockFlow uses a freemium model—start free, pay as you grow. You started on our free plan (up to 100 products at no cost). As your business grows and you add more products, your plan automatically upgrades to match your needs.
+                StockFlow uses a freemium model start free, pay as you grow. You started on our free plan (up to 100 products at no cost). As your business grows and you add more products, your plan automatically upgrades to match your needs.
               </div>
               <div className="text-blue-900 text-sm font-medium">
                 Your plan has been upgraded to accommodate your growing inventory. Click 'View Plan' to see your new plan details and pricing.

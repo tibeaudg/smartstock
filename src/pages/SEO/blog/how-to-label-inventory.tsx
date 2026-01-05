@@ -125,7 +125,7 @@ export default function SeoHowToLabelInventoryPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Label Inventory</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Poor labeling causes confusion, wasted time, and errors. We've seen businesses spend 30+ minutes searching for unlabeled items, only to find them misidentified later. Good labeling with barcodes eliminates this—staff can scan and instantly identify items, reducing search time by 50-70% and errors by 80-90%.
+              Poor labeling causes confusion, wasted time, and errors. We've seen businesses spend 30+ minutes searching for unlabeled items, only to find them misidentified later. Good labeling with barcodes eliminates this staff can scan and instantly identify items, reducing search time by 50-70% and errors by 80-90%.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Label inventory by: <strong>creating clear, readable labels</strong> with item name, SKU, location, and barcode/QR code, <strong>using durable label materials</strong> (weatherproof for outdoor storage), <strong>placing labels consistently</strong> (same position on items), <strong>using barcode or QR code labels</strong> for scanning, and <strong>maintaining labels</strong> (replace damaged or faded labels).

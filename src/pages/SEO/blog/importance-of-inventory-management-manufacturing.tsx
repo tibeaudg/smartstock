@@ -125,7 +125,7 @@ export default function SeoImportanceOfInventoryManagementManufacturingPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why Inventory Management is Critical for Manufacturing</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              In manufacturing, inventory management isn't just about tracking—it's about keeping production running. One manufacturer we worked with lost €45,000 in a single month when raw material stockouts halted production lines. Poor inventory management doesn't just cause delays; it stops revenue.
+              In manufacturing, inventory management isn't just about tracking it's about keeping production running. One manufacturer we worked with lost €45,000 in a single month when raw material stockouts halted production lines. Poor inventory management doesn't just cause delays; it stops revenue.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Inventory management is critical for manufacturing because it: <strong>prevents production delays</strong> (stockouts of raw materials stop production, costing thousands per hour), <strong>reduces costs</strong> (optimizes inventory levels, reduces waste from expired or damaged materials), <strong>improves production efficiency</strong> (ensures materials are available when needed), <strong>supports quality control</strong> (tracks materials through production for traceability), and <strong>enables better planning</strong> (accurate demand forecasting prevents shortages and overstock).
@@ -136,7 +136,7 @@ export default function SeoImportanceOfInventoryManagementManufacturingPage() {
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why manufacturing inventory management matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                In manufacturing, inventory stockouts don't just lose sales—they stop production, costing thousands per hour. Effective inventory management prevents these expensive shutdowns, optimizes inventory investment, reduces waste, and ensures production continuity. The stakes are higher in manufacturing, making inventory management essential for profitability.
+                In manufacturing, inventory stockouts don't just lose sales they stop production, costing thousands per hour. Effective inventory management prevents these expensive shutdowns, optimizes inventory investment, reduces waste, and ensures production continuity. The stakes are higher in manufacturing, making inventory management essential for profitability.
               </p>
             </div>
           </div>

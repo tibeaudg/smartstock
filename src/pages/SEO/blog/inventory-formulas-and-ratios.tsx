@@ -125,7 +125,7 @@ export default function SeoInventoryFormulasAndRatiosPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Essential Inventory Formulas and Ratios</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Most businesses manage inventory by guesswork—and lose thousands as a result. The right formulas eliminate the guesswork, providing data-driven decisions that optimize stock levels and prevent costly mistakes. One hardware store saved €12,000 annually simply by calculating reorder points correctly instead of ordering "when it feels low."
+              Most businesses manage inventory by guesswork and lose thousands as a result. The right formulas eliminate the guesswork, providing data-driven decisions that optimize stock levels and prevent costly mistakes. One hardware store saved €12,000 annually simply by calculating reorder points correctly instead of ordering "when it feels low."
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Essential inventory formulas include: <strong>Inventory Turnover</strong> (COGS ÷ Average Inventory - shows efficiency), <strong>Days Sales of Inventory</strong> (365 ÷ Turnover - days of stock on hand), <strong>Reorder Point</strong> (Lead Time × Average Daily Usage + Safety Stock - when to order), <strong>Safety Stock</strong> (Z-score × Standard Deviation × √Lead Time - buffer against variability), and <strong>Economic Order Quantity (EOQ)</strong> (optimizes order quantities to minimize total costs).

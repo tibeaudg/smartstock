@@ -299,12 +299,12 @@ export default function InventoryOptimization() {
         <div className="max-w-6xl mx-auto">
           <div className="prose prose-lg prose-slate max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-8">
-              <strong>Inventory optimization</strong> means finding the sweet spot: enough stock to prevent stockouts, but not so much that you tie up capital. Most businesses struggle with this balance—we've seen retailers lose €4,800 annually from overstock, while others lose sales from stockouts. Businesses that optimize properly see 20-30% cost reductions and 95%+ service levels. Here's how to get there.
+              <strong>Inventory optimization</strong> means finding the sweet spot: enough stock to prevent stockouts, but not so much that you tie up capital. Most businesses struggle with this balance we've seen retailers lose €4,800 annually from overstock, while others lose sales from stockouts. Businesses that optimize properly see 20-30% cost reductions and 95%+ service levels. Here's how to get there.
             </p>
 
             <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
               <p className="text-base text-slate-800 leading-relaxed m-0">
-                <strong className="text-blue-900">What most businesses get wrong:</strong> They optimize for one thing (avoiding stockouts) and ignore the cost. Or they minimize inventory and lose sales. Effective optimization balances both. Modern <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> uses real sales data to calculate optimal levels automatically—removing the guesswork that causes most mistakes.
+                <strong className="text-blue-900">What most businesses get wrong:</strong> They optimize for one thing (avoiding stockouts) and ignore the cost. Or they minimize inventory and lose sales. Effective optimization balances both. Modern <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> uses real sales data to calculate optimal levels automatically removing the guesswork that causes most mistakes.
               </p>
             </div>
           </div>
@@ -465,7 +465,7 @@ export default function InventoryOptimization() {
           <div className="bg-blue-600 text-white p-8 rounded-lg text-center">
             <h3 className="text-2xl font-bold mb-4">Ready to Optimize Your Inventory?</h3>
             <p className="text-lg mb-6 text-blue-100">
-              StockFlow provides comprehensive <strong>inventory optimization</strong> tools including real-time analytics, AI-powered demand forecasting, automated reorder points, and ABC analysis—all in one platform.
+              StockFlow provides comprehensive <strong>inventory optimization</strong> tools including real-time analytics, AI-powered demand forecasting, automated reorder points, and ABC analysis all in one platform.
             </p>
             <Link 
               to="/inventory-management-software"

@@ -125,7 +125,7 @@ export default function SeoInventoryControlSystemsPage() {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">What are Inventory Control Systems?</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              <strong>Inventory control systems</strong> are the foundation of effective inventory management. They track and manage inventory levels, movements, and operations—ensuring you know exactly what you have, where it is, and when to reorder. Most businesses start with spreadsheets, but once they hit 50+ items, accuracy drops to 60-80%. Modern systems improve this to 95-99%.
+              <strong>Inventory control systems</strong> are the foundation of effective inventory management. They track and manage inventory levels, movements, and operations ensuring you know exactly what you have, where it is, and when to reorder. Most businesses start with spreadsheets, but once they hit 50+ items, accuracy drops to 60-80%. Modern systems improve this to 95-99%.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               Types of inventory control systems include: <strong>perpetual systems</strong> (real-time tracking with software, most common for modern businesses), <strong>periodic systems</strong> (physical counts at intervals, used for verification), <strong>manual systems</strong> (spreadsheets/paper, only for very small operations with under 50 items), and <strong>automated systems</strong> (barcode scanning, RFID, for accuracy and efficiency).

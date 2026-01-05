@@ -211,7 +211,7 @@ export default function CustomersPage() {
               Customer Success Stories
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Coffee shops, boutiques, contractors—actual Belgian businesses sharing what changed after switching to StockFlow.
+              Coffee shops, boutiques, contractors actual Belgian businesses sharing what changed after switching to StockFlow.
             </p>
           </div>
 

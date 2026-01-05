@@ -23,8 +23,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { 
   CaseStudySection, 
-  ProprietaryMetrics, 
-  RealCustomerResults,
+
   getRelevantCaseStudies,
   getRelevantTestimonials,
   getProprietaryMetrics
@@ -215,25 +214,8 @@ export default function AssetsInventory() {
 
       <StructuredData data={[structuredData, faqStructuredData]} />
 
-      {/* Proprietary Metrics */}
-      <ProprietaryMetrics 
-        metrics={{
-          customerCount: metrics.customerCount,
-          averageTimeSaved: metrics.averageTimeSaved || "10 hours/week",
-          averageCostSaved: metrics.averageCostSaved || "40-60% reduction in loss",
-          keyMetric: "Complete asset visibility",
-          feature: "Assets Inventory"
-        }}
-      />
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={3}
-        />
-      )}
+
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto">

@@ -125,7 +125,7 @@ export default function Seo10MostCommonInventoryManagementMistakesSmallBusinesse
           <div>
             <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">10 Most Common Inventory Management Mistakes Small Businesses Make</h2>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Small businesses make the same inventory mistakes repeatedly—and it costs them €4,000-8,000 annually. We've worked with hundreds of small businesses, and we see these 10 mistakes everywhere. The good news? They're all fixable. The bad news? Most businesses don't realize they're making them until the damage is done.
+              Small businesses make the same inventory mistakes repeatedly and it costs them €4,000-8,000 annually. We've worked with hundreds of small businesses, and we see these 10 mistakes everywhere. The good news? They're all fixable. The bad news? Most businesses don't realize they're making them until the damage is done.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
               The 10 most common mistakes small businesses make: <strong>1) Using spreadsheets for 50+ items</strong> (becomes error-prone, accuracy drops to 60-80%), <strong>2) Not tracking inventory accurately</strong> (leads to stockouts and overstocking), <strong>3) Not setting reorder points</strong> (causes stockouts and lost sales), <strong>4) Skipping regular counts</strong> (records become inaccurate over time), <strong>5) Poor organization</strong> (items hard to find, wastes time), <strong>6) Not using barcode scanning</strong> (slow and error-prone), <strong>7) Ignoring expiration dates</strong> (waste from expired items), <strong>8) Overstocking</strong> (ties up capital unnecessarily), <strong>9) Not training staff</strong> (inconsistent processes), and <strong>10) Ignoring data</strong> (not using reports to make decisions).
@@ -136,7 +136,7 @@ export default function Seo10MostCommonInventoryManagementMistakesSmallBusinesse
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why avoiding these mistakes matters</h3>
               <p className="mt-3 text-base text-blue-900/90">
-                These mistakes cost small businesses €4,000-8,000 annually through stockouts, waste, overstocking, and inefficiency. Avoiding them improves accuracy to 95-99% and reduces costs by 20-30%. The biggest mistake—using spreadsheets for 50+ items—alone costs thousands through errors and wasted time.
+                These mistakes cost small businesses €4,000-8,000 annually through stockouts, waste, overstocking, and inefficiency. Avoiding them improves accuracy to 95-99% and reduces costs by 20-30%. The biggest mistake using spreadsheets for 50+ items alone costs thousands through errors and wasted time.
               </p>
             </div>
           </div>

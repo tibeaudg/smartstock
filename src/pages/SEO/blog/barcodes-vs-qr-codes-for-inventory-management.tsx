@@ -322,7 +322,7 @@ export default function SeoBarcodesVsQRCodesForInventoryManagementPage() {
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Barcode & QR Code Scanning with StockFlow</h2>
           <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            StockFlow supports both barcodes and QR codes, giving you flexibility to choose the best option for your inventory. The mobile app uses your smartphone camera for scanning—no expensive hardware required.
+            StockFlow supports both barcodes and QR codes, giving you flexibility to choose the best option for your inventory. The mobile app uses your smartphone camera for scanning no expensive hardware required.
           </p>
 
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200 mb-6">

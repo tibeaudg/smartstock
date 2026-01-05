@@ -125,40 +125,7 @@ export function getProprietaryMetrics(feature: string): {
   };
 }
 
-/**
- * Get industry-specific benchmarks
- */
-export function getIndustryBenchmarks(industry: string): {
-  averageSavings?: string;
-  averageTimeReduction?: string;
-  commonChallenge?: string;
-  typicalResult?: string;
-} {
-  const industryLower = industry.toLowerCase();
-  const relevantStudies = caseStudies.filter(study => 
-    study.industry.toLowerCase().includes(industryLower) ||
-    industryLower.includes(study.industry.toLowerCase())
-  );
-  
-  if (relevantStudies.length === 0) {
-    // Return general benchmarks
-    return {
-      averageSavings: "€10,000+ annually",
-      averageTimeReduction: "70%",
-      commonChallenge: "Manual inventory tracking",
-      typicalResult: "75% reduction in counting time"
-    };
-  }
-  
-  // Extract metrics from relevant studies
-  const firstStudy = relevantStudies[0];
-  return {
-    averageSavings: firstStudy.metrics.costSaved,
-    averageTimeReduction: firstStudy.results.find(r => r.includes('%')) || "70%",
-    commonChallenge: firstStudy.challenge,
-    typicalResult: firstStudy.results[0]
-  };
-}
+
 
 /**
  * Get all available metrics for display
