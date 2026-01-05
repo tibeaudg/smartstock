@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.stockflowsystems.com/about</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/AddProductPage</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
- 
-  <url>
-    <loc>https://www.stockflowsystems.com/BillOfMaterialsPage</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.stockflowsystems.com/case-studies</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
@@ -26,11 +10,7 @@
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/checkout</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
+
   <url>
     <loc>https://www.stockflowsystems.com/contact</loc>
     <lastmod>2026-01-05</lastmod>
@@ -46,18 +26,9 @@
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://www.stockflowsystems.com/demo</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/features</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/GuestSandbox</loc>
+    <loc>https://www.stockflowsystems.com</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
@@ -408,67 +379,67 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/compare-inventory-software</loc>
+    <loc>https://www.stockflowsystems.com/compare-inventory-software</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-cin7</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-cin7</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-inflow</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-inflow</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-katana</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-katana</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-sortly</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-sortly</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-spreadsheets</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-spreadsheets</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-tradegecko</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-tradegecko</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/comparisons/stockflow-vs-zoho-inventory</loc>
+    <loc>https://www.stockflowsystems.com/stockflow-vs-zoho-inventory</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/features/alerts</loc>
+    <loc>https://www.stockflowsystems.com/alerts</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/features/barcoding</loc>
+    <loc>https://www.stockflowsystems.com/barcoding</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/features/cycle-count</loc>
+    <loc>https://www.stockflowsystems.com/cycle-count</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/features/integrations</loc>
+    <loc>https://www.stockflowsystems.com/integrations</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.stockflowsystems.com/features/purchase-requisition-software</loc>
+    <loc>https://www.stockflowsystems.com/purchase-requisition-software</loc>
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
@@ -683,19 +654,6 @@
     <lastmod>2026-01-05</lastmod>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/ServerError</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/WarehousePage</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.stockflowsystems.com/WorkOrdersPage</loc>
-    <lastmod>2026-01-05</lastmod>
-    <priority>0.8</priority>
-  </url>
+
+
 </urlset>

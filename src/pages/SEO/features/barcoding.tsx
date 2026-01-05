@@ -290,18 +290,7 @@ export default function BarcodingPage() {
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
                 Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
               </p>
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {metrics.map((metric, index) => (
-                  <div key={index} className="rounded-xl border border-white/20 bg-white/10 p-4">
-                    <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-indigo-100">
-                      {metric.icon}
-                      {metric.title}
-                    </div>
-                    <div className="mt-2 text-3xl font-semibold">{metric.label}</div>
-                    <p className="mt-2 text-sm text-indigo-100/80">{metric.description}</p>
-                  </div>
-                ))}
-              </div>
+     
               <div className="mt-6 flex flex-wrap gap-3 text-sm text-indigo-100/80">
                 <span className="inline-flex items-center">
                   <CheckCircle className="mr-2 h-4 w-4" />
