@@ -11,7 +11,6 @@ import { ChevronLeft, ChevronRight, Star, ArrowRight } from 'lucide-react';
 
 import HeaderPublic from '@/components/HeaderPublic';
 import FooterLanding from './Footer';
-import { SEOPageHero } from './SEOPageHero';
 import { TableOfContents } from './TableOfContents';
 import { KeyTakeaways } from './KeyTakeaways';
 
