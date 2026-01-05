@@ -1005,7 +1005,6 @@ export default function WarehouseManagementSystem() {
             "name": "StockFlow - Warehouse Management System",
             "description": "Comprehensive warehouse management system for modern businesses. Streamline operations, reduce costs, and improve efficiency. Features real-time inventory tracking, barcode scanning, automated workflows, and WMS SaaS pricing from $0/month.",
             "applicationSubCategory": "WMS Software",
-            "operatingSystem": "Web Browser",
             "offers": [
               {
                 "@type": "Offer",
@@ -1053,7 +1052,6 @@ export default function WarehouseManagementSystem() {
             },
             "url": "https://www.stockflowsystems.com/warehouse-management-system",
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web Browser, iOS, Android"
           },
           {
             "@context": "https://schema.org",
