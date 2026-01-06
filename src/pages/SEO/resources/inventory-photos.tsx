@@ -252,7 +252,7 @@ export default function InventoryPhotosPage() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Photos 2025 - Product Image Management | StockFlow"
+        title="Inventory Photos 2026 - Product Image Management | StockFlow"
         description="Add photos to inventory items for better identification and tracking. Upload product images, manage visual inventory, and improve accuracy with photo-based inventory management. Sync to e-commerce, reduce errors. Join for Free."
         keywords="inventory photos, product photos, inventory image management, product image upload, inventory photography, e-commerce product photos, warehouse photos, inventory visual identification, stock photos, product image sync"
         url="https://www.stockflowsystems.com/inventory-photos"

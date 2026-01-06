@@ -238,6 +238,14 @@ export default function SuppliersPage() {
       heroTitle="Supplier Management Software for Inventory Control"
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+        title: "Inventory Management Software",
+        href: "/inventory-management-software"
+      }}
+      nextArticle={{
+        title: "Stock Management Software",
+        href: "/stock-management-software"
+      }}
     >
       <SEO
         title="Supplier Management Software | StockFlow"

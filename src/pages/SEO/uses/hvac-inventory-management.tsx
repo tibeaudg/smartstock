@@ -194,7 +194,7 @@ export default function HvacInventoryManagement() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "HVAC Inventory Management 2025",
+    "headline": "HVAC Inventory Management 2026",
     "description": "Complete guide to HVAC inventory management. Track HVAC parts, equipment, and supplies with mobile scanning, service vehicle management, and seasonal demand optimization. Free plan available.",
     "author": {
       "@type": "Organization",
@@ -208,8 +208,8 @@ export default function HvacInventoryManagement() {
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-01-15",
-    "dateModified": "2025-01-15",
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/hvac-inventory-management"
@@ -231,15 +231,23 @@ export default function HvacInventoryManagement() {
 
   return (
     <SeoPageLayout
-      title="HVAC Inventory Management 2025"
+      title="HVAC Inventory Management 2026"
       heroTitle="HVAC Inventory Management: Track Parts, Equipment & Service Vehicles"
       description="Complete HVAC inventory management guide. Track HVAC parts, equipment, and supplies with mobile scanning, service vehicle management, and seasonal demand optimization. Free plan available."
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+        title: "Electrical Inventory Management",
+        href: "/electrical-inventory-management"
+      }}
+      nextArticle={{
+        title: "Enterprise Inventory Management",
+        href: "/enterprise-inventory-management"
+      }}
     >
       <SEO
-        title="HVAC Inventory Management 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
-        description="Complete HVAC inventory management 2025. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Join for Free - no credit card required."
+        title="HVAC Inventory Management 2026 - Save 10+ Hours/Week, Free Plan | StockFlow"
+        description="Complete HVAC inventory management 2026. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Join for Free - no credit card required."
         keywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
         url="https://www.stockflowsystems.com/hvac-inventory-management"
         structuredData={[structuredData, faqStructuredData]}

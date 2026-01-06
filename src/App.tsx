@@ -10,7 +10,6 @@ import { HomePage } from "./components/HomePage";
 import { AuthPage } from "./components/AuthPage";
 import NotFound from "./pages/NotFound";
 import ServerError from "./pages/ServerError";
-import DemoPage from './pages/demo';
 import { Dashboard } from './components/Dashboard';
 import { StockMovements } from './components/StockMovements';
 import { Settings } from './components/Settings';
@@ -51,6 +50,11 @@ import CustomersPage from './pages/customers';
 import CustomerDetailPage from './pages/customers/[id]';
 import ReportingPage from './pages/reporting';
 import WarehousePage from "./pages/WarehousePage";
+import AboutPage from "./pages/about";
+import SupportPage from "./pages/help-center";
+import VideosPage from "./pages/videos";
+
+
 
 const HomePageNL = React.lazy(() => import("./components/HomePageNL"));
 const CategorysPage = React.lazy(() => import('./pages/products'));
@@ -155,8 +159,10 @@ const AppRouter = () => {
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" /><AuthRoute /></>} />
         <Route path="/checkout" element={<><SEO title="Checkout" /><CheckoutPage /></>} />
-        <Route path="/demo/*" element={<><SEO title="Live Demo" /><DemoPage /></>} />
         <Route path="/error-test" element={<ErrorTestComponent />} />
+        <Route path="/about" element={<><SEO title="About StockFlow" /><AboutPage /></>} />
+        <Route path="/help-center" element={<><SEO title="Help Center" /><SupportPage /></>} />
+        <Route path='/videos' element={<><SEO title="Instruction Videos" /><VideosPage /></>} />
 
         {/* REDIRECTS */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />

@@ -179,7 +179,7 @@ export default function ConstructionInventoryManagementSystem() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Construction Inventory Management System 2025",
+    "headline": "Construction Inventory Management System 2026",
     "description": "Complete guide to construction inventory management systems. Track materials, equipment, and tools across job sites with mobile scanning and automated alerts. Free plan available.",
     "author": {
       "@type": "Organization",
@@ -193,8 +193,8 @@ export default function ConstructionInventoryManagementSystem() {
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-01-15",
-    "dateModified": "2025-01-15",
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/construction-inventory-management-system"
@@ -216,15 +216,15 @@ export default function ConstructionInventoryManagementSystem() {
 
   return (
     <SeoPageLayout
-      title="Construction Inventory Management System 2025"
+      title="Construction Inventory Management System 2026"
       heroTitle="Construction Inventory Management System: Track Materials & Equipment Across Job Sites"
       description="Complete construction inventory management system. Track materials, equipment, and tools across multiple job sites with mobile scanning, automated alerts, and theft prevention. Free plan available."
-      updatedDate="2025-01-15"
+      updatedDate="2026-01-15"
       faqData={faqData}
     >
       <SEO
-        title="Construction Inventory Management System 2025 - Reduce Waste 15-25%, Save Time | StockFlow"
-        description="Construction inventory management system 2025 for tracking materials and equipment across job sites. Mobile scanning, theft prevention, automated alerts. Reduce waste 15-25%, save 10+ hours/week. Free plan for up to 100 products. Join for Free - no credit card required."
+        title="Construction Inventory Management System 2026 - Reduce Waste 15-25%, Save Time | StockFlow"
+        description="Construction inventory management system 2026 for tracking materials and equipment across job sites. Mobile scanning, theft prevention, automated alerts. Reduce waste 15-25%, save 10+ hours/week. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="construction inventory management system, construction inventory software, construction materials tracking, construction inventory app, job site inventory, construction equipment tracking, material management construction, construction inventory control, construction stock management, building materials inventory, stockflow, stock flow"
         url="https://www.stockflowsystems.com/construction-inventory-management-system"
         structuredData={[structuredData, faqStructuredData]}

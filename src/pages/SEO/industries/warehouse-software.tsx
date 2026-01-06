@@ -166,7 +166,7 @@ export default function WarehouseSoftwarePage() {
           <h2 className="text-3xl font-bold mb-8">Comprehensive List of Warehouse Management Software</h2>
           <div className="prose prose-blue max-w-none text-gray-600">
             <p>
-              Navigating the <strong>list of warehouse management software</strong> available in 2025 requires understanding your specific throughput requirements. High-end <strong>warehouse management system examples</strong> include Manhattan Active Omni and Blue Yonder, which are designed for multi-site global enterprises with complex robotics integration. 
+              Navigating the <strong>list of warehouse management software</strong> available in 2026 requires understanding your specific throughput requirements. High-end <strong>warehouse management system examples</strong> include Manhattan Active Omni and Blue Yonder, which are designed for multi-site global enterprises with complex robotics integration. 
             </p>
             <p>
               For businesses seeking a <strong>list of warehouse management software free</strong> or open-source, options like Odoo (Community Edition) or ERPNext provide entry-level capabilities. However, many organizations find that <strong>warehouse software free</strong> versions eventually lack the specialized logic required for high-volume picking. 

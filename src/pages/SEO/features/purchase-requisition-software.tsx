@@ -192,7 +192,7 @@ export default function PurchaseRequisitionSoftware() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Purchase Requisition Software 2025",
+    "headline": "Purchase Requisition Software 2026",
     "description": "Complete guide to purchase requisition software. Automate purchase requests, approvals, and PO generation with workflow automation and spending controls. Free plan available.",
     "author": {
       "@type": "Organization",
@@ -206,8 +206,8 @@ export default function PurchaseRequisitionSoftware() {
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-01-15",
-    "dateModified": "2025-01-15",
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/features/purchase-requisition-software"
@@ -229,15 +229,26 @@ export default function PurchaseRequisitionSoftware() {
 
   return (
     <SeoPageLayout
-      title="Purchase Requisition Software 2025"
+      title="Purchase Requisition Software 2026"
       heroTitle="Purchase Requisition Software: Automate Purchase Requests & Approvals"
       description="Complete purchase requisition software guide. Automate purchase requests, approvals, and PO generation with workflow automation, spending controls, and audit trails. Free plan available."
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+      title: "Integrations",
+      href: "/integrations"
+                            
+    }}
+    nextArticle={{
+      title: "Asset Controller Meaning",
+      href: "/glossary/asset-controller-meaning"
+    }}     
+
+
     >
       <SEO
-        title="Purchase Requisition Software 2025 - Save 10+ Hours/Week, Free Plan | StockFlow"
-        description="Purchase requisition software 2025 automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Save 10+ hours/week. Free plan available. Join for Free - no credit card required."
+        title="Purchase Requisition Software 2026 - Save 10+ Hours/Week, Free Plan | StockFlow"
+        description="Purchase requisition software 2026 automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Save 10+ hours/week. Free plan available. Join for Free - no credit card required."
         keywords="purchase requisition software, purchase requisition system, procurement software, purchase request software, requisition management software, purchase order software, procurement management, purchase approval software, requisition workflow, purchase requisition automation"
         url="https://www.stockflowsystems.com/features/purchase-requisition-software"
         structuredData={[structuredData, faqStructuredData]}

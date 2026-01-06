@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import Header from '@/components/HeaderPublic';
+import Footer from '@/components/Footer';
+import { ChatModal } from '@/components/ChatModal';
+
+
 import { 
   Search, 
   HelpCircle, 
@@ -19,6 +24,14 @@ import {
   Star
 } from 'lucide-react';
 import SEO from '@/components/SEO';
+import { FloatingChatButton } from '@/components/FloatingChatButton';
+import { createPortal } from 'react-dom';
+import { useMobile } from '@/hooks/use-mobile';
+import { useUnreadMessages } from '@/hooks/useUnreadMessages';
+import { on } from 'events';
+import SupportModal from '@/components/SupportModal';
+
+
 
 const categories = [
   {
@@ -92,32 +105,50 @@ const popularArticles = [
   }
 ];
 
-const supportOptions = [
-  {
-    title: 'Live Chat',
-    description: 'Get instant help from our support team',
-    icon: <MessageCircle className="h-8 w-8" />,
-    availability: 'Available 24/7',
-    responseTime: '< 5 minutes'
-  },
-  {
-    title: 'Email Support',
-    description: 'Send us your questions via email',
-    icon: <Mail className="h-8 w-8" />,
-    availability: 'Business hours',
-    responseTime: '< 24 hours'
-  },
-  {
-    title: 'Video Tutorials',
-    description: 'Watch step-by-step video guides',
-    icon: <Video className="h-8 w-8" />,
-    availability: 'Always available',
-    responseTime: 'Instant access'
-  }
-];
+
 
 export default function HelpCenterPage() {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [chatOpen, setChatOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+  const { isMobile } = useMobile();
+  const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
+  const supportOptions = [
+    {
+      title: 'Live Chat',
+      description: 'Get instant help from our support team',
+      icon: <MessageCircle className="h-8 w-8" />,
+      availability: 'Available 24/7',
+      responseTime: '< 5 minutes',
+      button: 'Start Chat',
+      onClick: () => setChatOpen(true)
+    },
+    {
+      title: 'Email Support',
+      description: 'Send us your questions via email',
+      icon: <Mail className="h-8 w-8" />,
+      availability: 'Business hours',
+      responseTime: '< 24 hours',
+      button: 'Send Email',
+      onClick: () => {
+        const link = document.createElement('a');
+        link.href = 'mailto:info@stockflow.be';
+        link.click();
+      }
+    },
+    {
+      title: 'Video Tutorials',
+      description: 'Watch step-by-step video guides',
+      icon: <Video className="h-8 w-8" />,
+      availability: 'Always available',
+      responseTime: 'Instant access',
+      button: 'Watch Videos',
+      onClick: () => window.open('/videos')
+    }
+  ];
+  
+    
+  
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -132,7 +163,13 @@ export default function HelpCenterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+
+    <>
+    
+    <Header />
+
+
+    <div className="min-h-screen bg-gray-50 mt-16">
       <SEO
         title="Help Center - StockFlow"
         description="Get help with StockFlow inventory management. Find answers, tutorials, and contact our support team."
@@ -190,8 +227,11 @@ export default function HelpCenterPage() {
                     {option.responseTime}
                   </div>
                 </div>
-                <Button className="w-full mt-6">
-                  Get Started
+                <Button className="w-full mt-6" onClick={option.onClick}>
+                  {option.button}
+
+
+
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </Card>
@@ -263,27 +303,42 @@ export default function HelpCenterPage() {
         </div>
       </div>
 
-      {/* Contact Support */}
-      <div className="py-20 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Still need help?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Our support team is here to help you succeed with StockFlow
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Start Live Chat
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
-              <Mail className="mr-2 h-5 w-5" />
-              Email Support
-            </Button>
-          </div>
-        </div>
-      </div>
+ 
     </div>
+
+    <Footer />
+
+
+
+          {/* Support Modal - Rendered using Portal to escape sidebar container */}
+          {supportOpen && createPortal(
+            <SupportModal 
+              open={supportOpen} 
+              onClose={() => setSupportOpen(false)} 
+              aria-describedby="support-modal-description"
+            />,
+            document.body
+          )}
+
+          {/* Floating Chat Button - Rendered using Portal */}
+          {!isMobile && createPortal(
+            <>
+              <FloatingChatButton onClick={() => setChatOpen(true)} />
+      
+            </>,
+            document.body
+          )}
+
+          {/* Chat Modal - Rendered using Portal */}
+          {chatOpen && createPortal(
+            <ChatModal 
+              open={chatOpen} 
+              onClose={() => setChatOpen(false)} 
+              aria-describedby="chat-modal-description"
+              resetUnreadMessages={resetUnreadCount}
+            />,
+            document.body
+          )}
+    </>
   );
 }

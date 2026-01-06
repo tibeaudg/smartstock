@@ -1,152 +1,121 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, Send, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { 
+  Facebook, 
+  Twitter, 
+  Linkedin, 
+  Instagram, 
+  Mail, 
+  ChevronRight, 
+  ExternalLink,
+  ShieldCheck,
+  Globe2
+} from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import ScrollTriggeredButton from './ScrollTriggeredButton';
-import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-day-picker';
 
 const Footer = () => {
   const navigate = useNavigate();
-  
-  // Organization Schema for Footer
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "StockFlow",
-    "alternateName": "stockflow",
     "url": "https://www.stockflowsystems.com",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://www.stockflowsystems.com/logo.png",
-      "width": 200,
-      "height": 60
-    },
-    "description": "Cloud-based Inventory Management Platform for growing businesses in Belgium. Smart stock control and warehouse management solution for SMEs.",
-    "foundingDate": "2024",
+    "logo": "https://www.stockflowsystems.com/logo.png",
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": "BE",
-      "addressRegion": "Belgium",
-      "addressLocality": "Belgium"
+      "addressCountry": "BE"
     },
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "email": "support@stockflowsystems.com",
-        "availableLanguage": ["English", "Dutch", "French", "German"]
-      },
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "email": "sales@stockflowsystems.com",
-        "availableLanguage": ["English", "Dutch"]
-      }
-    ],
     "sameAs": [
       "https://www.facebook.com/profile.php?id=61578067034898",
       "https://twitter.com/stockflow",
       "https://www.linkedin.com/company/stockflow",
       "https://www.instagram.com/stockflowbe"
+    ]
+  };
+
+  const footerLinks = {
+    product: [
+      { name: 'Features', path: '/features' },
+      { name: 'Pricing', path: '/pricing' },
+      { name: 'Security', path: '/security' },
+      { name: 'Integrations', path: '/integrations' },
     ],
-    "areaServed": {
-      "@type": "Country",
-      "name": "Belgium"
-    },
-    "knowsAbout": [
-      "Inventory Management",
-      "Stock Control",
-      "Warehouse Management",
-      "Business Software",
-      "SMB Solutions",
-      "Voorraadbeheer",
-      "Magazijnbeheer"
+    company: [
+      { name: 'About Us', path: '/about' },
+      { name: 'Contact', path: '/contact' },
+      { name: 'Careers', path: '/careers' },
+      { name: 'Partner Program', path: '/partners' },
     ],
-    "makesOffer": {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "SoftwareApplication",
-        "name": "StockFlow Inventory Management",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web Browser",
-        "description": "Cloud-based Inventory Management Platform for small and medium businesses"
-      },
-      "price": "0",
-      "priceCurrency": "EUR",
-      "availability": "https://schema.org/InStock"
-    }
+    legal: [
+      { name: 'Privacy Policy', path: '/privacy' },
+      { name: 'Terms of Service', path: '/terms' },
+      { name: 'Cookie Policy', path: '/cookies' },
+    ]
   };
 
   return (
     <>
       <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(organizationSchema)}
-        </script>
+        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
       </Helmet>
 
-
-      {/* Final CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-blue-600 to-blue-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Stop Losing Money on Inventory?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Join 500+ businesses using StockFlow free forever
-          </p>
-          <div className="max-w-md mx-auto">
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center items-stretch sm:items-center  px-4">
-            <ScrollTriggeredButton
-              as="button"
-              onClick={() => {
-          
-                navigate('/auth');
-              }}
-              className="w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50
-                px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-4 lg:px-6
-                text-base sm:text-lg md:text-xl lg:text-2xl
-                font-bold rounded-lg transform hover:scale-105
-                
-                shadow-2xl hover:shadow-3xl
-                ring-0 focus:ring-4 focus:ring-white/50 focus:outline-none
-                sm:min-h-[56px] touch-manipulation"
-        >
-          Create a Free Account
-          </ScrollTriggeredButton>
-
-            </div>
-
-          </div>
-          <div className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div className="text-center">
-              <p className="text-3xl font-bold text-white mb-2">500+</p>
-              <p className="text-blue-200">Active Businesses</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-white mb-2">4.8/5</p>
-              <p className="text-blue-200">Customer Rating</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-white mb-2">$15K+</p>
-              <p className="text-blue-200">Avg. Savings/Year</p>
+      {/* High-Impact CTA Section */}
+      <section className="relative py-24 bg-white overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_50%,_rgba(37,99,235,0.1),transparent_50%)]" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-5xl mx-auto bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-8 md:p-16 shadow-2xl shadow-blue-900/20">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="text-left">
+                <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+                  Stop losing revenue to <span className="text-blue-200">inventory friction.</span>
+                </h2>
+                <div className="flex flex-wrap gap-6 mb-8">
+                  <div className="flex items-center gap-2 text-blue-100">
+                    <ShieldCheck className="w-5 h-5" />
+                    <span className="font-medium text-sm md:text-base">Free Forever Plan</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-blue-100">
+                    <Globe2 className="w-5 h-5" />
+                    <span className="font-medium text-sm md:text-base">Global Availability</span>
+                  </div>
+                </div>
+                <ScrollTriggeredButton
+                  as="button"
+                  onClick={() => navigate('/auth')}
+                  className="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all flex items-center gap-2 group"
+                >
+                  Start Your Inventory Audit
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </ScrollTriggeredButton>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Active Users", val: "500+" },
+                  { label: "Success Rate", val: "99.9%" },
+                  { label: "Avg Savings", val: "€15k" },
+                  { label: "Support", val: "24/7" }
+                ].map((stat, i) => (
+                  <div key={i} className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+                    <div className="text-2xl font-bold text-white mb-1">{stat.val}</div>
+                    <div className="text-blue-100 text-xs font-bold uppercase tracking-wider">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-
-
-
-      
-      <footer className="bg-gray-900 text-gray-200 py-12 md:py-16">
-  <div className="max-w-7xl mx-auto px-6">
-    <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
-      {/* Company Info */}
-      <div className="md:col-span-2">
-        <img
+      {/* Corporate Footer */}
+      <footer className="bg-gray-900 border-t border-gray-600 pt-24 pb-12">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-12 gap-12 mb-20">
+            
+            {/* Brand Identity */}
+            <div className="col-span-2 lg:col-span-4">
+      <img
           src="/logo.png"
           alt="stockflow"
           className="h-10 md:h-12 mb-6"
@@ -158,68 +127,79 @@ const Footer = () => {
           onError={(e) => {
             e.currentTarget.src = '/placeholder.svg';
           }}
-        />
-        <p className="text-gray-400 text-base md:text-lg mb-6 leading-relaxed">
-          Smart inventory management for growing businesses
-        </p>
-        
-        {/* Social Media Follow Buttons */}
-        <div className="mb-6">
-          <h3 className="text-white font-semibold mb-3">Follow Us</h3>
-          <div className="flex gap-3">
-            <a 
-              href="https://www.facebook.com/profile.php?id=61578067034898"
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on Facebook"
-            >
-              <Facebook className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://twitter.com/stockflow" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on Twitter"
-            >
-              <Twitter className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://www.linkedin.com/company/stockflow" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-blue-700 hover:bg-blue-800 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on LinkedIn"
-            >
-              <Linkedin className="h-5 w-5" />
-            </a>
-            <a 
-              href="https://www.instagram.com/stockflowbe"
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-lg transition-colors"
-              aria-label="Follow us on Instagram"
-            >
-              <Instagram className="h-5 w-5" />
-            </a>
+        />              <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-sm">
+                The modern standard for cloud-based inventory orchestration. Empowering SMEs with enterprise-grade logistics.
+              </p>
+              <div className="flex gap-4">
+                {[
+                  { icon: <Linkedin />, url: "https://linkedin.com/company/stockflow" },
+                  { icon: <Twitter />, url: "https://twitter.com/stockflow" },
+                  { icon: <Instagram />, url: "https://instagram.com/stockflowbe" },
+                  { icon: <Facebook />, url: "https://facebook.com/profile.php?id=61578067034898" }
+                ].map((social, i) => (
+                  <a key={i} href={social.url} className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-blue-600 hover:text-blue-600 transition-all">
+                    {social.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Link Verticals */}
+            <div className="col-span-1 lg:col-span-2 lg:ml-auto">
+              <h4 className="font-bold text-gray-900 mb-6">Product</h4>
+              <ul className="space-y-4">
+                {footerLinks.product.map(link => (
+                  <li key={link.name}><Link to={link.path} className="text-gray-500 hover:text-blue-600 transition-colors">{link.name}</Link></li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="col-span-1 lg:col-span-2">
+              <h4 className="font-bold text-gray-900 mb-6">Company</h4>
+              <ul className="space-y-4">
+                {footerLinks.company.map(link => (
+                  <li key={link.name}><Link to={link.path} className="text-gray-500 hover:text-blue-600 transition-colors">{link.name}</Link></li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Newsletter / Contact */}
+            <div className="col-span-2 lg:col-span-4 lg:pl-12">
+              <h4 className="font-bold text-gray-900 mb-6">Global Support</h4>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl">
+                  <Mail className="w-5 h-5 text-blue-600 mt-1" />
+                  <div>
+                    <div className="text-sm font-bold text-gray-900 uppercase tracking-tighter">Support Desk</div>
+                    <a href="mailto:support@stockflowsystems.com" className="text-gray-500 hover:text-blue-600">support@stockflowsystems.com</a>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 border border-gray-100 rounded-2xl">
+                  <span className="text-sm font-medium text-gray-600">System Status</span>
+                  <span className="flex items-center gap-2 text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full uppercase">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                    All Operational
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-12 border-t border-gray-600 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} StockFlow Systems. All rights reserved.
+            </div>
+            <div className="flex gap-8">
+              {footerLinks.legal.map(link => (
+                <Link key={link.name} to={link.path} className="text-gray-400 hover:text-gray-900 text-sm transition-colors">
+                  {link.name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-
-
-
-
-    </div>
-
-
-    <div className="border-t border-gray-700 pt-6 text-center">
-      <p className="text-gray-300 text-xs md:text-sm">
-        &copy; {new Date().getFullYear()} stockflow. All rights reserved. 
-      </p>
-    </div>
-  </div>
-</footer>
+      </footer>
     </>
   );
 };

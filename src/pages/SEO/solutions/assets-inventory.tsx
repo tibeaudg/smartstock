@@ -152,7 +152,7 @@ export default function AssetsInventory() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Assets Inventory Management Software 2025",
+    "headline": "Assets Inventory Management Software 2026",
     "description": "Complete guide to assets inventory management. Track equipment, machinery, vehicles, and IT assets with barcode scanning, maintenance scheduling, and location tracking. Free plan available.",
     "author": {
       "@type": "Organization",
@@ -166,8 +166,8 @@ export default function AssetsInventory() {
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-01-15",
-    "dateModified": "2025-01-15",
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/assets-inventory"
@@ -189,15 +189,15 @@ export default function AssetsInventory() {
 
   return (
     <SeoPageLayout
-      title="Assets Inventory Management Software 2025"
+      title="Assets Inventory Management Software 2026"
       heroTitle="Assets Inventory Management: Track Equipment, Vehicles & IT Assets"
       description="Complete assets inventory management software. Track equipment, machinery, vehicles, and IT assets with barcode scanning, maintenance scheduling, and location tracking. Free plan available."
-      updatedDate="2025-01-15"
+      updatedDate="2026-01-15"
       faqData={faqData}
     >
       <SEO
-        title="Assets Inventory Management Software 2025 - Reduce Loss 40-60%, Save Time | StockFlow"
-        description="Assets inventory management software 2025 for tracking equipment, vehicles, IT assets. Barcode scanning, maintenance scheduling, location tracking. Reduce loss 40-60%, save 10+ hours/week. Free plan for up to 100 assets. Join for Free - no credit card required."
+        title="Assets Inventory Management Software 2026 - Reduce Loss 40-60%, Save Time | StockFlow"
+        description="Assets inventory management software 2026 for tracking equipment, vehicles, IT assets. Barcode scanning, maintenance scheduling, location tracking. Reduce loss 40-60%, save 10+ hours/week. Free plan for up to 100 assets. Join for Free - no credit card required."
         keywords="assets inventory, asset inventory management, asset tracking software, equipment inventory, IT asset management, asset management system, fixed asset tracking, asset tracking app, asset inventory software, equipment tracking software, asset management software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/assets-inventory"
         structuredData={[structuredData, faqStructuredData]}

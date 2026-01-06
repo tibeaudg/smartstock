@@ -87,60 +87,23 @@ export default function StockflowVsTradegecko() {
       heroTitle="StockFlow vs TradeGecko"
       updatedDate="06/01/2026"
       faqData={faqData}
+                    previousArticle={{
+      title: "StockFlow vs Spreadsheets",
+      href: "/stockflow-vs-spreadsheets"
+    }}
+    nextArticle={{
+      title: "StockFlow vs Zoho Inventory",
+      href: "/stockflow-vs-zoho-inventory"
+    }}
     >
       <SEO
-        title="StockFlow vs TradeGecko 2025 - Free Migration, Better Automation | StockFlow"
-        description="Compare StockFlow vs TradeGecko 2025 (QuickBooks Commerce). Modern alternative with better automation, EU hosting, free migration. Free forever. Save costs, improve efficiency."
-        keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison, tradegecko migration, tradegecko alternative 2025, quickbooks commerce alternative, inventory software after tradegecko"
+        title="StockFlow vs TradeGecko 2026 - Free Migration, Better Automation | StockFlow"
+        description="Compare StockFlow vs TradeGecko 2026 (QuickBooks Commerce). Modern alternative with better automation, EU hosting, free migration. Free forever. Save costs, improve efficiency."
+        keywords="stockflow vs tradegecko, tradegecko alternative, quickbooks commerce replacement, stockflow comparison, tradegecko migration, tradegecko alternative 2026, quickbooks commerce alternative, inventory software after tradegecko"
         url="https://www.stockflowsystems.com/stockflow-vs-tradegecko"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
-
-      <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>              <p className="text-xl text-gray-600 mb-8">
-                TradeGecko helped early ecommerce brands digitise inventory, but the platform sunset left teams searching for a future-proof solution. StockFlow delivers automation, analytics and EU support in one platform.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/auth"
-                  className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
-                >
-                  Get Started Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition"
-                >
-                  View Pricing
-                </Link>
-              </div>
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <span className="ml-2 text-sm text-gray-600">5.0/5</span>
-                </div>
-                <span className="text-sm text-gray-600">Migrating from TradeGecko? We’ll help.</span>
-              </div>
-            </div>
-            <div>
-              <img
-                src="/Inventory-Management.png"
-                alt="StockFlow vs TradeGecko comparison"
-                className="rounded-lg shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
 
 
       <section className="py-16 px-4 bg-white">

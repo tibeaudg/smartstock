@@ -78,9 +78,14 @@ export default function SimpleStockManagement() {
     <SeoPageLayout 
       title="Simple Stock Management"
       heroTitle="Simple Stock Management: Inventory Control Made Simple"
-      faqData={faqData}
-      
-      
+      previousArticle={{
+        title: "Stock Management Software",
+        href: "/stock-management-software"
+      }}
+      nextArticle={{
+        title: "Mobile Inventory Management",
+        href: "/mobile-inventory-management"
+      }}
     >
       <SEO
         title="Simple Stock Management Software | StockFlow"
@@ -212,7 +217,7 @@ export default function SimpleStockManagement() {
         {
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "Simple Stock Management - Complete Guide 2025",
+          "headline": "Simple Stock Management - Complete Guide 2026",
           "description": "Complete guide to simple stock management. Learn about easy-to-use inventory control systems that provide essential features without complexity. Perfect for businesses that want effective inventory management with minimal learning curve.",
           "image": "https://www.stockflowsystems.com/simple-stock-management.png",
           "author": {
@@ -227,8 +232,8 @@ export default function SimpleStockManagement() {
               "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "datePublished": "2025-11-25",
-          "dateModified": "2025-11-25",
+          "datePublished": "2026-11-25",
+          "dateModified": "2026-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.stockflowsystems.com/simple-stock-management"

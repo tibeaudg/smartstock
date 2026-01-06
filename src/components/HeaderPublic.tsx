@@ -205,7 +205,22 @@ const Header: React.FC<HeaderProps> = ({
       {
         id: 'resources',
         label: 'Resources',
-        to: '/blog'
+        to: '/resources'
+      },
+
+
+            {
+        id: 'about',
+        label: 'About',
+        to: '/about'
+      },
+
+
+
+            {
+        id: 'support',
+        label: 'Support',
+        to: '/help-center'
       },
     
     ],

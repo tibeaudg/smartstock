@@ -153,8 +153,8 @@ export default function WholesalerInventoryManagement() {
       faqData={faqData}
     >
       <SEO
-        title="Wholesaler Inventory Management 2025 - Save 30% Costs, Multi-Warehouse | StockFlow"
-        description="Complete wholesaler and distributor inventory management 2025. Multi-warehouse tracking, bulk order processing, inventory turnover optimization. Reduce costs by 30%, improve turnover 25%. Free plan available. Join for Free - no credit card required."
+        title="Wholesaler Inventory Management 2026 - Save 30% Costs, Multi-Warehouse | StockFlow"
+        description="Complete wholesaler and distributor inventory management 2026. Multi-warehouse tracking, bulk order processing, inventory turnover optimization. Reduce costs by 30%, improve turnover 25%. Free plan available. Join for Free - no credit card required."
         keywords="wholesaler inventory management, wholesaler inventory software, distributor inventory management, wholesaler inventory system, distributor inventory software, wholesaler and distributor, distributors and wholesalers, wholesale inventory management, distributor inventory system, wholesaler inventory app, distributor inventory app, wholesale inventory software, distributor inventory solution, wholesaler inventory platform, wholesale inventory tracking, distributor inventory tracking, wholesaler stock management, distributor stock management, wholesale inventory control, distributor inventory control, stockflow, stock flow"
         url="https://www.stockflowsystems.com/wholesaler-inventory-management"
       />
@@ -317,7 +317,7 @@ export default function WholesalerInventoryManagement() {
           "@context": "https://schema.org",
           "@type": "WebPage",
           "@id": "https://www.stockflowsystems.com/wholesaler-inventory-management",
-          "name": "Wholesaler Inventory Management Software 2025",
+          "name": "Wholesaler Inventory Management Software 2026",
           "description": "Best wholesaler inventory management software for distributors and wholesalers. Manage inventory across multiple warehouses, optimize turnover, and process bulk orders.",
           "url": "https://www.stockflowsystems.com/wholesaler-inventory-management",
           "inLanguage": "en",

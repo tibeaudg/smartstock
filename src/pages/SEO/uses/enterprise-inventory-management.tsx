@@ -106,9 +106,17 @@ export default function EnterpriseInventoryManagement() {
       heroTitle="Enterprise Inventory Management"
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+        title: "HVAC Inventory Management",
+        href: "/hvac-inventory-management"
+      }}
+      nextArticle={{
+        title: "Ecommerce Inventory Management",
+        href: "/ecommerce-inventory-management"
+      }}
     >
       <SEO
-        title="Enterprise Inventory Management Software 2025 | Multi-Location Solutions"
+        title="Enterprise Inventory Management Software 2026 | Multi-Location Solutions"
         description="Enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, API access, and scalability. Affordable enterprise solution starting at �0.004/product/month."
         keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, multi-location inventory, enterprise inventory features, stockflow, stock flow"
         url="https://www.stockflowsystems.com/enterprise-inventory-management"

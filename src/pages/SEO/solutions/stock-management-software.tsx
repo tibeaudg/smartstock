@@ -104,7 +104,7 @@ export default function StockManagementSoftware() {
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "Stock Management Software - Complete Guide 2025",
+      "headline": "Stock Management Software - Complete Guide 2026",
       "description": "Complete guide to stock management software. Learn how real-time tracking, automated reordering, and barcode scanning help businesses optimize inventory levels, reduce costs, and prevent stockouts.",
       "image": "https://www.stockflowsystems.com/stock-management-software.png",
       "author": {
@@ -119,8 +119,8 @@ export default function StockManagementSoftware() {
           "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
-      "datePublished": "2025-11-25",
-      "dateModified": "2025-11-25",
+      "datePublished": "2026-11-25",
+      "dateModified": "2026-11-25",
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://www.stockflowsystems.com/stock-management-software"
@@ -212,13 +212,19 @@ export default function StockManagementSoftware() {
   return (
     <SeoPageLayout 
       title="Stock Management Software"
-      heroTitle="Stock Management Software"
-      updatedDate="06/01/2026"
-      faqData={faqData}
+      heroTitle="Stock Management Software: Optimize Your Inventory"
+      previousArticle={{
+        title: "Suppliers",
+        href: "/suppliers"
+      }}
+      nextArticle={{
+        title: "Simple Stock Management",
+        href: "/simple-stock-management"
+      }}
     >
       <SEO
-        title="Stock Management Software 2025 - Save 10+ Hours/Week, 90% Fewer Errors | StockFlow"
-        description="Professional stock management software 2025 for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Join for Free - no credit card required."
+        title="Stock Management Software 2026 - Save 10+ Hours/Week, 90% Fewer Errors | StockFlow"
+        description="Professional stock management software 2026 for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="stock management software, inventory software, stock control, warehouse software, SMB stock, small business inventory, stock tracking software, inventory management for small business, stock management system, stock control software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/stock-management-software"
         locale="en"

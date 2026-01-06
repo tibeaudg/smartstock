@@ -236,15 +236,15 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout 
       title="Cross-dock Warehouse"
-      description="Complete cross-dock warehouse management 2025. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning. Free plan available."
+      description="Complete cross-dock warehouse management 2026. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning. Free plan available."
       heroTitle="Cross-dock Warehouse"
-      updatedDate="2025-11-06"
+      updatedDate="2026-11-06"
       faqData={faqData}
     >
       <SEO
-        title="Cross Dock Warehouse 2025 - Reduce Storage 50% | StockFlow"
-        description="Complete cross-dock warehouse management 2025. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning."
-        keywords="Cross-dock Warehouse, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2025, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, Cross-dock Warehouse comparison, best inventory software reviews, Cross-dock Warehouse features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
+        title="Cross Dock Warehouse 2026 - Reduce Storage 50% | StockFlow"
+        description="Complete cross-dock warehouse management 2026. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning."
+        keywords="Cross-dock Warehouse, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2026, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, Cross-dock Warehouse comparison, best inventory software reviews, Cross-dock Warehouse features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
         url="https://www.stockflowsystems.com/best-inventory-management-software"
       />
 
@@ -472,7 +472,7 @@ export default function BestInventoryManagementSoftware() {
             "name": "StockFlow",
             "url": "https://www.stockflowsystems.com"
           },
-          "datePublished": "2025-11-06",
+          "datePublished": "2026-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",

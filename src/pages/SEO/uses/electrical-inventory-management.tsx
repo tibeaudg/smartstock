@@ -325,6 +325,14 @@ export default function ElectricalInventoryManagement() {
       tableOfContents={sidebarContent.tableOfContents}
       showTOC={true}
       readingTime={estimatedReadingTime}
+      previousArticle={{
+        title: "Cross-Dock Warehouse",
+        href: "/cross-dock-warehouse"
+      }}
+      nextArticle={{
+        title: "HVAC Inventory Management",
+        href: "/hvac-inventory-management"
+      }}
     >
       <SEO
         title="Inventory Software for Electrical Contractors | StockFlow"
@@ -762,7 +770,7 @@ export default function ElectricalInventoryManagement() {
               "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "datePublished": "2025-11-06",
+          "datePublished": "2026-11-06",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",

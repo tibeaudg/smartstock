@@ -245,10 +245,20 @@ export default function BarcodingPage() {
       heroTitle="Barcoding"
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+      title: "Alerts",
+      href: "/alerts"
+                            
+    }}
+    nextArticle={{
+      title: "Cycle Count",
+      href: "/cycle-count"
+    }}
+
     >
       <SEO
-        title="Barcoding for Inventory Management 2025 - 99.7% Accuracy, 5x Faster | StockFlow"
-        description="Implement barcoding for inventory management 2025. Generate, print, scan barcodes with smartphone. Achieve 99.7% accuracy, 5x faster than manual entry. Free plan available. Join for Free - no credit card required."
+        title="Barcoding for Inventory Management 2026 - 99.7% Accuracy, 5x Faster | StockFlow"
+        description="Implement barcoding for inventory management 2026. Generate, print, scan barcodes with smartphone. Achieve 99.7% accuracy, 5x faster than manual entry. Free plan available. Join for Free - no credit card required."
         keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
         url="https://www.stockflowsystems.com/barcoding"
         structuredData={structuredData}
@@ -437,32 +447,7 @@ export default function BarcodingPage() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-indigo-700 to-blue-600 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to See StockFlow Barcoding in Action?</h2>
-          <p className="text-lg text-indigo-100 mb-8">
-            Try the scanner with your own barcode labels or connect with our team for a guided walkthrough tailored to your inventory workflows.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-indigo-700 hover:bg-indigo-100" asChild>
-              <a href="https://app.stockflowsystems.com/barcoding" target="_blank" rel="noopener noreferrer">
-                Start Scanning Now
-              </a>
-            </Button>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="border-white text-white hover:bg-white/10"
-              asChild
-            >
-              <a href="https://www.stockflowsystems.com/contact" target="_blank" rel="noopener noreferrer">
-                Book a Demo
-              </a>
-            </Button>
-          </div>
-        </div>
-      </div>
+
 
 
 

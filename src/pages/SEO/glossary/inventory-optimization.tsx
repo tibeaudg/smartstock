@@ -26,9 +26,9 @@ export default function InventoryOptimization() {
   usePageRefresh();
 
   const pageMetadata = {
-    published: '2024-01-15',
-    updated: '2025-01-20',
-    updatedDisplay: '20/01/2025'
+    published: '2025-01-15',
+    updated: '2026-01-20',
+    updatedDisplay: '20/01/2026'
   };
 
   const faqData = [
@@ -220,14 +220,14 @@ export default function InventoryOptimization() {
   return (
     <SeoPageLayout 
       title="Inventory Optimization"
-      heroTitle="Inventory Optimization: Complete Guide 2025"
+      heroTitle="Inventory Optimization: Complete Guide 2026"
       description="Master inventory optimization to reduce costs, improve cash flow, and eliminate stockouts. Learn proven strategies, tools, and best practices for optimal stock levels."
       updatedDate={pageMetadata.updatedDisplay}
       faqData={faqData}
     >
       <SEO
-        title="Inventory Optimization 2025 - Save 30% Costs, 15-25% Cash Flow | StockFlow"
-        description="Master inventory optimization 2025. Reduce costs 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI tools, best practices."
+        title="Inventory Optimization 2026 - Save 30% Costs, 15-25% Cash Flow | StockFlow"
+        description="Master inventory optimization 2026. Reduce costs 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI tools, best practices."
         keywords="inventory optimization, optimal inventory, stock optimization, inventory balance, inventory efficiency, stock level optimization, inventory management optimization, inventory cost optimization, ABC analysis, demand forecasting, reorder points, safety stock, EOQ, inventory turnover"
         url="https://www.stockflowsystems.com/glossary/inventory-optimization"
         publishedTime={pageMetadata.published}
@@ -247,7 +247,7 @@ export default function InventoryOptimization() {
           {
             '@context': 'https://schema.org',
             '@type': 'Article',
-            headline: 'Inventory Optimization: Complete Guide 2025',
+            headline: 'Inventory Optimization: Complete Guide 2026',
             description: 'Master inventory optimization to reduce costs, improve cash flow, and eliminate stockouts. Learn proven strategies, tools, and best practices for optimal stock levels.',
             author: {
               '@type': 'Organization',

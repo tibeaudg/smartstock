@@ -122,12 +122,19 @@ export default function CycleCount() {
       heroTitle="Cycle Count"
       updatedDate="06/01/2026"
       faqData={faqData}
-      
+      previousArticle={{
+      title: "Barcoding",
+      href: "/barcoding"
+}}
+nextArticle={{
+      title: "Integrations",
+      href: "/integrations"
+}}      
       
     >
       <SEO
-        title="Cycle Count Inventory 2025 - Improve Accuracy 20-30%, Save Time | StockFlow"
-        description="Cycle count inventory 2025: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
+        title="Cycle Count Inventory 2026 - Improve Accuracy 20-30%, Save Time | StockFlow"
+        description="Cycle count inventory 2026: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
         keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
         url="https://www.stockflowsystems.com/cycle-count"
       />
@@ -189,23 +196,7 @@ export default function CycleCount() {
         </div>
       </section>
 
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Cycle Counting Today
-          </h2>
-          <div className="flex justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              Join for Free
-            </Link>
-          </div>
-        </div>
-      </section>
 
- 
 
 
 

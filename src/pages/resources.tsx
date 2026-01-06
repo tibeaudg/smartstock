@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import Footer from '@/components/Footer';
+
 import {
   BookOpen,
   TrendingUp,
@@ -144,7 +146,7 @@ export default function ResourcesPage() {
           "@type": "ListItem",
           "position": 5,
           "name": "Product Demo Videos",
-          "url": "https://www.stockflowsystems.com/resources#demo-videos"
+          "url": "https://www.stockflowsystems.com/videos"
         },
         {
           "@type": "ListItem",
@@ -157,6 +159,7 @@ export default function ResourcesPage() {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       <SEO
         title="Resources - StockFlow | Blog, Case Studies, ROI Calculator & More"
@@ -173,7 +176,7 @@ export default function ResourcesPage() {
       />
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 to-green-600 text-white py-20">
+      <div className="bg-gradient-to-br from-blue-600 to-green-600 text-white py-20 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <BookOpen className="h-16 w-16 mx-auto mb-6 text-blue-200" />
@@ -207,17 +210,7 @@ export default function ResourcesPage() {
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <div className="space-y-3 mb-6 flex-1">
-                  {latestBlogPosts.map((post, index) => (
-                    <div key={post.id} className="border-l-2 border-blue-200 pl-3 py-2">
-                      <h4 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
-                        {post.title}
-                      </h4>
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Clock className="h-3 w-3 mr-1" />
-                        {new Date(post.datePublished).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                      </div>
-                    </div>
-                  ))}
+               
                 </div>
                 <Link to="/blog">
                   <Button className="w-full" variant="default">
@@ -386,31 +379,15 @@ export default function ResourcesPage() {
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <div className="mb-6 flex-1">
-                  <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video cursor-pointer group"
-                       onClick={() => setIsVideoModalOpen(true)}>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 group-hover:bg-white/30 transition-colors">
-                        <PlayCircle className="h-16 w-16 text-white" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                      <h4 className="text-white font-semibold text-sm mb-1">
-                        StockFlow Product Demo
-                      </h4>
-                      <p className="text-white/80 text-xs">
-                        See how StockFlow helps businesses manage inventory efficiently
-                      </p>
-                    </div>
-                  </div>
+    
                 </div>
-                <Button 
-                  className="w-full" 
-                  variant="default"
-                  onClick={() => setIsVideoModalOpen(true)}
-                >
-                  Watch Demo Video
-                  <PlayCircle className="ml-2 h-4 w-4" />
-                </Button>
+                  <Button 
+                    className="w-full" 
+                    variant="default"
+                    onClick={() => navigate('/videos')}
+                  >
+                    Watch Demo Videos
+                  </Button>
               </CardContent>
             </Card>
 
@@ -479,6 +456,9 @@ export default function ResourcesPage() {
         />
       )}
     </div>
+
+    <Footer />
+    </>
   );
 }
 

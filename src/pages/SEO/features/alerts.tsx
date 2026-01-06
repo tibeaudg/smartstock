@@ -242,10 +242,19 @@ export default function AlertsPage() {
       heroTitle="Alerts"
       updatedDate="06/01/2026"
       faqData={faqData}
+                          previousArticle={{
+      title: "StockFlow vs Zoho Inventory",
+      href: "/stockflow-vs-zoho-inventory"
+                            
+    }}
+    nextArticle={{
+      title: "Barcoding",
+      href: "/barcoding"
+    }}
     >
       <SEO
-        title="Inventory Alerts 2025 - Prevent Stockouts, Save 25% Costs | StockFlow"
-        description="Automated inventory alerts 2025 notify you of low stock, reorder points, stockouts. Prevent stockouts, save 25% costs. Real-time notifications via email, SMS, in-app. Free plan available. Join for Free - no credit card required."
+        title="Inventory Alerts 2026 - Prevent Stockouts, Save 25% Costs | StockFlow"
+        description="Automated inventory alerts 2026 notify you of low stock, reorder points, stockouts. Prevent stockouts, save 25% costs. Real-time notifications via email, SMS, in-app. Free plan available. Join for Free - no credit card required."
         keywords="inventory alerts, stock alerts, low stock alerts, reorder alerts, inventory notifications, stock level alerts, inventory management alerts, automated inventory alerts, stockout alerts, inventory alert system, stockflow"
         url="https://www.stockflowsystems.com/alerts"
         structuredData={structuredData}
@@ -444,32 +453,6 @@ export default function AlertsPage() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="bg-gradient-to-r from-indigo-700 to-blue-600 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to See StockFlow Scan in Action?</h2>
-          <p className="text-lg text-indigo-100 mb-8">
-            Try the scanner with your own barcode labels or connect with our team for a guided walkthrough tailored to your inventory workflows.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-indigo-700 hover:bg-indigo-100" asChild>
-              <a href="https://app.stockflowsystems.com/scan" target="_blank" rel="noopener noreferrer">
-                Start Scanning Now
-              </a>
-            </Button>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="border-white text-white hover:bg-white/10"
-              asChild
-            >
-              <a href="https://www.stockflowsystems.com/contact" target="_blank" rel="noopener noreferrer">
-                Book a Demo
-              </a>
-            </Button>
-          </div>
-        </div>
-      </div>
 
 
 

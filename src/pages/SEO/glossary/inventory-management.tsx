@@ -330,6 +330,8 @@ export default function InventoryManagementGuide() {
       heroTitle="Inventory Management Guide"
       updatedDate="06/01/2026"
       faqData={faqData}
+
+      
       
       
     >

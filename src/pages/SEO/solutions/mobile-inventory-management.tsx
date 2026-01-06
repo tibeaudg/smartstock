@@ -188,13 +188,19 @@ export default function MobileInventoryManagement() {
   return (
     <SeoPageLayout 
       title="Mobile Inventory Management"
-      heroTitle="Mobile Inventory Management"
-      updatedDate="06/01/2026"
-      faqData={faqData}
+      heroTitle="Mobile Inventory Management: Manage Inventory Anywhere"
+      previousArticle={{
+        title: "Simple Stock Management",
+        href: "/simple-stock-management"
+      }}
+      nextArticle={{
+        title: "Integrations",
+        href: "/integrations"
+      }}
     >
       <SEO
-        title="Mobile Inventory Management 2025 - Save 40-60% Time, 99.9% Accuracy | StockFlow"
-        description="Mobile inventory management 2025 for iOS and Android. Barcode scanning, offline mode, real-time sync. Increase productivity 40-60%, achieve 99.9% accuracy. Free plan available. Join for Free - no credit card required."
+        title="Mobile Inventory Management 2026 - Save 40-60% Time, 99.9% Accuracy | StockFlow"
+        description="Mobile inventory management 2026 for iOS and Android. Barcode scanning, offline mode, real-time sync. Increase productivity 40-60%, achieve 99.9% accuracy. Free plan available. Join for Free - no credit card required."
         keywords="mobile inventory management, mobile stock control, inventory mobile app, on-the-go inventory, mobile inventory tracking, inventory app, mobile warehouse management, barcode scanner app, stockflow, stock flow"
         url="https://www.stockflowsystems.com/mobile-inventory-management"
         locale="en"

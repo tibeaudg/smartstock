@@ -147,7 +147,7 @@ export default function SuppliersSolutionPage() {
     {
       '@context': 'https://schema.org',
       '@type': 'Article',
-      headline: 'Supplier Management Software - Complete Guide 2025',
+      headline: 'Supplier Management Software - Complete Guide 2026',
       description: 'Complete guide to supplier management software. Learn how to centralize vendor information, automate purchasing workflows, and track supplier performance. Discover unified supplier directories and procurement automation.',
       image: 'https://www.stockflowsystems.com/supplier-management.png',
       author: {
@@ -162,8 +162,8 @@ export default function SuppliersSolutionPage() {
           url: 'https://www.stockflowsystems.com/logo.png'
         }
       },
-      datePublished: '2025-11-25',
-      dateModified: '2025-11-25',
+      datePublished: '2026-11-25',
+      dateModified: '2026-11-25',
       mainEntityOfPage: {
         '@type': 'WebPage',
         '@id': 'https://www.stockflowsystems.com/suppliers'
@@ -211,10 +211,18 @@ export default function SuppliersSolutionPage() {
       heroTitle="Suppliers"
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+        title: "Inventory Management Software",
+        href: "/inventory-management-software"
+      }}
+      nextArticle={{
+        title: "Stock Management Software",
+        href: "/stock-management-software"
+      }}
     >
       <SEO
-        title="Supplier Management Software 2025 - Save 20-30% Costs | StockFlow"
-        description="Centralize supplier data 2025, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering."
+        title="Supplier Management Software 2026 - Save 20-30% Costs | StockFlow"
+        description="Centralize supplier data 2026, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/suppliers"
         structuredData={structuredData}

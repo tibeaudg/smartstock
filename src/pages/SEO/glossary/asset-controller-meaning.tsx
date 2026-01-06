@@ -90,6 +90,14 @@ export default function AssetControllerMeaning() {
       heroTitle="Asset Controller Meaning"
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+        title: "Inventory Automation",
+        href: "/inventory-automation"
+      }}
+      nextArticle={{
+        title: "Consignment Inventory",
+        href: "/glossary/consignment-inventory"
+      }}
     >
       <SEO
         description="Learn what asset controller means in inventory management. Understand asset controller responsibilities, how asset controller software works, and why it"

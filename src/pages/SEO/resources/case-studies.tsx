@@ -162,7 +162,7 @@ export default function SEOCaseStudiesPage() {
       faqData={faqData}
     >
       <SEO
-        title="Inventory Management Case Studies 2025 - Success Stories | StockFlow"
+        title="Inventory Management Case Studies 2026 - Success Stories | StockFlow"
         description="See how businesses use StockFlow to improve inventory management. Real success stories from electronics, retail, food, and logistics companies. Learn about ROI, time savings, and results."
         keywords="case studies, success stories, inventory management, business results, ROI, testimonials, inventory software case studies, inventory management success stories, stockflow case studies"
         url="https://www.stockflowsystems.com/resources/case-studies"

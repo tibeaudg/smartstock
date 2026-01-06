@@ -2,279 +2,180 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useLocation } from 'react-router-dom';
-import { generateSidebarContent } from '@/utils/seoPageHelpers';
-import { 
-  CheckCircle,
-  Star,
-  Trophy,
-  Users,
-  Clock,
-  Calendar,
-  TrendingUp,
-  Calculator
-} from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
+import { 
+  Package, 
+  BarChart3, 
+  Zap, 
+  Shield, 
+  Clock,
+  CheckCircle,
+  ArrowRight,
+  Star,
+  AlertTriangle,
+  TrendingDown,
+  X
+} from 'lucide-react';
 
-export default function WhatIsLeadTime() {
+export default function AvoidInventoryMistakes() {
   usePageRefresh();
-  const location = useLocation();
   
-  const faqData = [
+
+
+  const structuredData = [
     {
-      question: "What is lead time?",
-      answer: "Lead time is the period between when an order is placed and when it is received or completed. In inventory management, lead time typically refers to the time it takes from placing a purchase order with a supplier until the goods arrive and are available for use. Understanding lead time is crucial for inventory planning and preventing stockouts."
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqData.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
     },
     {
-      question: "Why is lead time important in inventory management?",
-      answer: "Lead time is important because it determines when you need to reorder inventory to avoid stockouts. If you know your lead time is 14 days, you need to place orders 14 days before you expect to run out. Accurate lead time information helps businesses set appropriate reorder points and maintain optimal inventory levels."
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "What Is Lead-Time: 7 Common Errors & Solutions",
+      "description": "Learn how to avoid costly inventory mistakes that cost businesses 10-20% of inventory value annually. Discover the 7 most common errors and proven solutions to prevent them.",
+      "image": "https://www.stockflowsystems.com/Inventory-Management.png",
+      "author": {
+        "@type": "Organization",
+        "name": "StockFlow"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "StockFlow",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.stockflowsystems.com/logo.png"
+        }
+      },
+      "datePublished": "2024-01-01",
+      "dateModified": new Date().toISOString().split('T')[0],
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.stockflowsystems.com/what-is-lead-time"
+      }
     },
     {
-      question: "How do you calculate lead time?",
-      answer: "Lead time is calculated by measuring the time from order placement to receipt. For inventory management, lead time = Order Date + Supplier Processing Time + Shipping Time + Receiving Time. Inventory management software like StockFlow tracks lead times automatically based on historical order data."
-    },
-    {
-      question: "What factors affect lead time?",
-      answer: "Factors affecting lead time include: supplier processing time, manufacturing time (for custom orders), shipping method and distance, customs clearance (for international orders), seasonality and demand fluctuations, supplier reliability, and order quantity. Inventory management software helps track and account for these factors."
-    },
-    {
-      question: "How can inventory management software help with lead time?",
-      answer: "Inventory management software like StockFlow helps with lead time by tracking historical lead times, calculating average lead times, setting reorder points based on lead times, providing alerts when lead times change, and helping optimize inventory levels to account for lead time variations."
-    },
-    {
-      question: "What is the difference between lead time and cycle time?",
-      answer: "Lead time is the total time from order placement to receipt, including all waiting and processing time. Cycle time is the active time spent processing or manufacturing an item. Lead time includes cycle time plus waiting periods, shipping, and other delays."
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.stockflowsystems.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "What Is Lead-Time",
+          "item": "https://www.stockflowsystems.com/what-is-lead-time"
+        }
+      ]
     }
   ];
-
-  const concepts = [
-    {
-      icon: Clock,
-      title: "Order Lead Time",
-      description: "Time from placing an order until it's received, including processing and shipping."
-    },
-    {
-      icon: Calendar,
-      title: "Production Lead Time",
-      description: "Time required to manufacture or produce goods before they're available for sale."
-    },
-    {
-      icon: TrendingUp,
-      title: "Replenishment Lead Time",
-      description: "Time needed to restock inventory from the point of reorder to availability."
-    }
-  ];
-
-  const benefits = [
-    "Prevent stockouts by ordering in advance",
-    "Optimize inventory levels based on lead times",
-    "Improve cash flow planning",
-    "Better negotiate with suppliers",
-    "Reduce safety stock requirements",
-    "Improve customer service levels",
-    "Make data-driven ordering decisions",
-    "Handle seasonal variations effectively"
-  ];
-
-  const sidebarContent = generateSidebarContent(location.pathname, [
-    { id: 'what-is', title: 'What is Lead Time?', level: 1 },
-    { id: 'concepts', title: 'Key Concepts', level: 1 },
-    { id: 'benefits', title: 'Benefits', level: 1 },
-    { id: 'faq', title: 'FAQ', level: 1 }
-  ]);
-
+  
   return (
     <SeoPageLayout 
-      title="What is Lead Time"
-      heroTitle="What is Lead Time"
+      title="What Is Lead-Time"
+      heroTitle="What Is Lead-Time"
       updatedDate="06/01/2026"
-      faqData={faqData}
-      
-      
+      previousArticle={{
+        title: "How to Choose Inventory Management Software",
+        href: "/how-to-choose-inventory-management-software"
+      }}
+      nextArticle={{
+        title: "Inventory Turnover Ratio",
+        href: "/inventory-turnover-ratio"
+      }}
     >
       <SEO
-        title="What Is Lead Time 2025 - Prevent Stockouts, Save 25% Costs | StockFlow"
-        description="Complete guide to lead time in inventory management 2025. Definition, formula, calculation examples. Optimize lead times to prevent stockouts and save 25% costs. Free plan available. Join for Free - no credit card required."
-        keywords="what is lead time, lead time, lead time definition, lead time meaning, lead time calculation, lead time formula, lead time inventory, lead time management, lead time planning, lead time optimization, supplier lead time, production lead time, order lead time, lead time tracking, stockflow, stock flow"
+        title="What Is Lead-Time 2026 - Save 10-20% Costs, 7 Solutions | StockFlow"
+        description="Avoid costly inventory mistakes 2026 that cost 10-20% of inventory value annually. Discover 7 common errors and proven solutions. Reduce errors 90-95%. Free plan available. Join for Free - no credit card required."
+        keywords="inventory mistakes, stock errors, inventory problems, avoid inventory errors, common inventory mistakes, inventory management errors, prevent inventory mistakes, inventory tracking errors"
         url="https://www.stockflowsystems.com/what-is-lead-time"
-      />      
-      <section id="what-is" className="py-16 px-4 bg-white">
+        locale="en"
+    
+        structuredData={structuredData}
+      />
+
+      {/* Introduction */}
+      <div className="mb-12">
+        <p className="text-lg black leading-relaxed mb-6">
+          Learn how to avoid costly inventory mistakes. Discover the 7 most common errors and how to prevent them.
+        </p>
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Inventory mistakes can cost businesses thousands of euros in lost revenue, wasted stock, and operational inefficiencies. Understanding common pitfalls and implementing preventive measures is essential for maintaining accurate inventory and profitable operations.
+        </p>
+      </div>
+
+      {/* Common Mistakes Section */}
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6">
-              What is <span className="text-blue-600">Lead Time</span>?
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              The 7 Most Common Inventory Mistakes
             </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Lead time is the period between placing an order and receiving it. Understanding what is lead time is essential for effective inventory planning and preventing stockouts.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              These mistakes cost businesses 10-20% of their inventory value annually. Learn how to prevent them.
             </p>
           </div>
 
-          <div className="bg-blue-50 rounded-lg p-8 mb-8">
-            <h3 className="text-2xl font-bold mb-4">Lead Time Formula</h3>
-            <div className="text-xl font-semibold text-blue-600 mb-4">
-              Lead Time = Order Date → Receipt Date
-            </div>
-            <p className="text-gray-700 mb-4">
-              Lead time includes order processing time, manufacturing (if applicable), shipping time, and receiving time. Inventory management software like StockFlow tracks lead times automatically to help optimize inventory planning.
-            </p>
-            <div className="bg-white rounded-lg p-4 mt-4">
-              <h4 className="font-semibold text-gray-900 mb-2">Detailed Calculation:</h4>
-              <p className="text-sm text-gray-700">
-                Lead Time = Supplier Processing Time + Manufacturing Time (if applicable) + Shipping Time + Receiving/Inspection Time
+      
+        </div>
+      </section>
+
+      {/* Prevention Strategies Section */}
+      <section className="py-16 px-4 bg-blue-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+            How to Prevent Inventory Mistakes
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white p-8 rounded-xl shadow-md">
+              <h3 className="text-2xl font-bold mb-4 text-blue-600">Use Digital Inventory Management</h3>
+              <p className="text-gray-700 mb-4">
+                Replace manual Excel sheets and paper lists with <Link to="/inventory-management-software" className="text-blue-600 font-semibold hover:underline">professional inventory management software</Link>. 
+                Digital systems provide real-time updates, automatic calculations, and eliminate manual entry errors.
               </p>
-            </div>
-          </div>
-
-          <div className="prose prose-lg max-w-none mb-8">
-            <p className="text-lg text-gray-700 leading-relaxed mb-4">
-              <strong>Lead time</strong> is one of the most critical metrics in inventory management. It directly impacts your reorder points, safety stock levels, and overall inventory investment. Understanding and accurately tracking lead times can help you prevent stockouts, reduce carrying costs by up to 25%, and improve cash flow management.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Businesses that accurately track and account for lead times see significant improvements in inventory efficiency. For example, a retailer with 500 SKUs who properly accounts for lead time variations can reduce safety stock by 30% while maintaining the same service level, freeing up capital for growth. <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Modern inventory management software</Link> like StockFlow automatically tracks historical lead times and adjusts reorder points accordingly.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="concepts" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Key <span className="text-blue-600">Lead Time Concepts</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {concepts.map((concept, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <concept.icon className="w-12 h-12 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{concept.title}</h3>
-                <p className="text-gray-600">{concept.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="benefits" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Benefits of <span className="text-blue-600">Lead Time</span> Management
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Proper lead time management delivers measurable business benefits. Companies that accurately track and optimize lead times see significant improvements in inventory efficiency and cost reduction.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span className="text-gray-700">{benefit}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-50 to-green-50 rounded-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Real-World Impact</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg p-6">
-                <h4 className="font-semibold text-gray-900 mb-2">Stockout Prevention</h4>
-                <p className="text-2xl font-bold text-blue-600 mb-2">95%</p>
-                <p className="text-sm text-gray-600">Reduction in stockouts when lead times are accurately tracked</p>
-              </div>
-              <div className="bg-white rounded-lg p-6">
-                <h4 className="font-semibold text-gray-900 mb-2">Cost Reduction</h4>
-                <p className="text-2xl font-bold text-green-600 mb-2">25%</p>
-                <p className="text-sm text-gray-600">Average reduction in safety stock requirements</p>
-              </div>
-              <div className="bg-white rounded-lg p-6">
-                <h4 className="font-semibold text-gray-900 mb-2">Cash Flow</h4>
-                <p className="text-2xl font-bold text-purple-600 mb-2">30%</p>
-                <p className="text-sm text-gray-600">Improvement in cash flow from optimized inventory levels</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="calculation" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
-            How to Calculate and Optimize Lead Time
-          </h2>
-          <div className="prose prose-lg max-w-none">
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              Calculating lead time accurately requires tracking multiple components. Here's a practical approach:
-            </p>
-            <div className="bg-white rounded-lg p-6 mb-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Step-by-Step Calculation</h3>
-              <ol className="space-y-3 text-gray-700">
+              <ul className="space-y-2">
                 <li className="flex items-start">
-                  <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">1</span>
-                  <span><strong>Track historical data:</strong> Record the time from order placement to receipt for each supplier over at least 3-6 months</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-gray-700">99.9% accuracy with barcode scanning</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">2</span>
-                  <span><strong>Calculate average:</strong> Sum all lead times and divide by the number of orders to get average lead time</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-gray-700">Real-time synchronization across all devices</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">3</span>
-                  <span><strong>Account for variability:</strong> Calculate standard deviation to understand lead time variability and set appropriate safety stock</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 flex-shrink-0">4</span>
-                  <span><strong>Update regularly:</strong> Review and update lead times quarterly or when supplier relationships change</span>
-                </li>
-              </ol>
-            </div>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Inventory management software</Link> automates this process by tracking order dates and receipt dates, calculating averages, and adjusting reorder points automatically. This eliminates manual calculations and ensures your inventory levels are always optimized based on current lead time data.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="optimization" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
-            Strategies to Optimize Lead Times
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-blue-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Supplier Relationships</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Negotiate shorter lead times with reliable suppliers</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Maintain backup suppliers for critical items</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Use local suppliers when possible to reduce shipping time</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-gray-700">Automatic backups prevent data loss</span>
                 </li>
               </ul>
             </div>
-            <div className="bg-green-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Order Management</h3>
-              <ul className="space-y-2 text-gray-700">
+            <div className="bg-white p-8 rounded-xl shadow-md">
+              <h3 className="text-2xl font-bold mb-4 text-blue-600">Set Up Automation</h3>
+              <p className="text-gray-700 mb-4">
+                Automate repetitive tasks and eliminate human error. Use <Link to="/inventory-management-software" className="text-blue-600 font-semibold hover:underline">automated reorder points</Link> and 
+                stock level alerts to prevent stockouts and overstock situations.
+              </p>
+              <ul className="space-y-2">
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Place orders earlier based on accurate lead time data</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-gray-700">Automatic reorder point alerts</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Use automated reorder points that account for lead time</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-gray-700">Scheduled inventory reports</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                  <span>Monitor lead time trends and adjust safety stock accordingly</span>
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2 mt-1 flex-shrink-0" />
+                  <span className="text-gray-700">Integration with sales channels</span>
                 </li>
               </ul>
             </div>
@@ -282,43 +183,11 @@ export default function WhatIsLeadTime() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Automate Lead Time Tracking with StockFlow
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            StockFlow automatically tracks lead times, calculates averages, and adjusts reorder points to optimize your inventory levels. Join for Free today with up to 100 products.
-          </p>
-          <Link
-            to="/auth"
-            className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
-          >
-            Join for Free →
-          </Link>
-        </div>
-      </section>
 
 
-
-
-      <StructuredData data={[
-        {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": faqData.map(faq => ({
-            "@type": "Question",
-            "name": faq.question,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": faq.answer
-            }
-          }))
-        }
-      ]} />
+      {/* Structured Data */}
+      <StructuredData data={structuredData} />
     </SeoPageLayout>
   );
 }
-
-
 

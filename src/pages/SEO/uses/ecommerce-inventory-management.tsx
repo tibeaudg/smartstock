@@ -121,10 +121,18 @@ export default function EcommerceInventoryManagement() {
       heroTitle="Ecommerce Inventory Management"
       updatedDate="06/01/2026"
       faqData={faqData}
+      previousArticle={{
+        title: "Enterprise Inventory Management",
+        href: "/enterprise-inventory-management"
+      }}
+      nextArticle={{
+        title: "Cross-Dock Warehouse",
+        href: "/cross-dock-warehouse"
+      }}
     >
       <SEO
-        title="Ecommerce Inventory Management 2025 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
-        description="Complete ecommerce inventory management 2025. Multi-channel sync, real-time updates, prevent overselling. Integrate Shopify, Amazon, WooCommerce. Save 20+ hours/week, 99%+ accuracy. Free plan available. Join for Free - no credit card required."
+        title="Ecommerce Inventory Management 2026 - Prevent Overselling, Save 20+ Hours/Week | StockFlow"
+        description="Complete ecommerce inventory management 2026. Multi-channel sync, real-time updates, prevent overselling. Integrate Shopify, Amazon, WooCommerce. Save 20+ hours/week, 99%+ accuracy. Free plan available. Join for Free - no credit card required."
         keywords="ecommerce management software, ecommerce inventory management, multi platform inventory management, cross platform inventory management, ecommerce inventory software, multi platform inventory, cross platform inventory, ecommerce inventory system, multi channel inventory management, ecommerce inventory solution, inventory management for ecommerce, multi platform inventory software, cross platform inventory software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/ecommerce-inventory-management"
       />

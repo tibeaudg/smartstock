@@ -253,10 +253,18 @@ export default function StockFlowVsSortly() {
       heroTitle="StockFlow vs Sortly   Compare Features, Pricing, and Migration"
       dateUpdated="06/01/2026"
       heroDescription="Completely free forever vs $25/month • 5-7 day setup vs 30+ days • Save 100% costs • Free migration assistance"
+              previousArticle={{
+      title: "StockFlow vs Katana",
+      href: "/stockflow-vs-katana"
+    }}
+    nextArticle={{
+      title: "StockFlow vs Spreadsheets",
+      href: "/stockflow-vs-spreadsheets"
+    }}
     >
       <SEO
-        title="StockFlow vs Sortly   Compare Features, Pricing, and Migration 2025 | StockFlow"
-        description="Compare StockFlow vs Sortly 2025. Free forever vs $25/month, better features. 5-7 day setup vs 30+ days. EU hosting. Save 100% costs."
+        title="StockFlow vs Sortly   Compare Features, Pricing, and Migration 2026 | StockFlow"
+        description="Compare StockFlow vs Sortly 2026. Free forever vs $25/month, better features. 5-7 day setup vs 30+ days. EU hosting. Save 100% costs."
         keywords="StockFlow vs Sortly, Sortly vs StockFlow, StockFlow comparison, Sortly alternative, inventory software comparison, migrate from Sortly, StockFlow features, Sortly pricing, inventory management software, free inventory software, StockFlow migration, Sortly competitor, best inventory software, StockFlow vs Sortly pricing, StockFlow vs Sortly features"
         url="https://www.stockflowsystems.com/stockflow-vs-sortly"
         locale="en"
@@ -265,73 +273,6 @@ export default function StockFlowVsSortly() {
         ]}
       />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
-              StockFlow vs Sortly
-              <br />
-              <span className="text-blue-600">Compare Features, Pricing, and Migration</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-              Completely free forever vs $25/month • 5-7 day setup vs 30+ days • Save 100% costs • Free migration assistance
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto mb-8 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-            <p className="text-xl font-bold text-gray-900 mb-4">
-              ⚡ Quick Winner: StockFlow is completely FREE forever with unlimited everything vs Sortly's $25/month. 5-7 day setup vs 30+ days. European hosting, 24/7 support. Save 100% costs!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/auth"
-                className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-lg"
-              >
-                Migrate to StockFlow   Free Setup
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                to="/auth"
-                className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-lg"
-              >
-                Get Started Free
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="text-center bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-3xl font-bold text-green-600 mb-2">$0</div>
-              <div className="text-sm text-gray-600">Free Forever</div>
-              <div className="text-xs text-gray-500 mt-1">vs $25/month Sortly</div>
-            </div>
-            <div className="text-center bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-3xl font-bold text-green-600 mb-2">5-7 Days</div>
-              <div className="text-sm text-gray-600">Setup Time</div>
-              <div className="text-xs text-gray-500 mt-1">vs 30+ days Sortly</div>
-            </div>
-            <div className="text-center bg-white p-6 rounded-lg shadow-sm">
-              <div className="text-3xl font-bold text-purple-600 mb-2">90%</div>
-              <div className="text-sm text-gray-600">Cost Savings</div>
-              <div className="text-xs text-gray-500 mt-1">First year savings</div>
-            </div>
-          </div>
-
-          <div className="mt-8 flex items-center justify-center gap-4 text-sm text-gray-600">
-            <div className="flex items-center">
-              <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
-              <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
-              <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
-              <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
-              <Star className="h-5 w-5 text-yellow-400 fill-current mr-1" />
-              <span className="ml-2">4.9/5 rating</span>
-            </div>
-            <span>•</span>
-            <span>500+ businesses migrated from Sortly</span>
-          </div>
-        </div>
-      </section>
 
 
       {/* Feature Comparison Matrix */}
@@ -809,51 +750,6 @@ export default function StockFlowVsSortly() {
       </section>
 
 
-      {/* Final CTA Section */}
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Switch from Sortly to StockFlow?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8">
-            Save 90% on costs, get better features, and enjoy free migration assistance. 
-            Start with our free plan no credit card required.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/auth"
-              className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition text-lg"
-            >
-              Migrate to StockFlow   Free Setup
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-            <Link
-              to="/pricing"
-              className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition text-lg"
-            >
-              View Pricing
-            </Link>
-          </div>
-          <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-blue-100">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5" />
-              <span>Free plan available</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5" />
-              <span>Free migration assistance</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5" />
-              <span>5-7 day setup</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5" />
-              <span>No credit card required</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Structured Data */}
       <StructuredData data={[
@@ -875,7 +771,7 @@ export default function StockFlowVsSortly() {
           "@id": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "name": "StockFlow vs Sortly   Compare Features, Pricing, and Migration",
           "headline": "StockFlow vs Sortly: Free Plan vs $25/month, Better Features, 5-7 Day Setup",
-          "description": "Compare StockFlow vs Sortly 2025. Free forever vs $25/month, better features. 5-7 day setup vs 30+ days. EU hosting. Save 100% costs.",
+          "description": "Compare StockFlow vs Sortly 2026. Free forever vs $25/month, better features. 5-7 day setup vs 30+ days. EU hosting. Save 100% costs.",
           "url": "https://www.stockflowsystems.com/stockflow-vs-sortly",
           "inLanguage": "en",
           "isPartOf": {
