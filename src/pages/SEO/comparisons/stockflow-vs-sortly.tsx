@@ -246,10 +246,13 @@ export default function StockFlowVsSortly() {
 
   return (
     <SeoPageLayout 
-      title="StockFlow vs Sortly   Compare Features, Pricing, and Migration"
+      breadcrumbItems={[
+        { label: 'Home', href: '/' },
+        { label: 'StockFlow vs Sortly', href: '/stockflow-vs-sortly' }
+      ]}
       heroTitle="StockFlow vs Sortly   Compare Features, Pricing, and Migration"
-      updatedDate="3/12/2025"
-      faqData={faqData}
+      dateUpdated="06/01/2026"
+      heroDescription="Completely free forever vs $25/month • 5-7 day setup vs 30+ days • Save 100% costs • Free migration assistance"
     >
       <SEO
         title="StockFlow vs Sortly   Compare Features, Pricing, and Migration 2025 | StockFlow"

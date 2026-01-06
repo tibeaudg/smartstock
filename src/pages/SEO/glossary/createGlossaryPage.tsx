@@ -80,7 +80,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
       <SeoPageLayout 
         title={title} 
         heroTitle={title}
-        updatedDate="3/12/2025"
+        updatedDate="06/01/2026"
         faqData={faqData}
          
         

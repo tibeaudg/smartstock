@@ -36,7 +36,7 @@ interface TOCItem {
 
 interface SEOPageLayoutProps {
   breadcrumbItems: any[];
-  title: string;
+  heroTitle: string;              // ✅ FIXED: Renamed from 'title' to 'heroTitle' for clarity
   dateUpdated: string;
   heroDescription: string;
   children: React.ReactNode;
@@ -49,7 +49,7 @@ interface SEOPageLayoutProps {
 
 export const SEOPageLayout = memo(({
   breadcrumbItems,
-  title,
+  heroTitle,                      // ✅ FIXED: Now uses heroTitle (for display only)
   dateUpdated,
   heroDescription,
   children,
@@ -194,7 +194,7 @@ export const SEOPageLayout = memo(({
       <HeaderPublic />
       <main>
         <SEOPageHero 
-          title={title} 
+          title={heroTitle}              // ✅ FIXED: Uses heroTitle for display
           breadcrumbItems={breadcrumbItems} 
           dateUpdated={dateUpdated} 
           description={heroDescription} 

@@ -120,7 +120,7 @@ export default function CycleCount() {
     <SeoPageLayout 
       title="Cycle Count"
       heroTitle="Cycle Count"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
       
       

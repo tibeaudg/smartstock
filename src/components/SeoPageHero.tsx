@@ -1,96 +1,56 @@
 import React from 'react';
-import { Calendar, Clock } from 'lucide-react';
-import { Breadcrumbs } from './Breadcrumbs';
-
-interface BreadcrumbItem {
-  label: string;
-  href?: string;
-}
+import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 
 interface SEOPageHeroProps {
   title: string;
-  breadcrumbItems: BreadcrumbItem[];
+  breadcrumbItems?: Array<{ label: string; href: string }>;
   description?: string;
-  dateUpdated?: string;
-  readingTime?: string;
-  category?: string;
 }
 
-export function SEOPageHero({
+export const SEOPageHero: React.FC<SEOPageHeroProps> = ({
   title,
-  breadcrumbItems,
+  breadcrumbItems = [],
   description,
-  dateUpdated,
-  readingTime,
-  category,
-}: SEOPageHeroProps) {
+}) => {
   return (
-    <section
-      className="relative bg-slate-50 border-b border-slate-200"
-      aria-labelledby="page-title"
-    >
-      {/* Decorative background */}
-      <div
-        aria-hidden
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-      >
-        <div className="absolute -top-24 left-1/4 h-96 w-96 rounded-full bg-blue-100/50 blur-3xl" />
-        <div className="absolute -bottom-24 right-1/4 h-96 w-96 rounded-full bg-indigo-100/50 blur-3xl" />
-      </div>
+    <section className="bg-[#f8faff] border-b border-slate-100">
+      <div className="container mx-auto px-6 py-16 md:py-24">
+        {/* Breadcrumbs integrated into Hero container */}
+        {breadcrumbItems.length > 0 && (
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex items-center gap-2 text-sm font-medium text-slate-500">
+              {breadcrumbItems.map((item, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <Link 
+                    to={item.href}
+                    className="hover:text-[#1d4ed8] transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                  {index < breadcrumbItems.length - 1 && (
+                    <ChevronRight className="h-4 w-4 text-slate-300" />
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
 
-      <div className="relative container mx-auto px-6 py-20">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-
-          <Breadcrumbs
-            items={breadcrumbItems}
-            className="mb-6 justify-center"
-          />
-
-          {category && (
-            <span className="mb-5 inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-              {category}
-            </span>
-          )}
-
-          <h1
-            id="page-title"
-            className="mb-6 text-4xl font-extrabold tracking-tight text-slate-900 md:text-6xl leading-tight"
-          >
+        <div className="max-w-4xl mt-12">
+          <h1 className="text-5xl md:text-7xl font-black text-[#0f172a] tracking-tight mb-4">
             {title}
           </h1>
 
           {description && (
-            <p className="mb-8 max-w-2xl text-lg text-slate-600 md:text-xl leading-relaxed">
+            <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-normal">
               {description}
             </p>
           )}
-
-          {(dateUpdated || readingTime) && (
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-slate-500">
-              {dateUpdated && (
-                <div className="flex items-center gap-2">
-                  <Calendar
-                    className="h-4 w-4"
-                    aria-hidden
-                  />
-                  <span>Updated {dateUpdated}</span>
-                </div>
-              )}
-
-              {readingTime && (
-                <div className="flex items-center gap-2">
-                  <Clock
-                    className="h-4 w-4"
-                    aria-hidden
-                  />
-                  <span>{readingTime} read</span>
-                </div>
-              )}
-            </div>
-          )}
-
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default SEOPageHero;

@@ -164,7 +164,7 @@ export default function InventoryManagementSoftware() {
   return (
     <SeoPageLayout title="Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses"
     heroTitle="Inventory Management Software for Medical Device Distributors, Event Companies & Rental Businesses"
-    updatedDate="3/12/2025"
+    updatedDate="06/01/2026"
     faqData={faqData}
     >
       <SEO

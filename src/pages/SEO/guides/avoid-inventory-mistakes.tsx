@@ -150,7 +150,7 @@ export default function AvoidInventoryMistakes() {
     <SeoPageLayout 
       title="Avoid Inventory Mistakes"
       heroTitle="Avoid Inventory Mistakes"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

@@ -240,7 +240,7 @@ export default function AlertsPage() {
     <SeoPageLayout 
       title="Alerts"
       heroTitle="Alerts"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

@@ -213,7 +213,7 @@ export default function StockManagementSoftware() {
     <SeoPageLayout 
       title="Stock Management Software"
       heroTitle="Stock Management Software"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

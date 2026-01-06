@@ -55,7 +55,7 @@ export default function StockFlowVsZohoInventory() {
     <SeoPageLayout 
       title="StockFlow vs Zoho Inventory"
       heroTitle="StockFlow vs Zoho Inventory"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

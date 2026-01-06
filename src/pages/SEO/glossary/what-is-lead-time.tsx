@@ -87,7 +87,7 @@ export default function WhatIsLeadTime() {
     <SeoPageLayout 
       title="What is Lead Time"
       heroTitle="What is Lead Time"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
       
       

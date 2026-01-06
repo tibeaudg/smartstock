@@ -149,9 +149,8 @@ export default function CompareInventorySoftware() {
 
   return (
     <SeoPageLayout 
-      title="Compare Inventory Software"
       heroTitle="Compare Inventory Software"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

@@ -121,7 +121,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
        
       

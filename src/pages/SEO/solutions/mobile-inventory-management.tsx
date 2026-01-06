@@ -189,7 +189,7 @@ export default function MobileInventoryManagement() {
     <SeoPageLayout 
       title="Mobile Inventory Management"
       heroTitle="Mobile Inventory Management"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

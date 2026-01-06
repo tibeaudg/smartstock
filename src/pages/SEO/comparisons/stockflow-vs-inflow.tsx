@@ -144,7 +144,6 @@ export default function StockFlowVsInFlow() {
 
   return (
     <SeoPageLayout 
-      title="StockFlow vs InFlow"
       heroTitle="StockFlow vs InFlow: The Better Choice for Growing Businesses"
       updatedDate={new Date().toISOString().split("T")[0]}
       faqData={faqData}

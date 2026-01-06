@@ -104,7 +104,7 @@ export default function EnterpriseInventoryManagement() {
     <SeoPageLayout 
       title="Enterprise Inventory Management"
       heroTitle="Enterprise Inventory Management"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO

@@ -287,7 +287,7 @@ export default function AssetTracking() {
     <SeoPageLayout 
       title="Asset Tracking Software for Tools, Equipment & Spare Parts"
       heroTitle="Asset Tracking: Keep Tabs on Critical Tools, Equipment & Spare Parts"
-      updatedDate="3/12/2025"
+      updatedDate="06/01/2026"
       faqData={faqData}
     >
       <SEO
