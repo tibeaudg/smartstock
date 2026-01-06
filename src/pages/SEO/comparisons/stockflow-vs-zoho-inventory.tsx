@@ -88,14 +88,6 @@ export default function StockFlowVsZohoInventory() {
 
 
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={2}
-        />
-      )}
 
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

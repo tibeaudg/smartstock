@@ -53,9 +53,9 @@ export function HeroSection() {
                         <ParticleSystem particleCount={60} />
 
                         {/* Content Container */}
-                        <div className="mx-auto max-w-7xl px-6 relative" style={{ zIndex: 2 }}>
+                        <div className="mx-auto max-w-7xl px-6 relative pb-12" style={{ zIndex: 2 }}>
                             <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0 items-center flex flex-col justify-center align-center pt-16">
-                                <AnimatedGroup variants={transitionVariants} className="mt-20">
+                                <AnimatedGroup variants={transitionVariants} >
                                     {/* Headline with gradient text and staggered word reveal */}
                                     <h1 
                                         className="max-w-screen mx-auto text-balance items-center text-8xl leading-tight font-bold tracking-tight text-white"

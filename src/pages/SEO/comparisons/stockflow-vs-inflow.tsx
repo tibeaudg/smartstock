@@ -170,14 +170,7 @@ export default function StockFlowVsInFlow() {
 
 
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={2}
-        />
-      )}
+ 
 
       {/* Feature Comparison */}
       <section className="py-16 px-4 bg-white">

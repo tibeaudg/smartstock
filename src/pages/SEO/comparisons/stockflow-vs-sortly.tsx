@@ -331,16 +331,6 @@ export default function StockFlowVsSortly() {
       </section>
 
 
-
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={2}
-        />
-      )}
-
       {/* Feature Comparison Matrix */}
       <section id="features" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

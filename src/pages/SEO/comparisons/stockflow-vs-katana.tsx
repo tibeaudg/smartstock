@@ -139,15 +139,6 @@ export default function StockflowVsKatana() {
 
 
 
-      {/* Real Customer Results */}
-      {relevantTestimonials.length > 0 && (
-        <RealCustomerResults 
-          testimonials={relevantTestimonials}
-          variant="grid"
-          maxItems={2}
-        />
-      )}
-
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center">
