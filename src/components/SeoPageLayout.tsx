@@ -60,6 +60,7 @@ export const SEOPageLayout = memo(({
   const location = useLocation();
   const contentRef = useRef<HTMLDivElement>(null);
   const tocContainerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   
   const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState('');
@@ -89,28 +90,63 @@ export const SEOPageLayout = memo(({
     setTocItems(items);
   }, [children]);
 
-  // 3. Calculate fixed TOC position
+  // 3. Calculate fixed TOC position with proper boundaries
   useEffect(() => {
     const updateTocPosition = () => {
-      if (!tocContainerRef.current) return;
+      if (!tocContainerRef.current || !sectionRef.current) return;
 
-      const rect = tocContainerRef.current.getBoundingClientRect();
+      const tocRect = tocContainerRef.current.getBoundingClientRect();
+      const sectionRect = sectionRef.current.getBoundingClientRect();
       const scrollY = window.scrollY;
-      const containerTop = tocContainerRef.current.offsetTop;
-
-      // Show fixed TOC when scrolled past the original position
-      if (scrollY > containerTop - 120) {
+      
+      // Get absolute positions
+      const tocContainerTop = tocContainerRef.current.offsetTop;
+      const sectionTop = sectionRef.current.offsetTop;
+      const sectionBottom = sectionTop + sectionRef.current.offsetHeight;
+      
+      const headerOffset = 120;
+      const bottomPadding = 40; // Extra padding from bottom
+      
+      // Check if we've scrolled past the TOC's starting position
+      const hasScrolledPastStart = scrollY + headerOffset > tocContainerTop;
+      
+      if (hasScrolledPastStart) {
         setShowFixedToc(true);
-        setTocStyles({
-          position: 'fixed',
-          top: '120px',
-          left: `${rect.left}px`,
-          width: `${rect.width}px`,
-          maxHeight: 'calc(100vh - 140px)',
-          overflowY: 'auto',
-          zIndex: 40
-        });
+        
+        // Get the TOC element to measure its actual height
+        const tocElement = document.querySelector('[data-toc-fixed]') as HTMLElement;
+        const tocHeight = tocElement ? tocElement.offsetHeight : 500;
+        
+        // Calculate the maximum top position (where TOC should stop)
+        const maxTopPosition = sectionBottom - tocHeight - bottomPadding;
+        const currentTopPosition = scrollY + headerOffset;
+        
+        // Check if we need to stop at the bottom
+        if (currentTopPosition > maxTopPosition) {
+          // Stop scrolling - use absolute positioning
+          setTocStyles({
+            position: 'absolute',
+            top: `${maxTopPosition}px`,
+            left: `${tocRect.left + window.scrollX}px`,
+            width: `${tocRect.width}px`,
+            maxHeight: 'calc(100vh - 140px)',
+            overflowY: 'auto',
+            zIndex: 40
+          });
+        } else {
+          // Normal fixed positioning - follow scroll
+          setTocStyles({
+            position: 'fixed',
+            top: `${headerOffset}px`,
+            left: `${tocRect.left}px`,
+            width: `${tocRect.width}px`,
+            maxHeight: 'calc(100vh - 140px)',
+            overflowY: 'auto',
+            zIndex: 40
+          });
+        }
       } else {
+        // Not scrolled past start - hide fixed TOC
         setShowFixedToc(false);
       }
     };
@@ -164,7 +200,7 @@ export const SEOPageLayout = memo(({
           description={heroDescription} 
         />
         
-        <section className="container mx-auto px-4 py-12">
+        <section ref={sectionRef} className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-16">
             
             <article ref={contentRef} className="min-w-0">
@@ -190,9 +226,9 @@ export const SEOPageLayout = memo(({
 
       </main>
 
-      {/* Fixed TOC that follows scroll - WILL work regardless of CSS */}
+      {/* Fixed/Absolute TOC that follows scroll and stops at section bottom */}
       {showFixedToc && (
-        <div style={tocStyles} className="hidden lg:block">
+        <div style={tocStyles} className="hidden lg:block" data-toc-fixed>
           <TableOfContents items={tocItems} activeId={activeId} />
           <div className="mt-8 pt-8 border-t border-slate-200">
             <BackToTop />
