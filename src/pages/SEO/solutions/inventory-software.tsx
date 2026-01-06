@@ -213,7 +213,7 @@ export default function InventorySoftware() {
         title="Inventory Software 2025 - Save 30% Costs, 15 Hours/Week | StockFlow"
         description="Best inventory software 2025. Real-time tracking, barcode scanning, automated alerts. Reduce costs 30% & save 15 hours/week. StockFlow is completely free forever - all features included, unlimited usage. Join for Free today - no credit card required."
         keywords="inventory software, stock management software, inventory tracking software, inventory management software, stock software, inventory control software, warehouse management software, inventory system software, stock tracking software, inventory software for small business, best inventory software, inventory software free, cloud inventory software, inventory software comparison, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/solutions/inventory-software"
+        url="https://www.stockflowsystems.com/inventory-software"
       />
 
 
@@ -783,7 +783,7 @@ export default function InventorySoftware() {
                 "image": "https://www.stockflowsystems.com/Inventory-Management.png",
                 "mainEntityOfPage": {
                   "@type": "WebPage",
-                  "@id": "https://www.stockflowsystems.com/solutions/inventory-software"
+                  "@id": "https://www.stockflowsystems.com/inventory-software"
                 },
                 "featureList": [
                   "Real-time inventory tracking",

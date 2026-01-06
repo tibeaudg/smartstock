@@ -166,7 +166,7 @@ export default function SuppliersSolutionPage() {
       dateModified: '2025-11-25',
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': 'https://www.stockflowsystems.com/solutions/suppliers'
+        '@id': 'https://www.stockflowsystems.com/suppliers'
       },
       keywords: 'supplier management software, vendor management, procurement automation'
     },
@@ -216,7 +216,7 @@ export default function SuppliersSolutionPage() {
         title="Supplier Management Software 2025 - Save 20-30% Costs | StockFlow"
         description="Centralize supplier data 2025, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/solutions/suppliers"
+        url="https://www.stockflowsystems.com/suppliers"
         structuredData={structuredData}
       />
 

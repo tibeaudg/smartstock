@@ -123,7 +123,7 @@ export default function StockManagementSoftware() {
       "dateModified": "2025-11-25",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://www.stockflowsystems.com/solutions/stock-management-software"
+        "@id": "https://www.stockflowsystems.com/stock-management-software"
       },
       "keywords": "stock management software, inventory software, stock control, warehouse software"
     },
@@ -173,7 +173,7 @@ export default function StockManagementSoftware() {
           "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
-      "url": "https://www.stockflowsystems.com/solutions/stock-management-software",
+      "url": "https://www.stockflowsystems.com/stock-management-software",
       "featureList": [
         "Real-time stock tracking",
         "Automated reorder alerts",
@@ -203,7 +203,7 @@ export default function StockManagementSoftware() {
           "@type": "ListItem",
           "position": 3,
           "name": "Stock Management Software",
-          "item": "https://www.stockflowsystems.com/solutions/stock-management-software"
+          "item": "https://www.stockflowsystems.com/stock-management-software"
         }
       ]
     }
@@ -220,10 +220,10 @@ export default function StockManagementSoftware() {
         title="Stock Management Software 2025 - Save 10+ Hours/Week, 90% Fewer Errors | StockFlow"
         description="Professional stock management software 2025 for SMEs. Real-time tracking, automated reordering, barcode scanning. Save 10+ hours weekly, reduce errors by 90%. Free plan for up to 100 products. Join for Free - no credit card required."
         keywords="stock management software, inventory software, stock control, warehouse software, SMB stock, small business inventory, stock tracking software, inventory management for small business, stock management system, stock control software, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/solutions/stock-management-software"
+        url="https://www.stockflowsystems.com/stock-management-software"
         locale="en"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/solutions/stock-management-software' },
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/stock-management-software' },
           { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/stockbeheer-software' }
         ]}
         structuredData={structuredData}

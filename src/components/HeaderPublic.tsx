@@ -424,7 +424,7 @@ const Header: React.FC<HeaderProps> = ({
     <header ref={headerRef} className={`fixed inset-x-0 top-0 z-[99] ${className}`}>
   
 
-      <div className="border-b border-gray-400" style={{ backgroundColor: baseColor }}>
+      <div className="border-b border-gray-200" style={{ backgroundColor: baseColor }}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:py-4">
           <div className="flex items-center gap-8">
             <Link to="/" onClick={handleNavigate} className="flex items-center gap-3">

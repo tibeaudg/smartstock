@@ -22,10 +22,7 @@ const faqData = [
     question: "What are the benefits of a barcode inventory system?",
     answer: "Barcode inventory systems offer numerous benefits including dramatically improved accuracy (reducing errors from 1-2% to less than 0.01%), faster inventory counting (up to 10x faster than manual methods), real-time visibility into stock levels across all locations, significant time savings by eliminating manual data entry, better compliance with audit trail requirements, reduced labor costs, prevention of stockouts and overstock situations, seamless integration with accounting and ERP systems, and scalability to grow with your business. Studies show that businesses implementing barcode inventory systems typically see 35-50% reduction in inventory counting time and 90% reduction in data entry errors."
   },
-  {
-    question: "How much does a barcode inventory system cost?",
-    answer: "Barcode inventory system costs vary based on the solution type. Cloud-based barcode inventory software typically ranges from €0-€300 per month, with free plans available for small businesses (like StockFlow's free plan for up to 100 SKUs). Mobile scanning apps can work with existing smartphones, eliminating the need for expensive hardware. Additional costs may include barcode label printers (€200-€1,500), barcode labels (€0.01-€0.10 per label), optional handheld scanners (€100-€500, though not required with mobile solutions), and implementation services. Total first-year cost for a small business can be as low as €0-€2,000, while enterprise solutions may cost €10,000-€50,000+ annually. StockFlow offers transparent pay-as-you-grow pricing starting at €0.004 per product per month after the free tier, with no setup fees."
-  },
+
   {
     question: "How do I implement a barcode inventory system?",
     answer: "Implementing a barcode inventory system involves five key steps: (1) Choose your barcode inventory software solution and ensure it supports mobile scanning if you want to use smartphones. (2) Set up your inventory database with all products, SKUs, locations, and initial quantities. (3) Generate and print barcode labels for all inventory items using the software's built-in barcode generator. (4) Affix barcode labels to items, ensuring they're visible and scannable. (5) Train your team on scanning procedures for receiving, picking, shipping, and cycle counting. Most modern cloud-based barcode inventory systems like StockFlow can be implemented in 5-7 days with guided onboarding. Start with a pilot location or product category, then expand once your team is comfortable with the process."
@@ -113,9 +110,7 @@ export default function BarcodeInventoryPage() {
             <p className="text-lg leading-relaxed text-gray-700 mb-6">
               Modern <strong>barcode inventory systems</strong> combine barcode scanning hardware (or smartphone cameras), inventory management software, and cloud-based databases to create a comprehensive tracking solution. Unlike traditional manual inventory methods, barcode inventory systems provide instant updates, maintain complete audit trails, and integrate seamlessly with accounting, ecommerce, and ERP systems.
             </p>
-            <p className="text-lg leading-relaxed text-gray-700">
-              Whether you're managing 100 SKUs or 100,000, a <strong>barcode inventory system</strong> scales with your business. Small businesses can start with free mobile scanning apps, while enterprise operations can deploy industrial-grade scanners with advanced warehouse management features. The key advantage is accuracy: barcode inventory systems reduce counting errors from 1-2% to less than 0.01%, saving time and preventing costly stockouts or overstock situations.
-            </p>
+  
           </div>
 
           <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6 mb-12">
@@ -342,27 +337,6 @@ export default function BarcodeInventoryPage() {
               </ul>
             </div>
 
-            {/* Cost Comparison Card */}
-            <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
-              <h3 className="text-xl font-bold text-blue-900 mb-6 text-center">First-Year Investment Estimator</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
-                  <span className="font-medium text-gray-600">Small Business (100 SKUs)</span>
-                  <span className="font-bold text-green-600">€0 - €500</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
-                  <span className="font-medium text-gray-600">Growing Retail (2k SKUs)</span>
-                  <span className="font-bold text-blue-600">€1,500 - €3,000</span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
-                  <span className="font-medium text-gray-600">Warehouse (10k+ SKUs)</span>
-                  <span className="font-bold text-indigo-600">€5,000 - €15,000</span>
-                </div>
-              </div>
-              <p className="text-xs text-blue-600 mt-4 text-center">
-                *Estimates include software, label printer, and initial labels.
-              </p>
-            </div>
           </div>
         </div>
       </section>

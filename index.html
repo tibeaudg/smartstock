@@ -5,25 +5,30 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free Inventory Management   StockFlow | Barcode, Mobile, Reporting</title>
+  <title>Free Inventory Management StockFlow |Inventory Chaos? Track Stock in Real-Time (Completely Free) | StockFlow
+  </title>
   <link rel="icon" href="/favicon.ico" />
   <!-- Meta description handled by React Helmet for dynamic SEO -->
-  
+
   <!-- Open Graph Meta Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.stockflowsystems.com/" />
-  <meta property="og:title" content="Free Inventory Management   StockFlow | Barcode, Mobile, Reporting" />
-  <meta property="og:description" content="Free inventory management software with barcode scanning, mobile access & reporting. Track stock in real-time, prevent stockouts, save 35% costs. Join for Free - no credit card!" />
+  <meta property="og:title"
+    content="Free Inventory Management   StockFlow |Inventory Chaos? Track Stock in Real-Time (Completely Free) | StockFlow" />
+  <meta property="og:description"
+    content="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Completely free. 15+ hours saved weekly." />
   <meta property="og:image" content="https://www.stockflowsystems.com/Inventory-Management.png" />
   <meta property="og:site_name" content="StockFlow" />
-  
+
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://www.stockflowsystems.com/" />
-  <meta name="twitter:title" content="Free Inventory Management   StockFlow | Barcode, Mobile, Reporting" />
-  <meta name="twitter:description" content="Free inventory management software with barcode scanning, mobile access & reporting. Track stock in real-time, prevent stockouts, save 35% costs. Join for Free - no credit card!" />
+  <meta name="twitter:title"
+    content="Free Inventory Management   StockFlow |Inventory Chaos? Track Stock in Real-Time (Completely Free) | StockFlow" />
+  <meta name="twitter:description"
+    content="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Completely free. 15+ hours saved weekly." />
   <meta name="twitter:image" content="https://www.stockflowsystems.com/Inventory-Management.png" />
-  
+
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     connect-src 'self' https://sszuxnqhbxauvershuys.supabase.co wss://sszuxnqhbxauvershuys.supabase.co https://www.google-analytics.com https://region1.google-analytics.com https://www.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.googleadservices.com https://www.google.be https://api.stripe.com https://checkout.stripe.com https://*.stripe.com https://m.stripe.network https://api.ipify.org https://clients5.google.com https://connect.facebook.net https://www.facebook.com https://analytics.google.com;
@@ -41,69 +46,112 @@
     require-trusted-types-for 'script';
     upgrade-insecure-requests;
   ">
-  
+
   <!-- Preconnect to critical origins -->
   <link rel="preconnect" href="https://sszuxnqhbxauvershuys.supabase.co" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
+
   <!-- DNS prefetch for external domains -->
   <link rel="dns-prefetch" href="//www.googletagmanager.com">
   <link rel="dns-prefetch" href="//www.google-analytics.com">
   <link rel="dns-prefetch" href="//js.stripe.com">
   <link rel="dns-prefetch" href="//m.stripe.network">
-  
+
   <!-- Preconnect to Stripe domains for faster connection establishment -->
   <link rel="preconnect" href="https://js.stripe.com" crossorigin>
   <link rel="preconnect" href="https://m.stripe.network" crossorigin>
-  
+
   <!-- Preload critical images -->
   <link rel="preload" as="image" href="/logo.png" fetchpriority="high">
   <link rel="preload" as="image" href="/newmobile.png" fetchpriority="high">
-  
+
   <!-- Note: Modulepreload removed - these are source files and will be handled by Vite's build process -->
-  
+
   <!-- Font preloading removed - fonts will load on-demand to avoid unused preload warnings -->
-  
+
   <style>
     /* Critical CSS: minimal layout for fast first render */
-    html,body{min-height:100vh;margin:0;padding:0;width:100%;background:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-    *{box-sizing:border-box;}
-    #root{width:100vw;margin:0 auto;overflow-x:hidden;}
-    .loading-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f9fafb;}
-    .spinner{border:3px solid #e5e7eb;border-top-color:#2563eb;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;}
-    @keyframes spin{to{transform:rotate(360deg);}}
+    html,
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background: #fff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    #root {
+      width: 100vw;
+      margin: 0 auto;
+      overflow-x: hidden;
+    }
+
+    .loading-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f9fafb;
+    }
+
+    .spinner {
+      border: 3px solid #e5e7eb;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     /* Prevent layout shift */
-    img{max-width:100%;height:auto;}
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   </style>
 </head>
 
 <body>
   <!-- Note: Meta Pixel noscript removed - requires cookie consent -->
   <!-- Tracking pixels will only load after user consent -->
-  
+
   <div id="root">
     <!-- Loading placeholder -->
     <div class="loading-screen">
       <div class="spinner"></div>
     </div>
   </div>
-  
+
   <!-- Cookie Consent Notice: Tracking scripts are now loaded conditionally -->
   <!-- Scripts will only load after user consent via the Cookie Consent banner -->
   <!-- See src/utils/cookieConsentManager.ts for implementation -->
   <script>
     // Initialize tracking flag
     window.stockflowTrackingReady = false;
-    
+
     // This will be called by the cookie consent manager after user accepts
-    window.initStockflowTracking = function() {
+    window.initStockflowTracking = function () {
       // Only load in production
       if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
         window.stockflowTrackingReady = true;
       }
     };
   </script>
-  
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
+
 </html>

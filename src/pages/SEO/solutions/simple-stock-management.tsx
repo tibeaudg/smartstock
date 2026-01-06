@@ -86,7 +86,7 @@ export default function SimpleStockManagement() {
         title="Simple Stock Management Software | StockFlow"
         description="Simple stock management made easy. Intuitive inventory control, real-time tracking, automated alerts, barcode scanning. Save 70% time. Free plan available."
         keywords="simple stock management, easy inventory, simple inventory software, straightforward stock control, easy stock management, simple inventory system, user-friendly inventory, easy stock tracking, simple inventory management, easy stock control, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/solutions/simple-stock-management"
+        url="https://www.stockflowsystems.com/simple-stock-management"
       />
 
 
@@ -231,7 +231,7 @@ export default function SimpleStockManagement() {
           "dateModified": "2025-11-25",
           "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https://www.stockflowsystems.com/solutions/simple-stock-management"
+            "@id": "https://www.stockflowsystems.com/simple-stock-management"
           },
           "keywords": "simple stock management, easy inventory control, user-friendly inventory"
         },
@@ -260,7 +260,7 @@ export default function SimpleStockManagement() {
             "description": "Free plan available"
           },
           "description": "Simple stock management system designed for ease of use. Intuitive interface, essential features, and quick setup. Perfect for businesses that want effective inventory control without complexity.",
-          "url": "https://www.stockflowsystems.com/solutions/simple-stock-management",
+          "url": "https://www.stockflowsystems.com/simple-stock-management",
           "featureList": [
             "Easy-to-use interface",
             "Real-time stock tracking",

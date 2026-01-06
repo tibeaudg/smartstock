@@ -171,7 +171,7 @@ export default function InventoryManagementSoftware() {
         title="Inventory Software for Medical, Event & Rental | StockFlow"
         description="Specialized inventory software for medical device distributors, event companies & rental businesses. Compliance tracking, equipment scheduling. Free plan available."
         keywords="inventory management software for medical device distributors, medical device inventory tracking, AV equipment inventory management, rental business inventory software, event production inventory, medical device compliance tracking, AV equipment scheduling, rental inventory management, party equipment tracking, machinery rental software, medical device distributor software, event company inventory, rental business software, stockflow, inventory tracking software"
-        url="https://www.stockflowsystems.com/solutions/inventory-management-software"
+        url="https://www.stockflowsystems.com/inventory-management-software"
         locale="en"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-management-software' },
@@ -234,7 +234,7 @@ export default function InventoryManagementSoftware() {
       {/* Schema.org Structured Data */}
       <StructuredData data={generateSeoPageStructuredData({
         title: "Inventory Management Software - StockFlow",
-        description: "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. 5-7 day setup. Trusted by 1,000+ businesses.",
+        description: "#1 Inventory Management Software 2026. FREE, real-time tracking, barcode scanning. Trusted by 1,000+ businesses.",
         url: location.pathname,
         breadcrumbs: getBreadcrumbPath(location.pathname).map((item, index) => ({
           name: item.name,
@@ -244,7 +244,7 @@ export default function InventoryManagementSoftware() {
         faqData: faqData,
         softwareData: {
           name: "StockFlow - Inventory Management Software",
-          description: "#1 Inventory Management Software 2025. FREE plan (100 SKUs), real-time tracking, barcode scanning. 5-7 day setup. Trusted by 1,000+ businesses.",
+        description: "#1 Inventory Management Software 2026. FREE, real-time tracking, barcode scanning. Trusted by 1,000+ businesses.",
           category: "BusinessApplication",
           operatingSystem: "Web Browser",
           price: "0",
@@ -273,13 +273,7 @@ export default function InventoryManagementSoftware() {
               availability: "https://schema.org/InStock",
               validFrom: "2024-01-01"
             },
-            {
-              price: "29",
-              priceCurrency: "EUR",
-              description: "Growth plan - Advanced features for growing businesses",
-              availability: "https://schema.org/InStock",
-              validFrom: "2024-01-01"
-            }
+
           ]
         },
         pageType: 'software',

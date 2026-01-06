@@ -170,7 +170,7 @@ export default function AssetsInventory() {
     "dateModified": "2025-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflowsystems.com/solutions/assets-inventory"
+      "@id": "https://www.stockflowsystems.com/assets-inventory"
     }
   };
 
@@ -199,7 +199,7 @@ export default function AssetsInventory() {
         title="Assets Inventory Management Software 2025 - Reduce Loss 40-60%, Save Time | StockFlow"
         description="Assets inventory management software 2025 for tracking equipment, vehicles, IT assets. Barcode scanning, maintenance scheduling, location tracking. Reduce loss 40-60%, save 10+ hours/week. Free plan for up to 100 assets. Join for Free - no credit card required."
         keywords="assets inventory, asset inventory management, asset tracking software, equipment inventory, IT asset management, asset management system, fixed asset tracking, asset tracking app, asset inventory software, equipment tracking software, asset management software, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/solutions/assets-inventory"
+        url="https://www.stockflowsystems.com/assets-inventory"
         structuredData={[structuredData, faqStructuredData]}
       />
 
