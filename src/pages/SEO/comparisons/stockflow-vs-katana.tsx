@@ -82,6 +82,14 @@ export default function StockflowVsKatana() {
       heroTitle="StockFlow vs Katana"
       updatedDate="06/01/2026"
       faqData={faqData}
+        previousArticle={{
+      title: "StockFlow vs Cin7",
+      href: "/stockflow-vs-cin7"
+    }}
+    nextArticle={{
+      title: "StockFlow vs inFlow",
+      href: "/stockflow-vs-inflow"
+    }}
     >
       <SEO
         title="StockFlow vs Katana 2025 - Save 50% Costs, Faster Setup | StockFlow"
@@ -91,51 +99,6 @@ export default function StockflowVsKatana() {
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
-
-      <section className="bg-gradient-to-br from-blue-50 to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div>              <p className="text-xl text-gray-600 mb-8">
-                Katana excels at shop-floor scheduling for manufacturers. StockFlow unifies inventory, procurement, and fulfillment across e-commerce, retail, and wholesale. If you're manufacturing-focused with complex production routing, consider Katana. If you're managing multiple sales channels and need fast setup, StockFlow fits better and it's free forever.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/auth"
-                  className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
-                >
-                  Try StockFlow Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <Link
-                  to="/pricing"
-                  className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition"
-                >
-                  Compare Pricing
-                </Link>
-              </div>
-              <div className="mt-6 flex items-center gap-4">
-                <div className="flex items-center">
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                  <span className="ml-2 text-sm text-gray-600">5.0/5</span>
-                </div>
-                <span className="text-sm text-gray-600">500+ teams modernise operations with StockFlow</span>
-              </div>
-            </div>
-            <div>
-              <img
-                src="/Inventory-Management.png"
-                alt="StockFlow vs Katana comparison"
-                className="rounded-lg shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
 
 
       <section className="py-16 px-4 bg-white">

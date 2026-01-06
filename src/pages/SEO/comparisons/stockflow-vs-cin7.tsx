@@ -92,6 +92,14 @@ export default function StockFlowVsCin7() {
       heroTitle="StockFlow vs Cin7"
       updatedDate="06/01/2026"
       faqData={faqData}
+              previousArticle={{
+      title: "Compare Inventory Software",
+      href: "/compare-inventory-software"
+    }}
+    nextArticle={{
+      title: "StockFlow vs inFlow",
+      href: "/stockflow-vs-inflow"
+    }}
     >
       <SEO
         title="StockFlow vs Cin7 2025 - Save 90% Costs, 10x Faster Setup | StockFlow"

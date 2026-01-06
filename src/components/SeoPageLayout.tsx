@@ -36,27 +36,33 @@ interface TOCItem {
 
 interface SEOPageLayoutProps {
   breadcrumbItems: any[];
-  heroTitle: string;              // ✅ FIXED: Renamed from 'title' to 'heroTitle' for clarity
+  heroTitle: string;
   dateUpdated: string;
   heroDescription: string;
   children: React.ReactNode;
   keyTakeaways?: string[];
   recentArticles?: any[];
   pageLanguage?: 'nl' | 'en';
+  previousArticle?: ArticleNavItem | null;  // Add this
+  nextArticle?: ArticleNavItem | null;      // Add this
 }
-
 // --- Main Layout ---
 
+// Update the SEOPageLayout component props
 export const SEOPageLayout = memo(({
   breadcrumbItems,
-  heroTitle,                      // ✅ FIXED: Now uses heroTitle (for display only)
+  heroTitle,
   dateUpdated,
   heroDescription,
   children,
   keyTakeaways = [],
   recentArticles = [],
   pageLanguage = 'en',
+  previousArticle = null,  // Add default
+  nextArticle = null,      // Add default
 }: SEOPageLayoutProps) => {
+
+
   const location = useLocation();
   const contentRef = useRef<HTMLDivElement>(null);
   const tocContainerRef = useRef<HTMLDivElement>(null);
@@ -194,11 +200,14 @@ export const SEOPageLayout = memo(({
       <HeaderPublic />
       <main>
         <SEOPageHero 
-          title={heroTitle}              // ✅ FIXED: Uses heroTitle for display
+          title={heroTitle}
           breadcrumbItems={breadcrumbItems} 
           dateUpdated={dateUpdated} 
-          description={heroDescription} 
+          description={heroDescription}
+          previousArticle={previousArticle}  // Pass navigation data
+          nextArticle={nextArticle}
         />
+
         
         <section ref={sectionRef} className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-16">

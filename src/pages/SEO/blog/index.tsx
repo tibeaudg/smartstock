@@ -405,12 +405,12 @@ export default function SeoBlogIndexPage() {
                     </div>
 
                     {/* Articles Grid for this Category */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="flex-row gap-6">
                       {pagesInCategory.map((page) => (
                         <Link
                           key={page.path}
                           to={page.path}
-                          className="group flex flex-col h-full bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200"
+                          className="m-6 group flex flex-col h-full bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200"
                         >
                           {/* Title */}
                           <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">

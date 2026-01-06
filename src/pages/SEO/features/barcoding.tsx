@@ -266,43 +266,7 @@ export default function BarcodingPage() {
         }))
       }]} />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <div>
-              <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
-                PWA Barcode Scanner
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                StockFlow Barcoding for Real-Time Inventory Accuracy
-              </h1>
-              <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
-                Give every team member a lightning-fast barcode scanner that runs in the browser. Capture codes, validate data, and sync stock levels across every channel without installing native apps.
-              </p>
-     
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-indigo-100/80">
-                <span className="inline-flex items-center">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  GS1 & QR compatible
-                </span>
-                <span className="inline-flex items-center">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Works online & offline
-                </span>
-              </div>
-            </div>
-            <div className="relative ">
-              <div className="absolute -inset-4 rounded-3xl bg-white/10 blur-3xl" />
-                  <img
-                    src="/scanner2.png"
-                    alt="StockFlow barcode scanner interface"
-                    className="h-[96] w-64 object-cover rounded-3xl"
-                  />
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Feature Highlights */}
       <div className="py-20">

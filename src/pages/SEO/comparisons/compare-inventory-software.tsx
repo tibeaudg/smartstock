@@ -164,57 +164,6 @@ export default function CompareInventorySoftware() {
       />
       <StructuredData data={structuredData} />
 
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-white py-12 md:py-20 px-4">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-              <Sparkles className="w-4 h-4" />
-              2025 Inventory Management Buyer’s Guide
-            </span>
-            <h1 className="mt-6 text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
-              Compare Inventory Software and choose the platform that scales with you
-            </h1>
-            <p className="mt-5 text-lg text-slate-600">
-              We did the legwork on real pricing and packaged capabilities from leading systems so you can benchmark
-              against StockFlow, shortlist faster, and avoid costly mismatches.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/auth"
-                className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
-              >
-                Get Started Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <button
-                onClick={() => setIsVideoModalOpen(true)}
-                className="inline-flex items-center justify-center border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition"
-              >
-                Talk to an expert
-              </button>
-            </div>
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-slate-600">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                Free for up to 30 products
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                Onboarded in weeks, not quarters
-              </div>
-            </div>
-          </div>
-          <div className="relative">
-            <div className="absolute inset-0 bg-blue-100 rounded-3xl blur-3xl opacity-60" />
-            <img
-              src="/Inventory-Management.png"
-              alt="Inventory software comparison dashboard"
-              className="relative rounded-3xl shadow-2xl border border-blue-100"
-            />
-          </div>
-        </div>
-      </section>
 
 
 
@@ -232,13 +181,7 @@ export default function CompareInventorySoftware() {
                 with vendors before you commit budget or timelines.
               </p>
             </div>
-            <Link
-              to="/pricing"
-              className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition"
-            >
-              See StockFlow pricing
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+       
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
@@ -342,38 +285,6 @@ export default function CompareInventorySoftware() {
         </div>
       </section>
 
-
-      {/* CTA */}
-      <section className="py-20 px-4 bg-blue-600 text-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold">
-            Ready to see StockFlow handle your edge cases?
-          </h2>
-          <p className="mt-4 text-lg text-blue-100">
-            Bring a messy SKU catalog, multi-location fulfillment, or supplier constraints we’ll map it in a live
-            workspace so you can compare results against your current stack.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <button
-              onClick={() => setIsVideoModalOpen(true)}
-              className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition"
-            >
-              Book a tailored walkthrough
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
-            <Link
-              to="/customer-stories"
-              className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition"
-            >
-              Explore customer stories
-            </Link>
-          </div>
-        </div>
-      </section>
-      <VideoModal 
-        isOpen={isVideoModalOpen} 
-        onClose={() => setIsVideoModalOpen(false)} 
-      />
     </SeoPageLayout>
   );
 }

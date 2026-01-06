@@ -260,57 +260,7 @@ export default function InventoryPhotosPage() {
       />
       <StructuredData data={structuredData} />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-indigo-700 via-purple-700 to-blue-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <div>
-              <Badge className="bg-white/15 text-white uppercase tracking-wider mb-6">
-                Product Photo Management
-              </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                Inventory Photos for Better Product Identification
-              </h1>
-              <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl">
-                Add unlimited photos to your inventory items for visual identification, reduced errors, and improved e-commerce listings. Upload from any device, organize with tags, and sync automatically to your online stores.
-              </p>
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {metrics.map((metric, index) => (
-                  <div key={index} className="rounded-xl border border-white/20 bg-white/10 p-4">
-                    <div className="flex items-center gap-2 text-sm uppercase tracking-wide text-indigo-100">
-                      {metric.icon}
-                      {metric.title}
-                    </div>
-                    <div className="mt-2 text-3xl font-semibold">{metric.label}</div>
-                    <p className="mt-2 text-sm text-indigo-100/80">{metric.description}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3 text-sm text-indigo-100/80">
-                <span className="inline-flex items-center">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Unlimited photos per product
-                </span>
-                <span className="inline-flex items-center">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Auto-sync to e-commerce
-                </span>
-              </div>
-            </div>
-            <div className="relative ">
-              <div className="absolute -inset-4 rounded-3xl bg-white/10 blur-3xl" />
-                  <img
-                    src="/Inventory-Management.png"
-                    alt="StockFlow inventory photo management interface"
-                    width={512}
-                    height={512}
-                    loading="lazy"
-                    className="h-[96] w-64 object-cover rounded-3xl"
-                  />
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Feature Highlights */}
       <div className="py-20">
