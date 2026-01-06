@@ -93,8 +93,7 @@ export default function AssetControllerMeaning() {
     >
       <SEO
         description="Learn what asset controller means in inventory management. Understand asset controller responsibilities, how asset controller software works, and why it"
-        title="Asset Controller Meaning | What is Asset Controller 2025 | StockFlow"
-        description="Discover the asset controller meaning in inventory management. Learn what asset controller means, asset controller responsibilities, and how asset controller software helps businesses track and manage assets."
+        title="Asset Controller Meaning | What is Asset Controller 2026 | StockFlow"
         keywords="asset controller meaning, what is asset controller, asset controller definition, asset controller responsibilities, asset controller software, asset management controller, asset tracking controller, asset control meaning, stockflow, stock flow"
         url="https://www.stockflowsystems.com/glossary/asset-controller-meaning"
       />

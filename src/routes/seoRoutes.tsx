@@ -2,43 +2,40 @@ import React from "react";
 
 export type SeoRoute = { path: string; element: React.ReactNode };
 
-// Auto-discover all TSX files under src/pages/SEO and src/pages/seo
-// Some environments or contributors may use different case for the directory.
+/**
+ * Auto-discover TSX files under SEO directories.
+ * Case-insensitive discovery for cross-platform compatibility.
+ */
 const upperCaseModules = import.meta.glob("../pages/SEO/**/*.tsx");
 const lowerCaseModules = import.meta.glob("../pages/seo/**/*.tsx");
 const modules = { ...upperCaseModules, ...lowerCaseModules };
 
-// Cache computed routes to avoid recreating React.lazy components on each render,
-// which can cause Suspense to keep showing the fallback indefinitely.
 let cachedRoutes: SeoRoute[] | null = null;
 
-// Function to clear cache (useful for debugging or hot reloading)
 export function clearRouteCache() {
   cachedRoutes = null;
 }
 
+/**
+ * Maps file system paths to URL slugs.
+ * Logic specifically handles glossary flattening and solutions path preservation.
+ */
 function getSlugFromPath(path: string): string {
   const withoutPrefix = path
-    // Remove leading ../segments
     .replace(/^(\.\.\/)+/, "")
-    // Remove pages/SEO or pages/seo prefix
     .replace(/^pages\/(SEO|seo)\//, "");
 
   const withoutExtension = withoutPrefix.replace(/\.tsx$/, "");
   const segments = withoutExtension.split("/").filter(Boolean);
 
-  if (segments.length === 0) {
-    return "";
-  }
+  if (segments.length === 0) return "";
 
   const lastSegment = segments[segments.length - 1];
   if (lastSegment === "index") {
     segments.pop();
   }
 
-  if (segments.length === 0) {
-    return "";
-  }
+  if (segments.length === 0) return "";
 
   const legacyTopLevelSlugs = new Set([
     "asset-tracking",
@@ -48,17 +45,16 @@ function getSlugFromPath(path: string): string {
     "warehouse-management-system",
   ]);
 
+  // Handle Glossary legacy path mapping
   if (segments[0] === "glossary") {
-    if (segments.length === 1) {
-      return "glossary";
-    }
+    if (segments.length === 1) return "glossary";
     if (segments.length === 2 && legacyTopLevelSlugs.has(segments[1])) {
       return segments[1];
     }
     return segments.join("/");
   }
 
-  // Preserve full path for solutions directory to match sitemap
+  // Preserve hierarchy for solutions (e.g., /solutions/inventory-software-management)
   if (segments[0] === "solutions") {
     return segments.join("/");
   }
@@ -66,68 +62,61 @@ function getSlugFromPath(path: string): string {
   return segments[segments.length - 1];
 }
 
+/**
+ * Generates route objects for SEO-optimized pages.
+ * Incorporates internal Suspense boundaries to prevent layout popping.
+ */
 export function getSeoRoutes(): SeoRoute[] {
   if (cachedRoutes) return cachedRoutes;
 
-  // Files to exclude from routing (helper functions, not page components)
   const excludedFiles = new Set([
     'glossary/createGlossaryPage',
-    'resources', // Exclude to avoid conflict with blog/index.tsx
+    'resources', 
   ]);
 
   cachedRoutes = Object.entries(modules)
     .map(([path, loader]) => {
-      // Check if this file should be excluded
       const withoutPrefix = path
         .replace(/^(\.\.\/)+/, "")
         .replace(/^pages\/(SEO|seo)\//, "")
         .replace(/\.tsx$/, "");
       
-      if (excludedFiles.has(withoutPrefix)) {
-        return null;
-      }
+      if (excludedFiles.has(withoutPrefix)) return null;
 
       const slug = getSlugFromPath(path);
-      if (!slug) {
-        console.warn(`[seoRoutes] Skipping SEO page without slug for path: ${path}`);
-        return null;
-      }
-      
-      // Debug logging for inventory-software-management
-      if (slug === 'solutions/inventory-software-management' || path.includes('inventory-software-management')) {
-        console.log(`[seoRoutes] Found inventory-software-management: path=${path}, slug=${slug}, route=/${slug}`);
-      }
+      if (!slug) return null;
       
       const Component = React.lazy(
         loader as () => Promise<{ default: React.ComponentType<any> }>
       );
-      // Add a local Suspense boundary so the whole app doesn't switch to the global fallback
+
+      // We wrap the component in a local Suspense boundary.
+      // Important: These components MUST contain their own <SEO title="..." /> 
+      // tags internally to override the default site metadata.
       const element = (
-        <React.Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3" /><p className="text-gray-600 text-sm">Loading...</p></div></div>}>
+        <React.Suspense 
+          fallback={
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3" />
+                <p className="text-gray-600 text-sm">Loading Page...</p>
+              </div>
+            </div>
+          }
+        >
           <Component />
         </React.Suspense>
       );
+
       return { path: `/${slug}`, element };
     })
     .filter((route): route is SeoRoute => route !== null)
-    // Deduplicate in case both globs matched the same file on case-insensitive FS
     .reduce<SeoRoute[]>((acc, route) => {
+      // Prevent duplicates from case-insensitive file matching
       if (!acc.some(r => r.path === route.path)) acc.push(route);
       return acc;
     }, [])
     .sort((a, b) => a.path.localeCompare(b.path));
 
-  // Debug: Log all solutions routes
-  const solutionsRoutes = cachedRoutes.filter(r => r.path.startsWith('/solutions/'));
-  console.log(`[seoRoutes] Generated ${cachedRoutes.length} total routes, ${solutionsRoutes.length} solutions routes`);
-  if (solutionsRoutes.some(r => r.path === '/solutions/inventory-software-management')) {
-    console.log('[seoRoutes] ✅ /solutions/inventory-software-management route is registered');
-  } else {
-    console.error('[seoRoutes] ❌ /solutions/inventory-software-management route is MISSING!');
-    console.log('[seoRoutes] Available solutions routes:', solutionsRoutes.map(r => r.path));
-  }
-
   return cachedRoutes;
 }
-
-

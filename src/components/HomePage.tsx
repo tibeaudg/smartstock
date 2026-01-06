@@ -1274,14 +1274,6 @@ export const HomePage = () => {
         description="Free inventory management that actually works. Scan barcodes with your phone, track stock in real-time, prevent stockouts, recover dead stock capital. 500+ businesses trust StockFlow free forever."
         keywords="inventory management software, stockbeer software, best inventory management software, inventory management online, stock management software, warehouse management system, inventory tracking, stock control, voorraadbeheer software, inventory software, stockflow, stock flow, free inventory management, cloud inventory software, inventory management system, stock management system, warehouse software, inventory control software"
         url="https://www.stockflowsystems.com/"
-        hreflang={[
-          { lang: 'en', url: 'https://www.stockflowsystems.com/' },
-          { lang: 'nl', url: 'https://www.stockflowsystems.com/nl' },
-        ]}
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl' }
-        ]}
         structuredData={structuredData}
         modifiedTime={new Date().toISOString()}
       />
