@@ -7,6 +7,11 @@
 }
 
 
+img, video, canvas, svg {
+  overflow: clip !important;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;

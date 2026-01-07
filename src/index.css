@@ -6,6 +6,19 @@
   overflow: visible !important;
 }
 
+img, video, canvas, svg {
+  overflow: clip !important;
+}
+
+
+/* Zorg dat de HTML/Body de sticky-container niet blokkeert */
+html, body {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+
+
 
 /* Performance optimizations */
 @layer base {
@@ -515,37 +528,5 @@ body>* {
     animation: pulse-glow-scale 2s ease-in-out infinite !important;
   }
 
-  /* CTA Button Shimmer Effect - Diagonal gradient */
-  .cta-shimmer {
-    position: relative;
-    overflow: hidden;
-  }
 
-  .cta-shimmer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-      135deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.3) 50%,
-      transparent 70%
-    );
-    animation: shimmer-diagonal 3s infinite;
-    transform: translate(-50%, -50%);
-  }
-
-  @keyframes shimmer-diagonal {
-    0% {
-      left: -100%;
-      top: -100%;
-    }
-    100% {
-      left: 200%;
-      top: 200%;
-    }
-  }
 }

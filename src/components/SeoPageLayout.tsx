@@ -44,12 +44,22 @@ export const SEOPageLayout = memo(({
   const [activeId, setActiveId] = useState('');
 
   // 1. Schone navigatie & Body fix (LCP optimalisatie)
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    // Forceer visible om CSS sticky te laten werken
-    document.documentElement.style.overflow = 'visible';
-    document.body.style.overflow = 'visible';
-  }, [location.pathname]);
+useEffect(() => {
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  
+  // Pas de overflow alleen aan op de hoofd-elementen
+  // Gebruik 'clip' of 'unset' in plaats van 'visible' indien mogelijk
+  document.documentElement.classList.add('is-seo-page');
+  document.body.classList.add('is-seo-page');
+
+  return () => {
+    document.documentElement.classList.remove('is-seo-page');
+    document.body.classList.remove('is-seo-page');
+  };
+}, [location.pathname]);
+
+
+
 
   // 2. Headings extractie
   useEffect(() => {
