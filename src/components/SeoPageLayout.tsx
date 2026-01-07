@@ -204,8 +204,6 @@ export const SEOPageLayout = memo(({
           breadcrumbItems={breadcrumbItems} 
           dateUpdated={dateUpdated} 
           description={heroDescription}
-          previousArticle={previousArticle}  // Pass navigation data
-          nextArticle={nextArticle}
         />
 
         
@@ -234,6 +232,54 @@ export const SEOPageLayout = memo(({
         </section>
 
       </main>
+
+{/* Article navigation */}
+{(previousArticle || nextArticle) && (
+  <nav
+    aria-label="Article navigation"
+    className="m-16 pt-10 border-t border-slate-200 "
+  >
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      
+      {/* Previous */}
+      {previousArticle ? (
+        <Link
+          to={previousArticle.href}
+          className="group bg-slate-100 flex items-start gap-4 rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:bg-slate-50 transition"
+        >
+          <ChevronLeft className="mt-1 h-5 w-5 text-slate-400 group-hover:text-slate-700" />
+          <div>
+            <p className="text-xs uppercase tracking-wide text-slate-500">
+              Previous article
+            </p>
+            <p className="mt-1 font-medium text-slate-900 group-hover:underline">
+              {previousArticle.title}
+            </p>
+          </div>
+        </Link>
+      ) : <div />}
+
+      {/* Next */}
+      {nextArticle && (
+        <Link
+          to={nextArticle.href}
+          className="group bg-slate-100 shadow-xl flex items-start justify-between gap-4 rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:bg-slate-50 transition text-right"
+        >
+          <div>
+            <p className="text-xs uppercase tracking-wide text-slate-500">
+              Next article
+            </p>
+            <p className="mt-1 font-medium text-slate-900 group-hover:underline">
+              {nextArticle.title}
+            </p>
+          </div>
+          <ChevronRight className="mt-1 h-5 w-5 text-slate-400 group-hover:text-slate-700" />
+        </Link>
+      )}
+    </div>
+  </nav>
+)}
+      
 
       {/* Fixed/Absolute TOC that follows scroll and stops at section bottom */}
       {showFixedToc && (

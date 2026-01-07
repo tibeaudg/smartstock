@@ -62,7 +62,7 @@ const Footer = () => {
 
       {/* High-Impact CTA Section */}
       <section className="relative py-24 bg-white overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_50%,_rgba(37,99,235,0.1),transparent_50%)]" />
+        <div className="absolute top-0 left-0 w-full h-full" />
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-8 md:p-16 shadow-2xl shadow-blue-900/20">
             <div className="grid lg:grid-cols-2 gap-12 items-center">

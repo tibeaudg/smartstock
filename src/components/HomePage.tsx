@@ -24,7 +24,7 @@ const TrustBadges = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
       {badges.map((badge, idx) => (
-        <div key={idx} className="flex flex-col items-center text-center p-4 bg-white/50 rounded-lg backdrop-blur-sm">
+        <div key={idx} className="flex flex-col items-center text-center p-4 bg-white shadow-lg rounded-lg backdrop-blur-sm">
           <badge.icon className="w-8 h-8 text-blue-600 mb-2" />
           <p className="font-semibold text-sm text-gray-900">{badge.text}</p>
           <p className="text-xs text-gray-600">{badge.subtext}</p>
