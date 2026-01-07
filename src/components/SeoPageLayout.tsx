@@ -9,20 +9,7 @@ import { TableOfContents } from './TableOfContents';
 import { SEOPageHero } from './SeoPageHero';
 import './SeoPageLayout.css';
 
-const BackToTop = () => {
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-  return (
-    <button
-      onClick={scrollToTop}
-      className="mt-8 flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors group"
-    >
-      <div className="p-2 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white transition-all">
-        <ArrowUp className="h-4 w-4" />
-      </div>
-      Back to top
-    </button>
-  );
-};
+
 
 interface TOCItem {
   id: string;
@@ -145,12 +132,11 @@ export const SEOPageLayout = memo(({
             </article>
 
             {/* Aside gefixeerd op artikel-hoogte */}
-<aside className="hidden lg:block w-[320px] shrink-0 self-stretch">
-  <div className="sticky top-24"> {/* Native CSS sticky */}
-    <TableOfContents items={tocItems} activeId={activeId} />
-    <BackToTop />
-  </div>
-</aside>
+            <aside className="hidden lg:block w-[320px] shrink-0 self-stretch">
+              <div className="sticky top-24"> {/* Native CSS sticky */}
+                <TableOfContents items={tocItems} activeId={activeId} />
+              </div>
+            </aside>
           </div>
         </section>
       </main>

@@ -34,6 +34,7 @@ import { useLocation } from "react-router-dom";
 import type { LucideIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import VideoModal from './VideoModal';
+import { NAV_ITEMS } from '../constants/navigation';
 
 
 
@@ -117,157 +118,14 @@ const Header: React.FC<HeaderProps> = ({
     return null;
   }
 
-  const navItems = useMemo<NavItem[]>(
-    () => [
-  
-      {
-        id: 'solutions',
-        label: 'Solutions',
-        megaMenu: {
-          intro: {
-            title: 'Solutions',
-            description: 'No matter what you need to track, StockFlow keeps your operations organized.',
-            ctaLabel: 'Explore all solutions',
-            ctaTo: '/features'
-          },
-          sections: [
-            {
-              title: 'Use Cases',
-              items: [
-                {
-                  label: 'Inventory Management',
-                  description: 'Manage, organize, and track all inventory in real time.',
-                  to: '/inventory-management',
-                  icon: Boxes
-                },
-                {
-                  label: 'Supplies Tracking',
-                  description: 'Track materials, consumables, and parts with ease.',
-                  to: '/suppliers',
-                  icon: Truck
-                },
-                {
-                  label: 'Asset Tracking',
-                  description: 'Keep tabs on critical tools, equipment, and spare parts.',
-                  to: '/asset-tracking',
-                  icon: Wrench
-                }
-              ]
-            },
-            {
-              title: 'Industries',
-              items: [
-                {
-                  label: 'Construction',
-                  description: 'Monitor job-site inventory from anywhere.',
-                  to: '/contractor-inventory-management',
-                  icon: HardHat
-                },
-                {
-                  label: 'Electrical',
-                  description: 'Stay on top of electrical supplies across teams.',
-                  to: '/electrical-inventory-management',
-                  icon: Zap
-                },
-                {
-                  label: 'Medical',
-                  description: 'Track medical supplies with full traceability.',
-                  to: '/medical-inventory-management',
-                  icon: Stethoscope
-                }
-              ]
-            },
-            {
-              title: 'More Industries',
-              items: [
-           
-                {
-                  label: 'Warehouse',
-                  description: 'Run smart warehouse operations with automation.',
-                  to: '/warehouse-software',
-                  icon: Warehouse
-                }
-              ]
-            }
-          ]
-        }
-      },
 
-
-
-      {
-        id: 'resources',
-        label: 'Resources',
-        megaMenu: {
-          intro: {
-            title: 'Resources',
-            description: 'Need help or information? Here you can find what you are looking for',
-          },
-          sections: [
-            {
-              title: 'Blog',
-              items: [
-                {
-                  label: 'Articles',
-                  description: 'Read our content for free.',
-                  to: '/blog',
-                  icon: FileText
-                },
-                {
-                  label: 'Case Studies',
-                  description: 'Find out other success stories.',
-                  to: '/case-studies',
-                  icon: TrendingUp
-                },
-                {
-                  label: 'Support',
-                  description: 'Get help here!',
-                  to: '/help-center',
-                  icon: LifeBuoy
-                },
-                {
-                  label: 'Demo Videos',
-                  description: 'Watch our free instruction videos.',
-                  to: '/videos',
-                  icon: PlayCircle
-                },
-                {
-                  label: 'Comparisons',
-                  description: 'Compare Stockflow with other inventory management platforms.',
-                  to: '/compare-inventory-software',
-                  icon: Scale
-                }                
-              ]
-            }
-          ]
-        }
-      },
-
-
-            {
-        id: 'about',
-        label: 'About',
-        to: '/about'
-      },
-
-
-
-            {
-        id: 'support',
-        label: 'Support',
-        to: '/help-center'
-      },
-    
-    ],
-    []
-  );
 
   const fallbackNavItems: NavItem[] = useMemo(
     () =>
       simplifiedNav
-        ? navItems.filter(item => ['pricing'].includes(item.id))
-        : navItems,
-    [navItems, simplifiedNav]
+        ? NAV_ITEMS.filter(item => ['pricing'].includes(item.id))
+        : NAV_ITEMS,
+    [NAV_ITEMS, simplifiedNav]
   );
 
   const handleLoginClick = () => {
@@ -478,9 +336,34 @@ const Header: React.FC<HeaderProps> = ({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:py-4">
           <div className="flex items-center gap-8">
             <Link to="/" onClick={handleNavigate} className="flex items-center gap-3">
+
+
+
+
               <div className="flex h-7 w-7 items-center justify-center rounded-3xl bg-blue-600 transition-transform duration-300 hover:scale-105">
-                <Package className="h-4 w-4 text-white" />
+                <svg 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  className="h-4 w-4 text-white"
+                  aria-hidden="true"
+                >
+                  <path d="M16.5 9.4 7.5 4.21" />
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                  <polyline points="3.29 7 12 12 20.71 7" />
+                  <line x1="12" y1="22" x2="12" y2="12" />
+                </svg>
               </div>
+
+
+
+
+
+
+
               <span className="text-xl font-semibold text-gray-900">stockflow</span>
             </Link>
 
