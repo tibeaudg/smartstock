@@ -5,7 +5,7 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, ArrowRight, Zap, Layers, Calculator, Globe } from "lucide-react";
 
-const topicTitle = "Best Inventory Management Software (2026): Open & Free Solutions";
+const topicTitle = "Best Inventory Management Software (2026): Free & Easy Solutions";
 const canonicalPath = "/best-inventory-management-software";
 const metaDescription = "Review the best inventory management software for 2026. Compare paid enterprise systems against StockFlow, a fully free platform for stock tracking, barcode scanning, and supply chain optimization.";
 const keywords = "free inventory management software, stockflow free inventory, best inventory tracking 2026, free barcode scanning software, open inventory systems, cost-free stock control, enterprise inventory management";

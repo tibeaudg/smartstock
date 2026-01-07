@@ -6,8 +6,8 @@ import { StructuredData } from "@/components/StructuredData";
 
 const topicTitle = "Bill of Materials (BOM) Management: Free Software";
 const canonicalPath = "/bill-of-materials-software";
-const metaDescription = "Master your Bill of Materials (BOM) with StockFlow. Discover how digital BOM management streamlines manufacturing, reduces errors, and improves inventory accuracy. Get free BOM software and templates.";
-const keywords = "bill of materials, BOM, bill of materials software free, manufacturing BOM, assembly bill of materials, engineering BOM, BOM management system, bill of materials template, inventory management BOM, BOM best practices, BOM software, BOM management guide, BOM examples, BOM types, BOM structure, BOM optimization, BOM for manufacturing, BOM for engineering, BOM for procurement, BOM for inventory, BOM for cost estimation, BOM for ERP, BOM for MRP";
+const metaDescription = "A Free & Easy bill of materials management tool. Integrated with the latest sourcing information to optimize your Bill Of Materials for cost, reduces errors, and improves inventory accuracy. Get free BOM software and templates.";
+const keywords = "Bill of Materials, BOM, indented bom, plm, PLM, django-bom, django, django bom, django plm, open source bom, open source plm, open source, indented bill of materials, free bom, free plm, indabom, indabom.com, hardware tool, hardware, parts, part, component, mechanical, engineering, part management, pdm, product lifetime management, bill of materials, BOM, bill of materials software free, manufacturing BOM, assembly bill of materials, engineering BOM, BOM management system, bill of materials template, inventory management BOM, BOM best practices, BOM software, BOM management guide, BOM examples, BOM types, BOM structure, BOM optimization, BOM for manufacturing, BOM for engineering, BOM for procurement, BOM for inventory, BOM for cost estimation, BOM for ERP, BOM for MRP";
 
 const KeyTakeaways = [
   "A Bill of Materials (BOM) is the 'recipe' for production, detailing every part, assembly, and sub-assembly required to build a product.",
@@ -96,7 +96,7 @@ export default function BillOfMaterialsManagementPage() {
     dateModified: new Date().toISOString().split("T")[0],
   }));
 
-  const heroTitle = "Complete Bill of Materials (BOM) Management Guide";
+  const heroTitle = "Free & Easy BOM Management Platform - Stockflow";
   const heroSubtitle = "Streamline your production, reduce errors, and improve inventory accuracy with StockFlow’s free BOM software and expert guide.";
 
   return (
