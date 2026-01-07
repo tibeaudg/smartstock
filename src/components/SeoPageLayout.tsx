@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, useState, memo } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Star, ArrowRight, ArrowUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUp } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 import HeaderPublic from '@/components/HeaderPublic';
 import FooterLanding from './Footer';
 import { TableOfContents } from './TableOfContents';
-import { KeyTakeaways } from './KeyTakeaways';
 import { SEOPageHero } from './SeoPageHero';
 import './SeoPageLayout.css';
-
-// --- Components ---
 
 const BackToTop = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -26,8 +24,6 @@ const BackToTop = () => {
   );
 };
 
-// --- Types ---
-
 interface TOCItem {
   id: string;
   text: string;
@@ -40,183 +36,75 @@ interface SEOPageLayoutProps {
   dateUpdated: string;
   heroDescription: string;
   children: React.ReactNode;
-  keyTakeaways?: string[];
-  recentArticles?: any[];
   pageLanguage?: 'nl' | 'en';
-  previousArticle?: ArticleNavItem | null;  // Add this
-  nextArticle?: ArticleNavItem | null;      // Add this
+  previousArticle?: any | null;
+  nextArticle?: any | null;
 }
-// --- Main Layout ---
 
-// Update the SEOPageLayout component props
 export const SEOPageLayout = memo(({
   breadcrumbItems,
   heroTitle,
   dateUpdated,
   heroDescription,
   children,
-  keyTakeaways = [],
-  recentArticles = [],
   pageLanguage = 'en',
-  previousArticle = null,  // Add default
-  nextArticle = null,      // Add default
+  previousArticle = null,
+  nextArticle = null,
 }: SEOPageLayoutProps) => {
-
-
   const location = useLocation();
   const contentRef = useRef<HTMLDivElement>(null);
-  const tocContainerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  
   const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState('');
-  const [tocStyles, setTocStyles] = useState<React.CSSProperties>({});
-  const [showFixedToc, setShowFixedToc] = useState(false);
 
-  // 1. Reset scroll on navigation
+  // 1. Schone navigatie & Body fix (LCP optimalisatie)
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
+    // Forceer visible om CSS sticky te laten werken
+    document.documentElement.style.overflow = 'visible';
+    document.body.style.overflow = 'visible';
   }, [location.pathname]);
 
-  // Add/update canonical link dynamically per page (origin + pathname)
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
-    const canonicalHref = `${window.location.origin}${location.pathname}`;
-    const selector = "link[rel='canonical']";
-
-    const existing = document.head.querySelector(selector) as HTMLLinkElement | null;
-    if (existing) {
-      existing.setAttribute('href', canonicalHref);
-    } else {
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'canonical');
-      link.setAttribute('href', canonicalHref);
-      document.head.appendChild(link);
-    }
-  }, [location.pathname]);
-
-  // 2. Extract Headings (Populates the TOC)
+  // 2. Headings extractie
   useEffect(() => {
     if (!contentRef.current) return;
-
     const headings = contentRef.current.querySelectorAll('h2');
     const items: TOCItem[] = Array.from(headings).map((h, i) => {
       const id = h.id || `section-${i}`;
       h.id = id;
-      return { 
-        id, 
-        text: h.textContent || '', 
-        level: 2 
-      };
+      return { id, text: h.textContent || '', level: 2 };
     });
-
     setTocItems(items);
   }, [children]);
 
-  // 3. Calculate fixed TOC position with proper boundaries
-  useEffect(() => {
-    const updateTocPosition = () => {
-      if (!tocContainerRef.current || !sectionRef.current) return;
-
-      const tocRect = tocContainerRef.current.getBoundingClientRect();
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-      const scrollY = window.scrollY;
-      
-      // Get absolute positions
-      const tocContainerTop = tocContainerRef.current.offsetTop;
-      const sectionTop = sectionRef.current.offsetTop;
-      const sectionBottom = sectionTop + sectionRef.current.offsetHeight;
-      
-      const headerOffset = 120;
-      const bottomPadding = 40; // Extra padding from bottom
-      
-      // Check if we've scrolled past the TOC's starting position
-      const hasScrolledPastStart = scrollY + headerOffset > tocContainerTop;
-      
-      if (hasScrolledPastStart) {
-        setShowFixedToc(true);
-        
-        // Get the TOC element to measure its actual height
-        const tocElement = document.querySelector('[data-toc-fixed]') as HTMLElement;
-        const tocHeight = tocElement ? tocElement.offsetHeight : 500;
-        
-        // Calculate the maximum top position (where TOC should stop)
-        const maxTopPosition = sectionBottom - tocHeight - bottomPadding;
-        const currentTopPosition = scrollY + headerOffset;
-        
-        // Check if we need to stop at the bottom
-        if (currentTopPosition > maxTopPosition) {
-          // Stop scrolling - use absolute positioning
-          setTocStyles({
-            position: 'absolute',
-            top: `${maxTopPosition}px`,
-            left: `${tocRect.left + window.scrollX}px`,
-            width: `${tocRect.width}px`,
-            maxHeight: 'calc(100vh - 140px)',
-            overflowY: 'auto',
-            zIndex: 40
-          });
-        } else {
-          // Normal fixed positioning - follow scroll
-          setTocStyles({
-            position: 'fixed',
-            top: `${headerOffset}px`,
-            left: `${tocRect.left}px`,
-            width: `${tocRect.width}px`,
-            maxHeight: 'calc(100vh - 140px)',
-            overflowY: 'auto',
-            zIndex: 40
-          });
-        }
-      } else {
-        // Not scrolled past start - hide fixed TOC
-        setShowFixedToc(false);
-      }
-    };
-
-    updateTocPosition();
-    
-    // Update on scroll and resize
-    window.addEventListener('scroll', updateTocPosition, { passive: true });
-    window.addEventListener('resize', updateTocPosition);
-
-    return () => {
-      window.removeEventListener('scroll', updateTocPosition);
-      window.removeEventListener('resize', updateTocPosition);
-    };
-  }, []);
-
-  // 4. Optimized Scroll Spy (Intersection Observer)
+  // 3. Lichtgewicht Intersection Observer voor Active State (Geen Scroll Listener)
   useEffect(() => {
     if (tocItems.length === 0) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
+        const intersecting = entries.find(entry => entry.isIntersecting);
+        if (intersecting) setActiveId(intersecting.target.id);
       },
-      {
-        rootMargin: '-120px 0px -50% 0px',
-        threshold: 0
-      }
+      { rootMargin: '-10% 0px -80% 0px', threshold: 0 }
     );
-
     tocItems.forEach((item) => {
       const el = document.getElementById(item.id);
       if (el) observer.observe(el);
     });
-
     return () => observer.disconnect();
   }, [tocItems]);
 
+  const canonicalUrl = `${window.location.origin}${location.pathname}`;
+
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen selection-container">
+      <Helmet>
+        <link rel="canonical" href={canonicalUrl} />
+        <html lang={pageLanguage} />
+      </Helmet>
+
       <HeaderPublic />
-      <main>
+      
+      <main className="relative">
         <SEOPageHero 
           title={heroTitle}
           breadcrumbItems={breadcrumbItems} 
@@ -224,90 +112,48 @@ export const SEOPageLayout = memo(({
           description={heroDescription}
         />
 
-        
-        <section ref={sectionRef} className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-16">
-            
-            <article ref={contentRef} className="min-w-0">
+        <section className="container mx-auto px-4 py-12 overflow-visible">
+          <div className="flex flex-col lg:flex-row gap-16 items-start overflow-visible">            
+            <article ref={contentRef} className="flex-1 min-w-0 overflow-visible">
               {children}
+
+              {(previousArticle || nextArticle) && (
+                <nav aria-label="Article navigation" className="mt-16 pt-10 border-t border-slate-200">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {previousArticle ? (
+                      <Link to={previousArticle.href} className="group bg-slate-100 flex items-start gap-4 rounded-xl border border-slate-200 p-5 hover:bg-slate-50 transition">
+                        <ChevronLeft className="mt-1 h-5 w-5 text-slate-400" />
+                        <div>
+                          <p className="text-xs uppercase text-slate-500">Previous</p>
+                          <p className="font-medium text-slate-900">{previousArticle.title}</p>
+                        </div>
+                      </Link>
+                    ) : <div />}
+
+                    {nextArticle && (
+                      <Link to={nextArticle.href} className="group bg-slate-100 flex items-start justify-between gap-4 rounded-xl border border-slate-200 p-5 hover:bg-slate-50 transition text-right">
+                        <div>
+                          <p className="text-xs uppercase text-slate-500">Next</p>
+                          <p className="font-medium text-slate-900">{nextArticle.title}</p>
+                        </div>
+                        <ChevronRight className="mt-1 h-5 w-5 text-slate-400" />
+                      </Link>
+                    )}
+                  </div>
+                </nav>
+              )}
             </article>
 
-            {/* Placeholder container for measuring position */}
-            <aside className="hidden lg:block">
-              <div ref={tocContainerRef} style={{ minHeight: '200px' }}>
-                {/* Static TOC shown when at top of page */}
-                {!showFixedToc && (
-                  <div>
-                    <TableOfContents items={tocItems} activeId={activeId} />
-                    <div className="mt-8 pt-8 border-t border-slate-200">
-                      <BackToTop />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </aside>
+            {/* Aside gefixeerd op artikel-hoogte */}
+<aside className="hidden lg:block w-[320px] shrink-0 self-stretch">
+  <div className="sticky top-24"> {/* Native CSS sticky */}
+    <TableOfContents items={tocItems} activeId={activeId} />
+    <BackToTop />
+  </div>
+</aside>
           </div>
         </section>
-
       </main>
-
-{/* Article navigation */}
-{(previousArticle || nextArticle) && (
-  <nav
-    aria-label="Article navigation"
-    className="m-16 pt-10 border-t border-slate-200 "
-  >
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-      
-      {/* Previous */}
-      {previousArticle ? (
-        <Link
-          to={previousArticle.href}
-          className="group bg-slate-100 flex items-start gap-4 rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:bg-slate-50 transition"
-        >
-          <ChevronLeft className="mt-1 h-5 w-5 text-slate-400 group-hover:text-slate-700" />
-          <div>
-            <p className="text-xs uppercase tracking-wide text-slate-500">
-              Previous article
-            </p>
-            <p className="mt-1 font-medium text-slate-900 group-hover:underline">
-              {previousArticle.title}
-            </p>
-          </div>
-        </Link>
-      ) : <div />}
-
-      {/* Next */}
-      {nextArticle && (
-        <Link
-          to={nextArticle.href}
-          className="group bg-slate-100 shadow-xl flex items-start justify-between gap-4 rounded-xl border border-slate-200 p-5 hover:border-slate-300 hover:bg-slate-50 transition text-right"
-        >
-          <div>
-            <p className="text-xs uppercase tracking-wide text-slate-500">
-              Next article
-            </p>
-            <p className="mt-1 font-medium text-slate-900 group-hover:underline">
-              {nextArticle.title}
-            </p>
-          </div>
-          <ChevronRight className="mt-1 h-5 w-5 text-slate-400 group-hover:text-slate-700" />
-        </Link>
-      )}
-    </div>
-  </nav>
-)}
-      
-
-      {/* Fixed/Absolute TOC that follows scroll and stops at section bottom */}
-      {showFixedToc && (
-        <div style={tocStyles} className="hidden lg:block" data-toc-fixed>
-          <TableOfContents items={tocItems} activeId={activeId} />
-          <div className="mt-8 pt-8 border-t border-slate-200">
-            <BackToTop />
-          </div>
-        </div>
-      )}
 
       <FooterLanding />
     </div>

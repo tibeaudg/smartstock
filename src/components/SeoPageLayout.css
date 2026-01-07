@@ -1,48 +1,20 @@
-/* 
-  CRITICAL CSS FIXES for Sticky Table of Contents
-  Add this to your SeoPageLayout.css file or create a new file
-*/
-
-/* Remove any overflow restrictions that break sticky positioning */
-.seo-page-layout-main {
-  overflow: visible !important;
+/* Forceer de flex container om geen alignment restricties op te leggen aan de hoogte */
+.flex.lg\:flex-row {
+  display: flex !important;
+  align-items: stretch !important; /* Cruciaal: maakt de aside even hoog als de article */
 }
 
-.seo-page-layout-section {
-  overflow: visible !important;
+/* De aside moet de volledige hoogte vullen om de sticky wrapper ruimte te geven */
+aside {
+  height: auto !important;
+  min-height: 100%;
+  position: relative;
 }
 
-.seo-page-layout-container {
-  overflow: visible !important;
-}
-
-/* Ensure the container class doesn't have overflow restrictions */
-.container {
-  overflow: visible !important;
-}
-
-/* Force sticky positioning on TOC */
-.table-of-contents-wrapper {
-  position: -webkit-sticky !important;
+/* De daadwerkelijke sticky container */
+.sticky.top-24 {
   position: sticky !important;
-  top: 120px !important;
-  max-height: calc(100vh - 140px) !important;
-  overflow-y: auto !important;
-  z-index: 10;
+  position: -webkit-sticky !important;
+  top: 120px !important; /* Verhoog dit als je header hoog is */
+  align-self: start;
 }
-
-/* Ensure parent aside doesn't interfere */
-.toc-aside {
-  overflow: visible !important;
-  position: relative !important;
-}
-
-/* 
-  DEBUGGING: Uncomment these to visually verify sticky is working
-*/
-/*
-.table-of-contents-wrapper {
-  background-color: rgba(59, 130, 246, 0.1) !important;
-  border: 2px solid blue !important;
-}
-*/

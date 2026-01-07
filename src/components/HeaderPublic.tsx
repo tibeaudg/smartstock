@@ -441,7 +441,7 @@ const Header: React.FC<HeaderProps> = ({
                         key={card.label}
                         to={card.to}
                         onClick={handleNavigate}
-                        className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-gray-100 bg-white/80 p-5 transition-all hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+                        className="group relative flex flex-col justify-between rounded-2xl border border-gray-100 bg-white/80 p-5 transition-all hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
                       >
                         <div className="flex-1">
                           <span className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
