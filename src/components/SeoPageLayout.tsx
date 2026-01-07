@@ -78,6 +78,24 @@ export const SEOPageLayout = memo(({
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [location.pathname]);
 
+  // Add/update canonical link dynamically per page (origin + pathname)
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const canonicalHref = `${window.location.origin}${location.pathname}`;
+    const selector = "link[rel='canonical']";
+
+    const existing = document.head.querySelector(selector) as HTMLLinkElement | null;
+    if (existing) {
+      existing.setAttribute('href', canonicalHref);
+    } else {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      link.setAttribute('href', canonicalHref);
+      document.head.appendChild(link);
+    }
+  }, [location.pathname]);
+
   // 2. Extract Headings (Populates the TOC)
   useEffect(() => {
     if (!contentRef.current) return;

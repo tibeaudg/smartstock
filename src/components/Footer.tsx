@@ -132,15 +132,27 @@ const Footer = () => {
               </p>
               <div className="flex gap-4">
                 {[
-                  { icon: <Linkedin />, url: "https://linkedin.com/company/stockflow" },
-                  { icon: <Twitter />, url: "https://twitter.com/stockflow" },
-                  { icon: <Instagram />, url: "https://instagram.com/stockflowbe" },
-                  { icon: <Facebook />, url: "https://facebook.com/profile.php?id=61578067034898" }
-                ].map((social, i) => (
-                  <a key={i} href={social.url} className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-blue-600 hover:text-blue-600 transition-all">
-                    {social.icon}
-                  </a>
-                ))}
+                  { name: 'LinkedIn', Icon: Linkedin, url: "https://linkedin.com/company/stockflow" },
+                  { name: 'Twitter', Icon: Twitter, url: "https://twitter.com/stockflow" },
+                  { name: 'Instagram', Icon: Instagram, url: "https://instagram.com/stockflowbe" },
+                  { name: 'Facebook', Icon: Facebook, url: "https://facebook.com/profile.php?id=61578067034898" }
+                ].map((social, i) => {
+                  const Icon = social.Icon;
+                  return (
+                    <a
+                      key={i}
+                      href={social.url}
+                      className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-blue-600 hover:text-blue-600 transition-all"
+                      aria-label={`Follow StockFlow on ${social.name}`}
+                      title={`Follow StockFlow on ${social.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon aria-hidden="true" />
+                      <span className="sr-only">{`Follow StockFlow on ${social.name}`}</span>
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
