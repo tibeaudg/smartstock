@@ -39,6 +39,7 @@ export const BillOfMaterials: React.FC<BillOfMaterialsProps> = ({
   const { checkCircularReference, checkResult, isChecking } = useCircularReferenceCheck();
   const currentVersionId = bomVersionId !== undefined ? bomVersionId : (activeVersion?.id || null);
   const hasAttemptedAutoCreate = React.useRef(false);
+  const hasOpenedAddDialog = React.useRef(false);
   
   // Auto-create version 1.0 if coming from "Create BOM" flow and no versions exist
   useEffect(() => {
@@ -76,9 +77,19 @@ export const BillOfMaterials: React.FC<BillOfMaterialsProps> = ({
       });
     }
     
-    // Reset flag if create parameter is removed (user navigated away or manually removed)
-    if (!shouldCreate && hasAttemptedAutoCreate.current) {
+    // If create flag is present and versions exist but no components, open add dialog
+    if (shouldCreate && !isLoading && versions.length > 0 && bom.length === 0 && !hasOpenedAddDialog.current) {
+      hasOpenedAddDialog.current = true;
+      setIsAddDialogOpen(true);
+      // remove the create param so we don't reopen on refresh
+      searchParams.delete('create');
+      setSearchParams(searchParams, { replace: true });
+    }
+
+    // Reset flags if create parameter is removed (user navigated away or manually removed)
+    if (!shouldCreate) {
       hasAttemptedAutoCreate.current = false;
+      hasOpenedAddDialog.current = false;
     }
   }, [searchParams, versions.length, isLoading, productId, createVersion, onVersionChange, setSearchParams]);
   
@@ -603,6 +614,8 @@ export const BillOfMaterials: React.FC<BillOfMaterialsProps> = ({
                     </TableCell>
                   </TableRow>
                 ))}
+
+                
               </TableBody>
             </Table>
           </div>

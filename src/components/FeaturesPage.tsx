@@ -500,7 +500,7 @@ const FeaturesPage: React.FC = () => {
             <div>
               <h3 className="font-semibold mb-4 text-white">Contact</h3>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li>support@stockflowsystems.com</li>
+                <li>info@stockflow.be</li>
                 <li>+32 123 456 789</li>
                 <li>Belgium</li>
               </ul>

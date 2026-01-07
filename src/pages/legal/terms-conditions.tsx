@@ -176,7 +176,7 @@ export default function TermsConditions() {
             <div className="bg-gray-50 p-6 rounded-lg mb-8">
               <p className="text-gray-700 mb-2"><strong>Email:</strong> legal@stockflowsystems.com</p>
               <p className="text-gray-700 mb-2"><strong>Address:</strong> StockFlow, Belgium</p>
-              <p className="text-gray-700"><strong>Support:</strong> support@stockflowsystems.com</p>
+              <p className="text-gray-700"><strong>Support:</strong> info@stockflow.be</p>
             </div>
 
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mt-8">

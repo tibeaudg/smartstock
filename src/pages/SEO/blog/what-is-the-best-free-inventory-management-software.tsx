@@ -203,22 +203,6 @@ export default function SeoBestInventoryManagementSoftwarePage() {
         </div>
       </section>
 
-      <section className="bg-slate-900 py-20 text-center text-white">
-        <div className="mx-auto max-w-4xl px-4">
-          <h2 className="text-3xl font-bold md:text-4xl">Stop Paying for Inventory Software.</h2>
-          <p className="mt-4 text-slate-400 text-lg">
-            StockFlow is the only fully free platform providing enterprise-grade stock control for businesses of all sizes.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/ auth" className="rounded-lg bg-white px-10 py-4 font-bold text-slate-900 hover:bg-slate-100 transition-colors">
-              Create Your Free Account
-            </Link>
-            <Link to="/features" className="rounded-lg border border-slate-700 px-10 py-4 font-bold hover:bg-slate-800 transition-colors">
-              Explore All Free Features
-            </Link>
-          </div>
-        </div>
-      </section>
     </SeoPageLayout>
   );
 }

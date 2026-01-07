@@ -57,7 +57,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({
     {
       id: 'email',
       title: 'Email support',
-      description: 'info@stockflowsystems.com', // TODO: Change to support@stockflowsystems.com
+      description: 'info@stockflowsystems.com', // TODO: Change to info@stockflow.be
       icon: Mail,
       action: () => {
         window.open('mailto:info@stockflowsystems.com');

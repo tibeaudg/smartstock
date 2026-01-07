@@ -171,7 +171,7 @@ const Footer = () => {
                   <Mail className="w-5 h-5 text-blue-600 mt-1" />
                   <div>
                     <div className="text-sm font-bold text-gray-900 uppercase tracking-tighter">Support Desk</div>
-                    <a href="mailto:support@stockflowsystems.com" className="text-gray-500 hover:text-blue-600">support@stockflowsystems.com</a>
+                    <a href="mailto:info@stockflow.be" className="text-gray-500 hover:text-blue-600">info@stockflow.be</a>
                   </div>
                 </div>
                 <div className="flex items-center justify-between p-4 border border-gray-100 rounded-2xl">

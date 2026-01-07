@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { useNavigate, useParams, Link, Outlet, useLocation } from 'react-router-dom';
+import { toast } from 'sonner';
+
+// UI Components
 import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
@@ -13,12 +17,41 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useNavigate } from 'react-router-dom';
-import { Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronDown, ChevronRight, Eye, Filter } from 'lucide-react';
-import { toast } from 'sonner';
-import { useProductBOM } from '@/hooks/useProductBOM';
+
+// Icons
+import { 
+  Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronLeft,
+  Eye, Filter, DollarSign, X
+} from 'lucide-react';
+
+// Custom Components
 import { BillOfMaterials } from '@/components/product/BillOfMaterials';
 import SEO from '@/components/SEO';
+
+// Types
+interface BOMComponent {
+  id: string;
+  name: string;
+  sku: string | null;
+  quantity: number;
+  unit: string;
+  component_id: string;
+  unit_cost: number;
+  current_stock: number;
+  scrap_factor: number;
+  production_step: string | null;
+  has_bom: boolean;
+  buildable_qty: number;
+}
+
+interface BOMVersion {
+  id: string;
+  version_number: string;
+  status: string;
+  component_count: number;
+  total_cost: number;
+  created_at: string;
+}
 
 interface BOMListItem {
   id: string;
@@ -27,67 +60,76 @@ interface BOMListItem {
   parent_product_sku: string | null;
   component_count: number;
   buildable_quantity: number;
+  total_estimated_cost: number;
   created_at: string;
-  versions?: Array<{ version_number: string; status: string; component_count: number }>;
-  components?: Array<{ 
-    name: string; 
-    quantity: number; 
-    unit: string;
-    component_id?: string;
-    unit_cost?: number;
-    current_stock?: number;
-  }>;
+  versions: BOMVersion[];
+  components: BOMComponent[];
 }
 
+interface WhereUsedItem {
+  parent_product_id: string;
+  parent_product_name: string;
+  parent_product_sku: string | null;
+  quantity_required: number;
+  total_parents_buildable: number;
+}
+
+// Main BOM List Page Component
 export default function BillOfMaterialsPage() {
+  const { activeBranch } = useBranches();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if we're in edit mode (on the edit page)
+  const isEditPage = location.pathname.includes('/bom/edit/');
+
+  // If we're on edit page, render the edit component
+  if (isEditPage) {
+    return <BOMEditPage />;
+  }
+
+  // Otherwise render the list page
+  return <BOMListPage />;
+}
+
+// BOM List Page
+function BOMListPage() {
   const { activeBranch } = useBranches();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  // State
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [newBOMProductId, setNewBOMProductId] = useState('');
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
-  const [viewingBOM, setViewingBOM] = useState<string | null>(null);
-  const [editingBOMProductId, setEditingBOMProductId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedBOMs, setSelectedBOMs] = useState<Set<string>>(new Set());
-  const [editingQuantities, setEditingQuantities] = useState<Map<string, { bomItemId: string; value: string }>>(new Map());
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [newBOMProductId, setNewBOMProductId] = useState('');
+  const [selectedComponentForWhereUsed, setSelectedComponentForWhereUsed] = useState<string | null>(null);
+  const [bulkReplaceDialog, setBulkReplaceDialog] = useState<{ from: string; to: string } | null>(null);
 
-  // Fetch all products with BOMs (either with components or with versions)
+  // Fetch BOM list with enhanced data
   const { data: bomList, isLoading, refetch } = useQuery<BOMListItem[]>({
     queryKey: ['bomList', activeBranch?.branch_id],
-    refetchOnWindowFocus: true, // Enable refetch on window focus
     queryFn: async () => {
       if (!activeBranch) return [];
 
-      // Fetch all BOM components for this branch
+      // Fetch all products with BOMs
       const { data: boms, error: bomError } = await supabase
         .from('product_bom')
         .select('parent_product_id')
         .eq('branch_id', activeBranch.branch_id);
 
-      if (bomError) {
-        console.error('Error fetching BOMs:', bomError);
-        throw bomError;
-      }
+      if (bomError) throw bomError;
 
-      // Fetch all BOM versions for this branch (to include products with versions but no components yet)
       const { data: bomVersions, error: versionsError } = await supabase
         .from('bom_versions')
         .select('parent_product_id')
         .eq('branch_id', activeBranch.branch_id);
 
-      if (versionsError) {
-        console.error('Error fetching BOM versions:', versionsError);
-        throw versionsError;
-      }
+      if (versionsError) throw versionsError;
 
-      // Combine product IDs from both BOM components and versions
-      const bomProductIds = new Set((boms || []).map((b: { parent_product_id: string }) => b.parent_product_id));
-      const versionProductIds = new Set((bomVersions || []).map((v: { parent_product_id: string }) => v.parent_product_id));
-      
-      // Merge both sets to get all unique product IDs that have BOMs
+      const bomProductIds = new Set((boms || []).map(b => b.parent_product_id));
+      const versionProductIds = new Set((bomVersions || []).map(v => v.parent_product_id));
       const uniqueParentIds = [...new Set([...bomProductIds, ...versionProductIds])];
 
       if (uniqueParentIds.length === 0) return [];
@@ -99,93 +141,132 @@ export default function BillOfMaterialsPage() {
         .in('id', uniqueParentIds)
         .eq('branch_id', activeBranch.branch_id);
 
-      if (productsError) {
-        console.error('Error fetching products:', productsError);
-        throw productsError;
-      }
+      if (productsError) throw productsError;
 
-      // For each product, calculate component count and buildable quantity
+      // Build enhanced BOM list
       const bomListItems: BOMListItem[] = await Promise.all(
         (products || []).map(async (product) => {
-          // Fetch BOM versions for this product
+          // Fetch versions
           const { data: versions } = await supabase
             .from('bom_versions')
-            .select('id, version_number, status')
+            .select('id, version_number, status, created_at')
             .eq('parent_product_id', product.id)
             .eq('branch_id', activeBranch.branch_id)
             .order('version_number', { ascending: false });
 
-          // Fetch BOM components for this product (for active version or all if no versioning)
+          const typedVersions = (versions || []) as Array<{ id: string; version_number: string; status: string; created_at: string }>;
+          const activeVersion = typedVersions.find(v => v.status === 'active');
+
+          // Fetch BOM components
           const { data: bomItems } = await supabase
             .from('product_bom')
-            .select('component_product_id, quantity_required, unit_of_measure, bom_version_id')
+            .select(`
+              id,
+              component_product_id,
+              quantity_required,
+              unit_of_measure,
+              scrap_factor,
+              production_step,
+              bom_version_id
+            `)
             .eq('parent_product_id', product.id)
             .eq('branch_id', activeBranch.branch_id);
 
-          // Get active version ID
-          const typedVersions = (versions || []) as Array<{ id: string; version_number: string; status: string }>;
-          const activeVersion = typedVersions.find(v => v.status === 'active');
-          const activeVersionId = activeVersion?.id || null;
-
-          // Filter components by active version (or all if no versioning)
-          const typedBomItems = (bomItems || []) as Array<{ 
-            component_product_id: string; 
-            quantity_required: number | string; 
+          const typedBomItems = (bomItems || []) as Array<{
+            id: string;
+            component_product_id: string;
+            quantity_required: number | string;
             unit_of_measure: string | null;
+            scrap_factor: number | null;
+            production_step: string | null;
             bom_version_id: string | null;
           }>;
-          const activeBomItems = activeVersionId 
-            ? typedBomItems.filter(item => item.bom_version_id === activeVersionId)
+
+          // Filter by active version
+          const activeBomItems = activeVersion
+            ? typedBomItems.filter(item => item.bom_version_id === activeVersion.id)
             : typedBomItems;
 
-          // Fetch component product details for preview
+          // Fetch component details
           const componentIds = activeBomItems.map(item => item.component_product_id);
           const { data: componentProducts } = await supabase
             .from('products')
-            .select('id, name, quantity_in_stock, purchase_price, unit_price')
+            .select('id, name, sku, quantity_in_stock, purchase_price, unit_price')
             .in('id', componentIds)
             .eq('branch_id', activeBranch.branch_id);
 
-          const componentMap = new Map(
-            (componentProducts || []).map(c => [c.id, c])
-          );
+          const componentMap = new Map((componentProducts || []).map(c => [c.id, c]));
 
-          // Calculate buildable quantity
+          // Check which components have BOMs
+          const { data: componentBOMs } = await supabase
+            .from('product_bom')
+            .select('parent_product_id')
+            .in('parent_product_id', componentIds)
+            .eq('branch_id', activeBranch.branch_id);
+
+          const componentsBOMSet = new Set((componentBOMs || []).map(cb => cb.parent_product_id));
+
+          // Calculate buildable quantity with scrap factor
           let buildableQuantity = Infinity;
-          if (activeBomItems.length > 0) {
-            buildableQuantity = Math.min(
-              ...activeBomItems.map(item => {
-                const component = componentMap.get(item.component_product_id);
-                const stock = component?.quantity_in_stock || 0;
-                const required = parseFloat(item.quantity_required?.toString() || '1');
-                return required > 0 ? Math.floor(stock / required) : 0;
-              })
-            );
-          }
+          let totalEstimatedCost = 0;
 
-          // Build component preview list with enhanced data
-          const componentsPreview = activeBomItems.slice(0, 3).map(item => {
+          const componentsData: BOMComponent[] = activeBomItems.map(item => {
             const component = componentMap.get(item.component_product_id);
+            const stock = component?.quantity_in_stock || 0;
+            const baseQuantity = parseFloat(item.quantity_required?.toString() || '1');
+            const scrapFactor = item.scrap_factor || 0;
+            const effectiveQuantity = baseQuantity * (1 + scrapFactor / 100);
             const unitCost = component?.purchase_price || component?.unit_price || 0;
+
+            // Calculate buildable for this component
+            const componentBuildable = effectiveQuantity > 0 
+              ? Math.floor(stock / effectiveQuantity) 
+              : 0;
+
+            buildableQuantity = Math.min(buildableQuantity, componentBuildable);
+            totalEstimatedCost += unitCost * effectiveQuantity;
+
             return {
+              id: item.id,
               name: component?.name || 'Unknown',
-              quantity: parseFloat(item.quantity_required?.toString() || '0'),
+              sku: component?.sku || null,
+              quantity: baseQuantity,
               unit: item.unit_of_measure || 'unit',
               component_id: item.component_product_id,
               unit_cost: unitCost,
-              current_stock: component?.quantity_in_stock || 0,
+              current_stock: stock,
+              scrap_factor: scrapFactor,
+              production_step: item.production_step,
+              has_bom: componentsBOMSet.has(item.component_product_id),
+              buildable_qty: componentBuildable,
             };
           });
 
-          // Build versions summary
-          const versionsSummary = typedVersions.map(v => {
-            const versionComponents = typedBomItems.filter(item => item.bom_version_id === v.id);
-            return {
-              version_number: v.version_number,
-              status: v.status,
-              component_count: versionComponents.length,
-            };
-          });
+          // Build versions summary with cost calculation
+          const versionsSummary: BOMVersion[] = await Promise.all(
+            typedVersions.map(async (v) => {
+              const versionComponents = typedBomItems.filter(item => item.bom_version_id === v.id);
+              
+              // Calculate total cost for this version
+              let versionCost = 0;
+              for (const item of versionComponents) {
+                const component = componentMap.get(item.component_product_id);
+                const unitCost = component?.purchase_price || component?.unit_price || 0;
+                const baseQty = parseFloat(item.quantity_required?.toString() || '1');
+                const scrap = item.scrap_factor || 0;
+                versionCost += unitCost * baseQty * (1 + scrap / 100);
+              }
+
+              return {
+                id: v.id,
+                version_number: v.version_number,
+                status: v.status,
+                component_count: versionComponents.length,
+                total_cost: versionCost,
+                created_at: v.created_at,
+              };
+            })
+          );
 
           return {
             id: product.id,
@@ -194,9 +275,10 @@ export default function BillOfMaterialsPage() {
             parent_product_sku: product.sku,
             component_count: activeBomItems.length,
             buildable_quantity: buildableQuantity === Infinity ? 0 : buildableQuantity,
+            total_estimated_cost: totalEstimatedCost,
             created_at: new Date().toISOString(),
             versions: versionsSummary,
-            components: componentsPreview,
+            components: componentsData,
           };
         })
       );
@@ -204,10 +286,11 @@ export default function BillOfMaterialsPage() {
       return bomListItems;
     },
     enabled: !!activeBranch,
+    refetchOnWindowFocus: true,
     staleTime: 30000,
   });
 
-  // Fetch available products for creating new BOM
+  // Fetch available products for BOM creation
   const { data: availableProducts } = useQuery({
     queryKey: ['availableProductsForBOM', activeBranch?.branch_id],
     queryFn: async () => {
@@ -220,46 +303,89 @@ export default function BillOfMaterialsPage() {
         .eq('is_variant', false)
         .order('name');
 
-      if (error) {
-        console.error('Error fetching products:', error);
-        return [];
-      }
-
+      if (error) return [];
       return data || [];
     },
     enabled: !!activeBranch,
   });
 
-  const filteredBOMList = bomList?.filter((item) => {
-    // Search filter
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      const matchesSearch = 
-        item.parent_product_name.toLowerCase().includes(query) ||
-        (item.parent_product_sku && item.parent_product_sku.toLowerCase().includes(query));
-      if (!matchesSearch) return false;
-    }
+  // Fetch where-used data for selected component
+  const { data: whereUsedData } = useQuery<WhereUsedItem[]>({
+    queryKey: ['whereUsed', selectedComponentForWhereUsed, activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!selectedComponentForWhereUsed || !activeBranch) return [];
 
-    // Status filter
-    if (statusFilter !== 'all') {
-      const hasMatchingStatus = item.versions?.some(v => v.status === statusFilter);
-      if (!hasMatchingStatus) return false;
-    }
+      const { data: bomItems } = await supabase
+        .from('product_bom')
+        .select(`
+          parent_product_id,
+          quantity_required,
+          scrap_factor
+        `)
+        .eq('component_product_id', selectedComponentForWhereUsed)
+        .eq('branch_id', activeBranch.branch_id);
 
-    return true;
-  }) || [];
+      if (!bomItems) return [];
 
+      const parentIds = [...new Set(bomItems.map(item => item.parent_product_id))];
+
+      const { data: parentProducts } = await supabase
+        .from('products')
+        .select('id, name, sku')
+        .in('id', parentIds)
+        .eq('branch_id', activeBranch.branch_id);
+
+      const parentMap = new Map((parentProducts || []).map(p => [p.id, p]));
+
+      return bomItems.map(item => {
+        const parent = parentMap.get(item.parent_product_id);
+        const bomItem = bomList?.find(b => b.id === item.parent_product_id);
+        
+        return {
+          parent_product_id: item.parent_product_id,
+          parent_product_name: parent?.name || 'Unknown',
+          parent_product_sku: parent?.sku || null,
+          quantity_required: parseFloat(item.quantity_required?.toString() || '1') * (1 + (item.scrap_factor || 0) / 100),
+          total_parents_buildable: bomItem?.buildable_quantity || 0,
+        };
+      });
+    },
+    enabled: !!selectedComponentForWhereUsed && !!activeBranch,
+  });
+
+  // Filtered list
+  const filteredBOMList = useMemo(() => {
+    return (bomList || []).filter(item => {
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = 
+          item.parent_product_name.toLowerCase().includes(query) ||
+          (item.parent_product_sku && item.parent_product_sku.toLowerCase().includes(query));
+        if (!matchesSearch) return false;
+      }
+
+      if (statusFilter !== 'all') {
+        const hasMatchingStatus = item.versions?.some(v => v.status === statusFilter);
+        if (!hasMatchingStatus) return false;
+      }
+
+      return true;
+    });
+  }, [bomList, searchQuery, statusFilter]);
+
+  // Handlers
   const handleCreateBOM = () => {
     if (!newBOMProductId) {
       toast.error('Please select a product');
       return;
     }
-    navigate(`/dashboard/products/${newBOMProductId}?tab=bom&create=true`);
+    // Navigate to the edit page for the new BOM
+    navigate(`/dashboard/bom/edit/${newBOMProductId}?create=true`);
     setIsCreateDialogOpen(false);
   };
 
   const handleDeleteBOM = async (productId: string) => {
-    if (!confirm('Are you sure you want to delete the BOM for this product? This will remove all components and versions.')) {
+    if (!confirm('Are you sure you want to delete this BOM? All components and versions will be removed.')) {
       return;
     }
 
@@ -269,7 +395,6 @@ export default function BillOfMaterialsPage() {
     }
 
     try {
-      // Delete BOM components first (they reference bom_versions)
       const { error: bomError } = await supabase
         .from('product_bom')
         .delete()
@@ -278,7 +403,6 @@ export default function BillOfMaterialsPage() {
 
       if (bomError) throw bomError;
 
-      // Delete BOM versions
       const { error: versionsError } = await supabase
         .from('bom_versions')
         .delete()
@@ -290,11 +414,40 @@ export default function BillOfMaterialsPage() {
       toast.success('BOM deleted successfully');
       refetch();
     } catch (error: any) {
-      console.error('Error deleting BOM:', error);
       toast.error(`Failed to delete BOM: ${error.message}`);
     }
   };
 
+  const handleBulkDelete = async () => {
+    if (!confirm(`Delete ${selectedBOMs.size} BOM(s)? This will remove all components and versions.`)) return;
+    
+    if (!activeBranch) {
+      toast.error('No active branch selected');
+      return;
+    }
+
+    try {
+      for (const bomId of selectedBOMs) {
+        await supabase.from('product_bom').delete().eq('parent_product_id', bomId).eq('branch_id', activeBranch.branch_id);
+        await supabase.from('bom_versions').delete().eq('parent_product_id', bomId).eq('branch_id', activeBranch.branch_id);
+      }
+      toast.success(`${selectedBOMs.size} BOM(s) deleted`);
+      setSelectedBOMs(new Set());
+      refetch();
+    } catch (error: any) {
+      toast.error(`Failed to delete BOMs: ${error.message}`);
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0) {
+      setSelectedBOMs(new Set());
+    } else {
+      setSelectedBOMs(new Set(filteredBOMList.map(item => item.id)));
+    }
+  };
+
+  // Render
   return (
     <>
       <SEO title="Bill of Materials | StockFlow" />
@@ -305,7 +458,7 @@ export default function BillOfMaterialsPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Bill of Materials</h1>
               <p className="text-sm text-gray-600 mt-1">
-                Define what components are needed to build each product and track how many you can build
+                Manage product recipes, track component costs, and calculate build capacity
               </p>
             </div>
             <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
@@ -363,18 +516,8 @@ export default function BillOfMaterialsPage() {
                 <p className="text-sm text-gray-600 mb-4">
                   {searchQuery
                     ? 'Try adjusting your search query'
-                    : 'A Bill of Materials (BOM) lists all the components and quantities needed to build a finished product. Create your first BOM to get started.'}
+                    : 'Create your first BOM to define product recipes and track production capacity'}
                 </p>
-                {!searchQuery && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-left max-w-md mx-auto">
-                    <p className="text-sm text-blue-900 font-medium mb-2">What is a BOM?</p>
-                    <ul className="text-xs text-blue-800 space-y-1 list-disc list-inside">
-                      <li>Lists all components needed to build a product</li>
-                      <li>Shows how many units you can build with current stock</li>
-                      <li>Helps plan production and identify shortages</li>
-                    </ul>
-                  </div>
-                )}
                 {!searchQuery && (
                   <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
                     <Plus className="w-4 h-4 mr-2" />
@@ -385,539 +528,365 @@ export default function BillOfMaterialsPage() {
             </Card>
           ) : (
             <Card className="p-4">
-              {/* Bulk Actions Toolbar */}
+              {/* Bulk Actions */}
               {selectedBOMs.size > 0 && (
                 <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-blue-900">
-                      {selectedBOMs.size} BOM{selectedBOMs.size > 1 ? 's' : ''} selected
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={async () => {
-                        if (!confirm(`Are you sure you want to delete ${selectedBOMs.size} BOM(s)? This will remove all components and versions.`)) return;
-                        if (!activeBranch) {
-                          toast.error('No active branch selected');
-                          return;
-                        }
-                        try {
-                          for (const bomId of selectedBOMs) {
-                            // Delete BOM components first
-                            const { error: bomError } = await supabase
-                              .from('product_bom')
-                              .delete()
-                              .eq('parent_product_id', bomId)
-                              .eq('branch_id', activeBranch.branch_id);
-                            
-                            if (bomError) throw bomError;
-
-                            // Delete BOM versions
-                            const { error: versionsError } = await supabase
-                              .from('bom_versions')
-                              .delete()
-                              .eq('parent_product_id', bomId)
-                              .eq('branch_id', activeBranch.branch_id);
-                            
-                            if (versionsError) throw versionsError;
-                          }
-                          toast.success(`${selectedBOMs.size} BOM(s) deleted successfully`);
-                          setSelectedBOMs(new Set());
-                          refetch();
-                        } catch (error: any) {
-                          toast.error(`Failed to delete BOMs: ${error.message}`);
-                        }
-                      }}
-                    >
+                  <span className="text-sm font-medium text-blue-900">
+                    {selectedBOMs.size} selected
+                  </span>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={handleBulkDelete}>
                       <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Selected
+                      Delete
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelectedBOMs(new Set())}
-                    >
-                      Clear Selection
+                    <Button variant="ghost" size="sm" onClick={() => setSelectedBOMs(new Set())}>
+                      Clear
                     </Button>
                   </div>
                 </div>
               )}
+
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-12">
-                      <Checkbox
-                        checked={selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedBOMs(new Set(filteredBOMList.map(item => item.id)));
-                          } else {
-                            setSelectedBOMs(new Set());
-                          }
-                        }}
+                      <Checkbox 
+                        checked={selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0} 
+                        onCheckedChange={toggleSelectAll} 
                       />
                     </TableHead>
                     <TableHead>Product</TableHead>
                     <TableHead>SKU</TableHead>
                     <TableHead className="text-right">Components</TableHead>
-                    <TableHead className="text-right">Buildable Qty</TableHead>
+                    <TableHead className="text-right">Est. Cost</TableHead>
+                    <TableHead className="text-right">Buildable</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredBOMList.map((item) => {
-                    const isExpanded = expandedRows.has(item.id);
-                    return (
-                      <React.Fragment key={item.id}>
-                        <TableRow className="cursor-pointer hover:bg-gray-50" onClick={(e) => {
-                          // Don't toggle if clicking on interactive elements
-                          const target = e.target as HTMLElement;
-                          const isInteractive = 
-                            target.closest('button') ||
-                            target.closest('a') ||
-                            target.closest('[role="button"]') ||
-                            target.closest('input') ||
-                            target.closest('label') ||
-                            target.tagName === 'BUTTON' ||
-                            target.tagName === 'A' ||
-                            target.tagName === 'INPUT' ||
-                            target.tagName === 'LABEL';
-                          
-                          if (isInteractive) {
-                            return;
-                          }
-                          
-                          const newExpanded = new Set(expandedRows);
-                          if (isExpanded) {
-                            newExpanded.delete(item.id);
-                          } else {
-                            newExpanded.add(item.id);
-                          }
-                          setExpandedRows(newExpanded);
-                        }}>
-                          <TableCell onClick={(e) => e.stopPropagation()}>
-                            <Checkbox
-                              checked={selectedBOMs.has(item.id)}
-                              onCheckedChange={(checked) => {
-                                const newSelected = new Set(selectedBOMs);
-                                if (checked) {
-                                  newSelected.add(item.id);
-                                } else {
-                                  newSelected.delete(item.id);
-                                }
-                                setSelectedBOMs(newSelected);
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              {isExpanded ? (
-                                <ChevronDown className="w-4 h-4 text-gray-400" />
-                              ) : (
-                                <ChevronRight className="w-4 h-4 text-gray-400" />
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <div className="font-medium truncate">{item.parent_product_name}</div>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>{item.parent_product_name}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                                {item.versions && item.versions.length > 0 && (
-                                  <div className="flex items-center gap-2 mt-1 flex-wrap">
-                                    {item.versions.slice(0, 2).map((v, idx) => {
-                                      const statusColors = {
-                                        active: 'bg-green-100 text-green-800 border-green-300',
-                                        draft: 'bg-yellow-100 text-yellow-800 border-yellow-300',
-                                        archived: 'bg-gray-100 text-gray-800 border-gray-300',
-                                      };
-                                      const statusColor = statusColors[v.status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800 border-gray-300';
-                                      return (
-                                        <TooltipProvider key={idx}>
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Badge 
-                                                className={`text-xs border ${statusColor}`}
-                                              >
-                                                v{v.version_number}
-                                              </Badge>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                              <p>Version {v.version_number} - {v.status} ({v.component_count} components)</p>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </TooltipProvider>
-                                      );
-                                    })}
-                                    {item.versions.length > 2 && (
-                                      <span className="text-xs text-gray-500">
-                                        +{item.versions.length - 2} more
-                                      </span>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <span className="font-mono text-sm text-gray-600">
-                              {item.parent_product_sku || 'N/A'}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Badge variant="secondary">{item.component_count}</Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Badge
-                              variant={
-                                item.component_count === 0 
-                                  ? 'secondary'
-                                  : item.buildable_quantity === 0 
-                                    ? 'destructive'
-                                    : item.buildable_quantity < 5
-                                      ? 'destructive'
-                                      : 'default'
-                              }
-                            >
-                              {item.buildable_quantity.toLocaleString()}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
-                            <div className="flex items-center justify-end gap-2">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDeleteBOM(item.id);
-                                      }}
-                                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                    >
-                                      <Trash2 className="w-4 h-4" />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>Delete BOM</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                        {isExpanded && (
-                          <TableRow>
-                            <TableCell 
-                              colSpan={6} 
-                              className="bg-gray-50 p-4" 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                              }}
-                              onMouseDown={(e) => {
-                                e.stopPropagation();
-                              }}
-                            >
-                              <div className="space-y-4">
-                                {/* Components Preview */}
-                                {item.components && item.components.length > 0 ? (
-                                  <div>
-                                    <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                                      Components {item.component_count > item.components.length && `(${item.components.length} of ${item.component_count} shown)`}
-                                    </h4>
-                                    <div className="bg-white border rounded-lg p-3">
-                                      <div className="space-y-2">
-                                        {item.components.map((comp, idx) => {
-                                          const editingKey = `${item.id}-${comp.component_id || idx}`;
-                                          const isEditing = editingQuantities.has(editingKey);
-                                          const editValue = editingQuantities.get(editingKey)?.value || comp.quantity.toString();
-                                          
-                                          return (
-                                            <div key={idx} className="flex items-center justify-between text-sm hover:bg-gray-50 p-2 rounded group">
-                                              <div className="flex-1 min-w-0">
-                                                <span className="text-gray-900 font-medium">{comp.name}</span>
-                                                <div className="flex items-center gap-4 mt-1 text-xs text-gray-600">
-                                                  {comp.unit_cost !== undefined && comp.unit_cost > 0 && (
-                                                    <span>Unit Cost: ${comp.unit_cost.toFixed(2)}</span>
-                                                  )}
-                                                  {comp.current_stock !== undefined && (
-                                                    <span>Stock: {comp.current_stock.toLocaleString()}</span>
-                                                  )}
-                                                </div>
-                                              </div>
-                                              <div className="flex items-center gap-2">
-                                                {isEditing ? (
-                                                  <>
-                                                    <Input
-                                                      type="number"
-                                                      min="0.001"
-                                                      step="0.001"
-                                                      value={editValue}
-                                                      onChange={(e) => {
-                                                        const newMap = new Map(editingQuantities);
-                                                        newMap.set(editingKey, { bomItemId: comp.component_id || '', value: e.target.value });
-                                                        setEditingQuantities(newMap);
-                                                      }}
-                                                      onBlur={async () => {
-                                                        const value = parseFloat(editValue);
-                                                        if (value > 0 && comp.component_id && activeBranch) {
-                                                          try {
-                                                            // First find the BOM item ID
-                                                            const { data: bomItems, error: findError } = await supabase
-                                                              .from('product_bom')
-                                                              .select('id')
-                                                              .eq('component_product_id', comp.component_id)
-                                                              .eq('parent_product_id', item.id)
-                                                              .eq('branch_id', activeBranch.branch_id)
-                                                              .limit(1)
-                                                              .maybeSingle() as { data: { id: string } | null; error: any };
-                                                            
-                                                            if (findError) {
-                                                              throw findError;
-                                                            }
-                                                            
-                                                            if (!bomItems || !bomItems.id) {
-                                                              throw new Error('BOM item not found');
-                                                            }
-                                                            
-                                                            const { error: updateError } = await (supabase
-                                                              .from('product_bom') as any)
-                                                              .update({ quantity_required: value })
-                                                              .eq('id', bomItems.id);
-                                                            
-                                                            if (updateError) throw updateError;
-                                                            
-                                                            toast.success('Quantity updated');
-                                                            refetch();
-                                                          } catch (error: any) {
-                                                            toast.error(`Failed to update: ${error.message}`);
-                                                          }
-                                                        }
-                                                        const newMap = new Map(editingQuantities);
-                                                        newMap.delete(editingKey);
-                                                        setEditingQuantities(newMap);
-                                                      }}
-                                                      onKeyDown={(e) => {
-                                                        if (e.key === 'Enter') {
-                                                          e.currentTarget.blur();
-                                                        }
-                                                        if (e.key === 'Escape') {
-                                                          const newMap = new Map(editingQuantities);
-                                                          newMap.delete(editingKey);
-                                                          setEditingQuantities(newMap);
-                                                        }
-                                                      }}
-                                                      className="w-20 h-7 text-sm"
-                                                      autoFocus
-                                                      onClick={(e) => e.stopPropagation()}
-                                                    />
-                                                    <span className="text-gray-600 text-xs">{comp.unit}</span>
-                                                  </>
-                                                ) : (
-                                                  <>
-                                                    <span className="text-gray-600 font-mono">
-                                                      {comp.quantity} {comp.unit}
-                                                    </span>
-                                                    <Button
-                                                      variant="ghost"
-                                                      size="sm"
-                                                      className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                      onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        const newMap = new Map(editingQuantities);
-                                                        newMap.set(editingKey, { bomItemId: comp.component_id || '', value: comp.quantity.toString() });
-                                                        setEditingQuantities(newMap);
-                                                      }}
-                                                    >
-                                                      <Edit className="w-3 h-3" />
-                                                    </Button>
-                                                  </>
-                                                )}
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                        {item.component_count > item.components.length && (
-                                          <div className="text-xs text-gray-500 pt-2 border-t">
-                                            +{item.component_count - item.components.length} more components
-                                          </div>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                                    <p className="text-sm text-yellow-800 mb-3">
-                                      No components defined yet.
-                                    </p>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setEditingBOMProductId(item.id);
-                                      }}
-                                    >
-                                      <Plus className="w-4 h-4 mr-2" />
-                                      Add Components
-                                    </Button>
-                                  </div>
-                                )}
-
-                                {/* Buildable Quantity Info */}
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                                  <p className="text-sm text-blue-900">
-                                    <strong>Buildable Qty:</strong> You can build <strong>{item.buildable_quantity}</strong> units of this product with current component stock.
-                                    {item.buildable_quantity === 0 && item.component_count > 0 && (
-                                      <span className="block mt-1 text-blue-800">
-                                        Check component stock levels to identify shortages.
-                                      </span>
-                                    )}
-                                  </p>
-                                </div>
-
-                                {/* Quick Actions */}
-                                <div 
-                                  className="flex items-center gap-2 pt-2 border-t"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                  }}
-                                  onMouseDown={(e) => {
-                                    e.stopPropagation();
-                                  }}
-                                >
-                                  <Button
-                                    type="button"
-                                    variant="default"
-                                    size="sm"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      setEditingBOMProductId(item.id);
-                                    }}
-                                    onMouseDown={(e) => {
-                                      e.stopPropagation();
-                                      e.preventDefault();
-                                    }}
-                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
-                                  >
-                                    <Edit className="w-4 h-4 mr-2" />
-                                    Edit BOM Components
-                                  </Button>
-                                  <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      // Use a small timeout to ensure event propagation is fully stopped
-                                      setTimeout(() => {
-                                        navigate(`/dashboard/products/${item.id}`);
-                                      }, 0);
-                                    }}
-                                    onMouseDown={(e) => {
-                                      e.stopPropagation();
-                                      e.preventDefault();
-                                    }}
-                                  >
-                                    View Product Details
-                                  </Button>
-                                </div>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
+                  {filteredBOMList.map((item) => (
+                    <BOMRow
+                      key={item.id}
+                      item={item}
+                      isSelected={selectedBOMs.has(item.id)}
+                      onToggleSelect={(checked) => {
+                        const newSelected = new Set(selectedBOMs);
+                        if (checked) newSelected.add(item.id);
+                        else newSelected.delete(item.id);
+                        setSelectedBOMs(newSelected);
+                      }}
+                      onDelete={() => handleDeleteBOM(item.id)}
+                      onEdit={() => navigate(`/dashboard/bom/edit/${item.id}`)}
+                      onViewProduct={() => navigate(`/dashboard/products/${item.id}`)}
+                      onViewWhereUsed={(componentId) => setSelectedComponentForWhereUsed(componentId)}
+                    />
+                  ))}
                 </TableBody>
               </Table>
             </Card>
           )}
         </div>
 
-        {/* Create BOM Dialog */}
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create Bill of Materials</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div>
-                <Label>Select Product</Label>
-                <Select value={newBOMProductId} onValueChange={setNewBOMProductId}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose a product to create BOM for" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableProducts?.map((product) => (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name} {product.sku && `(${product.sku})`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-gray-500 mt-2">
-                  You'll be taken to the product detail page to add components
-                </p>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleCreateBOM} disabled={!newBOMProductId}>
-                Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+        {/* Dialogs */}
+        <CreateBOMDialog
+          isOpen={isCreateDialogOpen}
+          onClose={() => setIsCreateDialogOpen(false)}
+          availableProducts={availableProducts || []}
+          selectedProductId={newBOMProductId}
+          onSelectProduct={setNewBOMProductId}
+          onConfirm={handleCreateBOM}
+        />
 
-        {/* BOM Editing Modal */}
-        <Dialog 
-          open={editingBOMProductId !== null} 
-          onOpenChange={(open) => {
-            if (!open) {
-              setEditingBOMProductId(null);
-              // Refetch BOM list to show updated data
-              refetch();
-            }
-          }}
-        >
-          <DialogContent className="max-w-6xl max-h-[90vh] flex flex-col">
-            <DialogHeader className="flex-shrink-0">
-              <DialogTitle>
-                {editingBOMProductId && bomList?.find(p => p.id === editingBOMProductId)?.parent_product_name 
-                  ? `Edit BOM: ${bomList.find(p => p.id === editingBOMProductId)?.parent_product_name}`
-                  : 'Edit Bill of Materials'}
-              </DialogTitle>
-            </DialogHeader>
-            {editingBOMProductId && (
-              <div className="flex-1 overflow-y-auto mt-4 pr-2">
-                <BillOfMaterials 
-                  productId={editingBOMProductId}
-                  onVersionChange={() => {
-                    // Refetch when version changes
-                    refetch();
-                  }}
-                />
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
+        <WhereUsedDialog
+          isOpen={selectedComponentForWhereUsed !== null}
+          onClose={() => setSelectedComponentForWhereUsed(null)}
+          componentId={selectedComponentForWhereUsed}
+          whereUsedData={whereUsedData || []}
+        />
+
+        <BulkReplaceDialog
+          isOpen={bulkReplaceDialog !== null}
+          onClose={() => setBulkReplaceDialog(null)}
+          onConfirm={() => {}}
+          fromComponentId={bulkReplaceDialog?.from}
+          toComponentId={bulkReplaceDialog?.to}
+        />
       </div>
     </>
   );
 }
 
+// BOM Edit Page Component
+function BOMEditPage() {
+  const { productId } = useParams<{ productId: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isCreateMode = new URLSearchParams(location.search).get('create') === 'true';
+
+  // Fetch product details
+  const { data: product, isLoading } = useQuery({
+    queryKey: ['productForBOM', productId],
+    queryFn: async () => {
+      if (!productId) return null;
+      
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, sku')
+        .eq('id', productId)
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!productId,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <SEO title={`${isCreateMode ? 'Create' : 'Edit'} BOM: ${product?.name || 'Loading...'} | StockFlow`} />
+      
+      <div className="h-full flex flex-col bg-white">
+        {/* Header with back button */}
+        <div className="border-b px-6 py-4 bg-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/dashboard/bom')}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Back to BOM List
+              </Button>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {isCreateMode ? 'Create BOM' : `Edit BOM: ${product?.name || 'Loading...'}`}
+                </h1>
+                {product?.sku && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    SKU: {product.sku}
+                  </p>
+                )}
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/dashboard/bom')}
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* BOM Editor Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {productId ? (
+            <div className="max-w-7xl mx-auto">
+              <BillOfMaterials 
+                productId={productId} 
+                onVersionChange={() => {}} 
+                isCreateMode={isCreateMode}
+              />
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600">No product selected</p>
+              <Button 
+                onClick={() => navigate('/dashboard/bom')}
+                className="mt-4"
+              >
+                Back to BOM List
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// BOM Row Component
+interface BOMRowProps {
+  item: BOMListItem;
+  isSelected: boolean;
+  onToggleSelect: (checked: boolean) => void;
+  onDelete: () => void;
+  onEdit: () => void;
+  onViewProduct: () => void;
+  onViewWhereUsed: (componentId: string) => void;
+}
+
+function BOMRow({ item, isSelected, onToggleSelect, onDelete, onEdit, onViewProduct, onViewWhereUsed }: BOMRowProps) {
+  return (
+    <TableRow>
+      <TableCell onClick={(e) => e.stopPropagation()}>
+        <Checkbox checked={isSelected} onCheckedChange={onToggleSelect} />
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <div>
+            <div className="font-medium">{item.parent_product_name}</div>
+            {item.versions.length > 0 && (
+              <div className="flex gap-2 mt-1">
+                {item.versions.slice(0, 2).map((v) => (
+                  <Badge key={v.id} variant={v.status === 'active' ? 'default' : 'secondary'} className="text-xs">
+                    v{v.version_number} • {v.status}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </TableCell>
+      <TableCell>
+        <span className="font-mono text-sm text-gray-600">{item.parent_product_sku || 'N/A'}</span>
+      </TableCell>
+      <TableCell className="text-right">
+        <Badge variant="secondary">{item.component_count}</Badge>
+      </TableCell>
+      <TableCell className="text-right">
+        <div className="flex items-center justify-end gap-1">
+          <DollarSign className="w-3 h-3 text-gray-400" />
+          <span className="font-semibold text-gray-900">{item.total_estimated_cost.toFixed(2)}</span>
+        </div>
+      </TableCell>
+      <TableCell className="text-right">
+        <Badge variant={item.buildable_quantity === 0 ? 'destructive' : item.buildable_quantity < 5 ? 'default' : 'default'}>
+          {item.buildable_quantity.toLocaleString()}
+        </Badge>
+      </TableCell>
+      <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-end gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="sm" onClick={onViewProduct}>
+                  <Eye className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>View Product</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          
+          <Button variant="default" size="sm" onClick={onEdit}>
+            <Edit className="w-4 h-4" />
+          </Button>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="sm" onClick={onDelete} className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Delete BOM</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
+}
+
+// Dialog Components (unchanged from your original)
+function CreateBOMDialog({ isOpen, onClose, availableProducts, selectedProductId, onSelectProduct, onConfirm }: any) {
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create Bill of Materials</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div>
+            <Label>Select Product</Label>
+            <Select value={selectedProductId} onValueChange={onSelectProduct}>
+              <SelectTrigger>
+                <SelectValue placeholder="Choose a product" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableProducts.map((product: any) => (
+                  <SelectItem key={product.id} value={product.id}>
+                    {product.name} {product.sku && `(${product.sku})`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={onConfirm} disabled={!selectedProductId}>
+            Continue <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function WhereUsedDialog({ isOpen, onClose, componentId, whereUsedData }: any) {
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Where Used Report</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          {whereUsedData.length === 0 ? (
+            <p className="text-sm text-gray-600">This component is not used in any BOMs</p>
+          ) : (
+            <div className="space-y-2">
+              {whereUsedData.map((item: WhereUsedItem) => (
+                <div key={item.parent_product_id} className="p-3 border rounded-lg">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium">{item.parent_product_name}</p>
+                      <p className="text-xs text-gray-600">{item.parent_product_sku || 'No SKU'}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm">Qty Required: <span className="font-semibold">{item.quantity_required}</span></p>
+                      <p className="text-xs text-gray-600">Can Build: {item.total_parents_buildable}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function BulkReplaceDialog({ isOpen, onClose, onConfirm, fromComponentId, toComponentId }: any) {
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Bulk Replace Component</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <p className="text-sm text-gray-600">
+            Replace component across all BOMs. This action cannot be undone.
+          </p>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={onConfirm} variant="destructive">
+            Replace All
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}

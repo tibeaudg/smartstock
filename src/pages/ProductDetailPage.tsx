@@ -6,49 +6,27 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { 
-  Edit, 
-  Plus, 
-  Trash2, 
-  MapPin, 
-  Package, 
-  Tag, 
-  DollarSign,
-  AlertCircle,
-  Calendar,
-  Scan,
-  Check,
-  X,
-  Upload,
-  Image as ImageIcon,
-  ChevronsUpDown,
-  Save,
-  ArrowLeft,
-  Archive,
-  QrCode,
-  ArrowRightLeft,
-  Warehouse,
-  TrendingUp
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useCurrency } from '@/hooks/useCurrency';
-import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
-import { useWarehouses } from '@/hooks/useWarehouses';
-import { AddVariantModal } from '@/components/AddVariantModal';
-import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
-import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useWarehouses } from '@/hooks/useWarehouses';
+import { cn } from '@/lib/utils';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
 import { InventorySegmentation } from '@/components/product/InventorySegmentation';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
 import { WarehouseTransferModal } from '@/components/WarehouseTransferModal';
 import { CategorySelectionModal } from '@/components/CategorySelectionModal';
+import { AddVariantModal } from '@/components/AddVariantModal';
+import { BarcodeScanner } from '@/components/BarcodeScanner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { BillOfMaterials } from '@/components/product/BillOfMaterials';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { format } from 'date-fns';
 
 export default function ProductDetailPage() {
@@ -81,8 +59,9 @@ export default function ProductDetailPage() {
   const [isLoadingVariants, setIsLoadingVariants] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   
-  // Tab state
-  const [activeTab, setActiveTab] = useState<string>('overview');
+  // Tab state (initialize from URL `tab` query param once)
+  const initialTab = React.useMemo(() => new URLSearchParams(window.location.search).get('tab') || 'overview', []);
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
   
   // Variant selection for bulk actions
   const [selectedVariantIds, setSelectedVariantIds] = useState<Set<string>>(new Set());
@@ -790,19 +769,99 @@ export default function ProductDetailPage() {
   return (
     <div className="h-full flex flex-col bg-white">
       {/* Top Header with Back Button */}
-      <div className="border-b px-6 py-3 bg-white">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate('/dashboard/categories')}
-          className="gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </Button>
-      </div>
 
       {/* Dual-Pane Layout */}
+      {/* Breadcrumb + Header: anchors user to product context */}
+      <div className="border-b px-6 py-2 bg-white">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/dashboard/categories')}
+              className="p-0"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <nav className="text-xs text-gray-500">
+              <span className="cursor-pointer hover:underline" onClick={() => navigate('/dashboard/categories')}>Products</span>
+              <span className="mx-2">/</span>
+           
+              <span className="text-gray-900 font-medium">{currentProduct?.name}</span>
+            </nav>
+          </div>
+      <div className="px-6 py-3">
+  
+
+                <Button
+                  onClick={handleAdjustStock}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs mr-2"
+                  title="Adjust Stock (A)"
+                >
+                  <Plus className="w-3 h-3" />
+                  Adjust
+                </Button>
+                <Button
+                  onClick={handleSetWarehouse}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs mr-2"
+                  title="Set Warehouse (T)"
+                >
+                  <MapPin className="w-3 h-3" />
+                  {currentProduct?.warehouse_name || 'Set Warehouse'}
+                </Button>
+                <Button
+                  onClick={handleSetCategory}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-xs mr-2"
+                  title="Set Category (C)"
+                >
+                  <Tag className="w-3 h-3" />
+                  {currentProduct?.category_name || 'Set Category'}
+                </Button>
+       
+
+
+                  <Button
+                variant="outline"
+                size="sm"
+                  className="gap-2 text-xs mr-2"
+                onClick={handleGenerateBarcode}
+              >
+                <QrCode className="w-3 h-3 mr-2" />
+                Generate Barcode
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                  className="gap-2 text-xs mr-2"
+                onClick={handleArchive}
+              >
+                <Archive className="w-3 h-3 mr-2" />
+                Archive
+              </Button>
+
+                       <Button
+                  onClick={handleDelete}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 mr-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  Delete
+                </Button>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar - Fixed (320px) */}
         <div className="w-80 border-r bg-gray-50 flex flex-col overflow-y-auto">
@@ -994,30 +1053,7 @@ export default function ProductDetailPage() {
              
             </div>
 
-            <Separator />
-
-            {/* Compact Action Buttons */}
-            <div className="space-y-2">
-           
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-start text-xs h-8"
-                onClick={handleGenerateBarcode}
-              >
-                <QrCode className="w-3 h-3 mr-2" />
-                Generate Barcode
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-start text-xs h-8 text-orange-600 hover:text-orange-700"
-                onClick={handleArchive}
-              >
-                <Archive className="w-3 h-3 mr-2" />
-                Archive
-              </Button>
-            </div>
+    
           </div>
         </div>
 
@@ -1065,47 +1101,7 @@ export default function ProductDetailPage() {
                 </div>
               )}
               
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={handleAdjustStock}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs"
-                  title="Adjust Stock (A)"
-                >
-                  <Plus className="w-3 h-3" />
-                  Adjust
-                </Button>
-                <Button
-                  onClick={handleSetWarehouse}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs"
-                  title="Set Warehouse (T)"
-                >
-                  <MapPin className="w-3 h-3" />
-                  {currentProduct?.warehouse_name || 'Set Warehouse'}
-                </Button>
-                <Button
-                  onClick={handleSetCategory}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs"
-                  title="Set Category (C)"
-                >
-                  <Tag className="w-3 h-3" />
-                  {currentProduct?.category_name || 'Set Category'}
-                </Button>
-                <Button
-                  onClick={handleDelete}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  Delete
-                </Button>
-              </div>
+          
             </div>
           </div>
 
@@ -1114,22 +1110,24 @@ export default function ProductDetailPage() {
             <div className="p-6">
               {/* Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className={cn(
-                  "grid w-full mb-6",
-                  currentProduct.is_variant ? "grid-cols-1" : "grid-cols-2"
-                )}>
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  {!currentProduct.is_variant && (
-                    <TabsTrigger value="variants">
-                      Variants
-                      {variants.length > 0 && (
-                        <Badge variant="secondary" className="ml-2 text-xs">
-                          {variants.length}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                  )}
-                </TabsList>
+                <TabsList className="grid w-full mb-6 grid-cols-2 gap-2 bg-white border rounded-md p-1">
+                    <TabsTrigger value="overview" className="px-3 py-1 rounded text-sm">Overview</TabsTrigger>
+                    {!currentProduct.is_variant && (
+                      <>
+                        <TabsTrigger value="variants" className="px-3 py-1 rounded text-sm">
+                        <div className="flex items-center">
+                          <span>Variants</span>
+                          {variants.length > 0 && (
+                            <Badge variant="secondary" className="ml-2 text-xs">
+                              {variants.length}
+                            </Badge>
+                          )}
+                        </div>
+                        </TabsTrigger>
+                     
+                      </>
+                    )}
+                  </TabsList>
 
                 {/* Overview Tab */}
                 <TabsContent value="overview" className="space-y-6 mt-0">
@@ -1421,6 +1419,19 @@ export default function ProductDetailPage() {
                         </div>
                       </div>
                     )}
+                  </TabsContent>
+                )}
+
+                {/* BOM Tab */}
+                {!currentProduct.is_variant && (
+                  <TabsContent value="bom" className="mt-0 space-y-4">
+                    <BillOfMaterials
+                      productId={currentProduct.id}
+                      onVersionChange={(versionId) => {
+                        // ensure we stay on BOM tab when versions change
+                        setActiveTab('bom');
+                      }}
+                    />
                   </TabsContent>
                 )}
               </Tabs>

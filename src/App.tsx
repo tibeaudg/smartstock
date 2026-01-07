@@ -42,6 +42,7 @@ import { getSeoRoutes } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
 import HelpCenterPage from "./pages/help-center";
 import BillOfMaterialsPage from './pages/BillOfMaterialsPage';
+import BOMEditPage from './pages/BillOfMaterialsPage'
 import AdminPage from './pages/admin';
 import PricingPage from './pages/pricing';
 import CheckoutPage from './pages/checkout';
@@ -221,7 +222,10 @@ const AppRouter = () => {
           <Route path="products/new" element={<AddProductPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="warehouses" element={<><SEO title="Warehouse Management" /><WarehousePage /></>} />
-          <Route path="bom" element={<BillOfMaterialsPage />} />
+            // In your router configuration (e.g., App.tsx or router.tsx)
+          <Route path="bom" element={<BillOfMaterialsPage />}>
+            <Route path="edit/:productId" element={<BOMEditPage />} />
+          </Route>
           <Route path="transactions" element={<StockMovements />} />
           <Route path="analytics/reports" element={<CustomReports />} />
           <Route path="analytics/advanced" element={<AdvancedReports />} />

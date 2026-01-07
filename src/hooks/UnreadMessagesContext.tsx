@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { AuthContext } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -17,8 +17,10 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
   const authContext = useContext(AuthContext);
   const user = authContext?.user || null;
 
+  const userId = user?.id || null;
+
   const refreshUnreadCount = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       setUnreadCount(0);
       return;
     }
@@ -28,7 +30,7 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
       const { data: chats, error: chatError } = await supabase
         .from('chats')
         .select('id')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .eq('is_closed', false)
         .limit(1);
       
@@ -58,18 +60,22 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
       console.error('Error in refreshUnreadCount:', error);
       setUnreadCount(0);
     }
-  }, [user]);
+  }, [userId]);
+
+  // refs to hold the active channel and debounce timer across renders
+  const channelRef = useRef<any>(null);
+  const refreshTimeoutRef = useRef<number | null>(null);
 
   // Reset unread count by marking all as read in DB
   const resetUnreadCount = useCallback(async () => {
-    if (!user) return;
+    if (!userId) return;
     
     try {
       // First get the user's chat
       const { data: chats, error: chatError } = await supabase
         .from('chats')
         .select('id')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .eq('is_closed', false)
         .limit(1);
       
@@ -103,15 +109,20 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
       console.error('Error in resetUnreadCount:', error);
       setUnreadCount(0);
     }
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => {
+    // Initial count
     refreshUnreadCount();
-    
-    // Subscribe to realtime changes for chat_messages
-    if (user) {
+
+    // Keep a ref to the active channel so we don't recreate on re-renders
+    const existingChannel = channelRef.current;
+
+    // Subscribe to realtime changes for chat_messages only once per authenticated user
+    if (userId && !existingChannel) {
+      const channelName = `chat_messages_changes_user_${userId}`;
       const channel = supabase
-        .channel('chat_messages_changes')
+        .channel(channelName)
         .on(
           'postgres_changes',
           {
@@ -120,31 +131,40 @@ export const UnreadMessagesProvider: React.FC<{ children: React.ReactNode }> = (
             table: 'chat_messages'
           },
           (payload) => {
-            console.log('Chat message change detected:', payload);
-            
-            // Only refresh if the message is from admin and unread
-            if (payload.eventType === 'INSERT' && 
-                payload.new?.sender_type === 'admin' && 
-                payload.new?.is_read === false) {
-              console.log('New unread admin message, refreshing count...');
-              refreshUnreadCount();
-            } else if (payload.eventType === 'UPDATE' && 
-                       payload.new?.sender_type === 'admin') {
-              // Refresh when admin messages are marked as read/unread
-              console.log('Admin message updated, refreshing count...');
-              refreshUnreadCount();
+            // Debounce refreshes to avoid rapid repeated network calls
+            if (refreshTimeoutRef.current) {
+              clearTimeout(refreshTimeoutRef.current);
             }
+            refreshTimeoutRef.current = window.setTimeout(() => {
+              // Only refresh for admin messages insert/update
+              if (payload.eventType === 'INSERT' && payload.new?.sender_type === 'admin' && payload.new?.is_read === false) {
+                refreshUnreadCount();
+              } else if (payload.eventType === 'UPDATE' && payload.new?.sender_type === 'admin') {
+                refreshUnreadCount();
+              }
+            }, 250) as unknown as number;
           }
         )
         .subscribe();
 
-      // Cleanup subscription on unmount
-      return () => {
-        console.log('Cleaning up chat messages subscription');
-        supabase.removeChannel(channel);
-      };
+      channelRef.current = channel;
     }
-  }, [refreshUnreadCount, user]);
+
+    // Cleanup subscription on unmount or when userId changes
+    return () => {
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current);
+        refreshTimeoutRef.current = null;
+      }
+      const ch = channelRef.current;
+      if (ch) {
+        console.log('Cleaning up chat messages subscription');
+        supabase.removeChannel(ch);
+        channelRef.current = null;
+      }
+    };
+  }, [userId, refreshUnreadCount]);
+  
 
   return (
     <UnreadMessagesContext.Provider value={{ unreadCount, refreshUnreadCount, resetUnreadCount }}>
