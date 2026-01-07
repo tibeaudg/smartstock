@@ -15,7 +15,7 @@ interface TableOfContentsProps {
   className?: string;
 }
 
-export function TableOfContents({ 
+export default function TableOfContents({ 
   items, 
   activeId, 
   onItemClick, 

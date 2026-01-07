@@ -1,24 +1,77 @@
-/* Forceer de flex container om geen alignment restricties op te leggen aan de hoogte */
-.flex.lg\:flex-row {
-  display: flex !important;
-  align-items: stretch !important; /* Cruciaal: maakt de aside even hoog als de article */
+/* SeoPageLayout.css */
+
+/* Critical above-the-fold styles */
+.is-seo-page {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 1000px;
 }
 
-/* De aside moet de volledige hoogte vullen om de sticky wrapper ruimte te geven */
-aside {
-  height: auto !important;
-  min-height: 100%;
-  position: relative;
+.seo-article {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 2000px;
 }
 
-/* De daadwerkelijke sticky container */
-.sticky.top-24 {
-  position: sticky !important;
-  position: -webkit-sticky !important;
-  top: 120px !important; /* Verhoog dit als je header hoog is */
-  align-self: start;
+/* Optimize image rendering */
+.seo-article img {
+  content-visibility: auto;
 }
 
+/* Prevent layout shifts */
+.seo-article img:not([width]):not([height]) {
+  aspect-ratio: 16/9;
+}
 
+/* Optimize text rendering */
+.seo-article {
+  text-rendering: optimizeSpeed;
+  font-display: swap;
+}
 
+/* Reduce paint area for sticky elements */
+.sticky {
+  will-change: transform;
+  backface-visibility: hidden;
+}
 
+/* Smooth scrolling for anchor links */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Optimize animations */
+.group-hover\:bg-slate-50,
+.hover\:bg-slate-50 {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent zoom on mobile */
+@media screen and (max-width: 768px) {
+  input,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Critical loading states */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
