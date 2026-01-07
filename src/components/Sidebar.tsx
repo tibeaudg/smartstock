@@ -54,6 +54,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
+import { sub } from 'date-fns';
 
 interface SidebarProps {
   currentTab: string;
@@ -125,6 +126,12 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
       return { ...prev, [menuId]: false };
     });
   };
+
+  const inventorySubItems = [
+    { id: 'products', label: 'Products', path: '/dashboard/categories'},
+    { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
+
+  ]
   
   const settingsSubItems = [
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
@@ -162,16 +169,15 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
 
         { 
-          id: 'products', 
-          label: 'Products', 
+          id: 'inventory', 
+          label: 'Inventory', 
           icon: Package, 
-          path: getProductsPath(),
-          end: true
+          path: 'dashboard/inventory',
+          subItems: [{ id: 'products', label: 'Products', path: '/dashboard/categories'}, { id: 'transactions', label: 'Transactions', path:'/dashboard/transactions'}]
         },
 
 
         { id: 'bom', label: 'Bill of Materials', icon: Layers, path: '/dashboard/bom', end: true },
-        { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
         ...(hasAnalytics
           ? [
               {

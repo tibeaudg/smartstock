@@ -36,7 +36,7 @@ export function generateRegionalStructuredData(data: RegionalBusinessData) {
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer support',
-        email: 'support@stockflowsystems.com',
+        email: 'info@stockflow.be',
         availableLanguage: ['Dutch', 'French', 'English']
       }
     },

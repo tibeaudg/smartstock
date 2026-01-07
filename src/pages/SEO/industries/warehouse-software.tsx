@@ -302,12 +302,7 @@ export default function WarehouseSoftwarePage() {
 
 
 
-      {caseStudies.length > 0 && (
-        <CaseStudySection
-          caseStudy={caseStudies[0]}
-          variant="highlighted"
-        />
-      )}
+  
     </SeoPageLayout>
   );
 }

@@ -156,7 +156,7 @@ export default function ContactPage() {
                       <Mail className="h-5 w-5 text-indigo-600 mt-1" />
                       <div>
                         <p className="font-medium text-gray-900">Email</p>
-                        <p className="text-gray-600">support@stockflowsystems.com</p>
+                        <p className="text-gray-600">info@stockflow.be</p>
                       </div>
                     </div>
                     

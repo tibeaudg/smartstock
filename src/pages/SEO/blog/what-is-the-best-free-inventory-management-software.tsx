@@ -5,7 +5,7 @@ import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, ArrowRight, Zap, Layers, Calculator, Globe } from "lucide-react";
 
-const topicTitle = "Best Inventory Management Software (2026): Open & Free Solutions";
+const topicTitle = "Best Inventory Management Software (2026): Free & Easy Solutions";
 const canonicalPath = "/best-inventory-management-software";
 const metaDescription = "Review the best inventory management software for 2026. Compare paid enterprise systems against StockFlow, a fully free platform for stock tracking, barcode scanning, and supply chain optimization.";
 const keywords = "free inventory management software, stockflow free inventory, best inventory tracking 2026, free barcode scanning software, open inventory systems, cost-free stock control, enterprise inventory management";
@@ -203,22 +203,6 @@ export default function SeoBestInventoryManagementSoftwarePage() {
         </div>
       </section>
 
-      <section className="bg-slate-900 py-20 text-center text-white">
-        <div className="mx-auto max-w-4xl px-4">
-          <h2 className="text-3xl font-bold md:text-4xl">Stop Paying for Inventory Software.</h2>
-          <p className="mt-4 text-slate-400 text-lg">
-            StockFlow is the only fully free platform providing enterprise-grade stock control for businesses of all sizes.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/ auth" className="rounded-lg bg-white px-10 py-4 font-bold text-slate-900 hover:bg-slate-100 transition-colors">
-              Create Your Free Account
-            </Link>
-            <Link to="/features" className="rounded-lg border border-slate-700 px-10 py-4 font-bold hover:bg-slate-800 transition-colors">
-              Explore All Free Features
-            </Link>
-          </div>
-        </div>
-      </section>
     </SeoPageLayout>
   );
 }

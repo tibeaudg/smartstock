@@ -23,7 +23,10 @@ import {
   Sparkles,
   FileText,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  LifeBuoy,
+  Scale,
+  TrendingUp
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '../hooks/useWindowSize';
@@ -177,23 +180,12 @@ const Header: React.FC<HeaderProps> = ({
             {
               title: 'More Industries',
               items: [
-                {
-                  label: 'Interior Design',
-                  description: 'Visually manage design inventory across projects.',
-                  to: '/interior-design-inventory-management',
-                  icon: Palette
-                },
+           
                 {
                   label: 'Warehouse',
                   description: 'Run smart warehouse operations with automation.',
-                  to: '/warehouse-inventory-management',
+                  to: '/warehouse-software',
                   icon: Warehouse
-                },
-                {
-                  label: 'Education',
-                  description: 'Effortlessly manage school inventory and supplies.',
-                  to: '/education-inventory-management',
-                  icon: GraduationCap
                 }
               ]
             }
@@ -202,10 +194,53 @@ const Header: React.FC<HeaderProps> = ({
       },
 
 
+
       {
         id: 'resources',
         label: 'Resources',
-        to: '/resources'
+        megaMenu: {
+          intro: {
+            title: 'Resources',
+            description: 'Need help or information? Here you can find what you are looking for',
+          },
+          sections: [
+            {
+              title: 'Blog',
+              items: [
+                {
+                  label: 'Articles',
+                  description: 'Read our content for free.',
+                  to: '/blog',
+                  icon: FileText
+                },
+                {
+                  label: 'Case Studies',
+                  description: 'Find out other success stories.',
+                  to: '/case-studies',
+                  icon: TrendingUp
+                },
+                {
+                  label: 'Support',
+                  description: 'Get help here!',
+                  to: '/help-center',
+                  icon: LifeBuoy
+                },
+                {
+                  label: 'Demo Videos',
+                  description: 'Watch our free instruction videos.',
+                  to: '/videos',
+                  icon: PlayCircle
+                },
+                {
+                  label: 'Comparisons',
+                  description: 'Compare Stockflow with other inventory management platforms.',
+                  to: '/compare-inventory-software',
+                  icon: Scale
+                }                
+              ]
+            }
+          ]
+        }
       },
 
 

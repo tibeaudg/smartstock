@@ -27,7 +27,6 @@ import {
   MapPin
 } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
 import { Link } from 'react-router-dom';
 
 
@@ -310,11 +309,7 @@ export default function ElectricalInventoryManagement() {
     { id: 'faq', title: 'FAQ', level: 1 }
   ]);
 
-  // Calculate reading time (approximate - based on content length)
-  const estimatedReadingTime = React.useMemo(() => {
-    const contentLength = faqData.reduce((acc, faq) => acc + faq.question.length + faq.answer.length, 0) + 5000; // Add base content estimate
-    return Math.ceil(contentLength / 200); // ~200 words per minute
-  }, [faqData]);
+
 
   return (
     <SeoPageLayout 
@@ -324,7 +319,6 @@ export default function ElectricalInventoryManagement() {
       faqData={faqData}
       tableOfContents={sidebarContent.tableOfContents}
       showTOC={true}
-      readingTime={estimatedReadingTime}
       previousArticle={{
         title: "Cross-Dock Warehouse",
         href: "/cross-dock-warehouse"

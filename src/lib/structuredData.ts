@@ -478,7 +478,7 @@ export function generateComprehensiveStructuredData(
     contactPoints: [
       {
         type: "customer service",
-        email: "support@stockflowsystems.com",
+        email: "info@stockflow.be",
         phone: "+32-XXX-XXX-XXX",
         languages: ["English", "Dutch", "French", "German", "Spanish"]
       },
@@ -825,7 +825,7 @@ export function generateSeoPageStructuredData(options: SeoPageStructuredDataOpti
       contactPoints: [
         {
           type: "customer service",
-          email: "support@stockflowsystems.com",
+          email: "info@stockflow.be",
           languages: ["English", "Dutch", "French", "German", "Spanish"]
         },
         {

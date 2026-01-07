@@ -5,6 +5,7 @@ import Header from './HeaderPublic';
 import { motion } from 'framer-motion';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import SEO from './SEO';
+import Footer from './Footer';
 
 // Animation components from HomePage
 const FadeInWhenVisible = ({ children, delay = 0, direction = 'up', duration = 700 }) => {
@@ -473,55 +474,7 @@ const FeaturesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 py-8 md:py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 mb-6 md:mb-8">
-            {/* Company Logo */}
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-blue-600 rounded-3xl flex items-center justify-center mr-3">
-                <Package className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-medium text-white">stockflow</span>
-            </div>
-            
-            {/* Pages */}
-            <div>
-              <h3 className="font-semibold mb-4 text-white">Pages</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
-                <li><Link to="/features" className="hover:text-white transition-colors">Features</Link></li>
-                <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-            
-            {/* Contact */}
-            <div>
-              <h3 className="font-semibold mb-4 text-white">Contact</h3>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li>support@stockflowsystems.com</li>
-                <li>+32 123 456 789</li>
-                <li>Belgium</li>
-              </ul>
-            </div>
-            
-            {/* Socials */}
-            <div>
-              <h3 className="font-semibold mb-4 text-white">Socials</h3>
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">LinkedIn</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Twitter</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">Facebook</a>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 pt-6 text-center text-sm text-gray-400">
-            <p>© 2025 StockFlow. All Rights Reserved.</p>
-          </div>
-        </div>
-      </footer>
+<Footer />
     </>
   );
 };

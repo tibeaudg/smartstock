@@ -51,7 +51,7 @@ export function generateOrganizationSchema(baseUrl: string = 'https://www.stockf
       {
         "@type": "ContactPoint",
         "contactType": "customer service",
-        "email": "support@stockflowsystems.com",
+        "email": "info@stockflow.be",
         "availableLanguage": ["English", "Dutch", "French"]
       },
       {

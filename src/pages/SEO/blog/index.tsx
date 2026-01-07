@@ -344,12 +344,10 @@ export default function SeoBlogIndexPage() {
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
-      <section id="articles" className="bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12">
+      <section id="articles">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-8">
-            <p className="text-sm md:text-base text-gray-600 max-w-3xl mx-auto">
-              Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.
-            </p>
+         
           </div>
 
           {/* Search and Filters */}
