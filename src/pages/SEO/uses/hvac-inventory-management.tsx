@@ -234,7 +234,7 @@ export default function HvacInventoryManagement() {
       title="HVAC Inventory Management 2026"
       heroTitle="HVAC Inventory Management: Track Parts, Equipment & Service Vehicles"
       description="Complete HVAC inventory management guide. Track HVAC parts, equipment, and supplies with mobile scanning, service vehicle management, and seasonal demand optimization. Free plan available."
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
         title: "Electrical Inventory Management",

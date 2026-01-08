@@ -28,7 +28,6 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 interface OnboardingWizardProps {
   open: boolean;
@@ -61,7 +60,6 @@ export const OnboardingWizard: React.FC<OnboardingWizardProps> = ({
   const { setActiveBranch, refreshBranches } = useBranches();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { trackCustomEvent } = useWebsiteTracking();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [createdBranchId, setCreatedBranchId] = useState<string | null>(null);

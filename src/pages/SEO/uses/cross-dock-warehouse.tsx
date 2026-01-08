@@ -238,7 +238,7 @@ export default function BestInventoryManagementSoftware() {
       title="Cross-dock Warehouse"
       description="Complete cross-dock warehouse management 2026. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning. Free plan available."
       heroTitle="Cross-dock Warehouse"
-      updatedDate="2026-11-06"
+      dateUpdated="2026-11-06"
       faqData={faqData}
     >
       <SEO

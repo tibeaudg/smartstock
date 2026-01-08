@@ -9,7 +9,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Building2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 interface FormData {
   branchName: string;
@@ -24,7 +23,6 @@ export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCrea
   const { user, signOut } = useAuth();
   const { setActiveBranch, refreshBranches } = useBranches();
   const navigate = useNavigate();
-  const { trackCustomEvent } = useWebsiteTracking();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     branchName: '',

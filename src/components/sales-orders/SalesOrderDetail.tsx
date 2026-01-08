@@ -2,10 +2,22 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { SalesOrder } from '@/types/stockTypes';
 import { format } from 'date-fns';
-import { ShoppingCart } from 'lucide-react';
+import { Check, ShoppingCart, Trash2 } from 'lucide-react';
 import { FulfillSalesOrderModal } from './FulfillSalesOrderModal';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface SalesOrderDetailProps {
   salesOrder: SalesOrder;
@@ -21,6 +33,8 @@ export const SalesOrderDetail = ({
   onSOUpdated
 }: SalesOrderDetailProps) => {
   const [showFulfillModal, setShowFulfillModal] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -33,22 +47,57 @@ export const SalesOrderDetail = ({
   };
 
   const canFulfill = salesOrder.status === 'pending' || salesOrder.status === 'draft';
+  const canDelete = salesOrder.status === 'draft' || salesOrder.status === 'cancelled';
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      // First delete all sales order items
+      const { error: itemsError } = await supabase
+        .from('sales_order_items')
+        .delete()
+        .eq('sales_order_id', salesOrder.id);
+
+      if (itemsError) throw itemsError;
+
+      // Then delete the sales order
+      const { error: soError } = await supabase
+        .from('sales_orders')
+        .delete()
+        .eq('id', salesOrder.id);
+
+      if (soError) throw soError;
+
+      toast.success(`Sales order ${salesOrder.so_number} deleted successfully`);
+      setShowDeleteDialog(false);
+      onClose();
+      onSOUpdated();
+    } catch (error) {
+      console.error('Error deleting sales order:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to delete sales order');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   if (!isOpen) return null;
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <Dialog open={isOpen} onOpenChange={onClose} >
+        <DialogContent className="max-h-[90vh] max-w-[90vh]">
           <DialogHeader>
             <div className="flex items-center justify-between">
               <DialogTitle className="flex items-center gap-3">
                 <ShoppingCart className="w-5 h-5" />
                 {salesOrder.so_number}
               </DialogTitle>
-              <Badge className={getStatusColor(salesOrder.status)}>
-                {salesOrder.status}
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge className={getStatusColor(salesOrder.status)}>
+                  {salesOrder.status}
+                </Badge>
+        
+              </div>
             </div>
           </DialogHeader>
 
@@ -110,20 +159,64 @@ export const SalesOrderDetail = ({
             </div>
 
             {/* Actions */}
-            {canFulfill && (
-              <div className="flex justify-end gap-2 pt-4 border-t">
-                <Button variant="outline" onClick={onClose}>
-                  Close
-                </Button>
-                <Button onClick={() => setShowFulfillModal(true)}>
-                  Fulfill Items
-                </Button>
+            <div className="flex justify-between items-center pt-4 border-t gap-2">
+              <div>
+                {canDelete && (
+                  <Button
+                    variant="destructive"
+                    onClick={() => setShowDeleteDialog(true)}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </Button>
+                )}
               </div>
-            )}
+              <div className="flex gap-2">
+             
+                {canFulfill && (
+                  <Button onClick={() => setShowFulfillModal(true)}>
+                    <Check className="w-4 h-4 mr-2" />
+                    Fulfill Items
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
 
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Sales Order</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete sales order <strong>{salesOrder.so_number}</strong>?
+              <br />
+              <br />
+              This will permanently delete:
+              <ul className="list-disc list-inside mt-2 space-y-1">
+                <li>The sales order record</li>
+                <li>All {salesOrder.items?.length || 0} item(s) in this order</li>
+              </ul>
+              <br />
+              <span className="text-red-600 font-semibold">This action cannot be undone.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              {isDeleting ? 'Deleting...' : 'Delete Order'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Fulfill Modal */}
       {showFulfillModal && (
         <FulfillSalesOrderModal
           salesOrder={salesOrder}
@@ -135,8 +228,3 @@ export const SalesOrderDetail = ({
     </>
   );
 };
-
-
-
-
-

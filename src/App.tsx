@@ -45,7 +45,6 @@ import BillOfMaterialsPage from './pages/BillOfMaterialsPage';
 import BOMEditPage from './pages/BillOfMaterialsPage'
 import AdminPage from './pages/admin';
 import PricingPage from './pages/pricing';
-import CheckoutPage from './pages/checkout';
 import ResourcesPage from './pages/resources';
 import CustomersPage from './pages/customers';
 import CustomerDetailPage from './pages/customers/[id]';
@@ -54,10 +53,12 @@ import WarehousePage from "./pages/WarehousePage";
 import AboutPage from "./pages/about";
 import SupportPage from "./pages/help-center";
 import VideosPage from "./pages/videos";
+import IntegrationsPage from "./pages/integrations";
+import SalesOrdersPage from "./pages/sales-orders";
+import VendorManagementPage from "./pages/VendorManagement";
 
 
 
-const HomePageNL = React.lazy(() => import("./components/HomePageNL"));
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
@@ -151,7 +152,6 @@ const AppRouter = () => {
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<><SEO title="Free Inventory Management Software" /><HomePage /></>} />
-        <Route path="/nl" element={<><SEO title="Gratis Voorraadbeheer Software" locale="nl" /><Suspense fallback={<LoadingScreen />}><HomePageNL /></Suspense></>} />
         <Route path="/features" element={<><SEO title="Features & Capabilities" /><FeaturesPage /></>} />
         <Route path="/reporting" element={<><SEO title="Inventory Reporting & Analytics" /><ReportingPage /></>} />
         <Route path="/pricing" element={<><SEO title="Pricing & Plans" /><PricingPage /></>} />
@@ -159,11 +159,10 @@ const AppRouter = () => {
         <Route path="/customers" element={<><SEO title="Our Customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" /><AuthRoute /></>} />
-        <Route path="/checkout" element={<><SEO title="Checkout" /><CheckoutPage /></>} />
-        <Route path="/error-test" element={<ErrorTestComponent />} />
         <Route path="/about" element={<><SEO title="About StockFlow" /><AboutPage /></>} />
         <Route path="/help-center" element={<><SEO title="Help Center" /><SupportPage /></>} />
         <Route path='/videos' element={<><SEO title="Instruction Videos" /><VideosPage /></>} />
+        <Route path='/integrations' element={<><SEO title="Integrations"/><IntegrationsPage /></>} />
 
         {/* REDIRECTS */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />
@@ -239,6 +238,9 @@ const AppRouter = () => {
             <Route path="license" element={<LicenseOverview />} />
             <Route path="invoicing" element={<InvoicingOverview />} />
           </Route>
+          <Route path="sales-orders" element={<SalesOrdersPage />} />
+          <Route path="vendor-management" element={<VendorManagementPage />} />
+
         </Route>
 
         {/* ERROR & FALLBACK */}

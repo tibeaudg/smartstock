@@ -127,7 +127,7 @@ export default function IntegrationsPage() {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Powerful Integrations
             </h1>
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100" >
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -192,48 +192,15 @@ export default function IntegrationsPage() {
                       </li>
                     ))}
                   </ul>
-                  {integration.status === 'Available' && (
-                    <Button className="w-full mt-4" variant="outline">
-                      Connect
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
-                  )}
-                  {integration.status === 'CSV Support' && (
-                    <Button className="w-full mt-4" variant="outline">
-                      View CSV Guide
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </Button>
-                  )}
-                  {integration.status === 'Coming Soon' && (
-                    <Button className="w-full mt-4" variant="outline" disabled>
-                      Coming Soon
-                    </Button>
-                  )}
+             
+             
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* API Section */}
-        <div className="mt-20 text-center">
-          <div className="bg-white rounded-2xl shadow-lg p-12">
-            <Zap className="h-16 w-16 text-blue-600 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold mb-4">Custom Integrations</h2>
-            <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              Need a custom integration? Our robust API allows you to connect StockFlow with any system or build your own integrations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg">
-                View API Documentation
-                <ExternalLink className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline">
-                Contact Sales
-              </Button>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       <Footer />

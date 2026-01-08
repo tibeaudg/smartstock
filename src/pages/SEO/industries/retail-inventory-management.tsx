@@ -276,7 +276,7 @@ export default function RetailInventoryManagement() {
     <SeoPageLayout 
       title="Retail Inventory Management"
       heroTitle="Retail Inventory Management"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO
@@ -606,45 +606,6 @@ export default function RetailInventoryManagement() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Transform Your Retail Inventory?
-          </h2>
-          <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join hundreds of retail shops using StockFlow to manage their inventory more efficiently and profitably. StockFlow is completely free forever with unlimited products and all features included.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-            >
-              Get Started Free →
-            </Link>
-            <Link
-              to="/solutions/inventory-management-software"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition"
-            >
-              Learn More
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              No credit card required
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Instant access
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Completely free forever
-            </div>
-          </div>
-        </div>
-      </section>
 
 
 

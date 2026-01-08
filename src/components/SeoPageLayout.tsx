@@ -282,7 +282,7 @@ const SEOPageLayout = memo(({
                       >
                         <ChevronLeft className="mt-1 h-5 w-5 text-slate-400 group-hover:text-blue-600 flex-shrink-0" />
                         <div className="min-w-0">
-                          <p className="text-[10px] font-bold uppercase text-slate-400 mb-1">Vorige</p>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 mb-1">Previous</p>
                           <p className="font-bold text-slate-900 group-hover:text-blue-600">{previousArticle.title}</p>
                         </div>
                       </Link>
@@ -292,9 +292,9 @@ const SEOPageLayout = memo(({
                         to={nextArticle.href} 
                         className="group p-5 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/30 transition-all duration-300 flex items-start justify-between gap-4"
                       >
-                        <div className="min-w-0 flex-1 text-right">
-                          <p className="text-[10px] font-bold uppercase text-slate-400 mb-1">Volgende</p>
-                          <p className="font-bold text-slate-900 group-hover:text-blue-600">{nextArticle.title}</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[10px] font-bold uppercase text-slate-400">Next</p>
+                          <p className="font-bold text-slate-900 truncate">{nextArticle.title}</p>
                         </div>
                         <ChevronRight className="mt-1 h-5 w-5 text-slate-400 group-hover:text-blue-600 flex-shrink-0" />
                       </Link>

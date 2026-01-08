@@ -192,7 +192,7 @@ export default function AssetsInventory() {
       title="Assets Inventory Management Software 2026"
       heroTitle="Assets Inventory Management: Track Equipment, Vehicles & IT Assets"
       description="Complete assets inventory management software. Track equipment, machinery, vehicles, and IT assets with barcode scanning, maintenance scheduling, and location tracking. Free plan available."
-      updatedDate="2026-01-15"
+      dateUpdated="2026-01-15"
       faqData={faqData}
     >
       <SEO

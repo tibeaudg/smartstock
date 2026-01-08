@@ -104,7 +104,7 @@ export default function BillOfMaterialsManagementPage() {
       title={topicTitle}
       heroTitle={heroTitle}
       heroSubtitle={heroSubtitle}
-      updatedDate="2026-01-05"
+      dateUpdated="2026-01-05"
       keyTakeaways={KeyTakeaways}
     >
       <SEO

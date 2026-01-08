@@ -17,6 +17,15 @@ interface CreateSalesOrderModalProps {
   onSOCreated: () => void;
 }
 
+interface OrderItem {
+  product_id: string;
+  variant_id: string | null;
+  quantity_ordered: number;
+  unit_price: number;
+  notes: string;
+  product_name?: string;
+}
+
 export const CreateSalesOrderModal = ({
   isOpen,
   onClose,
@@ -27,13 +36,9 @@ export const CreateSalesOrderModal = ({
   const [loading, setLoading] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [notes, setNotes] = useState('');
-  const [items, setItems] = useState<Array<{
-    product_id: string | null;
-    variant_id: string | null;
-    quantity_ordered: number;
-    unit_price: number;
-    notes: string;
-  }>>([{ product_id: null, variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '' }]);
+  const [items, setItems] = useState<OrderItem[]>([
+    { product_id: '', variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '', product_name: '' }
+  ]);
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -53,6 +58,7 @@ export const CreateSalesOrderModal = ({
 
     if (error) {
       console.error('Error fetching products:', error);
+      toast.error('Failed to load products');
       return;
     }
 
@@ -60,16 +66,42 @@ export const CreateSalesOrderModal = ({
   };
 
   const addItem = () => {
-    setItems([...items, { product_id: null, variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '' }]);
+    setItems([...items, { 
+      product_id: '', 
+      variant_id: null, 
+      quantity_ordered: 0, 
+      unit_price: 0, 
+      notes: '',
+      product_name: ''
+    }]);
   };
 
   const removeItem = (index: number) => {
+    if (items.length === 1) {
+      toast.error('Sales order must have at least one item');
+      return;
+    }
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const updateItem = (index: number, field: string, value: any) => {
+  const updateItem = (index: number, field: keyof OrderItem, value: any) => {
     const newItems = [...items];
     newItems[index] = { ...newItems[index], [field]: value };
+    setItems(newItems);
+  };
+
+  const handleProductChange = (index: number, productId: string) => {
+    const product = products.find(p => p.id === productId);
+    const newItems = [...items];
+    
+    newItems[index] = {
+      ...newItems[index],
+      product_id: productId,
+      product_name: product?.name || '',
+      unit_price: product?.sale_price || 0,
+      quantity_ordered: newItems[index].quantity_ordered || 1
+    };
+    
     setItems(newItems);
   };
 
@@ -95,7 +127,7 @@ export const CreateSalesOrderModal = ({
 
     const validItems = items.filter(item => item.product_id && item.quantity_ordered > 0);
     if (validItems.length === 0) {
-      toast.error('Add at least one item with quantity');
+      toast.error('Add at least one item with a product and quantity');
       return;
     }
 
@@ -118,6 +150,7 @@ export const CreateSalesOrderModal = ({
           user_id: user.id,
           created_by: user.id,
           notes: notes.trim() || null,
+          order_date: new Date().toISOString(),
         })
         .select()
         .single();
@@ -142,20 +175,29 @@ export const CreateSalesOrderModal = ({
 
       if (itemsError) throw itemsError;
 
-      toast.success('Sales order created successfully');
+      toast.success(`Sales order ${soNumber} created successfully`);
       onSOCreated();
       onClose();
       
       // Reset form
       setCustomerName('');
       setNotes('');
-      setItems([{ product_id: null, variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '' }]);
+      setItems([{ product_id: '', variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '', product_name: '' }]);
     } catch (error) {
       console.error('Error creating sales order:', error);
       toast.error(error instanceof Error ? error.message : 'Failed to create sales order');
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateTotal = () => {
+    return items.reduce((sum, item) => {
+      if (item.product_id && item.quantity_ordered > 0 && item.unit_price > 0) {
+        return sum + (item.quantity_ordered * item.unit_price);
+      }
+      return sum;
+    }, 0);
   };
 
   if (!isOpen) return null;
@@ -175,6 +217,7 @@ export const CreateSalesOrderModal = ({
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="Enter customer name"
+              className="mt-1"
             />
           </div>
 
@@ -186,13 +229,14 @@ export const CreateSalesOrderModal = ({
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Additional notes..."
               rows={3}
+              className="mt-1"
             />
           </div>
 
           {/* Items */}
           <div>
             <div className="flex justify-between items-center mb-4">
-              <Label>Items</Label>
+              <Label className="text-base font-semibold">Items</Label>
               <Button type="button" variant="outline" size="sm" onClick={addItem}>
                 <Plus className="w-4 h-4 mr-2" />
                 Add Item
@@ -201,7 +245,7 @@ export const CreateSalesOrderModal = ({
 
             <div className="space-y-4">
               {items.map((item, index) => (
-                <div key={index} className="border rounded-lg p-4 space-y-4">
+                <div key={index} className="border rounded-lg p-4 space-y-4 bg-gray-50">
                   <div className="flex justify-between items-start">
                     <h4 className="font-medium">Item {index + 1}</h4>
                     {items.length > 1 && (
@@ -218,48 +262,55 @@ export const CreateSalesOrderModal = ({
 
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="md:col-span-2">
-                      <Label>Product</Label>
+                      <Label>Product *</Label>
                       <select
-                        className="w-full rounded-md border border-input bg-background px-3 py-2"
-                        value={item.product_id || ''}
-                        onChange={(e) => {
-                          const product = products.find(p => p.id === e.target.value);
-                          updateItem(index, 'product_id', e.target.value);
-                          if (product) {
-                            updateItem(index, 'unit_price', product.sale_price || 0);
-                          }
-                        }}
+                        className="w-full rounded-md border border-input bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        value={item.product_id}
+                        onChange={(e) => handleProductChange(index, e.target.value)}
                       >
                         <option value="">Select product</option>
                         {products.map((product) => (
                           <option key={product.id} value={product.id}>
-                            {product.name} (Stock: {product.quantity_in_stock})
+                            {product.name} (Stock: {product.quantity_in_stock || 0})
                           </option>
                         ))}
                       </select>
+                      {item.product_id && item.product_name && (
+                        <p className="text-xs text-gray-600 mt-1">
+                          Selected: {item.product_name}
+                        </p>
+                      )}
                     </div>
 
                     <div>
-                      <Label>Quantity</Label>
+                      <Label>Quantity *</Label>
                       <Input
                         type="number"
                         min="1"
                         value={item.quantity_ordered || ''}
                         onChange={(e) => updateItem(index, 'quantity_ordered', parseInt(e.target.value) || 0)}
+                        placeholder="0"
                       />
                     </div>
 
                     <div>
-                      <Label>Unit Price</Label>
+                      <Label>Unit Price *</Label>
                       <Input
                         type="number"
                         step="0.01"
                         min="0"
                         value={item.unit_price || ''}
                         onChange={(e) => updateItem(index, 'unit_price', parseFloat(e.target.value) || 0)}
+                        placeholder="0.00"
                       />
                     </div>
                   </div>
+
+                  {item.product_id && item.quantity_ordered > 0 && item.unit_price > 0 && (
+                    <div className="text-right text-sm text-gray-600">
+                      Subtotal: ${(item.quantity_ordered * item.unit_price).toFixed(2)}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -270,7 +321,7 @@ export const CreateSalesOrderModal = ({
             <div className="flex justify-between items-center">
               <span className="text-lg font-semibold">Total Amount:</span>
               <span className="text-xl font-bold">
-                ${items.reduce((sum, item) => sum + (item.quantity_ordered * item.unit_price), 0).toFixed(2)}
+                ${calculateTotal().toFixed(2)}
               </span>
             </div>
           </div>
@@ -288,8 +339,3 @@ export const CreateSalesOrderModal = ({
     </Dialog>
   );
 };
-
-
-
-
-

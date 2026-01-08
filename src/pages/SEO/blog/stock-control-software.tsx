@@ -54,7 +54,7 @@ export default function SeoStockControlSoftwarePage() {
       title={topicTitle}
       heroTitle="Stock Control Software: Precision Inventory Solutions (2026)"
       heroDescription="Optimize your inventory with professional stock control software. Learn about real-time tracking, automated reordering, and why StockFlow is the top choice for 2026."
-      updatedDate="January 9, 2026"
+      dateUpdated="January 9, 2026"
       keyTakeaways={takeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />

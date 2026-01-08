@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  overflow: visible !important;
-}
+
 
 img, video, canvas, svg {
   overflow: clip !important;
@@ -213,9 +211,6 @@ html, body {
   html,
   body {
 
-    overflow: visible !important;
-    overflow-x: visible !important;
-    overflow-y: visible !important;
     height: auto !important;
   }
 

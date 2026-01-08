@@ -315,7 +315,7 @@ export default function ElectricalInventoryManagement() {
     <SeoPageLayout 
       title="Electrical Inventory Management"
       heroTitle="Electrical Inventory Management"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       tableOfContents={sidebarContent.tableOfContents}
       showTOC={true}

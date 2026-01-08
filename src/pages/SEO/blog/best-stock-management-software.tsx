@@ -38,7 +38,7 @@ export default function SeoBestStockManagementComprehensivePage() {
     <SeoPageLayout
       heroTitle={topicTitle}
       heroDescription={metaDescription}
-      updatedDate="January 10, 2026"
+      dateUpdated="January 10, 2026"
       keyTakeaways={takeaways}
     >
       <SEO

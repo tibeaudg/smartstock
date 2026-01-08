@@ -123,7 +123,7 @@ export default function InventoryTurnoverRatio() {
     <SeoPageLayout 
       title="Inventory Turnover Ratio"
       heroTitle="Inventory Turnover Ratio"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
         title: "Avoid Inventory Mistakes",

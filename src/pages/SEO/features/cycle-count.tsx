@@ -120,7 +120,7 @@ export default function CycleCount() {
     <SeoPageLayout 
       title="Cycle Count"
       heroTitle="Cycle Count"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
       title: "Barcoding",
@@ -155,7 +155,7 @@ nextArticle={{
         </div>
       </section>
 
-      <section id="features" className="py-16 px-4 bg-gray-50">
+      <section id="features" className="py-16 px-4 ">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -165,7 +165,7 @@ nextArticle={{
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
+              <div key={index} className="bg-white p-6 rounded-lg shadow-xl border border-gray-200">
                 <feature.icon className="w-12 h-12 text-blue-600 mb-4" />
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
                 <p className="text-gray-600">{feature.description}</p>
@@ -185,7 +185,7 @@ nextArticle={{
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg">
+              <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-xl border border-gray-200">
                 <div className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
                   <span className="text-gray-700">{benefit}</span>

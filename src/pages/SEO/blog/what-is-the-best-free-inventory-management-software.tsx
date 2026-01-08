@@ -85,7 +85,7 @@ export default function SeoBestInventoryManagementSoftwarePage() {
     <SeoPageLayout
       title={topicTitle}
       heroTitle={topicTitle}
-      updatedDate="January 5, 2026"
+      dateUpdated="January 5, 2026"
       faqData={faqData}
       keyTakeaways={takeaways}
     >

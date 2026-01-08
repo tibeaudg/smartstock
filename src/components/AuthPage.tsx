@@ -11,7 +11,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader2, CheckCircle, Shield, Zap, Users, Star, ArrowRight, Package } from 'lucide-react';
 import Header from './HeaderPublic';
 import { cn } from '@/lib/utils';
-import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 
@@ -44,16 +43,7 @@ export const AuthPage = () => {
     navigate('/');
   };
   
-  // Use website tracking
-  useWebsiteTracking();
-  const clearForm = () => {
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-    setFirstName('');
-    setLastName('');
-    setAcceptTerms(false);
-  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

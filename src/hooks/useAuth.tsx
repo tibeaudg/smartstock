@@ -11,7 +11,6 @@ import type { Database } from '@/integrations/supabase/types';
 import { useSessionRevalidation } from './useSessionRevalidation';
 import { useTabSyncSession } from './useTabSyncSession';
 import { captureReferralInfo } from '@/utils/referralTracking';
-import { linkAnonymousEventsToUser, getSessionId } from '@/utils/eventLinking';
 
 // UserProfile type from database schema
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
@@ -291,7 +290,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             () => reject(new Error('Session fetch timeout')),
             hasAuthTokensInHash ? 15000 : 25000
           );
-        });
+
+          
+        } 
+      
+      
+      );
 
         const sessionPromise = supabase.auth.getSession();
         

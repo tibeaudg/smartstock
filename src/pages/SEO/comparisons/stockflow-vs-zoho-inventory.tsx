@@ -55,7 +55,7 @@ export default function StockFlowVsZohoInventory() {
     <SeoPageLayout 
       title="StockFlow vs Zoho Inventory"
       heroTitle="StockFlow vs Zoho Inventory"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
                     previousArticle={{
       title: "StockFlow vs TradeGecko",
@@ -86,23 +86,23 @@ export default function StockFlowVsZohoInventory() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Why StockFlow is Better for European Businesses</h2>
           <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200">
               <DollarSign className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Better Pricing</h3>
               <p className="text-gray-600 mb-3">Free forever for up to 100 products. Zoho charges $59/month minimum.</p>
               <p className="text-lg font-bold text-green-600">Save €600+ per year</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200">
               <Shield className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">European Privacy</h3>
               <p className="text-gray-600 mb-3">GDPR-compliant with EU data hosting. Zoho stores data in US/India.</p>
               <p className="text-lg font-bold text-blue-600">100% GDPR compliant</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200">
               <Zap className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Simpler Interface</h3>
               <p className="text-gray-600 mb-3">Clean, focused on inventory. Zoho can feel cluttered with features.</p>
@@ -213,10 +213,10 @@ export default function StockFlowVsZohoInventory() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-green-50">
+      <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">Cost Comparison: StockFlow vs Zoho Inventory</h2>
-          <div className="bg-white rounded-lg p-8 shadow-lg">
+          <div className="bg-white rounded-lg p-8 shadow-xl border border-gray-200">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="border-r border-gray-200 pr-8">
                 <h3 className="text-2xl font-bold text-blue-600 mb-4">StockFlow</h3>

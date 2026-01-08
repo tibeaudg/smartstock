@@ -97,7 +97,7 @@ export default function WarehouseManagement() {
     <SeoPageLayout 
       title="Warehouse Management Software"
       heroTitle="Warehouse Management Software"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO

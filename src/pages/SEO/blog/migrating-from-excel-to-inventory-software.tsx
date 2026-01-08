@@ -81,7 +81,7 @@ export default function MigratingFromExcelToInventorySoftwarePage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="12/1/2024"
+      dateUpdated="12/1/2024"
       faqData={faqData}
     >
       <SEO

@@ -54,7 +54,7 @@ export default function SeoInventorySoftwareSmallBusinessPage() {
     <SeoPageLayout
       title={topicTitle}
       heroTitle={topicTitle}
-      updatedDate="January 6, 2026"
+      dateUpdated = "08/01/2026"
       keyTakeaways={takeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />

@@ -88,7 +88,7 @@ export default function AssetControllerMeaning() {
     <SeoPageLayout
       title="Asset Controller Meaning | What is Asset Controller"
       heroTitle="Asset Controller Meaning"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
         title: "Inventory Automation",
@@ -240,33 +240,7 @@ export default function AssetControllerMeaning() {
         </div>
       </section>
 
-      {/* StockFlow CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get Started with Asset Controller Software
-            </h2>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              StockFlow offers comprehensive asset controller functionality with inventory management. Track assets, maintain compliance, and optimize utilization with our free plan.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/auth"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition-colors text-lg"
-              >
-                Join for Free
-              </Link>
-              <button
-                onClick={() => setIsVideoModalOpen(true)}
-                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-blue-50 transition-colors text-lg"
-              >
-                View Demo
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Structured Data */}
       <StructuredData data={[

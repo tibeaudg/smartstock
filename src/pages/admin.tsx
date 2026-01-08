@@ -1350,45 +1350,6 @@ export default function AdminPage() {
           </div>
         </div>
 
-          {/* User Activity Dialog */}
-          <Dialog open={!!selectedUser} onOpenChange={(open) => !open && setSelectedUser(null)}>
-          <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                User Activity: {selectedUser?.email}
-              </DialogTitle>
-              {selectedUser?.referral_source && (
-                <DialogDescription>
-                  Referral: {(() => {
-                    try {
-                      const refInfo = JSON.parse(selectedUser.referral_source);
-                      const parts: string[] = [];
-                      if (refInfo.utm_source) parts.push(`Source: ${refInfo.utm_source}`);
-                      if (refInfo.utm_medium) parts.push(`Medium: ${refInfo.utm_medium}`);
-                      if (refInfo.referrer && !refInfo.referrer.startsWith(window.location.origin)) {
-                        try {
-                          const url = new URL(refInfo.referrer);
-                          parts.push(`From: ${url.hostname}`);
-                        } catch {
-                          parts.push(`From: ${refInfo.referrer}`);
-                        }
-                      }
-                      return parts.length > 0 ? parts.join(', ') : (refInfo.referrer || 'Direct');
-                    } catch {
-                      return selectedUser.referral_source;
-                    }
-                  })()}
-                </DialogDescription>
-              )}
-            </DialogHeader>
-            {selectedUser && (
-              <UserActivityView 
-                userId={selectedUser.id} 
-                userEmail={selectedUser.email}
-              />
-            )}
-          </DialogContent>
-        </Dialog>
         </>
       </Layout>
       

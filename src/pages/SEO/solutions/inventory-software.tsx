@@ -206,7 +206,7 @@ export default function InventorySoftware() {
     <SeoPageLayout 
       title="Inventory Software"
       heroTitle="Inventory Software"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO
@@ -689,40 +689,7 @@ export default function InventorySoftware() {
             </div>
       )}
 
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Transform Your Inventory Management?
-          </h2>
-          <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join hundreds of businesses using StockFlow to optimize their inventory management.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition shadow-lg"
-            >
-              Get Started Free
-            </Link>
 
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              No credit card required
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Instant access
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Completely free forever
-            </div>
-          </div>
-        </div>
-      </section>
 
 
       {/* Schema.org Structured Data */}

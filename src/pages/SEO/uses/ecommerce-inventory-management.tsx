@@ -119,7 +119,7 @@ export default function EcommerceInventoryManagement() {
     <SeoPageLayout 
       title="Ecommerce Inventory Management"
       heroTitle="Ecommerce Inventory Management"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
         title: "Enterprise Inventory Management",

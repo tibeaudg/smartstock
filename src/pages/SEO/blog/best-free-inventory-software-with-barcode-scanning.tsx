@@ -49,7 +49,7 @@ export default function InventoryManagementSoftware() {
     <SeoPageLayout 
       title="Best Free Inventory Software with Barcode Scanning 2026 | StockFlow"
       heroTitle="Best Free Inventory Software with Barcode Scanning"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO

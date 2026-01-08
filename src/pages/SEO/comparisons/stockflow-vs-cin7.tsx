@@ -91,7 +91,7 @@ export default function StockFlowVsCin7() {
     <SeoPageLayout 
       heroTitle="StockFlow vs Cin7"
       heroDescription='Compare StockFlow vs Cin7 2026. Free forever vs $300/month, 5-7 day setup vs 45-90 days. EU hosting. Save 100% costs, faster implementation.'
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
               previousArticle={{
       title: "Compare Inventory Software",

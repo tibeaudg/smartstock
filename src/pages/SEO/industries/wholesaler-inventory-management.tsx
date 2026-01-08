@@ -149,7 +149,7 @@ export default function WholesalerInventoryManagement() {
     <SeoPageLayout 
       title="Wholesaler Inventory Management"
       heroTitle="Wholesaler Inventory Management"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO
@@ -264,39 +264,7 @@ export default function WholesalerInventoryManagement() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Managing Your Wholesaler Inventory Today
-          </h2>
-          <p className="text-lg md:text-xl mb-8 opacity-90">
-            Join hundreds of wholesalers and distributors who use StockFlow to manage inventory across multiple warehouses.
-          </p>
-          <div className="flex justify-center mb-8">
-            <Link
-              to="/auth"
-              className="bg-white text-blue-600 px-12 py-5 rounded-xl font-semibold text-xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              Join for Free
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-6 text-sm opacity-75">
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              No credit card required
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Multi-warehouse support
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Free plan available
-            </div>
-          </div>
-        </div>
-      </section>
+
 
 
       {/* Schema.org Structured Data */}

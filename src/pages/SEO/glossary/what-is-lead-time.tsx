@@ -84,7 +84,7 @@ export default function AvoidInventoryMistakes() {
     <SeoPageLayout 
       title="What Is Lead-Time"
       heroTitle="What Is Lead-Time"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       previousArticle={{
         title: "How to Choose Inventory Management Software",
         href: "/how-to-choose-inventory-management-software"
