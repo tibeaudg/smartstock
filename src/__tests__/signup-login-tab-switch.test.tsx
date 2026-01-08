@@ -306,10 +306,7 @@ vi.mock('../hooks/useBranches', () => ({
   BranchProvider: ({ children }: { children: React.ReactNode }) => children,
 }))
 
-// Mock other hooks
-vi.mock('../hooks/useWebsiteTracking', () => ({
-  useWebsiteTracking: () => {},
-}))
+
 
 vi.mock('../hooks/useSessionRevalidation', () => ({
   useSessionRevalidation: () => {},

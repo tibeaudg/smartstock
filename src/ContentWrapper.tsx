@@ -6,7 +6,6 @@ import { useNotifications } from './hooks/useNotifications';
 import { AuthContext } from './hooks/useAuth';
 import { useSessionRevalidation } from './hooks/useSessionRevalidation';
 import { useWindowRefocusRefresh } from './hooks/useWindowRefocusRefresh';
-import { useWebsiteTracking } from './hooks/useWebsiteTracking';
 
 const getPageTitle = (pathname: string) => {
   // Don't show header for dashboard pages as they use Layout component
@@ -28,8 +27,7 @@ export const ContentWrapper: React.FC<{ children: React.ReactNode }> = ({ childr
   useSessionRevalidation();
   // Global window refocus refresh - works on all pages
   useWindowRefocusRefresh();
-  // Enable website tracking throughout the app
-  useWebsiteTracking();
+
   const { notifications, loading, unreadCount, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
   const title = getPageTitle(location.pathname);

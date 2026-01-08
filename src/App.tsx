@@ -53,8 +53,9 @@ import WarehousePage from "./pages/WarehousePage";
 import AboutPage from "./pages/about";
 import SupportPage from "./pages/help-center";
 import VideosPage from "./pages/videos";
-import IntegrationsPage from "./pages/integrations"
+import IntegrationsPage from "./pages/integrations";
 import SalesOrdersPage from "./pages/sales-orders";
+import VendorManagementPage from "./pages/VendorManagement";
 
 
 
@@ -238,6 +239,8 @@ const AppRouter = () => {
             <Route path="invoicing" element={<InvoicingOverview />} />
           </Route>
           <Route path="sales-orders" element={<SalesOrdersPage />} />
+          <Route path="vendor-management" element={<VendorManagementPage />} />
+
         </Route>
 
         {/* ERROR & FALLBACK */}

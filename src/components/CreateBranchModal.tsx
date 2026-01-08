@@ -25,7 +25,6 @@ import { CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useBranches } from '@/hooks/useBranches';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 
 interface CreateBranchModalProps {
   open: boolean;
@@ -58,7 +57,6 @@ export const CreateBranchModal = ({
   const [loading, setLoading] = useState(false);
   const [licenseInfo, setLicenseInfo] = useState<LicenseInfo | null>(null);
   const [showPaymentWarning, setShowPaymentWarning] = useState(false);
-  const { trackCustomEvent } = useWebsiteTracking();
   
   // Gebruik de page refresh hook
   usePageRefresh();

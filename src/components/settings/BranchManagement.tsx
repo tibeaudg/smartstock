@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { useWebsiteTracking } from '@/hooks/useWebsiteTracking';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -46,7 +45,6 @@ export const BranchManagement = () => {
   const { user } = useAuth();
   const { refreshBranches } = useBranches();
   const queryClient = useQueryClient();
-  const { trackCustomEvent } = useWebsiteTracking();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [editingBranch, setEditingBranch] = useState<UserBranch | null>(null);

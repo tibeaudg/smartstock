@@ -238,7 +238,6 @@ export const initializeTracking = (): void => {
     loadMarketingScripts();
   }
 
-  // Analytics is handled by useWebsiteTracking hook
   // Functional cookies (Stripe) are loaded on-demand when needed
 };
 
