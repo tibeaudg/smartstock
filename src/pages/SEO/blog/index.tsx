@@ -1,430 +1,227 @@
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
+import SEO from "@/components/SEO";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
+import { StructuredData } from "@/components/StructuredData";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
-import { Search } from "lucide-react";
-import SeoPageLayout from "@/components/SeoPageLayout";
-import SEO from "@/components/SEO";
-import { StructuredData } from "@/components/StructuredData";
+import { useMemo, useState } from "react";
+import { Search, BookOpen, ArrowRight, Clock, Tag, X } from "lucide-react";
+import Footer from "@/components/Footer";
+import Header from "@/components/HeaderPublic";
 
-// Get original file paths to determine folder structure
-// From src/pages/SEO/, ../ goes to src/pages/SEO/
-// So ../**/*.tsx matches all .tsx files in src/pages/SEO/**/*
-const seoFileModules = {
-  ...(import.meta as any).glob("../**/*.tsx", { eager: false }),
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Knowledge Hub - StockFlow",
+  "description": "Expert insights, industry guides, and software comparisons for modern inventory management.",
+  "url": "https://www.stockflowsystems.com/resources",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "StockFlow Resources",
+    "description": "Articles on warehouse optimization, procurement, and inventory control."
+  }
 };
 
-
-
-
-
-export default function SeoBlogIndexPage() {
+export default function SEOResourcesBlogPage() {
   usePageRefresh();
+  
   const [searchQuery, setSearchQuery] = useState("");
+  const [itemsToShow, setItemsToShow] = useState(13);
 
-  // Get all SEO pages - combine routes with metadata
-  const allPages = useMemo(() => {
+  const { featuredArticle, filteredArticles, totalResults } = useMemo(() => {
     const routes = getSeoRoutes();
     const metadataMap = new Map<string, PageMetadata>();
     
-    // Create a map of metadata by path (normalize paths for matching)
     getAllSeoPages().forEach(page => {
       const normalizedPath = page.path.startsWith('/') ? page.path : `/${page.path}`;
       metadataMap.set(normalizedPath, page);
-      // Also store without leading slash for flexible matching
-      if (normalizedPath !== page.path) {
-        metadataMap.set(page.path, page);
-      }
     });
 
-    // Helper to extract slug from file path (matching seoRoutes.tsx logic exactly)
-    const getSlugFromFilePath = (filePath: string): string => {
-      const withoutPrefix = filePath
-        .replace(/^(\.\.\/)+/, "")
-        .replace(/^pages\/(SEO|seo)\//, "");
-      const withoutExtension = withoutPrefix.replace(/\.tsx$/, "");
-      const segments = withoutExtension.split("/").filter(Boolean);
-
-      if (segments.length === 0) return "";
-
-      const lastSegment = segments[segments.length - 1];
-      if (lastSegment === "index") {
-        segments.pop();
-      }
-
-      if (segments.length === 0) return "";
-
-      const legacyTopLevelSlugs = new Set([
-        "asset-tracking",
-        "inventory-management",
-        "what-is-lead-time",
-        "warehouse-management",
-        "warehouse-management-system",
-      ]);
-
-      if (segments[0] === "glossary") {
-        if (segments.length === 1) {
-          return "glossary";
-        }
-        if (segments.length === 2 && legacyTopLevelSlugs.has(segments[1])) {
-          return segments[1];
-        }
-        return segments.join("/");
-      }
-
-      return segments[segments.length - 1];
-    };
-
-    // Create a map from route path to category based on file folder structure
-    // Key: route path (e.g., "/article"), Value: category (e.g., "blog")
-    const routePathToCategoryMap = new Map<string, string>();
-    
-    // Build route path to category map from all file paths
-    Object.keys(seoFileModules).forEach(filePath => {
-      // Skip index files (they're category overview pages, not articles)
-      const checkExt = filePath.replace(/\.tsx$/, "");
-      const checkSegments = checkExt.split("/").filter(Boolean);
-      const lastSegment = checkSegments[checkSegments.length - 1];
-      if (lastSegment === "index") return;
-      
-      // Extract folder structure from original file path FIRST (before slug extraction)
-      // Use the same normalization logic as getSlugFromFilePath to ensure consistency
-      // This processes paths the same way as seoRoutes.tsx does
-      const withoutPrefix = filePath
-        .replace(/^(\.\.\/)+/, "")
-        .replace(/^pages\/(SEO|seo)\//, "");
-      
-      const withoutExtension = withoutPrefix.replace(/\.tsx$/, "");
-      const segments = withoutExtension.split("/").filter(Boolean);
-      
-      // Determine category from folder structure
-      let category: string;
-      if (segments.length === 0) {
-        // Empty segments - shouldn't happen, but default to other
-        category = 'other';
-      } else if (segments.length === 1) {
-        // File is directly in pages/SEO root - put in "other" category
-        category = 'other';
-      } else {
-        // File is in a subfolder - first segment is the category
-        category = segments[0];
-      }
-      
-      // Filter out invalid category names (empty, ".", etc.)
-      if (!category || category === '.' || category.trim() === '') {
-        category = 'other';
-      }
-      
-      // Extract slug using same logic as getSeoRoutes
-      const slug = getSlugFromFilePath(filePath);
-      if (!slug) return;
-      
-      // Map route path to category
-      const routePath = `/${slug}`;
-      routePathToCategoryMap.set(routePath, category);
-      // Also store without leading slash for flexible matching
-      const routePathNoSlash = routePath.replace(/^\//, '');
-      if (routePathNoSlash !== routePath) {
-        routePathToCategoryMap.set(routePathNoSlash, category);
-      }
-      
-      // Debug logging (development only)
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`File: ${filePath} -> Route: ${routePath} -> Category: ${category}`);
-      }
-    });
-    
-    // Debug: Log mapping statistics (development only)
-    if (process.env.NODE_ENV === 'development') {
-      const categoryCounts: Record<string, number> = {};
-      routePathToCategoryMap.forEach((cat) => {
-        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
-      });
-      console.log('Route to Category Map:', {
-        totalMappings: routePathToCategoryMap.size,
-        categoryDistribution: categoryCounts,
-        sampleMappings: Array.from(routePathToCategoryMap.entries()).slice(0, 10)
-      });
-    }
-
-    // Helper to get category from route path using the map
-    const getCategoryFromRoutePath = (routePath: string): string => {
-      const normalizedPath = routePath.startsWith('/') ? routePath : `/${routePath}`;
-      const pathNoSlash = normalizedPath.replace(/^\//, '');
-      
-      // Try to find category in map (with and without leading slash)
-      let category = routePathToCategoryMap.get(normalizedPath) || 
-                     routePathToCategoryMap.get(pathNoSlash) ||
-                     routePathToCategoryMap.get(routePath) ||
-                     'other';
-      
-      // Ensure category is valid (filter out ".", empty, etc.)
-      if (!category || category === '.' || category.trim() === '') {
-        category = 'other';
-      }
-      
-      return category;
-    };
-
-    // Helper to generate title from slug
-    const generateTitleFromSlug = (slug: string): string => {
-      return slug
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-    };
-
-    // Combine routes with metadata, creating basic metadata for pages without it
-    const processedPages = routes
-      .filter(route => route.path !== '') // Exclude this overview page itself
+    const allArticles = routes
+      .filter(route => {
+        const path = route.path.toLowerCase();
+        return path.includes('/') && path !== '' && path !== '/resources';
+      })
       .map(route => {
         const existingMetadata = metadataMap.get(route.path);
-        
-        // Get category from folder structure - this is the source of truth
-        const folderCategory = getCategoryFromRoutePath(route.path);
-        
-        // Debug logging (development only)
-        if (process.env.NODE_ENV === 'development' && folderCategory === 'other' && route.path !== '') {
-          console.warn(`Route ${route.path} mapped to category "other". Available in map: ${routePathToCategoryMap.has(route.path)}`);
-        }
-        
-        if (existingMetadata) {
-          // Override category with folder-based category
-          return {
-            ...existingMetadata,
-            category: folderCategory,
-          };
-        }
-
-        // Derive metadata from path for pages not in topic clusters
-        const pathSegments = route.path.split('/').filter(Boolean);
-        const slug = pathSegments[pathSegments.length - 1] || '';
-        
-        // Generate title from slug
-        const title = generateTitleFromSlug(slug);
-
-        // Detect language from category
-        const language: 'nl' | 'en' = folderCategory === 'dutch' ? 'nl' : 'en';
-
-        return {
+        return existingMetadata || {
           path: route.path,
-          title,
-          language,
-          category: folderCategory,
-          description: `Learn more about ${title.toLowerCase()}`,
+          title: route.path.split('/').pop()?.replace(/-/g, ' ') || 'Article',
+          description: `Strategic insights into ${route.path.split('/').pop()?.replace(/-/g, ' ')} for enterprise growth.`,
+          category: 'Industry Insights',
+          language: 'en' as const
         } as PageMetadata;
       });
 
-    return processedPages;
-  }, []);
+    const filtered = allArticles.filter(article => 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.category?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-  // Group pages by category
-  const pagesByCategory = useMemo(() => {
-    const grouped: Record<string, PageMetadata[]> = {};
-    allPages.forEach(page => {
-      let category = page.category || 'other';
-      // Filter out invalid category names
-      if (!category || category === '.' || category.trim() === '') {
-        category = 'other';
-      }
-      if (!grouped[category]) {
-        grouped[category] = [];
-      }
-      grouped[category].push(page);
-    });
-    return grouped;
-  }, [allPages]);
-
-  // Get unique categories (filter out invalid ones)
-  const categories = useMemo(() => {
-    return Object.keys(pagesByCategory)
-      .filter(cat => cat && cat !== '.' && cat.trim() !== '')
-      .sort();
-  }, [pagesByCategory]);
-
-  // Filter pages based on search, category, and language
-  const filteredPages = useMemo(() => {
-    let filtered = allPages;
-
-    // Filter by search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(page => 
-        page.title.toLowerCase().includes(query) ||
-        page.description?.toLowerCase().includes(query) ||
-        page.path.toLowerCase().includes(query)
-      );
-    }
-
-    return filtered.sort((a, b) => a.title.localeCompare(b.title));
-  }, [allPages, searchQuery]);
-
-  // Group filtered pages by category
-  const filteredPagesByCategory = useMemo(() => {
-    const grouped: Record<string, PageMetadata[]> = {};
-    filteredPages.forEach(page => {
-      let category = page.category || 'other';
-      // Filter out invalid category names
-      if (!category || category === '.' || category.trim() === '') {
-        category = 'other';
-      }
-      if (!grouped[category]) {
-        grouped[category] = [];
-      }
-      grouped[category].push(page);
-    });
-    return grouped;
-  }, [filteredPages]);
-
-  // Helper function to format category name for display
-  const formatCategoryName = (category: string): string => {
-    // Filter out invalid categories
-    if (!category || category === '.' || category.trim() === '') {
-      return 'Other';
-    }
-    
-    // Handle special cases
-    const specialCases: Record<string, string> = {
-      'best-of': 'Best Of',
-      'dutch': 'Dutch',
+    return {
+      featuredArticle: searchQuery === "" ? filtered[0] : null,
+      filteredArticles: searchQuery === "" ? filtered.slice(1, itemsToShow) : filtered.slice(0, itemsToShow),
+      totalResults: filtered.length
     };
+  }, [searchQuery, itemsToShow]);
 
-    if (specialCases[category]) {
-      return specialCases[category];
-    }
-
-    // Format regular category names (e.g., "industries" -> "Industries")
-    return category
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
-  // Get sorted categories for filtered pages (filter out invalid ones)
-  const filteredCategories = useMemo(() => {
-    return Object.keys(filteredPagesByCategory)
-      .filter(cat => cat && cat !== '.' && cat.trim() !== '')
-      .sort();
-  }, [filteredPagesByCategory]);
-
-  const totalPages = allPages.length;
-  const filteredCount = filteredPages.length;
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Articles Overview - StockFlow",
-    "description": "Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights.",
-    "url": "https://www.stockflowsystems.com",
-    "mainEntity": {
-      "@type": "ItemList",
-      "name": "StockFlow Articles",
-      "numberOfItems": totalPages,
-      "itemListElement": allPages.slice(0, 10).map((page, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "name": page.title,
-        "url": `https://www.stockflowsystems.com${page.path}`
-      }))
-    }
+  const handleLoadMore = () => {
+    setItemsToShow(prev => prev + 12);
   };
 
   return (
-    <SeoPageLayout 
-      title="Articles Overview"
-      heroTitle="Articles Overview"
-      description="Explore our complete library of articles, guides, and resources about inventory management."
-    >
+    <>
+      <Header />
       <SEO
-        title="Articles Overview - StockFlow | Inventory Management Blog"
-        description="Explore our complete library of articles, guides, and resources. Find everything you need about inventory management, software comparisons, and industry insights."
-        keywords="inventory management articles, inventory blog, stock management guides, inventory software articles, warehouse management resources"
-        url="https://www.stockflowsystems.com"
+        title="Inventory Management Resources 2026 | Industry Guides | StockFlow"
+        description="Access professional articles, software comparisons, and best practices for inventory operations."
+        keywords="inventory management blog, inventory strategy, warehouse optimization guides"
+        url="https://www.stockflowsystems.com/blog"
         structuredData={structuredData}
       />
       <StructuredData data={structuredData} />
-      <section id="articles">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-8">
-         
-          </div>
 
-          {/* Search and Filters */}
-          <div className="max-w-4xl mx-auto space-y-4">
-            {/* Search Bar */}
+      {/* Featured Article Section - Hidden during search */}
+      {!searchQuery && featuredArticle && (
+        <section className="bg-slate-50 border-b border-gray-200 px-4 py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex items-center gap-2 text-blue-600 font-semibold mb-6 uppercase tracking-wider text-sm">
+              <Tag size={16} />
+              <span>Featured Insight</span>
+            </div>
+            <Link 
+              to={featuredArticle.path}
+              className="group grid lg:grid-cols-2 gap-12 items-center bg-white p-8 rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300"
+            >
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 text-gray-500 text-sm">
+                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+                    {featuredArticle.category || 'Management'}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <Clock size={14} />
+                    <span>8 min read</span>
+                  </div>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
+                  {featuredArticle.title}
+                </h2>
+                <p className="text-xl text-gray-600 leading-relaxed">
+                  {featuredArticle.description}
+                </p>
+                <div className="flex items-center gap-2 text-blue-600 font-bold group-hover:gap-4 transition-all">
+                  Read Full Article <ArrowRight size={20} />
+                </div>
+              </div>
+              <div className="hidden lg:block relative h-full min-h-[400px] bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl overflow-hidden shadow-inner">
+                <div className="absolute inset-0 opacity-20 flex items-center justify-center">
+                  <BookOpen size={180} color="white" />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      <section className="bg-white px-4 py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+                {searchQuery ? `Search Results for "${searchQuery}"` : "Latest Strategies & Analysis"}
+              </h2>
+              <p className="text-lg text-gray-600">
+                {searchQuery 
+                  ? `Showing ${filteredArticles.length} of ${totalResults} matching resources.`
+                  : "Technical resources designed to eliminate operational friction and optimize stock accuracy."}
+              </p>
+            </div>
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search articles by title, description, or path..."
+              <input 
+                type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                placeholder="Search resources..." 
+                className="pl-10 pr-10 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none w-full md:w-80"
               />
+              <Search className="absolute left-3 top-3.5 text-gray-400" size={18} />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={18} />
+                </button>
+              )}
             </div>
-
-            {/* Results Count */}
-            {filteredCount !== totalPages && (
-              <div className="text-sm text-gray-600">
-                Showing {filteredCount} of {totalPages} articles
-              </div>
-            )}
           </div>
-        </div>
-      </section>
 
-      {/* Articles Grid by Category */}
-      <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-7xl">
-
-          
-          <div className="space-y-12">
-            {filteredCategories.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No articles found. Check console for debugging info.</p>
-              </div>
-            ) : (
-              filteredCategories.map((category) => {
-                const pagesInCategory = filteredPagesByCategory[category];
-                if (!pagesInCategory || pagesInCategory.length === 0) {
-                  return null;
-                }
-                return (
-                  <div key={category} className="space-y-6">
-                    {/* Category Title */}
-                    <div className="border-b border-gray-200 pb-4">
-                      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-                        {formatCategoryName(category)}
-                      </h1>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {pagesInCategory.length} {pagesInCategory.length === 1 ? 'article' : 'articles'}
-                      </p>
-                    </div>
-
-                    {/* Articles Grid for this Category */}
-                    <div className="flex-row gap-6">
-                      {pagesInCategory.map((page) => (
-                        <Link
-                          key={page.path}
-                          to={page.path}
-                          className="m-6 group flex flex-col h-full bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200"
-                        >
-                          {/* Title */}
-                          <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-                            {page.title}
-                          </h3>
-
-                        </Link>
-                      ))}
-                    </div>
+          {filteredArticles.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredArticles.map((article) => (
+                <Link
+                  key={article.path}
+                  to={article.path}
+                  className="group flex flex-col h-full bg-white rounded-2xl border border-gray-100 p-8 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-200"
+                >
+                  <div className="mb-4">
+                    <span className="text-xs font-bold text-blue-600 uppercase tracking-widest px-2 py-1 bg-blue-50 rounded">
+                      {article.category || 'Article'}
+                    </span>
                   </div>
-                );
-              })
-            )}
-          </div>
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-3 line-clamp-2 leading-snug">
+                    {article.title}
+                  </h3>
+                  {article.description && (
+                    <p className="text-gray-600 text-sm line-clamp-3 mb-6 leading-relaxed">
+                      {article.description}
+                    </p>
+                  )}
+                  <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                      <Clock size={12} />
+                      <span>5 min read</span>
+                    </div>
+                    <span className="text-sm font-semibold text-blue-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      Read Article <ArrowRight size={14} />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-gray-50 rounded-3xl">
+              <p className="text-gray-500 text-lg">No articles found matching your criteria.</p>
+              <button 
+                onClick={() => setSearchQuery("")}
+                className="mt-4 text-blue-600 font-bold hover:underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+
+          {/* Pagination/Load More Logic */}
+          {totalResults > itemsToShow && (
+            <div className="mt-20 flex flex-col items-center justify-center p-12 bg-slate-50 rounded-3xl border-2 border-dashed border-gray-200">
+              <h4 className="text-xl font-bold text-gray-900 mb-2">Want deeper insights?</h4>
+              <p className="text-gray-600 mb-8 text-center max-w-md">
+                You've viewed {itemsToShow} articles. Access our full archive of over 95 specialized articles.
+              </p>
+              <button 
+                onClick={handleLoadMore}
+                className="px-8 py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-colors flex items-center gap-2 shadow-lg shadow-gray-200"
+              >
+                <Search size={18} />
+                Load More Articles
+              </button>
+            </div>
+          )}
         </div>
       </section>
-    </SeoPageLayout>
+
+      <Footer />
+    </>
   );
 }

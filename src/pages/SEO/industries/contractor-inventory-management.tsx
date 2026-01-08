@@ -6,7 +6,6 @@ import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import {
-  HardHat,
   Wrench,
   Truck,
   MapPin,
@@ -23,6 +22,7 @@ import {
   Building2,
   ArrowRight
 } from 'lucide-react';
+import { KeyTakeaways } from '@/components/KeyTakeaways';
 
 
 export default function ContractorInventoryManagement() {
@@ -264,6 +264,7 @@ export default function ContractorInventoryManagement() {
       heroTitle="Construction Inventory Management for Contractors"
       updatedDate="06/01/2026"
       faqData={faqData}
+      keyTakeaways={KeyTakeaways}
     >
       <SEO
         title="Construction Inventory Management Software | StockFlow"
