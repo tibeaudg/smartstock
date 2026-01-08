@@ -479,23 +479,6 @@ export default function MobileInventoryManagement() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Start Managing Inventory on the Go Today
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            StockFlow's mobile inventory management is included in all plans, including our free plan for up to 100 products. Start managing inventory from anywhere with no credit card required.
-          </p>
-          <Link
-            to="/auth"
-            className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
-          >
-            Join for Free →
-          </Link>
-        </div>
-      </section>
 
 
 
