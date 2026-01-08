@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, ChevronLeft, ChevronRight as NextIcon } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Calendar, Clock, Share2 } from 'lucide-react';
 
 interface ArticleNavItem {
   title: string;
@@ -11,94 +11,89 @@ interface SEOPageHeroProps {
   title: string;
   breadcrumbItems?: Array<{ label: string; href: string }>;
   description?: string;
+  dateUpdated?: string;
+  readingTime?: string;
   previousArticle?: ArticleNavItem | null;
   nextArticle?: ArticleNavItem | null;
 }
 
-export const SEOPageHero: React.FC<SEOPageHeroProps> = ({
+export const SEOPageHero = memo(({
   title,
   breadcrumbItems = [],
   description,
+  dateUpdated,
+  readingTime = "8 min",
   previousArticle = null,
   nextArticle = null,
-}) => {
+}: SEOPageHeroProps) => {
   return (
-    <section className="bg-[#f8faff] border-b border-slate-100">
-      <div className="container mx-auto px-6 py-16 md:py-24">
-        {/* Breadcrumbs integrated into Hero container */}
-        {breadcrumbItems.length > 0 && (
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex items-center gap-2 text-sm font-medium text-slate-500">
-              {breadcrumbItems.map((item, index) => (
-                <li key={index} className="flex items-center gap-2">
-                  <Link 
-                    to={item.href}
-                    className="hover:text-[#1d4ed8] transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                  {index < breadcrumbItems.length - 1 && (
-                    <ChevronRight className="h-4 w-4 text-slate-300" />
-                  )}
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
+    <header className="relative w-full bg-white border-b border-slate-100">
+      {/* Grid Pattern - Subtieler en beperkt tot container */}
+      <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg className="h-full w-full" fill="none">
+          <defs>
+            <pattern id="hero-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 32V.5H32" stroke="currentColor" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-grid)" />
+        </svg>
+      </div>
 
-        <div className="max-w-4xl mt-12">
-          <h1 className="text-5xl md:text-7xl font-black text-[#0f172a] tracking-tight mb-4">
-            {title}
-          </h1>
-
-          {description && (
-            <p className="text-xl md:text-2xl text-slate-600 leading-relaxed font-normal mb-8">
-              {description}
-            </p>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="py-12 lg:py-20">
+          {/* Breadcrumbs - Uitgelijnd met Logo */}
+          {breadcrumbItems.length > 0 && (
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex flex-wrap items-center gap-2 text-[13px] font-medium text-slate-400">
+                {breadcrumbItems.map((item, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <Link to={item.href} className="hover:text-blue-600 transition-colors">
+                      {item.label}
+                    </Link>
+                    {index < breadcrumbItems.length - 1 && (
+                      <ChevronRight className="h-3 w-3 opacity-50" />
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </nav>
           )}
 
-          {/* Previous/Next Article Navigation */}
-          {(previousArticle || nextArticle) && (
-            <div className="flex flex-col sm:flex-row gap-4 mt-8 pt-8 border-t border-slate-200">
-              {previousArticle && (
-                <Link
-                  to={previousArticle.href}
-                  className="group flex-1 flex items-center gap-3 p-4 rounded-lg border border-slate-200 bg-white hover:bg-blue-50 hover:border-blue-200 transition-all duration-200"
-                >
-                  <div className="p-2 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    <ChevronLeft className="h-4 w-4" />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div className="lg:col-span-7">
+              {/* Metadata */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-100 text-[12px] font-bold text-slate-500 uppercase tracking-tight">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span>{readingTime} leestijd</span>
+                </div>
+                {dateUpdated && (
+                  <div className="flex items-center gap-1.5 text-[12px] font-medium text-slate-400">
+                    <Calendar className="h-3.5 w-3.5" />
+                    <span>{dateUpdated}</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-slate-500 mb-1">Previous Article</div>
-                    <div className="text-lg font-semibold text-slate-900 truncate group-hover:text-blue-700 transition-colors">
-                      {previousArticle.title}
-                    </div>
-                  </div>
-                </Link>
-              )}
+                )}
+              </div>
 
-              {nextArticle && (
-                <Link
-                  to={nextArticle.href}
-                  className="group flex-1 flex items-center gap-3 p-4 rounded-lg border border-slate-200 bg-white hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 text-right"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-slate-500 mb-1">Next Article</div>
-                    <div className="text-lg font-semibold text-slate-900 truncate group-hover:text-blue-700 transition-colors">
-                      {nextArticle.title}
-                    </div>
-                  </div>
-                  <div className="p-2 rounded-full bg-slate-100 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    <NextIcon className="h-4 w-4" />
-                  </div>
-                </Link>
+              {/* Title - Minder agressieve grootte, betere line-height */}
+              <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-[1.15] mb-6">
+                {title}
+              </h1>
+
+              {description && (
+                <p className="text-lg text-slate-500 leading-relaxed max-w-2xl">
+                  {description}
+                </p>
               )}
             </div>
-          )}
+
+          
+          </div>
         </div>
       </div>
-    </section>
+    </header>
   );
-};
+});
 
-export default SEOPageHero;
+SEOPageHero.displayName = 'SEOPageHero';

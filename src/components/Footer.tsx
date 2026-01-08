@@ -6,12 +6,10 @@ import {
   Instagram, 
   Mail, 
   ChevronRight, 
-  ExternalLink,
   ShieldCheck,
   Globe2
 } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
-import ScrollTriggeredButton from './ScrollTriggeredButton';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -44,8 +42,6 @@ const Footer = () => {
     company: [
       { name: 'About Us', path: '/about' },
       { name: 'Contact', path: '/contact' },
-      { name: 'Careers', path: '/careers' },
-      { name: 'Partner Program', path: '/partners' },
     ],
     legal: [
       { name: 'Privacy Policy', path: '/privacy' },
@@ -80,14 +76,9 @@ const Footer = () => {
                     <span className="font-medium text-sm md:text-base">Global Availability</span>
                   </div>
                 </div>
-                <ScrollTriggeredButton
-                  as="button"
-                  onClick={() => navigate('/auth')}
-                  className="bg-white text-blue-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all flex items-center gap-2 group"
-                >
-                  Start Your Inventory Audit
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </ScrollTriggeredButton>
+                <button onClick={() => navigate('/auth')} className="inline-block bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow text-lg md:text-xl">
+                  Start your free inventory audit
+                </button>
               </div>
               
               <div className="grid grid-cols-2 gap-4">
@@ -97,7 +88,7 @@ const Footer = () => {
                   { label: "Avg Savings", val: "€15k" },
                   { label: "Support", val: "24/7" }
                 ].map((stat, i) => (
-                  <div key={i} className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-6">
+                  <div key={i} className="bg-white/10 border border-white/10 rounded-2xl p-6">
                     <div className="text-2xl font-bold text-white mb-1">{stat.val}</div>
                     <div className="text-blue-100 text-xs font-bold uppercase tracking-wider">{stat.label}</div>
                   </div>
@@ -119,8 +110,6 @@ const Footer = () => {
           src="/logo.png"
           alt="stockflow"
           className="h-10 md:h-12 mb-6"
-          loading="lazy"
-          decoding="async"
           onLoad={(e) => {
             e.currentTarget.classList.add('loaded');
           }}
@@ -132,15 +121,27 @@ const Footer = () => {
               </p>
               <div className="flex gap-4">
                 {[
-                  { icon: <Linkedin />, url: "https://linkedin.com/company/stockflow" },
-                  { icon: <Twitter />, url: "https://twitter.com/stockflow" },
-                  { icon: <Instagram />, url: "https://instagram.com/stockflowbe" },
-                  { icon: <Facebook />, url: "https://facebook.com/profile.php?id=61578067034898" }
-                ].map((social, i) => (
-                  <a key={i} href={social.url} className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-blue-600 hover:text-blue-600 transition-all">
-                    {social.icon}
-                  </a>
-                ))}
+                  { name: 'LinkedIn', Icon: Linkedin, url: "https://linkedin.com/company/stockflow" },
+                  { name: 'Twitter', Icon: Twitter, url: "https://twitter.com/stockflow" },
+                  { name: 'Instagram', Icon: Instagram, url: "https://instagram.com/stockflowbe" },
+                  { name: 'Facebook', Icon: Facebook, url: "https://facebook.com/profile.php?id=61578067034898" }
+                ].map((social, i) => {
+                  const Icon = social.Icon;
+                  return (
+                    <a
+                      key={i}
+                      href={social.url}
+                      className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-blue-600 hover:text-blue-600 transition-all"
+                      aria-label={`Follow StockFlow on ${social.name}`}
+                      title={`Follow StockFlow on ${social.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon aria-hidden="true" />
+                      <span className="sr-only">{`Follow StockFlow on ${social.name}`}</span>
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
@@ -188,7 +189,7 @@ const Footer = () => {
           {/* Bottom Bar */}
           <div className="pt-12 border-t border-gray-600 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-gray-400 text-sm">
-              © {new Date().getFullYear()} StockFlow Systems. All rights reserved.
+              © 2026 StockFlow Systems. All rights reserved.
             </div>
             <div className="flex gap-8">
               {footerLinks.legal.map(link => (

@@ -2,6 +2,16 @@
   width: 100vw;
 }
 
+* {
+  overflow: visible !important;
+}
+
+
+img, video, canvas, svg {
+  overflow: clip !important;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -54,8 +64,10 @@
 /* Scrollbars verbergen op mobiel, scrollen blijft mogelijk */
 @media (max-width: 600px) {
   body, html {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE en Edge */
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    height: auto !important;
   }
   body::-webkit-scrollbar, html::-webkit-scrollbar {
     display: none; /* Chrome, Safari en Opera */
@@ -63,5 +75,6 @@
 }
 
 body {
-  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
 }

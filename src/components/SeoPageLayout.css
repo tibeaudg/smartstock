@@ -1,48 +1,77 @@
-/* 
-  CRITICAL CSS FIXES for Sticky Table of Contents
-  Add this to your SeoPageLayout.css file or create a new file
-*/
+/* SeoPageLayout.css */
 
-/* Remove any overflow restrictions that break sticky positioning */
-.seo-page-layout-main {
-  overflow: visible !important;
+/* Critical above-the-fold styles */
+.is-seo-page {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 1000px;
 }
 
-.seo-page-layout-section {
-  overflow: visible !important;
+.seo-article {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 2000px;
 }
 
-.seo-page-layout-container {
-  overflow: visible !important;
+/* Optimize image rendering */
+.seo-article img {
+  content-visibility: auto;
 }
 
-/* Ensure the container class doesn't have overflow restrictions */
-.container {
-  overflow: visible !important;
+/* Prevent layout shifts */
+.seo-article img:not([width]):not([height]) {
+  aspect-ratio: 16/9;
 }
 
-/* Force sticky positioning on TOC */
-.table-of-contents-wrapper {
-  position: -webkit-sticky !important;
-  position: sticky !important;
-  top: 120px !important;
-  max-height: calc(100vh - 140px) !important;
-  overflow-y: auto !important;
-  z-index: 10;
+/* Optimize text rendering */
+.seo-article {
+  text-rendering: optimizeSpeed;
+  font-display: swap;
 }
 
-/* Ensure parent aside doesn't interfere */
-.toc-aside {
-  overflow: visible !important;
-  position: relative !important;
+/* Reduce paint area for sticky elements */
+.sticky {
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
-/* 
-  DEBUGGING: Uncomment these to visually verify sticky is working
-*/
-/*
-.table-of-contents-wrapper {
-  background-color: rgba(59, 130, 246, 0.1) !important;
-  border: 2px solid blue !important;
+/* Smooth scrolling for anchor links */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
-*/
+
+/* Optimize animations */
+.group-hover\:bg-slate-50,
+.hover\:bg-slate-50 {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent zoom on mobile */
+@media screen and (max-width: 768px) {
+  input,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Critical loading states */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
