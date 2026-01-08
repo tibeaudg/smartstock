@@ -451,9 +451,9 @@ function BOMListPage() {
   return (
     <>
       <SEO title="Bill of Materials | StockFlow" />
-      <div className="h-full flex flex-col bg-white">
+      <div className="h-full flex flex-col w-full">
         {/* Header */}
-        <div className="border-b px-6 py-4 bg-white">
+        <div className="border-b px-6 py-4 ">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Bill of Materials</h1>
@@ -469,7 +469,7 @@ function BOMListPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="border-b px-6 py-4 bg-gray-50">
+        <div className="px-6 py-4 ">
           <div className="flex items-center gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -527,7 +527,7 @@ function BOMListPage() {
               </div>
             </Card>
           ) : (
-            <Card className="p-4">
+            <Card>
               {/* Bulk Actions */}
               {selectedBOMs.size > 0 && (
                 <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
@@ -547,9 +547,9 @@ function BOMListPage() {
               )}
 
               <Table>
-                <TableHeader>
+                <TableHeader className='bg-gray-50'>
                   <TableRow>
-                    <TableHead className="w-12">
+                    <TableHead className="w-12 ">
                       <Checkbox 
                         checked={selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0} 
                         onCheckedChange={toggleSelectAll} 

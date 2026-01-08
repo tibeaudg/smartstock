@@ -52,7 +52,8 @@ import {
   ChevronRight, 
   ChevronsUpDown, 
   ChevronUp, 
-  ChevronDown 
+  ChevronDown, 
+  Filter
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -195,22 +196,43 @@ export default function VendorManagementPage() {
   }
 
   return (
-    <div className="space-y-6 p-4 sm:p-6">
-      {/* Search and Global Actions */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input 
-            placeholder="Search suppliers..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Button onClick={() => { resetForm(); setShowAddModal(true); }} className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
-          <Plus className="w-4 h-4 mr-2" /> Add Supplier
-        </Button>
+    <>
+    <div className="space-y-6">
+
+<div className="h-full flex-col-2 w-full">
+  {/* Header */}
+  <div className="border-b px-6 py-4">
+    <div className="flex items-center justify-between gap-4">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Supplier Management</h1>
+        <p className="text-sm text-gray-600 mt-1">
+          Manage suppliers, track component costs, and calculate delivery speed
+        </p>
       </div>
+      <Button 
+        onClick={() => { resetForm(); setShowAddModal(true); }} 
+        className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap"
+      >
+        <Plus className="w-4 h-4 mr-2" /> Add Supplier
+      </Button>
+    </div>
+  </div>
+
+  {/* Search and Filters */}
+  <div className="px-6 py-4">
+    <div className="flex items-center gap-4">
+      <div className="flex-1 relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Input
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Main Table Content */}
       <Card className="border-none shadow-sm overflow-hidden">
@@ -222,7 +244,7 @@ export default function VendorManagementPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-gray-50 border-b">
+              <thead className="bg-gray-50 border-b font-bold text-gray-700">
                 <tr>
                   <th className="p-4 cursor-pointer hover:bg-gray-100" onClick={() => handleSort('name')}>
                     <div className="flex items-center gap-2">Name <ChevronsUpDown className="w-3 h-3"/></div>
@@ -333,5 +355,8 @@ export default function VendorManagementPage() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+    
+
+</>
   );
 }
