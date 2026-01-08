@@ -158,7 +158,7 @@ export default function SEOCaseStudiesPage() {
     <SeoPageLayout 
       title="Inventory Management Case Studies"
       heroTitle="Inventory Management Case Studies"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO

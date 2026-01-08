@@ -323,7 +323,7 @@ export default function StockFlowVsSortly() {
       </section>
 
       {/* Pricing Comparison */}
-      <section id="pricing" className="py-16 px-4 bg-gray-50">
+      <section id="pricing" className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
@@ -435,105 +435,6 @@ export default function StockFlowVsSortly() {
               Get Free Migration Help
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Screenshots Section */}
-      <section id="screenshots" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              See StockFlow in Action
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Compare StockFlow's interface with Sortly's visual catalog approach
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-              <div className="bg-blue-50 px-6 py-4 border-b border-gray-200">
-                <h3 className="font-semibold text-blue-600">StockFlow Dashboard</h3>
-              </div>
-              <img
-                src="/Inventory-Management.png"
-                alt="StockFlow inventory management dashboard showing real-time tracking, barcode scanning, and multi-location support"
-                className="w-full h-auto"
-              />
-              <div className="p-4 bg-gray-50">
-                <p className="text-sm text-gray-600">
-                  StockFlow's operational dashboard optimized for inventory management workflows
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-600">Sortly Visual Catalog</h3>
-              </div>
-              <img
-                src="/Inventory-Management.png"
-                alt="Sortly visual catalog interface showing folder-style organization and photo-heavy item displays"
-                className="w-full h-auto opacity-75"
-              />
-              <div className="p-4 bg-gray-50">
-                <p className="text-sm text-gray-600">
-                  Sortly's visual catalog approach focused on browsing items with photos
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 grid md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-              <div className="bg-blue-50 px-6 py-4 border-b border-gray-200">
-                <h3 className="font-semibold text-blue-600">StockFlow Mobile App</h3>
-              </div>
-              <img
-                src="/Inventory-Management.png"
-                alt="StockFlow mobile app optimized for barcode scanning and field inventory management"
-                className="w-full h-auto"
-              />
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-600">Feature Comparison</h3>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-700">Barcode Workflows</span>
-                    <div className="flex gap-2">
-                      <span className="text-green-600 font-semibold">StockFlow ✓</span>
-                      <span className="text-gray-400">Sortly Limited</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-700">Multi-Location Management</span>
-                    <div className="flex gap-2">
-                      <span className="text-green-600 font-semibold">StockFlow ✓</span>
-                      <span className="text-gray-400">Sortly Limited</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-700">Automated Reordering</span>
-                    <div className="flex gap-2">
-                      <span className="text-green-600 font-semibold">StockFlow ✓</span>
-                      <span className="text-gray-400">Sortly Basic</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-700">Visual Catalog</span>
-                    <div className="flex gap-2">
-                      <span className="text-gray-400">StockFlow Basic</span>
-                      <span className="text-green-600 font-semibold">Sortly ✓</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -723,7 +624,7 @@ export default function StockFlowVsSortly() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-gray-50">
+      <section id="faq" className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">

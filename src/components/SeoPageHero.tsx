@@ -66,7 +66,7 @@ export const SEOPageHero = memo(({
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-100 text-[12px] font-bold text-slate-500 uppercase tracking-tight">
                   <Clock className="h-3.5 w-3.5" />
-                  <span>{readingTime} leestijd</span>
+                  <span>{readingTime} Reading Time</span>
                 </div>
                 {dateUpdated && (
                   <div className="flex items-center gap-1.5 text-[12px] font-medium text-slate-400">

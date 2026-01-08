@@ -219,7 +219,7 @@ export default function ConstructionInventoryManagementSystem() {
       title="Construction Inventory Management System 2026"
       heroTitle="Construction Inventory Management System: Track Materials & Equipment Across Job Sites"
       description="Complete construction inventory management system. Track materials, equipment, and tools across multiple job sites with mobile scanning, automated alerts, and theft prevention. Free plan available."
-      updatedDate="2026-01-15"
+      dateUpdated="2026-01-15"
       faqData={faqData}
     >
       <SEO

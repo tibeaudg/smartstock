@@ -80,7 +80,7 @@ export default function StockflowVsKatana() {
   return (
     <SeoPageLayout 
       heroTitle="StockFlow vs Katana"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
         previousArticle={{
       title: "StockFlow vs Inflow",
@@ -107,7 +107,7 @@ export default function StockflowVsKatana() {
           <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center">
             StockFlow vs Katana: Feature Breakdown
           </h1>
-          <div className="overflow-x-auto border border-gray-200 rounded-xl shadow-sm">
+          <div className="overflow-x-auto border border-gray-200 rounded-xl shadow-xl border border-gray-200">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -130,7 +130,7 @@ export default function StockflowVsKatana() {
         </div>
       </section>
 
-      <section className="py-16 px-4 bg-blue-600 text-white">
+      <section className="py-16 px-4 bg-blue-600 text-white rounded-xl">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Why SMEs Pick StockFlow</h2>
@@ -188,14 +188,14 @@ export default function StockflowVsKatana() {
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-10 text-center">When Katana Is a Better Fit</h2>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-gray-50 p-6 rounded-lg shadow-xl border border-gray-200">
               <Factory className="h-10 w-10 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-3">Deep Shop-Floor Control</h3>
               <p className="text-gray-600">
                 If you require advanced production scheduling, routing and shop-floor terminals, Katana may suit complex manufacturing operations better.
               </p>
             </div>
-            <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-gray-50 p-6 rounded-lg shadow-xl border border-gray-200">
               <Layers className="h-10 w-10 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-3">Engineer-to-Order Processes</h3>
               <p className="text-gray-600">

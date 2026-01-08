@@ -262,7 +262,7 @@ export default function ContractorInventoryManagement() {
     <SeoPageLayout 
       title="Construction Inventory Management for Contractors"
       heroTitle="Construction Inventory Management for Contractors"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO

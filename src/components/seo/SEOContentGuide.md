@@ -51,5 +51,5 @@ Use `findRelevantInternalLinks()` and `enhanceContentWithLinks()` to automatical
 2. **Include readingTime** - Improves user experience
 3. **Use HowTo schema** for step-by-step guides
 4. **Add contextual internal links** within content sections
-5. **Keep content updated** - Use updatedDate prop
+5. **Keep content updated** - Use dateUpdated prop
 

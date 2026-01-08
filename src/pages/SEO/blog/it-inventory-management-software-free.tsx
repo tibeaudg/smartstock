@@ -54,7 +54,7 @@ export default function SeoFreeItInventoryPage() {
       title={topicTitle}
       heroTitle="Free IT Inventory Management Software: The 2026 Definitive Guide"
       heroDescription="Explore truly free IT inventory management software. Learn about the limitations of Excel, Google's options, and whether 'free' tools like Zoho are actually cost-effective for ITAM."
-      updatedDate="January 8, 2026"
+      dateUpdated="January 8, 2026"
       keyTakeaways={keyTakeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />

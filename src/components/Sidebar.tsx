@@ -1,34 +1,15 @@
 import { 
   BarChart3, 
   Package, 
-  ShoppingCart, 
   Settings, 
   X,
-  HelpCircle,
   Users,
-  MessageSquare,
-  Bell,
-  Scan,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  FileText,
-  Truck,
-  Star,
   TrendingUp,
-  Brain,
-  PieChart,
-  Download,
-  Filter,
-  Database,
-  Activity,
-  ShoppingBag,
   Moon,
   Sun,
   Layers,
-  MapPin,
-  Warehouse,
-  Tags
+  FileText,
 } 
 from 'lucide-react';
 import { BranchSelector } from './BranchSelector';
@@ -54,7 +35,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
-import { sub } from 'date-fns';
 
 interface SidebarProps {
   currentTab: string;
@@ -104,13 +84,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
     }
   };
   
-  // Check subscription-based feature access
-  const { canUseFeature, currentTier } = useSubscription();
-  
-  // Check specific feature access based on subscription tier
-  const hasDeliveryNotes = canUseFeature('delivery-notes');
-  const hasScanner = true; // Scanner is now available for all users
-  const hasAnalytics = false; // Analytics is now available for all users
+
 
   // If blocked, only show settings/invoicing
   const isBlocked = userProfile?.blocked;
@@ -127,12 +101,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
     });
   };
 
-  const inventorySubItems = [
-    { id: 'products', label: 'Products', path: '/dashboard/categories'},
-    { id: 'transactions', label: 'Transactions', icon: ShoppingCart, path: '/dashboard/transactions', end: true },
 
-  ]
-  
   const settingsSubItems = [
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
     { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
@@ -149,53 +118,36 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
     { id: 'export', label: 'Export', path: '/dashboard/analytics/export' },
   ];
 
-  // Determine products path based on product count
-  const getProductsPath = () => {
-    if (isLoading) return '/dashboard/categories'; // Default while loading
-    return productCount === 0 ? '/dashboard/products/new' : '/dashboard/categories';
-  };
+
 
   const menuItems = isBlocked
     ? [
         { 
-          id: 'settings', 
-          label: 'Settings', 
-          icon: Settings, 
-          path: '/dashboard/settings',
+          id: 'settings',  label: 'Settings',  icon: Settings,  path: '/dashboard/settings',
           subItems: [{ id: 'invoicing', label: 'Billing', path: '/dashboard/settings/invoicing' }]
         },
       ]
     : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
-
+        
         { 
-          id: 'inventory', 
-          label: 'Inventory', 
-          icon: Package, 
-          path: 'dashboard/inventory',
-          subItems: [{ id: 'products', label: 'Products', path: '/dashboard/categories'}, { id: 'transactions', label: 'Transactions', path:'/dashboard/transactions'}]
+          id: 'inventory', label: 'Inventory',  icon: Package,  path: 'dashboard/inventory',
+          subItems: [
+            { id: 'products', label: 'Products', path: '/dashboard/categories'}, 
+            { id: 'transactions', label: 'Transactions', path:'/dashboard/transactions'}
+          ]
         },
-
 
         { id: 'bom', label: 'Bill of Materials', icon: Layers, path: '/dashboard/bom', end: true },
-        ...(hasAnalytics
-          ? [
-              {
-                id: 'analytics',
-                label: 'Analytics',
-                icon: TrendingUp,
-                path: '/dashboard/analytics/reports',
-                subItems: analyticsSubItems
-              }
-            ]
-          : []),
-        { 
-          id: 'settings', 
-          label: 'Settings', 
-          icon: Settings, 
-          path: '/dashboard/settings',
-          subItems: settingsSubItems
-        },
+
+        { id: 'sales-orders', label: 'Sales Orders', icon: FileText, path: '/dashboard/sales-orders',end: true },
+
+        { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/dashboard/analytics/reports', subItems: analyticsSubItems },
+
+
+
+        { id: 'settings', label: 'Settings', icon: Settings,  path: '/dashboard/settings', subItems: settingsSubItems },
+
         ...(isOwner
           ? [
               { 
@@ -338,8 +290,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
   // Desktop Sidebar
   return (
     <>
-      {/* Sidebar */}
-      <div className="fixed left-0 top-0 h-screen bg-white dark:bg-gray-950 transition-all border border-gray-200 dark:border-gray-800 duration-300 z-50 flex flex-col w-64 md:relative md:translate-x-0">
+      {/* Sidebar - FIXED positioning */}
+      <div className="fixed left-0 top-0 h-screen w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 transition-colors duration-300 z-50 flex flex-col ">
         {/* Logo Section */}
         <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between">
@@ -564,10 +516,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
           </div>
         </div>
       </div>
-
-
-
-
 
       {/* Support Modal - Rendered using Portal to escape sidebar container */}
       {supportOpen && createPortal(

@@ -88,7 +88,7 @@ export default function AssetControllerMeaning() {
     <SeoPageLayout
       title="Asset Controller Meaning | What is Asset Controller"
       heroTitle="Asset Controller Meaning"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
         title: "Inventory Automation",

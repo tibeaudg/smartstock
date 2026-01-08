@@ -232,7 +232,7 @@ export default function PurchaseRequisitionSoftware() {
       title="Purchase Requisition Software 2026"
       heroTitle="Purchase Requisition Software: Automate Purchase Requests & Approvals"
       description="Complete purchase requisition software guide. Automate purchase requests, approvals, and PO generation with workflow automation, spending controls, and audit trails. Free plan available."
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
       title: "Integrations",

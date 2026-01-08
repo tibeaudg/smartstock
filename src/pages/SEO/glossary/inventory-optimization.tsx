@@ -222,7 +222,7 @@ export default function InventoryOptimization() {
       title="Inventory Optimization"
       heroTitle="Inventory Optimization: Complete Guide 2026"
       description="Master inventory optimization to reduce costs, improve cash flow, and eliminate stockouts. Learn proven strategies, tools, and best practices for optimal stock levels."
-      updatedDate={pageMetadata.updatedDisplay}
+      dateUpdated={pageMetadata.updatedDisplay}
       faqData={faqData}
     >
       <SEO

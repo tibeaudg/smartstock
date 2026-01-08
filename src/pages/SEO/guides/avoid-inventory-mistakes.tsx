@@ -150,7 +150,7 @@ export default function AvoidInventoryMistakes() {
     <SeoPageLayout 
       title="Avoid Inventory Mistakes"
       heroTitle="Avoid Inventory Mistakes"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       previousArticle={{
         title: "How to Choose Inventory Management Software",

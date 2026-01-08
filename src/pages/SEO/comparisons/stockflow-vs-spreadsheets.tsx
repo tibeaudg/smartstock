@@ -147,7 +147,7 @@ export default function StockFlowVsSpreadsheets() {
     <SeoPageLayout 
       title="StockFlow vs Spreadsheets"
       heroTitle="StockFlow vs Spreadsheets: Why Professional Software Beats Manual Tracking"
-      updatedDate={new Date().toISOString().split("T")[0]}
+      dateUpdated={new Date().toISOString().split("T")[0]}
       faqData={faqData}
               previousArticle={{
       title: "StockFlow vs Sortly",
@@ -188,36 +188,36 @@ export default function StockFlowVsSpreadsheets() {
       </section>
 
       {/* Pain Points Section */}
-      <section className="py-16 px-4 bg-red-50">
+      <section className="py-16 px-4 ">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">The Hidden Costs of Using Spreadsheets for Inventory</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 border-l-4 border-red-500">
               <AlertCircle className="h-10 w-10 text-red-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Manual Data Entry Errors</h3>
               <p className="text-gray-600">Typos, wrong quantities, and formula mistakes lead to inventory discrepancies, stockouts, and lost sales. Studies show 88% of spreadsheets contain errors.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 border-l-4 border-red-500">
               <Clock className="h-10 w-10 text-red-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">10-20 Hours/Week Lost</h3>
               <p className="text-gray-600">Manual data entry, creating reports, reconciling discrepancies, and managing multiple spreadsheet versions consume valuable time that could be spent growing your business.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 border-l-4 border-red-500">
               <Users className="h-10 w-10 text-red-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Version Control Issues</h3>
               <p className="text-gray-600">Multiple people editing spreadsheets leads to conflicts, lost updates, and confusion about which version is current. No real-time collaboration.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 border-l-4 border-red-500">
               <FileText className="h-10 w-10 text-red-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">No Integration Capabilities</h3>
               <p className="text-gray-600">Can't connect to e-commerce platforms, POS systems, or accounting software. Requires manual data entry for every sale and purchase.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 border-l-4 border-red-500">
               <Database className="h-10 w-10 text-red-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">No Audit Trail</h3>
               <p className="text-gray-600">Can't track who made changes, when, or why. Difficult to identify and fix errors. No history of inventory movements.</p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm border-l-4 border-red-500">
+            <div className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 border-l-4 border-red-500">
               <Smartphone className="h-10 w-10 text-red-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">No Mobile Access</h3>
               <p className="text-gray-600">Can't update inventory from the warehouse floor. Requires going back to a computer, leading to delays and forgotten updates.</p>
@@ -231,22 +231,22 @@ export default function StockFlowVsSpreadsheets() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Why StockFlow is Better Than Spreadsheets</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-blue-50 p-6 rounded-lg shadow-xl border border-gray-200">
               <Zap className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Real-Time Tracking</h3>
               <p className="text-gray-600">Inventory updates instantly across all locations and users. No more waiting for spreadsheet updates or version conflicts.</p>
             </div>
-            <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-blue-50 p-6 rounded-lg shadow-xl border border-gray-200">
               <Smartphone className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Barcode Scanning</h3>
               <p className="text-gray-600">Scan barcodes with your phone to update inventory instantly. Eliminates manual data entry errors and saves hours daily.</p>
             </div>
-            <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-blue-50 p-6 rounded-lg shadow-xl border border-gray-200">
               <TrendingUp className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Automated Alerts</h3>
               <p className="text-gray-600">Get notified when stock is low, items are expiring, or reorder points are reached. Never run out of stock again.</p>
             </div>
-            <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
+            <div className="bg-blue-50 p-6 rounded-lg shadow-xl border border-gray-200">
               <Database className="h-12 w-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">E-commerce Integration</h3>
               <p className="text-gray-600">Automatically sync inventory with Shopify, Amazon, WooCommerce, and 45+ platforms. No manual updates needed.</p>
@@ -256,14 +256,14 @@ export default function StockFlowVsSpreadsheets() {
       </section>
 
       {/* Migration Guide */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">How to Migrate from Spreadsheets to StockFlow</h2>
           <div className="space-y-6">
             {migrationSteps.map((step, index) => {
               const Icon = step.icon;
               return (
-                <div key={index} className="bg-white rounded-lg p-6 shadow-sm border-l-4 border-blue-500">
+                <div key={index} className="bg-white rounded-lg p-6 shadow-xl border border-gray-200 border-l-4 border-blue-500">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full">
@@ -349,7 +349,7 @@ export default function StockFlowVsSpreadsheets() {
       </section>
 
       {/* When to Choose Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-white">
+      <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">When to Choose StockFlow vs Spreadsheets</h2>
           <div className="grid md:grid-cols-2 gap-8">

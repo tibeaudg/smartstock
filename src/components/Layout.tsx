@@ -53,20 +53,18 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   return (
     <div className="h-screen flex flex-col bg-background text-foreground transition-colors">
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - hidden on mobile, shown on desktop */}
+        {/* Sidebar - directly render without wrapper div */}
         {!isMobile && (
-          <div className="fixed left-0 top-0 h-full z-20">
-            <Sidebar
-              currentTab={currentTab}
-              onTabChange={handleTabChange}
-              userRole={userRole}
-              userProfile={userProfile}
-              isOpen={sidebarOpen}
-              onToggle={() => setSidebarOpen(!sidebarOpen)}
-              unreadCount={unreadCount}
-              onNotificationClick={handleNotificationClick}
-            />
-          </div>
+          <Sidebar
+            currentTab={currentTab}
+            onTabChange={handleTabChange}
+            userRole={userRole}
+            userProfile={userProfile}
+            isOpen={sidebarOpen}
+            onToggle={() => setSidebarOpen(!sidebarOpen)}
+            unreadCount={unreadCount}
+            onNotificationClick={handleNotificationClick}
+          />
         )}
         
         {/* Mobile Bottom Navbar - rendered inside Sidebar component */}
@@ -84,12 +82,10 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         )}
 
         <main
-          className={`flex-1 main-content-surface ${variant === 'admin' ? 'md:pl-0 overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
+          className={`flex-1 main-content-surface ${variant === 'admin' ? 'overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
-              : sidebarOpen 
-                ? 'md:pl-64' 
-                : 'md:pl-16'
+              : 'ml-64' // Always add left margin for fixed sidebar on desktop
           } transition-colors`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'} transition-colors`}>

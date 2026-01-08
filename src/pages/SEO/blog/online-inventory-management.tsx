@@ -53,7 +53,7 @@ export default function SeoOnlineInventoryManagementPage() {
     <SeoPageLayout
       title={topicTitle}
       heroTitle={topicTitle}
-      updatedDate="January 7, 2026"
+      dateUpdated="January 7, 2026"
       keyTakeaways={takeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />

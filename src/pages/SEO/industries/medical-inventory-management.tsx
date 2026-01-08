@@ -234,7 +234,7 @@ export default function MedicalInventoryManagement() {
     <SeoPageLayout 
       title="Medical Inventory Management for Healthcare Facilities"
       heroTitle="Medical Inventory Management for Healthcare Facilities"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO

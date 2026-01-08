@@ -240,7 +240,7 @@ export default function AlertsPage() {
     <SeoPageLayout 
       title="Alerts"
       heroTitle="Alerts"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
                           previousArticle={{
       title: "StockFlow vs Zoho Inventory",
@@ -341,7 +341,7 @@ export default function AlertsPage() {
       </div>
 
       {/* Supported Barcode Types */}
-      <div className="bg-gradient-to-r from-indigo-50 via-white to-blue-50 py-20">
+      <div className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
             <h2 className="text-3xl font-bold mb-4">Types of Inventory Alerts</h2>

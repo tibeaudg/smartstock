@@ -291,7 +291,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             () => reject(new Error('Session fetch timeout')),
             hasAuthTokensInHash ? 15000 : 25000
           );
-        });
+
+          
+        } 
+      
+      
+      );
 
         const sessionPromise = supabase.auth.getSession();
         

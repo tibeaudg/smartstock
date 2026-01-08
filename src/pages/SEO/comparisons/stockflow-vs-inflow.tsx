@@ -145,7 +145,7 @@ export default function StockFlowVsInFlow() {
   return (
     <SeoPageLayout 
       heroTitle="StockFlow vs InFlow: The Better Choice for Growing Businesses"
-      updatedDate={new Date().toISOString().split("T")[0]}
+      dateUpdated={new Date().toISOString().split("T")[0]}
       faqData={faqData}
       previousArticle={{
       title: "Stockflow vs Cin7",

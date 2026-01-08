@@ -117,7 +117,7 @@ export default function SeoInventoryManagement101Page() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
        
       

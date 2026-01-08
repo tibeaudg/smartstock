@@ -150,7 +150,7 @@ export default function CompareInventorySoftware() {
   return (
     <SeoPageLayout 
       heroTitle="Compare Inventory Software"
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
    
     nextArticle={{
@@ -242,11 +242,11 @@ export default function CompareInventorySoftware() {
       </section>
 
       {/* StockFlow differentiators */}
-      <section className="py-20 px-4 bg-slate-950 text-slate-100">
+      <section className="py-20 px-4 text-slate-900">
         <div className="max-w-6xl mx-auto">
           <div className="mb-12 text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-bold">Where StockFlow delivers more leverage</h2>
-            <p className="mt-3 text-slate-300 max-w-3xl">
+            <p className="mt-3 text-slate-700 max-w-3xl">
               Modern omnichannel operators need forecasting, fulfillment, and compliance to talk to each other. We
               built StockFlow so planners, buyers, and floor teams stay aligned without duct-taping spreadsheets to your
               ERP.

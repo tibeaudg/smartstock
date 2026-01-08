@@ -1,8 +1,19 @@
 import { 
-  Boxes, Truck, Wrench, HardHat, Zap, Stethoscope, 
-  Warehouse, FileText, TrendingUp, LifeBuoy, PlayCircle, Scale 
+  Boxes, 
+  Truck, 
+  Wrench, 
+  HardHat, 
+  Zap, 
+  Stethoscope, 
+  Warehouse, 
+  FileText, 
+  TrendingUp, 
+  LifeBuoy, 
+  PlayCircle, 
+  Scale,
+  Link2 
 } from 'lucide-react';
-import { NavItem } from '../components/Header'; // Pas import pad aan indien nodig
+import { NavItem } from '../components/Header';
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -47,17 +58,18 @@ export const NAV_ITEMS: NavItem[] = [
     megaMenu: {
       intro: {
         title: 'Resources',
-        description: 'Need help or information? Here you can find what you are looking for',
+        description: 'Access educational content, customer stories, and technical support.',
       },
       sections: [
         {
-          title: 'Blog',
+          title: 'Learn & Support',
           items: [
-            { label: 'Articles', description: 'Read our content for free.', to: '/blog', icon: FileText },
-            { label: 'Case Studies', description: 'Find out other success stories.', to: '/case-studies', icon: TrendingUp },
-            { label: 'Support', description: 'Get help here!', to: '/help-center', icon: LifeBuoy },
-            { label: 'Demo Videos', description: 'Watch our free instruction videos.', to: '/videos', icon: PlayCircle },
-            { label: 'Comparisons', description: 'Compare Stockflow with other inventory management platforms.', to: '/compare-inventory-software', icon: Scale }
+            { label: 'Articles', description: 'Expert insights on inventory optimization.', to: '/blog', icon: FileText },
+            { label: 'Case Studies', description: 'Real-world success stories from our clients.', to: '/case-studies', icon: TrendingUp },
+            { label: 'Support', description: 'Get technical help and documentation.', to: '/help-center', icon: LifeBuoy },
+            { label: 'Demo Videos', description: 'Step-by-step visual guides and tutorials.', to: '/videos', icon: PlayCircle },
+            { label: 'Comparisons', description: 'How StockFlow ranks against competitors.', to: '/compare-inventory-software', icon: Scale },
+            { label: 'Integrations', description: 'Connect with your existing software stack.', to: '/integrations', icon: Link2 }
           ]
         }
       ]

@@ -119,7 +119,7 @@ export default function VendorManagedStock() {
       title="Vendor Managed Stock | VMS Inventory Management"
       heroTitle="Vendor Managed Stock"
       description="Learn about vendor managed stock (VMS) inventory management. Understand how vendor managed stock works, benefits, implementation, and when to use VMS arrangements."
-      updatedDate="06/01/2026"
+      dateUpdated="06/01/2026"
       faqData={faqData}
       
     >

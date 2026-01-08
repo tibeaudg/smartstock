@@ -56,7 +56,7 @@ export default function VoorraadbeheerHorecaPage() {
       heroTitle="Voorraadbeheer in de Horeca"
       heroDescription="Correct stocken in de horeca: minder verspilling, meer controle en hogere marges"
       heroSubtitle="Praktische stappen, meetbare KPI's en softwaretips voor elke horecazaak"
-      updatedDate="2026-01-07"
+      dateUpdated="2026-01-07"
     >
       <SEO
         title="Voorraadbeheer Horeca & Stocken | Praktische Gids voor Horeca-uitbaters"
