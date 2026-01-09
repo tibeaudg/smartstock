@@ -1,55 +1,20 @@
-import fs from 'fs';
-import path from 'path';
-import { XMLParser, XMLBuilder } from 'fast-xml-parser';
-import fetch from 'node-fetch';
-import readline from 'readline';
-import { globby } from 'globby';
 
-const MY_BASE_URL = 'https://www.stockflowsystems.com';
-const PAGES_DIR = path.join(process.cwd(), 'src/pages');
-const SEO_DIR = path.join(process.cwd(), 'src/pages/seo');
-const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
-const CURRENT_DATE_STR = "january 9, 2026";
-const XML_DATE = '2026-01-09';
-
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-
-
-
-/**
- * EXPANDED REACT PAGE GENERATOR TEMPLATE
- * Project: StockFlow Systems
- * Date: January 9, 2026
- * Structure: High-Density SEO / Industrial Technical Focus
- */
-
-const template = (slug, title) => {
-  const CURRENT_DATE_STR = "january 9, 2026";
-  
-  const keyTakeaways = [
-    `Enterprise-grade ${title} systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.`,
-    'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
-    'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-    'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
-  ];
-
-  return `
 import React from 'react';
 import SeoPageLayout from '@/components/SeoPageLayout';
 
 const keyTakeaways = [
-  '${keyTakeaways[0]}',
-  '${keyTakeaways[1]}',
-  '${keyTakeaways[2]}',
-  '${keyTakeaways[3]}',
+  'Enterprise-grade How Sortly Customers Use Barcodes And Qr Codes systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
+  'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
+  'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
+  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {
   return (
     <SeoPageLayout
-      heroTitle="Advancing Enterprise ${title}: A Technical Framework"
-      title="${title} Strategy & Automation Guide | StockFlow"
-      dateUpdated="${CURRENT_DATE_STR}"
+      heroTitle="Advancing Enterprise How Sortly Customers Use Barcodes And Qr Codes: A Technical Framework"
+      title="How Sortly Customers Use Barcodes And Qr Codes Strategy & Automation Guide | StockFlow"
+      dateUpdated="january 9, 2026"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">
@@ -57,11 +22,11 @@ const Page = () => {
         {/* Section 1: Strategic Context */}
         <section className="prose max-w-none">
           <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-6">
-            The Critical Role of ${title} in Modern Logistics
+            The Critical Role of How Sortly Customers Use Barcodes And Qr Codes in Modern Logistics
           </h2>
           <p className="text-xl text-gray-700 leading-relaxed mb-8">
-            In high-throughput environments, <strong>${title}</strong> is no longer a back-office utility but a core driver of operational 
-            efficiency. Inadequate ${title.toLowerCase()} systems lead to "dark inventory"—stock that exists physically but is 
+            In high-throughput environments, <strong>How Sortly Customers Use Barcodes And Qr Codes</strong> is no longer a back-office utility but a core driver of operational 
+            efficiency. Inadequate how sortly customers use barcodes and qr codes systems lead to "dark inventory"—stock that exists physically but is 
             invisible to the digital ledger. StockFlow Systems addresses this through high-fidelity data capture and 
             proprietary synchronization algorithms.
           </p>
@@ -77,7 +42,7 @@ const Page = () => {
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">The Solution: Real-Time Governance</h3>
               <p className="text-gray-600">
-                Transitioning to a digital-first ${title.toLowerCase()} model allows for proactive management. 
+                Transitioning to a digital-first how sortly customers use barcodes and qr codes model allows for proactive management. 
                 Rather than reacting to shortages, systems predict them based on velocity and lead times.
               </p>
             </div>
@@ -92,7 +57,7 @@ const Page = () => {
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase">Feature</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase">Legacy Methods</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase bg-blue-50/50">StockFlow ${title}</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase bg-blue-50/50">StockFlow How Sortly Customers Use Barcodes And Qr Codes</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
@@ -123,7 +88,7 @@ const Page = () => {
 
         {/* Section 3: Implementation Roadmap */}
         <section className="bg-slate-900 text-white p-12 rounded-3xl">
-          <h2 className="text-3xl font-bold mb-10">4-Step Framework for ${title} Modernization</h2>
+          <h2 className="text-3xl font-bold mb-10">4-Step Framework for How Sortly Customers Use Barcodes And Qr Codes Modernization</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="text-4xl font-black text-blue-400 opacity-50">01</div>
@@ -175,19 +140,19 @@ const Page = () => {
           <div className="max-w-3xl mx-auto space-y-6">
             {[
               { 
-                q: "Does StockFlow support offline ${title} updates?", 
+                q: "Does StockFlow support offline How Sortly Customers Use Barcodes And Qr Codes updates?", 
                 a: "Yes. Our mobile architecture supports offline caching. Once connectivity is restored, the system performs a conflict-resolution sync to ensure data parity." 
               },
               { 
-                q: "How does ${title} integration affect current ERP performance?", 
+                q: "How does How Sortly Customers Use Barcodes And Qr Codes integration affect current ERP performance?", 
                 a: "StockFlow operates on a microservices layer that interacts with your ERP via asynchronous APIs, ensuring zero impact on the primary system's performance." 
               },
               { 
-                q: "What security protocols govern the ${title.toLowerCase()} data?", 
+                q: "What security protocols govern the how sortly customers use barcodes and qr codes data?", 
                 a: "All data is encrypted in transit (TLS 1.3) and at rest (AES-256), with SOC2-compliant access controls and detailed user activity logs." 
               },
               { 
-                q: "Can the system manage serialized ${title}?", 
+                q: "Can the system manage serialized How Sortly Customers Use Barcodes And Qr Codes?", 
                 a: "StockFlow supports full serialization and lot-tracking, providing end-to-end traceability from manufacturer to end-user." 
               }
             ].map((faq, i) => (
@@ -208,7 +173,7 @@ const Page = () => {
         <section className="bg-blue-600 rounded-3xl p-12 text-center text-white">
           <h2 className="text-3xl font-bold mb-4 italic italic">Maximize Your Operational Yield</h2>
           <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
-            Advanced <strong>${title}</strong> is an investment in your company's future scalability. 
+            Advanced <strong>How Sortly Customers Use Barcodes And Qr Codes</strong> is an investment in your company's future scalability. 
             Reduce waste, empower your staff, and achieve the operational clarity required to dominate your sector.
           </p>
         </section>
@@ -219,116 +184,3 @@ const Page = () => {
 };
 
 export default Page;
-`;
-};
-
-
-
-
-// --- Phase 2: Full Sitemap Flattening ---
-async function syncSitemap() {
-  console.log('\n--- Phase 2: Flattening URLs and Syncing Sitemap ---');
-
-  // 1. Permanent core routes
-  const permanentUrls = [
-    `${MY_BASE_URL}`,
-    `${MY_BASE_URL}/inventory-management-software`,
-    `${MY_BASE_URL}/inventory-software`,
-    `${MY_BASE_URL}/mobile-inventory-management`,
-    `${MY_BASE_URL}/simple-stock-management`,
-    `${MY_BASE_URL}/stock-management-software`
-  ];
-
-  // 2. Discover all pages
-  const allFiles = await globby('**/*.{js,jsx,ts,tsx}', {
-    cwd: PAGES_DIR,
-    ignore: ['_app.tsx', '_document.tsx', 'api/**', '**/_*.tsx']
-  });
-
-  const uniqueUrls = new Set(permanentUrls);
-
-  allFiles.forEach(file => {
-    // This logic takes ONLY the filename and discards ALL folder prefixes (SEO/, industries/, etc.)
-    const filename = path.basename(file);
-    let slug = filename
-      .replace(/\.(js|jsx|ts|tsx)$/, '')
-      .replace(/^index$/, '');
-
-    // If it's the home page or empty, skip (already in permanentUrls)
-    if (slug && slug !== '') {
-      uniqueUrls.add(`${MY_BASE_URL}/${slug}`);
-    }
-  });
-
-  // 3. Construct clean XML
-  const urlEntries = Array.from(uniqueUrls).map(url => ({
-    loc: url,
-    lastmod: XML_DATE,
-    priority: url === MY_BASE_URL ? '1.0' : '0.8'
-  }));
-
-  const sitemapObj = {
-    "?xml": { "@_version": "1.0", "@_encoding": "UTF-8" },
-    urlset: {
-      "@_xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9",
-      url: urlEntries
-    }
-  };
-
-  const builder = new XMLBuilder({ format: true, ignoreAttributes: false, attributeNamePrefix: "@_" });
-  fs.writeFileSync(SITEMAP_PATH, builder.build(sitemapObj));
-  
-  console.log(`✅ Sitemap created with ${urlEntries.length} flattened URLs.`);
-}
-
-// --- Phase 1: Main Flow ---
-async function startAutomation() {
-  rl.question('Enter competitor sitemap URL: ', async (compUrl) => {
-    try {
-      console.log('--- Phase 1: Analyzing Gaps ---');
-      const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
-      
-      const res = await fetch(compUrl);
-      const xml = await res.text();
-      const parsed = parser.parse(xml);
-      let entries = Array.isArray(parsed.urlset?.url) ? parsed.urlset.url : [parsed.urlset?.url].filter(Boolean);
-
-      // Check current filenames to skip existing content
-      const existingFiles = await globby('**/*.tsx', { cwd: SEO_DIR });
-      const existingSlugs = new Set(existingFiles.map(f => path.basename(f).replace('.tsx', '').toLowerCase()));
-
-      const gaps = [];
-      entries.forEach(e => {
-        const slug = e.loc.split('/').filter(Boolean).pop()?.toLowerCase();
-        if (slug && !existingSlugs.has(slug)) {
-          const title = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-          gaps.push({ slug, title });
-        }
-      });
-
-      console.log(`\nFound ${gaps.length} missing pages.`);
-      gaps.slice(1, 139).forEach((g, i) => console.log(`${i + 1}. ${g.slug}`));
-
-      rl.question('\nEnter number(s) or "all": ', async (input) => {
-        let toGenerate = input.toLowerCase() === 'all' ? gaps : input.split(',').map(i => gaps[parseInt(i.trim()) - 1]).filter(Boolean);
-
-        if (!fs.existsSync(SEO_DIR)) fs.mkdirSync(SEO_DIR, { recursive: true });
-
-        toGenerate.forEach(g => {
-          const filePath = path.join(SEO_DIR, `${g.slug}.tsx`);
-          fs.writeFileSync(filePath, template(g.slug, g.title));
-          console.log(`✅ Generated: ${g.slug}.tsx`);
-        });
-
-        await syncSitemap();
-        console.log('\n--- Automation Complete ---');
-        rl.close();
-      });
-    } catch (err) {
-      console.error('Error:', err.message);
-      rl.close();
-    }
-  });
-}
-
-startAutomation();
