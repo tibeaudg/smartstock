@@ -4,17 +4,8 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { StructuredData } from '@/components/StructuredData';
 import { 
-  Package, 
-  BarChart3, 
-  Zap, 
-  Shield, 
-  Clock,
   CheckCircle,
-  ArrowRight,
-  Star,
-  AlertTriangle,
-  TrendingDown,
-  X
+
 } from 'lucide-react';
 
 export default function AvoidInventoryMistakes() {
@@ -23,18 +14,6 @@ export default function AvoidInventoryMistakes() {
 
 
   const structuredData = [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqData.map(faq => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer
-        }
-      }))
-    },
     {
       "@context": "https://schema.org",
       "@type": "Article",

@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState, memo, useCallback, useMemo } from '
 import { useLocation, Link } from 'react-router-dom';
 import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left';
 import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
-import BookOpen from 'lucide-react/dist/esm/icons/book-open';
 import { Helmet } from 'react-helmet-async';
 
 import HeaderPublic from '@/components/HeaderPublic';
 import { SEOPageHero } from './SeoPageHero';
 import FooterLanding from './Footer';
 import TableOfContents from './TableOfContents';
-import { Check } from 'lucide-react';
+import { BookOpen, Check } from 'lucide-react';
 
 interface TOCItem {
   id: string;
