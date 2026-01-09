@@ -1,0 +1,1199 @@
+{
+  "summary": {
+    "totalGaps": 236
+  },
+  "categories": {
+    "COMPARE": [
+      {
+        "slug": "markup-vs-margin",
+        "competitorUrl": "https://www.sortly.com/blog/markup-vs-margin/",
+        "filename": "markup-vs-margin.tsx"
+      },
+      {
+        "slug": "rfid-vs-barcode-for-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/rfid-vs-barcode-for-inventory-management/",
+        "filename": "rfid-vs-barcode-for-inventory-management.tsx"
+      },
+      {
+        "slug": "dealer-vs-distributor",
+        "competitorUrl": "https://www.sortly.com/blog/dealer-vs-distributor/",
+        "filename": "dealer-vs-distributor.tsx"
+      },
+      {
+        "slug": "inventory-vs-supplies",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-vs-supplies/",
+        "filename": "inventory-vs-supplies.tsx"
+      },
+      {
+        "slug": "assets-vs-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/assets-vs-inventory/",
+        "filename": "assets-vs-inventory.tsx"
+      },
+      {
+        "slug": "manual-vs-automated-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/manual-vs-automated-inventory-management/",
+        "filename": "manual-vs-automated-inventory-management.tsx"
+      }
+    ],
+    "GUIDE": [
+      {
+        "slug": "6-best-moving-tips-period",
+        "competitorUrl": "https://www.sortly.com/blog/6-best-moving-tips-period/",
+        "filename": "6-best-moving-tips-period.tsx"
+      },
+      {
+        "slug": "12-money-making-garage-sale-tips",
+        "competitorUrl": "https://www.sortly.com/blog/12-money-making-garage-sale-tips/",
+        "filename": "12-money-making-garage-sale-tips.tsx"
+      },
+      {
+        "slug": "how-to-improve-inventory-control",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-improve-inventory-control/",
+        "filename": "how-to-improve-inventory-control.tsx"
+      },
+      {
+        "slug": "how-to-calculate-wholesale-price-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-calculate-wholesale-price-sortly/",
+        "filename": "how-to-calculate-wholesale-price-sortly.tsx"
+      },
+      {
+        "slug": "how-to-record-asset-depreciation",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-record-asset-depreciation/",
+        "filename": "how-to-record-asset-depreciation.tsx"
+      },
+      {
+        "slug": "small-business-hiring-tips",
+        "competitorUrl": "https://www.sortly.com/blog/small-business-hiring-tips/",
+        "filename": "small-business-hiring-tips.tsx"
+      },
+      {
+        "slug": "how-to-buy-in-bulk-for-business",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-buy-in-bulk-for-business/",
+        "filename": "how-to-buy-in-bulk-for-business.tsx"
+      },
+      {
+        "slug": "the-art-to-organization-tips-from-painter-nadine-robbins",
+        "competitorUrl": "https://www.sortly.com/blog/the-art-to-organization-tips-from-painter-nadine-robbins/",
+        "filename": "the-art-to-organization-tips-from-painter-nadine-robbins.tsx"
+      },
+      {
+        "slug": "organize-grow-direct-sales-business-tips",
+        "competitorUrl": "https://www.sortly.com/blog/organize-grow-direct-sales-business-tips/",
+        "filename": "organize-grow-direct-sales-business-tips.tsx"
+      },
+      {
+        "slug": "how-to-start-a-home-staging-business",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-start-a-home-staging-business/",
+        "filename": "how-to-start-a-home-staging-business.tsx"
+      },
+      {
+        "slug": "how-to-reduce-manufacturing-waste",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-reduce-manufacturing-waste/",
+        "filename": "how-to-reduce-manufacturing-waste.tsx"
+      },
+      {
+        "slug": "work-in-process-inventory-guide",
+        "competitorUrl": "https://www.sortly.com/blog/work-in-process-inventory-guide/",
+        "filename": "work-in-process-inventory-guide.tsx"
+      },
+      {
+        "slug": "a-guide-to-rfps-request-for-proposal-in-construction",
+        "competitorUrl": "https://www.sortly.com/blog/a-guide-to-rfps-request-for-proposal-in-construction/",
+        "filename": "a-guide-to-rfps-request-for-proposal-in-construction.tsx"
+      },
+      {
+        "slug": "how-to-use-qr-codes-for-healthcare-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-use-qr-codes-for-healthcare-inventory/",
+        "filename": "how-to-use-qr-codes-for-healthcare-inventory.tsx"
+      },
+      {
+        "slug": "how-to-eliminate-blurry-barcodes",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-eliminate-blurry-barcodes/",
+        "filename": "how-to-eliminate-blurry-barcodes.tsx"
+      },
+      {
+        "slug": "a-guide-to-rfis-request-for-information-in-construction",
+        "competitorUrl": "https://www.sortly.com/blog/a-guide-to-rfis-request-for-information-in-construction/",
+        "filename": "a-guide-to-rfis-request-for-information-in-construction.tsx"
+      },
+      {
+        "slug": "a-guide-to-tracking-expiration-dates-with-template",
+        "competitorUrl": "https://www.sortly.com/blog/a-guide-to-tracking-expiration-dates-with-template/",
+        "filename": "a-guide-to-tracking-expiration-dates-with-template.tsx"
+      },
+      {
+        "slug": "how-to-prepare-for-a-busy-season-with-efficient-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-prepare-for-a-busy-season-with-efficient-inventory-management/",
+        "filename": "how-to-prepare-for-a-busy-season-with-efficient-inventory-management.tsx"
+      },
+      {
+        "slug": "how-to-create-an-electrical-inventory-list",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-create-an-electrical-inventory-list/",
+        "filename": "how-to-create-an-electrical-inventory-list.tsx"
+      },
+      {
+        "slug": "how-to-invoice-your-electrical-customers-free-template",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-invoice-your-electrical-customers-free-template/",
+        "filename": "how-to-invoice-your-electrical-customers-free-template.tsx"
+      },
+      {
+        "slug": "6-inventory-management-tips-when-times-are-tight",
+        "competitorUrl": "https://www.sortly.com/blog/6-inventory-management-tips-when-times-are-tight/",
+        "filename": "6-inventory-management-tips-when-times-are-tight.tsx"
+      },
+      {
+        "slug": "expert-tips-for-organizing-holiday-decorations",
+        "competitorUrl": "https://www.sortly.com/blog/expert-tips-for-organizing-holiday-decorations/",
+        "filename": "expert-tips-for-organizing-holiday-decorations.tsx"
+      },
+      {
+        "slug": "how-to-calculate-cost-price",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-calculate-cost-price/",
+        "filename": "how-to-calculate-cost-price.tsx"
+      },
+      {
+        "slug": "how-to-create-a-purchase-order",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-create-a-purchase-order/",
+        "filename": "how-to-create-a-purchase-order.tsx"
+      },
+      {
+        "slug": "how-to-finance-upfront-inventory-costs-without-killing-your-cash-flow",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-finance-upfront-inventory-costs-without-killing-your-cash-flow/",
+        "filename": "how-to-finance-upfront-inventory-costs-without-killing-your-cash-flow.tsx"
+      },
+      {
+        "slug": "how-to-find-suppliers-you-trust",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-find-suppliers-you-trust/",
+        "filename": "how-to-find-suppliers-you-trust.tsx"
+      },
+      {
+        "slug": "how-to-get-more-wholesale-customers",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-get-more-wholesale-customers/",
+        "filename": "how-to-get-more-wholesale-customers.tsx"
+      },
+      {
+        "slug": "how-to-hire-an-inventory-manager",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-hire-an-inventory-manager/",
+        "filename": "how-to-hire-an-inventory-manager.tsx"
+      },
+      {
+        "slug": "how-to-manage-a-fleet",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-manage-a-fleet/",
+        "filename": "how-to-manage-a-fleet.tsx"
+      },
+      {
+        "slug": "how-to-order-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-order-inventory/",
+        "filename": "how-to-order-inventory.tsx"
+      },
+      {
+        "slug": "how-to-store-medical-supplies",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-store-medical-supplies/",
+        "filename": "how-to-store-medical-supplies.tsx"
+      },
+      {
+        "slug": "how-to-track-raw-materials",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-track-raw-materials/",
+        "filename": "how-to-track-raw-materials.tsx"
+      },
+      {
+        "slug": "invoice-payment-terms-guide",
+        "competitorUrl": "https://www.sortly.com/blog/invoice-payment-terms-guide/",
+        "filename": "invoice-payment-terms-guide.tsx"
+      },
+      {
+        "slug": "sortlys-guide-to-easy-ppe-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/sortlys-guide-to-easy-ppe-inventory-management/",
+        "filename": "sortlys-guide-to-easy-ppe-inventory-management.tsx"
+      },
+      {
+        "slug": "sku-management-guide",
+        "competitorUrl": "https://www.sortly.com/blog/sku-management-guide/",
+        "filename": "sku-management-guide.tsx"
+      },
+      {
+        "slug": "a-guide-to-managing-perishable-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/a-guide-to-managing-perishable-inventory/",
+        "filename": "a-guide-to-managing-perishable-inventory.tsx"
+      },
+      {
+        "slug": "asset-tagging-guide",
+        "competitorUrl": "https://www.sortly.com/blog/asset-tagging-guide/",
+        "filename": "asset-tagging-guide.tsx"
+      },
+      {
+        "slug": "how-to-keep-track-of-consumables",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-keep-track-of-consumables/",
+        "filename": "how-to-keep-track-of-consumables.tsx"
+      },
+      {
+        "slug": "how-to-use-barcodes-for-tool-tracking",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-use-barcodes-for-tool-tracking/",
+        "filename": "how-to-use-barcodes-for-tool-tracking.tsx"
+      },
+      {
+        "slug": "how-to-make-barcodes-for-small-business",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-make-barcodes-for-small-business/",
+        "filename": "how-to-make-barcodes-for-small-business.tsx"
+      },
+      {
+        "slug": "how-to-take-inventory-for-small-businesses",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-take-inventory-for-small-businesses/",
+        "filename": "how-to-take-inventory-for-small-businesses.tsx"
+      },
+      {
+        "slug": "how-to-grow-hvac-business",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-grow-hvac-business/",
+        "filename": "how-to-grow-hvac-business.tsx"
+      },
+      {
+        "slug": "restaurant-equipment-maintenance-guide",
+        "competitorUrl": "https://www.sortly.com/blog/restaurant-equipment-maintenance-guide/",
+        "filename": "restaurant-equipment-maintenance-guide.tsx"
+      },
+      {
+        "slug": "how-to-organize-a-stockroom",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-organize-a-stockroom/",
+        "filename": "how-to-organize-a-stockroom.tsx"
+      },
+      {
+        "slug": "how-to-perform-an-asset-audit",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-perform-an-asset-audit/",
+        "filename": "how-to-perform-an-asset-audit.tsx"
+      },
+      {
+        "slug": "guide-to-construction-asset-management-and-best-practices",
+        "competitorUrl": "https://www.sortly.com/blog/guide-to-construction-asset-management-and-best-practices/",
+        "filename": "guide-to-construction-asset-management-and-best-practices.tsx"
+      },
+      {
+        "slug": "how-to-manage-construction-materials",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-manage-construction-materials/",
+        "filename": "how-to-manage-construction-materials.tsx"
+      },
+      {
+        "slug": "how-to-choose-asset-tracking-software",
+        "competitorUrl": "https://www.sortly.com/blog/how-to-choose-asset-tracking-software/",
+        "filename": "how-to-choose-asset-tracking-software.tsx"
+      }
+    ],
+    "LISTICLE": [
+      {
+        "slug": "best-event-planning-apps",
+        "competitorUrl": "https://www.sortly.com/blog/best-event-planning-apps/",
+        "filename": "best-event-planning-apps.tsx"
+      },
+      {
+        "slug": "what-is-the-best-software-for-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-the-best-software-for-inventory-management/",
+        "filename": "what-is-the-best-software-for-inventory-management.tsx"
+      },
+      {
+        "slug": "hospital-supply-chain-management-best-practices",
+        "competitorUrl": "https://www.sortly.com/blog/hospital-supply-chain-management-best-practices/",
+        "filename": "hospital-supply-chain-management-best-practices.tsx"
+      },
+      {
+        "slug": "pharmacy-inventory-management-best-practices",
+        "competitorUrl": "https://www.sortly.com/blog/pharmacy-inventory-management-best-practices/",
+        "filename": "pharmacy-inventory-management-best-practices.tsx"
+      },
+      {
+        "slug": "top-5-challenges-in-interior-design-today",
+        "competitorUrl": "https://www.sortly.com/blog/top-5-challenges-in-interior-design-today/",
+        "filename": "top-5-challenges-in-interior-design-today.tsx"
+      },
+      {
+        "slug": "healthcare-clinics-stopped-over-ordering-wrong-supplies",
+        "competitorUrl": "https://www.sortly.com/blog/healthcare-clinics-stopped-over-ordering-wrong-supplies/",
+        "filename": "healthcare-clinics-stopped-over-ordering-wrong-supplies.tsx"
+      },
+      {
+        "slug": "top-construction-challenges",
+        "competitorUrl": "https://www.sortly.com/blog/top-construction-challenges/",
+        "filename": "top-construction-challenges.tsx"
+      },
+      {
+        "slug": "what-software-is-best-for-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/what-software-is-best-for-inventory/",
+        "filename": "what-software-is-best-for-inventory.tsx"
+      },
+      {
+        "slug": "best-barcode-generator",
+        "competitorUrl": "https://www.sortly.com/blog/best-barcode-generator/",
+        "filename": "best-barcode-generator.tsx"
+      },
+      {
+        "slug": "what-is-the-best-way-to-keep-track-of-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-the-best-way-to-keep-track-of-inventory/",
+        "filename": "what-is-the-best-way-to-keep-track-of-inventory.tsx"
+      },
+      {
+        "slug": "top-5-software-asset-management-tools",
+        "competitorUrl": "https://www.sortly.com/blog/top-5-software-asset-management-tools/",
+        "filename": "top-5-software-asset-management-tools.tsx"
+      },
+      {
+        "slug": "what-is-the-best-way-to-count-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-the-best-way-to-count-inventory/",
+        "filename": "what-is-the-best-way-to-count-inventory.tsx"
+      },
+      {
+        "slug": "inventory-management-best-practices-in-construction",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-management-best-practices-in-construction/",
+        "filename": "inventory-management-best-practices-in-construction.tsx"
+      },
+      {
+        "slug": "best-warehouse-management-software",
+        "competitorUrl": "https://www.sortly.com/blog/best-warehouse-management-software/",
+        "filename": "best-warehouse-management-software.tsx"
+      }
+    ],
+    "INDUSTRY": [
+      {
+        "slug": "construction-risk-management",
+        "competitorUrl": "https://www.sortly.com/blog/construction-risk-management/",
+        "filename": "construction-risk-management.tsx"
+      },
+      {
+        "slug": "state-of-construction-industry-report",
+        "competitorUrl": "https://www.sortly.com/blog/state-of-construction-industry-report/",
+        "filename": "state-of-construction-industry-report.tsx"
+      },
+      {
+        "slug": "restaurant-supply-list",
+        "competitorUrl": "https://www.sortly.com/blog/restaurant-supply-list/",
+        "filename": "restaurant-supply-list.tsx"
+      },
+      {
+        "slug": "operational-efficiency-in-manufacturing",
+        "competitorUrl": "https://www.sortly.com/blog/operational-efficiency-in-manufacturing/",
+        "filename": "operational-efficiency-in-manufacturing.tsx"
+      },
+      {
+        "slug": "10-easy-ways-to-make-your-medical-practice-more-efficient-today",
+        "competitorUrl": "https://www.sortly.com/blog/10-easy-ways-to-make-your-medical-practice-more-efficient-today/",
+        "filename": "10-easy-ways-to-make-your-medical-practice-more-efficient-today.tsx"
+      },
+      {
+        "slug": "2025-state-of-construction-industry-report",
+        "competitorUrl": "https://www.sortly.com/blog/2025-state-of-construction-industry-report/",
+        "filename": "2025-state-of-construction-industry-report.tsx"
+      },
+      {
+        "slug": "guaranteed-maximum-price-in-construction",
+        "competitorUrl": "https://www.sortly.com/blog/guaranteed-maximum-price-in-construction/",
+        "filename": "guaranteed-maximum-price-in-construction.tsx"
+      },
+      {
+        "slug": "sortlys-construction-customers-standing-strong-amidst-economic-shifts",
+        "competitorUrl": "https://www.sortly.com/blog/sortlys-construction-customers-standing-strong-amidst-economic-shifts/",
+        "filename": "sortlys-construction-customers-standing-strong-amidst-economic-shifts.tsx"
+      },
+      {
+        "slug": "what-is-a-cost-plus-contract-in-construction",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-a-cost-plus-contract-in-construction/",
+        "filename": "what-is-a-cost-plus-contract-in-construction.tsx"
+      },
+      {
+        "slug": "6-inventory-tracking-methods-for-construction-professionals",
+        "competitorUrl": "https://www.sortly.com/blog/6-inventory-tracking-methods-for-construction-professionals/",
+        "filename": "6-inventory-tracking-methods-for-construction-professionals.tsx"
+      },
+      {
+        "slug": "construction-industry-digital-transformation",
+        "competitorUrl": "https://www.sortly.com/blog/construction-industry-digital-transformation/",
+        "filename": "construction-industry-digital-transformation.tsx"
+      },
+      {
+        "slug": "construction-invoice-processing",
+        "competitorUrl": "https://www.sortly.com/blog/construction-invoice-processing/",
+        "filename": "construction-invoice-processing.tsx"
+      },
+      {
+        "slug": "cycle-counting-in-the-construction-industry",
+        "competitorUrl": "https://www.sortly.com/blog/cycle-counting-in-the-construction-industry/",
+        "filename": "cycle-counting-in-the-construction-industry.tsx"
+      },
+      {
+        "slug": "types-of-construction-bidding",
+        "competitorUrl": "https://www.sortly.com/blog/types-of-construction-bidding/",
+        "filename": "types-of-construction-bidding.tsx"
+      },
+      {
+        "slug": "how-hvac-professionals-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/how-hvac-professionals-use-sortly/",
+        "filename": "how-hvac-professionals-use-sortly.tsx"
+      },
+      {
+        "slug": "medical-supply-inventory-list-template",
+        "competitorUrl": "https://www.sortly.com/blog/medical-supply-inventory-list-template/",
+        "filename": "medical-supply-inventory-list-template.tsx"
+      },
+      {
+        "slug": "apps-for-contractors-construction",
+        "competitorUrl": "https://www.sortly.com/blog/apps-for-contractors-construction/",
+        "filename": "apps-for-contractors-construction.tsx"
+      },
+      {
+        "slug": "download-is-your-construction-inventory-costing-you-projects",
+        "competitorUrl": "https://www.sortly.com/blog/download-is-your-construction-inventory-costing-you-projects/",
+        "filename": "download-is-your-construction-inventory-costing-you-projects.tsx"
+      },
+      {
+        "slug": "why-you-need-medical-inventory-management-software",
+        "competitorUrl": "https://www.sortly.com/blog/why-you-need-medical-inventory-management-software/",
+        "filename": "why-you-need-medical-inventory-management-software.tsx"
+      },
+      {
+        "slug": "seven-signs-construction-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/seven-signs-construction-inventory-management/",
+        "filename": "seven-signs-construction-inventory-management.tsx"
+      },
+      {
+        "slug": "how-construction-companies-and-contractors-use-sortlys-construction-inventory-management-system",
+        "competitorUrl": "https://www.sortly.com/blog/how-construction-companies-and-contractors-use-sortlys-construction-inventory-management-system/",
+        "filename": "how-construction-companies-and-contractors-use-sortlys-construction-inventory-management-system.tsx"
+      },
+      {
+        "slug": "the-role-of-qr-codes-in-construction",
+        "competitorUrl": "https://www.sortly.com/blog/the-role-of-qr-codes-in-construction/",
+        "filename": "the-role-of-qr-codes-in-construction.tsx"
+      },
+      {
+        "slug": "using-barcodes-in-manufacturing",
+        "competitorUrl": "https://www.sortly.com/blog/using-barcodes-in-manufacturing/",
+        "filename": "using-barcodes-in-manufacturing.tsx"
+      },
+      {
+        "slug": "excel-manufacturing-inventory-template",
+        "competitorUrl": "https://www.sortly.com/blog/excel-manufacturing-inventory-template/",
+        "filename": "excel-manufacturing-inventory-template.tsx"
+      },
+      {
+        "slug": "ways-medical-practices-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/ways-medical-practices-use-sortly/",
+        "filename": "ways-medical-practices-use-sortly.tsx"
+      },
+      {
+        "slug": "hvac-supply-list",
+        "competitorUrl": "https://www.sortly.com/blog/hvac-supply-list/",
+        "filename": "hvac-supply-list.tsx"
+      }
+    ],
+    "PRODUCT": [
+      {
+        "slug": "10-business-success-apps",
+        "competitorUrl": "https://www.sortly.com/blog/10-business-success-apps/",
+        "filename": "10-business-success-apps.tsx"
+      },
+      {
+        "slug": "inventory-financing-6-things-to-know-before-you-apply",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-financing-6-things-to-know-before-you-apply/",
+        "filename": "inventory-financing-6-things-to-know-before-you-apply.tsx"
+      },
+      {
+        "slug": "2023-sortly-wrapped",
+        "competitorUrl": "https://www.sortly.com/blog/2023-sortly-wrapped/",
+        "filename": "2023-sortly-wrapped.tsx"
+      },
+      {
+        "slug": "can-i-create-a-barcode-system-in-excel",
+        "competitorUrl": "https://www.sortly.com/blog/can-i-create-a-barcode-system-in-excel/",
+        "filename": "can-i-create-a-barcode-system-in-excel.tsx"
+      },
+      {
+        "slug": "home-staging-inventory-management-software",
+        "competitorUrl": "https://www.sortly.com/blog/home-staging-inventory-management-software/",
+        "filename": "home-staging-inventory-management-software.tsx"
+      },
+      {
+        "slug": "auto-parts-inventory-management-system-drives-down-costs",
+        "competitorUrl": "https://www.sortly.com/blog/auto-parts-inventory-management-system-drives-down-costs/",
+        "filename": "auto-parts-inventory-management-system-drives-down-costs.tsx"
+      },
+      {
+        "slug": "could-a-landscaping-inventory-management-system-keep-your-biz-pristine",
+        "competitorUrl": "https://www.sortly.com/blog/could-a-landscaping-inventory-management-system-keep-your-biz-pristine/",
+        "filename": "could-a-landscaping-inventory-management-system-keep-your-biz-pristine.tsx"
+      },
+      {
+        "slug": "environmental-inventory-management-software",
+        "competitorUrl": "https://www.sortly.com/blog/environmental-inventory-management-software/",
+        "filename": "environmental-inventory-management-software.tsx"
+      },
+      {
+        "slug": "how-businesses-track-ppe-using-sortlys-inventory-app",
+        "competitorUrl": "https://www.sortly.com/blog/how-businesses-track-ppe-using-sortlys-inventory-app/",
+        "filename": "how-businesses-track-ppe-using-sortlys-inventory-app.tsx"
+      },
+      {
+        "slug": "is-there-an-app-to-keep-track-of-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/is-there-an-app-to-keep-track-of-inventory/",
+        "filename": "is-there-an-app-to-keep-track-of-inventory.tsx"
+      },
+      {
+        "slug": "simple-inventory-software-growth",
+        "competitorUrl": "https://www.sortly.com/blog/simple-inventory-software-growth/",
+        "filename": "simple-inventory-software-growth.tsx"
+      },
+      {
+        "slug": "what-does-inventory-management-software-do",
+        "competitorUrl": "https://www.sortly.com/blog/what-does-inventory-management-software-do/",
+        "filename": "what-does-inventory-management-software-do.tsx"
+      },
+      {
+        "slug": "what-is-computerized-inventory-system",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-computerized-inventory-system/",
+        "filename": "what-is-computerized-inventory-system.tsx"
+      },
+      {
+        "slug": "what-is-an-automated-inventory-system",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-an-automated-inventory-system/",
+        "filename": "what-is-an-automated-inventory-system.tsx"
+      },
+      {
+        "slug": "what-changes-inventory-management-software",
+        "competitorUrl": "https://www.sortly.com/blog/what-changes-inventory-management-software/",
+        "filename": "what-changes-inventory-management-software.tsx"
+      },
+      {
+        "slug": "what-is-a-barcode-inventory-system",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-a-barcode-inventory-system/",
+        "filename": "what-is-a-barcode-inventory-system.tsx"
+      },
+      {
+        "slug": "asset-management-systems",
+        "competitorUrl": "https://www.sortly.com/blog/asset-management-systems/",
+        "filename": "asset-management-systems.tsx"
+      },
+      {
+        "slug": "tool-crib-set-up",
+        "competitorUrl": "https://www.sortly.com/blog/tool-crib-set-up/",
+        "filename": "tool-crib-set-up.tsx"
+      },
+      {
+        "slug": "warehouse-management-system-cost",
+        "competitorUrl": "https://www.sortly.com/blog/warehouse-management-system-cost/",
+        "filename": "warehouse-management-system-cost.tsx"
+      }
+    ],
+    "UNCATEGORIZED": [
+      {
+        "slug": "selling-your-collectibles-for-profit",
+        "competitorUrl": "https://www.sortly.com/blog/selling-your-collectibles-for-profit/",
+        "filename": "selling-your-collectibles-for-profit.tsx"
+      },
+      {
+        "slug": "employee-spotlight-monica-mccleary",
+        "competitorUrl": "https://www.sortly.com/blog/employee-spotlight-monica-mccleary/",
+        "filename": "employee-spotlight-monica-mccleary.tsx"
+      },
+      {
+        "slug": "employee-spotlight-ben-flynn",
+        "competitorUrl": "https://www.sortly.com/blog/employee-spotlight-ben-flynn/",
+        "filename": "employee-spotlight-ben-flynn.tsx"
+      },
+      {
+        "slug": "employee-spotlight-fernando-mondragon",
+        "competitorUrl": "https://www.sortly.com/blog/employee-spotlight-fernando-mondragon/",
+        "filename": "employee-spotlight-fernando-mondragon.tsx"
+      },
+      {
+        "slug": "employee-spotlight-patrick-grimes",
+        "competitorUrl": "https://www.sortly.com/blog/employee-spotlight-patrick-grimes/",
+        "filename": "employee-spotlight-patrick-grimes.tsx"
+      },
+      {
+        "slug": "shamrock-moving-storage",
+        "competitorUrl": "https://www.sortly.com/blog/shamrock-moving-storage/",
+        "filename": "shamrock-moving-storage.tsx"
+      },
+      {
+        "slug": "registering-a-business",
+        "competitorUrl": "https://www.sortly.com/blog/registering-a-business/",
+        "filename": "registering-a-business.tsx"
+      },
+      {
+        "slug": "keeping-track-of-business-expenses",
+        "competitorUrl": "https://www.sortly.com/blog/keeping-track-of-business-expenses/",
+        "filename": "keeping-track-of-business-expenses.tsx"
+      },
+      {
+        "slug": "this-industrial-sales-service-provider-got-modernized-and-organized-with-sortly-pro",
+        "competitorUrl": "https://www.sortly.com/blog/this-industrial-sales-service-provider-got-modernized-and-organized-with-sortly-pro/",
+        "filename": "this-industrial-sales-service-provider-got-modernized-and-organized-with-sortly-pro.tsx"
+      },
+      {
+        "slug": "covid-19-response",
+        "competitorUrl": "https://www.sortly.com/blog/covid-19-response/",
+        "filename": "covid-19-response.tsx"
+      },
+      {
+        "slug": "sortlys-first-hackathon",
+        "competitorUrl": "https://www.sortly.com/blog/sortlys-first-hackathon/",
+        "filename": "sortlys-first-hackathon.tsx"
+      },
+      {
+        "slug": "sortlyfest-2023",
+        "competitorUrl": "https://www.sortly.com/blog/sortlyfest-2023/",
+        "filename": "sortlyfest-2023.tsx"
+      },
+      {
+        "slug": "sortly-capterra-shortlist-reviews",
+        "competitorUrl": "https://www.sortly.com/blog/sortly-capterra-shortlist-reviews/",
+        "filename": "sortly-capterra-shortlist-reviews.tsx"
+      },
+      {
+        "slug": "bilo-heating-plumbing",
+        "competitorUrl": "https://www.sortly.com/blog/bilo-heating-plumbing/",
+        "filename": "bilo-heating-plumbing.tsx"
+      },
+      {
+        "slug": "types-of-equipment-maintenance",
+        "competitorUrl": "https://www.sortly.com/blog/types-of-equipment-maintenance/",
+        "filename": "types-of-equipment-maintenance.tsx"
+      },
+      {
+        "slug": "plumbing-inventory-list",
+        "competitorUrl": "https://www.sortly.com/blog/plumbing-inventory-list/",
+        "filename": "plumbing-inventory-list.tsx"
+      },
+      {
+        "slug": "calculating-raw-materials-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/calculating-raw-materials-inventory/",
+        "filename": "calculating-raw-materials-inventory.tsx"
+      },
+      {
+        "slug": "surplus-inventory-liquidation",
+        "competitorUrl": "https://www.sortly.com/blog/surplus-inventory-liquidation/",
+        "filename": "surplus-inventory-liquidation.tsx"
+      },
+      {
+        "slug": "regulatory-compliance-in-healthcare",
+        "competitorUrl": "https://www.sortly.com/blog/regulatory-compliance-in-healthcare/",
+        "filename": "regulatory-compliance-in-healthcare.tsx"
+      },
+      {
+        "slug": "warehouse-material-handling",
+        "competitorUrl": "https://www.sortly.com/blog/warehouse-material-handling/",
+        "filename": "warehouse-material-handling.tsx"
+      },
+      {
+        "slug": "how-sortly-customers-use-barcodes-and-qr-codes",
+        "competitorUrl": "https://www.sortly.com/blog/how-sortly-customers-use-barcodes-and-qr-codes/",
+        "filename": "how-sortly-customers-use-barcodes-and-qr-codes.tsx"
+      },
+      {
+        "slug": "new-feature-alert-purchase-orders",
+        "competitorUrl": "https://www.sortly.com/blog/new-feature-alert-purchase-orders/",
+        "filename": "new-feature-alert-purchase-orders.tsx"
+      },
+      {
+        "slug": "markiewicz-dental",
+        "competitorUrl": "https://www.sortly.com/blog/markiewicz-dental/",
+        "filename": "markiewicz-dental.tsx"
+      },
+      {
+        "slug": "bar-inventory-template",
+        "competitorUrl": "https://www.sortly.com/blog/bar-inventory-template/",
+        "filename": "bar-inventory-template.tsx"
+      },
+      {
+        "slug": "qr-code-security-risks-and-solutions",
+        "competitorUrl": "https://www.sortly.com/blog/qr-code-security-risks-and-solutions/",
+        "filename": "qr-code-security-risks-and-solutions.tsx"
+      },
+      {
+        "slug": "new-feature-alert-pick-lists",
+        "competitorUrl": "https://www.sortly.com/blog/new-feature-alert-pick-lists/",
+        "filename": "new-feature-alert-pick-lists.tsx"
+      },
+      {
+        "slug": "sop-for-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/sop-for-inventory/",
+        "filename": "sop-for-inventory.tsx"
+      },
+      {
+        "slug": "state-of-interior-design-and-home-staging-report",
+        "competitorUrl": "https://www.sortly.com/blog/state-of-interior-design-and-home-staging-report/",
+        "filename": "state-of-interior-design-and-home-staging-report.tsx"
+      },
+      {
+        "slug": "4-ways-interior-designers-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/4-ways-interior-designers-use-sortly/",
+        "filename": "4-ways-interior-designers-use-sortly.tsx"
+      },
+      {
+        "slug": "6-ways-sortly-can-save-your-business-time",
+        "competitorUrl": "https://www.sortly.com/blog/6-ways-sortly-can-save-your-business-time/",
+        "filename": "6-ways-sortly-can-save-your-business-time.tsx"
+      },
+      {
+        "slug": "sortly-capterra-shortlist-reviews-2025",
+        "competitorUrl": "https://www.sortly.com/blog/sortly-capterra-shortlist-reviews-2025/",
+        "filename": "sortly-capterra-shortlist-reviews-2025.tsx"
+      },
+      {
+        "slug": "what-is-lifo-last-in-first-out-inventory-method-101",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-lifo-last-in-first-out-inventory-method-101/",
+        "filename": "what-is-lifo-last-in-first-out-inventory-method-101.tsx"
+      },
+      {
+        "slug": "what-is-aov",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-aov/",
+        "filename": "what-is-aov.tsx"
+      },
+      {
+        "slug": "creative-inventory-hacks-for-small-businesses",
+        "competitorUrl": "https://www.sortly.com/blog/creative-inventory-hacks-for-small-businesses/",
+        "filename": "creative-inventory-hacks-for-small-businesses.tsx"
+      },
+      {
+        "slug": "inventory-survey-data-how-sortly-saves-businesses-time-money",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-survey-data-how-sortly-saves-businesses-time-money/",
+        "filename": "inventory-survey-data-how-sortly-saves-businesses-time-money.tsx"
+      },
+      {
+        "slug": "why-inventory-tracking-needs-to-speak-your-language",
+        "competitorUrl": "https://www.sortly.com/blog/why-inventory-tracking-needs-to-speak-your-language/",
+        "filename": "why-inventory-tracking-needs-to-speak-your-language.tsx"
+      },
+      {
+        "slug": "4-small-resources-to-simplify-small-business",
+        "competitorUrl": "https://www.sortly.com/blog/4-small-resources-to-simplify-small-business/",
+        "filename": "4-small-resources-to-simplify-small-business.tsx"
+      },
+      {
+        "slug": "6-ways-sortly-can-save-your-business-money",
+        "competitorUrl": "https://www.sortly.com/blog/6-ways-sortly-can-save-your-business-money/",
+        "filename": "6-ways-sortly-can-save-your-business-money.tsx"
+      },
+      {
+        "slug": "small-business-inventory-sheet",
+        "competitorUrl": "https://www.sortly.com/blog/small-business-inventory-sheet/",
+        "filename": "small-business-inventory-sheet.tsx"
+      },
+      {
+        "slug": "10-queer-eye-quotes-thatll-inspire-you-at-work",
+        "competitorUrl": "https://www.sortly.com/blog/10-queer-eye-quotes-thatll-inspire-you-at-work/",
+        "filename": "10-queer-eye-quotes-thatll-inspire-you-at-work.tsx"
+      },
+      {
+        "slug": "4-ways-it-professionals-use-sortly-for-it-asset-tracking",
+        "competitorUrl": "https://www.sortly.com/blog/4-ways-it-professionals-use-sortly-for-it-asset-tracking/",
+        "filename": "4-ways-it-professionals-use-sortly-for-it-asset-tracking.tsx"
+      },
+      {
+        "slug": "5-trends-to-look-out-for-in-education-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/5-trends-to-look-out-for-in-education-inventory-management/",
+        "filename": "5-trends-to-look-out-for-in-education-inventory-management.tsx"
+      },
+      {
+        "slug": "6-inspiring-quotes-for-getting-organized-manage-and-maintain-business-better",
+        "competitorUrl": "https://www.sortly.com/blog/6-inspiring-quotes-for-getting-organized-manage-and-maintain-business-better/",
+        "filename": "6-inspiring-quotes-for-getting-organized-manage-and-maintain-business-better.tsx"
+      },
+      {
+        "slug": "6-ways-to-give-your-business-the-home-edit-treatment",
+        "competitorUrl": "https://www.sortly.com/blog/6-ways-to-give-your-business-the-home-edit-treatment/",
+        "filename": "6-ways-to-give-your-business-the-home-edit-treatment.tsx"
+      },
+      {
+        "slug": "anticipation-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/anticipation-inventory/",
+        "filename": "anticipation-inventory.tsx"
+      },
+      {
+        "slug": "asset-tracking-importance",
+        "competitorUrl": "https://www.sortly.com/blog/asset-tracking-importance/",
+        "filename": "asset-tracking-importance.tsx"
+      },
+      {
+        "slug": "bar-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/bar-inventory-management/",
+        "filename": "bar-inventory-management.tsx"
+      },
+      {
+        "slug": "cost-of-goods-sold-formula",
+        "competitorUrl": "https://www.sortly.com/blog/cost-of-goods-sold-formula/",
+        "filename": "cost-of-goods-sold-formula.tsx"
+      },
+      {
+        "slug": "free-asset-tracking-spreadsheet",
+        "competitorUrl": "https://www.sortly.com/blog/free-asset-tracking-spreadsheet/",
+        "filename": "free-asset-tracking-spreadsheet.tsx"
+      },
+      {
+        "slug": "get-rid-of-obsolete-parts",
+        "competitorUrl": "https://www.sortly.com/blog/get-rid-of-obsolete-parts/",
+        "filename": "get-rid-of-obsolete-parts.tsx"
+      },
+      {
+        "slug": "getting-organized-is-it-worth-it",
+        "competitorUrl": "https://www.sortly.com/blog/getting-organized-is-it-worth-it/",
+        "filename": "getting-organized-is-it-worth-it.tsx"
+      },
+      {
+        "slug": "how-auto-professionals-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/how-auto-professionals-use-sortly/",
+        "filename": "how-auto-professionals-use-sortly.tsx"
+      },
+      {
+        "slug": "how-do-you-calculate-inventory-order",
+        "competitorUrl": "https://www.sortly.com/blog/how-do-you-calculate-inventory-order/",
+        "filename": "how-do-you-calculate-inventory-order.tsx"
+      },
+      {
+        "slug": "excel-inventory-template",
+        "competitorUrl": "https://www.sortly.com/blog/excel-inventory-template/",
+        "filename": "excel-inventory-template.tsx"
+      },
+      {
+        "slug": "how-inventory-automation-can-help-businesses-become-leaner",
+        "competitorUrl": "https://www.sortly.com/blog/how-inventory-automation-can-help-businesses-become-leaner/",
+        "filename": "how-inventory-automation-can-help-businesses-become-leaner.tsx"
+      },
+      {
+        "slug": "how-inventory-lists-help-businesses-stay-organized-and-profitable",
+        "competitorUrl": "https://www.sortly.com/blog/how-inventory-lists-help-businesses-stay-organized-and-profitable/",
+        "filename": "how-inventory-lists-help-businesses-stay-organized-and-profitable.tsx"
+      },
+      {
+        "slug": "interior-design-firm-saves-with-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/interior-design-firm-saves-with-sortly/",
+        "filename": "interior-design-firm-saves-with-sortly.tsx"
+      },
+      {
+        "slug": "inventory-control-101",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-control-101/",
+        "filename": "inventory-control-101.tsx"
+      },
+      {
+        "slug": "inventory-holding-cost",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-holding-cost/",
+        "filename": "inventory-holding-cost.tsx"
+      },
+      {
+        "slug": "inventory-in-balance-sheet",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-in-balance-sheet/",
+        "filename": "inventory-in-balance-sheet.tsx"
+      },
+      {
+        "slug": "inventory-management-purpose",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-management-purpose/",
+        "filename": "inventory-management-purpose.tsx"
+      },
+      {
+        "slug": "inventory-management-challenges-and-solutions",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-management-challenges-and-solutions/",
+        "filename": "inventory-management-challenges-and-solutions.tsx"
+      },
+      {
+        "slug": "led-advantage-florida",
+        "competitorUrl": "https://www.sortly.com/blog/led-advantage-florida/",
+        "filename": "led-advantage-florida.tsx"
+      },
+      {
+        "slug": "losing-money-common-inventory-management-mistakes",
+        "competitorUrl": "https://www.sortly.com/blog/losing-money-common-inventory-management-mistakes/",
+        "filename": "losing-money-common-inventory-management-mistakes.tsx"
+      },
+      {
+        "slug": "marie-kondo-for-business",
+        "competitorUrl": "https://www.sortly.com/blog/marie-kondo-for-business/",
+        "filename": "marie-kondo-for-business.tsx"
+      },
+      {
+        "slug": "mechanic-shop-organization-ideas",
+        "competitorUrl": "https://www.sortly.com/blog/mechanic-shop-organization-ideas/",
+        "filename": "mechanic-shop-organization-ideas.tsx"
+      },
+      {
+        "slug": "obsolete-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/obsolete-inventory/",
+        "filename": "obsolete-inventory.tsx"
+      },
+      {
+        "slug": "organize-furniture-upcycling-business",
+        "competitorUrl": "https://www.sortly.com/blog/organize-furniture-upcycling-business/",
+        "filename": "organize-furniture-upcycling-business.tsx"
+      },
+      {
+        "slug": "with-sortly-this-thriving-photo-booth-company-keeps-tabs-on-its-equipment",
+        "competitorUrl": "https://www.sortly.com/blog/with-sortly-this-thriving-photo-booth-company-keeps-tabs-on-its-equipment/",
+        "filename": "with-sortly-this-thriving-photo-booth-company-keeps-tabs-on-its-equipment.tsx"
+      },
+      {
+        "slug": "why-supply-chain-traceability-matters-to-small-businesses",
+        "competitorUrl": "https://www.sortly.com/blog/why-supply-chain-traceability-matters-to-small-businesses/",
+        "filename": "why-supply-chain-traceability-matters-to-small-businesses.tsx"
+      },
+      {
+        "slug": "prop-and-set-design-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/prop-and-set-design-inventory/",
+        "filename": "prop-and-set-design-inventory.tsx"
+      },
+      {
+        "slug": "rfid-asset-tracking",
+        "competitorUrl": "https://www.sortly.com/blog/rfid-asset-tracking/",
+        "filename": "rfid-asset-tracking.tsx"
+      },
+      {
+        "slug": "running-a-profitable-auto-repair-shop",
+        "competitorUrl": "https://www.sortly.com/blog/running-a-profitable-auto-repair-shop/",
+        "filename": "running-a-profitable-auto-repair-shop.tsx"
+      },
+      {
+        "slug": "simplify-inventory-control",
+        "competitorUrl": "https://www.sortly.com/blog/simplify-inventory-control/",
+        "filename": "simplify-inventory-control.tsx"
+      },
+      {
+        "slug": "supply-chain-issues-2021-what-can-we-learn",
+        "competitorUrl": "https://www.sortly.com/blog/supply-chain-issues-2021-what-can-we-learn/",
+        "filename": "supply-chain-issues-2021-what-can-we-learn.tsx"
+      },
+      {
+        "slug": "this-industrial-finishing-company-saves-time-reduces-waste-and-avoids-costly-shutdowns-with-sortly-pro",
+        "competitorUrl": "https://www.sortly.com/blog/this-industrial-finishing-company-saves-time-reduces-waste-and-avoids-costly-shutdowns-with-sortly-pro/",
+        "filename": "this-industrial-finishing-company-saves-time-reduces-waste-and-avoids-costly-shutdowns-with-sortly-pro.tsx"
+      },
+      {
+        "slug": "this-non-profit-garden-got-organized-and-started-educating-visitors-with-sortly-pro",
+        "competitorUrl": "https://www.sortly.com/blog/this-non-profit-garden-got-organized-and-started-educating-visitors-with-sortly-pro/",
+        "filename": "this-non-profit-garden-got-organized-and-started-educating-visitors-with-sortly-pro.tsx"
+      },
+      {
+        "slug": "upc-barcodes",
+        "competitorUrl": "https://www.sortly.com/blog/upc-barcodes/",
+        "filename": "upc-barcodes.tsx"
+      },
+      {
+        "slug": "urgent-care-supply-list",
+        "competitorUrl": "https://www.sortly.com/blog/urgent-care-supply-list/",
+        "filename": "urgent-care-supply-list.tsx"
+      },
+      {
+        "slug": "usf-college-of-nursing",
+        "competitorUrl": "https://www.sortly.com/blog/usf-college-of-nursing/",
+        "filename": "usf-college-of-nursing.tsx"
+      },
+      {
+        "slug": "veterinary-hospital-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/veterinary-hospital-inventory/",
+        "filename": "veterinary-hospital-inventory.tsx"
+      },
+      {
+        "slug": "warehouse-equipment-list",
+        "competitorUrl": "https://www.sortly.com/blog/warehouse-equipment-list/",
+        "filename": "warehouse-equipment-list.tsx"
+      },
+      {
+        "slug": "what-are-the-most-common-inventory-control-models",
+        "competitorUrl": "https://www.sortly.com/blog/what-are-the-most-common-inventory-control-models/",
+        "filename": "what-are-the-most-common-inventory-control-models.tsx"
+      },
+      {
+        "slug": "what-is-the-difference-between-inventory-and-stock",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-the-difference-between-inventory-and-stock/",
+        "filename": "what-is-the-difference-between-inventory-and-stock.tsx"
+      },
+      {
+        "slug": "what-is-the-point-of-inventory-control",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-the-point-of-inventory-control/",
+        "filename": "what-is-the-point-of-inventory-control.tsx"
+      },
+      {
+        "slug": "why-forecasting-inventory-levels-is-vital-in-todays-economy",
+        "competitorUrl": "https://www.sortly.com/blog/why-forecasting-inventory-levels-is-vital-in-todays-economy/",
+        "filename": "why-forecasting-inventory-levels-is-vital-in-todays-economy.tsx"
+      },
+      {
+        "slug": "why-is-inventory-management-important",
+        "competitorUrl": "https://www.sortly.com/blog/why-is-inventory-management-important/",
+        "filename": "why-is-inventory-management-important.tsx"
+      },
+      {
+        "slug": "why-scanning-inventory-barcodes-and-qr-codes-shouldnt-scare-you",
+        "competitorUrl": "https://www.sortly.com/blog/why-scanning-inventory-barcodes-and-qr-codes-shouldnt-scare-you/",
+        "filename": "why-scanning-inventory-barcodes-and-qr-codes-shouldnt-scare-you.tsx"
+      },
+      {
+        "slug": "how-do-i-barcode-my-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/how-do-i-barcode-my-inventory/",
+        "filename": "how-do-i-barcode-my-inventory.tsx"
+      },
+      {
+        "slug": "asset-tracking-benefits",
+        "competitorUrl": "https://www.sortly.com/blog/asset-tracking-benefits/",
+        "filename": "asset-tracking-benefits.tsx"
+      },
+      {
+        "slug": "can-i-use-qr-codes-for-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/can-i-use-qr-codes-for-inventory/",
+        "filename": "can-i-use-qr-codes-for-inventory.tsx"
+      },
+      {
+        "slug": "inventory-forecasting-template",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-forecasting-template/",
+        "filename": "inventory-forecasting-template.tsx"
+      },
+      {
+        "slug": "office-supply-list-template",
+        "competitorUrl": "https://www.sortly.com/blog/office-supply-list-template/",
+        "filename": "office-supply-list-template.tsx"
+      },
+      {
+        "slug": "new-feature-alert-stock-counts",
+        "competitorUrl": "https://www.sortly.com/blog/new-feature-alert-stock-counts/",
+        "filename": "new-feature-alert-stock-counts.tsx"
+      },
+      {
+        "slug": "download-sortlys-2025-year-end-inventory-playbook",
+        "competitorUrl": "https://www.sortly.com/blog/download-sortlys-2025-year-end-inventory-playbook/",
+        "filename": "download-sortlys-2025-year-end-inventory-playbook.tsx"
+      },
+      {
+        "slug": "how-plumbers-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/how-plumbers-use-sortly/",
+        "filename": "how-plumbers-use-sortly.tsx"
+      },
+      {
+        "slug": "how-can-you-make-inventory-more-efficient",
+        "competitorUrl": "https://www.sortly.com/blog/how-can-you-make-inventory-more-efficient/",
+        "filename": "how-can-you-make-inventory-more-efficient.tsx"
+      },
+      {
+        "slug": "multi-echelon-inventory-optimization-meio",
+        "competitorUrl": "https://www.sortly.com/blog/multi-echelon-inventory-optimization-meio/",
+        "filename": "multi-echelon-inventory-optimization-meio.tsx"
+      },
+      {
+        "slug": "how-interior-designers-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/how-interior-designers-use-sortly/",
+        "filename": "how-interior-designers-use-sortly.tsx"
+      },
+      {
+        "slug": "why-photos-are-vital-in-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/why-photos-are-vital-in-inventory-management/",
+        "filename": "why-photos-are-vital-in-inventory-management.tsx"
+      },
+      {
+        "slug": "inventory-management-training",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-management-training/",
+        "filename": "inventory-management-training.tsx"
+      },
+      {
+        "slug": "team-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/team-inventory-management/",
+        "filename": "team-inventory-management.tsx"
+      },
+      {
+        "slug": "year-end-financial-statements",
+        "competitorUrl": "https://www.sortly.com/blog/year-end-financial-statements/",
+        "filename": "year-end-financial-statements.tsx"
+      },
+      {
+        "slug": "what-is-the-purpose-of-an-inventory-audit",
+        "competitorUrl": "https://www.sortly.com/blog/what-is-the-purpose-of-an-inventory-audit/",
+        "filename": "what-is-the-purpose-of-an-inventory-audit.tsx"
+      },
+      {
+        "slug": "auto-parts-inventory-spreadsheet",
+        "competitorUrl": "https://www.sortly.com/blog/auto-parts-inventory-spreadsheet/",
+        "filename": "auto-parts-inventory-spreadsheet.tsx"
+      },
+      {
+        "slug": "dental-inventory-spreadsheet",
+        "competitorUrl": "https://www.sortly.com/blog/dental-inventory-spreadsheet/",
+        "filename": "dental-inventory-spreadsheet.tsx"
+      },
+      {
+        "slug": "how-food-and-beverage-professionals-use-sortly",
+        "competitorUrl": "https://www.sortly.com/blog/how-food-and-beverage-professionals-use-sortly/",
+        "filename": "how-food-and-beverage-professionals-use-sortly.tsx"
+      },
+      {
+        "slug": "home-staging-inventory-list",
+        "competitorUrl": "https://www.sortly.com/blog/home-staging-inventory-list/",
+        "filename": "home-staging-inventory-list.tsx"
+      },
+      {
+        "slug": "equipment-maintenance-log",
+        "competitorUrl": "https://www.sortly.com/blog/equipment-maintenance-log/",
+        "filename": "equipment-maintenance-log.tsx"
+      },
+      {
+        "slug": "physical-asset-management",
+        "competitorUrl": "https://www.sortly.com/blog/physical-asset-management/",
+        "filename": "physical-asset-management.tsx"
+      },
+      {
+        "slug": "asset-management-qr-code",
+        "competitorUrl": "https://www.sortly.com/blog/asset-management-qr-code/",
+        "filename": "asset-management-qr-code.tsx"
+      },
+      {
+        "slug": "how-do-you-manage-assets",
+        "competitorUrl": "https://www.sortly.com/blog/how-do-you-manage-assets/",
+        "filename": "how-do-you-manage-assets.tsx"
+      },
+      {
+        "slug": "what-are-fixed-assets",
+        "competitorUrl": "https://www.sortly.com/blog/what-are-fixed-assets/",
+        "filename": "what-are-fixed-assets.tsx"
+      },
+      {
+        "slug": "remote-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/remote-inventory-management/",
+        "filename": "remote-inventory-management.tsx"
+      },
+      {
+        "slug": "sortly-amazon-business-integration",
+        "competitorUrl": "https://www.sortly.com/blog/sortly-amazon-business-integration/",
+        "filename": "sortly-amazon-business-integration.tsx"
+      },
+      {
+        "slug": "inventory-metrics",
+        "competitorUrl": "https://www.sortly.com/blog/inventory-metrics/",
+        "filename": "inventory-metrics.tsx"
+      },
+      {
+        "slug": "supply-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/supply-inventory-management/",
+        "filename": "supply-inventory-management.tsx"
+      },
+      {
+        "slug": "what-are-the-4-types-of-inventory",
+        "competitorUrl": "https://www.sortly.com/blog/what-are-the-4-types-of-inventory/",
+        "filename": "what-are-the-4-types-of-inventory.tsx"
+      },
+      {
+        "slug": "abc-analysis",
+        "competitorUrl": "https://www.sortly.com/blog/abc-analysis/",
+        "filename": "abc-analysis.tsx"
+      },
+      {
+        "slug": "aardvark-mobile-tours",
+        "competitorUrl": "https://www.sortly.com/blog/aardvark-mobile-tours/",
+        "filename": "aardvark-mobile-tours.tsx"
+      },
+      {
+        "slug": "healthcare-asset-tracking",
+        "competitorUrl": "https://www.sortly.com/blog/healthcare-asset-tracking/",
+        "filename": "healthcare-asset-tracking.tsx"
+      },
+      {
+        "slug": "safety-stock",
+        "competitorUrl": "https://www.sortly.com/blog/safety-stock/",
+        "filename": "safety-stock.tsx"
+      },
+      {
+        "slug": "automated-inventory-management",
+        "competitorUrl": "https://www.sortly.com/blog/automated-inventory-management/",
+        "filename": "automated-inventory-management.tsx"
+      }
+    ]
+  }
+}

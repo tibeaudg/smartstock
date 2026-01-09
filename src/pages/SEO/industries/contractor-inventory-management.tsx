@@ -14,7 +14,6 @@ import {
   TrendingUp,
   Clock,
   DollarSign,
-  Users,
   Package,
   AlertTriangle,
   Smartphone,
@@ -438,7 +437,7 @@ export default function ContractorInventoryManagement() {
             {testimonials.map((testimonial, index) => (
               <div key={index} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
                 <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                  {Array.from({ length: Number(testimonial.rating) || 0 }).map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>

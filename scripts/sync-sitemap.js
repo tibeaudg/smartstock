@@ -19,11 +19,11 @@ async function syncSitemap() {
   // 1. HARDCODED PERMANENT ROUTES (Always HTTPS, no trailing slash)
   const permanentUrls = [
     `${BASE_URL}`,
-    `${BASE_URL}/solutions/inventory-management-software`,
-    `${BASE_URL}/solutions/inventory-software`,
-    `${BASE_URL}/solutions/mobile-inventory-management`,
-    `${BASE_URL}/solutions/simple-stock-management`,
-    `${BASE_URL}/solutions/stock-management-software`
+    `${BASE_URL}/inventory-management-software`,
+    `${BASE_URL}/inventory-software`,
+    `${BASE_URL}/mobile-inventory-management`,
+    `${BASE_URL}/simple-stock-management`,
+    `${BASE_URL}/stock-management-software`
   ];
 
   // 2. Map local SEO files to root URLs
