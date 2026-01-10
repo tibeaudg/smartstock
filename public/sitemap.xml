@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.stockflowsystems.com</loc>
@@ -30,7 +31,6 @@
     <loc>https://www.stockflowsystems.com/case-studies</loc>
     <lastmod>2026-01-09</lastmod>
   </url>
-
   <url>
     <loc>https://www.stockflowsystems.com/customers</loc>
     <lastmod>2026-01-09</lastmod>
@@ -43,7 +43,6 @@
     <loc>https://www.stockflowsystems.com/integrations</loc>
     <lastmod>2026-01-09</lastmod>
   </url>
-
   <url>
     <loc>https://www.stockflowsystems.com/10-best-b2b-e-commerce-platforms</loc>
     <lastmod>2026-01-09</lastmod>
@@ -1452,8 +1451,6 @@
     <loc>https://www.stockflowsystems.com/consignment-inventory</loc>
     <lastmod>2026-01-09</lastmod>
   </url>
-
-
   <url>
     <loc>https://www.stockflowsystems.com/inventory-automation</loc>
     <lastmod>2026-01-09</lastmod>
@@ -1597,5 +1594,20 @@
   <url>
     <loc>https://www.stockflowsystems.com/parts-tracking</loc>
     <lastmod>2026-01-09</lastmod>
+  </url>
+  <url>
+    <loc>https://www.stockflowsystems.com/pricing</loc>
+    <lastmod>2026-01-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflowsystems.com/createGlossaryPage</loc>
+    <lastmod>2026-01-09</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.stockflowsystems.com/best-CRM-software-for-small-businesses-2026</loc>
+    <lastmod>2026-01-09</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>
