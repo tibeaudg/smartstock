@@ -15,10 +15,32 @@ import {
   Smartphone,
   FileSpreadsheet,
   Database,
-  CheckCircle
+  CheckCircle,
+  BarChart3,
+  Bot,
+  Building2,
+  Package
 } from 'lucide-react';
 
-import { KeyTakeaways } from '@/components/KeyTakeaways';
+
+const faqData = [
+  {
+    question: 'How does inventory software handle large teams of 12+ users?',
+    answer:
+      'Enterprise-grade inventory software like StockFlow utilizes role-based access control (RBAC). This allows administrators to grant specific permissions to different user tiers—such as warehouse staff, field technicians, and regional managers—ensuring data security while enabling real-time collaboration across the entire organization.',
+  },
+  {
+    question: 'Is your inventory data secure and compliant?',
+    answer:
+      'Yes. For large teams and enterprises, StockFlow adheres to SOC 2 and GDPR standards. We also support Single Sign-On (SSO) technology, allowing your IT department to manage user access through your existing corporate authentication provider for enhanced security.',
+  },
+  {
+    question: 'Can we migrate existing data from spreadsheets or legacy ERPs?',
+    answer:
+      'Absolutely. We provide dedicated data migration assistance. Our enterprise onboarding team helps you clean, format, and import your existing inventory data into StockFlow to ensure a seamless transition without operational downtime.',
+  },
+];
+
 
 export default function EnterpriseInventorySoftwarePage() {
   usePageRefresh();
@@ -129,7 +151,7 @@ export default function EnterpriseInventorySoftwarePage() {
     <SeoPageLayout
       title="Enterprise Inventory Management Software for Large Teams"
       heroTitle="Inventory Solutions Built for Massive Scale"
-      updatedDate="01/08/2026"
+      dateUpdated="january 10, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >
@@ -137,19 +159,79 @@ export default function EnterpriseInventorySoftwarePage() {
         title="Enterprise Inventory Software 2026 | Large Team Tracking | StockFlow"
         description="Scalable inventory management for large teams. SOC 2 compliant, SSO enabled, and dedicated support for organizations with 12+ users."
         keywords="enterprise inventory software, large team inventory tracking, sso inventory management, soc 2 compliant inventory, multi-user inventory system"
-        url="https://www.stockflowsystems.com/enterprise-inventory-software"
+        url="https://www.stockflowsystems.com/enterprise-inventory-management"
         structuredData={structuredData}
       />
 
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Inventory Management for the Modern Enterprise</h1>
+          <h1 className="text-4xl font-bold mb-6">Enterprise Inventory Management Software</h1>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             As organizations grow, the complexity of managing assets and stock increases exponentially. <strong>Enterprise inventory software</strong> is no longer just about counting items; it's about <strong>security, compliance, and large-scale collaboration</strong>. StockFlow enables teams of 12 or more to operate from a single source of truth.
           </p>
           <p className="text-lg text-gray-600 leading-relaxed">
             Managing thousands of items across <strong>multiple global locations</strong> requires a system that is as robust as it is intuitive. Our enterprise platform bridges the gap between high-level executive reporting and on-the-ground mobile execution, ensuring total visibility at every tier of the organization.
+          </p>
+        </div>
+      </section>
+
+
+      <section className="py-20 border-b">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-6">What is Enterprise Inventory Management?</h2>
+        </div>
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+            Enterprise inventory management refers to the systems and processes used by large organizations to track, manage, and optimize their inventory across multiple locations and departments. Unlike standard inventory solutions, enterprise systems are designed to handle the complexities of large-scale operations, including multi-user access, stringent security protocols, and compliance with industry regulations.
+          </p>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            Key features of enterprise inventory management include role-based access control (RBAC), Single Sign-On (SSO) integration, advanced reporting capabilities, and dedicated support for onboarding and training. These features ensure that large teams can collaborate effectively while maintaining data integrity and security.
+          </p>
+        </div>
+      </section>
+
+
+
+      <section className="py-20 border-b">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-6">What does ERP mean in inventory?</h2>
+        </div>
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+            ERP stands for Enterprise Resource Planning. In the context of inventory management, ERP refers to integrated software systems that help organizations manage and automate various business processes, including inventory tracking, procurement, sales, and supply chain management. An ERP system provides a centralized platform where all inventory-related data is stored and accessed, allowing for real-time visibility and control over stock levels, orders, and deliveries.
+          </p>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            By using an ERP system for inventory management, enterprises can streamline operations, reduce manual errors, and improve decision-making through comprehensive reporting and analytics. This integration is especially crucial for large organizations that need to coordinate inventory across multiple locations and departments.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20 border-b">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-6">Why is inventory management important for enterprises?</h2>
+        </div>
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+            Inventory management is crucial for enterprises because it directly impacts operational efficiency, customer satisfaction, and overall profitability. Effective inventory management ensures that the right products are available at the right time, reducing stockouts and overstock situations that can lead to lost sales or increased holding costs.
+          </p>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            For large organizations, managing inventory across multiple locations and departments adds layers of complexity. Without a robust inventory management system, enterprises risk data inaccuracies, miscommunication between teams, and compliance issues. A well-implemented inventory management solution helps streamline workflows, improve supply chain visibility, and enhance decision-making through accurate data analytics.
+          </p>
+        </div>
+      </section>
+
+
+      <section className="py-20 border-b">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-6">what is the 80/20 rule in inventory management?</h2>
+        </div>
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+            The 80/20 rule, also known as the Pareto Principle, states that 80% of effects come from 20% of causes. In inventory management, this means that a small percentage of inventory items (typically high-value or high-turnover products) account for the majority of sales or revenue.
+          </p>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            By focusing on these critical few items, enterprises can optimize their inventory levels, reduce carrying costs, and improve overall efficiency. This principle helps businesses prioritize their inventory management efforts and allocate resources more effectively.
           </p>
         </div>
       </section>
@@ -260,6 +342,112 @@ export default function EnterpriseInventorySoftwarePage() {
           </div>
         </div>
       </section>
+
+
+
+
+      {/* Section: Enterprise-Grade Inventory Control */}
+      <section className="py-24 bg-slate-950 text-white overflow-hidden relative">
+        {/* Architectural Grid Overlay */}
+        <div className="absolute inset-0 opacity-10 [background-image:linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] [background-size:40px_40px]" />
+        
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+                <Building2 className="w-4 h-4" /> Multi-Site Scalability
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold mb-8 leading-tight">
+                Enterprise Inventory Management for <span className="text-blue-500">Global Complexity</span>
+              </h2>
+              <p className="text-lg text-slate-400 leading-relaxed mb-8">
+                For organizations operating across multiple continents and hundreds of warehouses, standard tools aren't enough. Professional <strong>enterprise inventory management</strong> requires a resilient architecture capable of processing millions of transactions without latency.
+              </p>
+              
+              <div className="space-y-4 mb-10">
+                <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10">
+                  <Globe className="w-6 h-6 text-blue-500 mt-1" />
+                  <div>
+                    <h4 className="font-bold text-white">Global Visibility</h4>
+                    <p className="text-sm text-slate-400">Consolidate stock data from 50+ locations into a single <strong>online inventory management system</strong> for absolute executive oversight.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10">
+                  <ShieldCheck className="w-6 h-6 text-blue-500 mt-1" />
+                  <div>
+                    <h4 className="font-bold text-white">Advanced Security & SSO</h4>
+                    <p className="text-sm text-slate-400">Enterprise-grade <strong>web based inventory software</strong> with SAML, OAuth, and granular Role-Based Access Control (RBAC).</p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-slate-500 text-sm">
+                StockFlow’s enterprise core is built to handle the rigorous demands of <strong>inventory management online</strong> for high-volume manufacturers and third-party logistics (3PL) providers.
+              </p>
+            </div>
+
+            <div className="lg:w-1/2">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4 mt-8">
+                  <div className="p-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl shadow-2xl">
+                    <BarChart3 className="w-10 h-10 mb-4" />
+                    <h4 className="text-2xl font-bold">99.99%</h4>
+                    <p className="text-blue-100 text-xs uppercase font-bold tracking-tighter">Uptime SLA</p>
+                  </div>
+                  <div className="p-8 bg-slate-900 border border-slate-800 rounded-3xl">
+                    <Zap className="w-10 h-10 text-blue-500 mb-4" />
+                    <h4 className="text-xl font-bold">API-First</h4>
+                    <p className="text-slate-400 text-xs">Seamless ERP/WMS Integration</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="p-8 bg-slate-900 border border-slate-800 rounded-3xl">
+                    <Package className="w-10 h-10 text-blue-500 mb-4" />
+                    <h4 className="text-xl font-bold">Omnichannel</h4>
+                    <p className="text-slate-400 text-xs">Sync B2B and Direct-to-Consumer</p>
+                  </div>
+                  <div className="p-8 bg-slate-800 rounded-3xl">
+                    <Bot className="w-10 h-10 text-blue-400 mb-4" />
+                    <h4 className="text-xl font-bold">AI Forecast</h4>
+                    <p className="text-slate-400 text-xs">Predictive Enterprise Demand</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<section className="py-16">
+  <div className="max-w-4xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-slate-900 mb-10">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="space-y-6">
+      {faqData.map((faq, index) => (
+        <div
+          key={index}
+          className="bg-slate-800 rounded-2xl p-6 md:p-7 border border-slate-700/50 shadow-sm"
+        >
+          <h3 className="text-lg md:text-xl font-semibold text-white mb-3 leading-snug">
+            {faq.question}
+          </h3>
+
+          <p className="text-slate-300 leading-relaxed">
+            {faq.answer}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+
+
+
+
+      
     </SeoPageLayout>
   );
 }

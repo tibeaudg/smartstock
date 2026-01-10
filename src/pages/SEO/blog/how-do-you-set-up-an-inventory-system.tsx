@@ -3,216 +3,267 @@ import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
-import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
+import { 
+  CheckCircle, 
+  Target, 
+  BarChart3, 
+  Database, 
+  QrCode, 
+  Users, 
+  Settings2,
+  ArrowRight,
+  ShieldCheck,
+  Zap
+} from "lucide-react";
 
-const topicTitle = "How Do You Set Up An Inventory System";
-const canonicalPath = "/how-do-you-set-up-an-inventory-system";
-const metaDescription = "Step-by-step guide to setting up an inventory system. Learn how to implement inventory tracking, choose software, organize items, and establish processes. Complete setup guide.";
-const keywords = "how to set up inventory system, inventory system setup, setting up inventory, inventory system implementation, inventory setup guide, inventory system installation";
-const heroBadge = "Topic Guide • Updated September 2025";
-const summaryCopy = "Set up an inventory system by: choosing inventory management software (free plans available for small businesses), creating item records (name, SKU, description, location, initial quantity), organizing items by category, setting up locations (warehouses, shelves, bins), implementing barcode scanning (generate and print labels), establishing processes (receiving, picking, shipping, counting), and training staff. Key steps: select software, import or create item records, organize by category, set up locations, implement barcode scanning, establish processes, and train users. Setup typically takes 1-2 weeks for small businesses, longer for larger operations.";
-const takeaways = [
-  "Set up by: choosing inventory management software, creating item records, organizing by category, setting up locations, implementing barcode scanning, establishing processes, and training staff.",
-  "Key steps: select software, import or create item records, organize by category, set up locations, implement barcode scanning, establish processes, and train users.",
-  "Setup typically takes 1-2 weeks for small businesses. Free software (like StockFlow free for up to 100 products) makes setup accessible and affordable."
-];
-const actionSteps = [
-  {
-    "title": "Choose inventory software",
-    "description": "Select inventory management software that fits your needs. Consider free plans (like StockFlow free for up to 100 products) for small businesses, or paid plans for more features. Evaluate features, pricing, and scalability."
-  },
-  {
-    "title": "Create item records",
-    "description": "Create records for all inventory items: name, SKU, description, category, location, initial quantity, and reorder points. Import from spreadsheets if available, or create manually. Organize by category for easy management."
-  },
-  {
-    "title": "Implement barcode scanning",
-    "description": "Generate barcodes for items, print labels, and attach to items. Set up barcode scanning using mobile apps or scanners. Barcode scanning improves accuracy to 95-99% and speeds up operations significantly."
-  }
-];
-const metrics = [
-  {
-    "label": "Setup completion time",
-    "detail": "Track time to complete inventory system setup. Small businesses typically complete setup in 1-2 weeks. Good preparation and software selection speed up the process."
-  },
-  {
-    "label": "Item record creation",
-    "detail": "Measure progress in creating item records. Complete records for all items are essential for accurate tracking. Target 100% of items recorded within setup period."
-  },
-  {
-    "label": "System adoption",
-    "detail": "Monitor adoption rate after setup. Training and clear processes improve adoption. Target 80%+ adoption within first month after setup completion."
-  }
-];
-const faqData = [
-  {
-    "question": "How do you set up an inventory system?",
-    "answer": "Set up by: choosing inventory management software, creating item records (name, SKU, description, location, initial quantity), organizing by category, setting up locations, implementing barcode scanning, establishing processes (receiving, picking, shipping), and training staff. Setup typically takes 1-2 weeks for small businesses."
-  },
-  {
-    "question": "What software is needed to set up an inventory system?",
-    "answer": "Need inventory management software with features like: item management, location tracking, barcode scanning support, mobile apps, reporting, and reorder point alerts. Free plans (like StockFlow free for up to 100 products) are perfect for small businesses starting out."
-  },
-  {
-    "question": "How long does it take to set up an inventory system?",
-    "answer": "Setup time varies: small businesses (50-200 items) typically take 1-2 weeks, medium businesses (200-1000 items) take 2-4 weeks, and large businesses (1000+ items) take 1-2 months. Time depends on number of items, complexity, and preparation."
-  },
-  {
-    "question": "Do I need barcode scanning to set up an inventory system?",
-    "answer": "Barcode scanning is highly recommended but not required. It improves accuracy from 60-80% to 95-99% and speeds up operations by 10-20x. For businesses with 50+ items, barcode scanning is essential for efficiency and accuracy."
-  }
-];
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "How Do You Set Up An Inventory System",
-    "description": "Deep dive into How Do You Set Up An Inventory System. Learn practical ideas, implementation steps, and metrics so your team can apply How Do You Set Up An Inventory System with StockFlow.",
-    "author": {
-      "@type": "Organization",
-      "name": "StockFlow"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "StockFlow",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.stockflowsystems.com/logo.png"
-      }
-    },
-    "datePublished": "2025-09-08",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://www.stockflowsystems.com/how-do-you-set-up-an-inventory-system"
-    }
-  }
-];
-
-export default function SeoHowDoYouSetUpAnInventorySystemPage() {
+/**
+ * How to Set Up an Inventory System 2026 Guide
+ * Targets: "how to set up an inventory system", "how to create an inventory system"
+ */
+export default function SeoHowToSetUpAnInventorySystemPage() {
   usePageRefresh();
   const location = useLocation();
 
-  const pageStructuredData = structuredData.map((item) => ({
-    ...item,
-    dateModified: new Date().toISOString().split("T")[0],
-  }));
+  const topicTitle = "How to Set Up an Inventory System: The 2026 Implementation Guide";
+  const canonicalPath = "/how-to-set-up-an-inventory-system";
+  
+  const faqData = [
+    {
+      question: "How do you set up an inventory system from scratch?",
+      answer: "Setting up an inventory system requires five core phases: selecting a software platform (like StockFlow), digitizing your item catalog with unique SKUs, mapping your physical storage locations, implementing barcode/QR scanning, and establishing workflows for receiving and picking."
+    },
+    {
+      question: "How long does it take to create an inventory system?",
+      answer: "For small businesses with under 500 SKUs, a modern cloud-based system can be operational in 3–7 days. Large-scale enterprise implementations involving hardware integration and legacy data migration typically take 4–8 weeks."
+    },
+    {
+      question: "Can I create an inventory system using free software?",
+      answer: "Yes. For startups, free versions of platforms like StockFlow offer robust tools for item tracking, low-stock alerts, and mobile scanning. This is significantly more effective than using spreadsheets which lack real-time synchronization."
+    },
+    {
+      question: "What is the best way to organize inventory for a new system?",
+      answer: "Organize items using a categorical hierarchy and unique SKUs. Map your physical space into Zones, Aisles, Shelves, and Bins. This 'address-based' logic ensures that your software can direct staff to the exact location of an item instantly."
+    }
+  ];
 
+  const keyTakeaways = [
+    'The foundation of any inventory system is a clean, standardized data set with unique SKUs.',
+    'Cloud-based systems outperform spreadsheets by providing real-time sync and mobile access.',
+    'Mobile barcode scanning reduces human error in data entry by up to 99%.',
+    'Effective systems require a physical mapping of the warehouse (Zones and Bins) within the software.',
+    'Staff training and documented SOPs are as critical as the software itself for long-term accuracy.'
+  ];
 
+  const actionSteps = [
+    {
+      title: "Select Your Software Foundation",
+      description: "Choose an inventory system that supports mobile scanning and real-time cloud sync. For small businesses, prioritize platforms like StockFlow that offer easy onboarding and free entry tiers to eliminate upfront financial risk."
+    },
+    {
+      title: "Standardize Your Data & SKUs",
+      description: "Create a consistent naming convention. Every item must have a unique SKU (Stock Keeping Unit). Clean your data in a spreadsheet first, then import it into your new system to ensure a 'Single Source of Truth'."
+    },
+    {
+      title: "Map Physical & Digital Locations",
+      description: "Define your 'Sub-locations'. In the software, create a hierarchy: Warehouse > Aisle > Shelf > Bin. Physically label these areas so the system can generate optimized picking routes for your team."
+    }
+  ];
+
+  const metrics = [
+    {
+      label: "Inventory Accuracy Rate",
+      detail: "The percentage of physical stock that matches the system records. Aim for 98%+ after implementing barcode scanning."
+    },
+    {
+      label: "Cycle Count Completion",
+      detail: "Measure how often your team verifies stock levels. High-performing systems facilitate weekly 'mini-counts' rather than annual audits."
+    },
+    {
+      label: "Time-to-Ship (Order Velocity)",
+      detail: "Track the time from order receipt to dispatch. A well-setup system should reduce this by 30-50% via optimized bin locations."
+    }
+  ];
+
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Set Up an Inventory System",
+      "description": "A comprehensive guide on creating a modern inventory management system using cloud software and barcode scanning.",
+      "step": [
+        { "@type": "HowToStep", "text": "Select inventory management software." },
+        { "@type": "HowToStep", "text": "Create standardized SKU records and item data." },
+        { "@type": "HowToStep", "text": "Map physical warehouse locations to digital sub-locations." },
+        { "@type": "HowToStep", "text": "Generate and apply barcode or QR code labels." },
+        { "@type": "HowToStep", "text": "Establish standard operating procedures for the team." }
+      ],
+      "totalTime": "P7D",
+      "publisher": { "@type": "Organization", "name": "StockFlow" }
+    }
+  ];
 
   return (
-    <SeoPageLayout 
-      title={topicTitle} 
-      heroTitle={topicTitle} 
-      dateUpdated="06/01/2026"
+    <SeoPageLayout
+      title={topicTitle}
+      heroTitle="How to Set Up an Inventory System for Growth"
+      dateUpdated="January 10, 2026"
       faqData={faqData}
-       
-      
+      keyTakeaways={keyTakeaways}
     >
       <SEO
-        title={`How Do You Set Up An Inventory System 2025 - Complete Guide | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
+        title="How to Set Up an Inventory System (2026) – Implementation Guide"
+        description="Learn how to create an inventory system from scratch. Our 2026 guide covers software selection, SKU creation, and warehouse mapping for small businesses."
+        keywords="how to set up an inventory system, how to create an inventory system, inventory system setup guide, inventory management implementation"
         url={`https://www.stockflowsystems.com${canonicalPath}`}
+        structuredData={structuredData}
       />
 
-      <StructuredData data={pageStructuredData} />
+      <StructuredData data={structuredData} />
 
+      {/* Hero / Overview Section */}
+      <section className="bg-white px-4 py-20 border-b">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">
+                <Settings2 className="w-4 h-4" /> 2026 Implementation Playbook
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-8">
+                How Do You <span className="text-blue-600">Create an Inventory System</span> That Actually Works?
+              </h1>
+              <p className="text-xl text-slate-600 leading-relaxed mb-6">
+                In 2026, the question isn't just "how to set up an inventory system," but how to build one that is <strong>automated, mobile, and error-proof.</strong>
+              </p>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                Most businesses fail during setup because they over-complicate their data or under-estimate the physical organization. This guide breaks down the high-fidelity framework used by StockFlow to move companies from messy spreadsheets to 99% inventory accuracy.
+              </p>
+            </div>
+            <div className="bg-slate-900 rounded-3xl p-8 text-white shadow-2xl">
+              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <Zap className="text-amber-400" /> The "Fast-Track" Setup
+              </h3>
+              <div className="space-y-6">
+                {[
+                  { day: "Day 1", task: "Select software and import cleaned SKU list." },
+                  { day: "Day 2", task: "Define warehouse zones and sub-locations." },
+                  { day: "Day 3", task: "Print QR labels and tag physical stock." },
+                  { day: "Day 4", task: "Train team on Receiving vs. Picking workflows." },
+                  { day: "Day 5", task: "Perform first 'Baseline' cycle count." },
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-4 border-l-2 border-slate-700 pl-6 relative">
+                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-slate-900" />
+                    <div>
+                      <span className="text-blue-400 font-bold text-sm uppercase">{item.day}</span>
+                      <p className="text-slate-200">{item.task}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-
-      <section id="overview" className="bg-white px-4 py-16">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">How Do You Set Up an Inventory System?</h1>
-            <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Setting up an inventory system doesn't have to be overwhelming. One small retailer we worked with had their system fully operational in 5 days they started with 50 items, added barcode scanning on day 2, and were tracking everything accurately by day 5. The key? Starting with the right software and following a clear process.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Set up an inventory system by: <strong>choosing inventory management software</strong> (free plans available for small businesses like StockFlow), <strong>creating item records</strong> (name, SKU, description, location, initial quantity), <strong>organizing items by category</strong> (easier management), <strong>setting up locations</strong> (warehouses, shelves, bins), <strong>implementing barcode scanning</strong> (generate and print labels), <strong>establishing processes</strong> (receiving, picking, shipping, counting), and <strong>training staff</strong> on proper procedures.
-            </p>
-            <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Setup typically takes 1-2 weeks for small businesses, longer for larger operations. Free software (like StockFlow free for up to 100 products) makes setup accessible and affordable. Key steps include selecting software, importing or creating item records, organizing by category, setting up locations, implementing barcode scanning, establishing processes, and training users. Learn more about <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">inventory management software</Link> or explore <Link to="/how-can-you-make-inventory-more-efficient" className="text-blue-600 hover:underline font-semibold">making inventory more efficient</Link>.
-            </p>
-            <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
-              <h3 className="text-xl font-semibold">Why proper setup matters</h3>
-              <p className="mt-3 text-base text-blue-900/90">
-                Proper setup ensures accurate tracking from day one, prevents future problems (wrong data structure, missing information), makes training easier (clear processes), and saves time (no need to rebuild later). With free software options and clear processes, setting up an inventory system is more accessible than ever for small businesses.
+      {/* Deep Dive: The Three Pillars of Setup */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">The 3 Pillars of a Successful System</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">You cannot create an inventory system by focusing on software alone. You must balance Data, Hardware, and Process.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-10 rounded-2xl shadow-sm border border-slate-200">
+              <Database className="w-12 h-12 text-blue-600 mb-6" />
+              <h4 className="text-xl font-bold mb-4">1. Data Integrity</h4>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Before importing data, ensure every item has a <strong>Unique Identifier (SKU)</strong>. Avoid using manufacturer part numbers as your primary SKU; create a logical system (e.g., APP-GRN-LG for Green Large Apples) that your team can understand.
+              </p>
+            </div>
+            <div className="bg-white p-10 rounded-2xl shadow-sm border border-slate-200">
+              <QrCode className="w-12 h-12 text-blue-600 mb-6" />
+              <h4 className="text-xl font-bold mb-4">2. Hardware Strategy</h4>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Decide between dedicated laser scanners or <strong>Mobile-First scanning</strong>. In 2026, most small businesses use smartphone apps like StockFlow to turn every employee's phone into a high-speed QR reader, saving thousands in hardware costs.
+              </p>
+            </div>
+            <div className="bg-white p-10 rounded-2xl shadow-sm border border-slate-200">
+              <Users className="w-12 h-12 text-blue-600 mb-6" />
+              <h4 className="text-xl font-bold mb-4">3. Workflow Adoption</h4>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                A system is only as good as the hands that use it. Establish strict "Inbound" and "Outbound" zones. If an item moves physically, it <strong>must</strong> move digitally via a scan. No exceptions.
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Action Playbook */}
+      <section id="playbook" className="bg-white px-4 py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">Step-by-Step Implementation</h2>
+              <p className="mt-4 text-slate-600">
+                Use this tactical playbook to move from a manual process to a fully digital inventory ecosystem.
+              </p>
+            </div>
+            <div className="flex-shrink-0">
+              <div className="inline-flex items-center gap-2 rounded-full bg-green-50 px-4 py-2 text-sm font-bold text-green-700 border border-green-100">
+                <ShieldCheck className="h-4 w-4" /> Enterprise-Ready Framework
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-4">
-            {takeaways.map((item) => (
-              <div
-                key={item}
-                className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-200"
-              >
-                <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
-                  <CheckCircle className="h-5 w-5" />
-                </span>
-                <p className="text-sm text-gray-700">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="playbook" className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Action Playbook</h2>
-              <p className="mt-3 text-base text-gray-600">
-                Turn the big ideas behind {topicTitle.toLowerCase()} into structured workstreams. Align leaders, give teams the tools
-                they need, and track momentum every step of the way.
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-medium text-blue-700 shadow">
-              <Target className="h-4 w-4" />
-              Proven by StockFlow teams
-            </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
             {actionSteps.map((step, index) => (
-              <div key={step.title} className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-blue-600">Step {index + 1}</span>
-                  <Target className="h-5 w-5 text-blue-500" />
+              <div key={step.title} className="group flex flex-col md:flex-row gap-8 p-8 rounded-3xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300">
+                <div className="flex-shrink-0">
+                  <span className="flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-600 text-white font-bold text-lg">
+                    {index + 1}
+                  </span>
                 </div>
-                <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">{step.title}</h3>
+                  <p className="text-slate-600 leading-relaxed">{step.description}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="metrics" className="bg-white px-4 py-16">
+      {/* Metrics Section */}
+      <section id="metrics" className=" px-4 py-24 text-white rounded-t-[3rem]">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Metrics that Matter</h2>
-              <p className="mt-3 max-w-2xl text-base text-gray-600">
-                Use these scorecards to prove the ROI of {topicTitle.toLowerCase()}. Set a baseline, monitor progress weekly, and
-                communicate wins with clarity.
-              </p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-5 py-2 text-sm font-semibold text-blue-700">
-              <BarChart3 className="h-4 w-4" />
-              Build dashboards in StockFlow
-            </div>
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Success Scorecard</h2>
+            <p className="text-slate-400">Once your system is live, track these KPIs to validate your ROI.</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3">
             {metrics.map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
-                <p className="mt-3 text-sm text-gray-600">{metric.detail}</p>
+              <div key={metric.label} className="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-blue-500 transition-colors group">
+                <BarChart3 className="w-8 h-8 text-blue-400 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-xl font-bold mb-3">{metric.label}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{metric.detail}</p>
               </div>
             ))}
           </div>
+          
+          <div className="mt-20 p-10 bg-blue-600 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="max-w-xl">
+              <h3 className="text-2xl font-bold mb-2">Ready to set up your system?</h3>
+              <p className="text-blue-100">Start with StockFlow today. Free for small businesses with up to 100 items.</p>
+            </div>
+            <Link 
+              to="/signup" 
+              className="px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition-colors inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              Start Free Setup <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
-
-      
     </SeoPageLayout>
   );
 }

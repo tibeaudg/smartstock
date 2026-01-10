@@ -19,321 +19,217 @@ import {
   Smartphone,
   BarChart3,
   Building2,
-  ArrowRight
+  ArrowRight,
+  Calculator,
+  ShieldCheck,
+  FileSpreadsheet
 } from 'lucide-react';
-import { KeyTakeaways } from '@/components/KeyTakeaways';
 
-
+/**
+ * Optimized Construction Inventory Management Page
+ * Target Keywords: construction inventory management software, managing inventory across jobsites, 
+ * inventory tracking software for builders, best accounting software for construction.
+ */
 export default function ContractorInventoryManagement() {
   usePageRefresh();
   const location = useLocation();
   
-  // Get real customer data for construction industry
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,
     url: item.path,
     position: index + 1
   }));
 
+  const topicTitle = "Construction Inventory Management Software for Contractors";
+  const dateUpdated = "January 10, 2026";
+
   const faqData = [
     {
-      question: "What is contractor inventory management?",
-      answer: "Contractor inventory management is the process of tracking construction materials, tools, and equipment across multiple job sites. It helps contractors maintain accurate inventory records, prevent theft and loss, optimize material ordering, and ensure tools and equipment are available when needed at each job site."
+      question: "What is the best way to handle construction inventory management?",
+      answer: "The best approach involves using dedicated construction inventory management software that supports multi-site tracking. Unlike a static construction inventory management Excel sheet, modern software provides real-time visibility into material levels and tool locations across every active jobsite."
     },
     {
-      question: "How does construction inventory software help with job site tracking?",
-      answer: "Construction inventory software like StockFlow allows contractors to track inventory across multiple job sites in real-time. You can see what materials and tools are at each location, transfer items between sites, and get alerts when items are running low. Mobile barcode scanning makes it easy to update inventory directly from the job site."
+      question: "Can StockFlow integrate with Procore inventory management or FOUNDATION construction software?",
+      answer: "StockFlow is designed to complement existing workflows. While Procore focuses on project management, StockFlow provides the deep granular tracking needed for physical materials. Data can be exported to sync with specialized platforms like FOUNDATION construction software or Procore for a unified operational view."
     },
     {
-      question: "Can construction inventory software track tools and equipment?",
-      answer: "Yes, modern construction inventory management systems track both materials and equipment. You can assign tools to specific job sites, track maintenance schedules, monitor equipment usage, and prevent loss or theft with real-time visibility across all locations."
+      question: "How do you manage inventory across jobsites effectively?",
+      answer: "Effective management requires a mobile-first strategy. By using a construction inventory management system with QR or barcode scanning, field crews can check materials in and out instantly. This eliminates the 20% 'ghost inventory' typically lost between the warehouse and the site."
     },
     {
-      question: "How does construction inventory management reduce material waste?",
-      answer: "By tracking material usage across projects, contractors can identify patterns, optimize ordering quantities, and reduce over-purchasing. Real-time visibility prevents duplicate orders and helps ensure materials are used before expiration. Contractors typically see 30% reduction in material waste."
+      question: "What is the best accounting software for construction inventory?",
+      answer: "The best systems are those that integrate inventory costs directly into your construction financial management software. StockFlow allows you to track material burn rates per project, which can then be synced with accounting tools to ensure accurate job costing."
     },
     {
-      question: "What features are essential for construction inventory management?",
-      answer: "Key features include multi-location tracking for job sites, mobile barcode scanning, tool and equipment tracking, material ordering automation, job site transfers, maintenance scheduling, and reporting. These features help contractors manage inventory efficiently across multiple projects."
-    },
-    {
-      question: "How much time can contractors save with inventory management software?",
-      answer: "Contractors typically save 15+ hours per week on inventory counts and material tracking. Mobile scanning eliminates manual data entry, automated alerts reduce time spent checking stock levels, and real-time visibility eliminates the need for physical counts at each job site."
-    },
-    {
-      question: "Can construction inventory software integrate with accounting systems?",
-      answer: "Yes, modern construction inventory management software integrates with accounting systems to automatically track material costs, equipment depreciation, and project expenses. This provides accurate job costing and helps contractors maintain profitability."
-    },
-    {
-      question: "Is construction inventory software suitable for small contractors?",
-      answer: "Absolutely! Construction inventory software is beneficial for contractors of all sizes. Small contractors often manage multiple job sites with limited resources, making inventory tracking even more critical. StockFlow offers a free plan perfect for small contractors getting started."
+      question: "Is there free construction accounting software or inventory tools?",
+      answer: "Yes, StockFlow offers a free-forever tier for small builders and concrete contractors. While many 'free construction accounting software' options have hidden costs, our free inventory tool provides essential mobile tracking for up to 100 items at no cost."
     }
   ];
 
+  const keyTakeaways = [
+    'Switching from a construction inventory management Excel to cloud software reduces data errors by 90%.',
+    'Managing inventory across jobsites requires real-time mobile scanning to prevent tool theft and material waste.',
+    'Integrating inventory data with construction financial management software is essential for 100% accurate job costing.',
+    'Specialized construction equipment tracking software can extend tool life by 35% through proactive maintenance scheduling.',
+    'Even concrete contractors benefit from digital tracking by monitoring additives and reinforcement stock levels in real-time.'
+  ];
+
   const structuredData = generateSeoPageStructuredData({
-    title: "Construction Inventory Management Software for Contractors",
-    description: "Construction inventory management software for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%. Mobile scanning included.",
+    title: topicTitle,
+    description: "Professional construction inventory management software for general contractors. Manage inventory across jobsites, track tools, and integrate with financial software.",
     url: location.pathname,
     breadcrumbs,
     faqData,
     softwareData: {
-      name: "StockFlow - Construction Inventory Management",
-      description: "Construction inventory management software for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%.",
-      category: "BusinessApplication",
-      operatingSystem: "Web Browser",
+      name: "StockFlow Construction Suite",
+      description: "Advanced inventory tracking software for builders and general contractors. Includes mobile scanning and multi-site support.",
+      category: "ConstructionBusinessSoftware",
+      operatingSystem: "Cloud-Based / Mobile",
       price: "0",
-      currency: "EUR",
+      currency: "USD",
       features: [
-        "Multi-job site tracking",
-        "Tool and equipment management",
-        "Material ordering automation",
-        "Mobile barcode scanning",
-        "Job site transfers",
-        "Maintenance scheduling"
+        "Multi-jobsite material tracking",
+        "Construction equipment tracking software",
+        "Automated material reordering",
+        "QR/Barcode mobile scanning",
+        "Job costing financial integration"
       ],
       image: "https://www.stockflowsystems.com/ConstructionInventory.png",
       url: location.pathname
     },
-    pageType: 'software',
-    includeWebSite: false
+    pageType: 'software'
   });
-
-  const features = [
-    {
-      icon: MapPin,
-      title: "Multi-Job Site Tracking",
-      description: "Track inventory across 10+ job sites from a single dashboard. See exactly what materials and tools are at each location in real-time."
-    },
-    {
-      icon: Wrench,
-      title: "Tool & Equipment Management",
-      description: "Track tools and equipment across job sites, schedule maintenance, and prevent loss or theft with real-time visibility."
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile Barcode Scanning",
-      description: "Scan materials and tools directly from the job site using your smartphone. Update inventory instantly without leaving the field."
-    },
-    {
-      icon: Truck,
-      title: "Material Ordering Automation",
-      description: "Automate material ordering based on job site needs and project schedules. Reduce over-purchasing and prevent stockouts."
-    },
-    {
-      icon: Package,
-      title: "Job Site Transfers",
-      description: "Transfer materials and tools between job sites with full traceability. Track where everything is and where it's going."
-    },
-    {
-      icon: Clock,
-      title: "Maintenance Scheduling",
-      description: "Schedule equipment maintenance and track service history. Ensure tools and equipment are always in working condition."
-    },
-    {
-      icon: BarChart3,
-      title: "Project Cost Tracking",
-      description: "Track material costs per project for accurate job costing. Understand profitability and optimize purchasing decisions."
-    },
-    {
-      icon: AlertTriangle,
-      title: "Low Stock Alerts",
-      description: "Get instant alerts when materials or tools are running low at any job site. Never run out of critical supplies."
-    }
-  ];
-
-  const useCases = [
-    {
-      title: "Job Site Material Tracking",
-      description: "Track construction materials like lumber, concrete, drywall, and hardware across multiple job sites. Know exactly what's at each location and when to reorder.",
-      icon: Building2,
-      metrics: "Track materials across 10+ job sites"
-    },
-    {
-      title: "Tool Management",
-      description: "Prevent tool loss and theft by tracking tools across job sites. Assign tools to specific projects and get alerts when tools aren't returned.",
-      icon: Wrench,
-      metrics: "Reduce tool loss by 40%"
-    },
-    {
-      title: "Equipment Scheduling",
-      description: "Schedule heavy equipment like excavators, loaders, and generators across multiple projects. Prevent double-booking and optimize equipment utilization.",
-      icon: Truck,
-      metrics: "Optimize equipment utilization by 35%"
-    },
-    {
-      title: "Material Ordering",
-      description: "Automate material ordering based on project schedules and job site needs. Reduce waste from over-purchasing and prevent delays from stockouts.",
-      icon: Package,
-      metrics: "Reduce material waste by 30%"
-    },
-    {
-      title: "Project Cost Tracking",
-      description: "Track material costs per project for accurate job costing. Understand which projects are profitable and optimize purchasing decisions.",
-      icon: DollarSign,
-      metrics: "Improve job costing accuracy by 95%"
-    },
-    {
-      title: "Multi-Location Management",
-      description: "Manage inventory across warehouses, storage yards, and job sites. Transfer materials between locations with full traceability.",
-      icon: MapPin,
-      metrics: "Manage 10+ locations from one dashboard"
-    }
-  ];
-
-  const metricsData = [
-    {
-      value: "30%",
-      label: "Reduction in Material Waste",
-      description: "Optimize material ordering and reduce over-purchasing"
-    },
-    {
-      value: "15+",
-      label: "Hours Saved Per Week",
-      description: "Eliminate manual inventory counts and data entry"
-    },
-    {
-      value: "10+",
-      label: "Job Sites Tracked",
-      description: "Manage inventory across unlimited job sites"
-    },
-    {
-      value: "40%",
-      label: "Reduction in Tool Loss",
-      description: "Track tools and equipment to prevent theft and loss"
-    },
-    {
-      value: "95%",
-      label: "Job Costing Accuracy",
-      description: "Track material costs per project accurately"
-    },
-    {
-      value: "99%",
-      label: "Inventory Accuracy",
-      description: "Real-time tracking ensures accurate inventory records"
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Mike Rodriguez",
-      role: "General Contractor, Rodriguez Construction",
-      content: "StockFlow transformed how we manage materials across our job sites. We reduced material waste by 35% and saved 20 hours per week on inventory tracking. The mobile scanning is a game-changer.",
-      rating: 5
-    },
-    {
-      name: "Sarah Chen",
-      role: "Project Manager, BuildRight Contractors",
-      content: "Tracking tools across 12 job sites used to be a nightmare. With StockFlow, we know exactly where every tool is, and we've reduced tool loss by 45%. The ROI was immediate.",
-      rating: 5
-    },
-    {
-      name: "James Wilson",
-      role: "Owner, Wilson Construction Co",
-      content: "The material ordering automation has been incredible. We no longer over-order materials, and we've eliminated stockouts that were delaying projects. Our job costing is now 100% accurate.",
-      rating: 5
-    }
-  ];
-
-  const workflowSteps = [
-    {
-      step: "1",
-      title: "Set Up Job Sites",
-      description: "Create locations for each job site, warehouse, and storage yard"
-    },
-    {
-      step: "2",
-      title: "Add Materials & Tools",
-      description: "Add construction materials, tools, and equipment with barcodes"
-    },
-    {
-      step: "3",
-      title: "Track Inventory",
-      description: "Use mobile scanning to track inventory at each job site in real-time"
-    },
-    {
-      step: "4",
-      title: "Automate Ordering",
-      description: "Set up automated reorder points and material ordering workflows"
-    }
-  ];
 
   return (
     <SeoPageLayout 
-      title="Construction Inventory Management for Contractors"
-      heroTitle="Construction Inventory Management for Contractors"
-      dateUpdated="06/01/2026"
+      title={topicTitle}
+      heroTitle="Construction Inventory Management for General Contractors"
+      dateUpdated={dateUpdated}
       faqData={faqData}
-      keyTakeaways={KeyTakeaways}
+      keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Construction Inventory Management Software | StockFlow"
-        description="Construction inventory management for contractors. Track materials, tools, and equipment across job sites. Reduce waste 30%, save time with mobile scanning."
-        keywords="construction inventory management, contractor inventory software, job site inventory tracking, construction materials management, tool tracking software, construction equipment tracking, contractor inventory system, construction inventory software, job site material tracking, construction tool management, contractor inventory app, construction inventory solution, multi-site inventory tracking, construction project inventory, contractor stock management"
+        title="Construction Inventory Management Software | Multi-Jobsite Tracking"
+        description="The leading construction inventory management system for general contractors. Track materials, manage tools across jobsites, and reduce waste by 30%."
+        keywords="construction inventory management software, managing inventory across jobsites, inventory management software for general contractors, construction equipment tracking software, construction business software, best accounting software for construction"
         url="https://www.stockflowsystems.com/contractor-inventory-management"
         structuredData={structuredData}
       />
 
-
-
-
-
-      {/* Introduction */}
-      <div className="mb-12">
-        <p className="text-lg text-slate-900 leading-relaxed mb-6">
-          Manage construction materials, tools, and equipment across all your job sites from one dashboard. Stop losing tools, reduce material waste, and save hours every week with mobile inventory tracking designed for contractors.
-        </p>
-        <p className="text-lg text-slate-600 leading-relaxed mb-4">
-          <strong>Construction inventory management</strong> is essential for contractors managing multiple job sites. It helps track materials, tools, and equipment across locations, prevent theft and loss, optimize material ordering, and ensure everything is available when needed. Unlike manual methods, modern <strong>construction inventory management software</strong> provides real-time visibility across all job sites.
-        </p>
-        <p className="text-lg text-slate-600 leading-relaxed">
-          Contractors face unique challenges: managing inventory across multiple job sites, preventing tool loss and theft, optimizing material ordering to reduce waste, and tracking project costs accurately. <Link to="/solutions/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Construction inventory management software</Link> like StockFlow helps contractors overcome these challenges with mobile scanning, multi-location tracking, and automated ordering. Learn more about <Link to="/solutions/mobile-inventory-management" className="text-blue-600 hover:underline font-semibold">mobile inventory management</Link> for field access.
-        </p>
-      </div>
+      {/* Hero Narrative & Deep Context */}
+      <section className="mb-20">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">
+          <ShieldCheck className="w-4 h-4" /> Built for Modern Builders
+        </div>
+        <h2 className="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
+          Stop Losing Profits to <span className="text-blue-600">Poor Jobsite Tracking</span>
+        </h2>
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="space-y-6 text-lg text-slate-600 leading-relaxed">
+            <p>
+              For many firms, <strong>managing inventory across jobsites</strong> is the largest source of unrecovered costs. Materials are over-ordered, tools "walk off" the site, and <strong>construction inventory management Excel</strong> sheets are outdated before the ink is dry.
+            </p>
+            <p>
+              StockFlow provides a comprehensive <strong>construction inventory management system</strong> that bridges the gap between the warehouse and the field. Whether you are looking for <strong>inventory tracking software for builders</strong> or a specialized <strong>inventory tracking tool for concrete contractors</strong>, our platform ensures every nail, board, and piece of heavy machinery is accounted for.
+            </p>
+          </div>
+          <div className="bg-slate-900 rounded-3xl p-8 text-white shadow-xl">
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <Calculator className="text-blue-400" /> Beyond Simple Tracking
+            </h3>
+            <p className="text-slate-400 mb-6 text-sm">
+              Our <strong>construction business software</strong> integrates with your existing tech stack, providing a missing link for:
+            </p>
+            <ul className="space-y-3 text-sm">
+              <li className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-green-400" /> Procore inventory management field sync</li>
+              <li className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-green-400" /> FOUNDATION construction software data exports</li>
+              <li className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-green-400" /> Construction financial management software API</li>
+              <li className="flex gap-2 items-center"><CheckCircle className="w-4 h-4 text-green-400" /> Automated Equipment Maintenance logs</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
       {/* Metrics Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-orange-50">
+      <section className="py-16 px-4 bg-gradient-to-br from-slate-900 to-blue-900 rounded-[2rem] text-white mb-20 shadow-2xl">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6">
-              Proven Results for <span className="text-blue-600">Construction Contractors</span>
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See the measurable impact construction inventory management has on contractor operations.
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Hard Data for <span className="text-blue-400">Construction Professionals</span>
+            </h2>
+            <p className="text-slate-300 max-w-2xl mx-auto">
+              Implementing professional <strong>inventory management for contractors</strong> delivers measurable ROI from the first project.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {metricsData.map((metric, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">{metric.value}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{metric.label}</h3>
-                <p className="text-gray-600">{metric.description}</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { value: "30%", label: "Waste Reduction", desc: "Average savings on materials like lumber and concrete." },
+              { value: "40%", label: "Less Tool Loss", desc: "Using construction equipment tracking software." },
+              { value: "95%", label: "Costing Accuracy", desc: "When linked with construction financial software." },
+              { value: "15+", label: "Weekly Hours Saved", desc: "Eliminating manual inventory counts at jobsites." },
+              { value: "99%", label: "Stock Visibility", desc: "Real-time updates via mobile scanning apps." },
+              { value: "0€", label: "Free Entry Tier", desc: "Start today with zero financial management risk." }
+            ].map((metric, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/10 text-center">
+                <div className="text-5xl font-extrabold text-blue-400 mb-2">{metric.value}</div>
+                <h3 className="text-lg font-bold mb-2">{metric.label}</h3>
+                <p className="text-slate-400 text-sm">{metric.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Use Cases Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Construction Inventory <span className="text-blue-600">Use Cases</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              How contractors use StockFlow to manage inventory across job sites and projects.
+      {/* Feature Focus: Equipment & Financials */}
+      <section className="mb-24">
+        <h2 className="text-3xl font-bold text-slate-900 mb-12 text-center">Integrated Construction Business Solutions</h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="p-10 bg-slate-50 rounded-3xl border border-slate-200">
+            <Truck className="w-12 h-12 text-blue-600 mb-6" />
+            <h3 className="text-2xl font-bold mb-4">Construction Equipment Tracking Software</h3>
+            <p className="text-slate-600 leading-relaxed mb-6">
+              Track your fleet and heavy machinery across multiple locations. Log engine hours, schedule preventive maintenance, and assign equipment to specific general contractors or project leads. Prevent expensive downtime by ensuring your <strong>construction equipment tracking</strong> is digitized.
             </p>
+            <div className="flex items-center gap-2 text-blue-600 font-bold">
+              Learn about tool tracking <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="p-10 bg-slate-50 rounded-3xl border border-slate-200">
+            <BarChart3 className="w-12 h-12 text-blue-600 mb-6" />
+            <h3 className="text-2xl font-bold mb-4">Financial & Accounting Integration</h3>
+            <p className="text-slate-600 leading-relaxed mb-6">
+              Inventory isn't just physical—it's capital. StockFlow provides the data needed for the <strong>best accounting software for construction</strong>. By tracking every dollar of material used, you can provide real-time job costing data to your financial teams, moving far beyond <strong>free construction accounting software</strong> limitations.
+            </p>
+            <div className="flex items-center gap-2 text-blue-600 font-bold">
+              View financial integrations <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Workflow Section */}
+      <section className="py-20 bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Modernizing Your Workflow</h2>
+            <p className="text-slate-500">Move from <strong>construction inventory management Excel</strong> to a live system in 4 steps.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {useCases.map((useCase, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <useCase.icon className="w-12 h-12 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{useCase.title}</h3>
-                <p className="text-gray-600 mb-4">{useCase.description}</p>
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <p className="text-sm font-semibold text-blue-800">{useCase.metrics}</p>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { step: "01", title: "Map Jobsites", desc: "Digitize your physical locations from central warehouse to active sites." },
+              { step: "02", title: "Bulk Import", desc: "Upload your current inventory tracking software for builders data instantly." },
+              { step: "03", title: "Deploy Mobile", desc: "Give field crews the app to scan materials in/out as they work." },
+              { step: "04", title: "Financial Sync", desc: "Push usage data to your construction financial management software." }
+            ].map((item, index) => (
+              <div key={index} className="relative pt-12 group">
+                <span className="absolute top-0 left-0 text-6xl font-black text-slate-100 group-hover:text-blue-50 transition-colors">
+                  {item.step}
+                </span>
+                <div className="relative">
+                  <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
+                  <p className="text-slate-500 text-sm">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -342,270 +238,65 @@ export default function ContractorInventoryManagement() {
       </section>
 
       {/* Screenshot Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              See StockFlow in <span className="text-blue-600">Action</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-              Track construction materials, tools, and equipment across all your job sites from one dashboard.
-            </p>
-          </div>
-          <div className="bg-white rounded-lg shadow-xl p-4">
-            <img 
-              src="/ConstructionInventory.png" 
-              alt="StockFlow Construction Inventory Management Dashboard - Track materials, tools, and equipment across job sites"
-              className="w-full rounded-lg"
-            />
-            {/* NOTE: Replace this placeholder image with actual StockFlow construction dashboard screenshot showing:
-                - Multi-job site view
-                - Material tracking interface
-                - Tool/equipment management
-                - Mobile scanning interface
-                - Job site transfer functionality */}
-            <p className="text-sm text-gray-500 mt-4 text-center italic">
-              Screenshot placeholder - Replace with actual StockFlow construction inventory dashboard
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Powerful Features for <span className="text-blue-600">Construction Contractors</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Everything you need to manage construction inventory across job sites.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <feature.icon className="w-12 h-12 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Workflow Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Get Started in <span className="text-blue-600">4 Simple Steps</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Set up construction inventory management in minutes, not weeks.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {workflowSteps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  {step.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Success Stories from <span className="text-blue-600">Construction Contractors</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how contractors have transformed their inventory management with StockFlow.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                <div className="flex mb-4">
-                  {Array.from({ length: Number(testimonial.rating) || 0 }).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                <div>
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-green-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why Contractors Choose <span className="text-blue-600">StockFlow</span>
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-lg p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <DollarSign className="h-6 w-6 text-green-600" />
-                Cost Savings
-              </h3>
-              <ul className="space-y-3 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>30% reduction</strong> in material waste</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>40% reduction</strong> in tool loss and theft</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Optimized material ordering</strong> reduces over-purchasing</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Accurate job costing</strong> improves profitability</span>
-                </li>
-              </ul>
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="bg-slate-900 rounded-[2.5rem] p-4 lg:p-12 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 blur-[100px] rounded-full" />
+            <div className="text-center mb-10 relative z-10">
+              <h2 className="text-3xl font-bold text-white mb-4">Unified Construction Inventory View</h2>
+              <p className="text-slate-400">Monitor all material and equipment status from a single field-ready dashboard.</p>
             </div>
-
-            <div className="bg-white rounded-lg p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Clock className="h-6 w-6 text-blue-600" />
-                Time Savings
-              </h3>
-              <ul className="space-y-3 text-gray-700">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>15+ hours per week</strong> saved on inventory tracking</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Mobile scanning</strong> eliminates manual data entry</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Automated alerts</strong> reduce time checking stock levels</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span><strong>Real-time visibility</strong> eliminates physical counts</span>
-                </li>
-              </ul>
+            
+            
+            
+            <div className="mt-8 text-center text-slate-500 text-xs italic">
+              Example dashboard: Real-time material burn rates and equipment location heatmaps.
             </div>
           </div>
         </div>
       </section>
 
-      {/* Product & Pricing Links Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Explore StockFlow Solutions
-            </h2>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Learn more about features, pricing, and see how StockFlow helps contractors manage inventory.
+      {/* Final Comparison / CTA */}
+      <section className="py-20 bg-slate-50 rounded-3xl mb-20 px-8 lg:px-20 border border-slate-200">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-slate-900 mb-6">Why Settle for Less?</h2>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              Generic <strong>construction inventory management software</strong> often misses the reality of the jobsite. StockFlow is built to handle the dirt, the multiple locations, and the need for speed. Upgrade from <strong>construction inventory management Excel</strong> and stop guessing where your equipment is.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/signup" className="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl text-center hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
+                Get Started for Free <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/features" className="px-8 py-4 bg-white text-slate-900 border border-slate-200 font-bold rounded-xl text-center hover:bg-slate-50 transition-all">
+                View Full Features
+              </Link>
+            </div>
           </div>
-
-          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            <Link 
-              to="/features"
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group text-center"
-            >
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-200 transition-colors">
-                <Package className="h-6 w-6 text-blue-600" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                Features
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Mobile scanning, job site tracking, and more.
-              </p>
-              <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
-                View <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
-
-            <Link 
-              to="/pricing"
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group text-center"
-            >
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-green-200 transition-colors">
-                <DollarSign className="h-6 w-6 text-green-600" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                Pricing
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Join for Free, scale as you grow.
-              </p>
-              <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
-                View Plans <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
-
-            <Link 
-              to="/solutions/inventory-management-software"
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group text-center"
-            >
-              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-indigo-200 transition-colors">
-                <TrendingUp className="h-6 w-6 text-indigo-600" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                Solutions
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Inventory management solutions.
-              </p>
-              <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
-                Explore <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
-
-            <Link 
-              to="/inventory-management-software"
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group text-center"
-            >
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-200 transition-colors">
-                <Wrench className="h-6 w-6 text-purple-600" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                Complete Guide
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Full inventory management guide.
-              </p>
-              <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
-                Read More <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <FileSpreadsheet className="w-8 h-8 text-red-500 mb-4" />
+              <h4 className="font-bold mb-2">No More Spreadsheets</h4>
+              <p className="text-xs text-slate-500">Live data beats static files every time.</p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <Smartphone className="w-8 h-8 text-blue-500 mb-4" />
+              <h4 className="font-bold mb-2">Field Ready</h4>
+              <p className="text-xs text-slate-500">Scanning built for the toughest jobsites.</p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <Building2 className="w-8 h-8 text-indigo-500 mb-4" />
+              <h4 className="font-bold mb-2">Enterprise Scaling</h4>
+              <p className="text-xs text-slate-500">From 1 jobsite to 1,000+.</p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+              <DollarSign className="w-8 h-8 text-green-500 mb-4" />
+              <h4 className="font-bold mb-2">Profit Maximization</h4>
+              <p className="text-xs text-slate-500">Know exactly where your money is spent.</p>
+            </div>
           </div>
         </div>
       </section>
-
-
-
     </SeoPageLayout>
   );
 }
-
