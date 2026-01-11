@@ -115,7 +115,6 @@ export const AuthPage = () => {
           description: 'Check your inbox to confirm your email address',
         });
         setMode('login');
-        clearForm();
       } else if (mode === 'reset') {
         const { error } = await resetPassword(email);
 
@@ -181,7 +180,7 @@ export const AuthPage = () => {
               <div className="flex bg-gray-100 rounded-lg p-1">
                 <button
                   type="button"
-                  onClick={() => { setMode('login'); clearForm(); }}
+                  onClick={() => { setMode('login');  }}
                   disabled={isSubmitting}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
                     mode === 'login'
@@ -195,7 +194,6 @@ export const AuthPage = () => {
                   type="button"
                   onClick={() => { 
                     setMode('register'); 
-                    clearForm(); 
                   }}
                   disabled={isSubmitting}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${
@@ -326,7 +324,7 @@ export const AuthPage = () => {
                       </div>
                       <button 
                         type="button" 
-                        onClick={() => { setMode('reset'); clearForm(); }} 
+                        onClick={() => { setMode('reset'); }} 
                         className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors" 
                         disabled={isSubmitting}
                       >
