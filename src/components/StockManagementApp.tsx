@@ -100,13 +100,7 @@ export const StockManagementApp: React.FC = () => {
           <Outlet key={location.pathname} />
         </Layout>
 
-        {/* Onboarding wizard takes precedence over branch modal */}
-        {!isLoadingOnboarding && shouldShowOnboarding ? (
-          <OnboardingWizard
-            open={shouldShowOnboarding}
-            onComplete={handleOnboardingComplete}
-          />
-        ) : (
+
           <CreateBranchModal
             open={hasNoBranches && !hasError}
             onOpenChange={() => {
@@ -115,7 +109,6 @@ export const StockManagementApp: React.FC = () => {
               // New branch created successfully
             }}
           />
-        )}
         </div>
     </UnreadMessagesProvider>
   );

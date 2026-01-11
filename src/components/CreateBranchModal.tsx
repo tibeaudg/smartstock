@@ -152,20 +152,9 @@ export const CreateBranchModal = ({
           user_role: 'admin', // of haal uit branchData als beschikbaar
         });
 
-        // Track branch creation event
-        await trackCustomEvent('branch_created', {
-          branch_id: branchData.id,
-          branch_name: branchData.name,
-          is_main: branchData.is_main,
-          is_additional: isAdditionalBranch,
-        }, `Branch created: ${branchData.name}`);
+
       }
 
-      toast.success(
-        isAdditionalBranch
-          ? 'Branch successfully created! Additional costs will be charged on the next invoice.'
-          : 'Branch successfully created!'
-      );
 
       form.reset();
       onBranchCreated();

@@ -74,14 +74,6 @@ export const FirstBranchSetup: React.FC<FirstBranchSetupProps> = ({ onBranchCrea
           user_role: 'admin',
         });
 
-        // Track branch creation event
-        await trackCustomEvent('branch_created', {
-          branch_id: branchData.id,
-          branch_name: branchData.name,
-          is_main: branchData.is_main,
-          is_additional: false,
-          source: 'first_branch_setup',
-        }, `Branch created: ${branchData.name}`);
       }
 
       toast.success('Your first branch has been successfully created!');

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/integrations/supabase/types';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles } from 'lucide-react';
@@ -13,15 +12,12 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { UserActivityView } from '@/components/admin/UserActivityView';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 import { formatDistanceToNow } from 'date-fns';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
-import { OnboardingWizard } from '@/components/OnboardingWizard';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 
@@ -517,7 +513,7 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'onboarding' | 'chats' | 'notifications'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'chats' | 'notifications'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -528,7 +524,6 @@ export default function AdminPage() {
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [quickFilter, setQuickFilter] = useState<'all' | 'active' | 'blocked' | 'inactive'>('all');
-  const [showOnboardingWizard, setShowOnboardingWizard] = useState(false);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -777,9 +772,8 @@ export default function AdminPage() {
     };
   }, [currentUser?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'users' | 'onboarding' | 'chats' | 'notifications'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications'; label: string }[] = [
     { id: 'users', label: 'User Management' },
-    { id: 'onboarding', label: 'Test Onboarding' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
   ];
@@ -791,42 +785,6 @@ export default function AdminPage() {
     }
   }, [userProfile, navigate]);
 
-  const handleTestOnboarding = async () => {
-    if (!currentUser) {
-      toast.error('User not found');
-      return;
-    }
-
-    try {
-      // Reset onboarding status to null for testing
-      const { error } = await (supabase.from('profiles') as any)
-        .update({ onboarding: null })
-        .eq('id', currentUser.id);
-
-      if (error) throw error;
-
-      // Invalidate queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ['onboarding-product-count'] });
-      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
-      
-      // Show the wizard directly (bypassing the product count check for testing)
-      setShowOnboardingWizard(true);
-      toast.success('Onboarding wizard opened for testing!');
-    } catch (error: any) {
-      console.error('Error resetting onboarding:', error);
-      toast.error(`Failed to reset onboarding: ${error.message}`);
-    }
-  };
-
-  const handleOnboardingComplete = () => {
-    setShowOnboardingWizard(false);
-    // Redirect to categories page after onboarding completion
-    navigate('/categories');
-  };
-
-  if (!userProfile || userProfile.is_owner !== true) {
-    return null;
-  }
 
   return (
     <BranchProvider>
@@ -872,35 +830,7 @@ export default function AdminPage() {
 
           {/* Main content area */}
           <div className="w-full flex-grow space-y-8 mb-24">
-            {activeTab === 'onboarding' && (
-              <div className="space-y-8">
-                <PageHeader
-                  title="Test Onboarding Flow"
-                  description="Manually trigger the onboarding wizard for testing purposes. This will reset your onboarding status."
-                />
-                <Card className="border-2 border-dashed border-orange-300 bg-orange-50/50">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Sparkles className="w-5 h-5 text-orange-600" />
-                      Test Onboarding Wizard
-                    </CardTitle>
-                    <CardDescription>
-                      Click the button below to reset your onboarding status and trigger the onboarding wizard. This is useful for testing the onboarding flow.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button
-                      onClick={handleTestOnboarding}
-                      variant="outline"
-                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
-                    >
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Trigger Onboarding Wizard
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
+
             {activeTab === 'users' && (
               <div className="space-y-8">
         
@@ -1353,13 +1283,7 @@ export default function AdminPage() {
         </>
       </Layout>
       
-      {/* Onboarding Wizard for Testing */}
-      {showOnboardingWizard && (
-        <OnboardingWizard
-          open={showOnboardingWizard}
-          onComplete={handleOnboardingComplete}
-        />
-      )}
+ 
     </BranchProvider>
   );
 }

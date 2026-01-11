@@ -8,13 +8,18 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
-  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog';
 
 import { toast } from '@/hooks/use-toast';
-import { Loader2, Building2, Plus, Edit, Users, Calendar, Euro } from 'lucide-react';
+import { Loader2, Building2, Plus, Edit, Users, Calendar, Trash2 } from 'lucide-react';
 
 interface BranchFormData {
   name: string;
@@ -29,16 +34,6 @@ interface UserBranch {
   is_main: boolean;
   user_count?: number;
   created_at: string;
-}
-
-interface PricingInfo {
-  totalUsers: number;
-  totalBranches: number;
-  extraUsers: number;
-  extraBranches: number;
-  userCost: number;
-  branchCost: number;
-  totalCost: number;
 }
 
 export const BranchManagement = () => {
@@ -56,12 +51,20 @@ export const BranchManagement = () => {
     formState: { errors },
   } = useForm<BranchFormData>();
 
-  // React Query: fetch user branches
-  const fetchUserBranches = async () => {
+  // Fetch user branches
+  const fetchUserBranches = async (): Promise<UserBranch[]> => {
     if (!user) return [];
-    const { data, error } = await supabase.rpc('get_user_branches', { user_id: user.id });
-    if (error) throw error;
-    return data as UserBranch[];
+    
+    const { data, error } = await supabase.rpc('get_user_branches', { 
+      user_id: user.id 
+    });
+    
+    if (error) {
+      console.error('Error fetching branches:', error);
+      throw error;
+    }
+    
+    return (data as UserBranch[]) || [];
   };
 
   const {
@@ -75,122 +78,97 @@ export const BranchManagement = () => {
     queryFn: fetchUserBranches,
     enabled: !!user,
     refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2,
-  });
-
-  // Fetch pricing information
-  const fetchPricingInfo = async (): Promise<PricingInfo> => {
-    if (!user) return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
-    
-    // Get all branches for this user
-    const { data: branches, error: branchesError } = await supabase
-      .from('branches')
-      .select('id')
-      .eq('user_id', user.id);
-    
-    if (branchesError) {
-      console.error('Error fetching branches for pricing:', branchesError);
-      return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
-    }
-    
-    const branchIds = branches?.map(b => b.id) || [];
-    
-    // Get all users across all branches for this user
-    const { data: branchUsers, error: usersError } = await supabase
-      .from('branch_users')
-      .select('user_id')
-      .in('branch_id', branchIds);
-    
-    if (usersError) {
-      console.error('Error fetching branch users for pricing:', usersError);
-      return { totalUsers: 0, totalBranches: 0, extraUsers: 0, extraBranches: 0, userCost: 0, branchCost: 0, totalCost: 0 };
-    }
-    
-    // Count unique users
-    const uniqueUsers = new Set(branchUsers?.map(u => u.user_id) || []);
-    const totalUsers = uniqueUsers.size;
-    const totalBranches = branchIds.length;
-    
-    // Pricing: $2 per extra user (first user is free), $5 per extra branch (main branch is free)
-    const extraUsers = Math.max(0, totalUsers - 1); // First user is free
-    const extraBranches = Math.max(0, totalBranches - 1); // Main branch is free
-    const userCost = extraUsers * 2;
-    const branchCost = extraBranches * 5;
-    const totalCost = userCost + branchCost;
-    
-    return {
-      totalUsers,
-      totalBranches,
-      extraUsers,
-      extraBranches,
-      userCost,
-      branchCost,
-      totalCost
-    };
-  };
-
-  const {
-    data: pricingInfo,
-    isLoading: pricingLoading,
-  } = useQuery<PricingInfo>({
-    queryKey: ['pricingInfo', user?.id],
-    queryFn: fetchPricingInfo,
-    enabled: !!user,
-    refetchOnWindowFocus: true,
-    staleTime: 1000 * 60 * 2,
+    staleTime: 1000 * 60 * 2, // 2 minutes
   });
 
   // Delete branch
-  const deleteBranch = async (branchId: string) => {
-    const confirmed = window.confirm('Are you sure you want to delete this branch?');
+  const deleteBranch = async (branchId: string, isMain: boolean) => {
+    if (isMain) {
+      toast({
+        title: 'Cannot Delete',
+        description: 'The main branch cannot be deleted.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this branch? This action cannot be undone.'
+    );
+    
     if (!confirmed || !user) return;
 
-    const { error } = await supabase
-      .from('branches')
-      .delete()
-      .eq('id', branchId)
+    try {
+      const { error } = await supabase
+        .from('branches')
+        .delete()
+        .eq('id', branchId)
+        .eq('user_id', user.id); // Security: ensure user owns the branch
 
-    if (error) {
-      console.error('Error deleting branch:', error);
-    } else {
-      toast({ title: 'Deleted', description: 'Branch successfully deleted.' });
+      if (error) throw error;
+
+      toast({ 
+        title: 'Success', 
+        description: 'Branch successfully deleted.' 
+      });
+      
+      // Refresh data
       refetch();
-      // Refresh pricing info
-      queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
+      await refreshBranches();
+    } catch (error) {
+      console.error('Error deleting branch:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete branch. Please try again.',
+        variant: 'destructive',
+      });
     }
   };
 
-  // Create / Update form submit
+  // Create or update branch
   const onSubmit = async (data: BranchFormData) => {
-    if (!user) return;
+    if (!user) {
+      toast({
+        title: 'Error',
+        description: 'You must be logged in to perform this action.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
     setIsSaving(true);
+    
     try {
       if (editingBranch) {
-        // Update existing
+        // Update existing branch
         const { error } = await supabase
           .from('branches')
           .update({
             name: data.name,
-            address: data.address,
-            phone: data.phone,
-            email: data.email,
+            address: data.address || null,
+            phone: data.phone || null,
+            email: data.email || null,
             updated_at: new Date().toISOString(),
           })
-          .eq('id', editingBranch.branch_id);
+          .eq('id', editingBranch.branch_id)
+          .eq('user_id', user.id); // Security: ensure user owns the branch
 
         if (error) throw error;
 
-          toast({ title: 'Updated', description: 'Branch successfully updated.' });
+        toast({ 
+          title: 'Success', 
+          description: 'Branch successfully updated.' 
+        });
       } else {
-        // Create new
+        // Create new branch
         const { data: newBranch, error: branchError } = await supabase
           .from('branches')
           .insert({
             name: data.name,
-            address: data.address,
-            phone: data.phone,
-            email: data.email,
+            address: data.address || null,
+            phone: data.phone || null,
+            email: data.email || null,
+            user_id: user.id,
             is_main: false,
             is_active: true,
           })
@@ -199,6 +177,7 @@ export const BranchManagement = () => {
 
         if (branchError) throw branchError;
 
+        // Link user to the new branch
         const { error: userError } = await supabase
           .from('branch_users')
           .insert({
@@ -209,36 +188,33 @@ export const BranchManagement = () => {
           });
 
         if (userError) {
+          console.error('Error linking user to branch:', userError);
           toast({
             title: 'Warning',
             description: 'Branch created, but linking to user failed.',
             variant: 'destructive',
           });
         } else {
-          // Track branch creation event
-          await trackCustomEvent('branch_created', {
-            branch_id: newBranch.id,
-            branch_name: newBranch.name,
-            is_main: false,
-            is_additional: true,
-            source: 'branch_management',
-          }, `Branch created: ${newBranch.name}`);
-          
-          toast({ title: 'Created', description: 'New branch successfully added.' });
+          toast({ 
+            title: 'Success', 
+            description: 'Branch successfully created.' 
+          });
         }
       }
 
+      // Close dialog and reset form
       setIsDialogOpen(false);
       setEditingBranch(null);
       reset();
+      
+      // Refresh data
+      refetch();
       await refreshBranches();
-      // Refresh pricing info
-      queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
     } catch (error) {
-      console.error(error);
+      console.error('Error saving branch:', error);
       toast({
         title: 'Error',
-        description: 'An error occurred while saving.',
+        description: 'An error occurred while saving the branch.',
         variant: 'destructive',
       });
     } finally {
@@ -246,35 +222,51 @@ export const BranchManagement = () => {
     }
   };
 
+  // Open edit dialog with branch data
   const handleEditBranch = async (branch: UserBranch) => {
-    const { data, error } = await supabase
-      .from('branches')
-      .select('*')
-      .eq('id', branch.branch_id)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('branches')
+        .select('*')
+        .eq('id', branch.branch_id)
+        .eq('user_id', user?.id) // Security: ensure user owns the branch
+        .single();
 
-    if (error) {
+      if (error) throw error;
+
+      setEditingBranch(branch);
+      reset({
+        name: data.name,
+        address: data.address || '',
+        phone: data.phone || '',
+        email: data.email || '',
+      });
+      setIsDialogOpen(true);
+    } catch (error) {
       console.error('Error fetching branch:', error);
-      toast({ title: 'Error', description: 'Could not fetch data.', variant: 'destructive' });
-      return;
+      toast({ 
+        title: 'Error', 
+        description: 'Could not fetch branch data.', 
+        variant: 'destructive' 
+      });
     }
-
-    setEditingBranch(branch);
-    reset({
-      name: data.name,
-      address: data.address || '',
-      phone: data.phone || '',
-      email: data.email || '',
-    });
-    setIsDialogOpen(true);
   };
 
+  // Open create dialog
   const handleCreateNew = () => {
     setEditingBranch(null);
     reset({ name: '', address: '', phone: '', email: '' });
     setIsDialogOpen(true);
   };
 
+  // Close dialog handler
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setEditingBranch(null);
+    reset();
+  };
+
+  // Error state
   if (error) {
     return (
       <div className="text-center py-8">
@@ -288,122 +280,192 @@ export const BranchManagement = () => {
   }
 
   return (
-    <div className="space-y-2">
-      {/* Header Section with Title and Actions */}
+    <div className="space-y-6">
+      {/* Header Section */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Branches</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Manage Branches</h1>
+          <p className="text-gray-600 mt-1">Create and manage your branch locations</p>
         </div>
         
-        {/* Action Button */}
-        <div className="flex items-center gap-2">
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={handleCreateNew} className="h-9 bg-blue-600 hover:bg-blue-700 text-white">
-                <Plus className="w-4 h-4 mr-2" />
-                New Branch
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
+        {/* Create Branch Button */}
+        <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+          <DialogTrigger asChild>
+            <Button 
+              onClick={handleCreateNew} 
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              New Branch
+            </Button>
+          </DialogTrigger>
+          
+          <DialogContent>
             <DialogHeader>
-              <DialogTitle>{editingBranch ? 'Edit Branch' : 'New Branch'}</DialogTitle>
+              <DialogTitle>
+                {editingBranch ? 'Edit Branch' : 'Create New Branch'}
+              </DialogTitle>
               <DialogDescription>
                 {editingBranch
-                  ? 'Adjust the data of this branch.'
-                  : 'Enter the data of the new branch.'}
+                  ? 'Update the branch information below.'
+                  : 'Enter the details for your new branch.'}
               </DialogDescription>
             </DialogHeader>
+            
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {['name'].map((field) => (
-                <div className="space-y-2" key={field}>
-                  <Label htmlFor={field}>
-                    {field === 'name' ? 'Branch Name *' : field.charAt(0).toUpperCase() + field.slice(1)}
-                  </Label>
-                  <Input
-                    id={field}
-                    type={field === 'email' ? 'email' : 'text'}
-                    placeholder={
-                      field === 'name'
-                        ? ''
+              {/* Branch Name - Required */}
+              <div className="space-y-2">
+                <Label htmlFor="name">
+                  Branch Name <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="e.g., Downtown Office"
+                  {...register('name', {
+                    required: 'Branch name is required',
+                    minLength: {
+                      value: 2,
+                      message: 'Branch name must be at least 2 characters',
+                    },
+                  })}
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-600">{errors.name.message}</p>
+                )}
+              </div>
 
-                        : field === 'phone'
-                        ? '+31 6 12345678'
-                        : 'branch@company.nl'
-                    }
-                    {...register(field as keyof BranchFormData, {
-                      required: field === 'name' ? 'Name is required' : false,
-                    })}
-                  />
-                  {errors[field as keyof BranchFormData] && (
-                    <p className="text-sm text-red-600">
-                      {errors[field as keyof BranchFormData]?.message}
-                    </p>
-                  )}
-                </div>
-              ))}
-              <div className="flex justify-end space-x-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+              {/* Address - Optional */}
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Input
+                  id="address"
+                  type="text"
+                  placeholder="e.g., 123 Main Street, Amsterdam"
+                  {...register('address')}
+                />
+              </div>
+
+              {/* Phone - Optional */}
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="e.g., +31 6 12345678"
+                  {...register('phone')}
+                />
+              </div>
+
+              {/* Email - Optional */}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="e.g., branch@company.nl"
+                  {...register('email', {
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email address',
+                    },
+                  })}
+                />
+                {errors.email && (
+                  <p className="text-sm text-red-600">{errors.email.message}</p>
+                )}
+              </div>
+
+              {/* Form Actions */}
+              <div className="flex justify-end space-x-2 pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={handleCloseDialog}
+                  disabled={isSaving}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isSaving}>
                   {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                  {editingBranch ? 'Update' : 'Create'}
+                  {editingBranch ? 'Update Branch' : 'Create Branch'}
                 </Button>
               </div>
             </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Branches List */}
-      <div className="space-y-2">
-        {userBranches.map((branch) => (
-          <Card key={branch.branch_id}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Building2 className="w-4 h-4" />
-                    <h3 className="text-lg font-semibold text-gray-900">{branch.branch_name}</h3>
-                    {branch.is_main && (
-                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">
-                        Main Branch
-                      </span>
-                    )}
+      {userBranches.length > 0 && (
+        <div className="space-y-3">
+          {userBranches.map((branch) => (
+            <Card key={branch.branch_id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Building2 className="w-5 h-5 text-gray-600" />
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {branch.branch_name}
+                      </h3>
+                      {branch.is_main && (
+                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                          Main Branch
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4" />
+                        <span>
+                          {branch.user_count || 0} {branch.user_count === 1 ? 'user' : 'users'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>
+                          Created {new Date(branch.created_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4" />
-                      <span>{branch.user_count} users</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>{new Date(branch.created_at).toLocaleDateString('en-US')}</span>
-                    </div>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 ml-4">
+                    <Button
+                      onClick={() => handleEditBranch(branch)}
+                      size="sm"
+                      variant="outline"
+                      title="Edit branch"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      onClick={() => deleteBranch(branch.branch_id, branch.is_main)}
+                      size="sm"
+                      variant="outline"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      disabled={branch.is_main}
+                      title={branch.is_main ? 'Cannot delete main branch' : 'Delete branch'}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button onClick={() => handleEditBranch(branch)} size="sm" variant="outline">
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    onClick={() => deleteBranch(branch.branch_id)}
-                    size="sm"
-                    variant="outline"
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    disabled={branch.is_main}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
 
-      {(isLoading || isFetching) && (
+      {/* Loading State */}
+      {(isLoading || isFetching) && userBranches.length === 0 && (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
@@ -412,13 +474,23 @@ export const BranchManagement = () => {
         </div>
       )}
 
+      {/* Empty State */}
       {userBranches.length === 0 && !isLoading && !isFetching && (
-        <div className="flex items-center justify-center py-12">
-          <div className="text-center">
-            <Building2 className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No branches found</h3>
-            <p className="text-gray-600 mb-4">Begin with creating your first branch.</p>
-            <Button onClick={handleCreateNew} className="bg-blue-600 hover:bg-blue-700 text-white">
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center max-w-md">
+            <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Building2 className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              No branches yet
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Get started by creating your first branch location.
+            </p>
+            <Button 
+              onClick={handleCreateNew} 
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Create First Branch
             </Button>
