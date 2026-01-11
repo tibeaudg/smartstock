@@ -25,7 +25,6 @@ import {
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import Header from '@/components/HeaderPublic';
-import { SavingsCalculator } from '@/components/SavingsCalculator';
 import VideoModal from '@/components/VideoModal';
 import LeadMagnetDownload from '@/components/LeadMagnetDownload';
 import { leadMagnets, LeadMagnet } from '@/data/leadMagnets';
@@ -273,53 +272,7 @@ export default function ResourcesPage() {
                   Calculate your potential savings with StockFlow
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex-1 flex flex-col">
-                {!showCalculator ? (
-                  <>
-                    <div className="mb-6 flex-1">
-                      <div className="bg-purple-50 rounded-lg p-6 text-center">
-                        <Calculator className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                        <p className="text-sm text-gray-600 mb-4">
-                          Discover how much time and money StockFlow could save your business with our interactive calculator.
-                        </p>
-                        <ul className="text-left text-sm text-gray-600 space-y-2 mb-4">
-                          <li className="flex items-center">
-                            <span className="text-purple-600 mr-2">✓</span>
-                            Calculate time savings
-                          </li>
-                          <li className="flex items-center">
-                            <span className="text-purple-600 mr-2">✓</span>
-                            Estimate cost reductions
-                          </li>
-                          <li className="flex items-center">
-                            <span className="text-purple-600 mr-2">✓</span>
-                            See annual ROI potential
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <Button 
-                      className="w-full" 
-                      variant="default"
-                      onClick={() => setShowCalculator(true)}
-                    >
-                      Open Calculator
-                      <Calculator className="ml-2 h-4 w-4" />
-                    </Button>
-                  </>
-                ) : (
-                  <div className="mb-4">
-                    <SavingsCalculator />
-                    <Button 
-                      className="w-full mt-4" 
-                      variant="outline"
-                      onClick={() => setShowCalculator(false)}
-                    >
-                      Close Calculator
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
+
             </Card>
 
             {/* Knowledge Base Resource Card */}

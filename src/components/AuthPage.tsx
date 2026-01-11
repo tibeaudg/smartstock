@@ -109,11 +109,7 @@ export const AuthPage = () => {
               : error.message
           );
           return;
-        }
-
-        toast.success('Account created!', {
-          description: 'Check your inbox to confirm your email address',
-        });
+        };
         setMode('login');
       } else if (mode === 'reset') {
         const { error } = await resetPassword(email);

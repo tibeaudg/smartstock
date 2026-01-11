@@ -15,7 +15,6 @@ import {
 
 const SUGGESTIES = [
   { label: "Home", path: "/", icon: Home, category: "main" },
-  { label: "Pricing", path: "/pricing", icon: TrendingUp, category: "main" },
   { label: "Features", path: "/#features-section", icon: Package, category: "main" },
   { label: "Demo", path: "/#video-section", icon: BarChart3, category: "main" },
   { label: "Contact", path: "/#contact-section", icon: Mail, category: "main" },

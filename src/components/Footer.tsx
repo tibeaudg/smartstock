@@ -35,7 +35,6 @@ const Footer = () => {
   const footerLinks = {
     product: [
       { name: 'Features', path: '/features' },
-      { name: 'Pricing', path: '/pricing' },
       { name: 'Security', path: '/security' },
       { name: 'Integrations', path: '/integrations' },
     ],

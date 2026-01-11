@@ -11,7 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Tags, Edit, Trash2, Search, Filter, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, Eye } from 'lucide-react';
+import { Plus, Tags, Edit, Trash2, Search, Filter, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, Eye, ClipboardCheck } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -25,7 +26,11 @@ import {
   useCategoryRealtime
 } from '@/hooks/useCategories';
 import type { Category, CategoryCreateData } from '@/types/categoryTypes';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { CycleCount } from '@/types/stockTypes';
+import { CreateCycleCountModal } from '@/components/cycle-count/CreateCycleCountModal';
+import { CycleCountDetail } from '@/components/cycle-count/CycleCountDetail';
 import { getCategoryProductCounts } from '@/lib/categories/categoryService';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
@@ -68,6 +73,45 @@ export default function CategoriesPage() {
   const updateCategory = useUpdateCategory();
   const deleteCategoryMutation = useDeleteCategory();
   useCategoryRealtime();
+
+  // Cycle counts (recent) - small integration copied from cycle-count page
+  const queryClient = useQueryClient();
+  const [showCreateCycleModal, setShowCreateCycleModal] = useState(false);
+  const [selectedCycleCount, setSelectedCycleCount] = useState<CycleCount | null>(null);
+  const [cycleSearchQuery, setCycleSearchQuery] = useState('');
+
+  const { data: cycleCounts = [], isLoading: countsLoading, refetch: refetchCounts } = useQuery<CycleCount[]>({
+    queryKey: ['cycleCounts', activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!activeBranch?.branch_id) return [];
+      const { data, error } = await supabase
+        .from('cycle_counts')
+        .select(`*, items:cycle_count_items(*)`)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!activeBranch?.branch_id,
+  });
+
+  const filteredCycleCounts = cycleCounts.filter(count => {
+    if (cycleSearchQuery) {
+      const q = cycleSearchQuery.toLowerCase();
+      return (
+        count.count_number.toLowerCase().includes(q) ||
+        count.notes?.toLowerCase().includes(q)
+      );
+    }
+    return true;
+  });
+
+  const handleCycleCreated = () => {
+    setShowCreateCycleModal(false);
+    refetchCounts();
+    queryClient.invalidateQueries({ queryKey: ['cycleCounts'] });
+  };
 
   // Get product counts for categories
   const { data: productCounts } = useQuery({
@@ -256,6 +300,11 @@ export default function CategoriesPage() {
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Add Category</span>
           <span className="sm:hidden">Add</span>
+        </Button>
+        <Button onClick={() => setShowCreateCycleModal(true)} variant="outline" className="flex items-center gap-2">
+          <Plus className="w-4 h-4" />
+          <span className="hidden sm:inline">Create Cycle Count</span>
+          <span className="sm:hidden">Count</span>
         </Button>
       </div>
 
@@ -463,6 +512,44 @@ export default function CategoriesPage() {
         </div>
       )}
 
+      {/* Recent Cycle Counts (small integration) */}
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-3">Recent Cycle Counts</h3>
+        {countsLoading ? (
+          <div className="flex items-center justify-center p-6">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+          </div>
+        ) : filteredCycleCounts.length === 0 ? (
+          <Card>
+            <CardContent className="p-6 text-center">
+              <ClipboardCheck className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">No recent cycle counts</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-3">
+            {filteredCycleCounts.slice(0, 5).map((count) => (
+              <Card key={count.id} className="hover:shadow transition-shadow cursor-pointer" onClick={() => setSelectedCycleCount(count)}>
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-medium">{count.count_number}</h4>
+                        <Badge className={count.status ? (count.status === 'completed' ? 'bg-yellow-100 text-yellow-800' : count.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800') : 'bg-gray-100 text-gray-800'}>
+                          {count.status}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-gray-500">{new Date(count.count_date).toLocaleDateString()}</p>
+                    </div>
+                    <div className="text-sm text-gray-600">Items: {count.total_items_counted}</div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Add Category Modal */}
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
         <DialogContent>
@@ -571,6 +658,24 @@ export default function CategoriesPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Cycle Count Modals */}
+      {showCreateCycleModal && (
+        <CreateCycleCountModal
+          isOpen={showCreateCycleModal}
+          onClose={() => setShowCreateCycleModal(false)}
+          onCountCreated={handleCycleCreated}
+        />
+      )}
+
+      {selectedCycleCount && (
+        <CycleCountDetail
+          cycleCount={selectedCycleCount}
+          isOpen={!!selectedCycleCount}
+          onClose={() => setSelectedCycleCount(null)}
+          onCountUpdated={refetchCounts}
+        />
+      )}
     </div>
   );
 }

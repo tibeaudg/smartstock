@@ -694,9 +694,7 @@ export default function WarehouseManagementSystem() {
                 <span><strong>Scalable pricing:</strong> Pay only for what you use</span>
               </li>
             </ul>
-            <p className="mt-4 text-gray-600">
-              Compare our <strong>WMS SaaS pricing</strong> with traditional on-premise solutions using our <Link to="#roi" className="text-blue-600 hover:text-blue-800 font-semibold">ROI calculator</Link> above to see potential savings. View our complete <Link to="/pricing" className="text-blue-600 hover:text-blue-800 font-semibold">pricing page</Link> for detailed plan comparisons and features.
-            </p>
+
           </div>
         </div>
       </section>

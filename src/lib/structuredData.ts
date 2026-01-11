@@ -167,13 +167,6 @@ export function generateWebSiteSchema(organizationName: string, baseUrl: string)
         "name": "Features - Krachtige Voorraadbeheer Tools",
         "description": "Ontdek alle krachtige features van StockFlow inventory management",
         "url": `${baseUrl}/features`
-      },
-      {
-        "@type": "WebPage",
-        "@id": `${baseUrl}/pricing`,
-        "name": "Pricing - Completely Free Forever",
-        "description": "StockFlow is completely free forever - all features included, no credit card required",
-        "url": `${baseUrl}/pricing`
       }
     ]
   };

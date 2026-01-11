@@ -182,7 +182,6 @@ export function initializePerformanceOptimizations() {
   window.addEventListener('load', () => {
     // Prefetch next likely pages
     const criticalRoutes = [
-      '/pricing',
       '/features',
       '/dashboard'
     ];

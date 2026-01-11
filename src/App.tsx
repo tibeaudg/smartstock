@@ -44,7 +44,6 @@ import HelpCenterPage from "./pages/help-center";
 import BillOfMaterialsPage from './pages/BillOfMaterialsPage';
 import BOMEditPage from './pages/BillOfMaterialsPage'
 import AdminPage from './pages/admin';
-import PricingPage from './pages/pricing';
 import ResourcesPage from './pages/resources';
 import CustomersPage from './pages/customers';
 import CustomerDetailPage from './pages/customers/[id]';
@@ -154,7 +153,6 @@ const AppRouter = () => {
         <Route path="/" element={<><SEO title="Free Inventory Management Software" /><HomePage /></>} />
         <Route path="/features" element={<><SEO title="Features & Capabilities" /><FeaturesPage /></>} />
         <Route path="/reporting" element={<><SEO title="Inventory Reporting & Analytics" /><ReportingPage /></>} />
-        <Route path="/pricing" element={<><SEO title="Pricing & Plans" /><PricingPage /></>} />
         <Route path="/resources" element={<><SEO title="Resources & Guides" /><ResourcesPage /></>} />
         <Route path="/customers" element={<><SEO title="Our Customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />

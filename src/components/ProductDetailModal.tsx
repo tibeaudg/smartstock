@@ -38,9 +38,6 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
-import { InventorySegmentation } from '@/components/product/InventorySegmentation';
-import { ManualStockAdjustModal } from '@/components/ManualStockAdjustModal';
 import { WarehouseTransferModal } from '@/components/WarehouseTransferModal';
 import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { format } from 'date-fns';
@@ -782,18 +779,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 )}
               </TabsList>
 
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-6 mt-0">
 
-          {/* Vitals Bar */}
-          {currentProduct && (
-            <ProductVitalsBar
-              productId={currentProduct.id}
-              quantityInStock={totalStock}
-              minimumStockLevel={currentProduct.minimum_stock_level || 0}
-              valuationMethod="Average"
-            />
-          )}
+
+
 
           {/* Product Image and Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1383,16 +1371,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </div>
                 </div>
               )}
+            
 
-              {/* Inventory Segmentation */}
-              {currentProduct && (
-                <InventorySegmentation
-                  productId={currentProduct.id}
-                  currentStock={totalStock}
-                  reorderPoint={currentProduct.minimum_stock_level || 0}
-                />
-              )}
-            </TabsContent>
+
 
             {/* Variants Tab */}
             {!currentProduct.is_variant && (

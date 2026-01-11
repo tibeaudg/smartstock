@@ -438,24 +438,7 @@ export default function FeaturesPage() {
             </Card>
           </div>
 
-          {/* Pricing CTA */}
-          <div className="mt-12 text-center">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 text-white">
-              <h3 className="text-2xl font-bold mb-4">Ready to See Pricing?</h3>
-              <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-                View our transparent pricing plans and start your 14-day free trial. No credit card required.
-              </p>
-              <Link to="/pricing">
-                <Button 
-                  size="lg"
-                  className="bg-white text-blue-600 hover:bg-gray-100"
-                >
-                  View Pricing Plans
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
+  
         </div>
       </section>
 

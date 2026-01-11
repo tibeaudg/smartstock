@@ -577,10 +577,7 @@ export default function AssetTracking() {
               </span>
             </Link>
 
-            <Link 
-              to="/pricing"
-              className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-400 group text-center"
-            >
+       
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-green-200 transition-colors">
                 <DollarSign className="h-6 w-6 text-green-600" />
               </div>
@@ -593,7 +590,6 @@ export default function AssetTracking() {
               <span className="text-blue-600 text-sm font-semibold inline-flex items-center gap-1">
                 View Plans <ArrowRight className="h-4 w-4" />
               </span>
-            </Link>
 
             <Link 
               to="/solutions/inventory-management-software"

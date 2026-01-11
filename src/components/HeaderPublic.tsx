@@ -141,7 +141,7 @@ const Header: React.FC<HeaderProps> = ({
     if (onRegisterClick) {
       onRegisterClick();
     } else {
-      navigate('/pricing');
+      navigate('/auth');
     }
     setIsMobileMenuOpen(false);
   };

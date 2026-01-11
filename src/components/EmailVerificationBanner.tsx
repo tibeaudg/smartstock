@@ -38,11 +38,7 @@ export const EmailVerificationBanner = () => {
         toast.error('Failed to resend verification email', {
           description: error.message || 'Please try again later.',
         });
-      } else {
-        toast.success('Verification email sent!', {
-          description: 'Please check your inbox and spam folder.',
-        });
-      }
+      } 
     } catch (error: any) {
       toast.error('An error occurred', {
         description: error.message || 'Please try again later.',

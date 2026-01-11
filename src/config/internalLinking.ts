@@ -1,6 +1,5 @@
 /**
  * Internal Linking Configuration
- * Maps page categories to relevant product/pricing links and relationships
  */
 
 import { PageMetadata } from './topicClusters';
@@ -46,7 +45,6 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
   const category = getPageCategory(path);
   const config: InternalLinkConfig = {
     features: '/features',
-    pricing: '/pricing',
     resources: '/resources',
   };
 

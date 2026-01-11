@@ -16,15 +16,13 @@ import { useWarehouses } from '@/hooks/useWarehouses';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { ProductVitalsBar } from '@/components/product/ProductVitalsBar';
-import { InventorySegmentation } from '@/components/product/InventorySegmentation';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
 import { WarehouseTransferModal } from '@/components/WarehouseTransferModal';
 import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BillOfMaterials } from '@/components/product/BillOfMaterials';
+import  BillOfMaterials  from '@/pages/BillOfMaterialsPage';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { format } from 'date-fns';
@@ -1129,24 +1127,7 @@ export default function ProductDetailPage() {
                     )}
                   </TabsList>
 
-                {/* Overview Tab */}
-                <TabsContent value="overview" className="space-y-6 mt-0">
-                  {/* Vitals Bar */}
-                  <ProductVitalsBar
-                    productId={currentProduct.id}
-                    quantityInStock={totalStock}
-                    minimumStockLevel={currentProduct.minimum_stock_level || 0}
-                    valuationMethod="Average"
-                  />
 
-                  {/* Inventory Segmentation */}
-                  <InventorySegmentation
-                    productId={currentProduct.id}
-                    currentStock={totalStock}
-                    reorderPoint={currentProduct.minimum_stock_level || 0}
-                    onAddLocation={() => setEditingField('location')}
-                  />
-                </TabsContent>
 
                 {/* Variants Tab */}
                 {!currentProduct.is_variant && (

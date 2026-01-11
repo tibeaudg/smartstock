@@ -57,10 +57,7 @@ export const PreloadResources: React.FC<PreloadResourcesProps> = ({
       {/* Resource hints are managed in index.html to avoid duplicates */}
       
       {/* Prefetch common routes for faster navigation */}
-      <link rel="prefetch" href="/pricing" />
       <link rel="prefetch" href="/features" />
-      <link rel="prefetch" href="/voorraadbeheer-tips" />
-      <link rel="prefetch" href="/voorraadbeheer-software-vergelijken" />
       {prefetchRoutes.map((route, index) => (
         <link key={`route-${index}`} rel="prefetch" href={route} />
       ))}

@@ -237,12 +237,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
             >
               Create Your Account
             </Link>
-            <a
-              href="/pricing"
-              className="inline-flex items-center rounded-xl border border-purple-200 px-6 py-3 text-base font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              See Plans & Pricing
-            </a>
+       
           </div>
         </div>
       </section>
