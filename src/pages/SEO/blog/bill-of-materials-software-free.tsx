@@ -118,11 +118,43 @@ export default function BillOfMaterialsManagementPage() {
       <StructuredData data={pageStructuredData} />
 
 
+      <section className="px-4 py-16">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">What is a Bill of Materials management software?</h1>
+        </div>
+        <p className="mb-6">Bill of Materials (BOM) management software is a digital tool designed to create, manage, and track the complete list of raw materials, components, and instructions required to build a product. It serves as a central repository for all BOM-related data, enabling teams to maintain accurate records, streamline procurement processes, and ensure production consistency.
+          This software helps manufacturers keep track of all the parts and materials needed for each product, making it easier to manage inventory, plan production schedules, and reduce waste.
+
+        </p>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Key Features of BOM Management Software</h2>
+          <ul className="mt-4 list-disc pl-6 space-y-2 text-gray-700">
+            <li>Centralized BOM Repository: Store all BOM data in one place for easy access and management.</li>
+            <li>Version Control: Track changes and revisions to BOMs over time, ensuring everyone works from the latest version.</li>
+            <li>Integration with ERP/MRP Systems: Seamlessly connect BOM data with enterprise resource planning (ERP) and material requirements planning (MRP) systems for automated procurement and production planning.</li>
+            <li>Cost Analysis: Calculate the total cost of materials and components, helping businesses optimize their supply chain and pricing strategies.</li>
+            <li>Visual BOMs: Use images, diagrams, and interactive hierarchies to make BOMs easier to understand and navigate.</li>
+          </ul>
+        </div>
+
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Benefits of Using BOM Management Software</h2>
+          <ul className="mt-4 list-disc pl-6 space-y-2 text-gray-700">
+            <li>Improved Accuracy: Reduce manual data entry errors and ensure accurate BOMs for production.</li>
+            <li>Enhanced Collaboration: Facilitate communication between engineering, procurement, and manufacturing teams.</li>
+            <li>Optimized Inventory Management: Maintain optimal stock levels by accurately tracking material requirements.</li>
+            <li>Faster Time-to-Market: Streamline production processes and reduce lead times.</li>
+            <li>Regulatory Compliance: Maintain accurate records for audits and certifications.</li>
+          </ul>
+        </div>
+      </section>
+
+
 
       {/* What is a BOM? */}
       <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+        <div className="mx-auto">
+          <div className="flex gap-12 ">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                 What is a Bill of Materials (BOM)?
@@ -143,11 +175,7 @@ export default function BillOfMaterialsManagementPage() {
                 <li>Compliance with industry standards and regulatory requirements</li>
               </ul>
             </div>
-            <div className="flex items-center justify-center rounded-2xl bg-blue-50 p-8 border border-blue-100">
-              <blockquote className="text-xl italic font-medium text-blue-900">
-                "A BOM is not just a list; it is the heartbeat of your supply chain, connecting engineering vision to warehouse reality."
-              </blockquote>
-            </div>
+         
           </div>
         </div>
       </section>
