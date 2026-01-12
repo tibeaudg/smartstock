@@ -132,6 +132,11 @@ const categoryProductsData = useMemo(() => {
     status: p.status || 'active',
     description: p.description || '',
     image_url: p.image_url || null,
+    // Variant fields
+    is_variant: p.is_variant || false,
+    parent_product_id: p.parent_product_id || null,
+    variant_name: p.variant_name || null,
+    variant_sku: p.variant_sku || null,
   }));
 }, [productsData]);
 
@@ -183,6 +188,11 @@ const categoryProductsData = useMemo(() => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50; // Fixed to 50 rows per page
+  
+  // Collapse/expand state for parent products with variants
+  // collapsedParents contains parent IDs that are collapsed (variants hidden)
+  // By default, all parents are expanded (empty set = all expanded)
+  const [collapsedParents, setCollapsedParents] = useState<Set<string>>(new Set());
 
   const activeFiltersCount = useMemo(() => {
     let count = 0;
@@ -205,16 +215,68 @@ const categoryProductsData = useMemo(() => {
     setSearchTerm('');
   };
 
+  // Create hierarchical product structure with variants grouped under parents
+  const hierarchicalProducts = useMemo(() => {
+    // Separate parents and variants
+    // Parents: products that are not variants (is_variant is false or null, and no parent_product_id)
+    const parents = safeProducts.filter((p: any) => !p.is_variant && !p.parent_product_id);
+    // Variants: products that are marked as variants and have a parent_product_id
+    const variants = safeProducts.filter((p: any) => p.is_variant && p.parent_product_id);
+    
+    // Group variants by parent
+    const variantsByParent = new Map<string, any[]>();
+    variants.forEach((variant: any) => {
+      const parentId = variant.parent_product_id;
+      if (!variantsByParent.has(parentId)) {
+        variantsByParent.set(parentId, []);
+      }
+      variantsByParent.get(parentId)!.push(variant);
+    });
+    
+    // Sort variants by variant_name
+    variantsByParent.forEach((variantList) => {
+      variantList.sort((a, b) => {
+        const nameA = (a.variant_name || '').toLowerCase();
+        const nameB = (b.variant_name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+    });
+    
+    // Create flat list: parent followed by its variants
+    const result: any[] = [];
+    parents.forEach((parent: any) => {
+      const parentVariants = variantsByParent.get(parent.id) || [];
+      const variantCount = parentVariants.length;
+      result.push({ 
+        ...parent, 
+        isParent: true, 
+        hasVariants: variantsByParent.has(parent.id),
+        variantCount: variantCount
+      });
+      parentVariants.forEach((variant: any) => {
+        result.push({ ...variant, isVariant: true, parentId: parent.id });
+      });
+    });
+    
+    return result;
+  }, [safeProducts]);
+
   const filteredProducts = useMemo(() => {
-    let filtered = safeProducts;
+    // First apply basic filters to the flat list
+    let filtered = hierarchicalProducts;
+    
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
-      filtered = filtered.filter((p: any) =>
-        p.name?.toLowerCase().includes(term) ||
-        p.sku?.toLowerCase().includes(term) ||
-        p.category_name?.toLowerCase().includes(term)
-      );
+      filtered = filtered.filter((p: any) => {
+        const matchesParent = p.name?.toLowerCase().includes(term) ||
+          p.sku?.toLowerCase().includes(term) ||
+          p.category_name?.toLowerCase().includes(term);
+        const matchesVariant = p.variant_name?.toLowerCase().includes(term) ||
+          p.variant_sku?.toLowerCase().includes(term);
+        return matchesParent || matchesVariant;
+      });
     }
+    
     if (filterCategory !== 'all') {
       filtered = filtered.filter((p: any) => p.category_id === filterCategory);
     }
@@ -230,27 +292,82 @@ const categoryProductsData = useMemo(() => {
         filtered = filtered.filter((p: any) => stock(p) === 0);
       }
     }
+    
     if (minStock) {
       const min = parseInt(minStock);
       if (!isNaN(min)) filtered = filtered.filter((p: any) => (p.quantity_in_stock || 0) >= min);
     }
+    
     if (maxStock) {
       const max = parseInt(maxStock);
       if (!isNaN(max)) filtered = filtered.filter((p: any) => (p.quantity_in_stock || 0) <= max);
     }
+    
     if (minPrice) {
       const min = parseFloat(minPrice);
       if (!isNaN(min)) filtered = filtered.filter((p: any) => (p.price || 0) >= min);
     }
+    
     if (maxPrice) {
       const max = parseFloat(maxPrice);
       if (!isNaN(max)) filtered = filtered.filter((p: any) => (p.price || 0) <= max);
     }
-    return filtered;
-  }, [safeProducts, searchTerm, filterCategory, filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+    
+    // Rebuild hierarchy from filtered results
+    const parents = filtered.filter((p: any) => p.isParent);
+    const variants = filtered.filter((p: any) => p.isVariant);
+    const variantsByParent = new Map<string, any[]>();
+    
+    variants.forEach((variant: any) => {
+      const parentId = variant.parentId;
+      if (parentId && filtered.some((p: any) => p.id === parentId)) {
+        if (!variantsByParent.has(parentId)) {
+          variantsByParent.set(parentId, []);
+        }
+        variantsByParent.get(parentId)!.push(variant);
+      }
+    });
+    
+    // Sort variants
+    variantsByParent.forEach((variantList) => {
+      variantList.sort((a, b) => {
+        const nameA = (a.variant_name || '').toLowerCase();
+        const nameB = (b.variant_name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+    });
+    
+    // Create final hierarchical list
+    const result: any[] = [];
+    parents.forEach((parent: any) => {
+      result.push(parent);
+      const parentVariants = variantsByParent.get(parent.id) || [];
+      parentVariants.forEach((variant: any) => {
+        result.push(variant);
+      });
+    });
+    
+    return result;
+  }, [hierarchicalProducts, searchTerm, filterCategory, filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
-  const paginatedProducts = filteredProducts.slice(
+  // Apply collapse/expand filter to hide variants of collapsed parents
+  // collapsedParents contains parent IDs that are collapsed (variants hidden)
+  // By default, all parents are expanded (empty set = all variants shown)
+  const productsWithCollapseFilter = useMemo(() => {
+    return filteredProducts.filter((p: any) => {
+      // Always show parent products
+      if (p.isParent) return true;
+      // For variants, hide if parent is in collapsedParents
+      if (p.isVariant) {
+        const parentId = p.parentId;
+        return !collapsedParents.has(parentId); // Show if parent is NOT collapsed
+      }
+      return true;
+    });
+  }, [filteredProducts, collapsedParents]);
+
+  const totalPages = Math.max(1, Math.ceil(productsWithCollapseFilter.length / itemsPerPage));
+  const paginatedProducts = productsWithCollapseFilter.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -281,6 +398,40 @@ const categoryProductsData = useMemo(() => {
   const clearSelection = () => {
     setSelectedProductIds(new Set());
     setIsSelectAll(false);
+  };
+
+  // Toggle collapse/expand for parent products
+  const toggleParentExpansion = (parentId: string) => {
+    setCollapsedParents(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(parentId)) {
+        newSet.delete(parentId); // Expand: remove from collapsed set
+      } else {
+        newSet.add(parentId); // Collapse: add to collapsed set
+      }
+      return newSet;
+    });
+  };
+
+  // Helper function to get stock status
+  const getStockStatus = (quantity: number | string | null | undefined, minLevel: number | string | null | undefined) => {
+    // Convert to numbers, handling null, undefined, and string values
+    const qty = Number(quantity) || 0;
+    const min = Number(minLevel) || 0;
+    
+    // Out of stock: quantity is 0
+    if (qty === 0) {
+      return { label: 'Out', variant: 'destructive' as const, color: 'bg-red-100 text-red-800 border-red-200' };
+    }
+    
+    // Low stock: quantity is greater than 0 but less than minimum level
+    // Only check for low stock if minimum level is greater than 0
+    if (min > 0 && qty < min) {
+      return { label: 'Low', variant: 'secondary' as const, color: 'bg-yellow-100 text-yellow-800 border-yellow-200' };
+    }
+    
+    // In stock: quantity is greater than or equal to minimum level
+    return { label: 'In Stock', variant: 'default' as const, color: 'bg-green-100 text-green-800 border-green-200' };
   };
 
   useEffect(() => {
@@ -956,17 +1107,25 @@ const categoryProductsData = useMemo(() => {
               <tbody>
                 {paginatedProducts.map((p: any, index: number) => {
                   const isSelected = selectedProductIds.has(p.id);
-                  const isEven = index % 2 === 0;
+                  const isVariant = p.isVariant || false;
+                  const isParent = p.isParent || false;
+                  // For alternating colors, only count parent rows
+                  const parentIndex = paginatedProducts.slice(0, index).filter((item: any) => !item.isVariant).length;
+                  const isEven = parentIndex % 2 === 0;
+                  
                   return (
                     <tr 
                       key={p.id}
                       className={cn(
                         "border-b transition-colors",
                         isSelected && "bg-blue-50",
-                        !isSelected && isEven && "bg-white",
-                        !isSelected && !isEven && "bg-gray-50",
+                        !isSelected && isVariant && isEven && "bg-gray-50",
+                        !isSelected && isVariant && !isEven && "bg-gray-100",
+                        !isSelected && !isVariant && isEven && "bg-white",
+                        !isSelected && !isVariant && !isEven && "bg-gray-50",
                         !isSelected && "hover:bg-gray-100",
-                        viewMode === 'expanded' && "cursor-pointer"
+                        viewMode === 'expanded' && "cursor-pointer",
+                        isVariant && "border-l-4 border-l-blue-300"
                       )}
                       onClick={(e) => {
                         if ((e.target as HTMLElement).closest('input[type="checkbox"]')) return;
@@ -981,38 +1140,84 @@ const categoryProductsData = useMemo(() => {
                       </td>
                       {viewMode === 'expanded' && (
                         <td className="px-4 py-4">
-                          <div className="w-16 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden relative">
-                            {p.image_url ? (
-                              <img 
-                                src={p.image_url} 
-                                alt={p.name}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  const img = e.target as HTMLImageElement;
-                                  img.style.display = 'none';
-                                  const placeholder = img.nextElementSibling as HTMLElement;
-                                  if (placeholder) placeholder.style.display = 'flex';
-                                }}
-                              />
-                            ) : null}
-                            <div className="absolute inset-0 flex items-center justify-center" style={{ display: p.image_url ? 'none' : 'flex' }}>
-                              <Package className="w-6 h-6 text-gray-400" />
+                          {!isVariant && (
+                            <div className="w-16 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden relative">
+                              {p.image_url ? (
+                                <img 
+                                  src={p.image_url} 
+                                  alt={p.name}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    const img = e.target as HTMLImageElement;
+                                    img.style.display = 'none';
+                                    const placeholder = img.nextElementSibling as HTMLElement;
+                                    if (placeholder) placeholder.style.display = 'flex';
+                                  }}
+                                />
+                              ) : null}
+                              <div className="absolute inset-0 flex items-center justify-center" style={{ display: p.image_url ? 'none' : 'flex' }}>
+                                <Package className="w-6 h-6 text-gray-400" />
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </td>
                       )}
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4")}>
-                        <div className={cn("font-medium", viewMode === 'compact' ? "text-xs" : "text-sm")}>
-                          {p.name}
-                        </div>
-                        {viewMode === 'expanded' && p.description && (
-                          <div className="text-xs text-gray-500 mt-1 line-clamp-2 max-w-md">
-                            {p.description}
+                        <div className={cn(
+                          "flex items-center gap-2",
+                          isVariant && "pl-6"
+                        )}>
+                          {isParent && p.hasVariants && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-5 w-5 p-0 hover:bg-gray-200"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleParentExpansion(p.id);
+                              }}
+                              title={collapsedParents.has(p.id) ? "Expand variants" : "Collapse variants"}
+                            >
+                              {collapsedParents.has(p.id) ? (
+                                <ChevronDown className="w-3 h-3" />
+                              ) : (
+                                <ChevronUp className="w-3 h-3" />
+                              )}
+                            </Button>
+                          )}
+                          {!isParent && isVariant && (
+                            <span className="text-gray-400 text-xs w-5">└─</span>
+                          )}
+                          {!isParent && !isVariant && (
+                            <span className="w-5"></span>
+                          )}
+                          <div className="flex-1 flex items-center gap-2">
+                            <div className="flex-1">
+                              <div className={cn("font-medium", viewMode === 'compact' ? "text-xs" : "text-sm")}>
+                                {isVariant ? (
+                                  <span className="text-gray-600">
+                                    {p.variant_name || p.name}
+                                  </span>
+                                ) : (
+                                  p.name
+                                )}
+                              </div>
+                              {viewMode === 'expanded' && p.description && !isVariant && (
+                                <div className="text-xs text-gray-500 mt-1 line-clamp-2 max-w-md">
+                                  {p.description}
+                                </div>
+                              )}
+                            </div>
+                            {isParent && p.hasVariants && p.variantCount > 0 && (
+                              <Badge variant="secondary" className="text-xs">
+                                {p.variantCount} {p.variantCount === 1 ? 'variant' : 'variants'}
+                              </Badge>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs text-gray-600" : "px-4 py-4 text-sm")}>
-                        {p.sku || '—'}
+                        {isVariant ? (p.variant_sku || p.sku || '—') : (p.sku || '—')}
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm")}>
                         <div className={cn(viewMode === 'expanded' && "max-w-xs truncate")}>
@@ -1020,13 +1225,34 @@ const categoryProductsData = useMemo(() => {
                         </div>
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm")}>
-                        <span className={cn(
-                          "font-medium",
-                          (p.quantity_in_stock || 0) === 0 && "text-red-600",
-                          (p.quantity_in_stock || 0) > 0 && (p.quantity_in_stock || 0) <= (p.min_stock_level || 0) && "text-yellow-600"
-                        )}>
-                          {p.quantity_in_stock || 0}
-                        </span>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className={cn(
+                            "font-medium",
+                            (p.quantity_in_stock || 0) === 0 && "text-red-600",
+                            (p.quantity_in_stock || 0) > 0 && (p.quantity_in_stock || 0) <= (p.min_stock_level || 0) && "text-yellow-600 bg-yellow-100"
+                          )}
+                          style={{
+                            backgroundColor: (p.quantity_in_stock || 0) > 0 && (p.quantity_in_stock || 0) <= (p.min_stock_level || 0) ? 'bg-yellow-300' : 'bg-transparent'
+                          }}
+                        >
+                            {p.quantity_in_stock || 0}
+                          </span>
+                          {(() => {
+                            const qty = Number(p.quantity_in_stock) || 0;
+                            const min = Number(p.min_stock_level) || 0;
+                            const stockStatus = getStockStatus(qty, min);
+                            return (
+                              <Badge 
+                                className={cn(
+                                  "text-xs px-1.5 py-0.5 font-medium rounded-full border",
+                                  stockStatus.color
+                                )}
+                              >
+                                {stockStatus.label}
+                              </Badge>
+                            );
+                          })()}
+                        </div>
                         {viewMode === 'expanded' && p.min_stock_level !== undefined && (
                           <div className="text-xs text-gray-500 mt-0.5">
                             Min: {p.min_stock_level || 0}
@@ -1072,7 +1298,7 @@ const categoryProductsData = useMemo(() => {
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">
-                      Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} products
+                      Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, productsWithCollapseFilter.length)} of {productsWithCollapseFilter.length} products
                     </span>
                   </div>
 

@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp, ArrowUpRight } from 'lucide-react';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
@@ -84,6 +84,7 @@ export default function ProductDetailPage() {
   
   // Current product state
   const [currentProduct, setCurrentProduct] = useState<any>(null);
+  const [parentProduct, setParentProduct] = useState<any>(null);
   
   // Form state
   const [form, setForm] = useState({
@@ -163,6 +164,32 @@ export default function ProductDetailPage() {
 
     fetchProduct();
   }, [id, activeBranch, navigate]);
+
+  // Fetch parent product if viewing a variant
+  useEffect(() => {
+    const fetchParentProduct = async () => {
+      if (currentProduct?.is_variant && currentProduct?.parent_product_id && activeBranch) {
+        try {
+          const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('id', currentProduct.parent_product_id)
+            .eq('branch_id', activeBranch.branch_id)
+            .single();
+
+          if (error) throw error;
+          setParentProduct(data);
+        } catch (error) {
+          console.error('Error fetching parent product:', error);
+          setParentProduct(null);
+        }
+      } else {
+        setParentProduct(null);
+      }
+    };
+
+    fetchParentProduct();
+  }, [currentProduct?.is_variant, currentProduct?.parent_product_id, activeBranch?.branch_id]);
 
   // Fetch variants when product changes
   useEffect(() => {
@@ -847,9 +874,9 @@ export default function ProductDetailPage() {
   const productStatus = getProductStatus();
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-white rounded-lg">
       {/* Breadcrumb + Header */}
-      <div className="border-b px-6 py-2 bg-white">
+      <div className="border-b px-6 py-2 bg-white rounded-t-xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -862,8 +889,26 @@ export default function ProductDetailPage() {
             </Button>
             <nav className="text-xs text-gray-500">
               <span className="cursor-pointer hover:underline" onClick={() => navigate('/dashboard/categories')}>Products</span>
+              {currentProduct?.is_variant && parentProduct && (
+                <>
+                  <span className="mx-2">/</span>
+                  <span 
+                    className="cursor-pointer hover:underline text-blue-600"
+                    onClick={() => navigate(`/dashboard/products/${parentProduct.id}`)}
+                  >
+                    {parentProduct.name}
+                  </span>
+                </>
+              )}
               <span className="mx-2">/</span>
-              <span className="text-gray-900 font-medium">{currentProduct?.name}</span>
+              <span className="text-gray-900 font-medium">
+                {currentProduct?.is_variant ? (currentProduct?.variant_name || currentProduct?.name) : currentProduct?.name}
+              </span>
+              {currentProduct?.is_variant && (
+                <Badge variant="secondary" className="ml-2 text-xs">
+                  Variant
+                </Badge>
+              )}
             </nav>
           </div>
           <div className="px-6 py-3">
@@ -1117,17 +1162,45 @@ export default function ProductDetailPage() {
                   </Button>
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
-                  <h1 className="text-xl font-bold">{currentProduct.name}</h1>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('name')}
-                    className="h-6 w-6 p-0"
-                    title="Edit product name"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
+                <div className="space-y-2">
+                  {currentProduct.is_variant && parentProduct && (
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="secondary" className="text-xs font-normal">
+                        <Package className="w-3 h-3 mr-1" />
+                        Parent Product
+                      </Badge>
+                      <span className="text-sm text-gray-600">{parentProduct.name}</span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => navigate(`/dashboard/products/${parentProduct.id}`)}
+                        className="h-6 px-2 text-xs gap-1"
+                        title="Go to parent product"
+                      >
+                        <ArrowUpRight className="w-3 h-3" />
+                        View Parent
+                      </Button>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-xl font-bold">
+                      {currentProduct.is_variant ? (currentProduct.variant_name || currentProduct.name) : currentProduct.name}
+                    </h1>
+                    {currentProduct.is_variant && (
+                      <Badge variant="secondary" className="text-xs">
+                        Variant
+                      </Badge>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditingField('name')}
+                      className="h-6 w-6 p-0"
+                      title="Edit product name"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
