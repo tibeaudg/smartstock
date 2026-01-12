@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { BranchManagement } from './settings/BranchManagement';
 import { ProfileSettings } from './settings/ProfileSettings';
 import { UserManagement } from './settings/UserManagement';
 import { LicenseOverview } from './settings/LicenseOverview';
@@ -59,8 +58,6 @@ export const Settings = () => {
   // Define menu items
   const menuItems = [
     { id: 'profile', label: 'Profile', icon: <User className="w-4 h-4" /> },
-    { id: 'branches', label: 'Branches', icon: <Building2 className="w-4 h-4" /> },
-    { id: 'invoices', label: 'Invoices', icon: <Banknote className="w-4 h-4" /> },
     ...(isAdmin
       ? [
           { id: 'users', label: 'Users', icon: <Users className="w-4 h-4" /> },

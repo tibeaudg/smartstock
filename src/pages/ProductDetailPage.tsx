@@ -22,7 +22,7 @@ import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import  BillOfMaterials  from '@/pages/BillOfMaterialsPage';
+import  BillOfMaterials  from '@/components/products/BillOfMaterials';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { format } from 'date-fns';

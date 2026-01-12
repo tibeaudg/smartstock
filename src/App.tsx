@@ -14,15 +14,14 @@ import { Dashboard } from './components/Dashboard';
 import { StockMovements } from './components/StockMovements';
 import { Settings } from './components/Settings';
 import { ProfileSettings } from './components/settings/ProfileSettings';
-import { BranchManagement } from './components/settings/BranchManagement';
 import { UserManagement } from './components/settings/UserManagement';
 import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
-import { FirstBranchSetup } from "./components/FirstBranchSetup";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
+import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
@@ -41,8 +40,8 @@ import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
 import HelpCenterPage from "./pages/help-center";
-import BillOfMaterialsPage from './pages/BillOfMaterialsPage';
-import BOMEditPage from './pages/BillOfMaterialsPage'
+import BillOfMaterialsPage from './components/products/BillOfMaterials';
+import BOMEditPage from './components/products/BillOfMaterials'
 import AdminPage from './pages/admin';
 import ResourcesPage from './pages/resources';
 import CustomersPage from './pages/customers';
@@ -126,11 +125,14 @@ const AppRouter = () => {
   };
 
   const BranchAwareRoute = ({ children }: { children: React.ReactNode }) => {
-    const { branches, hasNoBranches, loading, hasError, queryLoading, isInitialLoad } = useBranches();
-    const { authLoading } = useAuth();
+    const { loading: authLoading } = useAuth();
+    const { activeBranch, loading: branchLoading } = useBranches();
+    
+    // Use the hook to ensure branch exists and is set
+    useEnsureBranch();
 
-    if (loading || authLoading) return <LoadingScreen />;
-    if (!isInitialLoad && !queryLoading && !hasError && hasNoBranches && branches.length === 0) return <FirstBranchSetup />;
+    // Wait for both auth and branch to be ready
+    if (authLoading || branchLoading) return <LoadingScreen />;
     
     return <>{children}</>;
   };
@@ -219,7 +221,6 @@ const AppRouter = () => {
           <Route path="products/new" element={<AddProductPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="warehouses" element={<><SEO title="Warehouse Management" /><WarehousePage /></>} />
-            // In your router configuration (e.g., App.tsx or router.tsx)
           <Route path="bom" element={<BillOfMaterialsPage />}>
             <Route path="edit/:productId" element={<BOMEditPage />} />
           </Route>
@@ -230,7 +231,6 @@ const AppRouter = () => {
           <Route path="settings" element={<Settings />}>
             <Route index element={<ProfileSettings />} />
             <Route path="profile" element={<ProfileSettings />} />
-            <Route path="branches" element={<BranchManagement />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="help-center" element={<HelpCenterPage />} />
             <Route path="license" element={<LicenseOverview />} />

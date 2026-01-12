@@ -14,7 +14,6 @@ import {
   Truck,
 } 
 from 'lucide-react';
-import { BranchSelector } from './BranchSelector';
 import { SupportModal } from './SupportModal';
 import { ChatModal } from './ChatModal';
 import { FloatingChatButton } from './FloatingChatButton';
@@ -106,7 +105,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
 
   const settingsSubItems = [
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
-    { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
   ];
 
@@ -242,46 +240,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-                  <div className="space-y-2">
-                    {menuItem.id === 'settings' && (
-                      <div className="flex items-center justify-between px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors">
-                        <div className="flex items-center gap-2">
-                          {theme === 'dark' ? (
-                            <Moon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                          ) : (
-                            <Sun className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                          )}
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                            {theme === 'dark' ? 'Dark mode' : 'Light mode'}
-                          </span>
-                        </div>
-                        <button
-                          onClick={toggleTheme}
-                          className="text-xs font-medium text-blue-600 dark:text-blue-400"
-                        >
-                          Switch
-                        </button>
-                      </div>
-                    )}
-                    {menuItem.subItems.map((subItem) => (
-                      <NavLink
-                        key={subItem.id}
-                        to={subItem.path}
-                        onClick={() => {
-                          setActiveSubmenu(null);
-                        }}
-                        className={({ isActive }) => `
-                          block px-4 py-3 rounded-lg transition-colors
-                          ${isActive 
-                            ? 'bg-blue-50 text-blue-600 font-medium dark:bg-blue-500/20 dark:text-blue-300' 
-                            : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800'
-                          }
-                        `}
-                      >
-                        {subItem.label}
-                      </NavLink>
-                    ))}
-                  </div>
+            
                 </div>
               </div>
             </div>
@@ -312,10 +271,6 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
           </div>
         </div>
 
-        {/* Branch Selector */}
-        <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
-          <BranchSelector />
-        </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm overflow-y-auto pb-4">
@@ -397,29 +352,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
                   {/* Submenu */}
                   {hasSubItems && isExpanded && (
                     <ul className="ml-3 sm:ml-4 space-y-1 border-l-2 border-gray-200 dark:border-gray-700 pl-3">
-                      {item.id === 'settings' && (
-                        <li>
-                          <div className="flex items-center justify-between px-3 sm:px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 transition-colors">
-                            <div className="flex items-center gap-2">
-                              {theme === 'dark' ? (
-                                <Moon className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                              ) : (
-                                <Sun className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                              )}
-                              <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">
-                                {theme === 'dark' ? 'Dark mode' : 'Light mode'}
-                              </span>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={toggleTheme}
-                              className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline"
-                            >
-                              Switch
-                            </button>
-                          </div>
-                        </li>
-                      )}
+                    
                       {item.subItems.map((subItem) => (
                         <li key={subItem.id}>
                           <NavLink
@@ -491,19 +424,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem
-                    onClick={() => {
-                      toggleTheme();
-                    }}
-                    className="text-gray-900 dark:text-gray-100"
-                  >
-                    {theme === 'dark' ? (
-                      <Sun className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-100" />
-                    ) : (
-                      <Moon className="w-4 h-4 mr-2 text-gray-900 dark:text-gray-100" />
-                    )}
-                    <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
-                  </DropdownMenuItem>
+              
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => {

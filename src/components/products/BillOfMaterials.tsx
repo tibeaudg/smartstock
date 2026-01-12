@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 // Icons
 import { 
   Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronLeft,
-  Eye, Filter, DollarSign, X, AlertCircle, Loader2
+  Eye, Filter, DollarSign, X, AlertCircle, Loader2, Save
 } from 'lucide-react';
 
 // Types
@@ -74,6 +74,21 @@ interface Product {
   id: string;
   name: string;
   sku: string | null;
+}
+
+interface BOMComponentFormData {
+  component_product_id: string;
+  quantity_required: number;
+  unit_of_measure: string;
+  scrap_factor: number;
+  production_step: string;
+}
+
+interface NewProductFormData {
+  name: string;
+  sku: string;
+  quantity_in_stock: number;
+  unit_price: number;
 }
 
 // Main BOM List Page Component
@@ -694,10 +709,26 @@ function BOMEditPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
   const isCreateMode = new URLSearchParams(location.search).get('create') === 'true';
 
+  // State for BOM components
+  const [components, setComponents] = useState<BOMComponentFormData[]>([]);
+  const [versionNumber, setVersionNumber] = useState('1.0');
+  const [isSaving, setIsSaving] = useState(false);
+  
+  // State for inline product creation
+  const [isCreatingProduct, setIsCreatingProduct] = useState(false);
+  const [newProductData, setNewProductData] = useState<NewProductFormData>({
+    name: '',
+    sku: '',
+    quantity_in_stock: 0,
+    unit_price: 0,
+  });
+  const [componentIndexForNewProduct, setComponentIndexForNewProduct] = useState<number | null>(null);
+
   // Fetch product details
-  const { data: product, isLoading, error } = useQuery({
+  const { data: product, isLoading: isProductLoading, error: productError } = useQuery({
     queryKey: ['productForBOM', productId],
     queryFn: async () => {
       if (!productId || !activeBranch) return null;
@@ -715,7 +746,252 @@ function BOMEditPage() {
     enabled: !!productId && !!activeBranch,
   });
 
-  if (isLoading) {
+  // Fetch existing BOM if not in create mode
+  const { data: existingBOM, isLoading: isBOMLoading } = useQuery({
+    queryKey: ['existingBOM', productId],
+    queryFn: async () => {
+      if (!productId || !activeBranch || isCreateMode) return null;
+
+      const { data: versions } = await supabase
+        .from('bom_versions')
+        .select('id, version_number, status')
+        .eq('parent_product_id', productId)
+        .eq('branch_id', activeBranch.branch_id)
+        .order('version_number', { ascending: false })
+        .limit(1);
+
+      if (!versions || versions.length === 0) return null;
+
+      const activeVersion = versions[0];
+      setVersionNumber(activeVersion.version_number);
+
+      const { data: bomItems } = await supabase
+        .from('product_bom')
+        .select('*')
+        .eq('parent_product_id', productId)
+        .eq('bom_version_id', activeVersion.id)
+        .eq('branch_id', activeBranch.branch_id);
+
+      if (bomItems) {
+        setComponents(bomItems.map(item => ({
+          component_product_id: item.component_product_id,
+          quantity_required: parseFloat(item.quantity_required?.toString() || '1'),
+          unit_of_measure: item.unit_of_measure || 'unit',
+          scrap_factor: item.scrap_factor || 0,
+          production_step: item.production_step || '',
+        })));
+      }
+
+      return { version: activeVersion, items: bomItems || [] };
+    },
+    enabled: !!productId && !!activeBranch && !isCreateMode,
+  });
+
+  // Fetch all available products for component selection
+  const { data: availableProducts } = useQuery({
+    queryKey: ['availableProducts', activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!activeBranch) return [];
+
+      const { data, error } = await supabase
+        .from('products')
+        .select('id, name, sku, quantity_in_stock')
+        .eq('branch_id', activeBranch.branch_id)
+        .neq('id', productId) // Don't allow selecting the parent product
+        .order('name');
+
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!activeBranch && !!productId,
+  });
+
+  // Add new component row
+  const handleAddComponent = () => {
+    setComponents([
+      ...components,
+      {
+        component_product_id: '',
+        quantity_required: 1,
+        unit_of_measure: 'unit',
+        scrap_factor: 0,
+        production_step: '',
+      },
+    ]);
+  };
+
+  // Remove component
+  const handleRemoveComponent = (index: number) => {
+    setComponents(components.filter((_, i) => i !== index));
+  };
+
+  // Update component field
+  const handleUpdateComponent = (index: number, field: keyof BOMComponentFormData, value: any) => {
+    const updated = [...components];
+    updated[index] = { ...updated[index], [field]: value };
+    setComponents(updated);
+  };
+
+  // Open inline product creation
+  const handleOpenProductCreation = (componentIndex: number) => {
+    setComponentIndexForNewProduct(componentIndex);
+    setNewProductData({
+      name: '',
+      sku: '',
+      quantity_in_stock: 0,
+      unit_price: 0,
+    });
+    setIsCreatingProduct(true);
+  };
+
+  // Create new product inline
+  const handleCreateProduct = async () => {
+    if (!activeBranch) {
+      toast.error('No active branch');
+      return;
+    }
+
+    if (!newProductData.name.trim()) {
+      toast.error('Product name is required');
+      return;
+    }
+
+    try {
+      const { data: newProduct, error } = await supabase
+        .from('products')
+        .insert({
+          name: newProductData.name,
+          sku: newProductData.sku || null,
+          quantity_in_stock: newProductData.quantity_in_stock,
+          unit_price: newProductData.unit_price,
+          purchase_price: newProductData.unit_price,
+          branch_id: activeBranch.branch_id,
+          is_variant: false,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Refresh available products
+      queryClient.invalidateQueries({ queryKey: ['availableProducts', activeBranch.branch_id] });
+
+      // Auto-select the new product in the component
+      if (componentIndexForNewProduct !== null) {
+        handleUpdateComponent(componentIndexForNewProduct, 'component_product_id', newProduct.id);
+      }
+
+      toast.success('Product created successfully');
+      setIsCreatingProduct(false);
+      setComponentIndexForNewProduct(null);
+    } catch (error: any) {
+      console.error('Error creating product:', error);
+      toast.error(`Failed to create product: ${error.message}`);
+    }
+  };
+
+  // Save BOM
+  const handleSave = async () => {
+    if (!productId || !activeBranch) {
+      toast.error('Missing required data');
+      return;
+    }
+
+    if (components.length === 0) {
+      toast.error('Please add at least one component');
+      return;
+    }
+
+    // Validate all components have a product selected
+    if (components.some(c => !c.component_product_id)) {
+      toast.error('Please select a product for all components');
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      // Get or create version
+      let versionId: string;
+
+      // First, check if a version already exists
+      const { data: existingVersion, error: checkError } = await supabase
+        .from('bom_versions')
+        .select('id, status')
+        .eq('parent_product_id', productId)
+        .eq('branch_id', activeBranch.branch_id)
+        .eq('version_number', versionNumber)
+        .maybeSingle();
+
+      if (checkError) throw checkError;
+
+      if (existingVersion) {
+        // Use existing version
+        versionId = existingVersion.id;
+
+        // Delete existing components for this version
+        await supabase
+          .from('product_bom')
+          .delete()
+          .eq('bom_version_id', versionId)
+          .eq('branch_id', activeBranch.branch_id);
+      } else {
+        // Create new version
+        const { data: newVersion, error: versionError } = await supabase
+          .from('bom_versions')
+          .insert({
+            parent_product_id: productId,
+            version_number: versionNumber,
+            status: 'active',
+            branch_id: activeBranch.branch_id,
+          })
+          .select()
+          .single();
+
+        if (versionError) throw versionError;
+        versionId = newVersion.id;
+
+        // If this is a new version, deactivate all other versions
+        await supabase
+          .from('bom_versions')
+          .update({ status: 'archived' })
+          .eq('parent_product_id', productId)
+          .eq('branch_id', activeBranch.branch_id)
+          .neq('id', versionId);
+      }
+
+      // Insert new components
+      const componentsToInsert = components.map(c => ({
+        parent_product_id: productId,
+        component_product_id: c.component_product_id,
+        quantity_required: c.quantity_required,
+        unit_of_measure: c.unit_of_measure,
+        scrap_factor: c.scrap_factor,
+        production_step: c.production_step,
+        bom_version_id: versionId,
+        branch_id: activeBranch.branch_id,
+      }));
+
+      const { error: insertError } = await supabase
+        .from('product_bom')
+        .insert(componentsToInsert);
+
+      if (insertError) throw insertError;
+
+      toast.success(isCreateMode ? 'BOM created successfully' : 'BOM updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['bomList'] });
+      queryClient.invalidateQueries({ queryKey: ['existingBOM', productId] });
+      
+      navigate('/dashboard/bom');
+    } catch (error: any) {
+      console.error('Error saving BOM:', error);
+      toast.error(`Failed to save BOM: ${error.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isProductLoading || isBOMLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
@@ -723,7 +999,7 @@ function BOMEditPage() {
     );
   }
 
-  if (error) {
+  if (productError) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8 max-w-md">
@@ -731,7 +1007,7 @@ function BOMEditPage() {
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Loading Product</h3>
             <p className="text-sm text-gray-600 mb-4">
-              {error instanceof Error ? error.message : 'Product not found'}
+              {productError instanceof Error ? productError.message : 'Product not found'}
             </p>
             <Button onClick={() => navigate('/dashboard/bom')}>
               Back to BOM List
@@ -744,7 +1020,7 @@ function BOMEditPage() {
 
   return (
     <div className="h-full flex flex-col bg-white">
-      {/* Header with back button */}
+      {/* Header */}
       <div className="border-b px-6 py-4 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -759,7 +1035,7 @@ function BOMEditPage() {
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                {isCreateMode ? 'Create BOM' : `Edit BOM: ${product?.name || 'Loading...'}`}
+                {isCreateMode ? 'Create BOM' : 'Edit BOM'}: {product?.name || 'Loading...'}
               </h1>
               {product?.sku && (
                 <p className="text-sm text-gray-600 mt-1">
@@ -768,50 +1044,280 @@ function BOMEditPage() {
               )}
             </div>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/dashboard/bom')}
-          >
-            <X className="w-4 h-4" />
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => navigate('/dashboard/bom')}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSave}
+              disabled={isSaving || components.length === 0}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {isSaving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save BOM
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* BOM Editor Content */}
+      {/* Editor Content */}
       <div className="flex-1 overflow-y-auto p-6">
-        {productId ? (
-          <div className="max-w-7xl mx-auto">
-            <Card className="p-8">
-              <div className="text-center">
-                <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  BOM Editor Component Missing
-                </h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  The BillOfMaterials component needs to be created at:
-                  <code className="block mt-2 p-2 bg-gray-100 rounded text-xs">
-                    src/components/product/BillOfMaterials.tsx
-                  </code>
-                </p>
-                <Button onClick={() => navigate('/dashboard/bom')}>
-                  Back to BOM List
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Version Info */}
+          <Card className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <Label className="text-sm font-medium">Version</Label>
+                <Input
+                  value={versionNumber}
+                  onChange={(e) => setVersionNumber(e.target.value)}
+                  className="mt-1 w-32"
+                  placeholder="e.g., 1.0"
+                />
+              </div>
+              <div className="text-sm text-gray-600">
+                {components.length} component{components.length !== 1 ? 's' : ''}
+              </div>
+            </div>
+          </Card>
+
+          {/* Components Table */}
+          <Card>
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold">Components</h2>
+                <Button onClick={handleAddComponent} size="sm">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Component
                 </Button>
               </div>
-            </Card>
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-600">No product selected</p>
-            <Button 
-              onClick={() => navigate('/dashboard/bom')}
-              className="mt-4"
-            >
-              Back to BOM List
-            </Button>
-          </div>
-        )}
+            </div>
+
+            {components.length === 0 ? (
+              <div className="p-12 text-center">
+                <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                <p className="text-gray-600 mb-4">No components yet</p>
+                <Button onClick={handleAddComponent}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add First Component
+                </Button>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Component</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Unit</TableHead>
+                      <TableHead>Scrap %</TableHead>
+                      <TableHead>Production Step</TableHead>
+                      <TableHead className="w-12"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {components.map((component, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <div className="space-y-2">
+                            <Select
+                              value={component.component_product_id}
+                              onValueChange={(value) => {
+                                if (value === '__create_new__') {
+                                  handleOpenProductCreation(index);
+                                } else {
+                                  handleUpdateComponent(index, 'component_product_id', value);
+                                }
+                              }}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select product" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <div className="p-2 border-b mb-1">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="w-full justify-start"
+                                    onClick={() => handleOpenProductCreation(index)}
+                                  >
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    Create New Product
+                                  </Button>
+                                </div>
+                                {availableProducts?.map((p) => (
+                                  <SelectItem key={p.id} value={p.id}>
+                                    {p.name} {p.sku && `(${p.sku})`} - Stock: {p.quantity_in_stock}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            type="number"
+                            value={component.quantity_required}
+                            onChange={(e) =>
+                              handleUpdateComponent(
+                                index,
+                                'quantity_required',
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                            min="0"
+                            step="0.01"
+                            className="w-24"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            value={component.unit_of_measure}
+                            onChange={(e) =>
+                              handleUpdateComponent(index, 'unit_of_measure', e.target.value)
+                            }
+                            className="w-24"
+                            placeholder="unit"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            type="number"
+                            value={component.scrap_factor}
+                            onChange={(e) =>
+                              handleUpdateComponent(
+                                index,
+                                'scrap_factor',
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            className="w-20"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Input
+                            value={component.production_step}
+                            onChange={(e) =>
+                              handleUpdateComponent(index, 'production_step', e.target.value)
+                            }
+                            placeholder="Optional"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveComponent(index)}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </Card>
+        </div>
       </div>
+
+      {/* Inline Product Creation Dialog */}
+      <Dialog open={isCreatingProduct} onOpenChange={setIsCreatingProduct}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Product</DialogTitle>
+            <DialogDescription>
+              Add a new product to use as a component in this BOM
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label>Product Name *</Label>
+              <Input
+                value={newProductData.name}
+                onChange={(e) =>
+                  setNewProductData({ ...newProductData, name: e.target.value })
+                }
+                placeholder="e.g., Steel Sheet"
+              />
+            </div>
+            <div>
+              <Label>SKU</Label>
+              <Input
+                value={newProductData.sku}
+                onChange={(e) =>
+                  setNewProductData({ ...newProductData, sku: e.target.value })
+                }
+                placeholder="e.g., STL-001"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Initial Stock</Label>
+                <Input
+                  type="number"
+                  value={newProductData.quantity_in_stock}
+                  onChange={(e) =>
+                    setNewProductData({
+                      ...newProductData,
+                      quantity_in_stock: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  min="0"
+                  step="1"
+                />
+              </div>
+              <div>
+                <Label>Unit Price</Label>
+                <Input
+                  type="number"
+                  value={newProductData.unit_price}
+                  onChange={(e) =>
+                    setNewProductData({
+                      ...newProductData,
+                      unit_price: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsCreatingProduct(false);
+                setComponentIndexForNewProduct(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleCreateProduct}>
+              <Plus className="w-4 h-4 mr-2" />
+              Create Product
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
