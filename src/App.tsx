@@ -55,21 +55,115 @@ import IntegrationsPage from "./pages/integrations";
 import SalesOrdersPage from "./pages/sales-orders";
 import VendorManagementPage from "./pages/VendorManagement";
 
-
-
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
 const AddProductPage = React.lazy(() => import('./pages/AddProductPage'));
 
-const LoadingScreen = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-      <p className="text-gray-600">Loading...</p>
+// Skeletal Loading Components
+const SkeletonCard = () => (
+  <div className="bg-white rounded-lg shadow p-6 animate-pulse">
+    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+  </div>
+);
+
+const SkeletonTable = () => (
+  <div className="bg-white rounded-lg shadow overflow-hidden animate-pulse">
+    <div className="px-6 py-4 border-b border-gray-200">
+      <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+    </div>
+    {[1, 2, 3, 4, 5].map((i) => (
+      <div key={i} className="px-6 py-4 border-b border-gray-100 flex items-center gap-4">
+        <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+        <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+        <div className="h-4 bg-gray-200 rounded w-1/5"></div>
+        <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+      </div>
+    ))}
+  </div>
+);
+
+const SkeletonSidebar = () => (
+  <div className="w-64 bg-white border-r border-gray-200 h-screen p-4 animate-pulse">
+    <div className="h-8 bg-gray-200 rounded mb-6"></div>
+    {[1, 2, 3, 4, 5, 6].map((i) => (
+      <div key={i} className="mb-4">
+        <div className="h-10 bg-gray-200 rounded"></div>
+      </div>
+    ))}
+  </div>
+);
+
+const SkeletonHeader = () => (
+  <div className="bg-white border-b border-gray-200 px-6 py-4 animate-pulse">
+    <div className="flex items-center justify-between">
+      <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+      <div className="flex items-center gap-4">
+        <div className="h-10 w-10 bg-gray-200 rounded-full"></div>
+        <div className="h-10 w-10 bg-gray-200 rounded-full"></div>
+      </div>
     </div>
   </div>
 );
+
+const SkeletonDashboard = () => (
+  <div className="min-h-screen bg-gray-50">
+    <SkeletonHeader />
+    <div className="flex">
+      <SkeletonSidebar />
+      <div className="flex-1 p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="bg-white rounded-lg shadow p-6 animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SkeletonContent = () => (
+  <div className="min-h-screen bg-gray-50 p-6">
+    <div className="max-w-7xl mx-auto">
+      <div className="animate-pulse">
+        <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+        <SkeletonTable />
+      </div>
+    </div>
+  </div>
+);
+
+const LoadingScreen = () => (
+  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="text-center">
+      <div className="relative w-16 h-16 mx-auto mb-4">
+        <div className="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
+        <div className="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+      </div>
+      <div className="space-y-2 animate-pulse">
+        <div className="h-4 bg-gray-200 rounded w-32 mx-auto"></div>
+        <div className="h-3 bg-gray-200 rounded w-24 mx-auto"></div>
+      </div>
+    </div>
+  </div>
+);
+
+const DashboardLoadingScreen = () => <SkeletonDashboard />;
+
+const ContentLoadingScreen = () => <SkeletonContent />;
 
 const AppRouter = () => {
   useNavigationQueryReset();
@@ -89,16 +183,31 @@ const AppRouter = () => {
     }, [loading]);
 
     if (location.pathname === '/reset-password') return <>{children}</>;
-    if (loading && !forceRender) return <LoadingScreen />;
+    
+    // Use skeletal loading for dashboard routes, simple loading for others
+    if (loading && !forceRender) {
+      if (location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin')) {
+        return <DashboardLoadingScreen />;
+      }
+      return <LoadingScreen />;
+    }
 
     if (forceRender && loading) {
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
           <div className="max-w-md bg-white rounded-lg shadow-lg p-8 text-center">
-            <h2 className="text-xl font-bold mb-2">Authentication Timeout</h2>
+            <div className="w-16 h-16 mx-auto mb-4 relative">
+              <Clock className="w-16 h-16 text-gray-300" />
+            </div>
+            <h2 className="text-xl font-bold mb-2 text-gray-900">Authentication Timeout</h2>
+            <p className="text-gray-600 mb-6">The authentication process is taking longer than expected.</p>
             <div className="flex gap-3 justify-center">
-              <Button onClick={() => window.location.reload()}>Refresh</Button>
-              <Button onClick={() => window.location.href = '/auth'}>Login</Button>
+              <Button onClick={() => window.location.reload()} variant="outline">
+                Refresh Page
+              </Button>
+              <Button onClick={() => window.location.href = '/auth'}>
+                Go to Login
+              </Button>
             </div>
           </div>
         </div>
@@ -117,7 +226,11 @@ const AppRouter = () => {
 
     return (
       <ThemeProvider>
-        <Suspense fallback={<LoadingScreen />}>
+        <Suspense fallback={
+          location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin') 
+            ? <DashboardLoadingScreen /> 
+            : <ContentLoadingScreen />
+        }>
           {children}
         </Suspense>
       </ThemeProvider>
@@ -131,8 +244,8 @@ const AppRouter = () => {
     // Use the hook to ensure branch exists and is set
     useEnsureBranch();
 
-    // Wait for both auth and branch to be ready
-    if (authLoading || branchLoading) return <LoadingScreen />;
+    // Wait for both auth and branch to be ready with skeletal loading
+    if (authLoading || branchLoading) return <DashboardLoadingScreen />;
     
     return <>{children}</>;
   };
@@ -143,7 +256,24 @@ const AppRouter = () => {
     const from = (location.state as any)?.from?.pathname || "/dashboard";
     const force = new URLSearchParams(location.search).get('force') === 'true';
 
-    if (loading) return <LoadingScreen />;
+    if (loading) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 animate-pulse">
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 bg-gray-200 rounded-full"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+              <div className="h-12 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
     if (user && userProfile && !force) return <Navigate to={from} replace />;
     return <AuthPage />;
   };
@@ -238,7 +368,6 @@ const AppRouter = () => {
           </Route>
           <Route path="sales-orders" element={<SalesOrdersPage />} />
           <Route path="vendor-management" element={<VendorManagementPage />} />
-
         </Route>
 
         {/* ERROR & FALLBACK */}

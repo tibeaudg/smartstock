@@ -96,7 +96,7 @@ export default function SalesOrdersPage() {
           <h1 className="text-2xl font-bold text-gray-900">Sales Orders</h1>
           <p className="text-sm text-gray-600 mt-1">Manage your sales orders and track fulfillment</p>
         </div>
-        <Button onClick={() => setShowCreateModal(true)} className="w-full sm:w-auto">
+        <Button onClick={() => setShowCreateModal(true)} className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white">
           <Plus className="w-4 h-4 mr-2" />
           Create Sales Order
         </Button>
@@ -143,7 +143,7 @@ export default function SalesOrdersPage() {
                 : 'Create your first sales order to get started'}
             </p>
             {!searchQuery && statusFilter === 'all' && (
-              <Button onClick={() => setShowCreateModal(true)}>
+              <Button onClick={() => setShowCreateModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Sales Order
               </Button>
