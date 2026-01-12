@@ -9,6 +9,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Plus, Minus } from 'lucide-react';
 import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { useBranches } from '@/hooks/useBranches';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Product {
   id: string;
@@ -49,6 +51,8 @@ export const EditProductStockModal = ({
   
   // Gebruik de page refresh hook
   usePageRefresh();
+  const { activeBranch } = useBranches();
+  const { user: authUser } = useAuth();
 
   useEffect(() => {
     if (isOpen) {
@@ -72,7 +76,67 @@ export const EditProductStockModal = ({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not logged in');
-      const currentQuantity = Number(product.quantity_in_stock) || 0;
+
+      // Defensive validation: ensure product and IDs are present and valid
+      const prodId = product?.id;
+      let branchId = product?.branch_id;
+      if (!prodId || typeof prodId !== 'string' || prodId.trim() === '' || prodId === 'undefined') {
+        console.error('EditProductStockModal: invalid product id', prodId);
+        toast.error('Product ID is missing. Please refresh and try again.');
+        setLoading(false);
+        return;
+      }
+      if (!branchId || typeof branchId !== 'string' || branchId.trim() === '' || branchId === 'undefined') {
+        // Try to resolve branch from activeBranch (new logic: each user has one branch)
+        if (activeBranch?.branch_id) {
+          branchId = activeBranch.branch_id;
+          console.warn('EditProductStockModal: using activeBranch branch_id as fallback', branchId);
+        } else if (authUser?.id) {
+          try {
+            const res: any = await supabase.rpc('get_user_branches', { user_id: authUser.id });
+            const branches = res?.data || res;
+            if (Array.isArray(branches) && branches.length > 0) {
+              const b = branches[0];
+              branchId = b.branch_id || b.id || b.branchId;
+              console.warn('EditProductStockModal: using RPC fallback branch_id', branchId);
+            }
+          } catch (err) {
+            console.error('EditProductStockModal: error resolving branch via RPC', err);
+          }
+        }
+
+        if (!branchId) {
+          console.error('EditProductStockModal: invalid branch id', branchId);
+          toast.error('Product branch is missing. Please select a branch.');
+          setLoading(false);
+          return;
+        }
+      }
+      let currentQuantity = Number(product.quantity_in_stock);
+      if (Number.isNaN(currentQuantity) || product.quantity_in_stock === null || product.quantity_in_stock === undefined) {
+        console.warn('EditProductStockModal: product.quantity_in_stock missing or invalid, fetching latest from DB', { prodId, branchId, provided: product.quantity_in_stock });
+        try {
+          const { data: fresh, error: freshErr } = await supabase
+            .from('products')
+            .select('quantity_in_stock')
+            .eq('id', prodId)
+            .eq('branch_id', branchId)
+            .maybeSingle();
+          if (!freshErr && fresh) {
+            currentQuantity = Number(fresh.quantity_in_stock) || 0;
+            console.log('EditProductStockModal: fetched currentQuantity', currentQuantity);
+          } else {
+            console.warn('EditProductStockModal: unable to fetch fresh quantity', freshErr);
+            currentQuantity = 0;
+          }
+        } catch (err) {
+          console.error('EditProductStockModal: exception fetching fresh quantity', err);
+          currentQuantity = 0;
+        }
+      } else {
+        currentQuantity = Number(product.quantity_in_stock) || 0;
+      }
+      console.log('EditProductStockModal: currentQuantity (final)', currentQuantity, 'inputQuantity', numericQuantity, 'action', currentActionType);
       const newQuantity = currentActionType === 'in'
         ? currentQuantity + numericQuantity
         : currentQuantity - numericQuantity;
@@ -84,17 +148,17 @@ export const EditProductStockModal = ({
         const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
-          product_id: product.id,
+          product_id: prodId,
           product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
           transaction_type: currentActionType === 'in' ? 'manual_adjustment' : 'manual_adjustment',
           quantity: numericQuantity,
           unit_price: product.unit_price,
           reference_number: `STOCK_${currentActionType?.toUpperCase()}_${Date.now()}`,
           notes: `Stock ${currentActionType === 'in' ? 'added' : 'removed'} via stock management`,
-          user_id: user.id, // Behoud user_id voor backward compatibility
-          created_by: user.id, // Nieuwe kolom voor relaties
-          branch_id: product.branch_id,
-          variant_id: product.is_variant ? product.id : null,
+          user_id: user.id,
+          created_by: user.id,
+          branch_id: branchId,
+          variant_id: product.is_variant ? prodId : null,
           variant_name: product.is_variant ? product.variant_name : null,
           adjustment_method: 'manual'
         });
@@ -107,7 +171,7 @@ export const EditProductStockModal = ({
           quantity_in_stock: newQuantity,
           updated_at: new Date().toISOString()
         })
-        .eq('id', product.id);
+        .eq('id', prodId);
       if (updateError) {
         throw new Error(`Error updating stock: ${updateError.message}`);
       }

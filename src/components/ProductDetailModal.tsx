@@ -729,15 +729,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <Plus className="w-3 h-3" />
                 Adjust
               </Button>
-              <Button
-                onClick={handleSetWarehouse}
-                variant="outline"
-                size="sm"
-                className="gap-2 text-xs"
-              >
-                <MapPin className="w-3 h-3" />
-                {currentProduct?.warehouse_name || 'Set Warehouse'}
-              </Button>
+       
               <Button
                 onClick={handleSetCategory}
                 variant="outline"

@@ -194,46 +194,7 @@ export type StockTransferItem = {
   product?: Product;
 };
 
-// Cycle Count types
-export type CycleCountStatus = 'draft' | 'in_progress' | 'completed' | 'approved';
 
-export type CycleCount = {
-  id: string;
-  count_number: string;
-  status: CycleCountStatus;
-  count_date: string;
-  completed_date?: string | null;
-  approved_date?: string | null;
-  approved_by?: string | null;
-  branch_id: string;
-  location_filter?: string | null;
-  user_id: string;
-  created_by?: string | null;
-  notes?: string | null;
-  discrepancy_count: number;
-  total_items_counted: number;
-  created_at: string;
-  updated_at: string;
-  items?: CycleCountItem[];
-};
-
-export type CycleCountItem = {
-  id: string;
-  cycle_count_id: string;
-  product_id?: string | null;
-  variant_id?: string | null;
-  expected_quantity: number;
-  counted_quantity: number;
-  variance: number; // counted - expected
-  variance_value: number;
-  notes?: string | null;
-  counted_by?: string | null;
-  counted_at?: string | null;
-  counting_method?: 'manual' | 'scan' | null;
-  created_at: string;
-  updated_at: string;
-  product?: Product;
-};
 
 export type StockMovementStats = {
   totalIncoming: number;

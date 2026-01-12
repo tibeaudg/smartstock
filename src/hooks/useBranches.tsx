@@ -117,6 +117,18 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
 
         const { data, error } = raced as any;
 
+        // Normalize RPC response to expected Branch shape. The RPC may return
+        // objects with different keys (e.g., `id` / `name`) depending on
+        // implementation, so ensure we always return `branch_id` and `branch_name`.
+        const normalize = (item: any) => ({
+          branch_id: item.branch_id || item.id || item.branchId || null,
+          branch_name: item.branch_name || item.name || item.branch_name || null,
+          is_main: item.is_main || item.isMain || false,
+          user_role: item.user_role || item.role || (item.branch_users?.[0]?.role) || 'admin',
+        });
+
+        const normalizedData = Array.isArray(data) ? data.map(normalize) : data;
+
         if (error) {
           console.error('Error fetching branches with RPC, trying direct query:', error);
           // Fallback: probeer direct de branches tabel te queryen
@@ -148,7 +160,9 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           return transformedData;
         }
 
-        return (data as Branch[]) || previous;
+        // Return normalized array (or previous) so callers always get the
+        // expected shape and `activeBranch` selection works reliably.
+        return (normalizedData as Branch[]) || previous;
       } catch (timeoutError) {
         console.warn('Branch fetch failed, serving cached data', timeoutError);
         // Preserve previous data instead of empty array

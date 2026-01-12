@@ -22,7 +22,7 @@ import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import  BillOfMaterials  from '@/components/products/BillOfMaterials';
+import BillOfMaterials from '@/components/products/BillOfMaterials';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { format } from 'date-fns';
@@ -151,7 +151,6 @@ export default function ProductDetailPage() {
             category_id: data.category_id || '',
             category_name: data.category_name || '',
           });
-          // Update warehouse_name in form if needed (for future use)
         }
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -504,7 +503,6 @@ export default function ProductDetailPage() {
           category_id: updatedProduct.category_id || '',
           category_name: updatedProduct.category_name || '',
         }));
-        // Update warehouse_name if needed (for future use)
       }
 
       // Clear image upload state if image was saved
@@ -565,12 +563,78 @@ export default function ProductDetailPage() {
 
   const [selectedProductForStock, setSelectedProductForStock] = useState<any>(null);
 
-  const handleAdjustStock = (product?: any) => {
-    if (product) {
-      setSelectedProductForStock(product);
-    } else {
-      setSelectedProductForStock(currentProduct);
+  const handleAdjustStock = async (product?: any) => {
+    const prodToUse = product || currentProduct;
+    if (!prodToUse) {
+      toast.error('No product selected');
+      return;
     }
+
+    const prodIdRaw = prodToUse?.id;
+    const prodId = typeof prodIdRaw === 'number' ? String(prodIdRaw) : (prodIdRaw ?? '');
+    const branchId = prodToUse?.branch_id || activeBranch?.branch_id;
+
+    if (!prodId || prodId === 'undefined' || (typeof prodId === 'string' && prodId.trim() === '')) {
+      if (id && typeof id === 'string' && id.trim() !== '') {
+        console.warn('handleAdjustStock: product.id missing, falling back to route id', { prodIdRaw, routeId: id });
+        try {
+          const branchToUse = prodToUse?.branch_id || activeBranch?.branch_id;
+          const { data: fetchedProduct, error: fetchError } = await supabase
+            .from('products')
+            .select('*')
+            .eq('id', id)
+            .eq('branch_id', branchToUse)
+            .maybeSingle();
+
+          if (fetchError || !fetchedProduct) {
+            console.error('handleAdjustStock: failed to fetch product by route id', fetchError);
+            toast.error('Unable to load product details. Please refresh and try again.');
+            return;
+          }
+
+          setSelectedProductForStock(fetchedProduct);
+          setIsStockAdjustModalOpen(true);
+          return;
+        } catch (err) {
+          console.error('handleAdjustStock: exception fetching product', err);
+          toast.error('Unable to load product details. Please refresh and try again.');
+          return;
+        }
+      }
+
+      console.error('handleAdjustStock: invalid product id (raw)', prodIdRaw, 'coerced:', prodId, prodToUse);
+      toast.error('Product ID is missing. Please refresh and try again.');
+      return;
+    }
+
+    if (!branchId) {
+      console.warn('handleAdjustStock: missing branch id on product, attempting to resolve user branch', prodToUse);
+      if (user?.id) {
+        try {
+          const res: any = await supabase.rpc('get_user_branches', { user_id: user.id });
+          const branches = res?.data || res;
+          if (Array.isArray(branches) && branches.length > 0) {
+            const fallbackBranch = branches[0];
+            const fallbackBranchId = fallbackBranch.branch_id || fallbackBranch.id || fallbackBranch.branch_id;
+            if (fallbackBranchId) {
+              console.log('handleAdjustStock: using fallback branch id from RPC', fallbackBranchId);
+              const fallbackProduct = { ...prodToUse, branch_id: fallbackBranchId };
+              setSelectedProductForStock(fallbackProduct);
+              setIsStockAdjustModalOpen(true);
+              return;
+            }
+          }
+        } catch (err) {
+          console.error('handleAdjustStock: error resolving user branch', err);
+        }
+      }
+
+      console.error('handleAdjustStock: missing branch id', branchId, prodToUse);
+      toast.error('Branch information missing. Please select a branch.');
+      return;
+    }
+
+    setSelectedProductForStock(prodToUse);
     setIsStockAdjustModalOpen(true);
   };
 
@@ -585,7 +649,6 @@ export default function ProductDetailPage() {
   };
 
   const handleTransferComplete = async () => {
-    // Refetch product data to get updated location
     if (id && activeBranch) {
       const { data, error } = await supabase
         .from('products')
@@ -600,17 +663,14 @@ export default function ProductDetailPage() {
           ...prev,
           location: data.location || '',
         }));
-        // warehouse_name is updated via WarehouseTransferModal
       }
     }
     
-    // Invalidate queries to refresh data
     queryClient.invalidateQueries({ queryKey: ['products'] });
     queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
   };
 
   const handleCategorySetComplete = async () => {
-    // Refetch product data to get updated category
     if (id && activeBranch) {
       const { data, error } = await supabase
         .from('products')
@@ -629,35 +689,58 @@ export default function ProductDetailPage() {
       }
     }
     
-    // Invalidate queries to refresh data
     queryClient.invalidateQueries({ queryKey: ['products'] });
     queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
   };
 
   const handleGenerateBarcode = () => {
     setShowBarcodeGenerator(true);
-    // TODO: Implement barcode generation
     toast.info('Barcode generation coming soon');
   };
 
   const handleArchive = () => {
     if (confirm('Are you sure you want to archive this product?')) {
-      // TODO: Implement archive functionality
       toast.info('Archive functionality coming soon');
     }
   };
 
   const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
-      // Navigate back and let the parent handle deletion
-      navigate('/dashboard/categories');
-    }
+    if (!currentProduct) return;
+    if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) return;
+
+    (async () => {
+      setLoading(true);
+      try {
+        const res: any = await supabase
+          .from('products')
+          .delete()
+          .eq('id', currentProduct.id)
+          .eq('branch_id', currentProduct.branch_id || activeBranch?.branch_id);
+
+        const error = res?.error;
+        if (error) {
+          console.error('Error deleting product:', error);
+          toast.error('Failed to delete product');
+          return;
+        }
+
+        toast.success('Product deleted');
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+        queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+        navigate('/dashboard/categories');
+      } catch (err) {
+        console.error('Unexpected error deleting product:', err);
+        toast.error('Failed to delete product');
+      } finally {
+        setLoading(false);
+      }
+    })();
   };
 
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't trigger shortcuts when typing in inputs
       if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') {
         return;
       }
@@ -716,7 +799,7 @@ export default function ProductDetailPage() {
     return new Intl.NumberFormat('en-US').format(Number(qty) || 0);
   };
 
-  // Calculate total stock - must be called before early returns (hooks rule)
+  // Calculate total stock
   const totalStock = React.useMemo(() => {
     if (!currentProduct) return 0;
     if (currentProduct.is_variant) {
@@ -755,7 +838,6 @@ export default function ProductDetailPage() {
   const stockStatus = getStatus(totalStock, currentProduct.minimum_stock_level);
   const stockDotColor = getDotColor(totalStock, currentProduct.minimum_stock_level);
 
-  // Get product status badge
   const getProductStatus = () => {
     if (currentProduct.status === 'inactive') return { label: 'Inactive', variant: 'secondary' as const };
     if (currentProduct.status === 'discontinued') return { label: 'Discontinued', variant: 'destructive' as const };
@@ -766,10 +848,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="h-full flex flex-col bg-white">
-      {/* Top Header with Back Button */}
-
-      {/* Dual-Pane Layout */}
-      {/* Breadcrumb + Header: anchors user to product context */}
+      {/* Breadcrumb + Header */}
       <div className="border-b px-6 py-2 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -784,82 +863,43 @@ export default function ProductDetailPage() {
             <nav className="text-xs text-gray-500">
               <span className="cursor-pointer hover:underline" onClick={() => navigate('/dashboard/categories')}>Products</span>
               <span className="mx-2">/</span>
-           
               <span className="text-gray-900 font-medium">{currentProduct?.name}</span>
             </nav>
           </div>
-      <div className="px-6 py-3">
-  
-
-                <Button
-                  onClick={handleAdjustStock}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs mr-2"
-                  title="Adjust Stock (A)"
-                >
-                  <Plus className="w-3 h-3" />
-                  Adjust
-                </Button>
-                <Button
-                  onClick={handleSetWarehouse}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs mr-2"
-                  title="Set Warehouse (T)"
-                >
-                  <MapPin className="w-3 h-3" />
-                  {currentProduct?.warehouse_name || 'Set Warehouse'}
-                </Button>
-                <Button
-                  onClick={handleSetCategory}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 text-xs mr-2"
-                  title="Set Category (C)"
-                >
-                  <Tag className="w-3 h-3" />
-                  {currentProduct?.category_name || 'Set Category'}
-                </Button>
-       
-
-
-                  <Button
-                variant="outline"
-                size="sm"
-                  className="gap-2 text-xs mr-2"
-                onClick={handleGenerateBarcode}
-              >
-                <QrCode className="w-3 h-3 mr-2" />
-                Generate Barcode
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                  className="gap-2 text-xs mr-2"
-                onClick={handleArchive}
-              >
-                <Archive className="w-3 h-3 mr-2" />
-                Archive
-              </Button>
-
-                       <Button
-                  onClick={handleDelete}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 mr-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  Delete
-                </Button>
-
-
-
-
-
+          <div className="px-6 py-3">
+            <Button
+              onClick={handleAdjustStock}
+              variant="outline"
+              size="sm"
+              className="gap-2 text-xs mr-2"
+              title="Adjust Stock (A)"
+            >
+              <Plus className="w-3 h-3" />
+              Adjust
+            </Button>
+            <Button
+              onClick={handleSetCategory}
+              variant="outline"
+              size="sm"
+              className="gap-2 text-xs mr-2"
+              title="Set Category (C)"
+            >
+              <Tag className="w-3 h-3" />
+              {currentProduct?.category_name || 'Set Category'}
+            </Button>
+            <Button
+              onClick={handleDelete}
+              variant="outline"
+              size="sm"
+              className="gap-2 mr-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+            >
+              <Trash2 className="w-3 h-3" />
+              Delete
+            </Button>
           </div>
         </div>
       </div>
+
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar - Fixed (320px) */}
         <div className="w-80 border-r bg-gray-50 flex flex-col overflow-y-auto">
@@ -1027,12 +1067,7 @@ export default function ProductDetailPage() {
                   <span className="font-mono text-sm text-gray-900">{currentProduct.barcode}</span>
                 </div>
               )}
-
-        
-
-           
             </div>
-
 
             {/* Quick Metadata */}
             <div className="space-y-2 text-xs">
@@ -1048,10 +1083,7 @@ export default function ProductDetailPage() {
                   {currentProduct.updated_at ? format(new Date(currentProduct.updated_at), 'MMM dd, yyyy') : 'N/A'}
                 </span>
               </div>
-             
             </div>
-
-    
           </div>
         </div>
 
@@ -1098,8 +1130,6 @@ export default function ProductDetailPage() {
                   </Button>
                 </div>
               )}
-              
-          
             </div>
           </div>
 
@@ -1109,25 +1139,221 @@ export default function ProductDetailPage() {
               {/* Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <TabsList className="grid w-full mb-6 grid-cols-2 gap-2 bg-white border rounded-md p-1">
-                    <TabsTrigger value="overview" className="px-3 py-1 rounded text-sm">Overview</TabsTrigger>
-                    {!currentProduct.is_variant && (
-                      <>
-                        <TabsTrigger value="variants" className="px-3 py-1 rounded text-sm">
-                        <div className="flex items-center">
-                          <span>Variants</span>
-                          {variants.length > 0 && (
-                            <Badge variant="secondary" className="ml-2 text-xs">
-                              {variants.length}
-                            </Badge>
-                          )}
+                  <TabsTrigger value="overview" className="px-3 py-1 rounded text-sm">Overview</TabsTrigger>
+                  {!currentProduct.is_variant && (
+                    <TabsTrigger value="variants" className="px-3 py-1 rounded text-sm">
+                      <div className="flex items-center">
+                        <span>Variants</span>
+                        {variants.length > 0 && (
+                          <Badge variant="secondary" className="ml-2 text-xs">
+                            {variants.length}
+                          </Badge>
+                        )}
+                      </div>
+                    </TabsTrigger>
+                  )}
+                </TabsList>
+
+                {/* Overview Tab */}
+                <TabsContent value="overview" className="mt-0 space-y-6">
+                  {/* Description Section */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">Description</h3>
+                      {editingField !== 'description' && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setEditingField('description')}
+                          className="h-6 w-6 p-0"
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                      )}
+                    </div>
+                    
+                    {editingField === 'description' ? (
+                      <div className="space-y-2">
+                        <Textarea
+                          value={form.description}
+                          onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
+                          placeholder="Enter product description"
+                          disabled={loading}
+                          className="min-h-[100px]"
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleSave('description')}
+                            disabled={loading}
+                            className="flex-1"
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleCancel('description')}
+                            disabled={loading}
+                            className="flex-1"
+                          >
+                            Cancel
+                          </Button>
                         </div>
-                        </TabsTrigger>
-                     
-                      </>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-600">
+                        {currentProduct.description || 'No description provided'}
+                      </p>
                     )}
-                  </TabsList>
+                  </div>
 
+                  <Separator />
 
+                  {/* Stock Information */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">Stock Information</h3>
+                      {editingField !== 'stock' && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setEditingField('stock')}
+                          className="h-6 w-6 p-0"
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                      )}
+                    </div>
+                    
+                    {editingField === 'stock' ? (
+                      <div className="space-y-3">
+           
+                        <div>
+                          <Label>Minimum Stock Level</Label>
+                          <Input
+                            type="number"
+                            value={form.minimum_stock_level}
+                            onChange={(e) => setForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleSave('stock')}
+                            disabled={loading}
+                            className="flex-1"
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleCancel('stock')}
+                            disabled={loading}
+                            className="flex-1"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-xs text-gray-500 mb-1">Current Stock</div>
+                          <div className="flex items-center gap-2">
+                            <div className={cn('w-2 h-2 rounded-full', stockDotColor)} />
+                            <span className="text-lg font-semibold">{formatQty(totalStock)}</span>
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-gray-500 mb-1">Minimum Level</div>
+                          <span className="text-lg font-semibold">{formatQty(currentProduct.minimum_stock_level)}</span>
+                        </div>
+                        <div className="col-span-2">
+                          <Badge variant={stockStatus === 'Out of Stock' ? 'destructive' : stockStatus === 'Low Stock' ? 'secondary' : 'default'}>
+                            {stockStatus}
+                          </Badge>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <Separator />
+
+                  {/* Pricing Information */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">Pricing</h3>
+                      {editingField !== 'pricing' && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setEditingField('pricing')}
+                          className="h-6 w-6 p-0"
+                        >
+                          <Edit className="w-3 h-3" />
+                        </Button>
+                      )}
+                    </div>
+                    
+                    {editingField === 'pricing' ? (
+                      <div className="space-y-3">
+                        <div>
+                          <Label>Purchase Price</Label>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={form.purchase_price}
+                            onChange={(e) => setForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div>
+                          <Label>Sale Price</Label>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={form.sale_price}
+                            onChange={(e) => setForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleSave('pricing')}
+                            disabled={loading}
+                            className="flex-1"
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleCancel('pricing')}
+                            disabled={loading}
+                            className="flex-1"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-xs text-gray-500 mb-1">Purchase Price</div>
+                          <span className="text-lg font-semibold">{formatPrice(currentProduct.purchase_price || 0)}</span>
+                        </div>
+                        <div>
+                          <div className="text-xs text-gray-500 mb-1">Sale Price</div>
+                          <span className="text-lg font-semibold">{formatPrice(currentProduct.sale_price || 0)}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </TabsContent>
 
                 {/* Variants Tab */}
                 {!currentProduct.is_variant && (
@@ -1336,16 +1562,18 @@ export default function ProductDetailPage() {
                                             size="sm"
                                             onClick={() => handleSaveVariant(variant.id)}
                                             disabled={loading || !variantForm.variant_name.trim()}
+                                            className="h-7"
                                           >
-                                            <Save className="w-4 h-4" />
+                                            Save
                                           </Button>
                                           <Button
                                             size="sm"
                                             variant="outline"
                                             onClick={handleCancelVariantEdit}
                                             disabled={loading}
+                                            className="h-7"
                                           >
-                                            <X className="w-4 h-4" />
+                                            Cancel
                                           </Button>
                                         </div>
                                       ) : (
@@ -1354,6 +1582,7 @@ export default function ProductDetailPage() {
                                             size="sm"
                                             variant="ghost"
                                             onClick={() => handleEditVariant(variant)}
+                                            className="h-7 w-7 p-0"
                                           >
                                             <Edit className="w-4 h-4" />
                                           </Button>
@@ -1361,33 +1590,9 @@ export default function ProductDetailPage() {
                                             size="sm"
                                             variant="ghost"
                                             onClick={() => handleAdjustStock(variant)}
+                                            className="h-7 w-7 p-0"
                                           >
                                             <TrendingUp className="w-4 h-4" />
-                                          </Button>
-                                          <Button
-                                            size="sm"
-                                            variant="ghost"
-                                            onClick={async () => {
-                                              if (window.confirm(`Delete variant "${variant.variant_name}"?`)) {
-                                                try {
-                                                  const { error } = await supabase
-                                                    .from('products')
-                                                    .delete()
-                                                    .eq('id', variant.id);
-                                                  
-                                                  if (error) throw error;
-                                                  
-                                                  toast.success('Variant deleted');
-                                                  handleVariantAdded();
-                                                } catch (error) {
-                                                  console.error('Error deleting variant:', error);
-                                                  toast.error('Failed to delete variant');
-                                                }
-                                              }
-                                            }}
-                                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                          >
-                                            <Trash2 className="w-4 h-4" />
                                           </Button>
                                         </div>
                                       )}
@@ -1402,219 +1607,18 @@ export default function ProductDetailPage() {
                     )}
                   </TabsContent>
                 )}
-
-                {/* BOM Tab */}
-                {!currentProduct.is_variant && (
-                  <TabsContent value="bom" className="mt-0 space-y-4">
-                    <BillOfMaterials
-                      productId={currentProduct.id}
-                      onVersionChange={(versionId) => {
-                        // ensure we stay on BOM tab when versions change
-                        setActiveTab('bom');
-                      }}
-                    />
-                  </TabsContent>
-                )}
               </Tabs>
-
-              {/* Inline Editing Modals for SKU, Location, Category */}
-              {editingField === 'sku' && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg p-4 w-full max-w-md">
-                    <div className="space-y-2">
-                      <Label>SKU</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          value={form.sku}
-                          onChange={(e) => setForm(prev => ({ ...prev, sku: e.target.value }))}
-                          placeholder="Enter SKU or scan barcode"
-                          disabled={loading}
-                          className="flex-1"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setShowScanner(true)}
-                          disabled={loading}
-                        >
-                          <Scan className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleSave('sku')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCancel('sku')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {editingField === 'location' && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg p-4 w-full max-w-md">
-                    <div className="space-y-2">
-                      <Label>Location</Label>
-                      <Input
-                        value={form.location}
-                        onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
-                        placeholder="Enter location (e.g. A1, Shelf 3)"
-                        disabled={loading}
-                      />
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleSave('location')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCancel('location')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {editingField === 'category' && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg p-4 w-full max-w-md">
-                    <div className="space-y-2">
-                      <Label>Category</Label>
-                      <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={categoryOpen}
-                            className="w-full justify-between"
-                            disabled={loading}
-                          >
-                            {form.category_name || "Select category..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command>
-                            <CommandInput 
-                              placeholder="Search category..." 
-                              value={form.category_name}
-                              onValueChange={(value) => handleCategoryChange(value)}
-                            />
-                            <CommandList>
-                              <CommandEmpty>
-                                <div className="p-2 text-center">
-                                  <p className="text-sm text-gray-500 mb-2">No category found</p>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={async () => {
-                                      if (form.category_name.trim() && user) {
-                                        try {
-                                          const { data: newCategory, error } = await supabase
-                                            .from('categories')
-                                            .insert({ name: form.category_name.trim(), user_id: user.id })
-                                            .select('id, name')
-                                            .single();
-                                          
-                                          if (error || !newCategory) {
-                                            toast.error('Error creating category');
-                                            return;
-                                          }
-                                          
-                                          setCategories(prev => [...prev, newCategory]);
-                                          setForm(prev => ({ ...prev, category_id: newCategory.id }));
-                                          setCategoryOpen(false);
-                                          toast.success('New category added!');
-                                        } catch (error) {
-                                          toast.error('Error creating category');
-                                        }
-                                      }
-                                    }}
-                                    className="w-full"
-                                  >
-                                    <Plus className="w-4 h-4 mr-2" />
-                                    Add "{form.category_name}"
-                                  </Button>
-                                </div>
-                              </CommandEmpty>
-                              <CommandGroup>
-                                {categories.map((category) => (
-                                  <CommandItem
-                                    key={category.id}
-                                    value={category.name}
-                                    onSelect={() => {
-                                      handleCategoryChange(category.name);
-                                      setCategoryOpen(false);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        form.category_name === category.name ? "opacity-100" : "opacity-0"
-                                      )}
-                                    />
-                                    {category.name}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleSave('category')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleCancel('category')}
-                          disabled={loading}
-                          className="flex-1"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
-
+      <AddVariantModal
+        isOpen={isAddVariantModalOpen}
+        onClose={() => setIsAddVariantModalOpen(false)}
+        parentProduct={currentProduct}
+        onVariantAdded={handleVariantAdded}
+      />
       {/* Modals */}
-      {/* Stock Adjustment Modal */}
       {isStockAdjustModalOpen && (selectedProductForStock || currentProduct) && (
         <EditProductStockModal
           isOpen={isStockAdjustModalOpen}
@@ -1623,86 +1627,42 @@ export default function ProductDetailPage() {
             setSelectedProductForStock(null);
           }}
           product={selectedProductForStock || currentProduct}
-          onProductUpdated={() => {
-            // Refresh product data
-            const fetchProduct = async () => {
-              if (!id || !activeBranch) return;
-              try {
-                const { data, error } = await supabase
-                  .from('products')
-                  .select('*')
-                  .eq('id', id)
-                  .eq('branch_id', activeBranch.branch_id)
-                  .single();
+          onProductUpdated={async () => {
+            if (id && activeBranch) {
+              const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .eq('id', id)
+                .eq('branch_id', activeBranch.branch_id)
+                .single();
 
-                if (!error && data) {
-                  setCurrentProduct(data);
-                  setForm({
-                    name: data.name || '',
-                    description: data.description || '',
-                    quantity_in_stock: data.quantity_in_stock || 0,
-                    minimum_stock_level: data.minimum_stock_level || 0,
-                    purchase_price: data.purchase_price || 0,
-                    sale_price: data.sale_price || 0,
-                    sku: data.sku || '',
-                    location: data.location || '',
-                    category_id: data.category_id || '',
-                    category_name: data.category_name || '',
-                  });
-                }
-              } catch (error) {
-                console.error('Error refreshing product:', error);
+              if (!error && data) {
+                setCurrentProduct(data);
+                setForm(prev => ({
+                  ...prev,
+                  quantity_in_stock: data.quantity_in_stock || 0,
+                  minimum_stock_level: data.minimum_stock_level || 0,
+                }));
               }
-            };
-            fetchProduct();
-            queryClient.invalidateQueries({ queryKey: ['productTransactions', id] });
-            queryClient.invalidateQueries({ queryKey: ['productValuation', id] });
-            queryClient.invalidateQueries({ queryKey: ['productLeadTime', id] });
+            }
+
             queryClient.invalidateQueries({ queryKey: ['products'] });
             queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
-            if (selectedProductForStock) {
-              handleVariantAdded(); // Refresh variants if we adjusted a variant
-            }
+            setIsStockAdjustModalOpen(false);
+            setSelectedProductForStock(null);
           }}
-          actionType="in"
         />
       )}
 
-      {/* Add Variant Modal */}
-      {currentProduct && !currentProduct.is_variant && (
-        <AddVariantModal
-          isOpen={isAddVariantModalOpen}
-          onClose={() => setIsAddVariantModalOpen(false)}
-          onVariantAdded={handleVariantAdded}
-          parentProduct={currentProduct}
-        />
-      )}
-
-      {/* Barcode Scanner Modal */}
-      {showScanner && (
-        <BarcodeScanner
-          onBarcodeDetected={handleBarcodeDetected}
-          onClose={() => setShowScanner(false)}
-          onScanSuccess={onScanSuccess}
-          settings={scannerSettings}
-        />
-      )}
-
-      {/* Warehouse Transfer Modal */}
       {isTransferModalOpen && currentProduct && (
         <WarehouseTransferModal
           isOpen={isTransferModalOpen}
           onClose={() => setIsTransferModalOpen(false)}
-          product={{
-            id: currentProduct.id,
-            name: currentProduct.name,
-            warehouse_name: currentProduct.warehouse_name,
-          }}
+          product={currentProduct}
           onTransferComplete={handleTransferComplete}
         />
       )}
 
-      {/* Category Selection Modal */}
       {isCategoryModalOpen && currentProduct && (
         <CategorySelectionModal
           isOpen={isCategoryModalOpen}
@@ -1716,7 +1676,8 @@ export default function ProductDetailPage() {
           onCategorySet={handleCategorySetComplete}
         />
       )}
+
     </div>
   );
 }
-
+  

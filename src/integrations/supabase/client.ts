@@ -39,6 +39,39 @@ function getSafeLocalStorage() {
   };
 }
 
+// Defensive: intercept fetch calls that would send 'eq.undefined' in query params
+// This prevents PostgREST requests like `.../products?id=eq.undefined` which
+// cause Postgres UUID parsing errors. We block those requests early and log
+// a helpful message to aid debugging; callers should still be fixed to avoid
+// passing undefined IDs.
+try {
+  const globalAny: any = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : undefined);
+  if (globalAny && typeof globalAny.fetch === 'function') {
+    const _origFetch = globalAny.fetch.bind(globalAny);
+    globalAny.fetch = async (input: any, init?: any) => {
+      try {
+        const url = typeof input === 'string' ? input : input?.url || '';
+        if (typeof url === 'string' && url.includes('=eq.undefined')) {
+          const stack = (new Error()).stack;
+          console.error('[supabase][block] Prevented request with undefined id in query:', url);
+          if (stack) console.error('[supabase][block] Stack trace for blocked request:\n', stack);
+          const body = JSON.stringify({
+            message: 'Blocked request: query contained undefined id',
+            details: 'Request blocked by client-side guard to avoid invalid UUID parsing on server',
+            client_stack: stack || null
+          });
+          return new Response(body, { status: 400, headers: { 'Content-Type': 'application/json' } });
+        }
+      } catch (err) {
+        // swallow and fallthrough to original fetch
+      }
+      return _origFetch(input, init);
+    };
+  }
+} catch (e) {
+  // ignore in environments where fetch override isn't permitted
+}
+
 // Create Supabase client with proper configuration
 export const supabase = createClient<Database>(
   SUPABASE_URL,

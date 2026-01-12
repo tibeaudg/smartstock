@@ -350,6 +350,7 @@ const AppRouter = () => {
           <Route path="categories-management" element={<CategoriesPage />} />
           <Route path="products/new" element={<AddProductPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
+          <Route path="categoriesManagement" element={<CategoriesPage />} />
           <Route path="warehouses" element={<><SEO title="Warehouse Management" /><WarehousePage /></>} />
           <Route path="bom" element={<BillOfMaterialsPage />}>
             <Route path="edit/:productId" element={<BOMEditPage />} />

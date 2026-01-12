@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
 import { ArrowLeft, Plus, Minus } from 'lucide-react';
 
+// Enhanced Product interface with all possible fields
 interface Product {
   id: string;
   name: string;
@@ -24,6 +25,8 @@ interface Product {
   is_variant?: boolean;
   variant_name?: string | null;
   sku?: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface ManualStockAdjustModalProps {
@@ -32,7 +35,6 @@ interface ManualStockAdjustModalProps {
   onProductUpdated: () => void;
   onBack?: () => void;
   defaultAction?: 'in' | 'out';
-  // Optional: allow parent to directly handle "Create New Product" with a prefilled name
   onCreateNewProduct?: (name?: string) => void;
 }
 
@@ -53,28 +55,45 @@ export const ManualStockAdjustModal = ({
   const [searchValue, setSearchValue] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProductOriginal, setSelectedProductOriginal] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [actionType, setActionType] = useState<'in' | 'out'>(defaultAction);
+  
+  const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('.relative')) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setSearchOpen(false);
       }
     };
 
-    if (searchOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Focus search input when modal opens
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
     }
-  }, [searchOpen]);
+  }, [isOpen]);
 
   // Fetch products when modal opens
   useEffect(() => {
-    if (isOpen && activeBranch) {
+    if (isOpen && activeBranch?.branch_id) {
       fetchProducts();
+    } else if (isOpen) {
+      toast.error('Please select a branch first');
+      onClose();
     }
   }, [isOpen, activeBranch]);
 
@@ -83,23 +102,25 @@ export const ManualStockAdjustModal = ({
     if (isOpen) {
       setSearchValue('');
       setSelectedProduct(null);
+      setSelectedProductOriginal(null);
       setQuantity('');
       setActionType(defaultAction);
+      setProducts([]);
     }
   }, [isOpen, defaultAction]);
 
   const fetchProducts = useCallback(async () => {
-    if (!activeBranch) {
-      
+    if (!activeBranch?.branch_id) {
+      toast.error('No active branch selected');
       return;
     }
     
-    
+    setSearchLoading(true);
     
     try {
       const { data, error } = await supabase
         .from('products')
-        .select('*')
+        .select('id, name, description, quantity_in_stock, minimum_stock_level, unit_price, status, branch_id, image_url, is_variant, variant_name, sku, created_at, updated_at')
         .eq('branch_id', activeBranch.branch_id)
         .order('name');
       
@@ -109,52 +130,80 @@ export const ManualStockAdjustModal = ({
         return;
       }
       
-      
       setProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error('Error loading products');
+    } finally {
+      setSearchLoading(false);
     }
   }, [activeBranch]);
 
   // Filter and format products for display
-  const filteredProducts = products
-    .map(product => {
-      const displayName =
-        product.is_variant && product.variant_name
-          ? `${product.name} (${product.variant_name})`
-          : product.name;
+  const filteredProducts = React.useMemo(() => {
+    if (!searchValue.trim()) return [];
+    
+    return products
+      .map(product => {
+        const displayName =
+          product.is_variant && product.variant_name
+            ? `${product.name} (${product.variant_name})`
+            : product.name;
 
-      return {
-        ...product,
-        displayName
-      };
-    })
-    .filter(product =>
-      product.displayName.toLowerCase().includes(searchValue.toLowerCase())
-    );
+        return {
+          ...product,
+          displayName,
+          // Ensure we keep the original product object reference
+          originalProduct: product
+        };
+      })
+      .filter(product =>
+        product.displayName.toLowerCase().includes(searchValue.toLowerCase()) ||
+        product.sku?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+  }, [products, searchValue]);
 
-  const handleProductSelect = (product: any) => {
-    setSelectedProduct(product);
-    setSearchValue(product.displayName);
+  const handleProductSelect = (productWithDisplay: any) => {
+    // Use the original product object, not the modified one
+    const originalProduct = productWithDisplay.originalProduct || productWithDisplay;
+    
+    console.log('Product selected:', {
+      selectedProduct: originalProduct,
+      id: originalProduct.id,
+      typeOfId: typeof originalProduct.id,
+      allKeys: Object.keys(originalProduct)
+    });
+    
+    if (!originalProduct.id) {
+      toast.error('Selected product has no ID. Please try again.');
+      return;
+    }
+    
+    setSelectedProduct(originalProduct);
+    setSelectedProductOriginal(originalProduct);
+    setSearchValue(productWithDisplay.displayName);
     setSearchOpen(false);
   };
 
   const handleCreateNew = () => {
     const trimmedValue = searchValue.trim();
     setSearchOpen(false);
-    onClose();
-    // Persist intended name so receivers can reliably prefill even if state/event timing differs
+    
+    // Persist intended name
     try {
       if (trimmedValue) {
-        localStorage.setItem('prefillAddProductName', trimmedValue);
+        sessionStorage.setItem('prefillAddProductName', trimmedValue);
       } else {
-        localStorage.removeItem('prefillAddProductName');
+        sessionStorage.removeItem('prefillAddProductName');
       }
     } catch {}
-    // Prefer direct callback when provided; fall back to global event for backward compatibility
+    
+    // Close modal first
+    onClose();
+    
+    // Use callback or dispatch event
     if (onCreateNewProduct) {
-      onCreateNewProduct(trimmedValue || undefined);
+      setTimeout(() => onCreateNewProduct(trimmedValue || undefined), 100);
     } else {
       window.dispatchEvent(
         new CustomEvent('openAddProductModal', {
@@ -167,57 +216,127 @@ export const ManualStockAdjustModal = ({
   };
 
   const handleSubmit = async () => {
-    if (!selectedProduct) {
+    // Use the original product reference to avoid stale data
+    const productToUse = selectedProductOriginal || selectedProduct;
+    
+    if (!productToUse) {
       toast.error('Please select a product');
       return;
     }
 
-    const numericQuantity = Number(quantity);
+    // Debug logging
+    console.log('DEBUG - Submitting stock adjustment:', {
+      productToUse,
+      productId: productToUse.id,
+      productIdType: typeof productToUse.id,
+      productIdValid: productToUse.id && typeof productToUse.id === 'string' && productToUse.id.trim() !== '',
+      hasBranchId: !!productToUse.branch_id,
+      branchId: productToUse.branch_id
+    });
 
-    if (!quantity || Number.isNaN(numericQuantity) || numericQuantity <= 0) {
-      toast.error('Enter a valid quantity');
+    // Capture values safely
+    const productId = productToUse.id;
+    const productName = productToUse.name;
+    const variantName = productToUse.variant_name;
+    const displayName = 
+      productToUse.is_variant && variantName 
+        ? `${productName} - ${variantName}`
+        : productName;
+
+    const branchId = productToUse.branch_id;
+    const unitPrice = productToUse.unit_price || 0;
+    const isVariant = Boolean(productToUse.is_variant);
+
+    // Helper: validate UUID-like strings to avoid passing 'undefined' or invalid values
+    const isValidUUID = (val: any) => {
+      if (typeof val !== 'string') return false;
+      const s = val.trim();
+      if (!s || s === 'undefined') return false;
+      const uuidRegex = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
+      return uuidRegex.test(s);
+    };
+
+    const sanitizeUUID = (val: any) => (isValidUUID(val) ? String(val).trim() : null);
+
+    // CRITICAL VALIDATION: Check productId and branchId; avoid sending 'undefined' strings
+    // Accept any non-empty product id string (some products may not use UUIDs),
+    // but explicitly reject the literal 'undefined'
+    if (!productId || typeof productId !== 'string' || productId.trim() === '' || productId === 'undefined') {
+      console.error('Invalid product ID detected:', productId);
+      toast.error('Invalid product ID. Please reselect the product.');
+      return;
+    }
+
+    const branchIdSanitized = sanitizeUUID(branchId) || sanitizeUUID(activeBranch?.branch_id);
+    if (!branchIdSanitized) {
+      toast.error('Product is not associated with a valid branch');
+      return;
+    }
+
+    const numericQuantity = parseInt(quantity, 10);
+
+    if (!quantity || isNaN(numericQuantity) || numericQuantity <= 0) {
+      toast.error('Enter a valid quantity greater than 0');
+      return;
+    }
+
+    if (numericQuantity > 999999) {
+      toast.error('Quantity is too large');
       return;
     }
 
     setLoading(true);
+
     try {
-      const { data: { user: currentUser } } = await supabase.auth.getUser();
-      if (!currentUser) throw new Error('Not logged in');
+      const { data: { user: currentUser }, error: authError } = await supabase.auth.getUser();
       
-      const currentQuantity = Number(selectedProduct.quantity_in_stock) || 0;
-      const newQuantity = actionType === 'in'
-        ? currentQuantity + numericQuantity
-        : currentQuantity - numericQuantity;
+      if (authError) {
+        throw new Error(`Authentication error: ${authError.message}`);
+      }
       
+      if (!currentUser) {
+        throw new Error('Not logged in. Please log in again.');
+      }
+
+      const currentQuantity = Number(productToUse.quantity_in_stock) || 0;
+      const newQuantity =
+        actionType === 'in'
+          ? currentQuantity + numericQuantity
+          : currentQuantity - numericQuantity;
+
       if (actionType === 'out' && newQuantity < 0) {
-        toast.error('Not enough stock available');
-        setLoading(false);
+        toast.error(`Not enough stock available. Current stock: ${currentQuantity}`);
         return;
       }
 
-      // Create stock transaction
+      // Prepare transaction data with debug info
+      const transactionData = {
+        product_id: productId,
+        product_name: displayName,
+        transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
+        quantity: numericQuantity,
+        unit_price: unitPrice,
+        reference_number: `MANUAL_${actionType.toUpperCase()}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        notes: `Manual stock ${actionType === 'in' ? 'addition' : 'removal'}`,
+        user_id: sanitizeUUID(currentUser.id) || null,
+        created_by: sanitizeUUID(currentUser.id) || null,
+        branch_id: branchIdSanitized,
+        variant_id: isVariant ? productId : null,
+        variant_name: isVariant ? variantName : null,
+        adjustment_method: 'manual',
+        created_at: new Date().toISOString()
+      };
+
+      console.log('DEBUG - Transaction data to insert:', transactionData);
+
+      // Create transaction
       const { error: transactionError } = await supabase
         .from('stock_transactions')
-        .insert({
-          product_id: selectedProduct.id,
-          product_name: selectedProduct.is_variant && selectedProduct.variant_name 
-            ? `${selectedProduct.name} - ${selectedProduct.variant_name}` 
-            : selectedProduct.name,
-          transaction_type: actionType === 'in' ? 'incoming' : 'outgoing',
-          quantity: numericQuantity,
-          unit_price: selectedProduct.unit_price,
-          reference_number: `MANUAL_${actionType.toUpperCase()}_${Date.now()}`,
-          notes: `Stock ${actionType === 'in' ? 'added' : 'removed'} via manual adjustment`,
-          user_id: currentUser.id,
-          created_by: currentUser.id,
-          branch_id: selectedProduct.branch_id,
-          variant_id: selectedProduct.is_variant ? selectedProduct.id : null,
-          variant_name: selectedProduct.is_variant ? selectedProduct.variant_name : null,
-          adjustment_method: 'manual'
-        });
+        .insert(transactionData);
 
       if (transactionError) {
-        throw new Error(`Error creating transaction: ${transactionError.message}`);
+        console.error('Transaction error details:', transactionError);
+        throw new Error(`Failed to create transaction: ${transactionError.message}`);
       }
 
       // Update product stock
@@ -227,23 +346,43 @@ export const ManualStockAdjustModal = ({
           quantity_in_stock: newQuantity,
           updated_at: new Date().toISOString()
         })
-        .eq('id', selectedProduct.id);
+        .eq('id', productId);
 
       if (updateError) {
-        throw new Error(`Error updating stock: ${updateError.message}`);
+        console.error('Update error details:', updateError);
+        throw new Error(`Failed to update stock: ${updateError.message}`);
       }
 
       toast.success(`Stock successfully ${actionType === 'in' ? 'added' : 'removed'}`);
-      onProductUpdated();
+
+      // Invalidate queries
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
       queryClient.invalidateQueries({ queryKey: ['dashboardData'] });
+      queryClient.invalidateQueries({ queryKey: ['inventory'] });
+
+      onProductUpdated();
       onClose();
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'An error occurred while updating stock');
+    } catch (error: any) {
+      console.error('Stock adjustment error:', error);
+      
+      // Show more specific error messages
+      if (error.message.includes('product_id')) {
+        toast.error('Product ID error. Please refresh and try again.');
+      } else if (error.message.includes('foreign key')) {
+        toast.error('Invalid product reference. The product might have been deleted.');
+      } else {
+        toast.error(error.message || 'An error occurred while updating stock');
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleQuantityChange = (value: string) => {
+    // Allow only numbers
+    const numValue = value.replace(/[^0-9]/g, '');
+    setQuantity(numValue);
   };
 
   if (!isOpen) return null;
@@ -272,17 +411,27 @@ export const ManualStockAdjustModal = ({
             {/* Product Search */}
             <div className="space-y-2">
               <Label>Select Product</Label>
-              <div className="relative">
+              <div className="relative" ref={searchRef}>
                 <Input
+                  ref={searchInputRef}
                   placeholder="Type to search for a product..."
                   value={searchValue}
                   onChange={(e) => {
                     setSearchValue(e.target.value);
+                    setSelectedProduct(null);
+                    setSelectedProductOriginal(null);
                     setSearchOpen(true);
                   }}
                   onFocus={() => setSearchOpen(true)}
                   className="w-full"
+                  disabled={searchLoading}
                 />
+                
+                {searchLoading && (
+                  <div className="absolute right-3 top-3">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  </div>
+                )}
                 
                 {/* Autocomplete Suggestions */}
                 {searchOpen && searchValue && (
@@ -294,16 +443,17 @@ export const ManualStockAdjustModal = ({
                             key={product.id}
                             type="button"
                             onClick={() => handleProductSelect(product)}
-                            className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                            className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 focus:outline-none focus:bg-gray-100"
                           >
                             <div className="font-medium text-gray-900">{product.displayName}</div>
                             <div className="text-sm text-gray-500">
                               Stock: {product.quantity_in_stock} | SKU: {product.sku || 'N/A'}
+                              {product.id && <span className="ml-2 text-xs text-gray-400">ID: {product.id.substring(0, 8)}...</span>}
                             </div>
                           </button>
                         ))}
                       </div>
-                    ) : (
+                    ) : !searchLoading ? (
                       <div className="p-4 text-center">
                         <p className="text-sm text-gray-500 mb-3">No products found</p>
                         <Button
@@ -316,10 +466,22 @@ export const ManualStockAdjustModal = ({
                           Create New Product
                         </Button>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 )}
               </div>
+              
+              {/* Debug info - can be removed in production */}
+              {process.env.NODE_ENV === 'development' && selectedProduct && (
+                <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs">
+                  <div className="font-medium text-yellow-800">Debug Info:</div>
+                  <div className="text-yellow-700">
+                    Product ID: {selectedProduct.id || 'MISSING!'}<br/>
+                    Type: {typeof selectedProduct.id}<br/>
+                    Branch ID: {selectedProduct.branch_id || 'MISSING!'}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Stock Adjustment UI - Only show if product is selected */}
@@ -363,9 +525,10 @@ export const ManualStockAdjustModal = ({
                     id="quantity"
                     type="number"
                     value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => handleQuantityChange(e.target.value)}
                     placeholder="Enter quantity"
                     min="1"
+                    max="999999"
                     className={`${actionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}`}
                   />
                 </div>
@@ -406,10 +569,15 @@ export const ManualStockAdjustModal = ({
             {selectedProduct && (
               <Button
                 onClick={handleSubmit}
-                disabled={loading || !quantity}
+                disabled={loading || !quantity || parseInt(quantity, 10) <= 0}
                 className={`${actionType === 'in' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'} ${isMobile ? 'w-full' : ''}`}
               >
-                {loading ? 'Processing...' : actionType === 'in' ? 'Add Stock' : 'Remove Stock'}
+                {loading ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent mr-2" />
+                    Processing...
+                  </>
+                ) : actionType === 'in' ? 'Add Stock' : 'Remove Stock'}
               </Button>
             )}
           </div>

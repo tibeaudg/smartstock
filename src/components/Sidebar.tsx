@@ -134,7 +134,8 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
           id: 'inventory', label: 'Inventory',  icon: Package,  path: 'dashboard/inventory',
           subItems: [
             { id: 'products', label: 'Products', path: '/dashboard/categories'}, 
-            { id: 'transactions', label: 'Transactions', path:'/dashboard/transactions'}
+            { id: 'transactions', label: 'Transactions', path:'/dashboard/transactions'},
+            { id: 'categories', label: 'Categories', path:'/dashboard/categoriesManagement' }
           ]
         },
 

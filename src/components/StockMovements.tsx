@@ -128,7 +128,6 @@ export const StockMovements = () => {
                 <SelectItem value="purchase_order">Purchase Order</SelectItem>
                 <SelectItem value="sales_order">Sales Order</SelectItem>
                 <SelectItem value="stock_transfer">Stock Transfer</SelectItem>
-                <SelectItem value="cycle_count">Cycle Count</SelectItem>
                 <SelectItem value="adjustment">Adjustment</SelectItem>
                 <SelectItem value="manual_adjustment">Manual Adjustment</SelectItem>
                 <SelectItem value="scan_adjustment">Scan Adjustment</SelectItem>
@@ -334,7 +333,6 @@ export const StockMovements = () => {
                             transaction.transaction_type === 'purchase_order' ? 'PO' :
                             transaction.transaction_type === 'sales_order' ? 'SO' :
                             transaction.transaction_type === 'stock_transfer' ? 'Transfer' :
-                            transaction.transaction_type === 'cycle_count' ? 'Cycle' :
                             transaction.transaction_type === 'manual_adjustment' ? (isOutgoing ? 'Out' : 'In') :
                             transaction.transaction_type === 'scan_adjustment' ? 'Scan' :
                             transaction.transaction_type}

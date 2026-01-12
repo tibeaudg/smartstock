@@ -126,20 +126,15 @@ const UserManagement = () => {
     const totalUsers = uniqueUsers.size;
     const totalBranches = branchIds.length;
     
-    // Pricing: $2 per extra user (first user is free), $5 per extra branch (main branch is free)
     const extraUsers = Math.max(0, totalUsers - 1); // First user is free
-    const extraBranches = Math.max(0, totalBranches - 1); // Main branch is free
     const userCost = extraUsers * 2;
-    const branchCost = extraBranches * 5;
     const totalCost = userCost + branchCost;
     
     return {
       totalUsers,
       totalBranches,
       extraUsers,
-      extraBranches,
       userCost,
-      branchCost,
       totalCost
     };
   };
@@ -328,10 +323,10 @@ const UserManagement = () => {
       <Card>
         <CardHeader>
           <CardTitle>Invite User</CardTitle>
-          <CardDescription>Add a new or existing user to a branch.</CardDescription>
+          <CardDescription>Add a new user.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2">
             <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
@@ -346,17 +341,7 @@ const UserManagement = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label>Branch</Label>
-              <Select value={selectedBranchId} onValueChange={setSelectedBranchId} disabled={branches.length === 0}>
-                <SelectTrigger><SelectValue placeholder="Select a branch" /></SelectTrigger>
-                <SelectContent>
-                  {branches.map(branch => (
-                    <SelectItem key={branch.branch_id} value={branch.branch_id}>{branch.branch_name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+
           </div>
         </CardContent>
       </Card>
@@ -434,24 +419,7 @@ const UserManagement = () => {
               <DialogHeader>
                 <DialogTitle>Manage Branches for {manageBranchesUser?.email}</DialogTitle>
               </DialogHeader>
-              <div className="space-y-2">
-                {branches.map(branch => (
-                  <label key={branch.branch_id} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      checked={userBranches.includes(branch.branch_id)}
-                      onChange={e => {
-                        if (e.target.checked) {
-                          setUserBranches([...userBranches, branch.branch_id]);
-                        } else {
-                          setUserBranches(userBranches.filter(id => id !== branch.branch_id));
-                        }
-                      }}
-                    />
-                    {branch.branch_name}
-                  </label>
-                ))}
-              </div>
+          
               <DialogFooter>
                 <Button onClick={handleSaveBranches} disabled={savingBranches}>
                   {savingBranches ? 'Saving...' : 'Save'}
