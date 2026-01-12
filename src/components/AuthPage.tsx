@@ -35,6 +35,9 @@ export const AuthPage = () => {
   const [lastName, setLastName] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  // Field-level errors (displayed inline)
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,6 +67,9 @@ export const AuthPage = () => {
     setAcceptTerms(false);
     setShowPassword(false);
     setShowConfirmPassword(false);
+    // Clear any inline errors when switching modes
+    setEmailError(null);
+    setPasswordError(null);
   }, [mode]);
 
   // Password strength calculator
@@ -127,6 +133,7 @@ export const AuthPage = () => {
       if (mode === 'login') {
         // Validate email
         if (!email.trim()) {
+          setEmailError('Email address is required');
           toast.error('Email address is required');
           setIsSubmitting(false);
           return;
@@ -134,23 +141,45 @@ export const AuthPage = () => {
         
         // Validate password
         if (!password) {
+          setPasswordError('Password is required');
           toast.error('Password is required');
           setIsSubmitting(false);
           return;
         }
 
-        const { error } = await signIn(email.trim(), password);
+        const signInResult = await signIn(email.trim(), password);
 
-        if (error) {
-          toast.error(
-            error.message === 'Invalid login credentials'
-              ? 'Invalid email address or password'
-              : error.message || 'Login failed'
-          );
+        // Normalize possible responses from Supabase: some responses include
+        // an `error` object, others may return no `user` in `data` when
+        // credentials are invalid. Treat both cases as invalid credentials.
+        const signInError = (signInResult as any)?.error;
+        const signInData = (signInResult as any)?.data;
+        const signInUser = signInData?.user || (signInResult as any)?.user || signInData?.session?.user || signInData?.session?.user?.user;
+
+        // If Supabase returns an error or we can't find a user/session, treat
+        // it as an authentication failure.
+        if (signInError || !signInUser) {
+          // Show inline field notifications instead of only toasts so users
+          // see the error directly at the input fields.
+          const message = signInError?.message || 'Login failed';
+
+          if (/invalid|credentials|wrong|not found/i.test(message) || !signInUser) {
+            const fieldMessage = 'Invalid email address or password';
+            setEmailError(fieldMessage);
+            setPasswordError(fieldMessage);
+          } else {
+            // Generic error: show under password field and toast
+            setPasswordError(message || 'Login failed');
+            toast.error(message || 'Login failed');
+          }
+
           setIsSubmitting(false);
           return;
         }
 
+        // Clear any previous field errors on success
+        setEmailError(null);
+        setPasswordError(null);
         toast.success('Welcome back!');
         
         // Redirect to dashboard
@@ -417,13 +446,18 @@ export const AuthPage = () => {
                         id="email" 
                         type="email" 
                         value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
+                        onChange={(e) => { setEmail(e.target.value); if (emailError) setEmailError(null); }} 
                         required 
                         disabled={isSubmitting}
+                        aria-invalid={!!emailError}
+                        aria-describedby={emailError ? 'email-error' : undefined}
                         className="h-11 pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                         placeholder="you@company.com"
                         autoComplete="email"
                       />
+                      {emailError && (
+                        <p id="email-error" className="text-xs text-red-600 mt-1">{emailError}</p>
+                      )}
                     </div>
                   </div>
 
@@ -483,9 +517,11 @@ export const AuthPage = () => {
                           id="password" 
                           type={showPassword ? "text" : "password"}
                           value={password} 
-                          onChange={(e) => setPassword(e.target.value)} 
+                          onChange={(e) => { setPassword(e.target.value); if (passwordError) setPasswordError(null); }} 
                           required 
                           disabled={isSubmitting}
+                          aria-invalid={!!passwordError}
+                          aria-describedby={passwordError ? 'password-error' : undefined}
                           className="h-11 pl-10 pr-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                           placeholder={mode === 'register' ? "At least 6 characters" : "Your password"}
                           autoComplete={mode === 'register' ? "new-password" : "current-password"}
@@ -504,6 +540,9 @@ export const AuthPage = () => {
                           )}
                         </button>
                       </div>
+                      {passwordError && (
+                        <p id="password-error" className="text-xs text-red-600 mt-1">{passwordError}</p>
+                      )}
                       
                       {/* Password Strength Indicator for Registration */}
                       {mode === 'register' && password && passwordStrength && (

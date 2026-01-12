@@ -238,16 +238,7 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
         </Card>
       </div>
 
-      {/* Currency Settings */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2"><DollarSign className="w-4 h-4" /><span>Currency</span></CardTitle>
-          <CardDescription>Select your preferred currency for displaying prices.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CurrencySwitcher />
-        </CardContent>
-      </Card>
+
 
       {/* Delete Account Card */}
       <Card className="border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900/50">
