@@ -199,7 +199,6 @@ export default function AddProductPage() {
         if (draft.showVariantsSection) {
           setShowVariantsSection(draft.showVariantsSection);
         }
-        toast.info('Draft restored. Continue where you left off.');
       } catch (error) {
         console.error('Error restoring draft:', error);
         // Clear corrupted draft
