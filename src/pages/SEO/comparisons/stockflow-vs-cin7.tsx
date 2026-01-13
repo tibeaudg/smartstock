@@ -90,17 +90,10 @@ export default function StockFlowVsCin7() {
   return (
     <SeoPageLayout 
       heroTitle="StockFlow vs Cin7"
-      heroDescription='Compare StockFlow vs Cin7 2026. Free forever vs $300/month, 5-7 day setup vs 45-90 days. EU hosting. Save 100% costs, faster implementation.'
+      heroDescription='Compare StockFlow vs Cin7 2026.'
       dateUpdated="06/01/2026"
       faqData={faqData}
-              previousArticle={{
-      title: "Compare Inventory Software",
-      href: "/compare-inventory-software"
-    }}
-    nextArticle={{
-      title: "StockFlow vs inFlow",
-      href: "/stockflow-vs-inflow"
-    }}
+
     >
       <SEO
         title="StockFlow vs Cin7 2026 - Save 90% Costs, 10x Faster Setup | StockFlow"
@@ -214,6 +207,23 @@ export default function StockFlowVsCin7() {
           </div>
         </div>
       </section>
+
+
+            <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
+      </section>
+
 
 
     </SeoPageLayout>

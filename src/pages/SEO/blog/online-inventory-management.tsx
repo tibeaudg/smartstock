@@ -46,6 +46,41 @@ const comparisonData = [
   { provider: "Odoo", access: "Modular", sync: "Complex", users: "Per-App", api: "Technical" },
 ];
 
+const faqData = [
+  {
+    question: "Is StockFlow a fully cloud-based inventory system?",
+    answer: "Yes — StockFlow is cloud-native, providing real-time synchronization across web and mobile clients with no on-premise server required."
+  },
+  {
+    question: "How quickly does inventory sync across locations?",
+    answer: "StockFlow uses a delta-sync engine for sub-second updates; typical propagation is near-instant depending on network conditions."
+  },
+  {
+    question: "Can I continue working if I lose internet connectivity?",
+    answer: "Yes — the mobile and edge clients support offline mode with local caching and automatic reconciliation when connectivity is restored."
+  },
+  {
+    question: "What integrations are available?",
+    answer: "StockFlow offers native connectors for major e-commerce platforms, shipping carriers, and accounting systems, plus a public REST API for custom integrations."
+  },
+  {
+    question: "How does StockFlow handle security and compliance?",
+    answer: "Data is encrypted in transit and at rest, with role-based access controls, audit logs, and options for SOC/ISO compliance upon request."
+  },
+  {
+    question: "Is it difficult to migrate my existing inventory data?",
+    answer: "No — StockFlow provides migration tools and support to import SKUs, stock levels, and transaction history from common formats and platforms."
+  },
+  {
+    question: "Do pricing tiers limit API access or user seats?",
+    answer: "Some tiers limit advanced API features and enterprise seats; StockFlow's standard plans include open API access and scalable user seat options."
+  },
+  {
+    question: "How does StockFlow prevent overselling across channels?",
+    answer: "Real-time stock reservation and instant decrement on confirmed orders ensure accurate availability across all connected sales channels."
+  }
+]
+
 export default function SeoOnlineInventoryManagementPage() {
   usePageRefresh();
 
@@ -186,6 +221,20 @@ export default function SeoOnlineInventoryManagementPage() {
             </div>
           </div>
         </div>
+      </section>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
       </section>
 
 

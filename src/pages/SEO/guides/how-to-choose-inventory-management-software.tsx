@@ -107,14 +107,7 @@ const HowToChooseInventoryManagementSoftware = () => {
       heroTitle="How To Choose Inventory Management Software"
       dateUpdated="06/01/2026"
       faqData={faqData}
-      previousArticle={{
-        title: "Inventory Turnover Ratio",
-        href: "/inventory-turnover-ratio"
-      }}
-      nextArticle={{
-        title: "Avoid Inventory Mistakes",
-        href: "/avoid-inventory-mistakes"
-      }}
+
     >
       <SEO
         title="How To Choose Inventory Management Software 2026 - Save 70% Time, 25% Costs | StockFlow"
@@ -294,28 +287,26 @@ const HowToChooseInventoryManagementSoftware = () => {
             </div>
           </section>
 
-          <section className="mb-12 bg-blue-600 text-white rounded-lg p-8">
-            <h2 className="text-3xl font-bold mb-4">
-              Ready to Choose Your Inventory Management Software?
-            </h2>
-            <p className="text-lg mb-6 opacity-90">
-              StockFlow offers a free plan for up to 100 products, making it easy to evaluate our inventory management software without any financial commitment. Get started in minutes with no credit card required.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/auth"
-                className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
-              >
-                Join for Free →
-              </Link>
-              <Link
-                to="/solutions/inventory-management-software"
-                className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition text-lg"
-              >
-                Learn More About StockFlow
-              </Link>
-            </div>
-          </section>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
+      </section>
+
+
+
+
+      
+
 
         </article>
       </div>

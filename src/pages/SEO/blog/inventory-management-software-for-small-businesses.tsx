@@ -173,6 +173,13 @@ export default function SeoInventorySoftwareSmallBusinessPage() {
           </div>
         </div>
       </section>
+
+
+
+
+
+
+
     </SeoPageLayout>
   );
 }

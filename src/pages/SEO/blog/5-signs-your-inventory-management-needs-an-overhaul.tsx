@@ -211,6 +211,20 @@ export default function Seo5SignsYourInventoryManagementNeedsAnOverhaulPage() {
           </div>
         </div>
       </section>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
+      </section>
 
       
     </SeoPageLayout>

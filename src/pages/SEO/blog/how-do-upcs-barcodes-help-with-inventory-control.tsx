@@ -133,10 +133,10 @@ export default function UPCBarcodeInventoryPage() {
       keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="UPC Barcodes for Inventory Control | 2026 Small Business Guide"
+        title="UPC Barcodes for Inventory Control | 2026"
         description="Discover how UPC barcodes can transform your business productivity. Learn the benefits of scanning, real-time data, and automated inventory software."
         keywords="UPC barcode inventory, inventory control benefits, barcode scanning software, real-time inventory data, stockflow barcode"
-        url="https://www.stockflowsystems.com/upc-barcodes-inventory-control"
+        url="https://www.stockflowsystems.com/how-do-upcs-barcodes-help-with-inventory-control"
         structuredData={structuredData}
       />
 
@@ -154,12 +154,12 @@ export default function UPCBarcodeInventoryPage() {
       </section>
 
       {/* Benefits Grid */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">6 Core Benefits of UPC Integration</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, i) => (
-              <div key={i} className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
+              <div key={i} className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-md transition-shadow shadow-xl ">
                 <benefit.icon className="w-10 h-10 text-blue-600 mb-4" />
                 <h3 className="text-xl font-bold mb-3">{benefit.title}</h3>
                 <p className="text-gray-600 leading-relaxed text-sm">{benefit.description}</p>
@@ -242,6 +242,166 @@ export default function UPCBarcodeInventoryPage() {
           </div>
         </div>
       </section>
+
+<section className="py-20 border-t ">
+  <div className="max-w-6xl mx-auto px-4">
+    <div className="text-center mb-16">
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        How do UPCs help with inventory control?
+      </h2>
+      <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        Universal Product Codes (UPCs) provide a standardized, machine-readable identifier that transforms how businesses track and manage physical stock.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* Feature 1 */}
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-3">Precision Accuracy</h3>
+        <p className="text-gray-600 leading-relaxed text-sm">
+          Eliminate ambiguity by assigning unique identifiers to every SKU. Scanning at the point of sale or receiving ensures digital records match physical stock perfectly.
+        </p>
+      </div>
+
+      {/* Feature 2 */}
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-3">Operational Speed</h3>
+        <p className="text-gray-600 leading-relaxed text-sm">
+          Barcode scanning is significantly faster than manual entry. Process high volumes in warehouses and checkouts efficiently, reducing labor costs and wait times.
+        </p>
+      </div>
+
+      {/* Feature 3 */}
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-3">Advanced Analytics</h3>
+        <p className="text-gray-600 leading-relaxed text-sm">
+          Leverage data for demand forecasting, turnover rates, and automated reordering. Make informed purchasing decisions based on real-time movement.
+        </p>
+      </div>
+
+      {/* Feature 4 */}
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-3">Global Visibility</h3>
+        <p className="text-gray-600 leading-relaxed text-sm">
+          Integrate seamlessly with ERP systems and global marketplaces. Simplify communication with suppliers and track product movement across multiple locations.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section className="py-24 border-t bg-white overflow-hidden">
+  <div className="max-w-6xl mx-auto px-4">
+    <div className="flex flex-col lg:flex-row gap-16 items-start">
+      
+      {/* Left Side: Strategic Overview */}
+      <div className="lg:w-5/12">
+        <span className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wide text-blue-700 uppercase bg-blue-50 rounded-full">
+          Core Technology
+        </span>
+        <h2 className="text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+          Barcode Scanning: The Foundation of Scale
+        </h2>
+        <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+          More than just a tool for speed, barcode scanning creates a digital thread through your entire supply chain. It captures high-fidelity data at every touchpoint, turning manual chaos into automated precision.
+        </p>
+        <div className="p-6 bg-gray-50 rounded-2xl border-l-4 border-blue-600">
+          <p className="italic text-gray-700">
+            "By eliminating manual entry, businesses can reduce inventory discrepancies by up to 99%, ensuring physical stock always matches the digital record."
+          </p>
+        </div>
+      </div>
+
+      {/* Right Side: Operational Benefits List */}
+      <div className="lg:w-7/12 grid gap-6">
+        
+        {/* Item 1 */}
+        <div className="flex gap-5 p-6 rounded-xl transition-all hover:bg-gray-50 border border-transparent hover:border-gray-200">
+          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold">1</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Instant Capture & Error Reduction</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Automate tracking during receiving, picking, and packing. Scanning removes the "human element" from data entry, preventing the costly mistakes of misplaced items or incorrect quantities.
+            </p>
+          </div>
+        </div>
+
+        {/* Item 2 */}
+        <div className="flex gap-5 p-6 rounded-xl transition-all hover:bg-gray-50 border border-transparent hover:border-gray-200">
+          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold">2</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Real-Time Logistics Visibility</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Gain immediate insight into stock movements. This visibility allows for "Just-in-Time" reordering and prevents the capital drain of overstocking or the lost revenue of stockouts.
+            </p>
+          </div>
+        </div>
+
+        {/* Item 3 */}
+        <div className="flex gap-5 p-6 rounded-xl transition-all hover:bg-gray-50 border border-transparent hover:border-gray-200">
+          <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold">3</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Integrated Enterprise Control</h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              When synced with ERP software, barcode systems centralize control across multiple locations. It simplifies audits, monitors shrinkage, and provides the reliable analytics needed for growth.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
+      </section>
+
+
+
+
+
+
+
+
+
+
+
     </SeoPageLayout>
   );
 }

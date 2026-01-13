@@ -13,6 +13,11 @@ const metaDescription =
 const keywords =
   "stocken horeca, voorraadbeheer horeca, horeca voorraad tellen, horeca stockbeheer, inventaris horeca, horeca kostenbeheersing, foodcost horeca, drankvoorraad horeca, voorraadbeheer restaurant, horeca software voorraad";
 
+
+const keyTakeaways = [
+  "Stockflow is een gratis platform voor alle soorten bedrijven om makkelijk en snel voorraad te beheren."
+];
+
 const structuredData = [
   {
     "@context": "https://schema.org",
@@ -41,6 +46,66 @@ const structuredData = [
   },
 ];
 
+const faqData: { question: string; answer: string }[] = [
+{
+    question: "Hoe doe je voorraadbeheer?",
+    answer:
+      "Voorraadbeheer voer je uit door het proces van inkopen, opslaan en verkopen nauwgezet te monitoren. Dit omvat het bepalen van bestelniveaus (wanneer koop ik bij?), het tellen van fysieke voorraad en het analyseren van de doorloopsnelheid om zowel tekorten als overschotten te voorkomen.",
+  },
+  {
+    question: "Wat is voorraadbeheer?",
+    answer:
+      "Voorraadbeheer (inventory management) is de kunst van het balanceren tussen vraag en aanbod. Het is het proces waarbij een bedrijf zorgt dat de juiste hoeveelheid goederen op het juiste moment op de juiste plek aanwezig is, tegen de laagst mogelijke kosten.",
+  },
+  {
+    question: "Wat is een voorraadbeheersysteem?",
+    answer:
+      "Een voorraadbeheersysteem (vaak software) is een tool die automatisch bijhoudt hoeveel producten er op voorraad zijn, waar ze liggen en wanneer ze aangevuld moeten worden. Het koppelt vaak inkoop, verkoop en magazijnbeheer aan elkaar voor een real-time overzicht.",
+  },
+  {
+    question: "Wat is de 80/20-regel in voorraadbeheer?",
+    answer:
+      "Ook wel bekend als de Pareto-analyse: het principe dat vaak 80% van de omzet wordt gegenereerd door slechts 20% van het totale aantal producten (de 'hardlopers'). In voorraadbeheer helpt dit om prioriteit te geven aan de belangrijkste artikelen.",
+  },
+
+
+  {
+    question: "Hoe vaak moet ik tellen?",
+    answer:
+      "Kleine of snelverbruikende items: dagelijks. De rest: wekelijks of maandelijks afhankelijk van omloopsnelheid.",
+  },
+  {
+    question: "Kan ik zonder software?",
+    answer:
+      "Ja, maar manuele processen vergen meer tijd en zijn foutgevoeliger. Software automatiseert koppelingen, vermindert fouten en koppelt tellingen aan verkoopdata.",
+  },
+  {
+    question: "Welke KPI's zijn het belangrijkst?",
+    answer:
+      "Foodcost %, shrinkage, inventory turnover en days on hand geven snel inzicht in de effectiviteit van je voorraadbeheer.",
+  },
+  {
+    question: "Hoe moet ik de voorraad in de horeca tellen?",
+    answer:
+      "Tel idealiter buiten de service, begin steeds met dezelfde volgorde, tel per opslagruimte en gebruik vaste eenheden (stuks, kilo's, liter). Noteer breuk en verspilling apart.",
+  },
+  {
+    question: "Wat is een gezonde winstmarge in de horeca?",
+    answer:
+      "Een gezonde brutomarge verschilt per categorie: dranken 70–80%, gerechten 60–70%. Streef naar een foodcost van ongeveer 25–35%.",
+  },
+  {
+    question: "Wat moet ik controleren bij overname van een zaak?",
+    answer:
+      "Controleer voorraadlijsten, rotatie en vraag om historische tellingen — verouderde of onbekende voorraad kunnen verborgen kostenposten zijn.",
+  },
+  {
+    question: "Wat zijn de 6 P's in de horeca?",
+    answer:
+      "Product, Prijs, Plaats, Promotie, Personeel en Proces — voorraadbeheer valt onder Proces en beïnvloedt alle andere P's.",
+  },
+];
+
 export default function VoorraadbeheerHorecaPage() {
   usePageRefresh();
   const location = useLocation();
@@ -57,6 +122,7 @@ export default function VoorraadbeheerHorecaPage() {
       heroDescription="Correct stocken in de horeca: minder verspilling, meer controle en hogere marges"
       heroSubtitle="Praktische stappen, meetbare KPI's en softwaretips voor elke horecazaak"
       dateUpdated="2026-01-07"
+      keyTakeaways={keyTakeaways}
     >
       <SEO
         title="Voorraadbeheer Horeca & Stocken | Praktische Gids voor Horeca-uitbaters"
@@ -180,14 +246,6 @@ export default function VoorraadbeheerHorecaPage() {
               </li>
             </ol>
 
-            <h2 id="telronde" className="mt-16 text-2xl font-bold text-gray-900">Stap-voor-stap: een telronde uitvoeren</h2>
-
-            <p className="mt-4 text-gray-700 leading-relaxed">
-              Begin buiten de service, werk met één verantwoordelijke en gebruik een duidelijke
-              volgorde. Noteer aantallen direct in je systeem of op een voorgedrukt formulier.
-              Kleine teams hebben baat bij een vast protocol: wie telt wat en wie verwerkt de
-              resultaten.
-            </p>
 
             <h2 id="software" className="mt-16 text-2xl font-bold text-gray-900">Software en integratie</h2>
 
@@ -219,63 +277,11 @@ export default function VoorraadbeheerHorecaPage() {
               <li><strong>Days on hand</strong>: hoeveel dagen voorraad meegaat bij huidig verbruik</li>
             </ul>
 
-            <h2 className="mt-16 text-2xl font-bold text-gray-900">
-              Hoe moet ik de voorraad in de horeca tellen?
-            </h2>
 
-            <p className="mt-4 text-gray-700 leading-relaxed">
-              Voorraad tellen in de horeca gebeurt idealiter buiten de service.
-              Begin steeds met dezelfde volgorde en gebruik vaste eenheden
-              (stuks, kilo’s, liter).
-            </p>
+   
 
-            <ul className="mt-4 list-disc pl-6 text-gray-700">
-              <li>Tel per opslagruimte (koelcel, bar, droge opslag)</li>
-              <li>Gebruik vaste meeteenheden per product</li>
-              <li>Noteer breuk, verspilling en afwijkingen</li>
-              <li>Vergelijk verbruik met verkoopcijfers</li>
-            </ul>
 
-            <h2 className="mt-16 text-2xl font-bold text-gray-900">
-              Hoeveel winstmarge is normaal in de horeca?
-            </h2>
 
-            <p className="mt-4 text-gray-700 leading-relaxed">
-              Een gezonde brutomarge in de horeca ligt gemiddeld tussen:
-            </p>
-
-            <ul className="mt-4 list-disc pl-6 text-gray-700">
-              <li>Dranken: 70–80%</li>
-              <li>Gerechten: 60–70%</li>
-              <li>Foodcost doelstelling: 25–35%</li>
-            </ul>
-
-            <p className="mt-4 text-gray-700 leading-relaxed">
-              Slecht voorraadbeheer en onnauwkeurig stocken zijn één van de
-              grootste oorzaken van margedaling.
-            </p>
-
-            <h2 className="mt-16 text-2xl font-bold text-gray-900">
-              Wat zijn de 6 P's horeca?
-            </h2>
-
-            <p className="mt-4 text-gray-700 leading-relaxed">
-              De 6 P’s vormen een klassiek kader binnen de horeca:
-            </p>
-
-            <ul className="mt-4 list-disc pl-6 text-gray-700">
-              <li>Product</li>
-              <li>Prijs</li>
-              <li>Plaats</li>
-              <li>Promotie</li>
-              <li>Personeel</li>
-              <li>Proces</li>
-            </ul>
-
-            <p className="mt-4 text-gray-700 leading-relaxed">
-              Voorraadbeheer en stocken vallen rechtstreeks onder <strong>Proces</strong>
-              en hebben invloed op alle andere P’s.
-            </p>
           </div>
 
           
@@ -284,70 +290,27 @@ export default function VoorraadbeheerHorecaPage() {
           
 
           {/* Sidebar */}
-          <aside className="space-y-6 lg:sticky lg:top-24">
-            <div className="rounded-xl bg-gray-50 p-6">
-              <h3 className="font-semibold">Waarom correct stocken?</h3>
-              <p className="mt-2 text-sm text-gray-600">
-                Minder verspilling, lagere kosten, beter inzicht en rust in je
-                operatie.
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-gray-50 p-6">
-              <h3 className="font-semibold">Veelgemaakte fouten</h3>
-              <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
-                <li>Inschatten i.p.v. tellen</li>
-                <li>Onregelmatig stocken</li>
-                <li>Geen analyse van afwijkingen</li>
-              </ul>
-            </div>
-            <div className="rounded-xl bg-gray-50 p-6">
-              <h3 className="font-semibold">Snel overzicht</h3>
-              <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
-                <li>Plan: vaste dagen en verantwoordelijken</li>
-                <li>Meet: foodcost &amp; shrinkage</li>
-                <li>Act: bijsturen en bestelvoorwaarden aanpassen</li>
-              </ul>
-            </div>
-
-            
-          </aside>
+_
         </div>
       </section>
 
-      {/* FAQ & CTA */}
-      <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="text-2xl font-bold text-gray-900">Veelgestelde vragen</h2>
 
-          <div className="mt-6 space-y-6 text-gray-700">
-            <div>
-              <h3 className="font-semibold">Hoe vaak moet ik tellen?</h3>
-              <p className="mt-2 text-sm">Kleine of snelverbruikende items: dagelijks. De rest: wekelijks of maandelijks afhankelijk van omloopsnelheid.</p>
-            </div>
 
-            <div>
-              <h3 className="font-semibold">Kan ik zonder software?</h3>
-              <p className="mt-2 text-sm">Ja, maar manuele processen vergen meer tijd en zijn foutgevoeliger. Software automatiseert koppelingen en analyses.</p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold">Welke KPI's zijn het belangrijkst?</h3>
-              <p className="mt-2 text-sm">Foodcost %, shrinkage, inventory turnover en days on hand geven snel inzicht in effectiviteit.</p>
-            </div>
-          </div>
-
-          <div className="mt-8 rounded-xl border p-6 bg-gray-50">
-            <h3 className="font-semibold">Overname checklist</h3>
-            <p className="mt-2 text-sm text-gray-700">Bij aankoop van een zaak: controleer voorraadlijsten, rotatie, en vraag om historische tellingen. Verouderde of onbekende voorraad zijn verborgen kostenposten.</p>
-          </div>
-
-          <div className="mt-8 rounded-xl border p-6 bg-gray-50">
-            <h3 className="font-semibold">Klaar om te verbeteren?</h3>
-            <p className="mt-2 text-sm text-gray-700">Probeer <Link to="/auth" className="text-blue-600 underline">StockFlow</Link> voor geautomatiseerd stocken of <Link to="/contact" className="text-blue-600 underline">neem contact</Link> op voor advies op maat.</p>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
           </div>
         </div>
+        
       </section>
+
     </SeoPageLayout>
   );
 }

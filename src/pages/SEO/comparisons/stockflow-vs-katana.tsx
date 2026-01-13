@@ -82,14 +82,7 @@ export default function StockflowVsKatana() {
       heroTitle="StockFlow vs Katana"
       dateUpdated="06/01/2026"
       faqData={faqData}
-        previousArticle={{
-      title: "StockFlow vs Inflow",
-      href: "/stockflow-vs-inflow"
-    }}
-    nextArticle={{
-      title: "StockFlow vs Sortly",
-      href: "/stockflow-vs-sortly"
-    }}
+
     >
       <SEO
         title="StockFlow vs Katana 2026 - Save 50% Costs, Faster Setup | StockFlow"
@@ -205,6 +198,24 @@ export default function StockflowVsKatana() {
           </div>
         </div>
       </section>
+
+
+
+            <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
+      </section>
+
 
 
       {/* Structured Data */}

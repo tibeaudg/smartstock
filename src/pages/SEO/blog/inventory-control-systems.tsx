@@ -419,25 +419,21 @@ export default function SeoInventoryControlSystemsPage() {
 
 
 
-
-            <section id="faq" className=" px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10">
-            <div className="mb-6" >
-              <h2 className="text-3xl font-bold text-slate-900">FAQ</h2>
-              <p className="text-base text-gray-600"></p>
-            </div>
-            <div className="space-y-8 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-              {faqData.map((faq) => (
-                <div className="bg-white rounded-lg border border-gray-200 p-4" key={faq.question}>
-                  <h3 className="font-bold text-gray-900 text-lg ">{faq.question}</h3>
-                  <p className="mt-2 text-gray-600 ">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
           </div>
         </div>
+        
       </section>
+
 
 
 

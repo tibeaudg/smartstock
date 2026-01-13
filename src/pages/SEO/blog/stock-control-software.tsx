@@ -185,6 +185,9 @@ export default function SeoStockControlSoftwarePage() {
           </div>
         </div>
       </section>
+
+
+
     </SeoPageLayout>
   );
 }

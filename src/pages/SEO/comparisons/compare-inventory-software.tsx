@@ -7,17 +7,15 @@ import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 import { useState } from 'react';
-import VideoModal from '@/components/VideoModal';
 import {
-  ArrowRight,
   ExternalLink,
   BarChart3,
   Users,
   Factory,
   ClipboardList,
-  Sparkles,
   CheckCircle2,
 } from 'lucide-react';
+import { KeyTakeaways } from '@/components/KeyTakeaways';
 
 
 const competitors = [
@@ -147,16 +145,14 @@ export default function CompareInventorySoftware() {
     includeWebSite: false
   });
 
+
   return (
     <SeoPageLayout 
       heroTitle="Compare Inventory Software"
-      dateUpdated="06/01/2026"
+      dateUpdated="january 13, 2026"
       faqData={faqData}
    
-    nextArticle={{
-      title: "StockFlow vs Cin7",
-      href: "/stockflow-vs-cin7"
-    }}
+
     >
       <SEO
         title="Compare Inventory Software 2026 - Save 50-90% Costs, Free Plan | StockFlow"
@@ -289,6 +285,26 @@ export default function CompareInventorySoftware() {
           </div>
         </div>
       </section>
+
+
+
+
+
+            <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
+      </section>
+
 
     </SeoPageLayout>
   );

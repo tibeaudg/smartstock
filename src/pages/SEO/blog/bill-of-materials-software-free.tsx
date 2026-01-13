@@ -108,7 +108,7 @@ export default function BillOfMaterialsManagementPage() {
       keyTakeaways={KeyTakeaways}
     >
       <SEO
-        title={`What is a Bill of Materials? | Free BOM Software & Guide | StockFlow`}
+        title={`Free BOM Software & Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

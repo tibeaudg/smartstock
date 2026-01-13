@@ -418,30 +418,21 @@ export default function EnterpriseInventorySoftwarePage() {
         </div>
       </section>
 
-<section className="py-16">
-  <div className="max-w-4xl mx-auto px-4">
-    <h2 className="text-3xl font-bold text-slate-900 mb-10">
-      Frequently Asked Questions
-    </h2>
-
-    <div className="space-y-6">
-      {faqData.map((faq, index) => (
-        <div
-          key={index}
-          className="bg-slate-800 rounded-2xl p-6 md:p-7 border border-slate-700/50 shadow-sm"
-        >
-          <h3 className="text-lg md:text-xl font-semibold text-white mb-3 leading-snug">
-            {faq.question}
-          </h3>
-
-          <p className="text-slate-300 leading-relaxed">
-            {faq.answer}
-          </p>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+        
+      </section>
+
 
 
 

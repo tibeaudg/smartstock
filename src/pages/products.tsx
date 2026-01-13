@@ -1078,9 +1078,9 @@ const categoryProductsData = useMemo(() => {
         <>
           <div className="border rounded-lg overflow-hidden">
             <table className="w-full">
-              <thead className="bg-gray-800">
+              <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className={cn("text-left text-white font-semibold", viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4", "w-12")}>
+                  <th className={cn("text-left text-gray-800 font-semibold ", viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4", "w-12")}>
                     <Checkbox
                       checked={isSelectAll}
                       onCheckedChange={toggleSelectAll}
@@ -1088,18 +1088,18 @@ const categoryProductsData = useMemo(() => {
                     />
                   </th>
                   {viewMode === 'expanded' && (
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-white w-20">Image</th>
+                    <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800 w-20">Image</th>
                   )}
-                  <th className={cn("text-left text-white font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Product</th>
-                  <th className={cn("text-left text-white font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>SKU</th>
-                  <th className={cn("text-left text-white font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Category</th>
-                  <th className={cn("text-left text-white font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Stock</th>
+                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Product</th>
+                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>SKU</th>
+                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Category</th>
+                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Stock</th>
                   {viewMode === 'expanded' && (
                     <>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-white">Price</th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-white">Cost</th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-white">Location</th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-white">Status</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Price</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Cost</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Location</th>
+                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Status</th>
                     </>
                   )}
                 </tr>

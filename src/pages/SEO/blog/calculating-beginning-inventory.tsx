@@ -3,15 +3,12 @@ import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { generateSidebarContent } from "@/utils/seoPageHelpers";
-import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
+import { CheckCircle, Target, BarChart3 } from "lucide-react";
 
 const topicTitle = "Calculating Beginning Inventory";
 const canonicalPath = "/calculating-beginning-inventory";
 const metaDescription = "Learn how to calculate beginning inventory. Step-by-step guide with formulas and examples. Calculate opening inventory for accounting and inventory management.";
 const keywords = "calculating beginning inventory, beginning inventory calculation, beginning inventory formula, opening inventory, calculate beginning inventory, starting inventory";
-const heroBadge = "Topic Guide • Updated December 2024";
-const summaryCopy = "Calculate beginning inventory by: taking ending inventory from previous period (becomes beginning inventory for current period), conducting physical count at period start, using inventory management software records, or calculating from formula: Beginning Inventory = Ending Inventory (previous period). Formula: Beginning Inventory = Ending Inventory (previous period). For first period: Beginning Inventory = Initial purchases/stock. Beginning inventory is the starting point for inventory calculations and is essential for cost of goods sold (COGS) calculations: COGS = Beginning Inventory + Purchases - Ending Inventory. Accurate beginning inventory ensures accurate financial reporting and inventory valuation.";
 const takeaways = [
   "Calculate by: taking ending inventory from previous period (becomes beginning inventory for current period), conducting physical count at period start, using inventory management software records, or calculating from formula.",
   "Formula: Beginning Inventory = Ending Inventory (previous period). For first period: Beginning Inventory = Initial purchases/stock.",
@@ -210,6 +207,20 @@ export default function SeoCalculatingBeginningInventoryPage() {
             ))}
           </div>
         </div>
+      </section>
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        
       </section>
 
       
