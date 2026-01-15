@@ -241,7 +241,28 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-            
+                  
+                  {/* Submenu Items */}
+                  <div className="space-y-2">
+                    {menuItem.subItems.map((subItem) => (
+                      <NavLink
+                        key={subItem.id}
+                        to={subItem.path}
+                        onClick={() => {
+                          setActiveSubmenu(null);
+                        }}
+                        className={({ isActive }) => `
+                          block w-full px-4 py-3 rounded-lg text-left font-medium text-sm transition-all duration-200
+                          ${isActive
+                            ? 'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
+                            : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-blue-300'
+                          }
+                        `}
+                      >
+                        {subItem.label}
+                      </NavLink>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
