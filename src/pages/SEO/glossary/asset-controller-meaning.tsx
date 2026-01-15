@@ -17,7 +17,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 
 export default function AssetControllerMeaning() {
-  usePageRefresh();
+  
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const faqData = [

@@ -23,7 +23,7 @@ import {
 
 export default function RetailInventoryManagement() {
   // Use the page refresh hook
-  usePageRefresh();
+  
   const location = useLocation();
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,

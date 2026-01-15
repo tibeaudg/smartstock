@@ -1,7 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 
 const topicTitle = "Voorraadbeheer in de Horeca: Stocken zonder verspilling";
@@ -107,7 +106,7 @@ const faqData: { question: string; answer: string }[] = [
 ];
 
 export default function VoorraadbeheerHorecaPage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const pageStructuredData = structuredData.map((item) => ({

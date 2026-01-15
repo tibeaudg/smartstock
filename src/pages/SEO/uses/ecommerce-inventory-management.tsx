@@ -13,7 +13,7 @@ import {
 
 
 export default function EcommerceInventoryManagement() {
-  usePageRefresh();
+  
   
 
   

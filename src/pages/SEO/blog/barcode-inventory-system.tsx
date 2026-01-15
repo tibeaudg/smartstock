@@ -1,6 +1,5 @@
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { Target, Zap, Eye, Coins, TrendingUp, ClipboardCheck } from "lucide-react";
 
@@ -81,7 +80,7 @@ const structuredData = [
 ];
 
 export default function BarcodeInventoryPage() {
-  usePageRefresh();
+  
 
   return (
     <SeoPageLayout 

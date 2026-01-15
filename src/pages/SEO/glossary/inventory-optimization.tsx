@@ -23,7 +23,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 
 export default function InventoryOptimization() {
-  usePageRefresh();
+  
 
   const pageMetadata = {
     published: '2025-01-15',

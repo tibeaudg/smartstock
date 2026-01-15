@@ -23,7 +23,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 
 export default function WarehouseManagementSystem() {
-  usePageRefresh();
+  
   const [roiInputs, setRoiInputs] = useState({
     inventoryValue: '',
     hoursPerWeek: '',

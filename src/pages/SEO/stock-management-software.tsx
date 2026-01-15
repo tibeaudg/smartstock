@@ -18,7 +18,7 @@ import {
 
 
 export default function StockManagementSoftware() {
-  usePageRefresh();
+  
   
 
   

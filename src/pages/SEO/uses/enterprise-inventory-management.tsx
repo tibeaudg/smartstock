@@ -7,7 +7,7 @@ import { Building, Shield, Zap, TrendingUp, CheckCircle } from 'lucide-react';
 
 
 export default function EnterpriseInventoryManagement() {
-  usePageRefresh();
+  
   
 
   

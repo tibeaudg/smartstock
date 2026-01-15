@@ -3,7 +3,7 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 
 export default function TermsConditions() {
-  usePageRefresh();
+  
 
   const structuredData = {
     "@context": "https://schema.org",

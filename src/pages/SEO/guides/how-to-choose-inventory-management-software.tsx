@@ -8,7 +8,7 @@ import { generateFAQSchema } from '@/lib/structuredData';
 import { generateHowToSchema } from '@/utils/enhancedStructuredData';
 
 const HowToChooseInventoryManagementSoftware = () => {
-  usePageRefresh();
+  
   
   const publishedTime = '2024-01-15T00:00:00Z';
   const modifiedTime = new Date().toISOString();

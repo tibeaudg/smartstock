@@ -22,7 +22,7 @@ import Footer from '@/components/Footer';
 
 
 export default function About() {
-  usePageRefresh();
+  
 
   const structuredData = {
     "@context": "https://schema.org",

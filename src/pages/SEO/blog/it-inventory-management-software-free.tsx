@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { 
   ShieldCheck, 
@@ -47,7 +46,7 @@ const itComparisonData = [
 ];
 
 export default function SeoFreeItInventoryPage() {
-  usePageRefresh();
+  
 
   return (
     <SeoPageLayout

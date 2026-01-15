@@ -57,7 +57,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
   };
 
   return function GlossaryPage() {
-    usePageRefresh();
+    
 
     const takeaways = keyTakeaways ?? [
       `Understand how ${title.toLowerCase()} fits into your inventory workflows.`,

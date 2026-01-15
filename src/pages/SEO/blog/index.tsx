@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
@@ -23,7 +22,7 @@ const structuredData = {
 };
 
 export default function SEOResourcesBlogPage() {
-  usePageRefresh();
+  
   
   const [searchQuery, setSearchQuery] = useState("");
   const [itemsToShow, setItemsToShow] = useState(13);
@@ -82,54 +81,13 @@ export default function SEOResourcesBlogPage() {
       />
       <StructuredData data={structuredData} />
 
-      {/* Featured Article Section - Hidden during search */}
-      {!searchQuery && featuredArticle && (
-        <section className="bg-slate-50 border-b border-gray-200 px-4 py-12">
-          <div className="mx-auto max-w-7xl">
-            <div className="flex items-center gap-2 text-blue-600 font-semibold mb-6 uppercase tracking-wider text-sm">
-              <Tag size={16} />
-              <span>Featured Insight</span>
-            </div>
-            <Link 
-              to={featuredArticle.path}
-              className="group grid lg:grid-cols-2 gap-12 items-center bg-white p-8 rounded-3xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300"
-            >
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 text-gray-500 text-sm">
-                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
-                    {featuredArticle.category || 'Management'}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <Clock size={14} />
-                    <span>8 min read</span>
-                  </div>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight">
-                  {featuredArticle.title}
-                </h2>
-                <p className="text-xl text-gray-600 leading-relaxed">
-                  {featuredArticle.description}
-                </p>
-                <div className="flex items-center gap-2 text-blue-600 font-bold group-hover:gap-4 transition-all">
-                  Read Full Article <ArrowRight size={20} />
-                </div>
-              </div>
-              <div className="hidden lg:block relative h-full min-h-[400px] bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl overflow-hidden shadow-inner">
-                <div className="absolute inset-0 opacity-20 flex items-center justify-center">
-                  <BookOpen size={180} color="white" />
-                </div>
-              </div>
-            </Link>
-          </div>
-        </section>
-      )}
 
       <section className="bg-white px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-                {searchQuery ? `Search Results for "${searchQuery}"` : "Latest Strategies & Analysis"}
+                {searchQuery ? `Search Results for "${searchQuery}"` : "Latest Articles"}
               </h2>
               <p className="text-lg text-gray-600">
                 {searchQuery 

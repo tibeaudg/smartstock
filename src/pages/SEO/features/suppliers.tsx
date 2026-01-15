@@ -26,7 +26,7 @@ import {
 
 
 export default function SuppliersPage() {
-  usePageRefresh();
+  
   const location = useLocation();
   
   // Get real customer data for supplier management

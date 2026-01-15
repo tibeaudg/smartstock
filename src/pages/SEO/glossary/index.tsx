@@ -278,7 +278,7 @@ const glossarySections: GlossarySection[] = [
 ];
 
 export default function GlossaryHomePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
 

@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 
 const topicTitle = "Bill of Materials (BOM) Management: Free Software";
@@ -88,7 +87,7 @@ const structuredData = [
 ];
 
 export default function BillOfMaterialsManagementPage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const pageStructuredData = structuredData.map((item) => ({

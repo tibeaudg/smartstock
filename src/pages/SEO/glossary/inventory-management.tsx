@@ -27,7 +27,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@r
 import { Link } from 'react-router-dom';
 
 export default function InventoryManagementGuide() {
-  usePageRefresh();
+  
   const location = useLocation();
   const { formatPrice } = useCurrency();
   

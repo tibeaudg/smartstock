@@ -1,74 +1,55 @@
 import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
-import { CheckCircle, Target, BarChart3, Lightbulb, TrendingUp, Shield, Users, Zap } from "lucide-react";
+import { CheckCircle, Target, BarChart3, Lightbulb, TrendingUp, Shield, Users, Zap, PieChart, GitBranch, Smartphone, Package, AlertTriangle, DollarSign, Calendar } from "lucide-react";
 
-const topicTitle = "Inventory Management for Small Business   Complete Guide";
+const topicTitle = "Inventory Management for Small Business: Complete 2026 Guide";
 const canonicalPath = "/blog/inventory-management-for-small-business-complete-guide";
-const metaDescription = "Complete guide to inventory management for small businesses. Learn fundamentals, software selection, implementation strategies, best practices, common mistakes, ROI calculation, and actionable next steps for success.";
-const keywords = "inventory management for small business, small business inventory, inventory software small business, inventory management guide, small business inventory management, inventory control small business";
-const heroBadge = "Complete Guide • Updated December 2024";
-const summaryCopy = "Inventory management for small business is essential for controlling costs, preventing stockouts, optimizing cash flow, and scaling operations. This complete guide covers everything small business owners need to know: from understanding inventory basics to selecting the right software, implementing systems, avoiding common mistakes, and calculating ROI. Small businesses using professional inventory management software see  in carrying costs, 70% time savings, 90% error reduction, and improved profitability. The key is choosing user-friendly software that scales with growth, implementing proper processes, and maintaining accurate data.";
+const metaDescription = "Small business inventory management 2026 guide. Learn systems, organization methods, 80/20 rule, software selection, and cost-saving strategies to optimize your stock control.";
+const keywords = "inventory management for small business, small business inventory, inventory software small business, best inventory system for small business, organize small business inventory, 80/20 rule inventory";
+const heroBadge = "2026 Small Business Guide • Updated January 2026";
+const summaryCopy = "Small business inventory management is the systematic tracking and control of stock to optimize costs, prevent stockouts, and support growth. This complete 2026 guide covers how to choose the best system, implement the 80/20 rule, organize your stock efficiently, and select between modern software solutions (including Square, Sortly, and Odoo) versus Excel templates. Effective management reduces carrying costs by 20-30%, cuts counting time by 70%, and prevents the 4 common mistakes that stall 43% of small business growth.";
 
+// Updated FAQ targeting specific search queries
 const faqData = [
   {
-    question: "What is inventory management for small business?",
-    answer: "Inventory management for small business is the process of tracking, controlling, and optimizing stock levels to ensure you have the right products in the right quantities at the right time. It involves monitoring inventory levels, automating reordering, preventing stockouts and overstock, and using software to streamline operations. Effective inventory management helps small businesses reduce costs, improve cash flow, and scale efficiently."
+    question: "What is the best inventory management system for a small business?",
+    answer: "The 'best' system depends on your specific needs. For retail businesses using Square POS, 'Square for Retail' offers seamless integration and starts free. For simple visual tracking, 'Sortly' is highly rated. For growing businesses needing scalability, cloud platforms like 'Odoo' or 'Zoho Inventory' offer extensive features. The ideal solution balances ease of use, essential features (barcode scanning, reorder alerts), and cost—typically between $0-50/month for a starter plan. Avoid overbuilt enterprise systems."
   },
   {
-    question: "Why do small businesses need inventory management software?",
-    answer: "Small businesses need inventory management software because manual methods (like Excel spreadsheets) become unsustainable as the business grows. Software provides real-time tracking, automated reordering, error reduction, multi-location support, and valuable insights. Small businesses using inventory software typically see  in carrying costs, 70% time savings, and 90% error reduction compared to manual methods."
+    question: "How do small businesses manage their inventory?",
+    answer: "Small businesses typically manage inventory through tiered approaches: 1) **Manual Methods:** Spreadsheets or paper for under 50 SKUs. 2) **Dedicated Apps:** Mobile-first apps (like Sortly or StockFlow) for 50-500 SKUs, offering barcode scanning and cloud sync. 3) **Integrated Systems:** POS-linked software (like Square for Retail) for real-time sales deduction. Best practices include regular cycle counts, organizing stock with clear labels, setting reorder points, and using the 80/20 rule to focus on high-value items. The trend is rapidly shifting from Excel to specialized apps."
+  },
+  {
+    question: "What is the 80/20 rule for inventory?",
+    answer: "The 80/20 rule, or Pareto Principle, states that roughly 80% of your sales value comes from 20% of your inventory items. In practice, this means you should: 1) **Identify** your top 20% of SKUs by revenue or profit. 2) **Prioritize** intense management (daily counts, tight reorder points) on these 'A' items. 3) **Simplify** management of the remaining 80% ('B' and 'C' items) with less frequent checks. This strategy maximizes ROI on management time and prevents stockouts of your most critical products."
+  },
+  {
+    question: "How to organize inventory for a small business?",
+    answer: "Organize inventory in 4 steps: 1) **Categorize & Label:** Group items by type, frequency, or supplier. Use consistent SKUs and barcode labels. 2) **Implement Location Logic:** Assign every item a specific home (e.g., 'Aisle 1-Bin C'). Map this in your software. 3) **Adopt Storage Methods:** Use FIFO (First-In, First-Out) for perishables. For small parts, consider bin shelving. 4) **Go Digital:** Use an inventory app to maintain a digital twin of your physical layout. This reduces search time by up to 60% and drastically improves count accuracy."
   },
   {
     question: "How much does inventory management software cost for small businesses?",
-    answer: "Inventory management software costs vary. StockFlow offers a free plan for small businesses with up to 100 products, making it accessible to start. Premium plans typically range from €29-99/month for small businesses, depending on features and inventory size. Many solutions offer free trials, allowing you to test before committing. The ROI typically far exceeds the cost within the first few months."
-  },
-  {
-    question: "What features should small businesses look for in inventory software?",
-    answer: "Small businesses should prioritize: real-time inventory tracking, barcode scanning, automated reorder points, mobile access, multi-location support (if needed), basic reporting, integration with sales channels (if e-commerce), and ease of use. Start with essential features and scale up as your business grows. Avoid over-complicated enterprise solutions designed for large companies."
-  },
-  {
-    question: "How long does it take to implement inventory management software?",
-    answer: "Implementation time varies, but cloud-based solutions like StockFlow can be set up in hours or days. Most small businesses are fully operational within 1-2 weeks, including data migration, team training, and process setup. The key is choosing user-friendly software that doesn't require extensive IT support or training. Start simple and add complexity gradually."
+    answer: "Costs vary significantly: 1) **Free Plans:** Square for Retail (with POS), StockFlow (up to 100 items), Zoho Inventory (up to 50 orders/month). 2) **Basic Tiers ($10-50/month):** Sortly, InFlow, Cin7 Core for essential features. 3) **Advanced Systems ($50-200+/month):** Odoo, TradeGecko for multi-channel or complex workflows. Most businesses start with a free plan, then upgrade. The ROI from reducing overstock and stockouts typically justifies the cost within 3-6 months."
   },
   {
     question: "Can small businesses use Excel for inventory management?",
-    answer: "While Excel can work for very small businesses with minimal inventory, it quickly becomes problematic as you grow. Excel lacks real-time updates, automation, error prevention, and scalability. Moving to dedicated inventory software provides better accuracy, saves time, prevents errors, and scales with your business. Learn more about <Link to=\"/blog/migrating-from-excel-to-inventory-software\" className=\"text-blue-600 hover:underline\">migrating from Excel to inventory software</Link>."
+    answer: "Excel can work as a starting point for businesses with under 50 simple SKUs and no plans for rapid growth. Free templates can track quantities, costs, and reorder points. However, limitations are severe: no real-time updates, high error rates (~15%), no barcode scanning, and no multi-user mobile access. Most businesses outgrow Excel within 12-18 months. Migrating to a dedicated app becomes essential to prevent errors and save time."
   },
   {
     question: "What are the most common inventory management mistakes small businesses make?",
-    answer: "Common mistakes include: using manual methods (spreadsheets/paper), no reorder point system, ignoring inventory accuracy, poor organization, lack of regular counts, no integration with sales channels, overstocking slow-moving items, and not tracking inventory metrics. Learn more in our guide to <Link to=\"/blog/small-business-inventory-management-mistakes\" className=\"text-blue-600 hover:underline\">small business inventory management mistakes</Link>."
-  },
-  {
-    question: "How do I calculate ROI for inventory management software?",
-    answer: "Calculate ROI by considering: time savings (hours saved × hourly rate), error reduction costs, stockout prevention, overstock reduction, and improved cash flow. Most small businesses see ROI within 3-6 months. Use our <Link to=\"/blog/roi-calculator-for-inventory-software\" className=\"text-blue-600 hover:underline\">interactive ROI calculator</Link> to estimate your specific return on investment."
-  },
-  {
-    question: "Do I need barcode scanning for my small business inventory?",
-    answer: "Barcode scanning dramatically improves accuracy and speed, but isn't strictly necessary for very small operations. As your inventory grows beyond 50-100 SKUs, barcode scanning becomes highly beneficial. It reduces errors from 15% (manual) to less than 1%, speeds up operations 10-20x, and is affordable with smartphone-based solutions. Compare <Link to=\"/blog/barcodes-vs-qr-codes-for-inventory-management\" className=\"text-blue-600 hover:underline\">barcodes vs QR codes</Link> to choose the right solution."
-  },
-  {
-    question: "How can small businesses improve inventory accuracy?",
-    answer: "Improve accuracy by: implementing regular cycle counts, using barcode/QR code scanning, establishing clear procedures, training staff properly, using inventory management software with real-time updates, organizing warehouse/storage effectively, and maintaining accurate data entry. Software like StockFlow helps maintain 99%+ accuracy automatically through barcode scanning and automated processes."
-  },
-  {
-    question: "What's the difference between inventory management and warehouse management?",
-    answer: "Inventory management focuses on tracking what you have, quantities, and stock levels. Warehouse management includes physical handling, storage optimization, picking routes, and warehouse operations. Many modern inventory software solutions include basic warehouse features. Small businesses typically start with inventory management and add warehouse features as they scale."
-  },
-  {
-    question: "How often should small businesses do inventory counts?",
-    answer: "Frequency depends on inventory size and value. Very small businesses (under 100 SKUs) may do full counts monthly or quarterly. As you grow, implement cycle counting (counting portions of inventory regularly). High-value items should be counted more frequently. Inventory management software helps automate counting with barcode scanning, making it faster and more accurate."
+    answer: "The top 4 mistakes are: 1) **No Standard Processes:** Inconsistent counting and receiving leads to chaos. 2) **Ignoring the 80/20 Rule:** Wasting time managing low-value items. 3) **Over-reliance on Manual Spreadsheets:** This creates a single point of failure and errors. 4) **Failing to Set Reorder Points:** This leads to reactive stockouts or overstocking. These mistakes contribute to the statistic that 43% of small businesses struggle with inventory management."
   }
 ];
 
+// Enhanced structured data with FAQ schema
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Inventory Management for Small Business   Complete Guide",
-    "description": "Complete guide to inventory management for small businesses covering fundamentals, software selection, implementation, best practices, and ROI calculation.",
+    "headline": "Inventory Management for Small Business: Complete 2026 Guide",
+    "description": "A comprehensive guide to small business inventory management covering system selection, the 80/20 rule, organization strategies, and software comparisons.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -82,385 +63,273 @@ const structuredData = [
       }
     },
     "datePublished": "2024-12-01",
+    "dateModified": "2026-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/blog/inventory-management-for-small-business-complete-guide"
     }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
   }
 ];
 
 export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
-  const pageStructuredData = structuredData.map((item) => ({
-    ...item,
-    dateModified: new Date().toISOString().split("T")[0],
-  }));
+  // Actionable framework for small businesses
+  const actionFramework = [
+    {
+      title: "Audit & Classify (The 80/20 Rule)",
+      description: "Identify your 'A' items (top 20% by value). These get priority management, tight reorder points, and frequent counts. Classify 'B' and 'C' items for simpler, less frequent tracking.",
+      icon: PieChart,
+      details: ["Run an ABC analysis report", "Set service levels: 99% for A, 95% for B, 90% for C items"]
+    },
+    {
+      title: "Choose Your Technology Stack",
+      description: "Select tools based on volume: Excel for <50 SKUs; Mobile apps (Sortly, StockFlow) for 50-500 SKUs; Integrated platforms (Square, Odoo) for >500 SKUs or multi-channel sales.",
+      icon: GitBranch,
+      details: ["Start with free trials of 2-3 apps", "Prioritize mobile access and barcode scanning"]
+    },
+    {
+      title: "Organize Physical & Digital Space",
+      description: "Implement a logical location system (aisle/shelf/bin) and replicate it in your software. Label everything. This creates a 'digital twin' of your warehouse.",
+      icon: Package,
+      details: ["Use a consistent naming convention", "Print barcode labels for items and locations"]
+    },
+    {
+      title: "Establish Core Processes",
+      description: "Document procedures for receiving, counting, and picking. Train your team. Consistency is more critical than complexity in small business inventory.",
+      icon: Calendar,
+      details: ["Schedule weekly cycle counts for 'A' items", "Create a simple checklist for new stock intake"]
+    }
+  ];
+
+  // Software comparison table data
+  const softwareComparison = [
+    { name: "Stockflow", bestFor: "Small businesses, <50 SKUs, zero budget", cost: "Free", keyFeature: "Mobile QR/Barcode counting, perishable stock alerts, multi-location bar & kitchen tracking, offline counting mode, usage analytics & waste reporting, supplier management", limitation: "No real-time sync, high error rate" },
+    { name: "Excel / Google Sheets", bestFor: "Absolute beginners, <50 SKUs, zero budget", cost: "$0", keyFeature: "Total control, simple templates", limitation: "No real-time sync, high error rate" },
+    { name: "Sortly", bestFor: "Visual thinkers, service businesses, equipment tracking", cost: "$0-99/month", keyFeature: "Visual catalog, QR code generation", limitation: "Less focused on complex sales integration" },
+    { name: "Square for Retail", bestFor: "Retail shops already using Square POS", cost: "Free with Square POS", keyFeature: "Seamless POS integration, purchase orders", limitation: "Ecosystem lock-in" },
+    { name: "Odoo Inventory", bestFor: "Growing businesses needing ERP features", cost: "$7.25/user/month", keyFeature: "Modular, scales to full ERP", limitation: "Can be complex to set up" },
+  ];
+
+  const keyTakeaways = [
+    'Apply the 80/20 Rule: Focus 80% of your management effort on the 20% of items that drive 80% of your revenue or profit.',
+    'Organization is foundational: A clear physical location system (implemented digitally) reduces search time by up to 60% and prevents errors.',
+    'Technology choice is critical: Start simple (Excel is valid for tiny inventories) but plan to migrate to a dedicated app before hitting 50-100 SKUs to avoid chaos.',
+    'Process beats software: The most expensive system fails without consistent counting, receiving, and data entry procedures.'
+  ];
 
   return (
     <SeoPageLayout 
       title={topicTitle} 
-      heroTitle={topicTitle} 
-      dateUpdated="12/1/2024"
+      heroTitle={"Small Business Inventory Management: How to Get Control in 2026"}
+      dateUpdated="01/15/2026"
       faqData={faqData}
+      keyTakeaways={keyTakeaways}
     >
       <SEO
-        title={`Inventory Management for Small Business   Complete Guide 2024 | StockFlow`}
+        title="Inventory Management for Small Business 2026: Systems, Software & Strategies"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
+        structuredData={structuredData}
       />
 
-      <StructuredData data={pageStructuredData} />
+      <StructuredData data={structuredData} />
 
-      {/* Introduction Section */}
-      <section className="bg-white px-4 py-16">
+      {/* Hero / Introduction */}
+      <section className="bg-white px-4 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            <strong>Inventory management for small business</strong> is one of the most critical operational processes that directly impacts profitability, cash flow, and growth potential. Unlike large enterprises with dedicated inventory teams, small businesses must balance inventory control with limited resources, making efficient systems essential.
-          </p>
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            This complete guide covers everything small business owners need to know about inventory management: from understanding the fundamentals to selecting the right software, implementing effective processes, avoiding common mistakes, and calculating ROI. Whether you're just starting out or looking to optimize existing operations, this guide provides actionable insights backed by real-world experience.
-          </p>
-          <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg mb-8">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Key Statistics</h3>
-            <ul className="space-y-2 text-gray-700">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong></strong> in inventory carrying costs with proper management</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>70% time savings</strong> compared to manual inventory tracking methods</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong>90% error reduction</strong> with barcode scanning and automated processes</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <span><strong></strong> achievable with modern software solutions</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* What is Inventory Management for Small Business */}
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">What is Inventory Management for Small Business?</h1>
-          <p className="text-lg leading-relaxed text-gray-700 mb-4">
-            <strong>Inventory management for small business</strong> is the systematic approach to tracking, controlling, and optimizing your stock levels to ensure you have the right products in the right quantities at the right time. It encompasses everything from monitoring stock levels and automating reordering to preventing stockouts, reducing overstock, and maintaining accurate records.
-          </p>
-          <p className="text-lg leading-relaxed text-gray-700 mb-4">
-            For small businesses, effective inventory management means balancing having enough stock to meet customer demand without tying up excessive capital in slow-moving inventory. Unlike large corporations, small businesses typically don't have dedicated inventory managers, making user-friendly software solutions essential.
-          </p>
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            Key components of inventory management for small businesses include:
-          </p>
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <Target className="h-6 w-6 text-blue-600" />
-                Real-Time Tracking
-              </h3>
-              <p className="text-gray-700">Monitor stock levels across all locations and sales channels in real-time. Know exactly what you have, where it is, and how much it's worth at any moment.</p>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">
+                <Lightbulb className="w-4 h-4" /> 2026 Implementation Guide
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-8">
+                Tired of <span className="text-blue-600">Lost Sales and Cash Tied Up in Stock?</span>
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed mb-6">
+                For small businesses, inventory isn't just products on a shelf—it's your largest liquid asset and your biggest source of operational headaches. <strong>43% of small businesses</strong> cite inventory management as a major growth blocker.
+              </p>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                This guide cuts through the complexity. You'll learn a practical framework—from applying the <strong>80/20 rule</strong> and organizing your stockroom to choosing between modern apps like <strong>Sortly</strong>, <strong>Odoo</strong>, and <strong>Square</strong> versus sticking with Excel templates.
+              </p>
             </div>
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <Zap className="h-6 w-6 text-yellow-600" />
-                Automated Reordering
+            <div className="bg-gray-900 rounded-3xl p-8 text-white shadow-2xl">
+              <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <Zap className="text-amber-400" /> The Small Business Reality
               </h3>
-              <p className="text-gray-700">Set reorder points that automatically alert you when stock is low. Prevent stockouts without manual monitoring or guesswork.</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <Shield className="h-6 w-6 text-green-600" />
-                Error Prevention
-              </h3>
-              <p className="text-gray-700">Reduce human error through barcode scanning, automated data entry, and validation processes. Achieve 99%+ accuracy.</p>
-            </div>
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <BarChart3 className="h-6 w-6 text-purple-600" />
-                Reporting & Analytics
-              </h3>
-              <p className="text-gray-700">Gain insights into inventory turnover, identify slow-moving items, optimize stock levels, and make data-driven purchasing decisions.</p>
+              <div className="space-y-6">
+                {[
+                  { stat: "43%", label: "of small businesses struggle with inventory control" },
+                  { stat: "20-30%", label: "carrying cost reduction with proper management" },
+                  { stat: "70%", label: "less time counting with barcode apps vs. spreadsheets" },
+                  { stat: "<50 SKUs", label: "the point where most outgrow Excel" },
+                ].map((item, i) => (
+                  <div key={i} className="border-l-2 border-gray-700 pl-6 relative">
+                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-gray-900" />
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-gray-300 font-medium">{item.label}</span>
+                      <span className="text-2xl font-bold text-white">{item.stat}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Small Businesses Need Inventory Management */}
-      <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Why Small Businesses Need Inventory Management</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            Many small business owners start with manual methods like Excel spreadsheets or even paper-based tracking. While these might work initially, they quickly become unsustainable as your business grows. Here's why professional inventory management is essential:
-          </p>
+      {/* Core Framework Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">A Practical 4-Step Framework for 2026</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">Follow these steps in order. Skipping #1 (The 80/20 Rule) is the most common reason small business inventory projects fail.</p>
+          </div>
           
-          <div className="space-y-6 mb-8">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">1. Cost Control</h3>
-              <p className="text-gray-700 mb-3">
-                Poor inventory management directly impacts your bottom line. Overstocking ties up capital that could be used for growth, while stockouts result in lost sales and frustrated customers. Professional inventory management helps you:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                <li>Reduce inventory carrying costs by 20-30%</li>
-                <li>Minimize dead stock and obsolete inventory</li>
-                <li>Optimize purchasing to match actual demand</li>
-                <li>Improve cash flow by reducing excess inventory</li>
-              </ul>
-            </div>
-
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">2. Time Savings</h3>
-              <p className="text-gray-700 mb-3">
-                Manual inventory tracking is extremely time-consuming. Small business owners typically spend 10- on inventory tasks when using spreadsheets. Inventory management software:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                <li>Saves 70%+ of time spent on manual tracking</li>
-                <li>Automates reordering and notifications</li>
-                <li>Eliminates manual data entry errors</li>
-                <li>Provides instant access to inventory information</li>
-              </ul>
-            </div>
-
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-6 border border-orange-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">3. Accuracy & Error Reduction</h3>
-              <p className="text-gray-700 mb-3">
-                Manual inventory tracking has error rates of 10-15%, leading to stockouts, overstock, and inaccurate financial records. Modern inventory software:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                <li>Achieves 99%+ accuracy through barcode scanning</li>
-                <li>Reduces errors by 90% compared to manual methods</li>
-                <li>Prevents data entry mistakes automatically</li>
-                <li>Maintains real-time accuracy across all locations</li>
-              </ul>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border border-purple-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">4. Scalability</h3>
-              <p className="text-gray-700 mb-3">
-                As your small business grows, inventory complexity increases exponentially. Professional inventory management:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
-                <li>Scales from 10 to 10,000+ products seamlessly</li>
-                <li>Supports multiple locations and warehouses</li>
-                <li>Integrates with sales channels as you expand</li>
-                <li>Grows with your business without reimplementation</li>
-              </ul>
-            </div>
+          <div className="space-y-8">
+            {actionFramework.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.title} className="group flex flex-col md:flex-row gap-8 p-8 rounded-3xl border border-gray-100 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300">
+                  <div className="flex-shrink-0">
+                    <span className="flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 text-white font-bold text-xl">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <div className="flex-grow">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Icon className="w-6 h-6 text-blue-600" />
+                      <h3 className="text-2xl font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed mb-4">{step.description}</p>
+                    {step.details && (
+                      <ul className="space-y-2">
+                        {step.details.map((detail, dIndex) => (
+                          <li key={dIndex} className="text-gray-700 flex items-start gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Key Features and Capabilities */}
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Key Features and Capabilities</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-8">
-            When evaluating <strong>inventory management software for small business</strong>, look for these essential features that provide the most value:
-          </p>
+      {/* Software Comparison */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-4">2026 Software Comparison: Find Your Fit</h2>
+          <p className="text-gray-600 mb-12">The right tool depends entirely on your SKU count, budget, and growth stage. Here's how top options compare for small businesses.</p>
 
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg p-8 border border-gray-200">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-3">
-                <TrendingUp className="h-7 w-7 text-blue-600" />
-                Real-Time Inventory Tracking
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Real-time tracking provides up-to-the-minute visibility into stock levels across all locations and sales channels. Unlike manual systems that require periodic updates, modern inventory software automatically updates inventory levels as sales occur, purchases are received, or transfers happen between locations.
-              </p>
-              <p className="text-gray-700 leading-relaxed">
-                This capability is especially critical for small businesses selling across multiple channels (online, retail, marketplaces), as it prevents overselling and ensures customers always see accurate stock availability. Real-time visibility also enables faster response times to inventory issues, allowing you to address problems before they impact sales.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-8 border border-gray-200">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-3">
-                <Zap className="h-7 w-7 text-yellow-600" />
-                Automated Reorder Points
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Automated reorder points eliminate the guesswork from inventory purchasing. The system monitors stock levels continuously and alerts you (or automatically generates purchase orders) when inventory falls below predetermined thresholds. Advanced systems calculate optimal reorder points based on:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-4">
-                <li>Historical sales data and trends</li>
-                <li>Supplier lead times</li>
-                <li>Safety stock requirements</li>
-                <li>Seasonal demand patterns</li>
-              </ul>
-              <p className="text-gray-700 leading-relaxed">
-                This prevents stockouts during peak demand while avoiding overstock during slow periods, optimizing both customer satisfaction and cash flow.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-8 border border-gray-200">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-3">
-                <Shield className="h-7 w-7 text-green-600" />
-                Barcode & QR Code Scanning
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Barcode and QR code scanning dramatically improve accuracy and speed. Instead of manually typing product codes or quantities, staff simply scan codes to record inventory movements. This reduces errors from 15% (manual entry) to less than 1% (barcode scanning) and speeds up operations 10-20x.
-              </p>
-              <p className="text-gray-700 leading-relaxed">
-                Modern inventory software like StockFlow includes built-in barcode scanning capabilities that work on any smartphone or tablet, eliminating the need for expensive dedicated hardware. Learn more about <Link to="/blog/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 hover:underline font-semibold">barcode vs QR code options</Link> or follow our <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">step-by-step setup guide</Link>.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-8 border border-gray-200">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-3">
-                <Users className="h-7 w-7 text-purple-600" />
-                Multi-Location Support
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                If your small business operates across multiple locations (warehouse, retail store, online fulfillment), multi-location inventory management is essential. It provides:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-4">
-                <li>Unified view of inventory across all locations</li>
-                <li>Location-specific reorder points and settings</li>
-                <li>Inter-location transfer tracking</li>
-                <li>Consolidated and location-specific reporting</li>
-              </ul>
-              <p className="text-gray-700 leading-relaxed">
-                This prevents situations where one location has excess stock while another faces stockouts, enabling better inventory allocation and reduced overall carrying costs.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-8 border border-gray-200">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-3">
-                <BarChart3 className="h-7 w-7 text-indigo-600" />
-                Reporting & Analytics
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Comprehensive reporting helps you understand inventory performance, identify opportunities, and make data-driven decisions. Key reports include:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4 mb-4">
-                <li>Inventory valuation and turnover rates</li>
-                <li>Slow-moving and fast-moving item analysis</li>
-                <li>Stock aging and expiration tracking</li>
-                <li>Sales performance by product</li>
-                <li>Reorder point analysis and recommendations</li>
-              </ul>
-              <p className="text-gray-700 leading-relaxed">
-                Analytics help identify seasonal patterns, recommend optimal stock levels, and highlight products that may need promotional support to move inventory.
-              </p>
-            </div>
+          <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm mb-8">
+            <table className="w-full">
+              <thead className="border-b bg-gray-50">
+                <tr>
+                  <th className="text-left p-6 font-bold text-gray-900">Software / Method</th>
+                  <th className="text-left p-6 font-bold text-gray-900">Best For</th>
+                  <th className="text-left p-6 font-bold text-gray-900">Starting Cost</th>
+                  <th className="text-left p-6 font-bold text-gray-900">Key Strength</th>
+                  <th className="text-left p-6 font-bold text-gray-900">Consideration</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {softwareComparison.map((software, index) => (
+                  <tr key={index} className="hover:bg-gray-50/50">
+                    <td className="p-6 align-top font-medium">{software.name}</td>
+                    <td className="p-6 align-top text-gray-700">{software.bestFor}</td>
+                    <td className="p-6 align-top font-medium text-gray-900">{software.cost}</td>
+                    <td className="p-6 align-top text-gray-700">{software.keyFeature}</td>
+                    <td className="p-6 align-top text-gray-700">{software.limitation}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+          <p className="text-sm text-gray-500 text-center">Data based on vendor pricing and small business case studies. Most offer free trials.</p>
         </div>
       </section>
 
-      {/* Choosing the Right Software */}
-      <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Choosing the Right Inventory Management Software</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            Selecting the right inventory management software is crucial for small business success. With numerous options available, it's important to evaluate solutions based on your specific needs, budget, and growth plans. For a comprehensive guide, see our <Link to="/blog/how-to-choose-inventory-software-for-small-business" className="text-blue-600 hover:underline font-semibold">buyer's guide for choosing inventory software</Link>.
-          </p>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Key Considerations for Small Businesses:</h3>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Must-Have Features:</h4>
-                <ul className="space-y-1 text-gray-700 text-sm">
-                  <li>✓ Real-time inventory tracking</li>
-                  <li>✓ Automated reorder points</li>
-                  <li>✓ Mobile access (smartphone/tablet)</li>
-                  <li>✓ Basic reporting and analytics</li>
-                  <li>✓ User-friendly interface</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Nice-to-Have Features:</h4>
-                <ul className="space-y-1 text-gray-700 text-sm">
-                  <li>✓ Barcode/QR code scanning</li>
-                  <li>✓ Integration with sales channels</li>
-                  <li>✓ Multi-location support</li>
-                  <li>✓ Demand forecasting</li>
-                  <li>✓ Advanced analytics</li>
+      {/* Deep Dive: The 80/20 Rule & Organization */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Master the 80/20 Rule for Inventory</h2>
+              <p className="text-gray-600 mb-6">
+                Not all inventory deserves equal attention. The Pareto Principle is your most powerful tool for prioritizing limited management time.
+              </p>
+              <div className="bg-white p-6 rounded-2xl border border-gray-200">
+                <h4 className="font-bold text-gray-900 mb-3">How to Implement ABC Analysis:</h4>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-800 font-bold text-sm flex items-center justify-center">A</div>
+                    <div>
+                      <span className="font-medium">Top 20% of SKUs (by annual usage value).</span>
+                      <p className="text-sm text-gray-600 mt-1">Tight control: Frequent counts, low safety stock, detailed records.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold text-sm flex items-center justify-center">B</div>
+                    <div>
+                      <span className="font-medium">Next 30% of SKUs.</span>
+                      <p className="text-sm text-gray-600 mt-1">Moderate control: Regular reviews, standard reorder points.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-800 font-bold text-sm flex items-center justify-center">C</div>
+                    <div>
+                      <span className="font-medium">Bottom 50% of SKUs.</span>
+                      <p className="text-sm text-gray-600 mt-1">Simple control: Bulk orders, infrequent counts, high safety stock.</p>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </div>
-          </div>
-
-          <p className="text-lg leading-relaxed text-gray-700 mb-4">
-            Start with essential features that address your immediate pain points, then scale up as your business grows. Avoid over-complicated enterprise solutions designed for large companies they're expensive, difficult to use, and include features you don't need.
-          </p>
-          <p className="text-lg leading-relaxed text-gray-700">
-            Look for solutions like StockFlow that offer free plans for small businesses, allowing you to start without financial commitment and upgrade as you scale. Test the software with a free trial to ensure it meets your needs and your team can use it effectively.
-          </p>
-        </div>
-      </section>
-
-      {/* Implementation Guide */}
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Implementation Guide</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-8">
-            Implementing inventory management software doesn't have to be complicated. Follow these steps for a smooth transition:
-          </p>
-
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg p-6 border-l-4 border-blue-600">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">1</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Plan & Prepare</h3>
-                  <p className="text-gray-700">
-                    Start by auditing your current inventory. Take a physical count of all items, document current processes, and identify pain points. Decide which team members will use the system and what roles/permissions they need. Set clear goals for what you want to achieve (e.g., "reduce stockouts by 50%").
-                  </p>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">How to Organize Inventory Physically & Digitally</h2>
+              <p className="text-gray-600 mb-6">
+                Chaos in the stockroom equals chaos in the books. A clear organization system is non-negotiable.
+              </p>
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start">
+                  <Package className="w-8 h-8 text-blue-600 shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-bold text-gray-900">Implement a Location Code System</h4>
+                    <p className="text-gray-600 text-sm mt-1">Every bin, shelf, and aisle gets a unique code (e.g., A-01-B). This code is the item's "address" in your software.</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 border-l-4 border-green-600">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">2</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Set Up Your System</h3>
-                  <p className="text-gray-700">
-                    Create your account and configure basic settings (locations, users, permissions). Import your inventory data (most software supports CSV import from Excel). Set up product categories, suppliers, and initial reorder points. This is also a good time to set up barcode scanning if you're using it see our guide on <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">how to set up barcode scanning with StockFlow</Link>.
-                  </p>
+                <div className="flex gap-4 items-start">
+                  <Smartphone className="w-8 h-8 text-blue-600 shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-bold text-gray-900">Create a "Digital Twin"</h4>
+                    <p className="text-gray-600 text-sm mt-1">Replicate your physical layout in your inventory app. When the software says an item is in "A-01-B," your staff can find it instantly.</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 border-l-4 border-yellow-600">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-yellow-600 text-white rounded-full flex items-center justify-center font-bold">3</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Train Your Team</h3>
-                  <p className="text-gray-700">
-                    Provide training to all users. Most modern inventory software is intuitive, but ensure everyone understands key processes: how to receive inventory, record sales, check stock levels, and generate reports. Start with basic functions and gradually introduce advanced features. Consider appointing a "super user" who can help others.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 border-l-4 border-purple-600">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold">4</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Go Live & Monitor</h3>
-                  <p className="text-gray-700">
-                    Start using the system for all inventory operations. Run parallel tracking (manual and software) for the first week to catch any issues. Monitor usage, address questions quickly, and refine processes. After the first month, review metrics and adjust reorder points, processes, and settings based on actual usage data.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 border-l-4 border-indigo-600">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">5</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Optimize & Scale</h3>
-                  <p className="text-gray-700">
-                    As you become comfortable with the system, explore advanced features: automated reordering, integrations with sales channels, advanced reporting, and demand forecasting. Continuously improve processes based on data insights. If you're migrating from Excel, check our guide on <Link to="/blog/migrating-from-excel-to-inventory-software" className="text-blue-600 hover:underline font-semibold">migrating from Excel to inventory software</Link> for specific migration strategies.
-                  </p>
+                <div className="flex gap-4 items-start">
+                  <AlertTriangle className="w-8 h-8 text-blue-600 shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-bold text-gray-900">Standardize Key Processes</h4>
+                    <p className="text-gray-600 text-sm mt-1">Document simple checklists for receiving new stock and picking orders. Consistency prevents 80% of inventory errors.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -468,213 +337,58 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
         </div>
       </section>
 
-      {/* Best Practices */}
-      <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Best Practices for Small Business Inventory Management</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-8">
-            Following best practices helps maximize the value of your inventory management system:
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Maintain Accurate Data</h3>
-              <p className="text-gray-700 text-sm">
-                Inventory accuracy is the foundation of effective management. Conduct regular cycle counts, use barcode scanning to minimize errors, and ensure all team members follow consistent data entry procedures. Aim for 99%+ accuracy.
-              </p>
+      {/* Cost of Mistakes & ROI */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">The Real Cost of Getting It Wrong</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto">Understanding these costs justifies the investment in better systems and processes.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                <DollarSign className="text-red-600" /> Hidden Costs of Poor Management
+              </h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-800 font-bold text-sm flex items-center justify-center">1</div>
+                  <span><strong>Excess Carrying Costs:</strong> Storage, insurance, and capital tied up in slow-moving stock can eat 25-30% of its value annually.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-800 font-bold text-sm flex items-center justify-center">2</div>
+                  <span><strong>Stockout Losses:</strong> A single stockout costs more than the lost sale—it damages customer trust and sends buyers to competitors.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-800 font-bold text-sm flex items-center justify-center">3</div>
+                  <span><strong>Operational Waste:</strong> Employees searching for misplaced items or correcting errors can waste 5-10 hours per week.</span>
+                </li>
+              </ul>
             </div>
-
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Set Realistic Reorder Points</h3>
-              <p className="text-gray-700 text-sm">
-                Base reorder points on actual sales data, not estimates. Consider supplier lead times, safety stock requirements, and seasonal variations. Review and adjust reorder points quarterly based on changing demand patterns.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Organize Your Storage</h3>
-              <p className="text-gray-700 text-sm">
-                Physical organization supports digital tracking. Use clear labeling, consistent location codes, and logical grouping (by category, frequency, or value). Well-organized storage reduces picking time and errors.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Monitor Key Metrics</h3>
-              <p className="text-gray-700 text-sm">
-                Track inventory turnover rate, days sales of inventory (DSI), stockout frequency, and carrying costs. Regular monitoring helps identify issues early and optimize stock levels for better cash flow.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Integrate Sales Channels</h3>
-              <p className="text-gray-700 text-sm">
-                If selling through multiple channels (online, retail, marketplaces), integrate them with your inventory system. This prevents overselling, maintains accurate stock levels across all channels, and automates updates.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Regular Reviews & Adjustments</h3>
-              <p className="text-gray-700 text-sm">
-                Review inventory performance monthly. Identify slow-moving items that may need promotion, adjust reorder points based on trends, and optimize stock levels. Continuous improvement is key to long-term success.
-              </p>
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                <TrendingUp className="text-green-600" /> ROI of a Proper System
+              </h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-800 font-bold text-sm flex items-center justify-center">1</div>
+                  <span><strong>Direct Cost Savings:</strong> Reducing overstock and stockouts typically lowers inventory costs by 20-30%, paying for software in months.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-800 font-bold text-sm flex items-center justify-center">2</div>
+                  <span><strong>Time Liberation:</strong> Automating counts and orders can give a small business owner back 4-8 hours per week for growth activities.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-800 font-bold text-sm flex items-center justify-center">3</div>
+                  <span><strong>Scalability Foundation:</strong> Clean data and processes are the bedrock for adding sales channels, new locations, or team members without chaos.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Common Mistakes to Avoid */}
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Common Mistakes to Avoid</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            Many small businesses make avoidable mistakes that undermine inventory management effectiveness. For a comprehensive guide, see our article on <Link to="/blog/small-business-inventory-management-mistakes" className="text-blue-600 hover:underline font-semibold">small business inventory management mistakes</Link>. Here are the most critical ones:
-          </p>
-
-          <div className="space-y-4">
-            <div className="bg-red-50 border-l-4 border-red-600 p-6 rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Using Manual Methods Too Long</h3>
-              <p className="text-gray-700">
-                Excel spreadsheets and paper-based tracking work for very small operations, but become unsustainable quickly. Manual methods have high error rates (10-15%), require excessive time, and don't scale. Migrate to professional software before these limitations hurt your business.
-              </p>
-            </div>
-
-            <div className="bg-orange-50 border-l-4 border-orange-600 p-6 rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Reorder Point System</h3>
-              <p className="text-gray-700">
-                Relying on intuition or checking stock "when you remember" leads to stockouts and overstock. Implement automated reorder points based on actual sales data to prevent both problems.
-              </p>
-            </div>
-
-            <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Ignoring Inventory Accuracy</h3>
-              <p className="text-gray-700">
-                Inaccurate inventory data cascades into stockouts, overstock, wrong purchasing decisions, and financial discrepancies. Prioritize accuracy through regular counts, barcode scanning, and proper processes.
-              </p>
-            </div>
-
-            <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Overstocking Slow-Moving Items</h3>
-              <p className="text-gray-700">
-                Tying up capital in slow-moving inventory hurts cash flow. Use inventory analytics to identify slow movers, optimize stock levels, and consider promotions or discontinuation for items that don't sell.
-              </p>
-            </div>
-
-            <div className="bg-purple-50 border-l-4 border-purple-600 p-6 rounded-r-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Lack of Integration</h3>
-              <p className="text-gray-700">
-                Operating inventory in isolation from sales channels, accounting, and other systems creates data silos and manual work. Integrate systems to automate updates and maintain consistency across your business.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ROI and Cost Savings */}
-      <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">ROI and Cost Savings</h2>
-          <p className="text-lg leading-relaxed text-gray-700 mb-6">
-            Investing in inventory management software delivers measurable ROI for small businesses. Most businesses see returns within 3-6 months through cost savings and efficiency gains. Use our <Link to="/blog/roi-calculator-for-inventory-software" className="text-blue-600 hover:underline font-semibold">interactive ROI calculator</Link> to estimate your specific return on investment.
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
-              <div className="text-3xl font-bold text-blue-600 mb-2">20-30%</div>
-              <div className="text-sm font-semibold text-gray-900 mb-2">Cost Reduction</div>
-              <p className="text-sm text-gray-700">Reduction in inventory carrying costs through optimized stock levels</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
-              <div className="text-3xl font-bold text-green-600 mb-2">70%</div>
-              <div className="text-sm font-semibold text-gray-900 mb-2">Time Savings</div>
-              <p className="text-sm text-gray-700">Reduction in time spent on manual inventory tracking tasks</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
-              <div className="text-3xl font-bold text-purple-600 mb-2">90%</div>
-              <div className="text-sm font-semibold text-gray-900 mb-2">Error Reduction</div>
-              <p className="text-sm text-gray-700">Reduction in inventory errors through automation and barcode scanning</p>
-            </div>
-          </div>
-
-          <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Typical ROI Timeline</h3>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <div className="text-lg font-bold text-indigo-600 mb-1">1-3 Months</div>
-                <p className="text-sm text-gray-700">Initial setup, data migration, and team training. Begin seeing time savings.</p>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-indigo-600 mb-1">3-6 Months</div>
-                <p className="text-sm text-gray-700">Visible improvements in accuracy, reduced errors, and optimized processes.</p>
-              </div>
-              <div>
-                <div className="text-lg font-bold text-indigo-600 mb-1">6-12 Months</div>
-                <p className="text-sm text-gray-700">Significant cost savings from optimized inventory levels and improved cash flow.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Next Steps */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Next Steps: Getting Started</h2>
-          <p className="text-lg leading-relaxed text-white/90 mb-8">
-            Ready to transform your small business inventory management? Here's how to get started:
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20">
-              <h3 className="text-xl font-semibold mb-3">1. Evaluate Your Current Situation</h3>
-              <p className="text-white/85 text-sm mb-4">
-                Assess your current inventory management processes. Identify pain points, measure time spent, and calculate current error rates. This baseline helps measure improvement.
-              </p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20">
-              <h3 className="text-xl font-semibold mb-3">2. Calculate Your ROI</h3>
-              <p className="text-white/85 text-sm mb-4">
-                Use our <Link to="/blog/roi-calculator-for-inventory-software" className="text-white underline font-semibold">ROI calculator</Link> to estimate potential savings and return on investment. This helps justify the investment and set expectations.
-              </p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20">
-              <h3 className="text-xl font-semibold mb-3">3. Choose Your Software</h3>
-              <p className="text-white/85 text-sm mb-4">
-                Follow our <Link to="/blog/how-to-choose-inventory-software-for-small-business" className="text-white underline font-semibold">buyer's guide</Link> to evaluate options. Start with a free plan or trial to test before committing.
-              </p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur rounded-lg p-6 border border-white/20">
-              <h3 className="text-xl font-semibold mb-3">4. Start Your Free Trial</h3>
-              <p className="text-white/85 text-sm mb-4">
-                <Link to="/solutions/inventory-management-software" className="text-white underline font-semibold">Try StockFlow free</Link> for 14 days. Import your inventory, set up reorder points, and experience the benefits firsthand. No credit card required.
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white/20 backdrop-blur rounded-lg p-6 border border-white/30">
-            <h3 className="text-xl font-semibold mb-3">Related Resources</h3>
-            <p className="text-white/85 mb-4">
-              Continue learning with these related guides:
-            </p>
-            <ul className="space-y-2 text-white/90">
-              <li>• <Link to="/blog/barcodes-vs-qr-codes-for-inventory-management" className="underline">Barcode vs QR Code for Inventory Management</Link></li>
-              <li>• <Link to="/blog/inventory-management-for-contractors" className="underline">Inventory Management for Contractors</Link></li>
-              <li>• <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="underline">How to Set Up Barcode Scanning with StockFlow</Link></li>
-              <li>• <Link to="/blog/roi-calculator-for-inventory-software" className="underline">ROI Calculator for Inventory Software</Link></li>
-              <li>• <Link to="/blog/small-business-inventory-management-mistakes" className="underline">Small Business Inventory Management Mistakes</Link></li>
-              <li>• <Link to="/blog/how-to-choose-inventory-software-for-small-business" className="underline">How to Choose Inventory Software for Small Business</Link></li>
-              <li>• <Link to="/blog/migrating-from-excel-to-inventory-software" className="underline">Migrating from Excel to Inventory Software</Link></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-
-
+      {/* FAQ Section */}
       <section>
         <div className="max-w-6xl mx-auto py-12">
           <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
@@ -687,11 +401,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
             ))}
           </div>
         </div>
-        
       </section>
-
-
-
     </SeoPageLayout>
   );
 }

@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 
 export default function EquipmentMaintenanceQRPage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

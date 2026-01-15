@@ -26,7 +26,7 @@ import {
 
 
 export default function MedicalInventoryManagement() {
-  usePageRefresh();
+  
   const location = useLocation();
   
   // Get real customer data for medical industry

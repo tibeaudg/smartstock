@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
@@ -106,7 +105,7 @@ const structuredData = [
 ];
 
 export default function SeoInventoryManagement101Page() {
-  usePageRefresh();
+  
 
   const pageStructuredData = structuredData.map((item) => ({
     ...item,

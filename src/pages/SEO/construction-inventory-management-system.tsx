@@ -24,7 +24,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 
 export default function ConstructionInventoryManagementSystem() {
-  usePageRefresh();
+  
   const { formatPrice } = useCurrency();
   
 

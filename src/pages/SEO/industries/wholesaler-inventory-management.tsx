@@ -8,7 +8,7 @@ import { Package, TrendingUp, Truck, BarChart3, Users, Zap, CheckCircle, Star } 
 
 
 export default function WholesalerInventoryManagement() {
-  usePageRefresh();
+  
   
  
   

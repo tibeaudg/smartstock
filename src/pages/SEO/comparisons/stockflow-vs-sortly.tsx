@@ -30,7 +30,7 @@ import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/
 
 
 export default function StockFlowVsSortly() {
-  usePageRefresh();
+  
   
 
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);

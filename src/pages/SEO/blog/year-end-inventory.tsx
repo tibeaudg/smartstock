@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
@@ -90,7 +89,7 @@ const structuredData = [
 ];
 
 export default function SeoYearEndInventoryPage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const pageStructuredData = structuredData.map((item) => ({

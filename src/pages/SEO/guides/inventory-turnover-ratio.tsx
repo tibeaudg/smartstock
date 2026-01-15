@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 export default function InventoryTurnoverRatio() {
-  usePageRefresh();
+  
   
   const faqData = [
     {

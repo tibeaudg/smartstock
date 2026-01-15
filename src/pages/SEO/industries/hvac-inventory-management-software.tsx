@@ -23,7 +23,7 @@ import {
 import { KeyTakeaways } from '@/components/KeyTakeaways';
 
 export default function HvacInventorySoftwarePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

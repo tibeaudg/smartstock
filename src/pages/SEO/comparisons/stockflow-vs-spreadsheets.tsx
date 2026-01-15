@@ -10,7 +10,7 @@ import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/
 
 
 export default function StockFlowVsSpreadsheets() {
-  usePageRefresh();
+  
 
 
   const comparisonFeatures: ComparisonFeature[] = [

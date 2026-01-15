@@ -40,7 +40,7 @@ type ContactFormValues = {
 };
 
 export default function ContactPage() {
-  usePageRefresh();
+  
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [selectedSubject, setSelectedSubject] = useState<string>('');

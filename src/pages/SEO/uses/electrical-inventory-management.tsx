@@ -31,7 +31,7 @@ import { Link } from 'react-router-dom';
 
 
 export default function ElectricalInventoryManagement() {
-  usePageRefresh();
+  
   const location = useLocation();
   const { formatPrice } = useCurrency();
 

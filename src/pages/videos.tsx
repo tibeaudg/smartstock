@@ -46,7 +46,7 @@ const TUTORIAL_CATEGORIES = [
 ];
 
 export default function KnowledgeBase() {
-  usePageRefresh();
+  
 
   const structuredData = {
     "@context": "https://schema.org",

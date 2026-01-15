@@ -34,7 +34,7 @@ const keyTakeaways = [
 ];
 
 export default function AssetTracking() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const keyTakeaways = [

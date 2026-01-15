@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 
 export default function InventoryManagementSoftware() {
-  usePageRefresh();
+  
   const location = useLocation();
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 

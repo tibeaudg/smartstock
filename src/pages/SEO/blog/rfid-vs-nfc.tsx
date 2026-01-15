@@ -21,7 +21,7 @@ import {
 import { s } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 export default function RfidVsNfcGuidePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

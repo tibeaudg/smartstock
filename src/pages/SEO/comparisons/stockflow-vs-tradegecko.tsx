@@ -54,7 +54,7 @@ const comparisonData = [
 ];
 
 export default function StockflowVsTradegecko() {
-  usePageRefresh();
+  
   
 
 

@@ -43,7 +43,7 @@ const faqData = [
 
 
 export default function EnterpriseInventorySoftwarePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

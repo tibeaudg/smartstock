@@ -22,7 +22,7 @@ import {
  * Updated: January 10, 2026
  */
 export default function BestInventoryManagementSoftwarePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({

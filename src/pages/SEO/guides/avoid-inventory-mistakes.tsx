@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function AvoidInventoryMistakes() {
-  usePageRefresh();
+  
   
   const faqData = [
     {

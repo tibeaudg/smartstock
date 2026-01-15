@@ -47,7 +47,7 @@ const comparisonRows = [
 ];
 
 export default function StockflowVsKatana() {
-  usePageRefresh();
+  
 
 
   const faqData = [

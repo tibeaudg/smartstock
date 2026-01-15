@@ -10,7 +10,7 @@ import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/
 import { KeyTakeaways as KeyTakeawaysComponent } from '@/components/KeyTakeaways';
 
 export default function StockFlowVsZohoInventory() {
-  usePageRefresh();
+  
 
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: 'Trial only, paid required' },

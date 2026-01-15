@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 
 export default function HobbyBusinessOrganizationPage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
@@ -22,7 +21,7 @@ const structuredData = {
 };
 
 export default function SEOResourcesBlogPage() {
-  usePageRefresh();
+  
 
   // Get all blog articles
   const blogArticles = useMemo(() => {

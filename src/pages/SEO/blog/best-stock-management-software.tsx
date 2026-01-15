@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import {
   BarChart3, Package, RefreshCw, Calculator, Database, LineChart, PlusCircle, Utensils, Factory, CheckCircle2, Smartphone, Layers, Search, LayoutDashboard
@@ -32,7 +31,7 @@ const structuredData = [
 ];
 
 export default function SeoBestStockManagementComprehensivePage() {
-  usePageRefresh();
+  
 
   return (
     <SeoPageLayout

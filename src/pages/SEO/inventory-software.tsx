@@ -19,7 +19,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 export default function InventorySoftware() {
   // Gebruik de page refresh hook
-  usePageRefresh();
+  
   
 
   

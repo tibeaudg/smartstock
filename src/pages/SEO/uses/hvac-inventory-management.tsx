@@ -23,7 +23,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 
 export default function HvacInventoryManagement() {
-  usePageRefresh();
+  
   const { formatPrice } = useCurrency();
 
 

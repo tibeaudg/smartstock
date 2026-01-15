@@ -20,7 +20,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 
 export default function VendorManagedStock() {
-  usePageRefresh();
+  
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const faqData = [

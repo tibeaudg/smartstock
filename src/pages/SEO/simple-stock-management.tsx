@@ -16,7 +16,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 
 export default function SimpleStockManagement() {
-  usePageRefresh();
+  
   
 
   const faqData = [

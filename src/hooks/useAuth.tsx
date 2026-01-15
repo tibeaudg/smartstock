@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     queryClient.clear();
   };
 
-  const fetchAndSetProfile = async (userId: string, email?: string) => {
+  const fetchAndSetProfile = async (userId: string, email?: string, userMetadata?: any) => {
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -81,9 +81,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .maybeSingle();
 
       if (error || !data) {
-        const fallback = { id: userId, email: email || '', role: 'staff', is_owner: false };
-        setUserProfile(fallback);
-        return fallback;
+        // Profile doesn't exist, create one (for OAuth users or edge cases)
+        const firstName = userMetadata?.first_name || userMetadata?.full_name?.split(' ')[0] || '';
+        const lastName = userMetadata?.last_name || userMetadata?.full_name?.split(' ').slice(1).join(' ') || '';
+        
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .upsert({
+            id: userId,
+            email: email || '',
+            first_name: firstName || null,
+            last_name: lastName || null,
+            role: 'admin',
+            is_owner: false,
+            updated_at: new Date().toISOString(),
+          })
+          .select()
+          .single();
+
+        if (createError || !newProfile) {
+          // If creation fails, use fallback
+          const fallback = { id: userId, email: email || '', role: 'staff', is_owner: false };
+          setUserProfile(fallback);
+          return fallback;
+        }
+        
+        setUserProfile(newProfile);
+        return newProfile;
       }
       setUserProfile(data);
       return data;
@@ -98,7 +122,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (initialSession) {
         setSession(initialSession);
         setUser(initialSession.user);
-        await fetchAndSetProfile(initialSession.user.id, initialSession.user.email);
+        await fetchAndSetProfile(
+          initialSession.user.id, 
+          initialSession.user.email,
+          initialSession.user.user_metadata
+        );
       }
       setLoading(false);
       isInitialized.current = true;
@@ -115,7 +143,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (currentSession) {
         setSession(currentSession);
         setUser(currentSession.user);
-        await fetchAndSetProfile(currentSession.user.id, currentSession.user.email);
+        // Pass user metadata for OAuth users to extract name information
+        await fetchAndSetProfile(
+          currentSession.user.id, 
+          currentSession.user.email,
+          currentSession.user.user_metadata
+        );
       } else {
         setSession(null);
         setUser(null);
@@ -169,6 +202,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth?mode=login`,
+        },
+      });
+      return { error };
+    } catch (err) {
+      return { error: err as AuthError };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetPassword = async (email: string) => {
+    setLoading(true);
+    const result = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth?mode=reset`,
+    });
+    setLoading(false);
+    return result;
+  };
+
   // ✅ CRITICAL: Ensure all methods are in the value object!
   const value = {
     user,
@@ -179,6 +238,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     emailVerified: !!user?.email_confirmed_at,
     signIn,
     signUp, // This fixes the "signUp is not a function" error
+    signInWithGoogle,
+    resetPassword,
     signOut,
   };
 

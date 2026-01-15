@@ -20,7 +20,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 
 export default function BestInventoryManagementSoftware() {
-  usePageRefresh();
+  
   const location = useLocation();
   const { formatPrice } = useCurrency();
   

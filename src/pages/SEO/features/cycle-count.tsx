@@ -16,7 +16,7 @@ import {
 
 
 export default function CycleCount() {
-  usePageRefresh();
+  
   
 
   const location = useLocation();

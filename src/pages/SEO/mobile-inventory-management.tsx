@@ -19,7 +19,7 @@ import {
 
 
 export default function MobileInventoryManagement() {
-  usePageRefresh();
+  
 
   
   const faqData = [

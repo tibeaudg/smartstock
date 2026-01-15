@@ -21,7 +21,7 @@ import { StructuredData } from '@/components/StructuredData';
 
 
 export default function PurchaseRequisitionSoftware() {
-  usePageRefresh();
+  
   const { formatPrice } = useCurrency();
 
 

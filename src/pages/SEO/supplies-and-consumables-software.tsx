@@ -23,7 +23,7 @@ import {
 import { KeyTakeaways } from '@/components/KeyTakeaways';
 
 export default function ConsumablesInventoryPage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

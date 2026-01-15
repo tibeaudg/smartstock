@@ -152,7 +152,7 @@ const structuredData = [
 ];
 
 export default function SEOCaseStudiesPage() {
-  usePageRefresh();
+  
 
   return (
     <SeoPageLayout 

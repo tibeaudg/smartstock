@@ -25,7 +25,7 @@ import {
 import { KeyTakeaways } from '@/components/KeyTakeaways';
 
 export default function WarehouseSoftwarePage() {
-  usePageRefresh();
+  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(

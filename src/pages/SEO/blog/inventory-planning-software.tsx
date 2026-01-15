@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { usePageRefresh } from "@/hooks/usePageRefresh";
 import { StructuredData } from "@/components/StructuredData";
 import {
   CheckCircle,
@@ -60,7 +59,7 @@ const forecastingModels = [
 ];
 
 export default function SeoInventoryPlanningSoftwarePage() {
-  usePageRefresh();
+  
 
   return (
     <SeoPageLayout

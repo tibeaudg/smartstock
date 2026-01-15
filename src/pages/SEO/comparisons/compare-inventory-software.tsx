@@ -81,7 +81,7 @@ const evaluationChecklist = [
 ];
 
 export default function CompareInventorySoftware() {
-  usePageRefresh();
+  
   const location = useLocation();
   const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
     name: item.name,

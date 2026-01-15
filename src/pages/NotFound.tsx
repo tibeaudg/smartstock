@@ -42,7 +42,7 @@ const NotFound = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   
   // Use the page refresh hook
-  usePageRefresh();
+  
 
   useEffect(() => {
     console.error(

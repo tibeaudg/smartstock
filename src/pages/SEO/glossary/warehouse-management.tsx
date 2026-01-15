@@ -6,7 +6,7 @@ import { Check, Package, MapPin, Smartphone, BarChart3, Users, Zap, TrendingUp, 
 
 import { StructuredData } from '@/components/StructuredData';
 export default function WarehouseManagement() {
-  usePageRefresh();
+  
   
   const faqData = [
     {

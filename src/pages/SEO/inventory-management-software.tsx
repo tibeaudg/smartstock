@@ -13,7 +13,7 @@ import { getBreadcrumbPath } from '@/config/topicClusters';
 
 export default function InventoryManagementSoftware() {
   // Gebruik de page refresh hook
-  usePageRefresh();
+  
 
   // Get related pages from topic cluster
   const relatedPages = getRelatedPages('/inventory-management-software', 6);
