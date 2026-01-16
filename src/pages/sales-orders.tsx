@@ -375,14 +375,14 @@ export default function SalesOrdersPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
+    <div className="space-y-6 p-4 sm:p-6 w-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex items-center justify-between border-b pb-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Sales Orders</h1>
           <p className="text-sm text-gray-600 mt-1">Manage your sales orders and track fulfillment</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
             size="sm"
@@ -665,7 +665,7 @@ export default function SalesOrdersPage() {
           )}
 
           {/* Pagination */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4">
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600">Showing per page</span>
               <Select value={itemsPerPage.toString()} onValueChange={(v) => {

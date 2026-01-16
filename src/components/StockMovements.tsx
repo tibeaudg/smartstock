@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -6,16 +6,56 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
+import { format, subMonths, startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
 import { useMobile } from '@/hooks/use-mobile';
 import { useStockMovements } from '@/hooks/useStockMovements';
 import { TransactionFilters } from '@/types/stockTypes';
-import { CalendarIcon, Download, Filter, Search, X, History, Package, Plus } from 'lucide-react';
+import { CalendarIcon, Download, Filter, Search, X, History, Package, Plus, ChevronLeft, ChevronRight, ArrowUpDown, Upload, Maximize2, Minimize2, TrendingUp, TrendingDown } from 'lucide-react';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 import { useProductCount } from '@/hooks/useDashboardData';
 import { useNavigate } from 'react-router-dom';
+
+// Go to page input component
+const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
+  const [pageInput, setPageInput] = useState('');
+
+  const handleGo = () => {
+    const page = parseInt(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      onPageChange(page);
+      setPageInput('');
+    }
+  };
+
+  return (
+    <>
+      <Input
+        type="number"
+        min={1}
+        max={totalPages}
+        className="w-16 h-8"
+        value={pageInput}
+        onChange={(e) => setPageInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleGo();
+          }
+        }}
+        placeholder="Page"
+      />
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleGo}
+      >
+        Go
+      </Button>
+    </>
+  );
+};
 
 export const StockMovements = () => {
   console.log('[StockMovements] Component rendering');
@@ -32,7 +72,126 @@ export const StockMovements = () => {
     refresh
   } = useStockMovements();
   
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  
   console.log('[StockMovements] State:', { loading, error: error?.message, transactionsCount: transactions.length });
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(transactions.length / itemsPerPage));
+  const paginatedTransactions = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return transactions.slice(start, end);
+  }, [transactions, currentPage, itemsPerPage]);
+
+  // Calculate stats with trends and percentage changes
+  const enhancedStats = useMemo(() => {
+    const now = new Date();
+    const currentMonthStart = startOfMonth(now);
+    const currentMonthEnd = endOfMonth(now);
+    const lastMonthStart = startOfMonth(subMonths(now, 1));
+    const lastMonthEnd = endOfMonth(subMonths(now, 1));
+
+    const currentMonthTransactions = transactions.filter(t => {
+      const transDate = new Date(t.created_at);
+      return isWithinInterval(transDate, { start: currentMonthStart, end: currentMonthEnd });
+    });
+
+    const lastMonthTransactions = transactions.filter(t => {
+      const transDate = new Date(t.created_at);
+      return isWithinInterval(transDate, { start: lastMonthStart, end: lastMonthEnd });
+    });
+
+    // Calculate totals
+    const currentTotalIn = currentMonthTransactions
+      .filter(t => t.transaction_type === 'incoming' || t.transaction_type === 'purchase_order')
+      .reduce((sum, t) => sum + (t.quantity || 0), 0);
+    const lastTotalIn = lastMonthTransactions
+      .filter(t => t.transaction_type === 'incoming' || t.transaction_type === 'purchase_order')
+      .reduce((sum, t) => sum + (t.quantity || 0), 0);
+    const totalInChange = lastTotalIn > 0 
+      ? ((currentTotalIn - lastTotalIn) / lastTotalIn) * 100 
+      : currentTotalIn > 0 ? 100 : 0;
+
+    const currentTotalOut = currentMonthTransactions
+      .filter(t => t.transaction_type === 'outgoing' || t.transaction_type === 'sales_order')
+      .reduce((sum, t) => sum + (t.quantity || 0), 0);
+    const lastTotalOut = lastMonthTransactions
+      .filter(t => t.transaction_type === 'outgoing' || t.transaction_type === 'sales_order')
+      .reduce((sum, t) => sum + (t.quantity || 0), 0);
+    const totalOutChange = lastTotalOut > 0 
+      ? ((currentTotalOut - lastTotalOut) / lastTotalOut) * 100 
+      : currentTotalOut > 0 ? 100 : 0;
+
+    const currentMovements = currentMonthTransactions.length;
+    const lastMovements = lastMonthTransactions.length;
+    const movementsChange = lastMovements > 0 
+      ? ((currentMovements - lastMovements) / lastMovements) * 100 
+      : currentMovements > 0 ? 100 : 0;
+
+    const currentValue = currentMonthTransactions.reduce((sum, t) => sum + (Number(t.total_value) || 0), 0);
+    const lastValue = lastMonthTransactions.reduce((sum, t) => sum + (Number(t.total_value) || 0), 0);
+    const valueChange = lastValue > 0 
+      ? ((currentValue - lastValue) / lastValue) * 100 
+      : currentValue > 0 ? 100 : 0;
+
+    // Generate trend data for last 12 days
+    const generateTrendData = (filterFn: (t: any) => boolean) => {
+      const data = [];
+      for (let i = 11; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dayStart = new Date(date.setHours(0, 0, 0, 0));
+        const dayEnd = new Date(date.setHours(23, 59, 59, 999));
+        
+        const count = transactions.filter(t => {
+          const transDate = new Date(t.created_at);
+          return transDate >= dayStart && transDate <= dayEnd && filterFn(t);
+        }).length;
+        
+        data.push({ value: count });
+      }
+      return data;
+    };
+
+    return {
+      totalIn: {
+        value: stats.totalIncoming,
+        change: totalInChange,
+        trend: generateTrendData(t => t.transaction_type === 'incoming' || t.transaction_type === 'purchase_order'),
+        color: '#10b981', // Green
+      },
+      totalOut: {
+        value: stats.totalOutgoing,
+        change: totalOutChange,
+        trend: generateTrendData(t => t.transaction_type === 'outgoing' || t.transaction_type === 'sales_order'),
+        color: '#ef4444', // Red
+      },
+      movements: {
+        value: stats.transactionCount,
+        change: movementsChange,
+        trend: generateTrendData(() => true),
+        color: '#9333ea', // Purple
+      },
+      stockValue: {
+        value: stats.totalValue,
+        change: valueChange,
+        trend: generateTrendData(() => true),
+        color: '#3b82f6', // Blue
+      },
+    };
+  }, [transactions, stats]);
+
+  // Calculate active filters count - MUST be before any early returns
+  const activeFiltersCount = useMemo(() => {
+    let count = 0;
+    if (filters.transactionType !== 'all') count++;
+    if (filters.dateRange !== 'all') count++;
+    if (filters.searchQuery) count++;
+    return count;
+  }, [filters.transactionType, filters.dateRange, filters.searchQuery]);
 
   const handleExport = () => {
     try {
@@ -63,6 +222,19 @@ export const StockMovements = () => {
     }
   };
 
+  // Clear filters function
+  const clearFilters = () => {
+    setFilters({
+      ...filters,
+      transactionType: 'all',
+      dateRange: 'all',
+      searchQuery: '',
+      startDate: undefined,
+      endDate: undefined,
+    });
+  };
+
+  // Early returns AFTER all hooks
   if (error) {
     return (
       <Card className="w-full">
@@ -92,66 +264,84 @@ export const StockMovements = () => {
   }
 
   return (
-
-
-    <div className="space-y-4">
-
-
-
-      {/* Filters */}
-      <div className="space-y-4">
-        {/* Search and Quick Filters */}
-        <div className="space-y-4">
-          {/* Search bar - full width */}
-          <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products"
-              className="pl-8"
-              value={filters.searchQuery}
-              onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
-            />
-          </div>
-          {/* Filters row and Toevoegen button */}
-          <div className="flex gap-2 items-center">
-            <Select
-              value={filters.transactionType}
-              onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as any }))}
-            >
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="incoming">Incoming</SelectItem>
-                <SelectItem value="outgoing">Outgoing</SelectItem>
-                <SelectItem value="purchase_order">Purchase Order</SelectItem>
-                <SelectItem value="sales_order">Sales Order</SelectItem>
-                <SelectItem value="stock_transfer">Stock Transfer</SelectItem>
-                <SelectItem value="adjustment">Adjustment</SelectItem>
-                <SelectItem value="manual_adjustment">Manual Adjustment</SelectItem>
-                <SelectItem value="scan_adjustment">Scan Adjustment</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select
-              value={filters.dateRange}
-              onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value as 'all' | 'today' | 'week' | 'month' | 'custom' }))}
-            >
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Date" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="week">7 Days</SelectItem>
-                <SelectItem value="month">30 Days</SelectItem>
-                <SelectItem value="custom">Custom</SelectItem>
-              </SelectContent>
-            </Select>
-            {/* Toevoegen button next to filters */}
-
-          </div>
+    <div className="space-y-6 p-4 sm:p-6">
+      {/* Header with Title and Actions */}
+      <div className="flex items-center justify-between border-b pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Track inventory transactions, adjustments, and stock movements
+          </p>
         </div>
+
+        <div className="flex items-center gap-2">
+          {activeFiltersCount > 0 && (
+            <Button 
+              variant="outline" 
+              onClick={clearFilters}
+              className="relative"
+            >
+              <X className="w-4 h-4 mr-2" />
+              Clear Filters
+              <Badge variant="secondary" className="ml-2 h-5 w-5 p-0 flex items-center justify-center">
+                {activeFiltersCount}
+              </Badge>
+            </Button>
+          )}
+
+          <Button variant="outline" onClick={handleExport}>
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+        </div>
+      </div>
+
+      {/* Search and Filter */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search transactions"
+            className="pl-8"
+            value={filters.searchQuery}
+            onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
+          />
+        </div>
+        <Select
+          value={filters.transactionType}
+          onValueChange={(value) => setFilters(prev => ({ ...prev, transactionType: value as any }))}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="All Types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="incoming">Incoming</SelectItem>
+            <SelectItem value="outgoing">Outgoing</SelectItem>
+            <SelectItem value="purchase_order">Purchase Order</SelectItem>
+            <SelectItem value="sales_order">Sales Order</SelectItem>
+            <SelectItem value="stock_transfer">Stock Transfer</SelectItem>
+            <SelectItem value="adjustment">Adjustment</SelectItem>
+            <SelectItem value="manual_adjustment">Manual Adjustment</SelectItem>
+            <SelectItem value="scan_adjustment">Scan Adjustment</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select
+          value={filters.dateRange}
+          onValueChange={(value) => setFilters(prev => ({ ...prev, dateRange: value as 'all' | 'today' | 'week' | 'month' | 'custom' }))}
+        >
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectValue placeholder="All" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="today">Today</SelectItem>
+            <SelectItem value="week">7 Days</SelectItem>
+            <SelectItem value="month">30 Days</SelectItem>
+            <SelectItem value="custom">Custom</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
         {/* Date Range Picker (if custom selected) */}
         {filters.dateRange === 'custom' && (
@@ -196,37 +386,157 @@ export const StockMovements = () => {
             </Popover>
           </div>
         )}
-      </div>
-
-
 
       {/* Stats Cards */}
       {!loading && transactions.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <Card>
-            <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Total In</p>
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">{stats.totalIncoming}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Total Out</p>
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold text-red-600">{stats.totalOutgoing}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Movements</p>
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold">{stats.transactionCount}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-medium text-muted-foreground">Current Stock Value</p>
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold">${stats.totalValue.toFixed(2)}</p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {/* Total In Card */}
+          <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-gray-600">Total In</h3>
+            </div>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold text-gray-900">{enhancedStats.totalIn.value}</div>
+                <div className="flex items-center gap-1 mt-1">
+                  {enhancedStats.totalIn.change >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-green-600" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-600" />
+                  )}
+                  <span className={`text-xs font-medium ${enhancedStats.totalIn.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {enhancedStats.totalIn.change >= 0 ? '+' : ''}{enhancedStats.totalIn.change.toFixed(1)}% Vs last month
+                  </span>
+                </div>
+              </div>
+              <div className="h-12 w-20">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={enhancedStats.totalIn.trend}>
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke={enhancedStats.totalIn.color}
+                      strokeWidth={2}
+                      dot={false}
+                      isAnimationActive={true}
+                      animationDuration={1000}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Total Out Card */}
+          <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-gray-600">Total Out</h3>
+            </div>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold text-gray-900">{enhancedStats.totalOut.value}</div>
+                <div className="flex items-center gap-1 mt-1">
+                  {enhancedStats.totalOut.change >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-green-600" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-600" />
+                  )}
+                  <span className={`text-xs font-medium ${enhancedStats.totalOut.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {enhancedStats.totalOut.change >= 0 ? '+' : ''}{enhancedStats.totalOut.change.toFixed(1)}% Vs last month
+                  </span>
+                </div>
+              </div>
+              <div className="h-12 w-20">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={enhancedStats.totalOut.trend}>
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke={enhancedStats.totalOut.color}
+                      strokeWidth={2}
+                      dot={false}
+                      isAnimationActive={true}
+                      animationDuration={1000}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Movements Card */}
+          <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-gray-600">Movements</h3>
+            </div>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold text-gray-900">{enhancedStats.movements.value}</div>
+                <div className="flex items-center gap-1 mt-1">
+                  {enhancedStats.movements.change >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-green-600" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-600" />
+                  )}
+                  <span className={`text-xs font-medium ${enhancedStats.movements.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {enhancedStats.movements.change >= 0 ? '+' : ''}{enhancedStats.movements.change.toFixed(1)}% Vs last month
+                  </span>
+                </div>
+              </div>
+              <div className="h-12 w-20">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={enhancedStats.movements.trend}>
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke={enhancedStats.movements.color}
+                      strokeWidth={2}
+                      dot={false}
+                      isAnimationActive={true}
+                      animationDuration={1000}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Current Stock Value Card */}
+          <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-gray-600">Current Stock Value</h3>
+            </div>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-2xl font-bold text-gray-900">${enhancedStats.stockValue.value.toFixed(2)}</div>
+                <div className="flex items-center gap-1 mt-1">
+                  {enhancedStats.stockValue.change >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-green-600" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-600" />
+                  )}
+                  <span className={`text-xs font-medium ${enhancedStats.stockValue.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {enhancedStats.stockValue.change >= 0 ? '+' : ''}{enhancedStats.stockValue.change.toFixed(1)}% Vs last month
+                  </span>
+                </div>
+              </div>
+              <div className="h-12 w-20">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={enhancedStats.stockValue.trend}>
+                    <Line
+                      type="monotone"
+                      dataKey="value"
+                      stroke={enhancedStats.stockValue.color}
+                      strokeWidth={2}
+                      dot={false}
+                      isAnimationActive={true}
+                      animationDuration={1000}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -274,11 +584,11 @@ export const StockMovements = () => {
         </Card>
       )}
 
-             {/* Transactions Table */}
-       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-         <div className={isMobile ? "" : "overflow-x-auto"}>
-           
-           <table className={`${isMobile ? "w-full" : "min-w-full"} divide-y divide-gray-200`}>
+      {/* Transactions Table */}
+      <div>
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+          <div className={isMobile ? "" : "overflow-x-auto"}>
+            <table className={`${isMobile ? "w-full" : "min-w-full"} divide-y divide-gray-200`}>
                          <thead className="bg-gray-50">
                <tr>
                 <th className={`${isMobile ? "px-2 py-2" : "px-4 py-2"} text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${isMobile ? "w-1/2" : ""}`}>Product</th>
@@ -294,7 +604,7 @@ export const StockMovements = () => {
                </tr>
              </thead>
             <tbody className="divide-y divide-gray-200">
-              {transactions.map((transaction, index) => (
+              {paginatedTransactions.map((transaction, index) => (
                                  <tr 
                    key={transaction.id}
                    className={`${
@@ -380,11 +690,175 @@ export const StockMovements = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
         </div>
       </div>
 
+      {/* Pagination */}
+      {transactions.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4 ">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Showing per page</span>
+            <Select value={itemsPerPage.toString()} onValueChange={(v) => {
+              setItemsPerPage(Number(v));
+              setCurrentPage(1);
+            }}>
+              <SelectTrigger className="w-[100px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">Show 10</SelectItem>
+                <SelectItem value="25">Show 25</SelectItem>
+                <SelectItem value="50">Show 50</SelectItem>
+                <SelectItem value="100">Show 100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">
+              Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, transactions.length)} of {transactions.length}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              Prev
+            </Button>
+            
+            <div className="flex items-center gap-1">
+              {totalPages <= 5 ? (
+                // Show all pages if 5 or fewer
+                Array.from({ length: totalPages }, (_, i) => (
+                  <Button
+                    key={i + 1}
+                    variant={currentPage === i + 1 ? "default" : "outline"}
+                    size="sm"
+                    className="w-8 h-8 p-0"
+                    onClick={() => setCurrentPage(i + 1)}
+                  >
+                    {i + 1}
+                  </Button>
+                ))
+              ) : currentPage <= 3 ? (
+                // Show first 5 pages when near start
+                <>
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Button
+                      key={i + 1}
+                      variant={currentPage === i + 1 ? "default" : "outline"}
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))}
+                  <span className="px-2">...</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-8 h-8 p-0"
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    {totalPages}
+                  </Button>
+                </>
+              ) : currentPage >= totalPages - 2 ? (
+                // Show last 5 pages when near end
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-8 h-8 p-0"
+                    onClick={() => setCurrentPage(1)}
+                  >
+                    1
+                  </Button>
+                  <span className="px-2">...</span>
+                  {Array.from({ length: 5 }, (_, i) => {
+                    const pageNum = totalPages - 4 + i;
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(pageNum)}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+                </>
+              ) : (
+                // Show pages around current page when in middle
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-8 h-8 p-0"
+                    onClick={() => setCurrentPage(1)}
+                  >
+                    1
+                  </Button>
+                  <span className="px-2">...</span>
+                  {Array.from({ length: 5 }, (_, i) => {
+                    const pageNum = currentPage - 2 + i;
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(pageNum)}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+                  <span className="px-2">...</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-8 h-8 p-0"
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    {totalPages}
+                  </Button>
+                </>
+              )}
+            </div>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Go to page</span>
+            <GoToPageInput
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        </div>
+      )}
 
     </div>
   );
 };
+

@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2 } from 'lucide-react';
+import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -23,6 +23,45 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { Progress } from '@/components/ui/progress';
+
+// Go to page input component
+const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
+  const [pageInput, setPageInput] = useState('');
+
+  const handleGo = () => {
+    const page = parseInt(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      onPageChange(page);
+      setPageInput('');
+    }
+  };
+
+  return (  
+    <>
+      <Input
+        type="number"
+        min={1}
+        max={totalPages}
+        className="w-16 h-8"
+        value={pageInput}
+        onChange={(e) => setPageInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleGo();
+          }
+        }}
+        placeholder="Page"
+      />
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleGo}
+      >
+        Go
+      </Button>
+    </>
+  );
+};
 
 export default function CategorysPageSecured() {
   const queryClient = useQueryClient();
@@ -868,65 +907,76 @@ const categoryProductsData = useMemo(() => {
      ============================================================================ */
   return (
     <div className="space-y-6 p-4 sm:p-6">
-      {/* Header with Search, Filters, and Actions */}
-      <Card>
-        <CardContent className="p-3 space-y-3">
-          <div className="flex flex-wrap gap-2 items-center">
-            <div className="flex-1 relative min-w-[200px]">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                placeholder="Search products…"
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+      {/* Header with Title and Actions */}
+      <div className="flex items-center justify-between border-b pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Manage your products, track inventory, and manage your product catalog
+          </p>
+        </div>
 
-            <Button 
-              variant="outline" 
-              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              className="relative"
-            >
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-              {activeFiltersCount > 0 && (
-                <Badge variant="secondary" className="ml-2 h-5 w-5 p-0 flex items-center justify-center">
-                  {activeFiltersCount}
-                </Badge>
-              )}
-            </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+            className="relative"
+          >
+            <Filter className="w-4 h-4 mr-2" />
+            Filters
+            {activeFiltersCount > 0 && (
+              <Badge variant="secondary" className="ml-2 h-5 w-5 p-0 flex items-center justify-center">
+                {activeFiltersCount}
+              </Badge>
+            )}
+          </Button>
 
-            <Button 
-              variant="outline" 
-              onClick={() => setViewMode(viewMode === 'compact' ? 'expanded' : 'compact')}
-            >
-              {viewMode === 'compact' ? (
-                <>
-                  <Maximize2 className="w-4 h-4 mr-2" />
-                  Expanded
-                </>
-              ) : (
-                <>
-                  <Minimize2 className="w-4 h-4 mr-2" />
-                  Compact
-                </>
-              )}
-            </Button>
+          <Button 
+            variant="outline" 
+            onClick={() => setViewMode(viewMode === 'compact' ? 'expanded' : 'compact')}
+          >
+            {viewMode === 'compact' ? (
+              <>
+                <Maximize2 className="w-4 h-4 mr-2" />
+                Expanded
+              </>
+            ) : (
+              <>
+                <Minimize2 className="w-4 h-4 mr-2" />
+                Compact
+              </>
+            )}
+          </Button>
 
-            <Button variant="outline" onClick={exportToCSV}>
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
+          <Button variant="outline" onClick={exportToCSV}>
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
 
-            <Button variant="outline" onClick={() => setShowImportDialog(true)}>
-              <Upload className="w-4 h-4 mr-2" />
-              Import
-            </Button>
+          <Button variant="outline" onClick={() => setShowImportDialog(true)}>
+            <Upload className="w-4 h-4 mr-2" />
+            Import
+          </Button>
 
-            <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-600 text-white hover:bg-blue-700">
-              <Plus className="w-4 h-4 mr-2" /> Add Product
-            </Button>
-          </div>
+          <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-600 text-white hover:bg-blue-700">
+            <Plus className="w-4 h-4 mr-2" /> Add Product
+          </Button>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 max-w-full">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            type="text"
+            placeholder="Search products…"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+      </div>
 
           {/* Bulk Actions Toolbar */}
           {selectedProductIds.size > 0 && (
@@ -1057,8 +1107,6 @@ const categoryProductsData = useMemo(() => {
               </div>
             </CollapsibleContent>
           </Collapsible>
-        </CardContent>
-      </Card>
 
       {categoriesLoading || productsLoading ? (
         <div className="py-12 text-center">Loading…</div>
@@ -1076,11 +1124,13 @@ const categoryProductsData = useMemo(() => {
         </Card>
       ) : (
         <>
-          <div className="border rounded-lg overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+          <div>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
                 <tr>
-                  <th className={cn("text-left text-gray-800 font-semibold ", viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4", "w-12")}>
+                  <th className={cn("text-left w-12", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>
                     <Checkbox
                       checked={isSelectAll}
                       onCheckedChange={toggleSelectAll}
@@ -1088,23 +1138,23 @@ const categoryProductsData = useMemo(() => {
                     />
                   </th>
                   {viewMode === 'expanded' && (
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800 w-20">Image</th>
+                    <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">Image</th>
                   )}
-                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Product</th>
-                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>SKU</th>
-                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Category</th>
-                  <th className={cn("text-left text-gray-800 font-semibold", viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-xs")}>Stock</th>
+                  <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Product</th>
+                  <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>SKU</th>
+                  <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Category</th>
+                  <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Stock</th>
                   {viewMode === 'expanded' && (
                     <>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Price</th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Cost</th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Location</th>
-                      <th className="px-4 py-4 text-left text-xs font-semibold text-gray-800">Status</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     </>
                   )}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white divide-y divide-gray-200">
                 {paginatedProducts.map((p: any, index: number) => {
                   const isSelected = selectedProductIds.has(p.id);
                   const isVariant = p.isVariant || false;
@@ -1288,46 +1338,171 @@ const categoryProductsData = useMemo(() => {
                   );
                 })}
               </tbody>
-            </table>
+                </table>
+              </div>
+            </div>
           </div>
 
           {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">
-                      Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, productsWithCollapseFilter.length)} of {productsWithCollapseFilter.length} products
-                    </span>
-                  </div>
+          {productsWithCollapseFilter.length > 0 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Showing per page</span>
+                <Select value={itemsPerPage.toString()} onValueChange={(v) => {
+                  setCurrentPage(1);
+                  // Note: itemsPerPage is fixed to 50 in this component, but we'll add the UI for consistency
+                }}>
+                  <SelectTrigger className="w-[100px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="50">Show 50</SelectItem>
+                    <SelectItem value="25">Show 25</SelectItem>
+                    <SelectItem value="100">Show 100</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                      disabled={currentPage === 1}
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                      Previous
-                    </Button>
-                    <span className="text-sm font-medium px-3">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                      <ChevronRight className="w-4 h-4" />
-                    </Button>
-                  </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">
+                  Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, productsWithCollapseFilter.length)} of {productsWithCollapseFilter.length}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Prev
+                </Button>
+                
+                <div className="flex items-center gap-1">
+                  {totalPages <= 5 ? (
+                    // Show all pages if 5 or fewer
+                    Array.from({ length: totalPages }, (_, i) => (
+                      <Button
+                        key={i + 1}
+                        variant={currentPage === i + 1 ? "default" : "outline"}
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(i + 1)}
+                      >
+                        {i + 1}
+                      </Button>
+                    ))
+                  ) : currentPage <= 3 ? (
+                    // Show first 5 pages when near start
+                    <>
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <Button
+                          key={i + 1}
+                          variant={currentPage === i + 1 ? "default" : "outline"}
+                          size="sm"
+                          className="w-8 h-8 p-0"
+                          onClick={() => setCurrentPage(i + 1)}
+                        >
+                          {i + 1}
+                        </Button>
+                      ))}
+                      <span className="px-2">...</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(totalPages)}
+                      >
+                        {totalPages}
+                      </Button>
+                    </>
+                  ) : currentPage >= totalPages - 2 ? (
+                    // Show last 5 pages when near end
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(1)}
+                      >
+                        1
+                      </Button>
+                      <span className="px-2">...</span>
+                      {Array.from({ length: 5 }, (_, i) => {
+                        const pageNum = totalPages - 4 + i;
+                        return (
+                          <Button
+                            key={pageNum}
+                            variant={currentPage === pageNum ? "default" : "outline"}
+                            size="sm"
+                            className="w-8 h-8 p-0"
+                            onClick={() => setCurrentPage(pageNum)}
+                          >
+                            {pageNum}
+                          </Button>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    // Show pages around current page when in middle
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(1)}
+                      >
+                        1
+                      </Button>
+                      <span className="px-2">...</span>
+                      {Array.from({ length: 5 }, (_, i) => {
+                        const pageNum = currentPage - 2 + i;
+                        return (
+                          <Button
+                            key={pageNum}
+                            variant={currentPage === pageNum ? "default" : "outline"}
+                            size="sm"
+                            className="w-8 h-8 p-0"
+                            onClick={() => setCurrentPage(pageNum)}
+                          >
+                            {pageNum}
+                          </Button>
+                        );
+                      })}
+                      <span className="px-2">...</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(totalPages)}
+                      >
+                        {totalPages}
+                      </Button>
+                    </>
+                  )}
                 </div>
-              </CardContent>
-            </Card>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Go to page</span>
+                <GoToPageInput
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+            </div>
           )}
         </>
       )}

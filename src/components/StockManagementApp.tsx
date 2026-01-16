@@ -93,8 +93,8 @@ export const StockManagementApp: React.FC = () => {
           }}
           userRole={userProfile.role}
           userProfile={userProfile}
-          // Use an admin-friendly variant when browsing /admin routes or categories so we can control spacing fully
-          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') ? 'admin' : 'default'}
+          // Use an admin-friendly variant when browsing /admin routes, categories, transactions, bom, sales-orders, or vendor-management so we can control spacing fully
+          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') || location.pathname.includes('/transactions') || location.pathname.includes('/bom') || location.pathname.includes('/sales-orders') || location.pathname.includes('/vendor-management') ? 'admin' : 'default'}
         >
           {/* Main scrollable content - Layout already handles overflow */}
           <Outlet key={location.pathname} />

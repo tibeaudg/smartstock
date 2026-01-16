@@ -18,13 +18,16 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 // Icons
 import { 
   Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronLeft,
   Eye, Filter, DollarSign, X, AlertCircle, Loader2, Save,
-  ChevronRight
+  ChevronRight, ArrowUpDown, Download
 } from 'lucide-react';
+import * as XLSX from 'xlsx';
+import { format } from 'date-fns';
 
 // Types
 interface BOMComponent {
@@ -105,6 +108,45 @@ export default function BillOfMaterials() {
   return <BOMListPage />;
 }
 
+// Go to page input component
+const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
+  const [pageInput, setPageInput] = useState('');
+
+  const handleGo = () => {
+    const page = parseInt(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      onPageChange(page);
+      setPageInput('');
+    }
+  };
+
+  return (
+    <>
+      <Input
+        type="number"
+        min={1}
+        max={totalPages}
+        className="w-16 h-8"
+        value={pageInput}
+        onChange={(e) => setPageInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleGo();
+          }
+        }}
+        placeholder="Page"
+      />
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleGo}
+      >
+        Go
+      </Button>
+    </>
+  );
+};
+
 // BOM List Page
 function BOMListPage() {
   const { activeBranch } = useBranches();
@@ -118,6 +160,8 @@ function BOMListPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [newBOMProductId, setNewBOMProductId] = useState('');
   const [selectedComponentForWhereUsed, setSelectedComponentForWhereUsed] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Fetch BOM list with enhanced data
   const { data: bomList, isLoading, refetch, error } = useQuery<BOMListItem[]>({
@@ -446,6 +490,14 @@ function BOMListPage() {
     });
   }, [bomList, searchQuery, statusFilter]);
 
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(filteredBOMList.length / itemsPerPage));
+  const paginatedBOMList = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredBOMList.slice(start, end);
+  }, [filteredBOMList, currentPage, itemsPerPage]);
+
   // Handlers
   const handleCreateBOM = () => {
     if (!newBOMProductId) {
@@ -455,6 +507,31 @@ function BOMListPage() {
     navigate(`/dashboard/bom/edit/${newBOMProductId}?create=true`);
     setIsCreateDialogOpen(false);
     setNewBOMProductId('');
+  };
+
+  const handleExport = () => {
+    try {
+      const exportData = filteredBOMList.map(item => ({
+        'Product Name': item.parent_product_name,
+        'SKU': item.parent_product_sku || 'N/A',
+        'Components': item.component_count,
+        'Estimated Cost': item.total_estimated_cost.toFixed(2),
+        'Buildable Quantity': item.buildable_quantity,
+        'Versions': item.versions.length,
+        'Active Version': item.versions.find(v => v.status === 'active')?.version_number || 'N/A',
+        'Created': new Date(item.created_at).toLocaleDateString(),
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Bill of Materials');
+      XLSX.writeFile(wb, `bom-list-${format(new Date(), 'yyyy-MM-dd')}.xlsx`);
+      
+      toast.success('Export completed successfully');
+    } catch (error) {
+      console.error('Export error:', error);
+      toast.error('Failed to export data');
+    }
   };
 
   const handleDeleteBOM = async (productId: string) => {
@@ -517,10 +594,10 @@ function BOMListPage() {
   };
 
   const toggleSelectAll = () => {
-    if (selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0) {
+    if (selectedBOMs.size === paginatedBOMList.length && paginatedBOMList.length > 0) {
       setSelectedBOMs(new Set());
     } else {
-      setSelectedBOMs(new Set(filteredBOMList.map(item => item.id)));
+      setSelectedBOMs(new Set(paginatedBOMList.map(item => item.id)));
     }
   };
 
@@ -546,54 +623,57 @@ function BOMListPage() {
 
   // Render
   return (
-    <div className="h-full flex flex-col w-full">
+    <div className="space-y-6 p-4 sm:p-6 w-full">
       {/* Header */}
-      <div className="border-b px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Bill of Materials</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              Manage product recipes, track component costs, and calculate build capacity
-            </p>
-          </div>
-          <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-            <Plus className="w-4 h-4 mr-2" />
-            Create BOM
+      <div className="flex items-center justify-between border-b pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Bill of Materials</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Manage product recipes, track component costs, and calculate build capacity
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleExport}>
+            <Download className="w-4 h-4 mr-2" />
+            Export
+          </Button>
+          <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 text-white hover:bg-blue-700">
+            <Plus className="w-4 h-4 mr-2" /> Add BOM
           </Button>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="px-6 py-4 border-b">
-        <div className="flex items-center gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <Input
-              placeholder="Search by product name or SKU..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-400" />
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-40">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 max-w-full">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            type="text"
+            placeholder="Search by product name or SKU..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Filter className="w-4 h-4 text-gray-400" />
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-40">
+              <SelectValue placeholder="All Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="archived">Archived</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div>
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -646,20 +726,20 @@ function BOMListPage() {
                 <TableRow>
                   <TableHead className="w-12">
                     <Checkbox 
-                      checked={selectedBOMs.size === filteredBOMList.length && filteredBOMList.length > 0} 
+                      checked={selectedBOMs.size === paginatedBOMList.length && paginatedBOMList.length > 0} 
                       onCheckedChange={toggleSelectAll} 
                     />
                   </TableHead>
-                  <TableHead>Product</TableHead>
-                  <TableHead>SKU</TableHead>
-                  <TableHead className="text-right">Components</TableHead>
-                  <TableHead className="text-right">Est. Cost</TableHead>
-                  <TableHead className="text-right">Buildable</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</TableHead>
+                  <TableHead className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</TableHead>
+                  <TableHead className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Components</TableHead>
+                  <TableHead className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Est. Cost</TableHead>
+                  <TableHead className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Buildable</TableHead>
+                  <TableHead className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredBOMList.map((item) => (
+                {paginatedBOMList.map((item) => (
                   <BOMRow
                     key={item.id}
                     item={item}
@@ -679,6 +759,108 @@ function BOMListPage() {
               </TableBody>
             </Table>
           </Card>
+        )}
+
+        {/* Pagination */}
+        {filteredBOMList.length > 0 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Showing per page</span>
+              <Select value={itemsPerPage.toString()} onValueChange={(v) => {
+                setItemsPerPage(Number(v));
+                setCurrentPage(1);
+              }}>
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">Show 10</SelectItem>
+                  <SelectItem value="25">Show 25</SelectItem>
+                  <SelectItem value="50">Show 50</SelectItem>
+                  <SelectItem value="100">Show 100</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">
+                Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, filteredBOMList.length)} of {filteredBOMList.length}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="w-4 h-4 mr-1" />
+                Prev
+              </Button>
+              
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum: number;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+                  
+                  if (totalPages > 5 && i === 4 && pageNum < totalPages - 1) {
+                    return (
+                      <React.Fragment key={pageNum}>
+                        <span className="px-2">...</span>
+                        <Button
+                          variant={currentPage === totalPages ? "default" : "outline"}
+                          size="sm"
+                          className="w-8 h-8 p-0"
+                          onClick={() => setCurrentPage(totalPages)}
+                        >
+                          {totalPages}
+                        </Button>
+                      </React.Fragment>
+                    );
+                  }
+                  
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(pageNum)}
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                })}
+              </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Go to page</span>
+              <GoToPageInput
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </div>
         )}
       </div>
 
@@ -1062,9 +1244,9 @@ function BOMEditPage() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col w-full">
       {/* Header */}
-      <div className="border-b px-6 py-4 bg-white">
+      <div className="px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button

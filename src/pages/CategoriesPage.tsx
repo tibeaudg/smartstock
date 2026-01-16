@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Card, CardContent } from '@/components/ui/card';
-import { Plus, Tags, Edit, Trash2, Search, Filter, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, Eye, ClipboardCheck } from 'lucide-react';
+import { Plus, Tags, Edit, Trash2, Search, Filter, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, ChevronsUpDown, Eye, ClipboardCheck, X, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
@@ -28,10 +28,48 @@ import {
 import type { Category, CategoryCreateData } from '@/types/categoryTypes';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { CycleCount } from '@/types/stockTypes';
 import { getCategoryProductCounts } from '@/lib/categories/categoryService';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+
+// Go to page input component
+const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
+  const [pageInput, setPageInput] = useState('');
+
+  const handleGo = () => {
+    const page = parseInt(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      onPageChange(page);
+      setPageInput('');
+    }
+  };
+
+  return (  
+    <>
+      <Input
+        type="number"
+        min={1}
+        max={totalPages}
+        className="w-16 h-8"
+        value={pageInput}
+        onChange={(e) => setPageInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleGo();
+          }
+        }}
+        placeholder="Page"
+      />
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={handleGo}
+      >
+        Go
+      </Button>
+    </>
+  );
+};
 
 type SortColumn = 'name' | 'products';
 type SortDirection = 'asc' | 'desc';
@@ -247,6 +285,20 @@ export default function CategoriesPage() {
     <div className="space-y-6 p-4 sm:p-6 w-full">
 
 
+      {/* Header with Title and Actions */}
+      <div className="flex items-center justify-between border-b pb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Manage your categories and organize your products
+          </p>
+        </div>
+
+
+      </div>
+
+
+
       {/* Search and Filters */}
       <div className="flex items-center gap-3 ">
         <div className="relative flex-1 max-w-full">
@@ -274,8 +326,8 @@ export default function CategoriesPage() {
 
       {/* Categories Table */}
       {sortedCategories.length === 0 ? (
-        <Card>
-          <CardContent className="p-12 text-center">
+        <div>
+          <div className="p-12 text-center">
             <Tags className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No categories yet</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
@@ -287,194 +339,259 @@ export default function CategoriesPage() {
               Add Your First Category
             </Button>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : (
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th 
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('name')}
-                  >
-                    <div className="flex items-center gap-2">
-                      Name
-                      {getSortIcon('name')}
-                    </div>
-                  </th>
-                  <th 
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort('products')}
-                  >
-                    <div className="flex items-center gap-2">
-                      Products
-                      {getSortIcon('products')}
-                    </div>
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {paginatedCategories.map((category) => {
-                  const productCount = productCounts?.get(category.id) ?? 0;
-                  
-                  return (
-                    <tr key={category.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="text-sm font-medium text-gray-900">
-                          {category.name}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                        {productCount > 0 ? `${productCount} products` : '-'}
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap text-sm">
+        <>
+          <div>
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th 
+                        className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                        onClick={() => handleSort('name')}
+                      >
                         <div className="flex items-center gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewProducts(category)}
-                            className="h-8 px-3"
-                          >
-                            <Eye className="w-4 h-4 mr-1" />
-                            View
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEditCategory(category)}
-                            className="h-8 px-3"
-                          >
-                            <Edit className="w-4 h-4 mr-1" />
-                            Edit
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteCategoryClick(category)}
-                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                          Name
+                          {getSortIcon('name')}
                         </div>
-                      </td>
+                      </th>
+                      <th 
+                        className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                        onClick={() => handleSort('products')}
+                      >
+                        <div className="flex items-center gap-2">
+                          Products
+                          {getSortIcon('products')}
+                        </div>
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {paginatedCategories.map((category) => {
+                      const productCount = productCounts?.get(category.id) ?? 0;
+                      
+                      return (
+                        <tr key={category.id} className="hover:bg-gray-50">
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className="text-sm font-medium text-gray-900">
+                              {category.name}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
+                            {productCount > 0 ? `${productCount} products` : '-'}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm">
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleViewProducts(category)}
+                                className="h-8 px-3"
+                              >
+                                <Eye className="w-4 h-4 mr-1" />
+                                View
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEditCategory(category)}
+                                className="h-8 px-3"
+                              >
+                                <Edit className="w-4 h-4 mr-1" />
+                                Edit
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDeleteCategoryClick(category)}
+                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           {/* Pagination */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-white border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 py-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-700">Results per page:</span>
-              <Select value={itemsPerPage.toString()} onValueChange={(value) => {
-                setItemsPerPage(Number(value));
+              <span className="text-sm text-gray-600">Showing per page</span>
+              <Select value={itemsPerPage.toString()} onValueChange={(v) => {
+                setItemsPerPage(Number(v));
                 setCurrentPage(1);
               }}>
-                <SelectTrigger className="w-20 h-8">
+                <SelectTrigger className="w-[100px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="12">12</SelectItem>
-                  <SelectItem value="24">24</SelectItem>
-                  <SelectItem value="48">48</SelectItem>
-                  <SelectItem value="100">100</SelectItem>
+                  <SelectItem value="10">Show 10</SelectItem>
+                  <SelectItem value="12">Show 12</SelectItem>
+                  <SelectItem value="24">Show 24</SelectItem>
+                  <SelectItem value="50">Show 50</SelectItem>
+                  <SelectItem value="100">Show 100</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">
+                Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, sortedCategories.length)} of {sortedCategories.length}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="h-8 px-3"
               >
                 <ChevronLeft className="w-4 h-4 mr-1" />
-                Previous
+                Prev
               </Button>
+              
               <div className="flex items-center gap-1">
-                {(() => {
-                  const pages: (number | string)[] = [];
-                  
-                  if (totalPages <= 7) {
-                    // Show all pages if 7 or fewer
-                    for (let i = 1; i <= totalPages; i++) {
-                      pages.push(i);
-                    }
-                  } else {
-                    // Always show first page
-                    pages.push(1);
-                    
-                    if (currentPage > 3) {
-                      pages.push('...');
-                    }
-                    
-                    // Show pages around current page
-                    const start = Math.max(2, currentPage - 1);
-                    const end = Math.min(totalPages - 1, currentPage + 1);
-                    
-                    for (let i = start; i <= end; i++) {
-                      if (i !== 1 && i !== totalPages) {
-                        pages.push(i);
-                      }
-                    }
-                    
-                    if (currentPage < totalPages - 2) {
-                      pages.push('...');
-                    }
-                    
-                    // Always show last page
-                    pages.push(totalPages);
-                  }
-                  
-                  return pages.map((page, index) => {
-                    if (page === '...') {
-                      return (
-                        <span key={`ellipsis-${index}`} className="px-2 text-gray-500">
-                          ...
-                        </span>
-                      );
-                    }
-                    
-                    const pageNum = page as number;
-                    return (
+                {totalPages <= 5 ? (
+                  // Show all pages if 5 or fewer
+                  Array.from({ length: totalPages }, (_, i) => (
+                    <Button
+                      key={i + 1}
+                      variant={currentPage === i + 1 ? "default" : "outline"}
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </Button>
+                  ))
+                ) : currentPage <= 3 ? (
+                  // Show first 5 pages when near start
+                  <>
+                    {Array.from({ length: 5 }, (_, i) => (
                       <Button
-                        key={pageNum}
-                        variant={currentPage === pageNum ? "default" : "outline"}
+                        key={i + 1}
+                        variant={currentPage === i + 1 ? "default" : "outline"}
                         size="sm"
-                        onClick={() => setCurrentPage(pageNum)}
-                        className={cn(
-                          "h-8 min-w-[2rem]",
-                          currentPage === pageNum && "bg-blue-600 hover:bg-blue-700 text-white"
-                        )}
+                        className="w-8 h-8 p-0"
+                        onClick={() => setCurrentPage(i + 1)}
                       >
-                        {pageNum}
+                        {i + 1}
                       </Button>
-                    );
-                  });
-                })()}
+                    ))}
+                    <span className="px-2">...</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(totalPages)}
+                    >
+                      {totalPages}
+                    </Button>
+                  </>
+                ) : currentPage >= totalPages - 2 ? (
+                  // Show last 5 pages when near end
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(1)}
+                    >
+                      1
+                    </Button>
+                    <span className="px-2">...</span>
+                    {Array.from({ length: 5 }, (_, i) => {
+                      const pageNum = totalPages - 4 + i;
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          className="w-8 h-8 p-0"
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                  </>
+                ) : (
+                  // Show pages around current page when in middle
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(1)}
+                    >
+                      1
+                    </Button>
+                    <span className="px-2">...</span>
+                    {Array.from({ length: 5 }, (_, i) => {
+                      const pageNum = currentPage - 2 + i;
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          className="w-8 h-8 p-0"
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                    <span className="px-2">...</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-8 h-8 p-0"
+                      onClick={() => setCurrentPage(totalPages)}
+                    >
+                      {totalPages}
+                    </Button>
+                  </>
+                )}
               </div>
+              
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="h-8 px-3"
               >
                 Next
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Go to page</span>
+              <GoToPageInput
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
-        </div>
+        </>
       )}
+
+
+
+
 
 
       {/* Add Category Modal */}
