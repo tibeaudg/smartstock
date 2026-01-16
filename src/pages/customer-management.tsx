@@ -1,16 +1,11 @@
-/**
- * Vendor Management Page
- * Database-integrated view for managing suppliers with CRUD operations
- */
-
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  useSuppliers, 
-  useDeleteSupplier,
-  useSupplierRealtime 
-} from '@/hooks/useSuppliers';
-import { Supplier } from '../types/supplierTypes';
+  useCustomers, 
+  useDeleteCustomer,
+  useCustomerRealtime 
+} from '@/hooks/useCustomers';
+import { Customer } from '../types/customerTypes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -86,15 +81,15 @@ const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number)
   );
 };
 
-export default function VendorManagementPage() {
+export default function CustomerManagementPage() {
   const navigate = useNavigate();
   
   // Delete dialog state
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   
   // Selected suppliers for bulk actions
-  const [selectedSupplierIds, setSelectedSupplierIds] = useState<Set<string>>(new Set());
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<Set<string>>(new Set());
 
   // Search and Sort states
   const [searchQuery, setSearchQuery] = useState('');
@@ -106,35 +101,35 @@ export default function VendorManagementPage() {
   const [itemsPerPage, setItemsPerPage] = useState(12);
 
   // Database Hooks
-  const { data: suppliers = [], isLoading } = useSuppliers();
-  const deleteMutation = useDeleteSupplier();
+  const { data: customers = [], isLoading } = useCustomers();
+  const deleteMutation = useDeleteCustomer();
   
   // Enable Real-time listener
-  useSupplierRealtime();
+  useCustomerRealtime();
 
   // Logic: Filtering
-  const filteredSuppliers = useMemo(() => {
+  const filteredCustomers = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
-    if (!query) return suppliers;
-    return suppliers.filter(s => 
-      s.name.toLowerCase().includes(query) || 
-      s.email.toLowerCase().includes(query)
+    if (!query) return customers;
+    return customers.filter(c => 
+      c.name.toLowerCase().includes(query) || 
+      c.email.toLowerCase().includes(query)
     );
-  }, [suppliers, searchQuery]);
+  }, [customers, searchQuery]);
 
   // Logic: Sorting
-  const sortedSuppliers = useMemo(() => {
-    return [...filteredSuppliers].sort((a, b) => {
+  const sortedCustomers = useMemo(() => {
+    return [...filteredCustomers].sort((a, b) => {
       const aVal = a[sortColumn] || '';
       const bVal = b[sortColumn] || '';
       const comparison = aVal.toString().localeCompare(bVal.toString());
       return sortDirection === 'asc' ? comparison : -comparison;
     });
-  }, [filteredSuppliers, sortColumn, sortDirection]);
+  }, [filteredCustomers, sortColumn, sortDirection]);
 
   // Logic: Pagination
-  const totalPages = Math.ceil(sortedSuppliers.length / itemsPerPage);
-  const paginatedSuppliers = sortedSuppliers.slice(
+  const totalPages = Math.ceil(sortedCustomers.length / itemsPerPage);
+  const paginatedCustomers = sortedCustomers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -149,19 +144,19 @@ export default function VendorManagementPage() {
   };
 
   const handleDelete = async () => {
-    if (!selectedSupplier) return;
+    if (!selectedCustomer) return;
     try {
-      await deleteMutation.mutateAsync(selectedSupplier.id);
+      await deleteMutation.mutateAsync(selectedCustomer.id);
       setShowDeleteDialog(false);
-      setSelectedSupplier(null);
-      toast.success('Supplier removed');
+      setSelectedCustomer(null);
+      toast.success('Customer removed');
     } catch (e) {
       console.error(e);
     }
   };
   
-  const toggleSelectSupplier = (id: string) => {
-    setSelectedSupplierIds(prev => {
+  const toggleSelectCustomer = (id: string) => {
+    setSelectedCustomerIds(prev => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
@@ -173,28 +168,28 @@ export default function VendorManagementPage() {
   };
   
   const toggleSelectAll = () => {
-    if (selectedSupplierIds.size === paginatedSuppliers.length) {
-      setSelectedSupplierIds(new Set());
+    if (selectedCustomerIds.size === paginatedCustomers.length) {
+      setSelectedCustomerIds(new Set());
     } else {
-      setSelectedSupplierIds(new Set(paginatedSuppliers.map(s => s.id)));
+      setSelectedCustomerIds(new Set(paginatedCustomers.map(c => c.id)));
     }
   };
   
   // Helper function to get municipality from address
-  const getMunicipality = (supplier: Supplier): string => {
-    if (supplier.municipality) return supplier.municipality;
+  const getMunicipality = (customer: Customer): string => {
+    if (customer.municipality) return customer.municipality;
     
     // Try to parse from billing_address
-    if (supplier.billing_address) {
+    if (customer.billing_address) {
       let address: any = {};
-      if (typeof supplier.billing_address === 'string') {
+      if (typeof customer.billing_address === 'string') {
         try {
-          address = JSON.parse(supplier.billing_address);
+          address = JSON.parse(customer.billing_address);
         } catch {
           return '';
         }
       } else {
-        address = supplier.billing_address;
+        address = customer.billing_address;
       }
       return address.municipality || '';
     }
@@ -203,38 +198,38 @@ export default function VendorManagementPage() {
   };
   
   // Helper function to get postal code and municipality combined
-  const getPostalCodeAndMunicipality = (supplier: Supplier): string => {
-    if (supplier.municipality) {
+  const getPostalCodeAndMunicipality = (customer: Customer): string => {
+    if (customer.municipality) {
       // Try to get postal code from address
-      if (supplier.billing_address) {
+      if (customer.billing_address) {
         let address: any = {};
-        if (typeof supplier.billing_address === 'string') {
+        if (typeof customer.billing_address === 'string') {
           try {
-            address = JSON.parse(supplier.billing_address);
+            address = JSON.parse(customer.billing_address);
           } catch {
-            return supplier.municipality;
+              return customer.municipality;
           }
         } else {
-          address = supplier.billing_address;
+          address = customer.billing_address;
         }
         if (address.postal_code) {
-          return `${address.postal_code} ${supplier.municipality}`;
+          return `${address.postal_code} ${customer.municipality}`;
         }
       }
-      return supplier.municipality;
+      return customer.municipality;
     }
     
     // Try to parse from billing_address
-    if (supplier.billing_address) {
+    if (customer.billing_address) {
       let address: any = {};
-      if (typeof supplier.billing_address === 'string') {
+      if (typeof customer.billing_address === 'string') {
         try {
-          address = JSON.parse(supplier.billing_address);
+          address = JSON.parse(customer.billing_address);
         } catch {
           return '';
         }
       } else {
-        address = supplier.billing_address;
+        address = customer.billing_address;
       }
       if (address.postal_code && address.municipality) {
         return `${address.postal_code} ${address.municipality}`;
@@ -259,17 +254,17 @@ export default function VendorManagementPage() {
       {/* Header */}
       <div className="flex items-center justify-between border-b pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Supplier Management</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Customer Management</h1>
           <p className="text-sm text-gray-600 mt-1">
-            Manage suppliers, track component costs, and calculate delivery speed
+            Manage customers, track component costs, and calculate delivery speed
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Button 
-            onClick={() => navigate('/dashboard/vendor-management/new')} 
+            onClick={() => navigate('/dashboard/customer-management/new')} 
             className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap"
           >
-            <Plus className="w-4 h-4 mr-2" /> Add Supplier
+            <Plus className="w-4 h-4 mr-2" /> Add Customer
           </Button>
         </div>
       </div>
@@ -290,10 +285,10 @@ export default function VendorManagementPage() {
 
       {/* Main Table Content */}
       <Card className="border-none shadow-sm overflow-hidden">
-        {sortedSuppliers.length === 0 ? (
+        {sortedCustomers.length === 0 ? (
           <div className="p-20 text-center">
             <Truck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No suppliers found.</p>
+            <p className="text-gray-500">No customers found.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -302,7 +297,7 @@ export default function VendorManagementPage() {
                 <tr>
                   <th className="px-4 py-2 w-12">
                     <Checkbox
-                      checked={paginatedSuppliers.length > 0 && selectedSupplierIds.size === paginatedSuppliers.length}
+                      checked={paginatedCustomers.length > 0 && selectedCustomerIds.size === paginatedCustomers.length}
                       onCheckedChange={toggleSelectAll}
                     />
                   </th>
@@ -343,42 +338,42 @@ export default function VendorManagementPage() {
                 </tr>
               </thead>
               <tbody className="divide-y">
-                {paginatedSuppliers.map((s, index) => {
-                  const supplierName = s.legal_name || s.commercial_name || s.name || '';
-                  const companyNumber = s.company_number || '';
-                  const municipality = getPostalCodeAndMunicipality(s);
-                  const isSelected = selectedSupplierIds.has(s.id);
+                {paginatedCustomers.map((c, index) => {
+                  const customerName = c.legal_name || c.commercial_name || c.name || '';
+                  const companyNumber = c.company_number || '';
+                  const municipality = getPostalCodeAndMunicipality(c);
+                  const isSelected = selectedCustomerIds.has(c.id);
                   
                   return (
                     <tr 
-                      key={s.id} 
+                      key={c.id} 
                       className={`hover:bg-gray-50 transition-colors cursor-pointer ${isSelected ? 'bg-blue-50' : ''}`}
                       onClick={(e) => {
                         // Don't navigate if clicking on checkbox
                         if ((e.target as HTMLElement).closest('button, [role="checkbox"]')) {
                           return;
                         }
-                        navigate(`/dashboard/vendor-management/${s.id}/edit`);
+                        navigate(`/dashboard/customer-management/${c.id}/edit`);
                       }}
                     >
                       <td className="p-4" onClick={(e) => e.stopPropagation()}>
                         <Checkbox
                           checked={isSelected}
-                          onCheckedChange={() => toggleSelectSupplier(s.id)}
+                          onCheckedChange={() => toggleSelectCustomer(c.id)}
                         />
                       </td>
-                      <td className="p-4 text-gray-600">{s.supplier_number || index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                      <td className="p-4 text-gray-600">{c.customer_number || index + 1 + (currentPage - 1) * itemsPerPage}</td>
                       <td className="p-4">
-                        <div className="font-semibold text-gray-900">{supplierName}</div>
+                        <div className="font-semibold text-gray-900">{customerName}</div>
                       </td>
                       <td className="p-4 text-gray-600">{companyNumber}</td>
                       <td className="p-4 text-gray-600">
-                        {s.contact_person || '-'}
+                        {c.contact_person || '-'}
                       </td>
                       <td className="p-4 text-gray-600">{municipality || '-'}</td>
-                      <td className="p-4 text-gray-600">{s.email || '-'}</td>
-                      <td className="p-4 text-gray-600">{s.phone || '-'}</td>
-                      <td className="p-4 text-gray-600">{s.mobile || '-'}</td>
+                      <td className="p-4 text-gray-600">{c.email || '-'}</td>
+                      <td className="p-4 text-gray-600">{c.phone || '-'}</td>
+                      <td className="p-4 text-gray-600">{c.mobile || '-'}</td>
                     </tr>
                   );
                 })}
@@ -411,7 +406,7 @@ export default function VendorManagementPage() {
 
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">
-              Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, sortedSuppliers.length)} of {sortedSuppliers.length}
+              Showing {(currentPage - 1) * itemsPerPage + 1} - {Math.min(currentPage * itemsPerPage, sortedCustomers.length)} of {sortedCustomers.length}
             </span>
           </div>
 
@@ -495,7 +490,7 @@ export default function VendorManagementPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete <strong>{selectedSupplier?.name}</strong>. 
+              This will permanently delete <strong>{selectedCustomer?.name}</strong>. 
               This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>

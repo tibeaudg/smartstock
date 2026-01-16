@@ -53,9 +53,9 @@ import SupportPage from "./pages/help-center";
 import VideosPage from "./pages/videos";
 import IntegrationsPage from "./pages/integrations";
 import SalesOrdersPage from "./pages/sales-orders";
-import VendorManagementPage from "./pages/VendorManagement";
-import CreateSupplierPage from "./pages/CreateSupplierPage";
-import EditSupplierPage from "./pages/EditSupplierPage";
+import VendorManagementPage from "./pages/customer-management";
+import CreateSupplierPage from "./pages/CreateCustomerPage";
+import EditSupplierPage from "./pages/EditCustomerPage";
 
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
@@ -370,9 +370,9 @@ const AppRouter = () => {
             <Route path="invoicing" element={<InvoicingOverview />} />
           </Route>
           <Route path="sales-orders" element={<SalesOrdersPage />} />
-          <Route path="vendor-management" element={<VendorManagementPage />} />
-          <Route path="vendor-management/new" element={<CreateSupplierPage />} />
-          <Route path="vendor-management/:id/edit" element={<EditSupplierPage />} />
+          <Route path="customer-management" element={<VendorManagementPage />} />
+          <Route path="customer-management/new" element={<CreateSupplierPage />} />
+          <Route path="customer-management/:id/edit" element={<EditSupplierPage />} />
         </Route>
 
         {/* ERROR & FALLBACK */}

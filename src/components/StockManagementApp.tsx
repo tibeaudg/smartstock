@@ -1,12 +1,10 @@
 import React, { useContext } from 'react';
-import { useLocation, Outlet, useNavigate } from 'react-router-dom';
+import { useLocation, Outlet } from 'react-router-dom';
 import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
-import { OnboardingWizard } from './OnboardingWizard';
 import { AuthContext } from '@/hooks/useAuth';
-import { useBranches, BranchProvider } from '@/hooks/useBranches';
+import { useBranches } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
-import { useOnboardingCheck } from '@/hooks/useOnboardingCheck';
 
 function isLocalStorageAvailable() {
   try {
@@ -26,9 +24,7 @@ export const StockManagementApp: React.FC = () => {
   const userProfile = auth?.userProfile || null;
   const loading = auth?.loading ?? true;
   const { hasNoBranches, hasError } = useBranches();
-  const { shouldShowOnboarding, isLoading: isLoadingOnboarding } = useOnboardingCheck();
   const location = useLocation();
-  const navigate = useNavigate();
 
   // Show loading state while auth is being determined
   if (loading) {
@@ -78,35 +74,25 @@ export const StockManagementApp: React.FC = () => {
 
   if (!userProfile) return null;
 
-  const handleOnboardingComplete = () => {
-    // Redirect to categories page after onboarding completion
-    navigate('/categories');
-  };
 
   return (
     <UnreadMessagesProvider>
         <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0 bg-background text-foreground transition-colors">
-        {/* Sidebar and Layout are assumed to be part of Layout component */}
         <Layout
           currentTab={getCurrentTab()}
           onTabChange={(tab: string) => {
           }}
-          userRole={userProfile.role}
+          userRole={userProfile.role as 'admin' | 'staff'}
           userProfile={userProfile}
-          // Use an admin-friendly variant when browsing /admin routes, categories, transactions, bom, sales-orders, or vendor-management so we can control spacing fully
-          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') || location.pathname.includes('/transactions') || location.pathname.includes('/bom') || location.pathname.includes('/sales-orders') || location.pathname.includes('/vendor-management') ? 'admin' : 'default'}
+          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') || location.pathname.includes('/transactions') || location.pathname.includes('/bom') || location.pathname.includes('/sales-orders') || location.pathname.includes('/customer-management') ? 'admin' : 'default'}
         >
-          {/* Main scrollable content - Layout already handles overflow */}
           <Outlet key={location.pathname} />
         </Layout>
-
-
           <CreateBranchModal
             open={hasNoBranches && !hasError}
             onOpenChange={() => {
             }}
             onBranchCreated={() => {
-              // New branch created successfully
             }}
           />
         </div>

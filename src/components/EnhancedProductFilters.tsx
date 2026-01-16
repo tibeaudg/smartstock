@@ -201,18 +201,18 @@ export const EnhancedProductFilters: React.FC<EnhancedProductFiltersProps> = ({
                       </Select>
                     </div>
 
-                    {/* Supplier Filter */}
+                    {/* Customer Filter */}
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium">Supplier</Label>
-                      <Select value={filters.supplierFilter} onValueChange={(value) => updateFilter('supplierFilter', value)}>
+                      <Label className="text-sm font-medium">Customer</Label>
+                      <Select value={filters.customerFilter} onValueChange={(value) => updateFilter('customerFilter', value)}>
                         <SelectTrigger>
-                          <SelectValue placeholder="All suppliers" />
+                          <SelectValue placeholder="All Customers" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">All Suppliers</SelectItem>
-                          {suppliers.map((supplier) => (
-                            <SelectItem key={supplier.id} value={supplier.id}>
-                              {supplier.name}
+                          <SelectItem value="all">All Customers</SelectItem>
+                          {customers.map((customer) => (
+                            <SelectItem key={customer.id} value={customer.id}>
+                              {customer.name}
                             </SelectItem>
                           ))}
                         </SelectContent>

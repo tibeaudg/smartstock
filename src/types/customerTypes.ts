@@ -1,4 +1,4 @@
-export interface SupplierAddress {
+export interface CustomerAddress {
   attention?: string;
   name?: string;
   country?: string;
@@ -10,7 +10,7 @@ export interface SupplierAddress {
   phone?: string;
 }
 
-export interface Supplier {
+export interface Customer {
   id: string;
   name: string; // Keep for backward compatibility
   email?: string;
@@ -39,8 +39,8 @@ export interface Supplier {
   general_ledger_account?: string;
   category?: string;
   
-  // Supplier details
-  supplier_number?: string;
+  // Customer details
+  customer_number?: string;
   reference?: string;
   salutation?: string;
   director_first_name?: string;
@@ -57,18 +57,16 @@ export interface Supplier {
   hide_iban_check?: boolean;
   
   // Addresses
-  billing_address?: SupplierAddress | string; // Can be JSONB or string for backward compatibility
-  delivery_address?: SupplierAddress | string;
+  billing_address?: CustomerAddress | string; // Can be JSONB or string for backward compatibility
+  delivery_address?: CustomerAddress | string;
   same_as_billing?: boolean;
   
   // Other
-  supplier_group?: string;
   comments?: string;
-  peppol_enabled?: boolean;
   contact_person?: string;
   municipality?: string;
   group?: string;
 }
 
-export type SupplierCreateData = Omit<Supplier, 'id' | 'created_at' | 'updated_at'>;
-export type SupplierUpdateData = Partial<SupplierCreateData>;
+export type CustomerCreateData = Omit<Customer, 'id' | 'created_at' | 'updated_at'>;
+export type CustomerUpdateData = Partial<CustomerCreateData>;

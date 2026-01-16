@@ -1,6 +1,6 @@
 /**
  * Multi-Intent Search Component
- * Provides search across Products, SKUs, Categories, Suppliers with Create actions
+ * Provides search across Products, SKUs, Categories, Customers with Create actions
  */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
@@ -37,7 +37,7 @@ interface MultiIntentSearchProps {
   onSubmit: (value: string) => void;
   onProductClick?: (product: any) => void;
   onCategoryClick?: (categoryId: string) => void;
-  onSupplierClick?: (supplierId: string) => void;
+  onCustomerClick?: (customerId: string) => void;
   onCreateProduct?: () => void;
   onCreateCategory?: () => void;
   onCreateLocation?: () => void;
@@ -47,7 +47,7 @@ interface MultiIntentSearchProps {
 }
 
 interface SearchResult {
-  type: 'product' | 'sku' | 'category' | 'supplier';
+  type: 'product' | 'sku' | 'category' | 'customer';
   id: string;
   name: string;
   subtitle?: string;
@@ -100,12 +100,12 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
   onSubmit,
   onProductClick,
   onCategoryClick,
-  onSupplierClick,
+  onCustomerClick,
   onCreateProduct,
   onCreateCategory,
   onCreateLocation,
   onTokensChange,
-  placeholder = "Search products, SKUs, categories, suppliers…",
+  placeholder = "Search products, SKUs, categories, customers…",
   inputRef: externalInputRef,
 }, ref) => {
   const { user } = useAuth();
@@ -215,26 +215,26 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
         });
       }
 
-      // Search suppliers
-      const { data: suppliers } = await supabase
-        .from('suppliers')
+      // Search customers
+      const { data: customers } = await supabase
+        .from('customers')
         .select('*')
         .eq('user_id', user.id)
         .ilike('name', `%${term}%`)
         .limit(10);
 
-      if (suppliers && Array.isArray(suppliers)) {
-        suppliers.forEach((supplier: any) => {
+      if (customers && Array.isArray(customers)) {
+        customers.forEach((customer: any) => {
           const matchedFields: string[] = ['name'];
-          if (supplier.contact_person?.toLowerCase().includes(term)) matchedFields.push('contact');
-          if (supplier.email?.toLowerCase().includes(term)) matchedFields.push('email');
+          if (customer.contact_person?.toLowerCase().includes(term)) matchedFields.push('contact');
+          if (customer.email?.toLowerCase().includes(term)) matchedFields.push('email');
           
           results.push({
-            type: 'supplier',
-            id: supplier.id,
-            name: supplier.name,
-            subtitle: supplier.contact_person || supplier.email || undefined,
-            data: supplier,
+            type: 'customer',
+            id: customer.id,
+            name: customer.name,
+            subtitle: customer.contact_person || customer.email || undefined,
+            data: customer,
             matchedFields,
           });
         });
@@ -254,7 +254,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
       products: searchResults.filter(r => r.type === 'product'),
       skus: searchResults.filter(r => r.type === 'sku'),
       categories: searchResults.filter(r => r.type === 'category'),
-      suppliers: searchResults.filter(r => r.type === 'supplier'),
+      customers: searchResults.filter(r => r.type === 'customer'),
     };
     return groups;
   }, [searchResults]);
@@ -406,8 +406,8 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
       case 'category':
         onCategoryClick?.(result.id);
         break;
-      case 'supplier':
-        onSupplierClick?.(result.id);
+      case 'customer':
+        onCustomerClick?.(result.id);
         break;
     }
   };
@@ -437,7 +437,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
         return <Tag className="w-4 h-4" />;
       case 'category':
         return <Tag className="w-4 h-4" />;
-      case 'supplier':
+      case 'customer':
         return <Building2 className="w-4 h-4" />;
     }
   };
@@ -707,15 +707,15 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
                     </div>
                   )}
 
-                  {/* Suppliers */}
-                  {groupedResults.suppliers.length > 0 && (
+                  {/* Customers */}
+                  {groupedResults.customers.length > 0 && (
                     <div className="mb-2">
                       <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider bg-gray-50">
-                        Suppliers
+                        Customers
                       </div>
-                      {groupedResults.suppliers.map((result) => (
+                      {groupedResults.customers.map((result) => (
                         <button
-                          key={`supplier-${result.id}`}
+                          key={`customer-${result.id}`}
                           onClick={() => handleResultClick(result)}
                           className="w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors flex items-center gap-3"
                         >

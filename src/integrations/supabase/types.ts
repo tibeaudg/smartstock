@@ -1075,7 +1075,6 @@ export type Database = {
           updated_at: string | null
           municipality: string | null
           group: string | null
-          peppol_enabled: boolean
         }
         Insert: {
           address?: string | null
@@ -1089,7 +1088,6 @@ export type Database = {
           updated_at?: string | null
           municipality?: string | null
           group?: string | null
-          peppol_enabled?: boolean
         }
         Update: {
           address?: string | null
@@ -1103,7 +1101,6 @@ export type Database = {
           updated_at?: string | null
           municipality?: string | null
           group?: string | null
-          peppol_enabled?: boolean
         }
         Relationships: []
       }
@@ -1113,7 +1110,7 @@ export type Database = {
           user_id: string
           type: 'incoming' | 'outgoing'
           status: 'draft' | 'processing' | 'completed' | 'cancelled'
-          supplier_id: string | null
+          customer_id: string | null
           customer_name: string | null
           customer_email: string | null
           customer_address: string | null
@@ -1129,7 +1126,7 @@ export type Database = {
           user_id: string
           type: 'incoming' | 'outgoing'
           status?: 'draft' | 'processing' | 'completed' | 'cancelled'
-          supplier_id?: string | null
+          customer_id?: string | null
           customer_name?: string | null
           customer_email?: string | null
           customer_address?: string | null
@@ -1145,7 +1142,7 @@ export type Database = {
           user_id?: string
           type?: 'incoming' | 'outgoing'
           status?: 'draft' | 'processing' | 'completed' | 'cancelled'
-          supplier_id?: string | null
+          customer_id?: string | null
           customer_name?: string | null
           customer_email?: string | null
           customer_address?: string | null
@@ -1158,10 +1155,10 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "delivery_notes_supplier_id_fkey"
-            columns: ["supplier_id"]
+            foreignKeyName: "delivery_notes_customer_id_fkey"
+            columns: ["customer_id"]
             isOneToOne: false
-            referencedRelation: "suppliers"
+            referencedRelation: "customers"
             referencedColumns: ["id"]
           },
           {

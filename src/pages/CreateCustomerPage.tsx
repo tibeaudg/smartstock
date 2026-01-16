@@ -14,20 +14,20 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ArrowLeft, Copy, Plus, Pencil, HelpCircle } from 'lucide-react';
-import { useCreateSupplier } from '@/hooks/useSuppliers';
-import { SupplierCreateData, SupplierAddress } from '@/types/supplierTypes';
+import { useCreateCustomer } from '@/hooks/useCustomers';
+import { CustomerCreateData, CustomerAddress } from '@/types/customerTypes';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 export default function CreateSupplierPage() {
   const navigate = useNavigate();
-  const createMutation = useCreateSupplier();
+  const createMutation = useCreateCustomer();
   
   const [advancedMode, setAdvancedMode] = useState(false);
   const [activeTab, setActiveTab] = useState('company');
   
   // Form state
-  const [formData, setFormData] = useState<Partial<SupplierCreateData>>({
+  const [formData, setFormData] = useState<Partial<CustomerCreateData>>({
     legal_name: '',
     commercial_name: '',
     company_number: '',
@@ -50,8 +50,7 @@ export default function CreateSupplierPage() {
     hide_iban_check: false,
     extend_payment_term: false,
     same_as_billing: false,
-    peppol_enabled: false,
-    supplier_number: '',
+    customer_number: '',
     reference: '',
     salutation: '',
     director_first_name: '',
@@ -62,11 +61,10 @@ export default function CreateSupplierPage() {
     vat_type: '',
     general_ledger_account: '',
     category: '',
-    supplier_group: '',
     comments: '',
   });
   
-  const [billingAddress, setBillingAddress] = useState<SupplierAddress>({
+  const [billingAddress, setBillingAddress] = useState<CustomerAddress>({
     attention: '',
     name: '',
     country: 'BE',
@@ -78,7 +76,7 @@ export default function CreateSupplierPage() {
     phone: '',
   });
   
-  const [deliveryAddress, setDeliveryAddress] = useState<SupplierAddress>({
+  const [deliveryAddress, setDeliveryAddress] = useState<CustomerAddress>({
     attention: '',
     name: '',
     country: 'BE',
@@ -98,24 +96,24 @@ export default function CreateSupplierPage() {
     }
     
     try {
-      const submitData: SupplierCreateData = {
+      const submitData: CustomerCreateData = {
         ...formData,
         name: formData.legal_name || formData.commercial_name || '', // Backward compatibility
         billing_address: billingAddress,
         delivery_address: formData.same_as_billing ? billingAddress : deliveryAddress,
-      } as SupplierCreateData;
+      } as CustomerCreateData;
       
       await createMutation.mutateAsync(submitData);
-      toast.success('Supplier created successfully');
+      toast.success('Customer created successfully');
       
       if (saveAndReturn) {
-        navigate('/dashboard/vendor-management');
+        navigate('/dashboard/customer-management');
       } else {
         // Optionally navigate to edit page, but for now just show success
-        navigate('/dashboard/vendor-management');
+        navigate('/dashboard/customer-management');
       }
     } catch (error: any) {
-      toast.error(`Failed to create supplier: ${error.message}`);
+      toast.error(`Failed to create customer: ${error.message}`);
     }
   };
   
@@ -128,14 +126,14 @@ export default function CreateSupplierPage() {
     setBillingAddress({ ...deliveryAddress });
   };
   
-  const updateBillingAddress = (field: keyof SupplierAddress, value: string) => {
+  const updateBillingAddress = (field: keyof CustomerAddress, value: string) => {
     setBillingAddress({ ...billingAddress, [field]: value });
     if (formData.same_as_billing) {
       setDeliveryAddress({ ...billingAddress, [field]: value });
     }
   };
   
-  const updateDeliveryAddress = (field: keyof SupplierAddress, value: string) => {
+  const updateDeliveryAddress = (field: keyof CustomerAddress, value: string) => {
     setDeliveryAddress({ ...deliveryAddress, [field]: value });
   };
   
@@ -149,12 +147,12 @@ export default function CreateSupplierPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/dashboard/vendor-management')}
+                onClick={() => navigate('/dashboard/customer-management')}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <h1 className="text-2xl font-bold text-gray-900">New Supplier</h1>
+              <h1 className="text-2xl font-bold text-gray-900">New Customer</h1>
             </div>
  
           </div>
@@ -237,11 +235,11 @@ export default function CreateSupplierPage() {
                 {/* Right Column - Supplier Details */}
                 <div className="space-y-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="supplier_number">Supplier No.</Label>
+                    <Label htmlFor="customer_number">Customer No.</Label>
                     <Input
-                      id="supplier_number"
-                      value={formData.supplier_number || ''}
-                      onChange={(e) => setFormData({ ...formData, supplier_number: e.target.value })}
+                      id="customer_number"
+                      value={formData.customer_number || ''}
+                      onChange={(e) => setFormData({ ...formData, customer_number: e.target.value })}
                       placeholder="0"
                     />
                   </div>
@@ -601,16 +599,9 @@ export default function CreateSupplierPage() {
           >
             Save
           </Button>
+
           <Button
-            onClick={() => handleSubmit(true)}
-            disabled={createMutation.isPending}
-            variant="outline"
-            className="border-blue-600 text-blue-600 hover:bg-blue-50"
-          >
-            Save and Return
-          </Button>
-          <Button
-            onClick={() => navigate('/dashboard/vendor-management')}
+            onClick={() => navigate('/dashboard/customer-management')}
             variant="outline"
           >
             Cancel

@@ -24,55 +24,55 @@ import {
   AlertDialogTitle 
 } from '@/components/ui/alert-dialog';
 import { ArrowLeft, Copy, Plus, Pencil, HelpCircle, Trash2 } from 'lucide-react';
-import { useSupplier, useUpdateSupplier, useDeleteSupplier } from '@/hooks/useSuppliers';
-import { SupplierUpdateData, SupplierAddress } from '@/types/supplierTypes';
+import { useCustomer, useUpdateCustomer, useDeleteCustomer } from '@/hooks/useCustomers';
+import { CustomerUpdateData, CustomerAddress } from '@/types/customerTypes';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 export default function EditSupplierPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { data: supplier, isLoading } = useSupplier(id);
-  const updateMutation = useUpdateSupplier();
-  const deleteMutation = useDeleteSupplier();
+  const { data: customer, isLoading } = useCustomer(id);
+  const updateMutation = useUpdateCustomer();
+  const deleteMutation = useDeleteCustomer();
   
   const [advancedMode, setAdvancedMode] = useState(false);
   const [activeTab, setActiveTab] = useState('company');
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   
   // Form state
-  const [formData, setFormData] = useState<Partial<SupplierUpdateData>>({});
-  const [billingAddress, setBillingAddress] = useState<SupplierAddress>({});
-  const [deliveryAddress, setDeliveryAddress] = useState<SupplierAddress>({});
+  const [formData, setFormData] = useState<Partial<CustomerUpdateData>>({});
+  const [billingAddress, setBillingAddress] = useState<CustomerAddress>({});
+  const [deliveryAddress, setDeliveryAddress] = useState<CustomerAddress>({});
   
   // Load supplier data when available
   useEffect(() => {
-    if (supplier) {
+        if (customer) {
       // Parse addresses if they're JSONB strings
-      let billing: SupplierAddress = {};
-      let delivery: SupplierAddress = {};
+      let billing: CustomerAddress = {};
+      let delivery: CustomerAddress = {};
       
-      if (supplier.billing_address) {
-        if (typeof supplier.billing_address === 'string') {
+      if (customer.billing_address) {
+        if (typeof customer.billing_address === 'string') {
           try {
-            billing = JSON.parse(supplier.billing_address);
+            billing = JSON.parse(customer.billing_address);
           } catch {
             billing = {};
           }
         } else {
-          billing = supplier.billing_address as SupplierAddress;
+          billing = customer.billing_address as CustomerAddress;
         }
       }
       
-      if (supplier.delivery_address) {
-        if (typeof supplier.delivery_address === 'string') {
+      if (customer.delivery_address) {
+        if (typeof customer.delivery_address === 'string') {
           try {
-            delivery = JSON.parse(supplier.delivery_address);
+            delivery = JSON.parse(customer.delivery_address);
           } catch {
             delivery = {};
           }
         } else {
-          delivery = supplier.delivery_address as SupplierAddress;
+          delivery = customer.delivery_address as CustomerAddress;
         }
       }
       
@@ -80,45 +80,43 @@ export default function EditSupplierPage() {
       setDeliveryAddress(delivery);
       
       setFormData({
-        legal_name: supplier.legal_name || supplier.name || '',
-        commercial_name: supplier.commercial_name || supplier.name || '',
-        company_number: supplier.company_number || '',
-        extra_id: supplier.extra_id || '',
-        email: supplier.email || '',
-        phone: supplier.phone || '',
-        mobile: supplier.mobile || '',
-        fax: supplier.fax || '',
-        website: supplier.website || '',
-        iban: supplier.iban || '',
-        bic: supplier.bic || '',
-        payment_term: supplier.payment_term || 30,
-        offer_validity_period: supplier.offer_validity_period || 30,
-        standard_currency: supplier.standard_currency || 'EUR',
-        language: supplier.language || 'nl',
-        vat_liable: supplier.vat_liable ?? true,
-        vat_deductible: supplier.vat_deductible ?? true,
-        small_enterprise: supplier.small_enterprise || false,
-        high_risk: supplier.high_risk || false,
-        hide_iban_check: supplier.hide_iban_check || false,
-        extend_payment_term: supplier.extend_payment_term || false,
-        same_as_billing: supplier.same_as_billing || false,
-        peppol_enabled: supplier.peppol_enabled || false,
-        supplier_number: supplier.supplier_number || '',
-        reference: supplier.reference || '',
-        salutation: supplier.salutation || '',
-        director_first_name: supplier.director_first_name || '',
-        director_last_name: supplier.director_last_name || '',
-        rpr_number: supplier.rpr_number || '',
-        payment_method: supplier.payment_method || '',
-        standard_paid: supplier.standard_paid || '',
-        vat_type: supplier.vat_type || '',
-        general_ledger_account: supplier.general_ledger_account || '',
-        category: supplier.category || '',
-        supplier_group: supplier.supplier_group || supplier.group || '',
-        comments: supplier.comments || '',
+            legal_name: customer.legal_name || customer.name || '',
+        commercial_name: customer.commercial_name || customer.name || '',
+        company_number: customer.company_number || '',
+            extra_id: customer.extra_id || '',
+        email: customer.email || '',
+        phone: customer.phone || '',
+        mobile: customer.mobile || '',
+        fax: customer.fax || '',
+        website: customer.website || '',
+        iban: customer.iban || '',
+        bic: customer.bic || '',
+        payment_term: customer.payment_term || 30,
+        offer_validity_period: customer.offer_validity_period || 30,
+        standard_currency: customer.standard_currency || 'EUR',
+        language: customer.language || 'nl',
+        vat_liable: customer.vat_liable ?? true,
+        vat_deductible: customer.vat_deductible ?? true,
+        small_enterprise: customer.small_enterprise || false,
+        high_risk: customer.high_risk || false,
+        hide_iban_check: customer.hide_iban_check || false,
+        extend_payment_term: customer.extend_payment_term || false,
+        same_as_billing: customer.same_as_billing || false,
+        customer_number: customer.customer_number || '',
+        reference: customer.reference || '',
+        salutation: customer.salutation || '',
+        director_first_name: customer.director_first_name || '',
+        director_last_name: customer.director_last_name || '',
+        rpr_number: customer.rpr_number || '',
+        payment_method: customer.payment_method || '',
+        standard_paid: customer.standard_paid || '',
+        vat_type: customer.vat_type || '',
+        general_ledger_account: customer.general_ledger_account || '',
+        category: customer.category || '',
+        comments: customer.comments || '',
       });
     }
-  }, [supplier]);
+  }, [customer]);
   
   const handleSubmit = async (saveAndReturn: boolean = false) => {
     if (!id) return;
@@ -130,7 +128,7 @@ export default function EditSupplierPage() {
     }
     
     try {
-      const submitData: SupplierUpdateData = {
+      const submitData: CustomerUpdateData = {
         ...formData,
         name: formData.legal_name || formData.commercial_name || '', // Backward compatibility
         billing_address: billingAddress,
@@ -138,13 +136,13 @@ export default function EditSupplierPage() {
       };
       
       await updateMutation.mutateAsync({ id, data: submitData });
-      toast.success('Supplier updated successfully');
+        toast.success('Customer updated successfully');
       
       if (saveAndReturn) {
-        navigate('/dashboard/vendor-management');
+        navigate('/dashboard/customer-management');
       }
     } catch (error: any) {
-      toast.error(`Failed to update supplier: ${error.message}`);
+      toast.error(`Failed to update customer: ${error.message}`);
     }
   };
   
@@ -153,10 +151,10 @@ export default function EditSupplierPage() {
     
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success('Supplier deleted successfully');
-      navigate('/dashboard/vendor-management');
+      toast.success('Customer deleted successfully');
+      navigate('/dashboard/customer-management');
     } catch (error: any) {
-      toast.error(`Failed to delete supplier: ${error.message}`);
+      toast.error(`Failed to delete customer: ${error.message}`);
     }
   };
   
@@ -169,14 +167,14 @@ export default function EditSupplierPage() {
     setBillingAddress({ ...deliveryAddress });
   };
   
-  const updateBillingAddress = (field: keyof SupplierAddress, value: string) => {
+  const updateBillingAddress = (field: keyof CustomerAddress, value: string) => {
     setBillingAddress({ ...billingAddress, [field]: value });
     if (formData.same_as_billing) {
       setDeliveryAddress({ ...billingAddress, [field]: value });
     }
   };
   
-  const updateDeliveryAddress = (field: keyof SupplierAddress, value: string) => {
+  const updateDeliveryAddress = (field: keyof CustomerAddress, value: string) => {
     setDeliveryAddress({ ...deliveryAddress, [field]: value });
   };
   
@@ -188,21 +186,21 @@ export default function EditSupplierPage() {
     );
   }
   
-  if (!supplier) {
+  if (!customer) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Supplier Not Found</h1>
-          <p className="text-gray-600 mb-6">The supplier you're looking for doesn't exist.</p>
-          <Button onClick={() => navigate('/dashboard/vendor-management')}>
-            Back to Suppliers
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Customer Not Found</h1>
+          <p className="text-gray-600 mb-6">The customer you're looking for doesn't exist.</p>
+          <Button onClick={() => navigate('/dashboard/customer-management')}>
+            Back to Customers
           </Button>
         </div>
       </div>
     );
   }
   
-  const supplierName = supplier.legal_name || supplier.commercial_name || supplier.name || 'Supplier';
+  const customerName = customer.legal_name || customer.commercial_name || customer.name || 'Customer';
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -214,12 +212,12 @@ export default function EditSupplierPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/dashboard/vendor-management')}
+                onClick={() => navigate('/dashboard/customer-management')}
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
-              <h1 className="text-2xl font-bold text-gray-900">{supplierName}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{customerName}</h1>
             </div>
 
           </div>
@@ -293,11 +291,11 @@ export default function EditSupplierPage() {
                 {/* Right Column - Supplier Details */}
                 <div className="space-y-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="supplier_number">Supplier No.</Label>
+                      <Label htmlFor="customer_number">Customer No.</Label>
                     <Input
-                      id="supplier_number"
-                      value={formData.supplier_number || ''}
-                      onChange={(e) => setFormData({ ...formData, supplier_number: e.target.value })}
+                      id="customer_number"
+                      value={formData.customer_number || ''}
+                      onChange={(e) => setFormData({ ...formData, customer_number: e.target.value })}
                       placeholder="0"
                     />
                   </div>
@@ -656,14 +654,7 @@ export default function EditSupplierPage() {
           >
             Save
           </Button>
-          <Button
-            onClick={() => handleSubmit(true)}
-            disabled={updateMutation.isPending}
-            variant="outline"
-            className="border-blue-600 text-blue-600 hover:bg-blue-50"
-          >
-            Save and Return
-          </Button>
+ 
           <Button
             onClick={() => setShowDeleteDialog(true)}
             variant="outline"
@@ -673,7 +664,7 @@ export default function EditSupplierPage() {
             Delete
           </Button>
           <Button
-            onClick={() => navigate('/dashboard/vendor-management')}
+            onClick={() => navigate('/dashboard/customer-management')}
             variant="outline"
           >
             Cancel

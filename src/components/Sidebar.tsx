@@ -143,7 +143,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
 
         { id: 'sales-orders', label: 'Sales Orders', icon: FileText, path: '/dashboard/sales-orders',end: true },
 
-        { id: 'vendor-management', label: 'Suppliers', icon: Truck, path: '/dashboard/vendor-management',end: true },
+        { id: 'customer-management', label: 'Customers', icon: Truck, path: '/dashboard/customer-management',end: true },
 
 
         { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/dashboard/analytics/reports', subItems: analyticsSubItems },

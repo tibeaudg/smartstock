@@ -5,43 +5,43 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Supplier, SupplierCreateData, SupplierUpdateData } from '../types/supplierTypes';
+import { Customer, CustomerCreateData, CustomerUpdateData } from '../types/customerTypes';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-const SUPPLIERS_QUERY_KEY = ['suppliers'];
+const CUSTOMERS_QUERY_KEY = ['customers'];
 
 // 1. Fetch Hook
-export function useSuppliers() {
+export function useCustomers() {
   return useQuery({
-    queryKey: SUPPLIERS_QUERY_KEY,
+    queryKey: CUSTOMERS_QUERY_KEY,
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('suppliers')
+        .from('customers')
         .select('*')
         .order('name', { ascending: true });
 
       if (error) throw error;
-      return data as Supplier[];
+      return data as Customer[];
     },
   });
 }
 
 // 1b. Fetch Single Supplier Hook
-export function useSupplier(id: string | undefined) {
+export function useCustomer(id: string | undefined) {
   return useQuery({
-    queryKey: ['supplier', id],
+    queryKey: ['customer', id],
     queryFn: async () => {
-      if (!id) throw new Error('Supplier ID is required');
+      if (!id) throw new Error('Customer ID is required');
       
       const { data, error } = await supabase
-        .from('suppliers')
+        .from('customers')
         .select('*')
         .eq('id', id)
         .single();
 
       if (error) throw error;
-      return data as Supplier;
+      return data as Customer;
     },
     enabled: !!id,
   });
@@ -49,20 +49,20 @@ export function useSupplier(id: string | undefined) {
 
 // 2. Create Hook
 // hooks/useSuppliers.ts refactoring
-export function useCreateSupplier() {
+export function useCreateCustomer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (newSupplier: SupplierCreateData) => {
+    mutationFn: async (newCustomer: CustomerCreateData) => {
       // Get current session
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) throw new Error("No active session");
 
       const { data, error } = await supabase
-        .from('suppliers')
+        .from('customers')
         .insert([{
-          ...newSupplier,
+          ...newCustomer,
           user_id: session.user.id, // Mandatory for most RLS policies
         }])
         .select()
@@ -72,19 +72,19 @@ export function useCreateSupplier() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['suppliers'] });
+      queryClient.invalidateQueries({ queryKey: ['customers'] });
     }
   });
 }
 
 // 3. Update Hook
-export function useUpdateSupplier() {
+export function useUpdateCustomer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: SupplierUpdateData }) => {
+    mutationFn: async ({ id, data }: { id: string; data: CustomerUpdateData }) => {
       const { data: updatedData, error } = await supabase
-        .from('suppliers')
+        .from('customers')
         .update(data)
         .eq('id', id)
         .select()
@@ -94,7 +94,7 @@ export function useUpdateSupplier() {
       return updatedData;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: SUPPLIERS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: CUSTOMERS_QUERY_KEY });
     },
     onError: (error: any) => {
       toast.error(`Update failed: ${error.message}`);
@@ -103,20 +103,20 @@ export function useUpdateSupplier() {
 }
 
 // 4. Delete Hook
-export function useDeleteSupplier() {
+export function useDeleteCustomer() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
-        .from('suppliers')
+        .from('customers')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: SUPPLIERS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: CUSTOMERS_QUERY_KEY });
     },
     onError: (error: any) => {
       toast.error(`Deletion failed: ${error.message}`);
@@ -125,17 +125,17 @@ export function useDeleteSupplier() {
 }
 
 // 5. Real-time Subscription Hook
-export function useSupplierRealtime() {
+export function useCustomerRealtime() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     const channel = supabase
-      .channel('suppliers-realtime')
+      .channel('customers-realtime')
       .on(
         'postgres_changes',
-        { event: '*', table: 'suppliers', schema: 'public' },
+        { event: '*', table: 'customers', schema: 'public' },
         () => {
-          queryClient.invalidateQueries({ queryKey: SUPPLIERS_QUERY_KEY });
+          queryClient.invalidateQueries({ queryKey: CUSTOMERS_QUERY_KEY });
         }
       )
       .subscribe();
