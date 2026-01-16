@@ -14,6 +14,9 @@ import { toast } from 'sonner';
 import { Plus, Trash2, User, Calendar, CreditCard, Truck, Package, FileText, DollarSign } from 'lucide-react';
 import { Product } from '@/types/stockTypes';
 import { format } from 'date-fns';
+import { CustomerAutocomplete } from '@/components/customers/CustomerAutocomplete';
+import { CreateCustomerModal } from '@/components/customers/CreateCustomerModal';
+import { Customer } from '@/types/customerTypes';
 
 interface CreateSalesOrderModalProps {
   isOpen: boolean;
@@ -41,6 +44,8 @@ export const CreateSalesOrderModal = ({
   
   // Form state
   const [customerName, setCustomerName] = useState('');
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [showCreateCustomerModal, setShowCreateCustomerModal] = useState(false);
   const [orderDate, setOrderDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [status, setStatus] = useState<'draft' | 'pending' | 'fulfilled' | 'cancelled'>('draft');
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'success' | 'failed' | 'refunded'>('pending');
@@ -277,16 +282,15 @@ export const CreateSalesOrderModal = ({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="customerName">Customer Name *</Label>
-                <Input
-                  id="customerName"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="Enter customer name"
-                  className="mt-1"
-                />
-              </div>
+              <CustomerAutocomplete
+                value={customerName}
+                onChange={setCustomerName}
+                onCustomerSelect={setSelectedCustomer}
+                onCreateNew={() => setShowCreateCustomerModal(true)}
+                placeholder="Enter customer name"
+                label="Customer Name"
+                required
+              />
             </CardContent>
           </Card>
 
@@ -569,6 +573,16 @@ export const CreateSalesOrderModal = ({
           </Button>
         </div>
       </DialogContent>
+      
+      {/* Create Customer Modal */}
+      <CreateCustomerModal
+        isOpen={showCreateCustomerModal}
+        onClose={() => setShowCreateCustomerModal(false)}
+        onCustomerCreated={(newCustomerName) => {
+          setCustomerName(newCustomerName);
+          setShowCreateCustomerModal(false);
+        }}
+      />
     </Dialog>
   );
 };
