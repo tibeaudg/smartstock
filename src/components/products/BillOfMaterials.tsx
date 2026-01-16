@@ -22,7 +22,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 // Icons
 import { 
   Plus, Edit, Trash2, Package, Search, ArrowRight, ChevronLeft,
-  Eye, Filter, DollarSign, X, AlertCircle, Loader2, Save
+  Eye, Filter, DollarSign, X, AlertCircle, Loader2, Save,
+  ChevronRight
 } from 'lucide-react';
 
 // Types
@@ -1562,6 +1563,9 @@ function CreateBOMDialog({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+
+
 
       {/* Product Creation Modal - Using AddProductModal for consistency */}
       <AddProductModal

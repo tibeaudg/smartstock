@@ -4,25 +4,16 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   useSuppliers, 
-  useCreateSupplier, 
-  useUpdateSupplier, 
   useDeleteSupplier,
   useSupplierRealtime 
-} from '@/hooks/useSuppliers'; // Assumed hook location
-import { Supplier, SupplierCreateData } from '../types/supplierTypes';
+} from '@/hooks/useSuppliers';
+import { Supplier } from '../types/supplierTypes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter 
-} from '@/components/ui/dialog';
+import { Card } from '@/components/ui/card';
 import { 
   AlertDialog, 
   AlertDialogAction, 
@@ -43,30 +34,27 @@ import {
 import { 
   Plus, 
   Search, 
-  Edit, 
   Trash2, 
   Truck, 
-  Mail, 
-  Phone, 
   ChevronLeft, 
   ChevronRight, 
-  ChevronsUpDown, 
-  ChevronUp, 
-  ChevronDown, 
-  Filter
+  ChevronsUpDown
 } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 
 type SortColumn = 'name' | 'email';
 type SortDirection = 'asc' | 'desc';
 
 export default function VendorManagementPage() {
-  // Modal states
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const navigate = useNavigate();
+  
+  // Delete dialog state
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  
+  // Selected suppliers for bulk actions
+  const [selectedSupplierIds, setSelectedSupplierIds] = useState<Set<string>>(new Set());
 
   // Search and Sort states
   const [searchQuery, setSearchQuery] = useState('');
@@ -77,18 +65,8 @@ export default function VendorManagementPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
 
-  // Form state
-  const [formData, setFormData] = useState<Omit<SupplierCreateData, 'branch_id'>>({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-  });
-
   // Database Hooks
   const { data: suppliers = [], isLoading } = useSuppliers();
-  const createMutation = useCreateSupplier();
-  const updateMutation = useUpdateSupplier();
   const deleteMutation = useDeleteSupplier();
   
   // Enable Real-time listener
@@ -130,36 +108,6 @@ export default function VendorManagementPage() {
     }
   };
 
-  const handleAdd = async () => {
-    if (!formData.name) {
-      toast.error('Name and Email are required');
-      return;
-    }
-    try {
-      await createMutation.mutateAsync(formData);
-      setShowAddModal(false);
-      resetForm();
-      toast.success('Supplier added successfully');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleUpdate = async () => {
-    if (!selectedSupplier) return;
-    try {
-      await updateMutation.mutateAsync({
-        id: selectedSupplier.id,
-        data: formData
-      });
-      setShowEditModal(false);
-      setSelectedSupplier(null);
-      toast.success('Supplier updated');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const handleDelete = async () => {
     if (!selectedSupplier) return;
     try {
@@ -171,20 +119,90 @@ export default function VendorManagementPage() {
       console.error(e);
     }
   };
-
-  const resetForm = () => {
-    setFormData({ name: '', email: '', phone: '', address: '', });
-  };
-
-  const openEdit = (s: Supplier) => {
-    setSelectedSupplier(s);
-    setFormData({
-      name: s.name,
-      email: s.email,
-      phone: s.phone || '',
-      address: s.address || '',
+  
+  const toggleSelectSupplier = (id: string) => {
+    setSelectedSupplierIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
     });
-    setShowEditModal(true);
+  };
+  
+  const toggleSelectAll = () => {
+    if (selectedSupplierIds.size === paginatedSuppliers.length) {
+      setSelectedSupplierIds(new Set());
+    } else {
+      setSelectedSupplierIds(new Set(paginatedSuppliers.map(s => s.id)));
+    }
+  };
+  
+  // Helper function to get municipality from address
+  const getMunicipality = (supplier: Supplier): string => {
+    if (supplier.municipality) return supplier.municipality;
+    
+    // Try to parse from billing_address
+    if (supplier.billing_address) {
+      let address: any = {};
+      if (typeof supplier.billing_address === 'string') {
+        try {
+          address = JSON.parse(supplier.billing_address);
+        } catch {
+          return '';
+        }
+      } else {
+        address = supplier.billing_address;
+      }
+      return address.municipality || '';
+    }
+    
+    return '';
+  };
+  
+  // Helper function to get postal code and municipality combined
+  const getPostalCodeAndMunicipality = (supplier: Supplier): string => {
+    if (supplier.municipality) {
+      // Try to get postal code from address
+      if (supplier.billing_address) {
+        let address: any = {};
+        if (typeof supplier.billing_address === 'string') {
+          try {
+            address = JSON.parse(supplier.billing_address);
+          } catch {
+            return supplier.municipality;
+          }
+        } else {
+          address = supplier.billing_address;
+        }
+        if (address.postal_code) {
+          return `${address.postal_code} ${supplier.municipality}`;
+        }
+      }
+      return supplier.municipality;
+    }
+    
+    // Try to parse from billing_address
+    if (supplier.billing_address) {
+      let address: any = {};
+      if (typeof supplier.billing_address === 'string') {
+        try {
+          address = JSON.parse(supplier.billing_address);
+        } catch {
+          return '';
+        }
+      } else {
+        address = supplier.billing_address;
+      }
+      if (address.postal_code && address.municipality) {
+        return `${address.postal_code} ${address.municipality}`;
+      }
+      return address.municipality || '';
+    }
+    
+    return '';
   };
 
   if (isLoading) {
@@ -210,7 +228,7 @@ export default function VendorManagementPage() {
         </p>
       </div>
       <Button 
-        onClick={() => { resetForm(); setShowAddModal(true); }} 
+        onClick={() => navigate('/dashboard/vendor-management/new')} 
         className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap"
       >
         <Plus className="w-4 h-4 mr-2" /> Add Supplier
@@ -246,37 +264,64 @@ export default function VendorManagementPage() {
             <table className="w-full text-left border-collapse">
               <thead className="bg-gray-50 border-b font-bold text-gray-700">
                 <tr>
+                  <th className="p-4 w-12">
+                    <Checkbox
+                      checked={paginatedSuppliers.length > 0 && selectedSupplierIds.size === paginatedSuppliers.length}
+                      onCheckedChange={toggleSelectAll}
+                    />
+                  </th>
+                  <th className="p-4">Nr</th>
                   <th className="p-4 cursor-pointer hover:bg-gray-100" onClick={() => handleSort('name')}>
                     <div className="flex items-center gap-2">Name <ChevronsUpDown className="w-3 h-3"/></div>
                   </th>
-                  <th className="p-4 hidden md:table-cell">Contact</th>
-                  <th className="p-4 text-right">Actions</th>
+                  <th className="p-4">Company</th>
+                  <th className="p-4">Contact</th>
+                  <th className="p-4">Municipality</th>
+                  <th className="p-4">Email</th>
+                  <th className="p-4">Phone</th>
+                  <th className="p-4">Mobile</th>
                 </tr>
               </thead>
               <tbody className="divide-y">
-                {paginatedSuppliers.map((s) => (
-                  <tr key={s.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      <div className="font-semibold text-gray-900">{s.name}</div>
-                      <div className="text-xs text-gray-500 md:hidden">{s.email}</div>
-                    </td>
-                    <td className="p-4 hidden md:table-cell">
-                      <div className="flex items-center text-sm text-gray-600 gap-2"><Mail className="w-3 h-3"/> {s.email}</div>
-                      {s.phone && <div className="flex items-center text-sm text-gray-600 gap-2"><Phone className="w-3 h-3"/> {s.phone}</div>}
-                    </td>
-                   
-                    <td className="p-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => openEdit(s)}>
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => { setSelectedSupplier(s); setShowDeleteDialog(true); }} className="text-red-500 hover:text-red-600 hover:bg-red-50">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                {paginatedSuppliers.map((s, index) => {
+                  const supplierName = s.legal_name || s.commercial_name || s.name || '';
+                  const companyNumber = s.company_number || '';
+                  const municipality = getPostalCodeAndMunicipality(s);
+                  const isSelected = selectedSupplierIds.has(s.id);
+                  
+                  return (
+                    <tr 
+                      key={s.id} 
+                      className={`hover:bg-gray-50 transition-colors cursor-pointer ${isSelected ? 'bg-blue-50' : ''}`}
+                      onClick={(e) => {
+                        // Don't navigate if clicking on checkbox
+                        if ((e.target as HTMLElement).closest('button, [role="checkbox"]')) {
+                          return;
+                        }
+                        navigate(`/dashboard/vendor-management/${s.id}/edit`);
+                      }}
+                    >
+                      <td className="p-4" onClick={(e) => e.stopPropagation()}>
+                        <Checkbox
+                          checked={isSelected}
+                          onCheckedChange={() => toggleSelectSupplier(s.id)}
+                        />
+                      </td>
+                      <td className="p-4 text-gray-600">{s.supplier_number || index + 1 + (currentPage - 1) * itemsPerPage}</td>
+                      <td className="p-4">
+                        <div className="font-semibold text-gray-900">{supplierName}</div>
+                      </td>
+                      <td className="p-4 text-gray-600">{companyNumber}</td>
+                      <td className="p-4 text-gray-600">
+                        {s.contact_person || '-'}
+                      </td>
+                      <td className="p-4 text-gray-600">{municipality || '-'}</td>
+                      <td className="p-4 text-gray-600">{s.email || '-'}</td>
+                      <td className="p-4 text-gray-600">{s.phone || '-'}</td>
+                      <td className="p-4 text-gray-600">{s.mobile || '-'}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -305,38 +350,6 @@ export default function VendorManagementPage() {
           </div>
         </div>
       </Card>
-
-      {/* Add/Edit Dialog */}
-      <Dialog open={showAddModal || showEditModal} onOpenChange={(val) => { if(!val){ setShowAddModal(false); setShowEditModal(false); } }}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{showAddModal ? 'New Supplier' : 'Edit Supplier'}</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label>Supplier Name</Label>
-              <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="Tech Corp" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label>Email</Label>
-                <Input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="info@tech.com" />
-              </div>
-              <div className="grid gap-2">
-                <Label>Phone</Label>
-                <Input value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} placeholder="+1..." />
-              </div>
-            </div>
-
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => { setShowAddModal(false); setShowEditModal(false); }}>Cancel</Button>
-            <Button onClick={showAddModal ? handleAdd : handleUpdate} disabled={createMutation.isPending || updateMutation.isPending}>
-              {showAddModal ? 'Create Supplier' : 'Save Changes'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Delete Confirmation */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>

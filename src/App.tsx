@@ -54,6 +54,8 @@ import VideosPage from "./pages/videos";
 import IntegrationsPage from "./pages/integrations";
 import SalesOrdersPage from "./pages/sales-orders";
 import VendorManagementPage from "./pages/VendorManagement";
+import CreateSupplierPage from "./pages/CreateSupplierPage";
+import EditSupplierPage from "./pages/EditSupplierPage";
 
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
@@ -369,6 +371,8 @@ const AppRouter = () => {
           </Route>
           <Route path="sales-orders" element={<SalesOrdersPage />} />
           <Route path="vendor-management" element={<VendorManagementPage />} />
+          <Route path="vendor-management/new" element={<CreateSupplierPage />} />
+          <Route path="vendor-management/:id/edit" element={<EditSupplierPage />} />
         </Route>
 
         {/* ERROR & FALLBACK */}

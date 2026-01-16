@@ -27,6 +27,26 @@ export function useSuppliers() {
   });
 }
 
+// 1b. Fetch Single Supplier Hook
+export function useSupplier(id: string | undefined) {
+  return useQuery({
+    queryKey: ['supplier', id],
+    queryFn: async () => {
+      if (!id) throw new Error('Supplier ID is required');
+      
+      const { data, error } = await supabase
+        .from('suppliers')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as Supplier;
+    },
+    enabled: !!id,
+  });
+}
+
 // 2. Create Hook
 // hooks/useSuppliers.ts refactoring
 export function useCreateSupplier() {
