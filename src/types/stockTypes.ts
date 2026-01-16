@@ -135,6 +135,10 @@ export type SalesOrder = {
   created_by?: string | null;
   notes?: string | null;
   shipping_address?: string | null;
+  payment_status?: 'pending' | 'success' | 'failed' | 'refunded';
+  delivery_status?: 'pending' | 'in_transit' | 'delivered' | 'failed';
+  delivery_date?: string | null;
+  tracking_number?: string | null;
   created_at: string;
   updated_at: string;
   items?: SalesOrderItem[];
