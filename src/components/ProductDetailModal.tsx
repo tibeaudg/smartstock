@@ -1632,8 +1632,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           )}
         </div>
 
-        {/* Sticky Footer with Action Buttons */}
-        <div className="sticky bottom-0 left-0 right-0 bg-white border-t px-6 py-4 shadow-lg z-10">
+        {/* Footer with Action Buttons */}
+        <div className="flex-shrink-0 bg-white border-t px-6 py-4 shadow-lg z-10">
           <div className="flex items-center justify-end gap-2">
             <Button
               onClick={handleAdjustStock}

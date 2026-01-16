@@ -1855,8 +1855,8 @@ export default function AddProductPage() {
           </div>
 
 
-            {/* Action Buttons - Sticky Footer */}
-            <div className={`sticky bottom-0 bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
+            {/* Action Buttons - Footer */}
+            <div className={`flex-shrink-0 bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
               <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row justify-end'}`}>
                 <Button 
                   type="button"

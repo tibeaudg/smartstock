@@ -5,6 +5,7 @@ import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
+import { AddProductModal } from '@/components/AddProductModal';
 
 // UI Components
 import { Card } from '@/components/ui/card';
@@ -719,12 +720,6 @@ function BOMEditPage() {
   
   // State for inline product creation
   const [isCreatingProduct, setIsCreatingProduct] = useState(false);
-  const [newProductData, setNewProductData] = useState<NewProductFormData>({
-    name: '',
-    sku: '',
-    quantity_in_stock: 0,
-    unit_price: 0,
-  });
   const [componentIndexForNewProduct, setComponentIndexForNewProduct] = useState<number | null>(null);
 
   // Fetch product details
@@ -835,59 +830,106 @@ function BOMEditPage() {
   // Open inline product creation
   const handleOpenProductCreation = (componentIndex: number) => {
     setComponentIndexForNewProduct(componentIndex);
-    setNewProductData({
-      name: '',
-      sku: '',
-      quantity_in_stock: 0,
-      unit_price: 0,
-    });
     setIsCreatingProduct(true);
   };
 
-  // Create new product inline
-  const handleCreateProduct = async () => {
-    if (!activeBranch) {
-      toast.error('No active branch');
-      return;
-    }
+  // Handle product creation completion - auto-select the new product in the component
+  const handleProductAdded = async () => {
+    if (!activeBranch) return;
 
-    if (!newProductData.name.trim()) {
-      toast.error('Product name is required');
-      return;
-    }
+    // Invalidate all product-related queries to ensure products appear in categories page
+    await queryClient.invalidateQueries({
+      queryKey: ['products'],
+      refetchType: 'active',
+    });
 
-    try {
-      const { data: newProduct, error } = await supabase
-        .from('products')
-        .insert({
-          name: newProductData.name,
-          sku: newProductData.sku || null,
-          quantity_in_stock: newProductData.quantity_in_stock,
-          unit_price: newProductData.unit_price,
-          purchase_price: newProductData.unit_price,
-          branch_id: activeBranch.branch_id,
-          is_variant: false,
-        })
-        .select()
-        .single();
+    await queryClient.invalidateQueries({
+      queryKey: ['products', activeBranch.branch_id],
+      refetchType: 'active',
+    });
 
-      if (error) throw error;
+    // Invalidate the specific query key pattern used by categories page
+    await queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey;
+        return (
+          Array.isArray(key) &&
+          key.length >= 2 &&
+          key[0] === 'products' &&
+          key[1] === 'categoryProducts'
+        );
+      },
+      refetchType: 'active',
+    });
 
-      // Refresh available products
-      queryClient.invalidateQueries({ queryKey: ['availableProducts', activeBranch.branch_id] });
+    // Invalidate category products queries
+    queryClient.invalidateQueries({
+      queryKey: ['categoryProducts'],
+      refetchType: 'active',
+    });
 
-      // Auto-select the new product in the component
-      if (componentIndexForNewProduct !== null) {
-        handleUpdateComponent(componentIndexForNewProduct, 'component_product_id', newProduct.id);
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey;
+        return (
+          Array.isArray(key) &&
+          key.length >= 1 &&
+          key[0] === 'categoryProducts'
+        );
+      },
+      refetchType: 'active',
+    });
+
+    // Invalidate stock transactions queries
+    queryClient.invalidateQueries({
+      queryKey: ['stockTransactions'],
+      refetchType: 'active',
+    });
+
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey;
+        return (
+          Array.isArray(key) &&
+          key.length >= 1 &&
+          key[0] === 'stockTransactions'
+        );
+      },
+      refetchType: 'active',
+    });
+
+    // Refresh available products for BOM component selection
+    await queryClient.invalidateQueries({ queryKey: ['availableProducts', activeBranch.branch_id] });
+    
+    // Wait a bit for the query to complete, then find and select the most recently created product
+    setTimeout(async () => {
+      if (!activeBranch || componentIndexForNewProduct === null) return;
+      
+      try {
+        const { data: products } = await supabase
+          .from('products')
+          .select('id, name')
+          .eq('branch_id', activeBranch.branch_id)
+          .eq('is_variant', false)
+          .neq('id', productId) // Don't allow selecting the parent product
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (products && products.length > 0) {
+          // Check if this product is not already in the available products list
+          // (meaning it was just created)
+          const isNewProduct = !availableProducts?.some(p => p.id === products[0].id);
+          if (isNewProduct) {
+            handleUpdateComponent(componentIndexForNewProduct, 'component_product_id', products[0].id);
+          }
+        }
+      } catch (error) {
+        console.error('Error finding newly created product:', error);
+      } finally {
+        setIsCreatingProduct(false);
+        setComponentIndexForNewProduct(null);
       }
-
-      toast.success('Product created successfully');
-      setIsCreatingProduct(false);
-      setComponentIndexForNewProduct(null);
-    } catch (error: any) {
-      console.error('Error creating product:', error);
-      toast.error(`Failed to create product: ${error.message}`);
-    }
+    }, 500);
   };
 
   // Save BOM
@@ -1098,7 +1140,7 @@ function BOMEditPage() {
             <div className="p-4 border-b">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">Components</h2>
-                <Button onClick={handleAddComponent} size="sm">
+                <Button onClick={handleAddComponent} size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Component
                 </Button>
@@ -1238,86 +1280,16 @@ function BOMEditPage() {
         </div>
       </div>
 
-      {/* Inline Product Creation Dialog */}
-      <Dialog open={isCreatingProduct} onOpenChange={setIsCreatingProduct}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create New Product</DialogTitle>
-            <DialogDescription>
-              Add a new product to use as a component in this BOM
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label>Product Name *</Label>
-              <Input
-                value={newProductData.name}
-                onChange={(e) =>
-                  setNewProductData({ ...newProductData, name: e.target.value })
-                }
-                placeholder="e.g., Steel Sheet"
-              />
-            </div>
-            <div>
-              <Label>SKU</Label>
-              <Input
-                value={newProductData.sku}
-                onChange={(e) =>
-                  setNewProductData({ ...newProductData, sku: e.target.value })
-                }
-                placeholder="e.g., STL-001"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Initial Stock</Label>
-                <Input
-                  type="number"
-                  value={newProductData.quantity_in_stock}
-                  onChange={(e) =>
-                    setNewProductData({
-                      ...newProductData,
-                      quantity_in_stock: parseFloat(e.target.value) || 0,
-                    })
-                  }
-                  min="0"
-                  step="1"
-                />
-              </div>
-              <div>
-                <Label>Unit Price</Label>
-                <Input
-                  type="number"
-                  value={newProductData.unit_price}
-                  onChange={(e) =>
-                    setNewProductData({
-                      ...newProductData,
-                      unit_price: parseFloat(e.target.value) || 0,
-                    })
-                  }
-                  min="0"
-                  step="0.01"
-                />
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setIsCreatingProduct(false);
-                setComponentIndexForNewProduct(null);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button onClick={handleCreateProduct}>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Product
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Inline Product Creation Modal - Using AddProductModal for consistency */}
+      <AddProductModal
+        isOpen={isCreatingProduct}
+        onClose={() => {
+          setIsCreatingProduct(false);
+          setComponentIndexForNewProduct(null);
+        }}
+        onProductAdded={handleProductAdded}
+        onFirstProductAdded={handleProductAdded}
+      />
     </div>
   );
 }
@@ -1443,40 +1415,162 @@ function CreateBOMDialog({
   onSelectProduct: (id: string) => void;
   onConfirm: () => void;
 }) {
+  const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
+  
+  // State for product creation modal
+  const [isCreatingProduct, setIsCreatingProduct] = useState(false);
+
+  // Handle product creation completion
+  const handleProductAdded = async () => {
+    if (!activeBranch) return;
+
+    // Invalidate all product-related queries to ensure products appear in categories page
+    await queryClient.invalidateQueries({
+      queryKey: ['products'],
+      refetchType: 'active',
+    });
+
+    await queryClient.invalidateQueries({
+      queryKey: ['products', activeBranch.branch_id],
+      refetchType: 'active',
+    });
+
+    // Invalidate the specific query key pattern used by categories page
+    await queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey;
+        return (
+          Array.isArray(key) &&
+          key.length >= 2 &&
+          key[0] === 'products' &&
+          key[1] === 'categoryProducts'
+        );
+      },
+      refetchType: 'active',
+    });
+
+    // Invalidate category products queries
+    queryClient.invalidateQueries({
+      queryKey: ['categoryProducts'],
+      refetchType: 'active',
+    });
+
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey;
+        return (
+          Array.isArray(key) &&
+          key.length >= 1 &&
+          key[0] === 'categoryProducts'
+        );
+      },
+      refetchType: 'active',
+    });
+
+    // Invalidate stock transactions queries
+    queryClient.invalidateQueries({
+      queryKey: ['stockTransactions'],
+      refetchType: 'active',
+    });
+
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey;
+        return (
+          Array.isArray(key) &&
+          key.length >= 1 &&
+          key[0] === 'stockTransactions'
+        );
+      },
+      refetchType: 'active',
+    });
+
+    // Refresh available products for BOM creation
+    await queryClient.invalidateQueries({ queryKey: ['availableProductsForBOM', activeBranch.branch_id] });
+    
+    // Wait a bit for the query to complete, then find and select the most recently created product
+    setTimeout(async () => {
+      if (!activeBranch) return;
+      
+      try {
+        const { data: products } = await supabase
+          .from('products')
+          .select('id, name')
+          .eq('branch_id', activeBranch.branch_id)
+          .eq('is_variant', false)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (products && products.length > 0) {
+          // Check if this product is not already in the available products list
+          // (meaning it was just created)
+          const isNewProduct = !availableProducts.some(p => p.id === products[0].id);
+          if (isNewProduct) {
+            onSelectProduct(products[0].id);
+          }
+        }
+      } catch (error) {
+        console.error('Error finding newly created product:', error);
+      }
+    }, 500);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Bill of Materials</DialogTitle>
-          <DialogDescription>
-            Select a product to create a BOM for
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div>
-            <Label>Select Product</Label>
-            <Select value={selectedProductId} onValueChange={onSelectProduct}>
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a product" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableProducts.map((product) => (
-                  <SelectItem key={product.id} value={product.id}>
-                    {product.name} {product.sku && `(${product.sku})`}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create Bill of Materials</DialogTitle>
+            <DialogDescription>
+              Select a product to create a BOM for
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <Label>Select Product</Label>
+              <Select value={selectedProductId} onValueChange={onSelectProduct}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose a product" />
+                </SelectTrigger>
+                <SelectContent>
+                  <div className="p-2 border-b mb-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full justify-start"
+                      onClick={() => setIsCreatingProduct(true)}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create New Product
+                    </Button>
+                  </div>
+                  {availableProducts.map((product) => (
+                    <SelectItem key={product.id} value={product.id}>
+                      {product.name} {product.sku && `(${product.sku})`}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={onConfirm} disabled={!selectedProductId}>
-            Continue <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter>
+            <Button variant="outline" onClick={onClose}>Cancel</Button>
+            <Button onClick={onConfirm} disabled={!selectedProductId}>
+              Continue <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Product Creation Modal - Using AddProductModal for consistency */}
+      <AddProductModal
+        isOpen={isCreatingProduct}
+        onClose={() => setIsCreatingProduct(false)}
+        onProductAdded={handleProductAdded}
+        onFirstProductAdded={handleProductAdded}
+      />
+    </>
   );
 }
 

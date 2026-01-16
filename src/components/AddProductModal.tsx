@@ -825,16 +825,17 @@ export const AddProductModal = ({
             return;
           }
           console.log(`[AddProductModal] Parent product inserted: ID ${parent.id}`);
+          insertedProduct = parent;
         }
 
         // Create variants only in create mode (edit mode variant updates handled separately above)
         if (!editMode && insertedProduct) {
-        // 5a. Log product creation in history (quantity 0 so stats aren't affected)
-        try {
-          const { error: parentTxError } = await supabase
-            .from('stock_transactions')
-            .insert({
-              product_id: parent.id,
+          // 5a. Log product creation in history (quantity 0 so stats aren't affected)
+          try {
+            const { error: parentTxError } = await supabase
+              .from('stock_transactions')
+              .insert({
+                product_id: insertedProduct.id,
               product_name: validatedData.name,
               transaction_type: 'incoming' as const,
               quantity: 0,
@@ -847,18 +848,18 @@ export const AddProductModal = ({
               notes: 'Product created',
               variant_id: null,
               variant_name: null,
-              adjustment_method: 'system'
-            });
+                adjustment_method: 'system'
+              });
 
-          if (parentTxError) {
-            console.warn('[AddProductModal] Failed to log parent product creation:', parentTxError);
+            if (parentTxError) {
+              console.warn('[AddProductModal] Failed to log parent product creation:', parentTxError);
+            }
+          } catch (e) {
+            console.warn('[AddProductModal] Exception while logging parent product creation:', e);
           }
-        } catch (e) {
-          console.warn('[AddProductModal] Exception while logging parent product creation:', e);
-        }
 
-        // 5. Create Variants
-        const variantRows = variants.filter(v => v.variantName.trim()).map(v => ({
+          // 5. Create Variants
+          const variantRows = variants.filter(v => v.variantName.trim()).map(v => ({
           name: validatedData.name,
           description: validatedData.description || null,
           quantity_in_stock: v.quantityInStock || 0,
@@ -870,59 +871,60 @@ export const AddProductModal = ({
           image_url: imageUrl,
           user_id: user.id,
           category_id: categoryId,
-          location: v.location?.trim() || validatedData.location.trim() || null,
-          is_variant: true,
-          parent_product_id: parent.id,
-          variant_name: v.variantName.trim(),
-          sku: v.sku?.trim() || null,
-          variant_barcode: v.barcode?.trim() || null,
-        }));
-        
-        console.log(`[AddProductModal] Preparing ${variantRows.length} variant rows.`);
-        
-        if (variantRows.length > 0) {
-          const { data: createdVariants, error: varErr } = await supabase
-            .from('products')
-            .insert(variantRows)
-            .select();
-            
-          if (varErr) {
-            console.error('Error creating variants:', varErr);
-            toast.error('Error creating variants.');
-            setLoading(false);
-            return;
-          }
-          const insertedVariants = createdVariants || [];
-          console.log(`[AddProductModal] Inserted ${insertedVariants.length} variants.`);
+            location: v.location?.trim() || validatedData.location.trim() || null,
+            is_variant: true,
+            parent_product_id: insertedProduct.id,
+            variant_name: v.variantName.trim(),
+            sku: v.sku?.trim() || null,
+            variant_barcode: v.barcode?.trim() || null,
+          }));
+          
+          console.log(`[AddProductModal] Preparing ${variantRows.length} variant rows.`);
+          
+          if (variantRows.length > 0) {
+            const { data: createdVariants, error: varErr } = await supabase
+              .from('products')
+              .insert(variantRows)
+              .select();
+              
+            if (varErr) {
+              console.error('Error creating variants:', varErr);
+              toast.error('Error creating variants.');
+              setLoading(false);
+              return;
+            }
+            const insertedVariants = createdVariants || [];
+            console.log(`[AddProductModal] Inserted ${insertedVariants.length} variants.`);
 
-          // 6. Create Initial Transactions for Variants
-          const transactions = insertedVariants
-            .filter(vp => vp.quantity_in_stock > 0)
-            .map(vp => ({
-              product_id: vp.id,
-              product_name: `${validatedData.name} - ${vp.variant_name}`,
-              transaction_type: 'incoming' as const,
-              quantity: vp.quantity_in_stock,
-              unit_price: vp.purchase_price,
-              user_id: user.id,
-              created_by: user.id,
-              branch_id: activeBranch.branch_id,
-              reference_number: 'INITIAL_STOCK_VARIANT',
-              notes: 'New variant initial stock',
-              variant_id: vp.id,
-              variant_name: vp.variant_name,
-              adjustment_method: 'system'
-            }));
-            
-          console.log(`[AddProductModal] Preparing ${transactions.length} variant transactions.`);
+            // 6. Create Initial Transactions for Variants
+            const transactions = insertedVariants
+              .filter(vp => vp.quantity_in_stock > 0)
+              .map(vp => ({
+                product_id: vp.id,
+                product_name: `${validatedData.name} - ${vp.variant_name}`,
+                transaction_type: 'incoming' as const,
+                quantity: vp.quantity_in_stock,
+                unit_price: vp.purchase_price,
+                user_id: user.id,
+                created_by: user.id,
+                branch_id: activeBranch.branch_id,
+                reference_number: 'INITIAL_STOCK_VARIANT',
+                notes: 'New variant initial stock',
+                variant_id: vp.id,
+                variant_name: vp.variant_name,
+                adjustment_method: 'system'
+              }));
+              
+            console.log(`[AddProductModal] Preparing ${transactions.length} variant transactions.`);
 
-          if (transactions.length > 0) {
-            const { error: tErr } = await supabase
-              .from('stock_transactions')
-              .insert(transactions);
-            if (tErr) {
-              console.error('Error creating variant transactions:', tErr);
-              toast.warning('Variants created but initial transactions failed.');
+            if (transactions.length > 0) {
+              const { error: tErr } = await supabase
+                .from('stock_transactions')
+                .insert(transactions);
+              if (tErr) {
+                console.error('Error creating variant transactions:', tErr);
+                toast.warning('Variants created but initial transactions failed.');
+              }
             }
           }
         }
@@ -932,19 +934,61 @@ export const AddProductModal = ({
       const branchId = activeBranch.branch_id;
       const userId = user.id;
 
+      // Invalidate all products queries (including the categories page specific pattern)
+      await queryClient.invalidateQueries({
+        queryKey: ['products'],
+        refetchType: 'active',
+      });
+
       await queryClient.invalidateQueries({
         queryKey: ['products', branchId],
         refetchType: 'active',
       });
 
+      // Invalidate the specific query key pattern used by categories page
+      // Pattern: ['products', 'categoryProducts', branchId, selectedCategoryIds, user?.id]
       await queryClient.invalidateQueries({
-        queryKey: ['products'],
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            key.length >= 2 &&
+            key[0] === 'products' &&
+            key[1] === 'categoryProducts'
+          );
+        },
         refetchType: 'active',
       });
 
       // Invalidate all categoryProducts queries to refresh category views
       queryClient.invalidateQueries({
         queryKey: ['categoryProducts'],
+        refetchType: 'active',
+      });
+
+      // Invalidate category-specific product queries
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            key.length >= 1 &&
+            key[0] === 'categoryProducts'
+          );
+        },
+        refetchType: 'active',
+      });
+
+      // Invalidate productsByCategories queries
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            key.length >= 1 &&
+            key[0] === 'productsByCategories'
+          );
+        },
         refetchType: 'active',
       });
 
@@ -964,8 +1008,22 @@ export const AddProductModal = ({
         queryKey: ['productCount', branchId, userId],
       });
 
+      // Invalidate all stockTransactions queries (both general and branch-specific)
       queryClient.invalidateQueries({
         queryKey: ['stockTransactions'],
+        refetchType: 'active',
+      });
+
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) &&
+            key.length >= 1 &&
+            key[0] === 'stockTransactions'
+          );
+        },
+        refetchType: 'active',
       });
 
       queryClient.invalidateQueries({
@@ -1051,11 +1109,11 @@ export const AddProductModal = ({
       {/* 1. Main AddProductModal Dialog */}
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className={`w-full max-w-full mx-auto p-0 flex flex-col ${isMobile ? 'h-full max-h-full rounded-none bg-white' : 'bg-white md:w-auto md:max-w-5xl md:max-h-[95vh] md:rounded-lg'}`}>
-          <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-6 border-b'}`}>
+          <DialogHeader className={`${isMobile ? 'p-4 border-b' : 'p-6 border-b'} flex-shrink-0`}>
             <DialogTitle>{editMode ? 'Edit Product' : 'Add Product'}</DialogTitle>
           </DialogHeader>
 
-          <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'}`}>
+          <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'} min-h-0`}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                 {/* Product Information Card */}
@@ -1769,8 +1827,8 @@ export const AddProductModal = ({
           </div>
 
 
-            {/* Action Buttons - Sticky Footer */}
-            <div className={`sticky bottom-0 bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
+            {/* Action Buttons - Footer */}
+            <div className={`flex-shrink-0 bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
               <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row justify-end'}`}>
                 {editMode && onDelete && (
                   <Button 
