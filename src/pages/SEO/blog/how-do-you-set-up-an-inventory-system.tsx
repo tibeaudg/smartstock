@@ -5,7 +5,8 @@ import { StructuredData } from "@/components/StructuredData";
 import {
   CheckCircle, Target, BarChart3, Database, QrCode, Users, Settings2,
   ArrowRight, ShieldCheck, Zap, Cpu, PieChart, FileSpreadsheet,
-  Smartphone, Warehouse, CalendarClock, AlertCircle, GitBranch, Brain
+  Smartphone, Warehouse, CalendarClock, AlertCircle, GitBranch, Brain,
+  Calculator
 } from "lucide-react";
 
 /**
@@ -282,6 +283,39 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
         </div>
       </section>
 
+
+{/* 3. The 80/20 Rule Section (Addresses PAA) */}
+<section className="py-20 bg-white">
+        <div className="max-w-5xl mx-auto px-4 text-center">
+          <div className="inline-block p-3 bg-blue-50 rounded-2xl mb-6">
+            <Calculator className="text-blue-600 w-8 h-8" />
+          </div>
+          <h2 className="text-3xl font-bold mb-6">The 80/20 Rule: ABC Analysis</h2>
+          <p className="text-lg text-slate-600 mb-10 max-w-3xl mx-auto">
+            Don't treat all stock equally. An effective inventory system uses <strong>ABC Analysis</strong> to prioritize resources.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="p-6 border-t-4 border-green-500 bg-slate-50 rounded-b-xl">
+              <h4 className="font-bold text-2xl mb-2">Category A</h4>
+              <p className="text-sm text-slate-500">20% of items, 80% of value. Track these daily.</p>
+            </div>
+            <div className="p-6 border-t-4 border-yellow-500 bg-slate-50 rounded-b-xl">
+              <h4 className="font-bold text-2xl mb-2">Category B</h4>
+              <p className="text-sm text-slate-500">30% of items, 15% of value. Track these monthly.</p>
+            </div>
+            <div className="p-6 border-t-4 border-red-500 bg-slate-50 rounded-b-xl">
+              <h4 className="font-bold text-2xl mb-2">Category C</h4>
+              <p className="text-sm text-slate-500">50% of items, 5% of value. Track these annually.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+
       {/* The Definitive 5-Step Implementation Guide */}
       <section id="steps" className="bg-white px-4 py-24">
         <div className="mx-auto max-w-5xl">
@@ -359,6 +393,39 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
             })}
           </div>
 
+
+{/* 6. Valuation Methodology (Advanced Topic for SEO) */}
+<section className="py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+             <div>
+               <h2 className="text-3xl font-bold mb-6 text-black">Inventory Valuation: FIFO vs. LIFO</h2>
+               <p className="text-black mb-6">
+                 When you create an inventory system, you must define how you calculate the value of items on your shelves. This impacts your profit reporting and taxes.
+               </p>
+               <ul className="space-y-4 text-black">
+                 <li className="flex gap-3">
+                   <CheckCircle className="text-green-500 flex-shrink-0 text-black" />
+                   <span><strong>FIFO:</strong> Assumes the first items placed in inventory are the first sold. Ideal for perishable goods.</span>
+                 </li>
+                 <li className="flex gap-3">
+                   <CheckCircle className="text-green-500 flex-shrink-0 text-black" />
+                   <span><strong>LIFO:</strong> Assumes the last items produced are sold first. Often used to hedge against inflation.</span>
+                 </li>
+               </ul>
+             </div>
+             <div className="bg-white p-8 rounded-3xl shadow-xl">
+                <h4 className="font-bold mb-4 text-black">The Safety Stock Formula</h4>
+                <p className="text-sm text-slate-500 mb-4 text-black leading-relaxed">Never run out of stock again by setting up your system to calculate:</p>
+                <div className="bg-slate-50 p-6 rounded-xl font-mono text-blue-600 text-center text-black">
+                  $$ (Max Daily Sales \times Max Lead Time) - (Avg Daily Sales \times Avg Lead Time) $$
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+
           {/* CTA with Strong Value Prop */}
           <div className="mt-20 p-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
@@ -377,21 +444,19 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
       </section>
 
       {/* Comprehensive FAQ targeting all "People Also Ask" */}
-      <section id="faq" className="bg-white py-24">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Your Inventory System Questions, Answered</h2>
-          <div className="space-y-6">
+      <section>
+        <div className="max-w-6xl mx-auto py-12">
+          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
             {faqData.map((faq, index) => (
-              <div key={index} id={`faq-${faq.question.substring(0, 20).toLowerCase().replace(/\s+/g, '-')}`} className="border border-slate-200 rounded-2xl p-6 hover:border-blue-300 transition-colors">
-                <h3 className="text-xl font-bold text-slate-900 mb-3 flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                  {faq.question}
-                </h3>
-                <p className="text-slate-700 pl-8">{faq.answer}</p>
-              </div>
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              </details>
             ))}
           </div>
         </div>
+        
       </section>
 
     </SeoPageLayout>

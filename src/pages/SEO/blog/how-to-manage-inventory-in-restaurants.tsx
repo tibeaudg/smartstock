@@ -179,7 +179,7 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
                 <ChefHat className="w-4 h-4" /> 2026 Restaurant Operations Guide
               </div>
               <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-8">
-                Tired of <span className="text-red-600">Food Waste Eating Your Profits?</span>
+                Tired of <span className="text-blue-600">Food Waste Eating Your Profits?</span>
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed mb-6">
                 The average restaurant loses <strong>4-10% of revenue</strong> to food waste and poor inventory control. But top-performing restaurants using systematic inventory management reduce food costs by <strong>20-30%</strong> while virtually eliminating stockouts.
@@ -214,6 +214,58 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
           </div>
         </div>
       </section>
+
+
+
+      <section className="py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">The "Shelf-to-Sheet" Gold Standard</h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Most errors in restaurant inventory happen because staff look at a list and try to find the item (Sheet-to-Shelf). For 98%+ accuracy, use the <strong>Shelf-to-Sheet method</strong>.
+            </p>
+            <div className="space-y-4">
+              <div className="flex gap-4 p-4 rounded-xl bg-green-50 border border-green-100">
+                <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
+                <div>
+                  <p className="font-bold text-gray-900">Shelf-to-Sheet</p>
+                  <p className="text-sm text-gray-600">Count what you see on the shelf first, then record it. This ensures "ghost inventory" (items in stock but not on the list) is actually captured.</p>
+                </div>
+              </div>
+              <div className="flex gap-4 p-4 rounded-xl bg-red-50 border border-red-100 opacity-80">
+                <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0" />
+                <div>
+                  <p className="font-bold text-gray-900 text-sm">Avoid: Sheet-to-Shelf</p>
+                  <p className="text-xs text-gray-600">Searching for items based on a list leads to "pencil whipping" (guessing numbers) when an item isn't immediately found.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100">
+            <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-blue-600" /> Pro Counting Tips</h4>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 text-gray-700 italic">"Count in pairs: One person calls out the weight/count, the other records it in the app. This cuts time by 50%."</li>
+              <li className="flex items-start gap-3 text-gray-700">
+                <span className="font-bold text-blue-600">01.</span> Standardize units (e.g., always count flour by the 50lb bag, not individual scoops).
+              </li>
+              <li className="flex items-start gap-3 text-gray-700">
+                <span className="font-bold text-blue-600">02.</span> Map your storage. Your inventory app should follow the exact physical path of your walk-in.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+
+
+
+
 
       {/* What is Restaurant Inventory Management? */}
       <section className="py-16 bg-gray-50">
@@ -322,6 +374,78 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
           </div>
         </div>
       </section>
+
+
+
+      <section className="py-16 bg-blue-900 text-white overflow-hidden relative">
+  <div className="max-w-6xl mx-auto px-4 relative z-10">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold mb-4">Connecting Inventory to the Plate</h2>
+      <p className="text-blue-200">Inventory management is useless if your recipes aren't costed correctly.</p>
+    </div>
+    
+    <div className="grid md:grid-cols-2 gap-8">
+      <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+        <ChefHat className="w-10 h-10 text-blue-300 mb-6" />
+        <h3 className="text-xl font-bold mb-4">Dynamic Recipe Costing</h3>
+        <p className="text-blue-100 mb-6">As your supplier prices fluctuate (the "Actual" cost), your recipe costs must update automatically. If your steak price rises by 15%, your software should alert you that your margin on the Filet Mignon has dropped below your target.</p>
+        <div className="bg-blue-800/50 p-4 rounded-lg text-sm">
+          <strong>2026 Trend:</strong> AI-driven price fetching from digital invoices now allows for real-time menu profitability tracking.
+        </div>
+      </div>
+      
+      <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+        <Target className="w-10 h-10 text-green-300 mb-6" />
+        <h3 className="text-xl font-bold mb-4">The Menu Engineering Matrix</h3>
+        <p className="text-blue-100 mb-4">Classify your menu based on inventory usage and profitability:</p>
+        <ul className="space-y-3 text-sm">
+          <li><span className="text-green-400 font-bold">Stars:</span> High Profit / High Popularity (Highlight these)</li>
+          <li><span className="text-yellow-400 font-bold">Plowhorses:</span> Low Profit / High Popularity (Raise price or lower portion)</li>
+          <li><span className="text-orange-400 font-bold">Puzzles:</span> High Profit / Low Popularity (Promote these)</li>
+          <li><span className="text-red-400 font-bold">Dogs:</span> Low Profit / Low Popularity (Remove from menu)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section className="py-16 bg-gray-50">
+  <div className="max-w-4xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Top 3 Reasons Inventory Systems Fail</h2>
+    <div className="space-y-6">
+      {[
+        {
+          title: "The 'Everything' Trap",
+          desc: "Trying to track every salt packet and garnish. Focus on the 'Vital Few' (Top 20% of items that represent 80% of your spend).",
+          fix: "Use ABC Analysis: Track 'A' items (Proteins/Alcohol) daily, 'B' items weekly, and 'C' items monthly."
+        },
+        {
+          title: "Ignoring Transfers",
+          desc: "When the bar takes lemons from the kitchen, or Location A sends meat to Location B, your data dies without a transfer log.",
+          fix: "Implement a digital 'Internal Transfer' button on your mobile inventory app."
+        },
+        {
+          title: "Measuring Without Action",
+          desc: "Counting every Sunday but never looking at the variance report until the end of the quarter.",
+          fix: "Mandate a Monday morning 'Variance Meeting' to discuss the top 5 missing items from the previous week."
+        }
+      ].map((pitfall, i) => (
+        <div key={i} className="flex gap-6 p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
+          <div className="text-2xl font-black text-gray-200">0{i+1}</div>
+          <div>
+            <h4 className="font-bold text-gray-900 text-lg mb-2">{pitfall.title}</h4>
+            <p className="text-gray-600 mb-3">{pitfall.desc}</p>
+            <p className="text-sm font-semibold text-blue-600 flex items-center gap-1">
+              <Lightbulb className="w-4 h-4" /> The Fix: {pitfall.fix}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Software Comparison Section */}
       <section id="software" className="py-16 bg-gray-50">
@@ -447,6 +571,36 @@ export default function SeoHowToManageInventoryInRestaurantsPage() {
           </div>
         </div>
       </section>
+
+
+
+      <section className="py-16 bg-white">
+  <div className="max-w-6xl mx-auto px-4">
+    <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+      <div className="max-w-2xl">
+        <h2 className="text-3xl font-bold text-gray-900">Physical Organization: The Foundation</h2>
+        <p className="text-gray-600 mt-2">Digital tracking only works if your physical shelves are organized for speed and visibility.</p>
+      </div>
+      <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2">
+        <Package className="w-4 h-4" /> Optimize for 2026 Efficiency
+      </div>
+    </div>
+    
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[
+        { label: "Clear Labeling", text: "Every bin must have a label with the item name, unit, and a QR code for quick scanning." },
+        { label: "The 6-Inch Rule", text: "Health safety: Keep all items at least 6 inches off the floor to prevent contamination and ease cleaning." },
+        { label: "Date-First Facing", text: "Rotate products so the 'Received' or 'Exp' date is always facing forward for the checker." },
+        { label: "Declutter 'Dead Stock'", text: "Unused items take up mental space. If you haven't used it in 60 days, sell it or toss it." }
+      ].map((tip, i) => (
+        <div key={i} className="p-6 rounded-2xl border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-lg transition-all">
+          <h4 className="font-bold text-gray-900 mb-3">{tip.label}</h4>
+          <p className="text-sm text-gray-600 leading-relaxed">{tip.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
 
       <section>

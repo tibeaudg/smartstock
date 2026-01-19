@@ -208,6 +208,9 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
           </div>
         </div>
       </section>
+
+
+      
       <section>
         <div className="max-w-6xl mx-auto py-12">
           <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
