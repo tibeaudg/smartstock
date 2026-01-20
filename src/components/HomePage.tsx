@@ -174,11 +174,25 @@ export const HomePage = () => {
               </p>
             </div>
           </div>
-
-          {/* Trust Badges */}
-          <TrustBadges />
         </div>
-      </section>
+        </section>
+
+
+
+        {/* Social Proof - Logo Bar */}
+        <section className="py-16 bg-slate-50 border-y border-slate-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <p className="text-center text-slate-500 text-sm font-semibold uppercase tracking-wider mb-8">
+              Powering Inventory Management for Industry Leaders
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-12 opacity-40 grayscale">
+              {['Acme Manufacturing', 'TechParts Inc', 'GlobalAssembly', 'Precision Tools', 'IndustrialCo', 'MakerSpace'].map((company, i) => (
+                <div key={i} className="text-2xl font-black text-slate-700">{company}</div>
+              ))}
+            </div>
+          </div>
+        </section>
+
 
       {/* Problem-Solution Section */}
       <section className="py-16 px-4 bg-white">

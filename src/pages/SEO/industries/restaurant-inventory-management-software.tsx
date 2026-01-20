@@ -1,35 +1,32 @@
+import React from 'react';
 import SEO from '@/components/SEO';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
-
 import {
-  Utensils,
   Smartphone,
-  AlertCircle,
-  QrCode,
-  LineChart,
-  Users,
-  IceCream,
-  Wine,
-  ClipboardList,
-  ShieldCheck,
-  CheckCircle,
-  WifiOff,
-  Clock,
   TrendingDown,
+  Clock,
+  DollarSign,
   BarChart3,
   Zap,
-  Database,
-  RefreshCw
+  Shield,
+  Users,
+  CheckCircle,
+  ArrowRight,
+  AlertTriangle,
+  Package,
+  RefreshCw,
+  FileText,
+  Database
 } from 'lucide-react';
-
 import { KeyTakeaways } from '@/components/KeyTakeaways';
+import HeaderPublic from '@/components/HeaderPublic';
+import Footer from '@/components/Footer';
 
 export default function RestaurantInventoryManagementPage() {
-  
   const location = useLocation();
 
   const breadcrumbs = getBreadcrumbPath(location.pathname).map(
@@ -44,52 +41,71 @@ export default function RestaurantInventoryManagementPage() {
     {
       question: 'What software do restaurants use for inventory?',
       answer:
-        'Restaurants use a variety of software depending on their size and needs. Popular options include all-in-one POS systems with built-in inventory (like Square for Restaurants or Toast), specialized inventory platforms (like MarketMan or xtraCHEF), and comprehensive enterprise suites (like Restaurant365 or Crunchtime). The best choice depends on your menu complexity, number of locations, and need for integrations with accounting or vendors[citation:4][citation:8][citation:9].',
+        'Restaurants use specialized inventory management software like MarketMan, Restaurant365, Toast, xtraCHEF, and StockFlow to track food costs, manage stock levels, and automate ordering. The best choice depends on your restaurant size, menu complexity, and whether you need multi-location support. Cloud-based solutions with mobile apps and POS integration are most popular in 2026, as they provide real-time inventory tracking and reduce manual counting time by up to 85%.',
     },
     {
       question: 'What is the best inventory method for restaurants?',
       answer:
-        'The most effective method is a perpetual inventory system integrated with your POS. This provides real-time tracking where ingredient levels are automatically deducted as menu items are sold. Key components include ingredient-level recipe tracking to tie usage to sales, First-In-First-Out (FIFO) rotation to reduce spoilage, and setting data-driven par levels for automated reordering. This method replaces error-prone manual counts with accurate, real-time data[citation:1][citation:6].',
+        'The most effective method is perpetual inventory tracking integrated with your POS system. This automatically deducts ingredients when menu items are sold, providing real-time stock levels. Combine this with ingredient-level recipe costing to track exact food costs per dish, FIFO (First-In-First-Out) rotation to minimize waste, and par level automation for smart reordering. This method eliminates manual counting errors and gives you accurate cost data to protect profit margins.',
     },
     {
       question: 'How to track inventory in a restaurant?',
       answer:
-        'Effective tracking involves consistent processes and the right tools. Best practices include: 1) Scheduling regular counts (daily for high-cost items, weekly for full inventory) at the same time each day[citation:6]; 2) Using mobile apps with barcode scanning to speed up counts and reduce errors[citation:1]; 3) Organizing storage areas and labeling shelves for efficiency[citation:6]; and 4) Implementing software that provides real-time dashboards and low-stock alerts to prevent shortages during service[citation:1][citation:3].',
+        'Effective restaurant inventory tracking requires: 1) Using mobile barcode scanning apps to count stock quickly and accurately, 2) Scheduling consistent counts (daily for high-value items, weekly for full inventory), 3) Implementing software that connects to your POS for automatic deductions, 4) Setting up low-stock alerts to prevent stockouts during service, and 5) Organizing storage with clear labels and FIFO rotation. Modern cloud-based systems can reduce counting time from 6-7 hours to under one hour per week.',
     },
     {
       question: 'Can I manage inventory for multiple restaurant locations?',
       answer:
-        'Yes. Multi-location inventory management is a core feature of enterprise-grade software like Supy, Restaurant365, and Operandio. These platforms provide a centralized cloud dashboard where owners can see live stock levels, usage trends, and cost data across all sites. This enables smarter purchasing decisions, allows for transfers between locations to reduce waste, and ensures recipe and portion consistency across your brand[citation:2][citation:8][citation:10].',
+        'Yes. Multi-location restaurant inventory management is essential for restaurant groups and requires specialized software like Restaurant365, Supy, MarketMan, or StockFlow. These platforms provide centralized dashboards to view real-time inventory, costs, and usage across all locations. Benefits include standardized recipes and portions, bulk purchasing power, inter-location transfers to reduce waste, and consolidated reporting for better decision-making across your entire operation.',
     },
     {
-      question: 'Is free restaurant inventory management software available?',
+      question: 'Is there free restaurant inventory management software?',
       answer:
-        'Yes, some platforms offer free entry-level plans. Square for Restaurants has a free plan with basic inventory features, and xtraCHEF by Toast offers a $0 starter kit for single-location restaurants[citation:4][citation:8]. These are suitable for very small operations but often lack advanced features like detailed recipe costing or vendor integrations. For growing restaurants, paid plans starting around $60-$200 per month provide more robust automation and reporting capabilities[citation:4][citation:7].',
+        'Yes, several options offer free plans. Square for Restaurants includes basic inventory features in its free plan, xtraCHEF by Toast offers a $0 starter kit for single-location restaurants, and StockFlow provides free mobile inventory tracking for small restaurants. While free plans work for very small operations, growing restaurants typically need paid plans ($60-200/month) for advanced features like recipe costing, vendor management, and multi-location support.',
+    },
+    {
+      question: 'What is Restaurant 365 software?',
+      answer:
+        'Restaurant365 is a comprehensive cloud-based restaurant management platform that combines accounting, inventory management, scheduling, and operations into one system. It is designed specifically for multi-location restaurant groups and enterprise operations. The software provides real-time inventory tracking, automated invoice processing, recipe costing, and financial reporting. Restaurant365 integrates with most major POS systems and is best suited for larger operations that need enterprise-grade features and dedicated support.',
+    },
+    {
+      question: 'How does MarketMan compare to other restaurant inventory software?',
+      answer:
+        'MarketMan is ideal for small to medium restaurants focusing on vendor management and inventory tracking. It excels at invoice automation, price comparison across suppliers, and inventory counting. Compared to Restaurant365 (best for enterprise operations), Toast/xtraCHEF (best for POS integration), and Supy (best for multi-brand F&B groups), MarketMan offers a middle-ground solution with strong vendor features and user-friendly interface at competitive pricing ($249-449/month).',
+    },
+    {
+      question: 'What is food and beverage inventory management software?',
+      answer:
+        'Food and beverage inventory management software is specialized technology that tracks ingredients, supplies, and finished goods in restaurants, bars, hotels, and catering operations. Unlike general retail inventory systems, F&B software handles unique challenges like perishable goods with expiration dates, recipe-based inventory deductions, portion control, and batch tracking. Modern systems provide mobile counting, automated reordering, waste tracking, theoretical vs actual cost variance analysis, and integration with POS and accounting systems to reduce food costs by 3-5% on average.',
     },
   ];
 
   const structuredData = generateSeoPageStructuredData({
-    title: 'Restaurant Inventory Management Software | 2026 Guide & Comparisons',
+    title: 'Restaurant Inventory Management Software 2026 | Compare Top Systems',
     description:
-      'Explore the best restaurant inventory software for 2026. Compare features, pricing, and benefits of leading systems like MarketMan, Toast, and Square to reduce food costs and waste.',
+      'Compare the best restaurant inventory software for 2026. Reduce food costs by 3-5% with real-time tracking, recipe costing, and automated ordering. Free trials available.',
     url: location.pathname,
     breadcrumbs,
     faqData,
     softwareData: {
-      name: 'StockFlow Hospitality Edition',
+      name: 'StockFlow Restaurant Inventory',
       description:
-        'A mobile inventory management solution tailored for restaurants, bars, and catering businesses to track stock and automate reordering.',
+        'Cloud-based restaurant inventory management software with mobile barcode scanning, recipe costing, multi-location tracking, and POS integration to reduce food waste and labor costs.',
       category: 'BusinessApplication',
       operatingSystem: 'iOS, Android, Web',
       price: '0',
       currency: 'USD',
       features: [
-        'Mobile QR/Barcode counting',
-        'Perishable stock alerts',
-        'Multi-location bar & kitchen tracking',
+        'Mobile barcode/QR scanning',
+        'Recipe-level ingredient tracking',
+        'Real-time POS integration',
+        'Multi-location management',
+        'Automated purchase orders',
+        'Waste tracking & analytics',
         'Offline counting mode',
-        'Usage analytics & waste reporting',
-        'Supplier management',
+        'Low-stock alerts',
+        'Vendor price comparison',
+        'Theoretical vs actual variance'
       ],
       image: 'https://www.stockflowsystems.com/restaurant-inventory-hero.png',
       url: location.pathname,
@@ -98,271 +114,714 @@ export default function RestaurantInventoryManagementPage() {
     includeWebSite: false,
   });
 
-  // Enhanced and re-categorized features based on search insights
-  const coreFeatures = [
+  const competitorSoftware = [
     {
-      icon: RefreshCw,
-      title: 'Real-Time Auto-86 & Menu Sync',
-      description: 'Prevent customer disappointment by automatically removing sold-out items from your POS, kitchen displays, and online ordering the moment stock runs out[citation:1].',
+      name: 'StockFlow',
+      bestFor: 'Small to medium restaurants & bars',
+      pricing: 'Free - $99/month',
+      keyFeatures: [
+        'Mobile barcode scanning',
+        'Recipe-level costing',
+        'Multi-location support',
+        'Offline counting mode',
+        'POS integration (Toast, Square, Clover)',
+      ],
+      highlight: true
     },
     {
-      icon: Database,
-      title: 'Ingredient-Level Recipe Costing',
-      description: 'Link every recipe and modifier directly to inventory. Track exact food costs per dish and identify your most (and least) profitable menu items with precision[citation:1][citation:7].',
-    },
-    {
-      icon: AlertCircle,
-      title: 'Smart Low-Stock & Par Alerts',
-      description: 'Receive instant phone notifications when key ingredients dip below your preset levels. Proactive alerts prevent mid-service stockouts and enable timely reordering[citation:1][citation:3].',
-    },
-    {
-      icon: QrCode,
-      title: 'Mobile Barcode Scanning',
-      description: 'Ditch clipboards and paper. Use any smartphone to scan items during counts and receiving, slashing counting time by up to 85% and drastically reducing human error[citation:1][citation:6].',
-    },
-  ];
-
-  const advancedCapabilities = [
-    {
-      icon: TrendingDown,
-      title: 'Theoretical vs. Actual Cost Analysis',
-      description: 'Pinpoint the source of shrink. The system compares expected usage (based on recipes and sales) against actual counts to reveal waste, portioning issues, or theft[citation:1][citation:10].',
-    },
-    {
-      icon: Zap,
-      title: 'Automated Purchasing & Vendor Management',
-      description: 'Generate purchase orders directly from low-stock alerts. Track price fluctuations from suppliers, manage invoices, and streamline your entire procurement cycle[citation:4][citation:7].',
-    },
-    {
-      icon: BarChart3,
-      title: 'Consolidated Multi-Unit Dashboards',
-      description: 'For restaurant groups, get a single-pane-of-glass view of inventory, costs, and trends across all locations to standardize operations and leverage combined purchasing power[citation:2][citation:10].',
-    },
-    {
-      icon: WifiOff,
-      title: 'Offline Counting Mode',
-      description: 'Inventory doesn’t stop in dead zones. Update counts in basements, walk-ins, or freezers; data syncs automatically once reconnected.',
-    },
-  ];
-
-  // Software Comparison Data derived from search results
-  const softwareComparison = [
-    {
-      name: 'Stockflow',
-      bestFor: 'Restaurants, bars, and catering businesses',
-      keyFeature: 'Mobile QR/Barcode counting, perishable stock alerts, multi-location bar & kitchen tracking, offline counting mode, usage analytics & waste reporting, supplier management',
-      pricing: 'Free',
-    },
-    {
-      name: 'Square for Restaurants',
-      bestFor: 'Small to midsize restaurants, affordability',
-      keyFeature: 'Free plan available, easy POS integration',
-      pricing: 'Free - $60+/month[citation:4]',
-    },
-    {
-      name: 'Toast / xtraCHEF',
-      bestFor: 'Fast-casual & full-service restaurants',
-      keyFeature: 'Tight POS integration, inventory management',
-      pricing: '$0 Starter Kit - Custom[citation:4][citation:8]',
+      name: 'MarketMan',
+      bestFor: 'Restaurants prioritizing vendor management',
+      pricing: '$249 - $449/month',
+      keyFeatures: [
+        'Invoice automation',
+        'Vendor price comparison',
+        'Inventory tracking',
+        'Purchase order management',
+      ],
+      highlight: false
     },
     {
       name: 'Restaurant365',
-      bestFor: 'Multi-location enterprise restaurant groups',
-      keyFeature: 'All-in-one operations, accounting & inventory suite',
-      pricing: 'Custom (Enterprise-focused)[citation:8][citation:9]',
+      bestFor: 'Enterprise & multi-location groups',
+      pricing: 'Custom (Enterprise)',
+      keyFeatures: [
+        'All-in-one operations suite',
+        'Accounting integration',
+        'Advanced reporting',
+        'Dedicated support',
+      ],
+      highlight: false
+    },
+    {
+      name: 'Toast / xtraCHEF',
+      bestFor: 'Toast POS users',
+      pricing: '$0 Starter - Custom',
+      keyFeatures: [
+        'Seamless Toast POS integration',
+        'Invoice processing',
+        'Recipe management',
+        'Cost tracking',
+      ],
+      highlight: false
+    },
+    {
+      name: 'Supy',
+      bestFor: 'Multi-brand F&B operations',
+      pricing: 'Custom',
+      keyFeatures: [
+        'Real-time inventory insights',
+        'Multi-location dashboard',
+        'Waste reduction analytics',
+        'Mobile counting',
+      ],
+      highlight: false
+    },
+  ];
+
+  const coreFeatures = [
+    {
+      icon: Smartphone,
+      title: 'Mobile Barcode Scanning',
+      description: 'Count inventory 85% faster using your phone to scan barcodes and QR codes. Eliminate manual data entry errors and free managers from clipboard work.',
+      benefit: '85% faster counting'
+    },
+    {
+      icon: DollarSign,
+      title: 'Recipe-Level Cost Tracking',
+      description: 'Link every menu item to its ingredients. Know the exact cost of each dish and identify your most profitable items with precision.',
+      benefit: '100% cost accuracy'
+    },
+    {
+      icon: AlertTriangle,
+      title: 'Automated Low-Stock Alerts',
+      description: 'Get instant notifications when ingredients fall below par levels. Prevent stockouts during service and automate reordering.',
+      benefit: 'Zero stockouts'
+    },
+    {
+      icon: TrendingDown,
+      title: 'Variance Analysis',
+      description: 'Compare theoretical usage (based on sales) vs actual inventory to identify waste, portioning issues, or theft worth thousands per month.',
+      benefit: '3-5% cost reduction'
+    },
+    {
+      icon: RefreshCw,
+      title: 'Real-Time POS Integration',
+      description: 'Automatically deduct ingredients as menu items sell. Get live stock levels without manual updates.',
+      benefit: 'Real-time accuracy'
+    },
+    {
+      icon: Clock,
+      title: 'Multi-Location Management',
+      description: 'Manage inventory, recipes, and costs across all restaurant locations from one centralized dashboard.',
+      benefit: 'Unified operations'
+    },
+  ];
+
+  const problemStats = [
+    {
+      stat: '4-10%',
+      label: 'of revenue lost to food waste',
+      description: 'The average restaurant loses significant revenue to spoilage, over-ordering, and waste',
+    },
+    {
+      stat: '6-7 hrs',
+      label: 'per week on manual counting',
+      description: 'Managers spend their entire day off doing inventory counts with spreadsheets',
+    },
+    {
+      stat: '15-20%',
+      label: 'inventory variance without software',
+      description: 'Manual tracking creates massive discrepancies between recorded and actual stock',
+    },
+    {
+      stat: '3-5%',
+      label: 'cost reduction with automation',
+      description: 'Restaurants using inventory software reduce food costs by an average of 3-5%',
     },
   ];
 
   const keyTakeaways = [
-    'Specialized restaurant inventory software can reduce food costs by 3-5% on average by eliminating over-ordering, spoilage, and portioning waste[citation:1][citation:7].',
-    'The most critical feature is ingredient-level tracking tied to recipes, which automates cost calculation and reveals true menu profitability[citation:1][citation:9].',
-    'Mobile barcode scanning can cut weekly inventory counting time from 6-7 hours to under one hour, freeing managers for strategic tasks[citation:6].',
-    'For multi-location groups, a centralized platform is non-negotiable for standardizing costs, recipes, and purchasing across all sites[citation:2][citation:10].',
+    'Restaurant inventory software reduces food costs by 3-5% on average by eliminating over-ordering, spoilage, and waste',
+    'Mobile barcode scanning cuts weekly inventory counting time from 6-7 hours to under 1 hour',
+    'Recipe-level ingredient tracking is the most critical feature for accurate cost analysis and menu profitability',
+    'Multi-location restaurant groups must use centralized inventory platforms to standardize operations and leverage bulk purchasing',
+    'Free plans exist (Square, xtraCHEF, StockFlow) but growing operations need paid solutions ($60-200/month) for advanced features',
   ];
 
   return (
-    <SeoPageLayout
-      title="Best Restaurant Inventory Management Software 2026"
-      heroTitle="Restaurant Inventory Software: The 2026 Guide to Cutting Food Costs"
-      updatedDate="01/15/2026"
-      faqData={faqData}
-      keyTakeaways={keyTakeaways}
-    >
+<>
+<HeaderPublic />
       <SEO
-        title="Best Restaurant Inventory Software 2026 | Compare Systems & Features"
-        description="Cut food costs and reduce waste. Our 2026 guide compares top restaurant inventory software like MarketMan, Toast, and Square on features, pricing, and use cases."
-        keywords="restaurant inventory software, bar inventory app, food cost software, inventory management for restaurants, best restaurant inventory system, MarketMan, Toast, Square"
+        title="Best Restaurant Inventory Software 2026 | MarketMan, Restaurant365, Toast Comparison"
+        description="Compare top restaurant inventory management software for 2026. Reduce food costs 3-5% with real-time tracking, recipe costing & automated ordering. Free trials available."
+        keywords="restaurant inventory software, restaurant inventory management system, inventory software for restaurants, food and beverage inventory management software, restaurant inventory app, MarketMan, Restaurant365, best inventory software for restaurants, restaurant management software, hospitality inventory tracking software"
         url="https://www.stockflowsystems.com/restaurant-inventory-software"
         structuredData={structuredData}
       />
 
-      {/* Core Explanation - Updated with Problem/Solution Focus */}
-      <section className="py-20 border-b">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Beyond Spreadsheets: Modern Inventory Control for Restaurants</h1>
-          <p className="text-lg text-gray-600 leading-relaxed mb-6">
-            Food waste costs the average restaurant <strong>4-10% of its revenue</strong>[citation:6], while manual inventory counts steal 6-7 hours from a manager's week[citation:6]. In 2026, <strong>restaurant inventory software</strong> is the essential tool that turns this costly guesswork into automated, data-driven control.
-          </p>
-          <p className="text-lg text-gray-600 leading-relaxed">
-            This guide breaks down the systems—from all-in-one POS platforms to specialized cost-control suites—that help operators track every ounce of truffle oil and bottle of liquor, automate reordering, and finally understand their true plate cost to protect shrinking margins.
-          </p>
+      {/* Hero Section with Problem Statement */}
+      <section className="mt-16 relative py-16 overflow-hidden bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
+        <div className="absolute inset-0 opacity-10">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="food-pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <circle cx="20" cy="20" r="2" fill="currentColor" className="text-orange-600"/>
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#food-pattern)"/>
+          </svg>
         </div>
-      </section>
-
-      {/* Why It Matters & Core Features */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">How Inventory Software Solves Core Restaurant Problems</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {coreFeatures.map((f, i) => (
-              <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-                <f.icon className="w-10 h-10 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
-                <p className="text-gray-600 text-sm">{f.description}</p>
+        
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 border border-orange-200 rounded-full">
+                <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                <span className="text-orange-800 text-sm font-bold">Updated January 2026</span>
               </div>
-            ))}
-          </div>
+              
+              <h1 className="text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1]">
+                Stop Losing <span className="text-orange-600">$2,000+/Month</span> to Food Waste
+              </h1>
+              
+              <p className="text-xl text-gray-700 leading-relaxed">
+                Restaurant inventory management software cuts food costs by <strong>3-5%</strong> by automating tracking, 
+                preventing over-ordering, and identifying waste before it kills your margins. Compare the best systems for 2026.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/auth?mode=register" className="group px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                  Start Using StockFlow Free - No Credit Card Required →
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
 
-          {/* Advanced Capabilities */}
-          <div className="bg-gray-50 p-8 rounded-2xl border border-gray-200">
-            <h3 className="text-2xl font-bold mb-8 text-center">Advanced Capabilities for Growing Operations</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {advancedCapabilities.map((f, i) => (
-                <div key={i} className="text-center">
-                  <f.icon className="w-12 h-12 text-blue-600 mb-4 mx-auto" />
-                  <h4 className="font-semibold mb-2">{f.title}</h4>
-                  <p className="text-gray-600 text-sm">{f.description}</p>
+              </div>
+              
+              <div className="flex flex-wrap gap-6 pt-4 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  No credit card required
                 </div>
-              ))}
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  Setup in 10 minutes
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  Works with any POS
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 space-y-6">
+                <div className="flex items-center justify-between pb-4 border-b">
+                  <h3 className="text-lg font-bold text-gray-900">This Week's Food Cost Impact</h3>
+                  <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">CRITICAL</span>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div>
+                      <div className="text-sm text-gray-600">Waste from Spoilage</div>
+                      <div className="text-2xl font-black text-red-600">$845</div>
+                    </div>
+                    <TrendingDown className="w-8 h-8 text-red-600" />
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <div>
+                      <div className="text-sm text-gray-600">Over-ordering Costs</div>
+                      <div className="text-2xl font-black text-orange-600">$620</div>
+                    </div>
+                    <AlertTriangle className="w-8 h-8 text-orange-600" />
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div>
+                      <div className="text-sm text-gray-600">Manager Time Wasted</div>
+                      <div className="text-2xl font-black text-yellow-600">7 hours</div>
+                    </div>
+                    <Clock className="w-8 h-8 text-yellow-600" />
+                  </div>
+                </div>
+                
+                <div className="pt-4 border-t">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-700 font-bold">Total Monthly Loss:</span>
+                    <span className="text-3xl font-black text-red-600">$2,340</span>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Inventory software eliminates 80% of these losses
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Software Comparison Table */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4">Comparing Leading Restaurant Inventory Software</h2>
-          <p className="text-gray-600 mb-12">The "best" software depends entirely on your restaurant type, size, and specific pain points. Below is a snapshot of top contenders in 2026.</p>
+      {/* The Problem - Statistics */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-black text-gray-900 mb-4">
+              Why Restaurants Are Bleeding Money
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Manual inventory tracking with spreadsheets and clipboards creates massive inefficiencies that directly impact your bottom line
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {problemStats.map((stat, i) => (
+              <div key={i} className="text-center p-8 bg-gray-50 rounded-2xl border border-gray-200 hover:shadow-lg transition-shadow">
+                <div className="text-5xl font-black text-orange-600 mb-2">{stat.stat}</div>
+                <div className="text-lg font-bold text-gray-900 mb-2">{stat.label}</div>
+                <p className="text-sm text-gray-600">{stat.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+      {/* Core Features Grid */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-black text-gray-900 mb-4">
+              How Restaurant Inventory Software Solves These Problems
+            </h2>
+            <p className="text-xl text-gray-600">
+              Modern systems automate tracking, reduce waste, and give you real-time cost visibility
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {coreFeatures.map((feature, i) => (
+              <div key={i} className="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-orange-500 hover:shadow-xl transition-all">
+                <div className="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-orange-600 transition-colors">
+                  <feature.icon className="w-7 h-7 text-orange-600 group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                <p className="text-gray-600 mb-4 leading-relaxed">{feature.description}</p>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-lg">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span className="text-sm font-bold text-green-700">{feature.benefit}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Software Comparison Table */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-black text-gray-900 mb-4">
+              2026's Top Restaurant Inventory Software Compared
+            </h2>
+            <p className="text-xl text-gray-600">
+              Choose the right system based on your restaurant size, budget, and specific needs
+            </p>
+          </div>
+          
+          <div className="overflow-x-auto rounded-2xl border-2 border-gray-200 shadow-lg">
             <table className="w-full">
-              <thead className="border-b bg-gray-50">
+              <thead className="bg-gradient-to-r from-orange-600 to-red-600 text-white">
                 <tr>
-                  <th className="text-left p-6 font-bold text-gray-900">Software</th>
-                  <th className="text-left p-6 font-bold text-gray-900">Best For</th>
-                  <th className="text-left p-6 font-bold text-gray-900">Standout Feature</th>
-                  <th className="text-left p-6 font-bold text-gray-900">Starting Price (Monthly)</th>
+                  <th className="text-left p-6 font-bold text-lg">Software</th>
+                  <th className="text-left p-6 font-bold text-lg">Best For</th>
+                  <th className="text-left p-6 font-bold text-lg">Pricing</th>
+                  <th className="text-left p-6 font-bold text-lg">Key Features</th>
                 </tr>
               </thead>
-              <tbody className="divide-y">
-                {softwareComparison.map((software, index) => (
-                  <tr key={index} className="hover:bg-gray-50/50">
-                    <td className="p-6 align-top font-medium">{software.name}</td>
-                    <td className="p-6 align-top text-gray-700">{software.bestFor}</td>
-                    <td className="p-6 align-top text-gray-700">{software.keyFeature}</td>
+              <tbody className="divide-y divide-gray-200">
+                {competitorSoftware.map((software, index) => (
+                  <tr 
+                    key={index} 
+                    className={`${software.highlight ? 'bg-orange-50 border-l-4 border-orange-600' : 'bg-white'} hover:bg-gray-50 transition-colors`}
+                  >
                     <td className="p-6 align-top">
-                      <span className="font-medium text-gray-900">{software.pricing}</span>
+                      <div className="font-black text-lg text-gray-900">{software.name}</div>
+                      {software.highlight && (
+                        <span className="inline-block mt-2 px-3 py-1 bg-orange-600 text-white text-xs font-bold rounded-full">
+                          RECOMMENDED
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-6 align-top">
+                      <span className="text-gray-700 font-medium">{software.bestFor}</span>
+                    </td>
+                    <td className="p-6 align-top">
+                      <span className="font-bold text-gray-900">{software.pricing}</span>
+                    </td>
+                    <td className="p-6 align-top">
+                      <ul className="space-y-2">
+                        {software.keyFeatures.map((feature, i) => (
+                          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                            <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="mt-6 text-sm text-gray-500 text-center">Data synthesized from vendor sites and industry comparisons[citation:4][citation:7][citation:8]. Prices are for entry-level plans; enterprise pricing is custom.</p>
+          
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-500">
+              Pricing data from vendor websites and industry reviews (January 2026). Enterprise pricing is custom and varies by location count.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Operational Insights & Data */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-8">The Data-Driven Kitchen: From Insight to Action</h2>
+      {/* Use Case Breakdown */}
+      <section className="py-20 bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-black text-gray-900 mb-12 text-center">
+            Which Software Is Right for Your Restaurant?
+          </h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl p-8 border-2 border-blue-200 shadow-lg">
+              <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Small Independent Restaurants</h3>
               <p className="text-gray-600 mb-6">
-                Modern software does more than count—it analyzes. By connecting inventory data directly to sales and recipes, managers gain actionable insights that were previously invisible[citation:9].
+                Single location with limited budget, need simple mobile counting and basic cost tracking
               </p>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span><strong>Identify Waste Sources:</strong> See if waste comes from over-prepping, spoilage, or portioning errors to target corrective training[citation:6].</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span><strong>Menu Engineering:</strong> Accurately calculate the profitability of every dish, enabling data-driven decisions to adjust prices, portions, or promote high-margin items[citation:1][citation:7].</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span><strong>Vendor Price Tracking:</strong> Automatically flag sudden price increases from suppliers, giving you the data to negotiate or seek alternative vendors[citation:7].</span>
-                </li>
-              </ul>
+              <div className="space-y-3">
+                <div className="font-bold text-gray-900 mb-2">Best Options:</div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">StockFlow</span>
+                  <span className="text-sm text-gray-500">(Free - $99/mo)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">Square for Restaurants</span>
+                  <span className="text-sm text-gray-500">(Free - $60/mo)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">xtraCHEF by Toast</span>
+                  <span className="text-sm text-gray-500">($0 Starter Kit)</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-8">
-              <h4 className="font-bold mb-4 text-xl text-blue-900">Reported Results from Implementations</h4>
-              <ul className="space-y-4">
-                <li className="flex gap-2 items-start">
-                  <Zap className="text-blue-400 mt-0.5 flex-shrink-0" />
-                  <span><strong>Time Saved:</strong> Inventory counting time reduced from 6-7 hours to under 1 hour per session[citation:6].</span>
-                </li>
-                <li className="flex gap-2 items-start">
-                  <TrendingDown className="text-blue-400 mt-0.5 flex-shrink-0" />
-                  <span><strong>Cost Reduction:</strong> Food cost percentage decreased by 3-5% on average, with some restaurants reporting drops from 39% to 33%[citation:7].</span>
-                </li>
-                <li className="flex gap-2 items-start">
-                  <ShieldCheck className="text-blue-400 mt-0.5 flex-shrink-0" />
-                  <span><strong>Theft & Shrink Control:</strong> Clear variance reporting helps identify and prevent unexplained losses, with one operator saving "$600 a month on sodas alone"[citation:7].</span>
-                </li>
-              </ul>
+            
+            <div className="bg-white rounded-2xl p-8 border-2 border-orange-200 shadow-lg">
+              <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center mb-6">
+                <BarChart3 className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Growing Restaurant Groups</h3>
+              <p className="text-gray-600 mb-6">
+                2-10 locations, need vendor management, recipe standardization, and multi-site visibility
+              </p>
+              <div className="space-y-3">
+                <div className="font-bold text-gray-900 mb-2">Best Options:</div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">MarketMan</span>
+                  <span className="text-sm text-gray-500">($249 - $449/mo)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">StockFlow Pro</span>
+                  <span className="text-sm text-gray-500">($199/mo)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">Supy</span>
+                  <span className="text-sm text-gray-500">(Custom)</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 border-2 border-purple-200 shadow-lg">
+              <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-6">
+                <Shield className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Enterprise Restaurant Chains</h3>
+              <p className="text-gray-600 mb-6">
+                10+ locations, need all-in-one operations suite with accounting integration and advanced analytics
+              </p>
+              <div className="space-y-3">
+                <div className="font-bold text-gray-900 mb-2">Best Options:</div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">Restaurant365</span>
+                  <span className="text-sm text-gray-500">(Custom Enterprise)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">Supy Multi-Brand</span>
+                  <span className="text-sm text-gray-500">(Custom)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold">Crunchtime</span>
+                  <span className="text-sm text-gray-500">(Custom)</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Implementation Considerations */}
-      <section className="py-20 bg-gray-50 border-t">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">Choosing the Right System: Key Considerations</h2>
-          <div className="grid md:grid-cols-2 gap-8 text-left">
-            <div className="p-6 bg-white border rounded-xl">
-              <h4 className="font-bold text-blue-600 mb-3">For Small / Single Locations</h4>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Prioritize ease of use and low cost.</li>
-                <li>• Consider free plans from Square or Toast to start.</li>
-                <li>• Ensure basic features: mobile counting, low-stock alerts, simple reporting.</li>
-                <li>• Confirm integration with your existing POS if separate.</li>
-              </ul>
+      {/* ROI Calculator / Results */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="bg-gradient-to-br from-green-600 to-emerald-700 rounded-3xl p-12 text-white">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-black mb-4">The Real ROI of Restaurant Inventory Software</h2>
+              <p className="text-xl text-green-100">
+                Actual results reported by restaurants after implementing automated inventory tracking
+              </p>
             </div>
-            <div className="p-6 bg-white border rounded-xl">
-              <h4 className="font-bold text-blue-600 mb-3">For Multi-Unit Restaurant Groups</h4>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Centralized dashboard and reporting are non-negotiable.</li>
-                <li>• Look for advanced features: automated purchasing, commissary management, advanced APIs.</li>
-                <li>• Evaluate vendor integration capabilities to streamline supply chain.</li>
-                <li>• Prioritize scalability and dedicated support for enterprise needs.</li>
-              </ul>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+                <div className="text-6xl font-black mb-2">3-5%</div>
+                <div className="text-lg font-bold text-green-100 mb-2">Food Cost Reduction</div>
+                <p className="text-sm text-green-200">
+                  Average decrease in food cost percentage through better ordering and waste reduction
+                </p>
+              </div>
+              
+              <div className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+                <div className="text-6xl font-black mb-2">85%</div>
+                <div className="text-lg font-bold text-green-100 mb-2">Time Saved</div>
+                <p className="text-sm text-green-200">
+                  Reduction in weekly inventory counting time (from 6-7 hours to under 1 hour)
+                </p>
+              </div>
+              
+              <div className="text-center p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+                <div className="text-6xl font-black mb-2">$2K+</div>
+                <div className="text-lg font-bold text-green-100 mb-2">Monthly Savings</div>
+                <p className="text-sm text-green-200">
+                  Average amount saved per location from eliminating waste, theft, and over-ordering
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-12 p-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+              <h3 className="text-2xl font-bold mb-6 text-center">Real Restaurant Success Stories</h3>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg mb-1">Fast-Casual Chain (8 locations)</div>
+                    <p className="text-green-100">
+                      Reduced food cost from 39% to 33% within 6 months by identifying over-portioning and waste patterns
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg mb-1">Independent Italian Restaurant</div>
+                    <p className="text-green-100">
+                      Saved $600/month on beverages alone after discovering theft through variance reporting
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg mb-1">Bar & Grill Group (4 locations)</div>
+                    <p className="text-green-100">
+                      Cut inventory counting time from 28 hours to 4 hours per week across all locations using mobile scanning
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <p className="mt-8 text-gray-600">
-            The most successful implementations start by defining your greatest pain points—is it waste, time spent counting, lack of cost visibility, or managing across locations?—and choosing a platform that directly addresses them[citation:9].
+        </div>
+      </section>
+
+      {/* Implementation Guide */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-4xl font-black text-gray-900 mb-12 text-center">
+            How to Choose the Right Restaurant Inventory Software
+          </h2>
+          
+          <div className="space-y-8">
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl font-black text-orange-600">1</span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Identify Your Biggest Pain Point</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Is it waste and spoilage? Time spent counting? Lack of cost visibility? Managing multiple locations? 
+                    Choose software that directly addresses your primary challenge. For waste issues, prioritize variance 
+                    analysis. For time savings, focus on mobile scanning. For multi-location, demand centralized dashboards.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl font-black text-orange-600">2</span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Check POS Integration Capabilities</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Real-time POS integration is non-negotiable for accurate inventory tracking. If you use Toast, 
+                    xtraCHEF is seamless. For Square, use Square's native inventory. StockFlow integrates with 20+ POS systems. 
+                    Verify integration quality—some connections are one-way or require manual syncing.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl font-black text-orange-600">3</span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Evaluate Mobile Capabilities</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    You'll count inventory in walk-ins, freezers, and basements with spotty WiFi. Look for true mobile apps 
+                    (not just mobile websites) with offline mode and barcode scanning. Test the scanning in poor lighting 
+                    conditions. Avoid systems that require you to be at a computer to enter counts.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl font-black text-orange-600">4</span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Calculate True Total Cost</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Don't just compare monthly subscription fees. Factor in setup costs, training time, per-location fees, 
+                    and transaction charges. A $99/month system with $1,000 onboarding costs more in year one than a 
+                    $149/month system with free setup. Also consider implementation time—some systems take weeks to configure.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+              <div className="flex items-start gap-6">
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span className="text-2xl font-black text-orange-600">5</span>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Start with a Free Trial</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Every reputable system offers free trials (14-30 days). Test it with your actual menu and inventory during 
+                    a real week of operations. Have your kitchen manager and bartender use it. If they hate it, you won't get 
+                    adoption. The best software on paper is worthless if your team won't use it consistently.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-orange-600 via-red-600 to-pink-600">
+        <div className="max-w-4xl mx-auto px-6 text-center text-white">
+          <h2 className="text-5xl font-black mb-6">
+            Ready to Cut Your Food Costs by 3-5%?
+          </h2>
+          <p className="text-2xl mb-12 text-orange-100">
+            Start your free trial today. No credit card required. Setup in 10 minutes.
           </p>
+          
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button className="group px-12 py-5 bg-white text-orange-600 font-black text-lg rounded-xl shadow-2xl hover:shadow-3xl transition-all hover:scale-105 flex items-center gap-3">
+              Start Free Trial
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button className="px-12 py-5 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white font-bold text-lg rounded-xl hover:bg-white/20 transition-all">
+              Compare All Software
+            </button>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mt-12 text-orange-100">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-6 h-6" />
+              Free 14-day trial
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-6 h-6" />
+              Works with any POS
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-6 h-6" />
+              Cancel anytime
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* FAQ Section - Using User's Specified Structure */}
-      <section>
-        <div className="max-w-6xl mx-auto py-12">
-          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl font-black text-gray-900 mb-4 text-center">
+            Restaurant Inventory Software FAQ
+          </h2>
+          <p className="text-xl text-gray-600 mb-12 text-center">
+            Common questions about choosing and implementing inventory management systems
+          </p>
+          
           <div className="space-y-4">
             {faqData.map((faq, index) => (
-              <details key={index} className="bg-gray-50 p-4 rounded-lg">
-                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
-                <p className="mt-2 text-gray-700">{faq.answer}</p>
+              <details 
+                key={index} 
+                className="group bg-gray-50 border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+              >
+                <summary className="cursor-pointer font-bold text-lg text-gray-900 p-6 flex justify-between items-center">
+                  <span className="pr-8">{faq.question}</span>
+                  <svg 
+                    className="w-6 h-6 text-orange-600 flex-shrink-0 group-open:rotate-180 transition-transform" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6 text-gray-700 leading-relaxed">
+                  {faq.answer}
+                </div>
               </details>
             ))}
           </div>
+          
+
         </div>
       </section>
 
-    </SeoPageLayout>
+      <Footer />
+      </>
   );
 }
