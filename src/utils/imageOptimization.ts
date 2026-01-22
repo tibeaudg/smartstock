@@ -119,3 +119,4 @@ export function getOptimizedImageSrc(originalPath: string, useWebP: boolean = tr
  * - Target: <50KB for logos, <200KB for gallery images
  */
 
+

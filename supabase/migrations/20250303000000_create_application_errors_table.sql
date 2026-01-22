@@ -44,3 +44,4 @@ CREATE POLICY "Authenticated users can insert errors" ON public.application_erro
 -- Add comment
 COMMENT ON TABLE public.application_errors IS 'Stores application errors logged from the frontend for admin review and debugging';
 
+
