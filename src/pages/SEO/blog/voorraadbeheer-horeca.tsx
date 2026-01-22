@@ -7,14 +7,18 @@ const topicTitle = "Voorraadbeheer in de Horeca: Stocken zonder verspilling";
 const canonicalPath = "/voorraadbeheer-horeca";
 
 const metaDescription =
-  "Voorraadbeheer in de horeca uitgelegd. Leer correct stocken in de horeca, verspilling verminderen, marges verbeteren en controle krijgen over je voorraad met praktische tips en software.";
+  "Voorraadbeheer horeca: complete gids voor stockbeheer in restaurants en cafés. Leer correct stocken, verspilling verminderen tot 30%, foodcost verlagen en winstmarges verbeteren met gratis voorraadbeheer software voor horeca.";
 
 const keywords =
-  "stocken horeca, voorraadbeheer horeca, horeca voorraad tellen, horeca stockbeheer, inventaris horeca, horeca kostenbeheersing, foodcost horeca, drankvoorraad horeca, voorraadbeheer restaurant, horeca software voorraad";
+  "voorraadbeheer horeca, stocken horeca, horeca voorraad tellen, horeca stockbeheer, inventaris horeca, horeca kostenbeheersing, foodcost horeca, drankvoorraad horeca, voorraadbeheer restaurant, horeca software voorraad, voorraadbeheer software horeca, stockbeheer restaurant, voorraadbeheer café, horeca inventaris software";
 
 
 const keyTakeaways = [
-  "Stockflow is een gratis platform voor alle soorten bedrijven om makkelijk en snel voorraad te beheren."
+  "Voorraadbeheer horeca (stocken) is essentieel voor foodcost controle en winstoptimalisatie.",
+  "StockFlow biedt gratis voorraadbeheer software horeca specifiek ontwikkeld voor restaurants en cafés.",
+  "Systematisch tellen met vaste routines vermindert verspilling met tot 30% en verbetert marges.",
+  "De juiste voorraadbeheer software horeca integreert met POS-systemen voor real-time tracking.",
+  "KPI's zoals foodcost %, shrinkage en inventory turnover geven snel inzicht in effectiviteit."
 ];
 
 const structuredData = [
@@ -23,7 +27,7 @@ const structuredData = [
     "@type": "Article",
     headline: "Voorraadbeheer in de Horeca: Stocken zonder verspilling",
     description:
-      "Praktische gids over stocken in de horeca. Leer hoe correct voorraadbeheer helpt om verspilling te beperken en marges te verhogen.",
+      "Complete gids voor voorraadbeheer horeca: stockbeheer, voorraadbeheer software horeca, foodcost optimalisatie, en praktische tips voor restaurants en cafés. Leer hoe correct voorraadbeheer verspilling met 30% vermindert en marges verbetert.",
     author: {
       "@type": "Organization",
       name: "StockFlow",
@@ -37,11 +41,23 @@ const structuredData = [
       },
     },
     datePublished: "2026-01-07",
-    dateModified: "2026-01-07",
+    dateModified: "2026-01-22",
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://www.stockflowsystems.com${canonicalPath}`,
     },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
   },
 ];
 
@@ -103,6 +119,21 @@ const faqData: { question: string; answer: string }[] = [
     answer:
       "Product, Prijs, Plaats, Promotie, Personeel en Proces — voorraadbeheer valt onder Proces en beïnvloedt alle andere P's.",
   },
+  {
+    question: "Welke voorraadbeheer software horeca is het beste?",
+    answer:
+      "De beste voorraadbeheer software horeca biedt POS-integratie, mobiele tellingen, receptbeheer en real-time tracking. StockFlow is specifiek ontwikkeld voor horeca en biedt alle essentiële functies volledig gratis, zonder verborgen kosten of beperkingen.",
+  },
+  {
+    question: "Hoeveel kan ik besparen met voorraadbeheer software horeca?",
+    answer:
+      "Horecazaken die overstappen op voorraadbeheer software horeca zien gemiddeld 20-30% reductie in verspilling, 5-10% verbetering in foodcost, en 15-25% tijdswinst op administratie. Dit vertaalt zich vaak in €5.000-€15.000 extra winst per jaar voor een gemiddeld restaurant.",
+  },
+  {
+    question: "Is voorraadbeheer software horeca moeilijk te leren?",
+    answer:
+      "Goede voorraadbeheer software horeca zoals StockFlow is intuïtief ontworpen. De meeste teams zijn binnen 1-2 weken volledig operationeel. Mobiele apps maken tellingen eenvoudig, en automatische integraties elimineren handmatig werk.",
+  },
 ];
 
 export default function VoorraadbeheerHorecaPage() {
@@ -120,11 +151,11 @@ export default function VoorraadbeheerHorecaPage() {
       heroTitle="Voorraadbeheer in de Horeca"
       heroDescription="Correct stocken in de horeca: minder verspilling, meer controle en hogere marges"
       heroSubtitle="Praktische stappen, meetbare KPI's en softwaretips voor elke horecazaak"
-      dateUpdated="2026-01-07"
+      dateUpdated="2026-01-22"
       keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Voorraadbeheer Horeca & Stocken | Praktische Gids voor Horeca-uitbaters"
+        title="Voorraadbeheer Horeca: Complete Gids voor Stockbeheer & Inventaris | 2026"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -246,34 +277,59 @@ export default function VoorraadbeheerHorecaPage() {
             </ol>
 
 
-            <h2 id="software" className="mt-16 text-2xl font-bold text-gray-900">Software en integratie</h2>
+            <h2 id="software" className="mt-16 text-2xl font-bold text-gray-900">Voorraadbeheer software horeca: wat moet je zoeken?</h2>
 
             <p className="mt-4 text-gray-700 leading-relaxed">
-              Digitale tools zoals <Link to="/auth" className="text-blue-600 underline">StockFlow</Link> maken
-              stocken sneller, minder foutgevoelig en automatisch gekoppeld aan je verkoopdata.
-              Zoek naar software die deze integraties ondersteunt:
+              <strong>Voorraadbeheer software voor horeca</strong> maakt het verschil tussen giswerk en exacte controle. Digitale tools zoals <Link to="/auth" className="text-blue-600 underline">StockFlow</Link> maken
+              stocken sneller, minder foutgevoelig en automatisch gekoppeld aan je verkoopdata. De beste <strong>voorraadbeheer software horeca</strong> ondersteunt deze integraties:
             </p>
 
             <ul className="mt-4 list-disc pl-6 text-gray-700">
-              <li>POS-integratie voor realtime verbruik</li>
-              <li>Automatische correcties voor leveringen en inkoopfacturen</li>
-              <li>Receptbeheer om verbruik te vertalen naar ingrediënten</li>
-              <li>Mobiele tellingen met auditable logs</li>
+              <li><strong>POS-integratie</strong> voor realtime verbruik en automatische voorraadafname</li>
+              <li><strong>Automatische correcties</strong> voor leveringen en inkoopfacturen</li>
+              <li><strong>Receptbeheer</strong> om verbruik te vertalen naar ingrediënten en foodcost te berekenen</li>
+              <li><strong>Mobiele tellingen</strong> met auditable logs voor transparantie</li>
+              <li><strong>Multi-locatie support</strong> voor ketens met meerdere vestigingen</li>
+              <li><strong>Barcode scanning</strong> voor snelle en foutloze tellingen</li>
             </ul>
+
+            <div className="mt-6 p-6 bg-blue-50 rounded-xl border border-blue-200">
+              <h3 className="font-semibold text-gray-900 mb-2">Waarom voorraadbeheer software horeca kiezen?</h3>
+              <p className="text-gray-700 text-sm">
+                <strong>Voorraadbeheer software voor horeca</strong> zoals StockFlow is specifiek ontwikkeld voor restaurants, cafés en hotels. Het begrijpt de unieke uitdagingen van de horeca: bederf, seizoensgebonden vraag, en de noodzaak van real-time inzicht. In tegenstelling tot generieke <Link to="/inventory-management-software" className="text-blue-600 underline">inventory management software</Link>, is <strong>voorraadbeheer software horeca</strong> geoptimaliseerd voor foodcost tracking, receptbeheer en POS-integratie.
+              </p>
+            </div>
 
             <hr className="my-12 border-gray-200" />
 
             <h2 id="telronde" className="mt-16 text-2xl font-bold text-gray-900">Stap-voor-stap: een telronde uitvoeren</h2>
 
             <p className="mt-4 text-gray-700 leading-relaxed">
+              Een systematische telronde is de basis van goed <strong>stockbeheer restaurant</strong>. Volg deze stappen voor nauwkeurige resultaten:
+            </p>
+
+            <ol className="mt-4 list-decimal pl-6 text-gray-700 space-y-2">
+              <li><strong>Voorbereiding:</strong> Zorg dat alle leveringen geboekt zijn en je team op de hoogte is</li>
+              <li><strong>Start met droge opslag:</strong> Tel eerst niet-bederfelijke producten (blikken, verpakkingen)</li>
+              <li><strong>Koelcel en vriezer:</strong> Tel snel om temperatuurschommelingen te voorkomen</li>
+              <li><strong>Bar en dranken:</strong> Tel flessen, tapinstallaties en voorraad apart</li>
+              <li><strong>Noteer breuken:</strong> Apart registreren van beschadigde of verlopen producten</li>
+              <li><strong>Controleer tegen systeem:</strong> Vergelijk getelde voorraad met je <strong>voorraadbeheer software horeca</strong></li>
+              <li><strong>Analyseer afwijkingen:</strong> Onderzoek grote verschillen tussen telling en systeem</li>
+            </ol>
+
+            <h3 id="kpis" className="mt-12 text-xl font-bold text-gray-900">KPI's voor voorraadbeheer horeca</h3>
+
+            <p className="mt-4 text-gray-700 leading-relaxed">
               Meet wat telt: met deze KPI's zie je snel of je voorraadbeheer werkt.
             </p>
 
-            <ul className="mt-4 list-disc pl-6 text-gray-700">
-              <li><strong>Foodcost %</strong>: totale kosten ingrediënten / omzet</li>
-              <li><strong>Shrinkage</strong>: verlies door bederf, diefstal of fouten</li>
-              <li><strong>Inventory turnover</strong>: hoe snel voorraad wordt omgezet</li>
-              <li><strong>Days on hand</strong>: hoeveel dagen voorraad meegaat bij huidig verbruik</li>
+            <ul className="mt-4 list-disc pl-6 text-gray-700 space-y-2">
+              <li><strong>Foodcost %</strong>: totale kosten ingrediënten / omzet (streefwaarde: 25-35%)</li>
+              <li><strong>Shrinkage</strong>: verlies door bederf, diefstal of fouten (streefwaarde: &lt;2%)</li>
+              <li><strong>Inventory turnover</strong>: hoe snel voorraad wordt omgezet (streefwaarde: 12-24x per jaar)</li>
+              <li><strong>Days on hand</strong>: hoeveel dagen voorraad meegaat bij huidig verbruik (streefwaarde: 7-14 dagen)</li>
+              <li><strong>Drankmarge</strong>: brutomarge op dranken (streefwaarde: 70-80%)</li>
             </ul>
 
 

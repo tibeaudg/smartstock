@@ -10,7 +10,7 @@ import {
   Clock, Smartphone, Building, Award, ArrowRight
 } from 'lucide-react';
 import { Head } from 'react-day-picker';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 
 // Trust Badges Component
 const TrustBadges = () => {
@@ -152,6 +152,9 @@ export const HomePage = () => {
               Free Inventory Management<br />
               <span className="text-blue-600">That Actually Works</span>
             </h1>
+            <p className="text-md md:text-lg text-gray-700 mb-6 max-w-3xl mx-auto leading-relaxed">
+              Whether you're managing complex manufacturing with <Link to="/bill-of-materials-software-free" className="text-blue-600 hover:text-blue-700 font-semibold underline">Bill of Materials (BOM) software</Link>, comparing the <Link to="/best-inventory-management-software" className="text-blue-600 hover:text-blue-700 font-semibold underline">best inventory management software</Link> solutions, or optimizing operations with a comprehensive <Link to="/warehouse-management-system" className="text-blue-600 hover:text-blue-700 font-semibold underline">warehouse management system</Link>, StockFlow provides enterprise-grade inventory control that scales with your business—completely free forever.
+            </p>
             <p className="text-md md:text-md text-gray-600 mb-8 max-w-2xl mx-auto">
               Stop stockouts. Recover dead stock capital. Track inventory in real-time with your phone. 
               <span className="font-semibold text-gray-900"> Join 500+ businesses using StockFlow - free forever.</span>

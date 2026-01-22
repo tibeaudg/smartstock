@@ -32,6 +32,16 @@
       "source": "/inventory-software-management",
       "destination": "/solutions/inventory-software-management",
       "permanent": true
+    },
+    {
+      "source": "/what-is-bill-of-materials",
+      "destination": "/bill-of-materials-software-free",
+      "permanent": true
+    },
+    {
+      "source": "/bill-of-materials",
+      "destination": "/bill-of-materials-software-free",
+      "permanent": true
     }
   ],
   "rewrites": [

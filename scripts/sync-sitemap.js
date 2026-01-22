@@ -4,15 +4,17 @@ import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import { globby } from 'globby';
 
 const BASE_URL = 'https://www.stockflowsystems.com';
-const SEO_DIR = path.join(process.cwd(), 'src/pages/seo');
+const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
+const SEO_DIR_LOWER = path.join(process.cwd(), 'src/pages/seo');
 const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
-const XML_DATE = '2026-01-09';
+const XML_DATE = '2026-01-22';
 
 async function syncSitemap() {
   console.log('--- Starting Sitemap Sync & Cleanup ---');
 
-  if (!fs.existsSync(SEO_DIR)) {
-    console.error(`Error: SEO directory not found at ${SEO_DIR}`);
+  const seoDir = fs.existsSync(SEO_DIR) ? SEO_DIR : SEO_DIR_LOWER;
+  if (!fs.existsSync(seoDir)) {
+    console.error(`Error: SEO directory not found at ${seoDir}`);
     return;
   }
 
@@ -26,15 +28,49 @@ async function syncSitemap() {
     `${BASE_URL}/stock-management-software`
   ];
 
-  // 2. Map local SEO files to root URLs
-  const files = await globby('**/*.{js,jsx,ts,tsx}', { cwd: SEO_DIR });
+  // 2. Map local SEO files to root URLs (English pages)
+  const files = await globby('**/*.{js,jsx,ts,tsx}', { 
+    cwd: seoDir,
+    ignore: ['**/nl/**'] // Exclude Dutch pages from this scan
+  });
   const localRoutes = new Set(
     files
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
-      .map(file => path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, ''))
+      .map(file => {
+        const filename = path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '');
+        // Handle nested paths (glossary, solutions, industries, etc.)
+        const dir = path.dirname(file);
+        if (dir !== '.' && !dir.includes('nl')) {
+          // For nested structures, use the filename only (matching seoRoutes.tsx logic)
+          return filename;
+        }
+        return filename;
+      })
   );
 
-  const localUrls = new Set([...localRoutes].map(route => `${BASE_URL}/${route}`));
+  // 3. Map Dutch /nl/ files
+  const nlDir = path.join(seoDir, 'nl');
+  const nlRoutes = new Set();
+  if (fs.existsSync(nlDir)) {
+    const nlFiles = await globby('**/*.{js,jsx,ts,tsx}', { cwd: nlDir });
+    nlFiles
+      .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
+      .forEach(file => {
+        const dir = path.dirname(file);
+        const filename = path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '');
+        if (dir === '.' || dir === 'nl') {
+          nlRoutes.add(`nl/${filename}`);
+        } else {
+          // For nested structures like nl/industries/...
+          nlRoutes.add(`nl/${dir}/${filename}`);
+        }
+      });
+  }
+
+  const localUrls = new Set([
+    ...Array.from(localRoutes).map(route => `${BASE_URL}/${route}`),
+    ...Array.from(nlRoutes).map(route => `${BASE_URL}/${route}`)
+  ]);
 
   // 3. Load and Parse Sitemap
   let sitemapData = { urlset: { url: [] } };
@@ -70,7 +106,7 @@ async function syncSitemap() {
     // PROTECTED: Non-SEO core folders (Case Insensitive)
     const protectedFolders = [
       'case-studies', 'customers', 'integrations', 
-      'blog', 'glossary', 'categoriespage'
+      'blog', 'glossary', 'categoriespage', 'nl'
     ];
     
     const isProtected = protectedFolders.some(p => 
@@ -80,7 +116,11 @@ async function syncSitemap() {
     if (isProtected) return true;
 
     // REMOVE MISSING: If not in local file set and not protected
-    if (!localRoutes.has(route)) {
+    // Check both English routes and Dutch routes
+    const isEnglishRoute = localRoutes.has(route);
+    const isDutchRoute = route.startsWith('nl/') && nlRoutes.has(route);
+    
+    if (!isEnglishRoute && !isDutchRoute) {
       console.log(`- Removed: ${url}`);
       return false;
     }
@@ -96,10 +136,12 @@ async function syncSitemap() {
 
   allTargetUrls.forEach(url => {
     if (!existingLocs.has(url)) {
+      // Set priority: 1.0 for homepage, 0.8 for Dutch pages, 0.8 for others
+      const priority = url === BASE_URL ? '1.0' : (url.includes('/nl/') ? '0.8' : '0.8');
       sitemapData.urlset.url.push({
         loc: url,
         lastmod: XML_DATE,
-        priority: url === BASE_URL ? '1.0' : '0.8'
+        priority: priority
       });
       addedCount++;
       console.log(`+ Added: ${url}`);

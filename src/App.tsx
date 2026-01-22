@@ -299,6 +299,8 @@ const AppRouter = () => {
         {/* REDIRECTS */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />
         <Route path="/asset-tracking" element={<Navigate to="/solutions/asset-tracking" replace />} />
+        <Route path="/what-is-bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
+        <Route path="/bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
 
         {/* DYNAMIC SEO ROUTES */}
         {getSeoRoutes().map(r => (

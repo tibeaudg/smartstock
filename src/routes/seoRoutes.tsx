@@ -18,7 +18,7 @@ export function clearRouteCache() {
 
 /**
  * Maps file system paths to URL slugs.
- * Logic specifically handles glossary flattening and solutions path preservation.
+ * Logic specifically handles glossary flattening, solutions path preservation, and Dutch /nl/ paths.
  */
 function getSlugFromPath(path: string): string {
   const withoutPrefix = path
@@ -36,6 +36,15 @@ function getSlugFromPath(path: string): string {
   }
 
   if (segments.length === 0) return "";
+
+  // Handle Dutch /nl/ paths - preserve the /nl/ prefix
+  if (segments[0] === "nl") {
+    if (segments.length === 1) return "nl";
+    // For nested structures like nl/industries/..., preserve full path
+    if (segments.length > 1) {
+      return segments.join("/");
+    }
+  }
 
   const legacyTopLevelSlugs = new Set([
     "asset-tracking",
