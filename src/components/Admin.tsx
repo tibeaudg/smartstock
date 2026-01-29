@@ -12,7 +12,8 @@ import {
   Settings,
   Users,
   BarChart3,
-  Crown
+  Crown,
+  Mail
 } from 'lucide-react';
 
 export const Admin = () => {
@@ -21,6 +22,7 @@ export const Admin = () => {
 
   const menuItems = [
     { id: 'notifications', label: 'Notificaties', icon: Bell, path: '/admin/notifications' },
+    { id: 'smtp', label: 'E-mail / SMTP', icon: Mail, path: '/admin/smtp' },
     { id: 'chat', label: 'Chat', icon: MessageSquare, path: '/admin/chat' },
     { id: 'seo', label: 'SEO', icon: Search, path: '/admin/seo' },
     { id: 'subscriptions', label: 'Abonnementen', icon: Crown, path: '/admin/subscriptions' },

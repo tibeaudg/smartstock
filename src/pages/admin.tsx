@@ -20,6 +20,7 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
+import AdminSmtpPage from '@/pages/AdminSmtpPage';
 
 // User management types
 type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'branches' | 'linkedUsers' | 'cus' | 'created';
@@ -513,7 +514,7 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'chats' | 'notifications'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'chats' | 'notifications' | 'smtp'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -772,10 +773,11 @@ export default function AdminPage() {
     };
   }, [currentUser?.id, queryClient, activeTab]);
 
-  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'smtp'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
+    { id: 'smtp', label: 'E-mail / SMTP' },
   ];
   
   // Access control - only owners can view the admin page
@@ -1275,6 +1277,10 @@ export default function AdminPage() {
 
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
+            )}
+
+            {activeTab === 'smtp' && (
+              <AdminSmtpPage />
             )}
 
           </div>

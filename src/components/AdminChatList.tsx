@@ -4,6 +4,7 @@ import { fetchAllChats, fetchChatMessages, sendChatMessage, markMessagesAsRead, 
 import { useAuth } from '@/hooks/useAuth';
 import { MessageSquare, MessageSquareDashed, RefreshCw, Bug, Trash2, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 // Helper function to check if a date is today
 function isToday(date: Date) {
@@ -13,8 +14,15 @@ function isToday(date: Date) {
     date.getFullYear() === today.getFullYear();
 }
 
+const getApiBase = () => {
+  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) {
+    return (import.meta.env.VITE_API_URL as string).replace(/\/$/, '');
+  }
+  return '';
+};
+
 export const AdminChatList: React.FC = () => {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [chats, setChats] = useState<any[]>([]);
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
@@ -89,21 +97,60 @@ export const AdminChatList: React.FC = () => {
   async function handleSend(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim() || !selectedChat || !user) return;
+    const replyText = input.trim();
     setLoading(true);
-    await sendChatMessage({
-      chatId: selectedChat.id,
-      senderType: 'admin',
-      senderId: user.id,
-      message: input.trim(),
-    });
-    setInput('');
-    const msgs = await fetchChatMessages(selectedChat.id);
-    setMessages(msgs);
-    
-    // Ververs de chat lijst om nieuwe berichten te tonen
-    refreshChatList();
-    
-    setLoading(false);
+    try {
+      await sendChatMessage({
+        chatId: selectedChat.id,
+        senderType: 'admin',
+        senderId: user.id,
+        message: replyText,
+      });
+      setInput('');
+      const msgs = await fetchChatMessages(selectedChat.id);
+      setMessages(msgs);
+      refreshChatList();
+
+      const userEmail = selectedChat.profiles?.email;
+      if (userEmail) {
+        try {
+          const { data, error } = await supabase.functions.invoke<{ success: boolean; error?: string }>(
+            'send-support-reply-email',
+            { body: { chatId: selectedChat.id, message: replyText } }
+          );
+          if (!error && data?.success) {
+            toast.success('Reply sent and email sent to user');
+          } else if (data?.error) {
+            console.warn('Support reply email failed:', data.error);
+            toast.info('Reply saved; email could not be sent. Check SMTP in Admin.');
+          } else if (error && session?.access_token) {
+            const base = getApiBase();
+            const url = base ? `${base}/api/send-support-reply-email` : '/api/send-support-reply-email';
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session.access_token}`,
+              },
+              body: JSON.stringify({ chatId: selectedChat.id, message: replyText }),
+            });
+            const apiData = await res.json().catch(() => ({}));
+            if (res.ok && apiData.success) {
+              toast.success('Reply sent and email sent to user');
+            } else {
+              toast.info('Reply saved; email could not be sent. Check SMTP in Admin.');
+            }
+          } else {
+            toast.info('Reply saved; email could not be sent. Check SMTP in Admin.');
+          }
+        } catch (err) {
+          console.warn('Support reply email error:', err);
+          toast.info('Reply saved; email could not be sent.');
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   // Functie om een chat te verwijderen

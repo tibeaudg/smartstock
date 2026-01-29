@@ -89,18 +89,21 @@ export const SmtpConfigModal: React.FC<SmtpConfigModalProps> = ({
 
     setLoading(true);
     try {
+      const payload: Record<string, unknown> = {
+        user_id: user.id,
+        smtp_host: settings.smtp_host,
+        smtp_port: settings.smtp_port,
+        smtp_username: settings.smtp_username,
+        from_email: settings.from_email,
+        from_name: settings.from_name,
+        use_tls: settings.use_tls
+      };
+      if (settings.smtp_password && settings.smtp_password.trim()) {
+        payload.smtp_password = settings.smtp_password;
+      }
       const { error } = await supabase
         .from('smtp_settings')
-        .upsert({
-          user_id: user.id,
-          smtp_host: settings.smtp_host,
-          smtp_port: settings.smtp_port,
-          smtp_username: settings.smtp_username,
-          smtp_password: settings.smtp_password,
-          from_email: settings.from_email,
-          from_name: settings.from_name,
-          use_tls: settings.use_tls
-        });
+        .upsert(payload as Record<string, never>, { onConflict: 'user_id' });
 
       if (error) {
         console.error('Error saving SMTP settings:', error);

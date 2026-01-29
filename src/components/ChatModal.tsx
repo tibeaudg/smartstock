@@ -111,7 +111,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       } catch (err) {
         if (!mounted) return;
         console.error('Failed to initialize chat:', err);
-        setError('Kon chat niet laden. Probeer het opnieuw.');
+        setError('Could not load chat. Please try again.');
       } finally {
         if (mounted) {
           setLoading(false);
@@ -154,7 +154,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
       setMessages(updatedMessages);
     } catch (err) {
       console.error('Failed to send message:', err);
-      setError('Bericht kon niet worden verzonden. Probeer het opnieuw.');
+      setError('Message could not be sent. Please try again.');
       setInput(messageText); // Restore the message
     } finally {
       setSending(false);
@@ -261,6 +261,7 @@ const ChatContent: React.FC<ChatContentProps> = ({
   messagesEndRef,
 }) => {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
   React.useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
@@ -287,7 +288,7 @@ const ChatContent: React.FC<ChatContentProps> = ({
           size="sm"
           onClick={onClose}
           className="h-8 w-8 p-0 rounded-full hover:bg-gray-200 transition-colors"
-          aria-label="Chat sluiten"
+          aria-label="Close chat"
         >
           <X className="w-4 h-4" />
         </Button>
@@ -300,14 +301,14 @@ const ChatContent: React.FC<ChatContentProps> = ({
             <div className="flex items-center justify-center h-32">
               <div className="flex items-center gap-2 text-gray-500">
                 <Loader2 className="w-4 h-4 animate-spin" />
-                <span className="text-sm">Chat wordt geladen...</span>
+                <span className="text-sm">Loading chat...</span>
               </div>
             </div>
           ) : messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-32 text-center">
               <MessageCircle className="w-8 h-8 text-gray-400 mb-2" />
-              <p className="text-gray-500 text-sm">Start een gesprek met ons support team</p>
-              <p className="text-gray-400 text-xs mt-1">We reageren zo snel mogelijk</p>
+              <p className="text-gray-500 text-sm">Start a conversation with our support team</p>
+              <p className="text-gray-400 text-xs mt-1">We'll respond as soon as possible</p>
             </div>
           ) : (
             <>
@@ -337,7 +338,7 @@ const ChatContent: React.FC<ChatContentProps> = ({
             ref={inputRef}
             type="text"
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder-gray-400 text-sm"
-            placeholder="Typ je bericht hier..."
+            placeholder="Type your message here..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={loading || sending}
@@ -357,7 +358,7 @@ const ChatContent: React.FC<ChatContentProps> = ({
         </form>
         {input.length > 450 && (
           <p className="text-xs text-gray-500 mt-1">
-            {500 - input.length} karakters over
+            {500 - input.length} characters remaining
           </p>
         )}
       </div>
@@ -371,7 +372,7 @@ interface MessageBubbleProps {
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isUser = message.sender_type === 'user';
-  const timestamp = new Date(message.created_at).toLocaleTimeString('nl-NL', {
+  const timestamp = new Date(message.created_at).toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
   });

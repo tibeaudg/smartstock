@@ -26,6 +26,7 @@ import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import AdminNotificationsPage from './pages/AdminNotificationsPage';
+import AdminSmtpPage from './pages/AdminSmtpPage';
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
@@ -332,6 +333,7 @@ const AppRouter = () => {
         >
           <Route element={<Admin />}>
             <Route path="notifications" element={<AdminNotificationsPage />} />
+            <Route path="smtp" element={<AdminSmtpPage />} />
             <Route path="chat" element={<AdminChatList />} />
             <Route path="user/:id" element={<AdminUserDetailPage />} />
           </Route>
