@@ -1,28 +1,28 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
-import { Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2, Image as ImageIcon } from 'lucide-react';
+import { Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import * as XLSX from 'xlsx';
+import {
+  parseCSV,
+  buildColumnMapping,
+  normalizeRow,
+  type ProductRow,
+  type ProductField,
+  COLUMN_SYNONYMS,
+} from '@/lib/products/bulkImportUtils';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface BulkImportModalProps {
   isOpen: boolean;
   onClose: () => void;
   onImportComplete: () => void;
-}
-
-interface ProductRow {
-  name: string;
-  description?: string;
-  stock: number;
-  minimum_level: number;
-  purchase_price: number;
-  sale_price: number;
-  location?: string;
-  category?: string;
 }
 
 export const BulkImportModal: React.FC<BulkImportModalProps> = ({
@@ -33,14 +33,29 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const [file, setFile] = useState<File | null>(null);
+  const [fileHeaders, setFileHeaders] = useState<string[]>([]);
+  const [rawRows, setRawRows] = useState<Record<string, unknown>[]>([]);
+  const [columnMapping, setColumnMapping] = useState<Record<ProductField, string | null> | null>(null);
+  const [showMappingUI, setShowMappingUI] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [importProgress, setImportProgress] = useState<{ current: number; total: number } | null>(null);
+  const [isParsing, setIsParsing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [parseError, setParseError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMountedRef = useRef(true);
   const [importResults, setImportResults] = useState<{
     success: number;
     failed: number;
     errors: string[];
   } | null>(null);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   type InitialStockMovementInput = {
     productId: string;
@@ -126,33 +141,90 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
     toast.success('Template downloaded successfully');
   };
 
-  const validateAndSetFile = (selectedFile: File) => {
-    // Check file type
-    const validTypes = [
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'application/vnd.ms-excel',
-    ];
-    
-    if (!validTypes.includes(selectedFile.type) && !selectedFile.name.endsWith('.xlsx') && !selectedFile.name.endsWith('.xls')) {
-      toast.error('Please select a valid Excel file (.xlsx or .xls)');
+  const isCSV = (f: File) =>
+    f.type === 'text/csv' || f.name.toLowerCase().endsWith('.csv');
+  const isExcel = (f: File) =>
+    f.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+    f.type === 'application/vnd.ms-excel' ||
+    f.name.toLowerCase().endsWith('.xlsx') ||
+    f.name.toLowerCase().endsWith('.xls');
+
+  const parseFile = async (selectedFile: File): Promise<{ headers: string[]; rows: Record<string, unknown>[] }> => {
+    if (isCSV(selectedFile)) {
+      const text = await selectedFile.text();
+      const { headers, rows } = parseCSV(text);
+      return { headers, rows: rows as Record<string, unknown>[] };
+    }
+    const data = await selectedFile.arrayBuffer();
+    const workbook = XLSX.read(data, { type: 'array' });
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const matrix = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as (string | number)[][];
+    if (matrix.length === 0) return { headers: [], rows: [] };
+    const firstRow = matrix[0] ?? [];
+    const headers = firstRow.map((c, i) => {
+      const s = String(c ?? '').trim();
+      return s || `Column ${i + 1}`;
+    });
+    const rows: Record<string, unknown>[] = [];
+    for (let i = 1; i < matrix.length; i++) {
+      const rowArr = matrix[i] ?? [];
+      const obj: Record<string, unknown> = {};
+      headers.forEach((h, idx) => {
+        const v = rowArr[idx];
+        obj[h] = v === undefined || v === null ? '' : typeof v === 'number' ? v : String(v);
+      });
+      const hasData = headers.some((_, idx) => {
+        const val = rowArr[idx];
+        return val !== undefined && val !== null && String(val).trim() !== '';
+      });
+      if (hasData) rows.push(obj);
+    }
+    return { headers, rows };
+  };
+
+  const validateAndSetFile = async (selectedFile: File) => {
+    if (!isCSV(selectedFile) && !isExcel(selectedFile)) {
+      toast.error('Please select an Excel (.xlsx, .xls) or CSV (.csv) file');
       return false;
     }
-
-    // Validate file size (max 10MB for Excel files)
     if (selectedFile.size > 10 * 1024 * 1024) {
       toast.error('File size must be less than 10MB');
       return false;
     }
-
-    setFile(selectedFile);
+    setParseError(null);
     setImportResults(null);
-    return true;
+    setIsParsing(true);
+    try {
+      const { headers, rows } = await parseFile(selectedFile);
+      if (headers.length === 0 || rows.length === 0) {
+        setParseError('The file has no headers or data rows.');
+        return false;
+      }
+      const mapping = buildColumnMapping(headers);
+      if (!mapping.name) {
+        setShowMappingUI(true);
+      } else {
+        setShowMappingUI(false);
+      }
+      setFile(selectedFile);
+      setFileHeaders(headers);
+      setRawRows(rows);
+      setColumnMapping(mapping);
+      return true;
+    } catch (e) {
+      setParseError(e instanceof Error ? e.message : 'Failed to read file');
+      toast.error('Could not parse file');
+      return false;
+    } finally {
+      setIsParsing(false);
+    }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      validateAndSetFile(selectedFile);
+      await validateAndSetFile(selectedFile);
     }
   };
 
@@ -168,14 +240,13 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-
     const droppedFile = e.dataTransfer.files?.[0];
     if (droppedFile) {
-      validateAndSetFile(droppedFile);
+      await validateAndSetFile(droppedFile);
     }
   };
 
@@ -188,6 +259,11 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
       toast.error('Please select a file first');
       return;
     }
+    const mapping = columnMapping;
+    if (!mapping || !mapping.name) {
+      toast.error('Please map a column to "Product name" (required). Use "Adjust column mapping" if needed.');
+      return;
+    }
 
     setIsImporting(true);
     const errors: string[] = [];
@@ -195,58 +271,46 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
     let failedCount = 0;
 
     try {
-      // Read the Excel file
-      const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet) as ProductRow[];
+      const jsonData: ProductRow[] = rawRows.map(row => normalizeRow(row as Record<string, unknown>, mapping));
 
       if (jsonData.length === 0) {
-        toast.error('The Excel file is empty');
+        toast.error('The file has no data rows');
         setIsImporting(false);
         return;
       }
 
-      // Get existing categories for matching
+      const total = jsonData.length;
+      setImportProgress({ current: 0, total });
+
       const { data: existingCategorys } = await supabase
         .from('categories')
         .select('id, name')
         .eq('user_id', user.id);
-
       const categoryMap = new Map(existingCategorys?.map(c => [c.name.toLowerCase(), c.id]) || []);
 
-      // Import each product
       for (let i = 0; i < jsonData.length; i++) {
+        if (!isMountedRef.current) break;
+
         const row = jsonData[i];
-        const rowNumber = i + 2; // +2 because Excel starts at 1 and has header row
+        const rowNumber = i + 2;
 
         try {
-          // Validate required fields
           if (!row.name || row.name.trim() === '') {
             errors.push(`Row ${rowNumber}: Name is required`);
             failedCount++;
             continue;
           }
 
-          // Find category ID if provided
-          let categoryId = null;
-
+          let categoryId: string | null = null;
           if (row.category && row.category.trim() !== '') {
             const catName = row.category.trim().toLowerCase();
-            categoryId = categoryMap.get(catName) || null;
-            
-            // Create category if it doesn't exist
+            categoryId = categoryMap.get(catName) ?? null;
             if (!categoryId) {
               const { data: newCategory, error: catError } = await supabase
                 .from('categories')
-                .insert({
-                  name: row.category.trim(),
-                  user_id: user.id,
-                })
+                .insert({ name: row.category.trim(), user_id: user.id })
                 .select()
                 .single();
-
               if (!catError && newCategory) {
                 categoryId = newCategory.id;
                 categoryMap.set(catName, categoryId);
@@ -254,11 +318,9 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             }
           }
 
-
           const quantity = Number(row.stock) || 0;
           const purchasePrice = Number(row.purchase_price) || 0;
 
-          // Insert product
           const { data: insertedProduct, error: productError } = await supabase
             .from('products')
             .insert({
@@ -268,12 +330,14 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
               minimum_stock_level: Number(row.minimum_level) || 0,
               purchase_price: purchasePrice,
               sale_price: Number(row.sale_price) || 0,
-              unit_price: Number(row.sale_price) || 0, // Use sale price as unit price
+              unit_price: Number(row.sale_price) || 0,
               location: row.location?.trim() || null,
               category_id: categoryId,
               branch_id: activeBranch.branch_id,
               user_id: user.id,
               status: 'active',
+              ...(row.sku?.trim() ? { sku: row.sku.trim() } : {}),
+              ...(row.barcode?.trim() ? { barcode: row.barcode.trim() } : {}),
             })
             .select('id, name')
             .single();
@@ -283,7 +347,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             failedCount++;
           } else {
             successCount++;
-
             const movementResult = await createInitialStockMovement({
               productId: insertedProduct.id,
               productName: insertedProduct.name,
@@ -292,7 +355,6 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
               branchId: activeBranch.branch_id,
               userId: user.id,
             });
-
             if (!movementResult.success) {
               errors.push(
                 `Row ${rowNumber}: Product imported but stock history failed - ${movementResult.message}`
@@ -303,19 +365,22 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
           errors.push(`Row ${rowNumber}: ${error instanceof Error ? error.message : 'Unknown error'}`);
           failedCount++;
         }
+
+        const current = i + 1;
+        if (current % 20 === 0 || current === total) {
+          if (isMountedRef.current) setImportProgress({ current, total });
+        }
       }
 
       setImportResults({
         success: successCount,
         failed: failedCount,
-        errors: errors.slice(0, 10), // Show max 10 errors
+        errors: errors.slice(0, 10),
       });
-
       if (successCount > 0) {
         toast.success(`${successCount} product${successCount !== 1 ? 's' : ''} imported successfully`);
         onImportComplete();
       }
-
       if (failedCount > 0) {
         toast.error(`${failedCount} product${failedCount !== 1 ? 's' : ''} failed`);
       }
@@ -324,13 +389,33 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
       toast.error('An error occurred during import');
     } finally {
       setIsImporting(false);
+      setImportProgress(null);
     }
   };
 
   const handleClose = () => {
     setFile(null);
+    setFileHeaders([]);
+    setRawRows([]);
+    setColumnMapping(null);
+    setShowMappingUI(false);
+    setParseError(null);
     setImportResults(null);
+    setImportProgress(null);
+    setIsParsing(false);
     onClose();
+  };
+
+  const effectiveMapping = columnMapping ?? (fileHeaders.length > 0 ? buildColumnMapping(fileHeaders) : null);
+  const nameMapped = (columnMapping ?? effectiveMapping)?.name != null;
+  const canStartImport = file != null && nameMapped && !isImporting;
+
+  const updateMapping = (field: ProductField, fileHeader: string | null) => {
+    setColumnMapping(prev => {
+      const next = prev ? { ...prev } : buildColumnMapping(fileHeaders);
+      (next as Record<ProductField, string | null>)[field] = fileHeader;
+      return next;
+    });
   };
 
   return (
@@ -346,12 +431,15 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
         <div className="space-y-6">
           {/* Instructions */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="font-semibold text-blue-900 mb-2">How to use:</h3>
+            <h3 className="font-semibold text-blue-900 mb-2">How to use</h3>
+            <p className="text-sm text-blue-800 mb-2">
+              Upload any Excel or CSV file; we’ll match columns automatically. You can download our template or use your own layout.
+            </p>
             <ol className="list-decimal list-inside space-y-1 text-sm text-blue-800">
-              <li>Download the template Excel file</li>
-              <li>Fill in your products according to the example</li>
-              <li>Upload the completed file</li>
-              <li>Click "Start Import"</li>
+              <li>Download the template (optional) or use your own file</li>
+              <li>Upload your Excel (.xlsx, .xls) or CSV file</li>
+              <li>Confirm or adjust column mapping if needed</li>
+              <li>Click &quot;Start Import&quot;</li>
             </ol>
           </div>
 
@@ -370,75 +458,135 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
           {/* File Upload with Drag and Drop */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">
-              Upload Excel File
+              Upload Excel or CSV
             </label>
-            
-            {/* Drag and Drop Zone */}
+            {parseError && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
+                {parseError}
+              </div>
+            )}
             <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              onClick={handleDragZoneClick}
+              onDragOver={isParsing ? undefined : handleDragOver}
+              onDragLeave={isParsing ? undefined : handleDragLeave}
+              onDrop={isParsing ? undefined : handleDrop}
+              onClick={isParsing ? undefined : handleDragZoneClick}
               className={`
-                border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-                ${isDragging 
-                  ? 'border-blue-500 bg-blue-50' 
-                  : file 
-                    ? 'border-green-500 bg-green-50' 
-                    : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'
-                }
+                border-2 border-dashed rounded-lg p-8 text-center transition-colors
+                ${isParsing ? 'cursor-wait border-blue-400 bg-blue-50' : 'cursor-pointer'}
+                ${!isParsing && isDragging ? 'border-blue-500 bg-blue-50' : ''}
+                ${!isParsing && file && !isDragging ? 'border-green-500 bg-green-50' : ''}
+                ${!isParsing && !file && !isDragging ? 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50' : ''}
               `}
             >
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".xlsx,.xls"
+                accept=".xlsx,.xls,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                 onChange={handleFileChange}
                 className="hidden"
+                disabled={isParsing}
               />
-              
-              {file ? (
+              {isParsing ? (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-500 border-t-transparent" />
+                  <p className="text-sm font-medium text-blue-800">Parsing file…</p>
+                </div>
+              ) : file ? (
                 <div className="flex flex-col items-center gap-2">
                   <CheckCircle2 className="w-12 h-12 text-green-600" />
                   <p className="text-sm font-medium text-green-800">{file.name}</p>
-                  <p className="text-xs text-green-600">Click to select a different file</p>
+                  <p className="text-xs text-green-600">{rawRows.length} row{rawRows.length !== 1 ? 's' : ''} • Click to select a different file</p>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
                   <Upload className="w-12 h-12 text-gray-400" />
                   <div>
                     <p className="text-sm font-medium text-gray-700">
-                      Drag and drop your Excel file here
+                      Drag and drop your file here
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
                       or click to browse
                     </p>
                   </div>
                   <p className="text-xs text-gray-400 mt-2">
-                    Supports .xlsx and .xls files (max 10MB)
+                    Supports Excel (.xlsx, .xls) and CSV (.csv), max 10MB
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* Required Fields Info */}
+          {/* Column mapping: show when file loaded */}
+          {file && fileHeaders.length > 0 && (
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setShowMappingUI(!showMappingUI)}
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+              >
+                {showMappingUI ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                Adjust column mapping
+                {!nameMapped && (
+                  <span className="text-red-600 text-xs">(Product name required)</span>
+                )}
+              </button>
+              {showMappingUI && (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+                  <p className="text-xs text-gray-600 mb-2">
+                    Map each product field to a column from your file. Only &quot;Product name&quot; is required.
+                  </p>
+                  {(Object.keys(COLUMN_SYNONYMS) as ProductField[]).map(field => (
+                    <div key={field} className="flex items-center gap-2">
+                      <Label className="w-36 text-sm shrink-0">
+                        {field === 'name' ? 'Product name (required)' : field.replace(/_/g, ' ')}
+                      </Label>
+                      <Select
+                        value={(columnMapping ?? effectiveMapping)?.[field] ?? '__none__'}
+                        onValueChange={v => updateMapping(field, v === '__none__' ? null : v)}
+                      >
+                        <SelectTrigger className="flex-1">
+                          <SelectValue placeholder="— Not mapped —" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__none__">
+                            — Not mapped —
+                          </SelectItem>
+                          {fileHeaders.map(h => (
+                            <SelectItem key={h} value={h}>
+                              {h}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Required / Optional fields */}
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h4 className="font-semibold text-gray-900 mb-2">Required columns:</h4>
+            <h4 className="font-semibold text-gray-900 mb-2">Required</h4>
+            <p className="text-sm text-gray-700 mb-1">Product name (we auto-detect columns like &quot;Name&quot;, &quot;Product&quot;, &quot;Article&quot;, etc.)</p>
+            <h4 className="font-semibold text-gray-900 mt-3 mb-2">Optional</h4>
             <ul className="space-y-1 text-sm text-gray-700">
-              <li><strong>name</strong> - Product name (required)</li>
-              <li><strong>stock</strong> - Current stock (number)</li>
-              <li><strong>minimum_level</strong> - Minimum stock level (number)</li>
-              <li><strong>purchase_price</strong> - Purchase price (number)</li>
-              <li><strong>sale_price</strong> - Sale price (number)</li>
-            </ul>
-            <h4 className="font-semibold text-gray-900 mt-3 mb-2">Optional columns:</h4>
-            <ul className="space-y-1 text-sm text-gray-700">
-              <li><strong>description</strong> - Product description</li>
-              <li><strong>location</strong> - Storage location</li>
-              <li><strong>category</strong> - Category (will be created if it doesn't exist)</li>
+              <li>Stock, min level, purchase price, sale price, description, location, category, SKU, barcode</li>
             </ul>
           </div>
+
+          {/* Import progress */}
+          {isImporting && importProgress != null && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-gray-700">
+                Importing… {importProgress.current.toLocaleString()} / {importProgress.total.toLocaleString()} products
+              </p>
+              <Progress
+                value={importProgress.total > 0 ? (importProgress.current / importProgress.total) * 100 : 0}
+                className="h-2"
+              />
+            </div>
+          )}
 
           {/* Import Results */}
           {importResults && (
@@ -486,7 +634,7 @@ export const BulkImportModal: React.FC<BulkImportModalProps> = ({
             </Button>
             <Button
               onClick={handleImport}
-              disabled={!file || isImporting}
+              disabled={!canStartImport}
               className="bg-blue-600 hover:bg-blue-700"
             >
               {isImporting ? (

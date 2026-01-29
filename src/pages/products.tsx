@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown } from 'lucide-react';
 import { toast } from 'sonner';
@@ -23,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { Progress } from '@/components/ui/progress';
+import { BulkImportModal } from '@/components/BulkImportModal';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -221,8 +221,6 @@ const categoryProductsData = useMemo(() => {
   const [showBulkDeleteDialog, setShowBulkDeleteDialog] = useState(false);
 
   const [showImportDialog, setShowImportDialog] = useState(false);
-  const [importFile, setImportFile] = useState<File | null>(null);
-  const [importing, setImporting] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -794,97 +792,6 @@ const categoryProductsData = useMemo(() => {
     } catch (error) {
       console.error('Error exporting CSV:', error);
       toast.error('Failed to export products');
-    }
-  };
-
-  const handleImportFile = async () => {
-    if (!importFile || !user) {
-      toast.error('Please select a file');
-      return;
-    }
-
-    setImporting(true);
-    try {
-      const text = await importFile.text();
-      const lines = text.split('\n').filter(line => line.trim());
-      
-      if (lines.length < 2) {
-        toast.error('CSV file must have at least a header row and one data row');
-        return;
-      }
-
-      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-      const nameIndex = headers.findIndex(h => h.toLowerCase().includes('name'));
-      const skuIndex = headers.findIndex(h => h.toLowerCase() === 'sku');
-      
-      if (nameIndex === -1) {
-        toast.error('CSV must contain a "Name" column');
-        return;
-      }
-
-      let imported = 0;
-      let errors = 0;
-
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
-        const name = values[nameIndex];
-        const sku = skuIndex >= 0 ? values[skuIndex] : null;
-
-        if (!name) continue;
-
-        try {
-          const productData: any = {
-            name,
-            sku: sku || undefined,
-            user_id: user.id,
-            branch_id: branchId || undefined,
-          };
-
-          const categoryIndex = headers.findIndex(h => h.toLowerCase().includes('category'));
-          const stockIndex = headers.findIndex(h => h.toLowerCase().includes('stock') || h.toLowerCase().includes('quantity'));
-          const priceIndex = headers.findIndex(h => h.toLowerCase() === 'price');
-
-          if (categoryIndex >= 0 && values[categoryIndex]) {
-            const categoryName = values[categoryIndex];
-            const category = allCategories.find(c => c.name.toLowerCase() === categoryName.toLowerCase());
-            if (category) {
-              productData.category_id = category.id;
-            }
-          }
-
-          if (stockIndex >= 0 && values[stockIndex]) {
-            productData.quantity_in_stock = parseInt(values[stockIndex]) || 0;
-          }
-
-          if (priceIndex >= 0 && values[priceIndex]) {
-            productData.price = parseFloat(values[priceIndex]) || 0;
-          }
-
-          const { error } = await supabase
-            .from('products')
-            .insert(productData);
-
-          if (error) {
-            console.error('Error importing product:', error);
-            errors++;
-          } else {
-            imported++;
-          }
-        } catch (err) {
-          console.error('Error processing row:', err);
-          errors++;
-        }
-      }
-
-      queryClient.invalidateQueries({ queryKey: ['products', 'categoryProducts', branchId, selectedCategoryIds, user?.id] });
-      toast.success(`Imported ${imported} products${errors > 0 ? `, ${errors} errors` : ''}`);
-      setShowImportDialog(false);
-      setImportFile(null);
-    } catch (error) {
-      console.error('Error importing CSV:', error);
-      toast.error('Failed to import products');
-    } finally {
-      setImporting(false);
     }
   };
 
@@ -1546,39 +1453,15 @@ const categoryProductsData = useMemo(() => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Import Dialog */}
-      <Dialog open={showImportDialog} onOpenChange={setShowImportDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Import Products from CSV</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label>CSV File</Label>
-              <Input
-                type="file"
-                accept=".csv"
-                onChange={(e) => setImportFile(e.target.files?.[0] || null)}
-                className="mt-2"
-              />
-              <p className="text-xs text-gray-500 mt-2">
-                CSV should include columns: Name, SKU (optional), Category (optional), Stock (optional), Price (optional)
-              </p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setShowImportDialog(false);
-              setImportFile(null);
-            }}>
-              Cancel
-            </Button>
-            <Button onClick={handleImportFile} disabled={!importFile || importing}>
-              {importing ? 'Importing...' : 'Import'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Bulk Import Modal (Excel / CSV) */}
+      <BulkImportModal
+        isOpen={showImportDialog}
+        onClose={() => setShowImportDialog(false)}
+        onImportComplete={() => {
+          queryClient.invalidateQueries({ queryKey: ['products', 'categoryProducts', branchId, selectedCategoryIds, user?.id] });
+          setShowImportDialog(false);
+        }}
+      />
     </div>
   );
 }

@@ -21,48 +21,8 @@ const keyTakeaways = [
   "KPI's zoals foodcost %, shrinkage en inventory turnover geven snel inzicht in effectiviteit."
 ];
 
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "Voorraadbeheer in de Horeca: Stocken zonder verspilling",
-    description:
-      "Complete gids voor voorraadbeheer horeca: stockbeheer, voorraadbeheer software horeca, foodcost optimalisatie, en praktische tips voor restaurants en cafés. Leer hoe correct voorraadbeheer verspilling met 30% vermindert en marges verbetert.",
-    author: {
-      "@type": "Organization",
-      name: "StockFlow",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "StockFlow",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://www.stockflowsystems.com/logo.png",
-      },
-    },
-    datePublished: "2026-01-07",
-    dateModified: "2026-01-22",
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `https://www.stockflowsystems.com${canonicalPath}`,
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqData.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  },
-];
-
 const faqData: { question: string; answer: string }[] = [
-{
+  {
     question: "Hoe doe je voorraadbeheer?",
     answer:
       "Voorraadbeheer voer je uit door het proces van inkopen, opslaan en verkopen nauwgezet te monitoren. Dit omvat het bepalen van bestelniveaus (wanneer koop ik bij?), het tellen van fysieke voorraad en het analyseren van de doorloopsnelheid om zowel tekorten als overschotten te voorkomen.",
@@ -133,6 +93,46 @@ const faqData: { question: string; answer: string }[] = [
     question: "Is voorraadbeheer software horeca moeilijk te leren?",
     answer:
       "Goede voorraadbeheer software horeca zoals StockFlow is intuïtief ontworpen. De meeste teams zijn binnen 1-2 weken volledig operationeel. Mobiele apps maken tellingen eenvoudig, en automatische integraties elimineren handmatig werk.",
+  },
+];
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "Voorraadbeheer in de Horeca: Stocken zonder verspilling",
+    description:
+      "Complete gids voor voorraadbeheer horeca: stockbeheer, voorraadbeheer software horeca, foodcost optimalisatie, en praktische tips voor restaurants en cafés. Leer hoe correct voorraadbeheer verspilling met 30% vermindert en marges verbetert.",
+    author: {
+      "@type": "Organization",
+      name: "StockFlow",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "StockFlow",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.stockflowsystems.com/logo.png",
+      },
+    },
+    datePublished: "2026-01-07",
+    dateModified: "2026-01-22",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://www.stockflowsystems.com${canonicalPath}`,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
   },
 ];
 

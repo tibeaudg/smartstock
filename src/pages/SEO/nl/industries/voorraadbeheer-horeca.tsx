@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
@@ -48,48 +49,53 @@ const faqData: { question: string; answer: string }[] = [
   }
 ];
 
-const structuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "Voorraadbeheer in de Horeca: Stocken zonder verspilling",
-    description:
-      "Complete gids voor voorraadbeheer horeca: stockbeheer, voorraadbeheer software horeca, foodcost optimalisatie, en praktische tips voor restaurants en cafés. Leer hoe correct voorraadbeheer verspilling met 30% vermindert en marges verbetert.",
-    author: {
-      "@type": "Organization",
-      name: "StockFlow",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "StockFlow",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://www.stockflowsystems.com/logo.png",
-      },
-    },
-    datePublished: "2026-01-07",
-    dateModified: "2026-01-22",
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `https://www.stockflowsystems.com${canonicalPath}`,
+const articleStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Voorraadbeheer in de Horeca: Stocken zonder verspilling",
+  description:
+    "Complete gids voor voorraadbeheer horeca: stockbeheer, voorraadbeheer software horeca, foodcost optimalisatie, en praktische tips voor restaurants en cafés. Leer hoe correct voorraadbeheer verspilling met 30% vermindert en marges verbetert.",
+  author: {
+    "@type": "Organization",
+    name: "StockFlow",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "StockFlow",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.stockflowsystems.com/logo.png",
     },
   },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqData.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
+  datePublished: "2026-01-07",
+  dateModified: "2026-01-22",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `https://www.stockflowsystems.com${canonicalPath}`,
   },
-];
+};
+
+function getStructuredData() {
+  return [
+    articleStructuredData,
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqData.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    },
+  ];
+}
 
 export default function VoorraadbeheerHorecaPage() {
   const location = useLocation();
+  const structuredData = useMemo(() => getStructuredData(), []);
 
   return (
     <SeoPageLayout
