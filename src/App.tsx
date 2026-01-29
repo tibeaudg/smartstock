@@ -17,6 +17,7 @@ import { ProfileSettings } from './components/settings/ProfileSettings';
 import { UserManagement } from './components/settings/UserManagement';
 import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
+import { GeneralSettings } from './components/settings/GeneralSettings';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
@@ -365,6 +366,7 @@ const AppRouter = () => {
           <Route path="analytics/export" element={<ExportData />} />
           <Route path="settings" element={<Settings />}>
             <Route index element={<ProfileSettings />} />
+            <Route path="general" element={<GeneralSettings />} />
             <Route path="profile" element={<ProfileSettings />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="help-center" element={<HelpCenterPage />} />

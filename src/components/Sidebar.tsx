@@ -104,6 +104,7 @@ export const Sidebar = ({ userRole, userProfile, isOpen, onToggle, unreadCount =
 
 
   const settingsSubItems = [
+    { id: 'general', label: 'General', path: '/dashboard/settings/general' },
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
   ];
