@@ -99,6 +99,9 @@ export default function ProductDetailPage() {
     category_id: '',
     category_name: '',
   });
+
+  // Locations state for multiple locations support
+  const [locations, setLocations] = useState<string[]>(['']);
   
   // Image upload state
   const [uploadedImages, setUploadedImages] = useState<Array<{
@@ -152,6 +155,13 @@ export default function ProductDetailPage() {
             category_id: data.category_id || '',
             category_name: data.category_name || '',
           });
+          // Initialize locations array from comma-separated string
+          if (data.location) {
+            const locationArray = data.location.split(',').map(l => l.trim()).filter(l => l);
+            setLocations(locationArray.length > 0 ? locationArray : ['']);
+          } else {
+            setLocations(['']);
+          }
         }
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -488,7 +498,9 @@ export default function ProductDetailPage() {
       } else if (field === 'sku') {
         updateData.sku = form.sku.trim() || null;
       } else if (field === 'location') {
-        updateData.location = form.location.trim() || null;
+        // Join locations array with commas, filter out empty strings
+        const locationString = locations.filter(l => l.trim()).join(', ') || null;
+        updateData.location = locationString;
       } else if (field === 'category') {
         updateData.category_id = categoryId;
         updateData.category_name = form.category_name.trim() || null;
@@ -530,6 +542,13 @@ export default function ProductDetailPage() {
           category_id: updatedProduct.category_id || '',
           category_name: updatedProduct.category_name || '',
         }));
+        // Update locations array from updated product
+        if (updatedProduct.location) {
+          const locationArray = updatedProduct.location.split(',').map(l => l.trim()).filter(l => l);
+          setLocations(locationArray.length > 0 ? locationArray : ['']);
+        } else {
+          setLocations(['']);
+        }
       }
 
       // Clear image upload state if image was saved
@@ -568,6 +587,14 @@ export default function ProductDetailPage() {
       category_id: currentProduct?.category_id || '',
       category_name: currentProduct?.category_name || '',
     });
+    
+    // Reset locations array from current product
+    if (field === 'location' && currentProduct?.location) {
+      const locationArray = currentProduct.location.split(',').map(l => l.trim()).filter(l => l);
+      setLocations(locationArray.length > 0 ? locationArray : ['']);
+    } else if (field === 'location') {
+      setLocations(['']);
+    }
     
     // Clear image uploads
     if (field === 'image') {
@@ -1061,13 +1088,45 @@ export default function ProductDetailPage() {
                 <div className="text-xs font-medium text-gray-500 mb-1">Location</div>
                 {editingField === 'location' ? (
                   <div className="space-y-2">
-                    <Input
-                      value={form.location}
-                      onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
-                      placeholder="Enter location (e.g. row6 box 4)"
+                    {locations.map((location, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          value={location}
+                          onChange={(e) => {
+                            const newLocations = [...locations];
+                            newLocations[index] = e.target.value;
+                            setLocations(newLocations);
+                          }}
+                          placeholder="Enter location (e.g. row6 box 4)"
+                          disabled={loading}
+                          className="text-sm flex-1"
+                        />
+                        {locations.length > 1 && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              const newLocations = locations.filter((_, i) => i !== index);
+                              setLocations(newLocations.length > 0 ? newLocations : ['']);
+                            }}
+                            disabled={loading}
+                            className="h-7 w-7 p-0"
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setLocations([...locations, ''])}
                       disabled={loading}
-                      className="text-sm"
-                    />
+                      className="w-full h-7 text-xs"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Add Location
+                    </Button>
                     <div className="flex gap-2">
                       <Button
                         size="sm"
@@ -1090,13 +1149,34 @@ export default function ProductDetailPage() {
                   </div>
                 ) : (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-900">
-                      {currentProduct.location || 'Not set'}
-                    </span>
+                    <div className="flex flex-wrap gap-1 flex-1">
+                      {currentProduct.location ? (
+                        currentProduct.location.split(',').map((loc: string, idx: number) => {
+                          const trimmedLoc = loc.trim();
+                          return trimmedLoc ? (
+                            <Badge key={idx} variant="secondary" className="text-xs">
+                              <MapPin className="w-2.5 h-2.5 mr-1" />
+                              {trimmedLoc}
+                            </Badge>
+                          ) : null;
+                        })
+                      ) : (
+                        <span className="text-sm text-gray-500">Not set</span>
+                      )}
+                    </div>
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => setEditingField('location')}
+                      onClick={() => {
+                        // Initialize locations when entering edit mode
+                        if (currentProduct.location) {
+                          const locationArray = currentProduct.location.split(',').map(l => l.trim()).filter(l => l);
+                          setLocations(locationArray.length > 0 ? locationArray : ['']);
+                        } else {
+                          setLocations(['']);
+                        }
+                        setEditingField('location');
+                      }}
                       className="h-6 w-6 p-0"
                     >
                       <Edit className="w-3 h-3" />
@@ -1593,9 +1673,23 @@ export default function ProductDetailPage() {
                                           onChange={(e) => setVariantForm(prev => ({ ...prev, location: e.target.value }))}
                                           className="text-sm"
                                           disabled={loading}
+                                          placeholder="Enter locations (comma-separated)"
                                         />
                                       ) : (
-                                        <span className="text-sm text-gray-600">{variant.location || '-'}</span>
+                                        <div className="flex flex-wrap gap-1">
+                                          {variant.location ? (
+                                            variant.location.split(',').map((loc: string, idx: number) => {
+                                              const trimmedLoc = loc.trim();
+                                              return trimmedLoc ? (
+                                                <Badge key={idx} variant="secondary" className="text-xs">
+                                                  {trimmedLoc}
+                                                </Badge>
+                                              ) : null;
+                                            })
+                                          ) : (
+                                            <span className="text-sm text-gray-500">-</span>
+                                          )}
+                                        </div>
                                       )}
                                     </td>
                                     <td className="px-4 py-3 text-center">

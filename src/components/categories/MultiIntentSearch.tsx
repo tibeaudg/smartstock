@@ -157,7 +157,7 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
         .from('products')
         .select('id, name, sku, barcode, location, category_id, quantity_in_stock')
         .eq('branch_id', activeBranch?.branch_id)
-        .or(`name.ilike.%${term}%,sku.ilike.%${term}%,barcode.ilike.%${term}%`)
+        .or(`name.ilike.%${term}%,sku.ilike.%${term}%,barcode.ilike.%${term}%,location.ilike.%${term}%`)
         .limit(10);
 
       if (products && Array.isArray(products)) {
@@ -168,6 +168,13 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
           if (product.name?.toLowerCase().includes(term)) matchedFields.push('name');
           if (product.sku?.toLowerCase().includes(term)) matchedFields.push('SKU');
           if (product.barcode?.toLowerCase().includes(term)) matchedFields.push('barcode');
+          // Check if location matches (handle comma-separated locations)
+          if (product.location) {
+            const locations = product.location.split(',').map((l: string) => l.trim().toLowerCase());
+            if (locations.some((loc: string) => loc.includes(term.toLowerCase()))) {
+              matchedFields.push('location');
+            }
+          }
           
           // Add as product match
           if (product.name?.toLowerCase().includes(term)) {
@@ -190,6 +197,22 @@ export const MultiIntentSearch = React.forwardRef<HTMLInputElement, MultiIntentS
               data: product,
               matchedFields: ['SKU'],
             });
+          }
+          // Add as location match if location matches but name/SKU don't
+          if (product.location && matchedFields.includes('location') && !matchedFields.includes('name') && !matchedFields.includes('SKU')) {
+            const matchingLocation = product.location.split(',').find((loc: string) => 
+              loc.trim().toLowerCase().includes(term.toLowerCase())
+            );
+            if (matchingLocation) {
+              results.push({
+                type: 'product',
+                id: product.id,
+                name: matchingLocation.trim(),
+                subtitle: product.name,
+                data: product,
+                matchedFields: ['location'],
+              });
+            }
           }
         });
       }

@@ -1226,7 +1226,20 @@ const categoryProductsData = useMemo(() => {
                           </td>
                         
                           <td className="px-4 py-4 text-sm">
-                            {p.location || '—'}
+                            {p.location ? (
+                              <div className="flex flex-wrap gap-1">
+                                {p.location.split(',').map((loc: string, idx: number) => {
+                                  const trimmedLoc = loc.trim();
+                                  return trimmedLoc ? (
+                                    <Badge key={idx} variant="secondary" className="text-xs">
+                                      {trimmedLoc}
+                                    </Badge>
+                                  ) : null;
+                                })}
+                              </div>
+                            ) : (
+                              '—'
+                            )}
                           </td>
                           <td className="px-4 py-4">
                             <span className={cn(
