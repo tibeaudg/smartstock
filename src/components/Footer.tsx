@@ -83,7 +83,7 @@ const Footer = () => {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: "Active Users", val: "500+" },
-                  { label: "Success Rate", val: "99.9%" },
+                  { label: "Inventory Accuracy", val: "99.9%" },
                   { label: "Avg Savings", val: "€15k" },
                   { label: "Support", val: "24/7" }
                 ].map((stat, i) => (

@@ -7,7 +7,8 @@ import Footer from './Footer';
 import { 
   Package, BarChart3, Zap, ChevronLeft, ChevronRight, 
   Scan, CheckCircle, Star, Shield, Users, TrendingUp,
-  Clock, Smartphone, Building, Award, ArrowRight
+  Clock, Smartphone, Building, Award, ArrowRight, WifiOff,
+  Camera, RefreshCw, BarChart
 } from 'lucide-react';
 import { Head } from 'react-day-picker';
 import { Navigate, useNavigate, Link } from 'react-router-dom';
@@ -42,21 +43,24 @@ const SocialProof = () => {
       role: "Retail Store Owner",
       savings: "$4,800/year",
       quote: "Stopped wasting money on expired inventory and overstock. Now we invest that capital into bestsellers.",
-      rating: 5
+      rating: 5,
+      photo: "/Laura.png"
     },
     {
       name: "Tom Demuynck", 
       role: "Boutique Manager",
       savings: "$8,500 recovered",
       quote: "Identified slow-moving inventory worth $8,500. Cleared it at 30% margin instead of letting it sit.",
-      rating: 5
+      rating: 5,
+      photo: "/jan.png"
     },
     {
       name: "Marie Dubois",
       role: "E-commerce Business",
       savings: "75% time saved",
       quote: "What took 4 hours now takes 1 hour. StockFlow pays for itself in time savings alone.",
-      rating: 5
+      rating: 5,
+      photo: "/anke.png"
     }
   ];
 
@@ -70,10 +74,20 @@ const SocialProof = () => {
             ))}
           </div>
           <p className="text-gray-700 mb-4 italic">"{t.quote}"</p>
-          <div className="border-t pt-4">
-            <p className="font-semibold text-gray-900">{t.name}</p>
-            <p className="text-sm text-gray-600">{t.role}</p>
-            <p className="text-sm font-bold text-green-600 mt-1">{t.savings}</p>
+          <div className="border-t pt-4 flex items-center gap-4">
+            <img 
+              src={t.photo} 
+              alt={t.name}
+              className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+            <div className="flex-1">
+              <p className="font-semibold text-gray-900">{t.name}</p>
+              <p className="text-sm text-gray-600">{t.role}</p>
+              <p className="text-sm font-bold text-green-600 mt-1">{t.savings}</p>
+            </div>
           </div>
         </div>
       ))}
@@ -86,6 +100,10 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
   
   const faqs = [
+    {
+      q: "Why is StockFlow free? What's the catch?",
+      a: "Our basic plan is free forever for small shops. We only charge for extra-large warehouses or custom features. Your data is always yours, and you can export it anytime."
+    },
     {
       q: "What is the best inventory management software?",
       a: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, and excellent customer service - completely free forever with all features included."
@@ -152,9 +170,8 @@ export const HomePage = () => {
               Free Inventory Management<br />
               <span className="text-blue-600">That Actually Works</span>
             </h1>
-            <p className="text-md md:text-lg text-gray-700 mb-6 max-w-3xl mx-auto leading-relaxed">
-              Whether you're managing complex manufacturing with <Link to="/bill-of-materials-software-free" className="text-blue-600 hover:text-blue-700 font-semibold underline">Bill of Materials (BOM) software</Link>, comparing the <Link to="/best-inventory-management-software" className="text-blue-600 hover:text-blue-700 font-semibold underline">best inventory management software</Link> solutions, or optimizing operations with a comprehensive <Link to="/warehouse-management-system" className="text-blue-600 hover:text-blue-700 font-semibold underline">warehouse management system</Link>, StockFlow provides enterprise-grade inventory control that scales with your business—completely free forever.
-            </p>
+
+
             <p className="text-md md:text-md text-gray-600 mb-8 max-w-2xl mx-auto">
               Stop stockouts. Recover dead stock capital. Track inventory in real-time with your phone. 
               <span className="font-semibold text-gray-900"> Join 500+ businesses using StockFlow - free forever.</span>
@@ -169,7 +186,7 @@ export const HomePage = () => {
                 onClick={handleGetStarted}
                 className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
               >
-                Start Free - No Credit Card Required
+                Get My Free Account
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
               <p className="text-center text-sm text-gray-500 mt-3">
@@ -182,23 +199,49 @@ export const HomePage = () => {
 
 
 
-        {/* Social Proof - Logo Bar */}
-        <section className="py-16 bg-slate-50 border-y border-slate-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <p className="text-center text-slate-500 text-sm font-semibold uppercase tracking-wider mb-8">
-              Powering Inventory Management for Industry Leaders
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-12 opacity-40 grayscale">
-              {['Acme Manufacturing', 'TechParts Inc', 'GlobalAssembly', 'Precision Tools', 'IndustrialCo', 'MakerSpace'].map((company, i) => (
-                <div key={i} className="text-2xl font-black text-slate-700">{company}</div>
-              ))}
+        <section className="py-20 px-4 bg-gradient-to-b from-white to-blue-50">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+
+              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+                About Stockflow
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Image Left */}
+              <div className="order-2 md:order-1">
+
+
+                <div className=" overflow-hidden">
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
+                    <img 
+                      src="/dashboard.png" 
+                      alt="StockFlow dashboard showing inventory management" 
+                      className="w-full h-full object-contain border-2 border-blue-200 rounded-lg"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
+                      <BarChart className="w-16 h-16 text-blue-600 opacity-50" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Text Right */}
+              <div className="order-1 md:order-2">
+                <div className="">
+                  <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                    Whether you're managing complex manufacturing with <Link to="/bill-of-materials-software-free" className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors">Bill of Materials (BOM) software</Link>, comparing the <Link to="/best-inventory-management-software" className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors">best inventory management software</Link> solutions, or optimizing operations with a comprehensive <Link to="/warehouse-management-system" className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors">warehouse management system</Link>, StockFlow provides enterprise-grade inventory control that scales with your business completely free forever.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-
       {/* Problem-Solution Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-blue-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -260,6 +303,175 @@ export const HomePage = () => {
         </div>
       </section>
 
+
+
+            {/* Barcode Scanning Demo Section */}
+            <section className="py-20 px-4 bg-blue-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-100">
+              <Camera className="w-3 h-3 mr-1 inline" />
+              Mobile Barcode Scanning
+            </Badge>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+              See It In Action
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              Scan a barcode and watch stock update instantly. No special hardware needed—just your phone's camera.
+            </p>
+          </div>
+
+          {/* Main Demo Area */}
+          <div className="grid lg:grid-cols-2 gap-8 mb-12">
+            {/* Left: Demo Video/Image */}
+            <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 overflow-hidden">
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden mb-4">
+                {/* Primary demo image */}
+                <img 
+                  src="/scanner.png" 
+                  alt="Barcode scanning demonstration" 
+                  className="w-150 h-150 object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+  
+              </div>
+
+            </div>
+
+            {/* Right: Key Features */}
+            <div className="space-y-4">
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-600">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Zap className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">Instant Updates</h3>
+                    <p className="text-gray-600 text-sm">Stock levels update in real-time across all devices and locations. No delays, no manual entry errors.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-600">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">99.9% Accuracy</h3>
+                    <p className="text-gray-600 text-sm">Barcode scanning eliminates human error. No more typos, wrong quantities, or misplaced items.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-purple-600">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <WifiOff className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">Works Offline</h3>
+                    <p className="text-gray-600 text-sm">Scan in basements, warehouses, or remote locations. Changes sync automatically when you reconnect.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-orange-600">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">5x Faster</h3>
+                    <p className="text-gray-600 text-sm">What used to take hours of manual counting now takes minutes. Save 40-60% of your inventory time.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile App Showcase */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 mb-4 aspect-square flex items-center justify-center relative overflow-hidden">
+                <img 
+                  src="/mobile-app.png" 
+                  alt="Mobile app interface" 
+                  className="max-w-full max-h-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
+                  <Smartphone className="w-16 h-16 text-blue-600" />
+                </div>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Mobile App</h3>
+              <p className="text-sm text-gray-600">Scan and manage inventory from your phone, anywhere, anytime.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 mb-4 aspect-square flex items-center justify-center relative overflow-hidden">
+                <img 
+                  src="/scanner2.png" 
+                  alt="Barcode scanner interface" 
+                  className="max-w-full max-h-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
+                  <Scan className="w-16 h-16 text-green-600" />
+                </div>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Barcode Scanner</h3>
+              <p className="text-sm text-gray-600">Use your phone's camera to scan any standard barcode instantly.</p>
+            </div>
+
+            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 mb-4 aspect-square flex items-center justify-center relative overflow-hidden">
+                <img 
+                  src="/dashboard.png" 
+                  alt="Dashboard view" 
+                  className="max-w-full max-h-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
+                  <BarChart className="w-16 h-16 text-purple-600" />
+                </div>
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Real-Time Dashboard</h3>
+              <p className="text-sm text-gray-600">See all your inventory data update live as you scan.</p>
+            </div>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">Ready to see it in action?</p>
+            <Button 
+              onClick={handleGetStarted}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+            >
+              Try Free Scanning Now
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+
+      
+
       {/* Feature Benefits Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -277,7 +489,8 @@ export const HomePage = () => {
                 icon: Smartphone,
                 title: "Scan with Your Phone",
                 benefit: "Count inventory in minutes, not hours",
-                features: ["Works offline", "No special hardware", "iOS & Android"]
+                features: ["Works offline", "No special hardware", "iOS & Android"],
+                offlineHighlight: true
               },
               {
                 icon: TrendingUp,
@@ -292,7 +505,13 @@ export const HomePage = () => {
                 features: ["Real-time sync", "Transfer tracking", "Per-location alerts"]
               }
             ].map((feature, idx) => (
-              <div key={idx} className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:shadow-lg">
+              <div key={idx} className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:shadow-lg relative">
+                {feature.offlineHighlight && (
+                  <Badge className="absolute top-4 right-4 bg-green-100 text-green-700 border-green-300 flex items-center gap-1">
+                    <WifiOff className="w-3 h-3" />
+                    Works Offline
+                  </Badge>
+                )}
                 <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
                   <feature.icon className="w-8 h-8 text-white" />
                 </div>
@@ -302,7 +521,11 @@ export const HomePage = () => {
                   {feature.features.map((f, i) => (
                     <li key={i} className="flex items-center text-gray-700">
                       <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      {f}
+                      {f === "Works offline" ? (
+                        <span className="font-semibold text-green-700">Perfect for basements, remote locations, and poor Wi-Fi areas</span>
+                      ) : (
+                        f
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -312,8 +535,10 @@ export const HomePage = () => {
         </div>
       </section>
 
+
+
       {/* How It Works Section */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
