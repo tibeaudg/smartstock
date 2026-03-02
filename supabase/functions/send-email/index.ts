@@ -1,0 +1,242 @@
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import nodemailer from 'npm:nodemailer@6.9.14'
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-application-name',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+function validateEmail(email: string): boolean {
+  if (typeof email !== 'string') return false
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  return emailRegex.test(email) && email.length <= 254
+}
+
+function replaceTemplateVariables(text: string, variables: Record<string, string>): string {
+  let result = text
+  for (const [key, value] of Object.entries(variables)) {
+    const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g')
+    result = result.replace(regex, value || '')
+  }
+  return result
+}
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { 
+      status: 204,
+      headers: corsHeaders 
+    })
+  }
+
+  if (req.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Method not allowed' }),
+      { status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  try {
+    const authHeader = req.headers.get('Authorization')
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+
+    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    })
+
+    const { data: { user }, error: userError } = await userClient.auth.getUser(token)
+    if (userError || !user) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid or expired token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const { data: profile } = await userClient
+      .from('profiles')
+      .select('role, is_owner')
+      .eq('id', user.id)
+      .single()
+
+    const isAdmin = profile?.role === 'admin' || profile?.is_owner === true
+    if (!isAdmin) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Admin access required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const adminClient = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    })
+
+    const body = await req.json().catch(() => ({}))
+    const {
+      toEmail,
+      subject,
+      htmlBody,
+      textBody,
+      emailType = 'custom',
+      templateId,
+      campaignId,
+      recipientUserId,
+      variables = {},
+    } = body
+
+    if (!toEmail || typeof toEmail !== 'string' || !validateEmail(toEmail.trim())) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Valid toEmail is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (!subject || typeof subject !== 'string' || subject.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Subject is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (!htmlBody || typeof htmlBody !== 'string' || htmlBody.trim().length === 0) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'HTML body is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Get SMTP settings
+    const { data: smtpRow, error: smtpError } = await adminClient
+      .from('smtp_settings')
+      .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
+      .eq('user_id', user.id)
+      .single()
+
+    if (smtpError || !smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'SMTP not configured. Configure E-mail / SMTP in Admin first.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    if (!smtpRow.smtp_password || String(smtpRow.smtp_password).trim() === '') {
+      return new Response(
+        JSON.stringify({ success: false, error: 'SMTP password not set. Enter and save your password in Admin SMTP settings.' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Replace template variables
+    const finalSubject = replaceTemplateVariables(subject, variables)
+    const finalHtmlBody = replaceTemplateVariables(htmlBody, variables)
+    const finalTextBody = textBody ? replaceTemplateVariables(textBody, variables) : undefined
+
+    const port = Number(smtpRow.smtp_port) || 587
+    const secure = smtpRow.use_tls && port === 465
+
+    const transporter = nodemailer.createTransport({
+      host: smtpRow.smtp_host,
+      port,
+      secure,
+      auth: {
+        user: smtpRow.smtp_username,
+        pass: smtpRow.smtp_password || undefined,
+      },
+      tls: {
+        rejectUnauthorized: Deno.env.get('DENO_ENV') === 'production',
+        ...(Deno.env.get('DENO_ENV') !== 'production' && {
+          rejectUnauthorized: false,
+          servername: smtpRow.smtp_host,
+        }),
+      },
+    })
+
+    // Send email
+    const fromName = smtpRow.from_name || 'StockFlow'
+    const to = toEmail.trim().toLowerCase()
+    
+    let emailStatus = 'sent'
+    let errorMessage: string | null = null
+    let messageId: string | null = null
+
+    try {
+      const info = await transporter.sendMail({
+        from: { name: fromName, address: smtpRow.from_email },
+        to,
+        subject: finalSubject,
+        html: finalHtmlBody,
+        text: finalTextBody || finalHtmlBody.replace(/<[^>]*>/g, ''),
+      })
+
+      messageId = info.messageId || null
+      emailStatus = 'delivered'
+    } catch (error) {
+      console.error('[send-email] Error sending email:', error)
+      emailStatus = 'failed'
+      errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    }
+
+    // Log email to database
+    const { error: logError } = await adminClient
+      .from('email_logs')
+      .insert({
+        campaign_id: campaignId || null,
+        template_id: templateId || null,
+        recipient_email: to,
+        recipient_user_id: recipientUserId || null,
+        subject: finalSubject,
+        email_type: emailType,
+        status: emailStatus,
+        error_message: errorMessage,
+        sent_at: new Date().toISOString(),
+        delivered_at: emailStatus === 'delivered' ? new Date().toISOString() : null,
+        metadata: {
+          message_id: messageId,
+          variables_used: Object.keys(variables),
+        },
+      })
+
+    if (logError) {
+      console.error('[send-email] Error logging email:', logError)
+    }
+
+    if (emailStatus === 'failed') {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: errorMessage || 'Failed to send email',
+          email_log_id: null,
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: 'Email sent successfully',
+        message_id: messageId,
+        status: emailStatus,
+      }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  } catch (error) {
+    console.error('[send-email]', error)
+    const message = error instanceof Error ? error.message : 'Failed to send email'
+    return new Response(
+      JSON.stringify({ success: false, error: message }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+})

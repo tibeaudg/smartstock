@@ -8,6 +8,7 @@ interface SEOProps {
   keywords?: string;
   image?: string;
   url?: string;
+  canonical?: string;
   structuredData?: object;
   hreflang?: Array<{ lang: string; url: string }>;
   alternateLanguages?: Array<{ lang: string; url: string }>;
@@ -53,6 +54,7 @@ export const SEO: React.FC<SEOProps> = ({
   keywords = 'stockflow, stock flow, stockflow app, stockflow software, warehouse management system, WMS, inventory management, stock control, warehouse software, inventory tracking, warehouse automation, stock management software, warehouse operations, inventory control system, inventory tracking programs, softwares for inventory management, inventory and stock management software, manage inventory, inventory planning software',
   image = defaultImage,
   url = defaultUrl,
+  canonical,
   structuredData,
   hreflang = [],
   alternateLanguages = [],
@@ -108,8 +110,17 @@ export const SEO: React.FC<SEOProps> = ({
         ? 'nofollow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
+  // Canonical URL handling:
+  // - Support `canonical` as an alias for `url` (older call sites use it)
+  // - If neither is set (or url is left at the default), fall back to the current browser URL
+  const canonicalCandidate = canonical ?? url;
+  const runtimeUrl =
+    (canonicalCandidate === defaultUrl || !canonicalCandidate) && typeof window !== 'undefined'
+      ? window.location.href
+      : canonicalCandidate;
+
   // Normalize canonical URL to ensure consistency (no trailing slashes, no query params)
-  const normalizedUrl = normalizeCanonicalUrl(url);
+  const normalizedUrl = normalizeCanonicalUrl(runtimeUrl);
 
   // SEO Validation: Warn if title or description exceed recommended lengths
   if (process.env.NODE_ENV === 'development') {

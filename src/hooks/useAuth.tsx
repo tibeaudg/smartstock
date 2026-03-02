@@ -202,6 +202,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           role: 'admin',
           updated_at: new Date().toISOString(),
         });
+
+        // Trigger segment automations immediately after registration (e.g. welcome email tied to "New Accounts" segment).
+        // This is hard-deduped per segment+template+user/email.
+        try {
+          await supabase.functions.invoke('trigger-segment-automations', { body: {} });
+        } catch (e) {
+          // Don't block signup if email automation fails.
+          console.error('[signUp] trigger-segment-automations failed:', e);
+        }
       }
       return { data, error: null };
     } finally {

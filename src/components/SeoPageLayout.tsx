@@ -160,8 +160,6 @@ const SEOPageLayout = memo(({
   const [activeId, setActiveId] = useState('');
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  const canonicalUrl = `${PRODUCTION_URL}${location.pathname}`.replace(/\/+$/, '');
-
   /* Scroll restore */
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -229,8 +227,6 @@ const SEOPageLayout = memo(({
     <div className="min-h-screen bg-white">
       <Helmet>
         <html lang={pageLanguage} />
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:url" content={canonicalUrl} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <style>{`@font-face { font-display: swap; }`}</style>

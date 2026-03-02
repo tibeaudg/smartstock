@@ -27,7 +27,7 @@ const canonicalPath =
   "/what-is-the-best-free-inventory-management-software";
 
 const metaDescription =
-  "Discover the best free inventory management software for 2026. Compare StockFlow, Zoho, Odoo, Square, and more. Learn about real limitations and use cases without trials or fluff.";
+  "Stop getting trapped by “free” tiers. We compare the top options, reveal the real caps, and show how to save 5 hours a week in 2026.";
 
 const keywords =
   "free inventory management software, inventory software free, free inventory system, best free inventory app, inventory management free, free barcode scanning software, stock control software free";
@@ -171,10 +171,10 @@ export default function SeoBestInventoryManagementSoftwarePage() {
       faqData={faqData}
     >
       <SEO
-        title={`${topicTitle} | StockFlow`}
+        title="Top Free Inventory Software 2026 — Avoid SKU & User Limits"
         description={metaDescription}
         keywords={keywords}
-        canonical={canonicalPath}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
 
       <StructuredData data={structuredData} />

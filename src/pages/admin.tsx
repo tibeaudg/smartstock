@@ -21,6 +21,7 @@ import { MetricCard } from '@/components/admin/MetricCard';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import AdminSmtpPage from '@/pages/AdminSmtpPage';
+import EmailManagementPage from '@/pages/admin/EmailManagementPage';
 import { UserDetailModal } from '@/components/admin/UserDetailModal';
 
 // User management types
@@ -124,6 +125,16 @@ function calculateUserStats(users: UserProfile[]) {
 }
 
 /**
+ * Calculate inactivity in whole days based on last login or account creation date
+ */
+function calculateInactivityDays(lastLogin: string | null, createdAt: string): number {
+  const now = new Date();
+  const referenceDate = lastLogin ? new Date(lastLogin) : new Date(createdAt);
+  const diffTime = now.getTime() - referenceDate.getTime();
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+}
+
+/**
  * Calculate inactivity and activity status
  * Returns activity status with display text and color coding
  * Active users are those who logged in within last 5 minutes
@@ -141,13 +152,7 @@ function calculateActivityStatus(
   const now = new Date();
   const accountCreated = new Date(createdAt);
   
-  let referenceDate: Date;
-  if (!lastLogin) {
-    // Never logged in - use account creation date
-    referenceDate = accountCreated;
-  } else {
-    referenceDate = new Date(lastLogin);
-  }
+  const referenceDate: Date = lastLogin ? new Date(lastLogin) : accountCreated;
   
   const diffTime = now.getTime() - referenceDate.getTime();
   const diffMinutes = Math.floor(diffTime / (1000 * 60));
@@ -179,8 +184,6 @@ function calculateActivityStatus(
   let display: string;
   if (isActive) {
     display = `Active ${diffMinutes}m ago`;
-  } else if (!lastLogin) {
-    display = 'Never logged in';
   } else if (diffMinutes < 60) {
     display = `${diffMinutes}m ago`;
   } else if (diffHours < 24) {
@@ -813,11 +816,12 @@ export default function AdminPage() {
     };
   }, [activeTab, queryClient]);
 
-  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'smtp'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'smtp' | 'emails'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
     { id: 'smtp', label: 'E-mail / SMTP' },
+    { id: 'emails', label: 'Email Management' },
   ];
   
   // Access control - only owners can view the admin page
@@ -1347,6 +1351,10 @@ export default function AdminPage() {
 
             {activeTab === 'smtp' && (
               <AdminSmtpPage />
+            )}
+
+            {activeTab === 'emails' && (
+              <EmailManagementPage />
             )}
 
           </div>

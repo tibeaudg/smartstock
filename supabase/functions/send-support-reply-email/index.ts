@@ -4,7 +4,8 @@ import nodemailer from 'npm:nodemailer@6.9.14'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-application-name',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 function validateEmail(email: string): boolean {
@@ -23,8 +24,12 @@ function sanitizeMessage(str: string, maxLength = 10000): string {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { 
+      status: 204,
+      headers: corsHeaders 
+    })
   }
 
   if (req.method !== 'POST') {
@@ -176,27 +181,175 @@ serve(async (req) => {
       },
     })
 
+    // Fetch all chat messages for this chat
+    const { data: chatMessages, error: messagesError } = await adminClient
+      .from('chat_messages')
+      .select('id, message, sender_type, sender_id, created_at')
+      .eq('chat_id', chatId.trim())
+      .order('created_at', { ascending: true })
+
+    if (messagesError) {
+      console.error('[send-support-reply-email] Error fetching chat messages:', messagesError)
+    }
+
+    // Get admin profile name for display
+    const { data: adminProfile } = await adminClient
+      .from('profiles')
+      .select('first_name, last_name')
+      .eq('id', user.id)
+      .single()
+
+    const adminName = adminProfile 
+      ? `${adminProfile.first_name || ''} ${adminProfile.last_name || ''}`.trim() || 'Support Team'
+      : 'Support Team'
+
+    // Get user profile name for display
+    const { data: userProfileFull } = await adminClient
+      .from('profiles')
+      .select('first_name, last_name')
+      .eq('id', chat.user_id)
+      .single()
+
+    const userName = userProfileFull
+      ? `${userProfileFull.first_name || ''} ${userProfileFull.last_name || ''}`.trim() || 'You'
+      : 'You'
+
     const fromName = smtpRow.from_name || 'StockFlow Support'
     const subject = 'Re: StockFlow support'
+    
+    // Format chat history
+    let chatHistoryHtml = ''
+    if (chatMessages && chatMessages.length > 0) {
+      chatHistoryHtml = '<div style="border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 20px;">'
+      chatHistoryHtml += '<h3 style="font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 16px;">Chat History:</h3>'
+      
+      chatMessages.forEach((msg: any) => {
+        const isAdmin = msg.sender_type === 'admin'
+        const senderName = isAdmin ? adminName : userName
+        const senderColor = isAdmin ? '#3b82f6' : '#6b7280'
+        const bgColor = isAdmin ? '#eff6ff' : '#f9fafb'
+        const align = isAdmin ? 'right' : 'left'
+        
+        const messageText = msg.message
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/\n/g, '<br>')
+        
+        const date = new Date(msg.created_at)
+        const formattedDate = date.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit'
+        })
+        
+        chatHistoryHtml += `
+          <div style="margin-bottom: 16px; text-align: ${align};">
+            <div style="display: inline-block; max-width: 80%; background-color: ${bgColor}; padding: 12px; border-radius: 8px; text-align: left;">
+              <div style="font-size: 12px; font-weight: 600; color: ${senderColor}; margin-bottom: 4px;">${senderName}</div>
+              <div style="white-space: pre-wrap; line-height: 1.6; color: #1f2937;">${messageText}</div>
+              <div style="font-size: 11px; color: #9ca3af; margin-top: 4px;">${formattedDate}</div>
+            </div>
+          </div>
+        `
+      })
+      
+      chatHistoryHtml += '</div>'
+    }
+
     const escaped = trimmedMessage
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
+      .replace(/\n/g, '<br>')
+    
     const htmlBody = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <p style="white-space: pre-wrap; line-height: 1.6;">${escaped}</p>
+        <div style="background-color: #eff6ff; padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+          <div style="font-size: 12px; font-weight: 600; color: #3b82f6; margin-bottom: 4px;">${adminName}</div>
+          <p style="white-space: pre-wrap; line-height: 1.6; color: #1f2937; margin: 0;">${escaped}</p>
+        </div>
+        ${chatHistoryHtml}
         <p style="margin-top: 24px; color: #6b7280; font-size: 12px;">This is a reply from StockFlow support. You can also view and reply in the app.</p>
       </div>
     `
+    
+    // Create plain text version with chat history
+    let textBody = trimmedMessage + '\n\n'
+    if (chatMessages && chatMessages.length > 0) {
+      textBody += '--- Chat History ---\n\n'
+      chatMessages.forEach((msg: any) => {
+        const senderName = msg.sender_type === 'admin' ? adminName : userName
+        const date = new Date(msg.created_at)
+        const formattedDate = date.toLocaleString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit'
+        })
+        textBody += `${senderName} (${formattedDate}):\n${msg.message}\n\n`
+      })
+    }
+    textBody += '\n---\nThis is a reply from StockFlow support. You can also view and reply in the app.'
 
-    await transporter.sendMail({
-      from: { name: fromName, address: smtpRow.from_email },
-      to: toEmail,
-      subject,
-      html: htmlBody,
-      text: trimmedMessage,
-    })
+    let emailStatus = 'sent'
+    let errorMessage: string | null = null
+    let messageId: string | null = null
+
+    try {
+      const info = await transporter.sendMail({
+        from: { name: fromName, address: smtpRow.from_email },
+        to: toEmail,
+        subject,
+        html: htmlBody,
+        text: textBody,
+      })
+
+      messageId = info.messageId || null
+      emailStatus = 'delivered'
+    } catch (error) {
+      console.error('[send-support-reply-email] Error sending email:', error)
+      emailStatus = 'failed'
+      errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    }
+
+    // Log email to database
+    const { error: logError } = await adminClient
+      .from('email_logs')
+      .insert({
+        template_id: null,
+        recipient_email: toEmail,
+        recipient_user_id: chat.user_id,
+        subject,
+        email_type: 'support',
+        status: emailStatus,
+        error_message: errorMessage,
+        sent_at: new Date().toISOString(),
+        delivered_at: emailStatus === 'delivered' ? new Date().toISOString() : null,
+        metadata: {
+          message_id: messageId,
+          chat_id: chatId,
+        },
+      })
+
+    if (logError) {
+      console.error('[send-support-reply-email] Error logging email:', logError)
+    }
+
+    if (emailStatus === 'failed') {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: errorMessage || 'Failed to send email',
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     return new Response(
       JSON.stringify({ success: true, message: 'Reply sent and email sent to user' }),

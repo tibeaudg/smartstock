@@ -14,12 +14,6 @@ function isToday(date: Date) {
     date.getFullYear() === today.getFullYear();
 }
 
-const getApiBase = () => {
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) {
-    return (import.meta.env.VITE_API_URL as string).replace(/\/$/, '');
-  }
-  return '';
-};
 
 export const AdminChatList: React.FC = () => {
   const { user, session } = useAuth();
@@ -118,28 +112,21 @@ export const AdminChatList: React.FC = () => {
             'send-support-reply-email',
             { body: { chatId: selectedChat.id, message: replyText } }
           );
-          if (!error && data?.success) {
-            toast.success('Reply sent and email sent to user');
-          } else if (data?.error) {
+          
+          if (error) {
+            console.warn('Support reply email failed:', error.message || 'Edge Function error');
+            toast.info('Reply saved; email could not be sent. Make sure the Edge Function is deployed.');
+            return;
+          }
+          
+          if (data?.error) {
             console.warn('Support reply email failed:', data.error);
             toast.info('Reply saved; email could not be sent. Check SMTP in Admin.');
-          } else if (error && session?.access_token) {
-            const base = getApiBase();
-            const url = base ? `${base}/api/send-support-reply-email` : '/api/send-support-reply-email';
-            const res = await fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${session.access_token}`,
-              },
-              body: JSON.stringify({ chatId: selectedChat.id, message: replyText }),
-            });
-            const apiData = await res.json().catch(() => ({}));
-            if (res.ok && apiData.success) {
-              toast.success('Reply sent and email sent to user');
-            } else {
-              toast.info('Reply saved; email could not be sent. Check SMTP in Admin.');
-            }
+            return;
+          }
+          
+          if (data?.success) {
+            toast.success('Reply sent and email sent to user');
           } else {
             toast.info('Reply saved; email could not be sent. Check SMTP in Admin.');
           }

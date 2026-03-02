@@ -4,8 +4,8 @@ import SeoPageLayout from "@/components/SeoPageLayout";
 import { StructuredData } from "@/components/StructuredData";
 
 const topicTitle = "Free Bill of Material Management Software";
-const canonicalPath = "/bill-of-material-management-software-free";
-const metaDescription = "Stop using spreadsheets. Manage your inventory and BOM for free. No credit card required. Built for manufacturers and small businesses.";
+const canonicalPath = "/bill-of-materials-software-free";
+const metaDescription = "Free BOM software for 2026. Replace spreadsheets, manage parts/kits, and reduce build errors up to 40%. No credit card.";
 const keywords = "Bill of Materials, BOM, indented bom, plm, PLM, django-bom, django, django bom, django plm, open source bom, open source plm, open source, indented bill of materials, free bom, free plm, indabom, indabom.com, hardware tool, hardware, parts, part, component, mechanical, engineering, part management, pdm, product lifetime management, bill of materials, BOM, bill of materials software free, manufacturing BOM, assembly bill of materials, engineering BOM, BOM management system, bill of materials template, inventory management BOM, BOM best practices, BOM software, BOM management guide, BOM examples, BOM types, BOM structure, BOM optimization, BOM for manufacturing, BOM for engineering, BOM for procurement, BOM for inventory, BOM for cost estimation, BOM for ERP, BOM for MRP";
 
 const KeyTakeaways = [
@@ -123,7 +123,7 @@ export default function BillOfMaterialsManagementPage() {
       keyTakeaways={KeyTakeaways}
     >
       <SEO
-        title={`Free Bill of Materials (BOM) Software - Unlimited Parts & Kits`}
+        title="Free BOM Software 2026 — Cut Build Errors 40%"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

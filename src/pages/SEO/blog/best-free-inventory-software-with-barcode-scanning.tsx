@@ -54,9 +54,9 @@ export default function InventoryManagementSoftware() {
     >
       <SEO
         title="Best Free Inventory Software with Barcode Scanning 2026 | StockFlow"
-        description="Compare the top 5 free inventory management software with native barcode scanning. StockFlow offers unlimited free inventory tracking, mobile scanning, BOM management & real-time updates. No credit card required."
+        description="Scan items with your phone and update stock instantly. Compare free tools in 2026 and pick one with unlimited items. Save 5 hrs/week."
         keywords="free inventory software, barcode scanning software, inventory management system, free inventory tracker, barcode inventory app, free stock management, inventory control software, warehouse management free"
-        url="https://www.stockflowsystems.com/best-free-inventory-software-with-native-barcode-scanning"
+        url="https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning"
         locale="en"
       />
 
