@@ -31,6 +31,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getCategoryProductCounts } from '@/lib/categories/categoryService';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -88,6 +89,14 @@ export default function CategoriesPage() {
   
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // Advanced filter states
+  const [minProductCount, setMinProductCount] = useState<string>('');
+  const [maxProductCount, setMaxProductCount] = useState<string>('');
+  const [hasDescription, setHasDescription] = useState<string>('all');
+  const [isActive, setIsActive] = useState<string>('all');
+  const [hasParent, setHasParent] = useState<string>('all');
   
   // Sorting state
   const [sortColumn, setSortColumn] = useState<SortColumn | null>('name');
@@ -130,15 +139,49 @@ export default function CategoriesPage() {
 
 
 
-  // Filter categories by search
+  // Filter categories by search and advanced filters
   const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return categories;
+    let filtered = categories;
     
-    const query = searchQuery.toLowerCase();
-    return categories.filter(cat => 
-      cat.name.toLowerCase().includes(query)
-    );
-  }, [categories, searchQuery]);
+    // Basic search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(cat => 
+        cat.name.toLowerCase().includes(query) ||
+        (cat.description && cat.description.toLowerCase().includes(query))
+      );
+    }
+    
+    // Advanced filters
+    return filtered.filter(cat => {
+      // Product count range
+      const productCount = productCounts?.get(cat.id) ?? 0;
+      if (minProductCount && productCount < parseFloat(minProductCount)) return false;
+      if (maxProductCount && productCount > parseFloat(maxProductCount)) return false;
+      
+      // Has description filter
+      if (hasDescription !== 'all') {
+        const hasDesc = !!cat.description;
+        if (hasDescription === 'yes' && !hasDesc) return false;
+        if (hasDescription === 'no' && hasDesc) return false;
+      }
+      
+      // Is active filter
+      if (isActive !== 'all') {
+        if (isActive === 'yes' && !cat.is_active) return false;
+        if (isActive === 'no' && cat.is_active) return false;
+      }
+      
+      // Has parent category filter
+      if (hasParent !== 'all') {
+        const hasParentCategory = !!cat.parent_category_id;
+        if (hasParent === 'yes' && !hasParentCategory) return false;
+        if (hasParent === 'no' && hasParentCategory) return false;
+      }
+      
+      return true;
+    });
+  }, [categories, searchQuery, productCounts, minProductCount, maxProductCount, hasDescription, isActive, hasParent]);
 
   // Sort categories
   const sortedCategories = useMemo(() => {
@@ -171,7 +214,7 @@ export default function CategoriesPage() {
   // Reset to page 1 when filters/search change
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [searchQuery, sortColumn, sortDirection]);
+  }, [searchQuery, sortColumn, sortDirection, minProductCount, maxProductCount, hasDescription, isActive, hasParent]);
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
@@ -292,7 +335,15 @@ export default function CategoriesPage() {
           <p className="text-sm text-gray-600 mt-1">
             Manage your categories and organize your products
           </p>
+
+          
         </div>
+
+        <Button onClick={handleAddCategory} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+          <Plus className="w-4 h-4" />
+          <span className="hidden sm:inline">Add Category</span>
+          <span className="sm:hidden">Add</span>
+        </Button>
 
 
       </div>
@@ -311,18 +362,108 @@ export default function CategoriesPage() {
             className="pl-10"
           />
         </div>
-        <Button variant="outline" className="flex items-center gap-2">
+        <Button variant="outline" className="flex items-center gap-2" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>
           <Filter className="w-4 h-4" />
-          Filters
+          {showAdvancedFilters ? <X className="w-4 h-4" /> : null}
         </Button>
 
-        <Button onClick={handleAddCategory} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
-          <Plus className="w-4 h-4" />
-          <span className="hidden sm:inline">Add Category</span>
-          <span className="sm:hidden">Add</span>
-        </Button>
+
   
       </div>
+
+        {/* Advanced Filters Panel */}
+        {showAdvancedFilters && (
+          <Card className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Product Count Range */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Product Count</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minProductCount}
+                    onChange={(e) => setMinProductCount(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                  <span className="text-gray-500">-</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxProductCount}
+                    onChange={(e) => setMaxProductCount(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              {/* Has Description */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Has Description</Label>
+                <Select value={hasDescription} onValueChange={setHasDescription}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="yes">Yes</SelectItem>
+                    <SelectItem value="no">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Is Active */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Status</Label>
+                <Select value={isActive} onValueChange={setIsActive}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="yes">Active</SelectItem>
+                    <SelectItem value="no">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Has Parent Category */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Category Type</Label>
+                <Select value={hasParent} onValueChange={setHasParent}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="no">Root Categories</SelectItem>
+                    <SelectItem value="yes">Subcategories</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Clear Filters Button */}
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setMinProductCount('');
+                    setMaxProductCount('');
+                    setHasDescription('all');
+                    setIsActive('all');
+                    setHasParent('all');
+                  }}
+                  className="w-full"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
 
       {/* Categories Table */}
       {sortedCategories.length === 0 ? (

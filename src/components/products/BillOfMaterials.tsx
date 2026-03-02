@@ -162,6 +162,17 @@ function BOMListPage() {
   const [selectedComponentForWhereUsed, setSelectedComponentForWhereUsed] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  
+  // Advanced filter states
+  const [minComponentCount, setMinComponentCount] = useState<string>('');
+  const [maxComponentCount, setMaxComponentCount] = useState<string>('');
+  const [minBuildableQty, setMinBuildableQty] = useState<string>('');
+  const [maxBuildableQty, setMaxBuildableQty] = useState<string>('');
+  const [minCost, setMinCost] = useState<string>('');
+  const [maxCost, setMaxCost] = useState<string>('');
+  const [hasNestedBOMs, setHasNestedBOMs] = useState<string>('all');
+  const [buildableStatus, setBuildableStatus] = useState<string>('all');
 
   // Fetch BOM list with enhanced data
   const { data: bomList, isLoading, refetch, error } = useQuery<BOMListItem[]>({
@@ -473,6 +484,7 @@ function BOMListPage() {
     if (!bomList) return [];
     
     return bomList.filter(item => {
+      // Basic search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         const matchesSearch = 
@@ -481,14 +493,42 @@ function BOMListPage() {
         if (!matchesSearch) return false;
       }
 
+      // Status filter
       if (statusFilter !== 'all') {
         const hasMatchingStatus = item.versions?.some(v => v.status === statusFilter);
         if (!hasMatchingStatus) return false;
       }
 
+      // Advanced filters
+      // Component count range
+      if (minComponentCount && item.component_count < parseFloat(minComponentCount)) return false;
+      if (maxComponentCount && item.component_count > parseFloat(maxComponentCount)) return false;
+
+      // Buildable quantity range
+      if (minBuildableQty && item.buildable_quantity < parseFloat(minBuildableQty)) return false;
+      if (maxBuildableQty && item.buildable_quantity > parseFloat(maxBuildableQty)) return false;
+
+      // Cost range
+      if (minCost && item.total_estimated_cost < parseFloat(minCost)) return false;
+      if (maxCost && item.total_estimated_cost > parseFloat(maxCost)) return false;
+
+      // Has nested BOMs filter
+      if (hasNestedBOMs !== 'all') {
+        const hasNested = item.components?.some(c => c.has_bom) || false;
+        if (hasNestedBOMs === 'yes' && !hasNested) return false;
+        if (hasNestedBOMs === 'no' && hasNested) return false;
+      }
+
+      // Buildable status filter
+      if (buildableStatus !== 'all') {
+        if (buildableStatus === 'buildable' && item.buildable_quantity === 0) return false;
+        if (buildableStatus === 'not_buildable' && item.buildable_quantity > 0) return false;
+        if (buildableStatus === 'low_stock' && item.buildable_quantity >= 5) return false;
+      }
+
       return true;
     });
-  }, [bomList, searchQuery, statusFilter]);
+  }, [bomList, searchQuery, statusFilter, minComponentCount, maxComponentCount, minBuildableQty, maxBuildableQty, minCost, maxCost, hasNestedBOMs, buildableStatus]);
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filteredBOMList.length / itemsPerPage));
@@ -634,42 +674,165 @@ function BOMListPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleExport}>
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
+
           <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 text-white hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" /> Add BOM
+            <Plus className="w-4 h-4 mr-2" /> Add New
           </Button>
         </div>
       </div>
 
       {/* Search and Filters */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-full">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            type="text"
-            placeholder="Search by product name or SKU..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1 max-w-full">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              type="text"
+              placeholder="Search by product name or SKU"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+
+          <Button variant="outline" className="flex items-center gap-2" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>
+            <Filter className="w-4 h-4" />
+            {showAdvancedFilters ? <X className="w-4 h-4" /> : null}
+          </Button>
         </div>
-        <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-gray-400" />
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="All Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="archived">Archived</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+
+        {/* Advanced Filters Panel */}
+        {showAdvancedFilters && (
+          <Card className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Component Count Range */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Component Count</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minComponentCount}
+                    onChange={(e) => setMinComponentCount(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                  <span className="text-gray-500">-</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxComponentCount}
+                    onChange={(e) => setMaxComponentCount(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              {/* Buildable Quantity Range */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Buildable Quantity</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minBuildableQty}
+                    onChange={(e) => setMinBuildableQty(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                  <span className="text-gray-500">-</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxBuildableQty}
+                    onChange={(e) => setMaxBuildableQty(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              {/* Cost Range */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Estimated Cost</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minCost}
+                    onChange={(e) => setMinCost(e.target.value)}
+                    className="w-full"
+                    min="0"
+                    step="0.01"
+                  />
+                  <span className="text-gray-500">-</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxCost}
+                    onChange={(e) => setMaxCost(e.target.value)}
+                    className="w-full"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              {/* Has Nested BOMs */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Has Nested BOMs</Label>
+                <Select value={hasNestedBOMs} onValueChange={setHasNestedBOMs}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="yes">Yes</SelectItem>
+                    <SelectItem value="no">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Buildable Status */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Buildable Status</Label>
+                <Select value={buildableStatus} onValueChange={setBuildableStatus}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="buildable">Buildable</SelectItem>
+                    <SelectItem value="not_buildable">Not Buildable</SelectItem>
+                    <SelectItem value="low_stock">Low Stock (&lt;5)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Clear Filters Button */}
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setMinComponentCount('');
+                    setMaxComponentCount('');
+                    setMinBuildableQty('');
+                    setMaxBuildableQty('');
+                    setMinCost('');
+                    setMaxCost('');
+                    setHasNestedBOMs('all');
+                    setBuildableStatus('all');
+                  }}
+                  className="w-full"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
       </div>
 
       {/* Content */}

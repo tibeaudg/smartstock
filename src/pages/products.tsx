@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown } from 'lucide-react';
+import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown, ScanLine, MoreVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -23,6 +23,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { Progress } from '@/components/ui/progress';
 import { BulkImportModal } from '@/components/BulkImportModal';
+import { BarcodeScanner } from '@/components/BarcodeScanner';
+import { useScannerSettings } from '@/hooks/useScannerSettings';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -221,6 +229,8 @@ const categoryProductsData = useMemo(() => {
   const [showBulkDeleteDialog, setShowBulkDeleteDialog] = useState(false);
 
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -825,49 +835,48 @@ const categoryProductsData = useMemo(() => {
 
         <div className="flex items-center gap-2">
           <Button 
-            variant="outline" 
-            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            className="relative"
+            onClick={() => setShowScanner(true)}
+            variant="outline"
+            className="flex items-center gap-2"
           >
-            <Filter className="w-4 h-4 mr-2" />
-            Filters
-            {activeFiltersCount > 0 && (
-              <Badge variant="secondary" className="ml-2 h-5 w-5 p-0 flex items-center justify-center">
-                {activeFiltersCount}
-              </Badge>
-            )}
-          </Button>
-
-          <Button 
-            variant="outline" 
-            onClick={() => setViewMode(viewMode === 'compact' ? 'expanded' : 'compact')}
-          >
-            {viewMode === 'compact' ? (
-              <>
-                <Maximize2 className="w-4 h-4 mr-2" />
-                Expanded
-              </>
-            ) : (
-              <>
-                <Minimize2 className="w-4 h-4 mr-2" />
-                Compact
-              </>
-            )}
-          </Button>
-
-          <Button variant="outline" onClick={exportToCSV}>
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-
-          <Button variant="outline" onClick={() => setShowImportDialog(true)}>
-            <Upload className="w-4 h-4 mr-2" />
-            Import
+            <ScanLine className="w-4 h-4" />
+            Scan Item
           </Button>
 
           <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-600 text-white hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" /> Add Product
+            <Plus className="w-4 h-4 mr-2" /> Add Manually
           </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setViewMode(viewMode === 'compact' ? 'expanded' : 'compact')}>
+                {viewMode === 'compact' ? (
+                  <>
+                    <Maximize2 className="w-4 h-4 mr-2" />
+                    Expanded
+                  </>
+                ) : (
+                  <>
+                    <Minimize2 className="w-4 h-4 mr-2" />
+                    Compact
+                  </>
+                )}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={exportToCSV}>
+                <Download className="w-4 h-4 mr-2" />
+                Export
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setShowImportDialog(true)}>
+                <Upload className="w-4 h-4 mr-2" />
+                Import
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
@@ -883,6 +892,19 @@ const categoryProductsData = useMemo(() => {
             className="pl-10"
           />
         </div>
+        <Button 
+          variant="outline" 
+          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+          className="flex items-center gap-2 relative"
+        >
+          <Filter className="w-4 h-4" />
+          {showAdvancedFilters ? <X className="w-4 h-4" /> : null}
+          {activeFiltersCount > 0 && !showAdvancedFilters && (
+            <Badge variant="secondary" className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
+              {activeFiltersCount}
+            </Badge>
+          )}
+        </Button>
       </div>
 
           {/* Bulk Actions Toolbar */}
@@ -921,99 +943,108 @@ const categoryProductsData = useMemo(() => {
             </div>
           )}
 
-          {/* Advanced Filters */}
-          <Collapsible open={showAdvancedFilters} onOpenChange={setShowAdvancedFilters}>
-            <CollapsibleContent>
-              <div className="pt-3 border-t space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Category</Label>
-                    <Select value={filterCategory} onValueChange={setFilterCategory}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="All categories" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
-                        {allCategories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Stock Status</Label>
-                    <Select value={filterStockStatus} onValueChange={setFilterStockStatus}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="All statuses" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="in-stock">In Stock</SelectItem>
-                        <SelectItem value="low-stock">Low Stock</SelectItem>
-                        <SelectItem value="out-of-stock">Out of Stock</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Stock Range</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        type="number"
-                        placeholder="Min"
-                        value={minStock}
-                        onChange={e => setMinStock(e.target.value)}
-                        className="w-20"
-                      />
-                      <Input
-                        type="number"
-                        placeholder="Max"
-                        value={maxStock}
-                        onChange={e => setMaxStock(e.target.value)}
-                        className="w-20"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Price Range</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        type="number"
-                        placeholder="Min"
-                        value={minPrice}
-                        onChange={e => setMinPrice(e.target.value)}
-                        step="0.01"
-                        className="w-24"
-                      />
-                      <Input
-                        type="number"
-                        placeholder="Max"
-                        value={maxPrice}
-                        onChange={e => setMaxPrice(e.target.value)}
-                        step="0.01"
-                        className="w-24"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {activeFiltersCount > 0 && (
-                  <div className="flex justify-end">
-                    <Button variant="ghost" size="sm" onClick={clearFilters}>
-                      <X className="w-4 h-4 mr-2" />
-                      Clear All Filters
-                    </Button>
-                  </div>
-                )}
+        {/* Advanced Filters Panel */}
+        {showAdvancedFilters && (
+          <Card className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Category Filter */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Category</Label>
+                <Select value={filterCategory} onValueChange={setFilterCategory}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {allCategories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-            </CollapsibleContent>
-          </Collapsible>
+
+              {/* Stock Status Filter */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Stock Status</Label>
+                <Select value={filterStockStatus} onValueChange={setFilterStockStatus}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All statuses" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="in-stock">In Stock</SelectItem>
+                    <SelectItem value="low-stock">Low Stock</SelectItem>
+                    <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Stock Range */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Stock Range</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minStock}
+                    onChange={e => setMinStock(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                  <span className="text-gray-500">-</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxStock}
+                    onChange={e => setMaxStock(e.target.value)}
+                    className="w-full"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              {/* Price Range */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Price Range</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={minPrice}
+                    onChange={e => setMinPrice(e.target.value)}
+                    step="0.01"
+                    className="w-full"
+                    min="0"
+                  />
+                  <span className="text-gray-500">-</span>
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={maxPrice}
+                    onChange={e => setMaxPrice(e.target.value)}
+                    step="0.01"
+                    className="w-full"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              {/* Clear Filters Button */}
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={clearFilters}
+                  className="w-full"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Clear Filters
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
 
       {categoriesLoading || productsLoading ? (
         <div className="py-12 text-center">Loading…</div>
@@ -1475,6 +1506,21 @@ const categoryProductsData = useMemo(() => {
           setShowImportDialog(false);
         }}
       />
+
+      {/* Barcode Scanner Modal */}
+      {showScanner && (
+        <BarcodeScanner
+          onBarcodeDetected={(barcode) => {
+            setShowScanner(false);
+            // Navigate to scan page with the barcode
+            navigate('/scan', { state: { barcode } });
+            toast.success(`Barcode scanned: ${barcode}`);
+          }}
+          onClose={() => setShowScanner(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
+        />
+      )}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart } from 'lucide-react';
+import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart, Plus, ScanLine, FilePlus2, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
 import { useDashboardData, useBasicDashboardMetrics, useProductCount } from '@/hooks/useDashboardData';
@@ -13,7 +13,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalytics';
 import { useCategoryProducts } from '@/hooks/useCategories';
 import { Link, useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { useBranches } from '@/hooks/useBranches';
+import { BarcodeScanner } from './BarcodeScanner';
+import { useScannerSettings } from '@/hooks/useScannerSettings';
+import { toast } from 'sonner';
 
 
 
@@ -55,7 +58,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   const { notifications, loading: notificationsLoading, unreadCount, markAllAsRead } = useNotifications();
   const { formatPrice } = useCurrency();
   const navigate = useNavigate();
+  const { activeBranch } = useBranches();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   const handleNotificationClick = () => {
     setShowNotifications((prev) => !prev);
     if (unreadCount > 0) markAllAsRead();
@@ -231,6 +237,74 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
+  // Suggested restock items (derived from real product data)
+  const [suggestedRestock, setSuggestedRestock] = useState<
+    { name: string; currentQty: number; reorderPoint: number }[]
+  >([]);
+
+  useEffect(() => {
+    const loadSuggestedRestock = async () => {
+      if (!activeBranch?.branch_id) return;
+
+      const { data, error } = await supabase
+        .from('products')
+        .select('name, quantity_in_stock, minimum_stock_level')
+        .eq('branch_id', activeBranch.branch_id)
+        .gt('minimum_stock_level', 0);
+
+      if (error || !data) {
+        console.error('Failed to fetch suggested restock data:', error);
+        return;
+      }
+
+      // Near-threshold items: above minimum but within 50% of it
+      const nearThreshold = data
+        .filter(
+          (p) =>
+            p.quantity_in_stock > p.minimum_stock_level &&
+            p.quantity_in_stock <= p.minimum_stock_level * 1.5
+        )
+        .slice(0, 5)
+        .map((p) => ({
+          name: p.name,
+          currentQty: p.quantity_in_stock,
+          reorderPoint: p.minimum_stock_level,
+        }));
+
+      setSuggestedRestock(nearThreshold);
+    };
+
+    loadSuggestedRestock();
+  }, [activeBranch?.branch_id]);
+
+  const renderTrend = (percent?: number | null) => {
+    if (percent == null) {
+      return (
+        <div className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+          No prior week data
+        </div>
+      );
+    }
+
+    const isUp = percent >= 0;
+    const Icon = isUp ? ArrowUpRight : ArrowDownRight;
+
+    return (
+      <div className="mt-1 inline-flex items-center text-xs sm:text-sm font-medium">
+        <Icon
+          className={`mr-1 h-3 w-3 sm:h-3.5 sm:w-3.5 ${
+            isUp ? 'text-emerald-500' : 'text-red-500'
+          }`}
+        />
+        <span className={isUp ? 'text-emerald-600' : 'text-red-600'}>
+          {isUp && '+'}
+          {percent.toFixed(1)}%{' '}
+          <span className="text-gray-500 dark:text-gray-400">vs last week</span>
+        </span>
+      </div>
+    );
+  };
+
   // Fetch analytics data on component mount and when timeRange changes
   useEffect(() => {
     fetchAnalyticsData();
@@ -280,6 +354,87 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     turnoverRates: []
   };
 
+  // ---- Derived weekly trends from real dashboard data ----
+  const activityData =
+    ((chartData as any)?.dailyActivity || safeMetrics.dailyActivity || []) as {
+      date: string;
+      incoming: number;
+      outgoing: number;
+    }[];
+
+  const sortedActivity = [...activityData].sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
+  const last14Activity = sortedActivity.slice(-14);
+  const last7Activity = last14Activity.slice(-7);
+  const prev7Activity =
+    last14Activity.length > 7 ? last14Activity.slice(0, last14Activity.length - 7) : [];
+
+  const sumIncoming = (items: typeof activityData) =>
+    items.reduce((sum, d) => sum + (d.incoming || 0), 0);
+  const sumOutgoing = (items: typeof activityData) =>
+    items.reduce((sum, d) => sum + (d.outgoing || 0), 0);
+
+  const weeklyIncomingCurrent = sumIncoming(last7Activity);
+  const weeklyIncomingPrev = sumIncoming(prev7Activity);
+  const weeklyOutgoingCurrent = sumOutgoing(last7Activity);
+  const weeklyOutgoingPrev = sumOutgoing(prev7Activity);
+
+  const computeTrendPercent = (current: number, previous: number): number | null => {
+    if (!previous || previous === 0) return null;
+    return ((current - previous) / previous) * 100;
+  };
+
+  const incomingTrendPercent = computeTrendPercent(
+    weeklyIncomingCurrent,
+    weeklyIncomingPrev
+  );
+
+  const outgoingTrendPercent = computeTrendPercent(
+    weeklyOutgoingCurrent,
+    weeklyOutgoingPrev
+  );
+
+  const weeklyThroughputCurrent = weeklyIncomingCurrent + weeklyOutgoingCurrent;
+  const weeklyThroughputPrev = weeklyIncomingPrev + weeklyOutgoingPrev;
+  const throughputTrendPercent = computeTrendPercent(
+    weeklyThroughputCurrent,
+    weeklyThroughputPrev
+  );
+
+  // Use stock value history to drive total value and capacity trends
+  const stockTrend =
+    (safeMetrics.stockValueTrend || []) as { date: string; total_value: number }[];
+  const sortedStockTrend = [...stockTrend].sort((a, b) =>
+    a.date.localeCompare(b.date)
+  );
+
+  let capacityPercent = 0;
+  let totalValueTrendPercent: number | null = null;
+
+  if (sortedStockTrend.length > 0) {
+    const values = sortedStockTrend.map((p) => p.total_value || 0);
+    const currentValue = values[values.length - 1];
+    const maxValue = Math.max(...values);
+
+    if (maxValue > 0) {
+      capacityPercent = Math.round((currentValue / maxValue) * 100);
+    }
+
+    if (values.length >= 8) {
+      const previousWeekValue = values[values.length - 8];
+      totalValueTrendPercent = computeTrendPercent(currentValue, previousWeekValue);
+    }
+  }
+
+  // Approximate low stock pressure trend based on change in net movement
+  let lowStockTrendPercent: number | null = null;
+  if (weeklyIncomingPrev || weeklyOutgoingPrev) {
+    const netCurrent = weeklyOutgoingCurrent - weeklyIncomingCurrent;
+    const netPrev = weeklyOutgoingPrev - weeklyIncomingPrev;
+    lowStockTrendPercent = computeTrendPercent(netCurrent, netPrev);
+  }
+
   return (
     <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6 ">
   {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
@@ -310,17 +465,51 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
         </Card>
       )}
 
+      {/* Quick Actions */}
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50">
+          Warehouse Overview
+        </h1>
+        <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
+          <Button
+            onClick={() => navigate('/dashboard/products/new')}
+            variant="default"
+            className="flex items-center gap-2 whitespace-nowrap"
+          >
+            <Plus className="h-4 w-4" />
+            <span className="text-sm">Add Item</span>
+          </Button>
+          <Button
+            onClick={() => setShowScanner(true)}
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+          >
+            <ScanLine className="h-4 w-4" />
+            <span className="text-sm">Scan Items</span>
+          </Button>
+          <Button
+            onClick={() => navigate('/purchase-orders')}
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+          >
+            <FilePlus2 className="h-4 w-4" />
+            <span className="text-sm">Purchase Order</span>
+          </Button>
+        </div>
+      </div>
+
       {/* Metrics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
             <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Total Stock Value</CardTitle>
             <Euro className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">
               {formatPrice((safeMetrics as { totalValue: number }).totalValue)}
             </div>
+            {renderTrend(totalValueTrendPercent)}
           </CardContent>
         </Card>
 
@@ -332,9 +521,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-green-600">
               {safeMetrics.incomingToday}
             </div>
+            {renderTrend(incomingTrendPercent)}
           </CardContent>
         </Card>
 
@@ -344,9 +534,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-red-600">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-red-600">
               {safeMetrics.outgoingToday}
             </div>
+            {renderTrend(outgoingTrendPercent)}
           </CardContent>
         </Card>
 
@@ -356,9 +547,71 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-yellow-600">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-yellow-600">
               {safeMetrics.lowStockCount}
-            </div>          
+            </div>
+            {renderTrend(lowStockTrendPercent)}
+          </CardContent>
+        </Card>
+
+        {/* Warehouse Capacity */}
+        <Card className="bg-white hover:shadow-lg transition-shadow col-span-2 sm:col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Warehouse Capacity</CardTitle>
+            <Package className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600" />
+          </CardHeader>
+          <CardContent className="pt-0 flex items-center gap-4">
+            <div className="relative h-16 w-16 sm:h-20 sm:w-20">
+              <svg viewBox="0 0 36 36" className="h-full w-full">
+                <path
+                  className="text-gray-200"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="none"
+                  d="M18 2.0845
+                     a 15.9155 15.9155 0 0 1 0 31.831
+                     a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  className="text-indigo-500"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  strokeDasharray={`${capacityPercent}, 100`}
+                  strokeLinecap="round"
+                  fill="none"
+                  d="M18 2.0845
+                     a 15.9155 15.9155 0 0 1 0 31.831
+                     a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-sm sm:text-base font-semibold text-gray-900">
+                  {capacityPercent}%
+                </span>
+              </div>
+            </div>
+            <div className="flex-1">
+              <p className="text-xs sm:text-sm text-gray-500">
+                Based on current stock value vs 30-day peak
+              </p>
+              {renderTrend(totalValueTrendPercent)}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Weekly Movements */}
+        <Card className="bg-white hover:shadow-lg transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
+            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">
+              Weekly Movements
+            </CardTitle>
+            <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">
+              {weeklyThroughputCurrent.toLocaleString()}
+            </div>
+            {renderTrend(throughputTrendPercent)}
           </CardContent>
         </Card>
       </div>
@@ -396,14 +649,33 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={isMobile ? 250 : 300}>
-            <RechartsLineChart data={(chartData as any)?.dailyActivity || safeMetrics.dailyActivity || []} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <AreaChart
+              data={(chartData as any)?.dailyActivity || safeMetrics.dailyActivity || []}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" fontSize={isMobile ? 10 : 12} />
               <YAxis fontSize={isMobile ? 10 : 12} />
               <Tooltip />
-              <Line type="monotone" dataKey="incoming" stroke="#4ade80" strokeWidth={2} name="Incoming" dot={{ fill: "#4ade80" }} />
-              <Line type="monotone" dataKey="outgoing" stroke="#f87171" strokeWidth={2} name="Outgoing" dot={{ fill: "#f87171" }} />
-            </RechartsLineChart>
+              <Area
+                type="monotone"
+                dataKey="incoming"
+                stackId="1"
+                stroke="#22c55e"
+                fill="#4ade80"
+                fillOpacity={0.5}
+                name="Incoming"
+              />
+              <Area
+                type="monotone"
+                dataKey="outgoing"
+                stackId="1"
+                stroke="#ef4444"
+                fill="#f87171"
+                fillOpacity={0.5}
+                name="Outgoing"
+              />
+            </AreaChart>
           </ResponsiveContainer>
         )}
         {(!(chartData as any)?.dailyActivity && !safeMetrics.dailyActivity && !chartLoading) && (
@@ -414,33 +686,94 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
 
-        {/* Low Stock Products */}
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Low Stock Alerts</h2>
-          <div className="space-y-3">
-            {(safeMetrics.lowStockProducts || []).slice(0, 5).map((product, index) => (
-              <div key={index} className="flex justify-between items-center p-3 bg-red-50 rounded-lg border border-red-200">
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900 truncate">{product.product_name}</p>
-                  <p className="text-sm text-red-600">
-                    Stock: {product.quantity_in_stock} | Min: {product.minimum_stock_level}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="font-semibold text-red-600">{formatPrice(product.unit_price)}</p>
-                  <p className="text-xs text-gray-500">per unit</p>
-                </div>
-              </div>
-            ))}
-            {(!safeMetrics.lowStockProducts || safeMetrics.lowStockProducts.length === 0) && (
-              <p className="text-gray-500 text-center py-4">All products have sufficient stock levels</p>
-            )}
+        {/* Low Stock Products / Suggested Restock */}
+        <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100">
+              {safeMetrics.lowStockProducts && safeMetrics.lowStockProducts.length > 0
+                ? 'Low Stock Alerts'
+                : 'Suggested Restock'}
+            </h2>
           </div>
+
+          {safeMetrics.lowStockProducts && safeMetrics.lowStockProducts.length > 0 ? (
+            <div className="space-y-3">
+              {safeMetrics.lowStockProducts.slice(0, 5).map((product: any, index: number) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-950/30 rounded-lg border border-red-200 dark:border-red-800"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                      {product.product_name}
+                    </p>
+                    <p className="text-sm text-red-600 dark:text-red-400">
+                      Stock: {product.quantity_in_stock} | Min: {product.minimum_stock_level}
+                    </p>
+                  </div>
+                  <div className="text-right flex-shrink-0 ml-4">
+                    <p className="font-semibold text-red-600 dark:text-red-400">
+                      {formatPrice(product.unit_price)}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">per unit</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-2 overflow-x-auto">
+              <table className="min-w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
+                    <th className="py-2 pr-4 font-semibold text-gray-600 dark:text-gray-300">
+                      Item Name
+                    </th>
+                    <th className="py-2 pr-4 font-semibold text-gray-600 dark:text-gray-300">
+                      Current Qty
+                    </th>
+                    <th className="py-2 pr-4 font-semibold text-gray-600 dark:text-gray-300">
+                      Reorder Point
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {suggestedRestock.map((item, index) => (
+                    <tr
+                      key={index}
+                      className="border-b last:border-b-0 border-gray-100 dark:border-gray-800"
+                    >
+                      <td className="py-2 pr-4 text-gray-900 dark:text-gray-100 truncate max-w-xs">
+                        {item.name}
+                      </td>
+                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">
+                        {item.currentQty.toLocaleString()}
+                      </td>
+                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">
+                        {item.reorderPoint.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 
-
-      
+      {/* Barcode Scanner Modal */}
+      {showScanner && (
+        <BarcodeScanner
+          onBarcodeDetected={(barcode) => {
+            setShowScanner(false);
+            // Navigate to scan page with the barcode
+            navigate('/scan', { state: { barcode } });
+            toast.success(`Barcode scanned: ${barcode}`);
+          }}
+          onClose={() => setShowScanner(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
+        />
+      )}
     </div>
   );
 };

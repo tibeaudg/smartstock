@@ -294,7 +294,10 @@ const AppRouter = () => {
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" /><AuthRoute /></>} />
         <Route path="/about" element={<><SEO title="About StockFlow" /><AboutPage /></>} />
-        <Route path="/help-center" element={<><SEO title="Help Center" /><SupportPage /></>} />
+        <Route
+          path="/help-center"
+          element={<Navigate to="/dashboard/settings/help-center" replace />}
+        />
         <Route path='/videos' element={<><SEO title="Instruction Videos" /><VideosPage /></>} />
         <Route path='/integrations' element={<><SEO title="Integrations"/><IntegrationsPage /></>} />
 

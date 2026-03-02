@@ -53,7 +53,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   };
 
   return (
-    <div className="h-screen flex flex-col bg-background text-foreground transition-colors">
+    <div className="h-screen flex flex-col bg-slate-100 dark:bg-slate-950 text-foreground transition-colors">
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - directly render without wrapper div */}
         {!isMobile && (
