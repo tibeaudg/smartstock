@@ -5,13 +5,6 @@ import { toast } from 'sonner';
 
 type EdgeFunctionResponse = { success: boolean; message?: string; error?: string };
 
-const getApiBase = () => {
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) {
-    return (import.meta.env.VITE_API_URL as string).replace(/\/$/, '');
-  }
-  return '';
-};
-
 interface SmtpSettings {
   id: string;
   user_id: string;
@@ -80,74 +73,51 @@ const saveSmtpSettings = async (userId: string, settings: SmtpSettingsInput): Pr
   return data;
 };
 
-const EDGE_FUNCTION_UNREACHABLE =
-  'SMTP test service unreachable. Deploy the Edge Function (supabase functions deploy admin-smtp-test) or run the local API and set VITE_API_URL.';
-
-// Try Edge Function first; fall back to local /api when Edge Function is not available (e.g. not deployed, CORS)
-const testSmtpConnection = async (accessToken: string | null): Promise<boolean> => {
+// Test SMTP connection using Supabase Edge Function only
+const testSmtpConnection = async (): Promise<boolean> => {
   const { data, error } = await supabase.functions.invoke<EdgeFunctionResponse>('admin-smtp-test', {
     body: { action: 'test' },
   });
-  if (!error && data?.success) return true;
-  if (data?.error) throw new Error(data.error);
-
-  if (accessToken) {
-    const base = getApiBase();
-    const url = base ? `${base}/api/admin-smtp-test` : '/api/admin-smtp-test';
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ action: 'test' }),
-    });
-    const apiData = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      const msg = apiData.error || (res.status === 404 ? 'Local API not found. Deploy the Edge Function or set VITE_API_URL.' : 'SMTP test failed');
-      throw new Error(msg);
-    }
-    if (apiData.error) throw new Error(apiData.error);
-    return apiData.success === true;
+  
+  if (error) {
+    throw new Error(error.message || 'Failed to test SMTP connection. Make sure the Edge Function is deployed.');
   }
-
-  throw new Error(error?.message || EDGE_FUNCTION_UNREACHABLE);
+  
+  if (data?.error) {
+    throw new Error(data.error);
+  }
+  
+  if (!data?.success) {
+    throw new Error('SMTP connection test failed');
+  }
+  
+  return true;
 };
 
-const sendTestEmailViaApi = async (toEmail: string, accessToken: string | null): Promise<boolean> => {
+// Send test email using Supabase Edge Function only
+const sendTestEmailViaApi = async (toEmail: string): Promise<boolean> => {
   const { data, error } = await supabase.functions.invoke<EdgeFunctionResponse>('admin-smtp-test', {
     body: { action: 'send-test', toEmail: toEmail.trim() },
   });
-  if (!error && data?.success) return true;
-  if (data?.error) throw new Error(data.error);
-
-  if (accessToken) {
-    const base = getApiBase();
-    const url = base ? `${base}/api/admin-smtp-test` : '/api/admin-smtp-test';
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ action: 'send-test', toEmail: toEmail.trim() }),
-    });
-    const apiData = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      const msg = apiData.error || (res.status === 404 ? 'Local API not found. Deploy the Edge Function or set VITE_API_URL.' : 'Send test email failed');
-      throw new Error(msg);
-    }
-    if (apiData.error) throw new Error(apiData.error);
-    return apiData.success === true;
+  
+  if (error) {
+    throw new Error(error.message || 'Failed to send test email. Make sure the Edge Function is deployed.');
   }
-
-  throw new Error(error?.message || EDGE_FUNCTION_UNREACHABLE);
+  
+  if (data?.error) {
+    throw new Error(data.error);
+  }
+  
+  if (!data?.success) {
+    throw new Error('Failed to send test email');
+  }
+  
+  return true;
 };
 
 export const useSmtpSettings = () => {
-  const { user, session } = useAuth();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
-  const accessToken = session?.access_token ?? null;
 
   // Fetch SMTP settings
   const {
@@ -180,9 +150,9 @@ export const useSmtpSettings = () => {
     }
   });
 
-  // Test SMTP connection mutation (Edge Function with /api fallback)
+  // Test SMTP connection mutation (Supabase Edge Function only)
   const testMutation = useMutation({
-    mutationFn: () => testSmtpConnection(accessToken),
+    mutationFn: () => testSmtpConnection(),
     onSuccess: () => {
       toast.success('SMTP connection test successful!');
     },
@@ -191,10 +161,10 @@ export const useSmtpSettings = () => {
     }
   });
 
-  // Send test email mutation (Edge Function with /api fallback)
+  // Send test email mutation (Supabase Edge Function only)
   const sendTestEmailMutation = useMutation({
     mutationFn: ({ toEmail }: { settings: SmtpSettingsInput; toEmail: string }) =>
-      sendTestEmailViaApi(toEmail, accessToken),
+      sendTestEmailViaApi(toEmail),
     onSuccess: () => {
       toast.success('Test email sent successfully!');
     },

@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -21,9 +21,10 @@ import { MetricCard } from '@/components/admin/MetricCard';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import AdminSmtpPage from '@/pages/AdminSmtpPage';
+import { UserDetailModal } from '@/components/admin/UserDetailModal';
 
 // User management types
-type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'branches' | 'linkedUsers' | 'cus' | 'created';
+type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'linkedUsers' | 'created';
 type SortDirection = 'asc' | 'desc';
 
 interface UserProfile {
@@ -123,14 +124,20 @@ function calculateUserStats(users: UserProfile[]) {
 }
 
 /**
- * Calculate inactivity days
- * Returns days since last login, or days since account creation if never logged in
- * Uses relative time format: "Active now", "2d ago", "1w ago", "1mo ago"
+ * Calculate inactivity and activity status
+ * Returns activity status with display text and color coding
+ * Active users are those who logged in within last 5 minutes
  */
-function calculateInactivityDays(
+function calculateActivityStatus(
   lastLogin: string | null,
   createdAt: string
-): { days: number; display: string } {
+): { 
+  isActive: boolean; 
+  days: number; 
+  display: string; 
+  color: 'green' | 'yellow' | 'gray';
+  exactTime: string;
+} {
   const now = new Date();
   const accountCreated = new Date(createdAt);
   
@@ -143,69 +150,69 @@ function calculateInactivityDays(
   }
   
   const diffTime = now.getTime() - referenceDate.getTime();
+  const diffMinutes = Math.floor(diffTime / (1000 * 60));
+  const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   
-  if (diffDays === 0) {
-    return { days: 0, display: 'Active now' };
+  // Check if user is active (logged in within last 5 minutes)
+  const isActive = lastLogin !== null && diffMinutes < 5;
+  
+  // Format exact timestamp
+  const exactTime = lastLogin 
+    ? new Date(lastLogin).toLocaleString('en-US', { 
+        dateStyle: 'medium', 
+        timeStyle: 'short' 
+      })
+    : 'Never';
+  
+  // Determine color based on recency
+  let color: 'green' | 'yellow' | 'gray';
+  if (isActive) {
+    color = 'green';
+  } else if (diffMinutes < 60 || diffHours < 24) {
+    color = 'yellow';
+  } else {
+    color = 'gray';
   }
   
-  if (diffDays < 0) {
-    return { days: 0, display: 'Active now' };
+  // Generate display text
+  let display: string;
+  if (isActive) {
+    display = `Active ${diffMinutes}m ago`;
+  } else if (!lastLogin) {
+    display = 'Never logged in';
+  } else if (diffMinutes < 60) {
+    display = `${diffMinutes}m ago`;
+  } else if (diffHours < 24) {
+    display = `${diffHours}h ago`;
+  } else if (diffDays < 7) {
+    display = `${diffDays}d ago`;
+  } else if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    display = `${weeks}w ago`;
+  } else if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    display = `${months}mo ago`;
+  } else {
+    const years = Math.floor(diffDays / 365);
+    display = `${years}y ago`;
   }
   
-  // Use formatDistanceToNow for relative time
-  try {
-    const relative = formatDistanceToNow(referenceDate, { addSuffix: false });
-    // Convert to shorter format
-    if (relative.includes('less than a minute') || relative.includes('minute')) {
-      return { days: diffDays, display: 'Active now' };
-    }
-    if (relative.includes('hour')) {
-      const hours = Math.floor(diffTime / (1000 * 60 * 60));
-      return { days: diffDays, display: `${hours}h ago` };
-    }
-    if (relative.includes('day')) {
-      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      if (days < 7) {
-        return { days: diffDays, display: `${days}d ago` };
-      } else if (days < 30) {
-        const weeks = Math.floor(days / 7);
-        return { days: diffDays, display: `${weeks}w ago` };
-      } else {
-        const months = Math.floor(days / 30);
-        return { days: diffDays, display: `${months}mo ago` };
-      }
-    }
-    if (relative.includes('month')) {
-      const months = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30));
-      return { days: diffDays, display: `${months}mo ago` };
-    }
-    if (relative.includes('year')) {
-      const years = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
-      return { days: diffDays, display: `${years}y ago` };
-    }
-    
-    return { days: diffDays, display: `${diffDays}d ago` };
-  } catch (error) {
-    // Fallback to simple format
-    if (diffDays < 7) {
-      return { days: diffDays, display: `${diffDays}d ago` };
-    } else if (diffDays < 30) {
-      const weeks = Math.floor(diffDays / 7);
-      return { days: diffDays, display: `${weeks}w ago` };
-    } else {
-      const months = Math.floor(diffDays / 30);
-      return { days: diffDays, display: `${months}mo ago` };
-    }
-  }
+  return {
+    isActive,
+    days: diffDays,
+    display,
+    color,
+    exactTime
+  };
 }
 
 /**
  * Determine if inactivity should be highlighted (red)
- * Highlight when inactivity ≥ 7 days AND CUS = 0
+ * Highlight when inactivity ≥ 7 days AND no products
  */
-function shouldHighlightInactivity(inactivityDays: number, cus: number): boolean {
-  return inactivityDays >= 7 && cus === 0;
+function shouldHighlightInactivity(inactivityDays: number, productCount: number): boolean {
+  return inactivityDays >= 7 && productCount === 0;
 }
 
 // Chart component for user registrations
@@ -524,7 +531,7 @@ export default function AdminPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [quickFilter, setQuickFilter] = useState<'all' | 'active' | 'blocked' | 'inactive'>('all');
+  const [quickFilter, setQuickFilter] = useState<'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in'>('all');
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -573,14 +580,44 @@ export default function AdminPage() {
   /**
    * Sort users based on current sort settings
    */
+  // Filter users based on search and quick filter
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      // Search filter
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        const emailMatch = user.email.toLowerCase().includes(searchLower);
+        const nameMatch = `${user.first_name || ''} ${user.last_name || ''}`.toLowerCase().includes(searchLower);
+        const idMatch = user.id.toLowerCase().includes(searchLower);
+        if (!emailMatch && !nameMatch && !idMatch) return false;
+      }
+      
+      // Quick filter
+      if (quickFilter === 'blocked') {
+        if (!user.blocked) return false;
+      } else if (quickFilter === 'active') {
+        const activity = calculateActivityStatus(user.last_login || null, user.created_at);
+        if (!activity.isActive) return false;
+      } else if (quickFilter === 'inactive') {
+        const activity = calculateActivityStatus(user.last_login || null, user.created_at);
+        const stats = userStats.find(s => s.userId === user.id);
+        if (activity.days < 7 || (stats?.productCount || 0) > 0) return false;
+      } else if (quickFilter === 'never-logged-in') {
+        if (user.last_login) return false;
+      }
+      
+      return true;
+    });
+  }, [users, searchTerm, quickFilter, userStats]);
+
   const sortedUsers = useMemo(() => {
-    const sorted = [...users];
+    const sorted = [...filteredUsers];
     
     sorted.sort((a, b) => {
       const statsA = userStats.find(s => s.userId === a.id);
       const statsB = userStats.find(s => s.userId === b.id);
-      const inactivityA = calculateInactivityDays(a.last_login || null, a.created_at);
-      const inactivityB = calculateInactivityDays(b.last_login || null, b.created_at);
+      const inactivityA = calculateActivityStatus(a.last_login || null, a.created_at);
+      const inactivityB = calculateActivityStatus(b.last_login || null, b.created_at);
 
       let comparison = 0;
 
@@ -599,14 +636,8 @@ export default function AdminPage() {
         case 'products':
           comparison = (statsA?.productCount || 0) - (statsB?.productCount || 0);
           break;
-        case 'branches':
-          comparison = (statsA?.branchCount || 0) - (statsB?.branchCount || 0);
-          break;
         case 'linkedUsers':
           comparison = (statsA?.linkedUserCount || 0) - (statsB?.linkedUserCount || 0);
-          break;
-        case 'cus':
-          comparison = (statsA?.coreUsageScore || 0) - (statsB?.coreUsageScore || 0);
           break;
         case 'created':
           comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
@@ -617,7 +648,7 @@ export default function AdminPage() {
     });
 
     return sorted;
-  }, [users, userStats, sortColumn, sortDirection]);
+  }, [filteredUsers, userStats, sortColumn, sortDirection]);
 
   /**
    * Export user data to Excel
@@ -634,12 +665,9 @@ export default function AdminPage() {
           'Last Name': user.last_name || '',
           'Full Name': `${user.first_name || ''} ${user.last_name || ''}`.trim() || '',
           'Role': user.role,
-          'Inactivity Days': inactivity.days,
-          'Inactivity Display': inactivity.display,
+          'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
           'Products': stats?.productCount || 0,
-          'Branches': stats?.branchCount || 0,
           'Linked Users': stats?.linkedUserCount || 0,
-          'CUS (Core Usage Score)': stats?.coreUsageScore || 0,
           'License Cost': (stats?.licenseCost || 0).toFixed(2),
           'Blocked': user.blocked ? 'Yes' : 'No',
           'Created At': new Date(user.created_at).toLocaleString('en-US'),
@@ -747,7 +775,7 @@ export default function AdminPage() {
 
 
 
-  // Real-time updates voor admin data
+  // Real-time updates for admin data
   useEffect(() => {
     if (!currentUser?.id) return;
 
@@ -764,14 +792,26 @@ export default function AdminPage() {
           queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
         }
       )
-       
-      
       .subscribe();
 
     return () => {
       supabase.removeChannel(adminChannel);
     };
   }, [currentUser?.id, queryClient, activeTab]);
+
+  // Auto-refresh activity status every 30 seconds
+  useEffect(() => {
+    if (activeTab !== 'users') return;
+    
+    const interval = setInterval(() => {
+      // Force re-render by updating a state that triggers recalculation
+      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+    }, 30000); // 30 seconds
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [activeTab, queryClient]);
 
   const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'smtp'; label: string }[] = [
     { id: 'users', label: 'User Management' },
@@ -923,7 +963,17 @@ export default function AdminPage() {
                               : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                           }`}
                         >
-                          Inactive (≥7d, CUS=0)
+                          Inactive (≥7d, no products)
+                        </button>
+                        <button
+                          onClick={() => setQuickFilter('never-logged-in')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'never-logged-in'
+                              ? 'bg-orange-50 border-orange-200 text-orange-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Never Logged In
                         </button>
                       </div>
                       
@@ -940,6 +990,14 @@ export default function AdminPage() {
                           >
                             Clear filters
                           </button>
+                        )}
+                        {quickFilter === 'active' && (
+                          <span className="ml-2 text-green-600 font-medium">
+                            ({sortedUsers.filter(u => {
+                              const activity = calculateActivityStatus(u.last_login || null, u.created_at);
+                              return activity.isActive;
+                            }).length} active now)
+                          </span>
                         )}
                       </div>
                     </div>
@@ -974,27 +1032,43 @@ export default function AdminPage() {
                         <div className="text-center py-8 text-slate-500">No users found.</div>
                       ) : sortedUsers.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
-                        const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
-                        const shouldHighlight = shouldHighlightInactivity(inactivity.days, stats?.coreUsageScore || 0);
+                        const activity = calculateActivityStatus(user.last_login || null, user.created_at);
+                        const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
                         
                         return (
-                          <Card key={user.id} className="cursor-pointer hover:bg-gray-50" onClick={() => setSelectedUser(user)}>
+                          <Card key={user.id} className={`cursor-pointer hover:bg-gray-50 ${activity.isActive ? 'border-green-200 bg-green-50/30' : ''}`} onClick={() => setSelectedUser(user)}>
                             <CardContent className="p-4">
                               <div className="space-y-2">
                                 <div className="flex justify-between items-start">
                                   <div className="flex-1">
-                                    <h3 className="font-semibold text-sm">{user.email}</h3>
+                                    <div className="flex items-center gap-2">
+                                      {activity.isActive && (
+                                        <Circle className="w-2 h-2 fill-green-500 text-green-500" />
+                                      )}
+                                      <h3 className="font-semibold text-sm">{user.email}</h3>
+                                    </div>
                                     <p className="text-xs text-gray-600">{user.first_name} {user.last_name}</p>
                                   </div>
-                                  <span className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                                    {user.blocked ? 'Blocked' : 'Active'}
-                                  </span>
+                                  <div className="flex flex-col items-end gap-1">
+                                    <span className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                      {user.blocked ? 'Blocked' : 'Active'}
+                                    </span>
+                                    {activity.isActive && (
+                                      <span className="px-2 py-0.5 rounded text-xs bg-green-100 text-green-700 font-medium">
+                                        Online
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                   <div className="text-gray-600">
-                                    <span className="font-medium">Inactivity:</span>{' '}
-                                    <span className={shouldHighlight ? 'text-red-600 font-semibold' : ''}>
-                                      {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : inactivity.display}
+                                    <span className="font-medium">Last Login:</span>{' '}
+                                    <span className={`${
+                                      activity.color === 'green' ? 'text-green-600 font-semibold' :
+                                      activity.color === 'yellow' ? 'text-yellow-600' :
+                                      shouldHighlight ? 'text-red-600 font-semibold' : 'text-gray-600'
+                                    }`} title={activity.exactTime}>
+                                      {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : activity.display}
                                     </span>
                                   </div>
                                   <div className="text-gray-600">
@@ -1002,18 +1076,13 @@ export default function AdminPage() {
                                     {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}
                                   </div>
                                   <div className="text-gray-600">
-                                    <span className="font-medium">Branches:</span>{' '}
-                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}
-                                  </div>
-                                  <div className="text-gray-600">
                                     <span className="font-medium">Linked Users:</span>{' '}
                                     {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.linkedUserCount || 0}
                                   </div>
                                   <div className="text-gray-600">
-                                    <span className="font-medium">CUS:</span>{' '}
-                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.coreUsageScore || 0}
+                                    <span className="font-medium">Created:</span>{' '}
+                                    {new Date(user.created_at).toLocaleDateString('en-US')}
                                   </div>
-                       
                                 </div>
                                 <div className="flex justify-between items-center pt-2 gap-2">
                                   <div className="flex gap-1 flex-wrap">
@@ -1128,33 +1197,11 @@ export default function AdminPage() {
                             </th>
                             <th 
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
-                              onClick={() => handleSort('branches')}
-                            >
-                              <div className="flex items-center justify-end gap-1">
-                                Branches
-                                {sortColumn === 'branches' && (
-                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                                )}
-                              </div>
-                            </th>
-                            <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('linkedUsers')}
                             >
                               <div className="flex items-center justify-end gap-1">
                                 Linked Users
                                 {sortColumn === 'linkedUsers' && (
-                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                                )}
-                              </div>
-                            </th>
-                            <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
-                              onClick={() => handleSort('cus')}
-                            >
-                              <div className="flex items-center justify-end gap-1">
-                                CUS
-                                {sortColumn === 'cus' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
                                 )}
                               </div>
@@ -1175,32 +1222,51 @@ export default function AdminPage() {
                         </thead>
                         <tbody>
                           {sortedUsers.length === 0 ? (
-                            <tr><td colSpan={9} className="text-center py-4">No users found.</td></tr>
+                            <tr><td colSpan={7} className="text-center py-4">No users found.</td></tr>
                           ) : sortedUsers.map((user) => {
                             const stats = userStats.find(s => s.userId === user.id);
-                            const inactivity = calculateInactivityDays(user.last_login || null, user.created_at);
-                            const shouldHighlight = shouldHighlightInactivity(inactivity.days, stats?.coreUsageScore || 0);
+                            const activity = calculateActivityStatus(user.last_login || null, user.created_at);
+                            const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
                             
                             return (
-                              <tr key={user.id} className="bg-white border-b hover:bg-slate-50 cursor-pointer" onClick={() => setSelectedUser(user)}>
-                                <td className="px-4 py-2 text-left">{user.email}</td>
+                              <tr 
+                                key={user.id} 
+                                className={`border-b hover:bg-slate-50 cursor-pointer ${
+                                  activity.isActive ? 'bg-green-50/30 border-green-100' : 'bg-white'
+                                }`} 
+                                onClick={() => setSelectedUser(user)}
+                              >
+                                <td className="px-4 py-2 text-left">
+                                  <div className="flex items-center gap-2">
+                                    {activity.isActive && (
+                                      <Circle className="w-2 h-2 fill-green-500 text-green-500 flex-shrink-0" />
+                                    )}
+                                    <span>{user.email}</span>
+                                  </div>
+                                </td>
                                 <td className="px-4 py-2 text-left">{user.first_name} {user.last_name}</td>
-                                <td className={`px-4 py-2 text-left ${shouldHighlight ? 'text-red-600 font-semibold bg-red-50' : ''}`}>
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin" /> : inactivity.display}
+                                <td className={`px-4 py-2 text-left ${
+                                  activity.color === 'green' ? 'text-green-600 font-semibold' :
+                                  activity.color === 'yellow' ? 'text-yellow-600' :
+                                  shouldHighlight ? 'text-red-600 font-semibold bg-red-50' : 'text-gray-600'
+                                }`} title={activity.exactTime}>
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                                    <div className="flex items-center gap-2">
+                                      <span>{activity.display}</span>
+                                      {activity.isActive && (
+                                        <span className="px-1.5 py-0.5 rounded text-xs bg-green-100 text-green-700 font-medium">
+                                          Active
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.productCount || 0}
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.branchCount || 0}
-                                </td>
-                                <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
-                                <td className="px-4 py-2 text-right tabular-nums">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.coreUsageScore || 0}
-                                </td>
-                               
                                 <td className="px-4 py-2 text-left">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
                                 <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
                                   <div className="flex gap-1">
@@ -1285,6 +1351,13 @@ export default function AdminPage() {
 
           </div>
         </div>
+
+        {/* User Detail Modal */}
+        <UserDetailModal
+          user={selectedUser}
+          isOpen={!!selectedUser}
+          onClose={() => setSelectedUser(null)}
+        />
 
         </>
       </Layout>

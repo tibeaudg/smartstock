@@ -4,7 +4,8 @@ import nodemailer from 'npm:nodemailer@6.9.14'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-application-name',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
 function validateEmail(email: string): boolean {
@@ -14,8 +15,12 @@ function validateEmail(email: string): boolean {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { 
+      status: 204,
+      headers: corsHeaders 
+    })
   }
 
   if (req.method !== 'POST') {

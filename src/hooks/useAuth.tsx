@@ -72,8 +72,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     queryClient.clear();
   };
 
-  const fetchAndSetProfile = async (userId: string, email?: string, userMetadata?: any) => {
+  const fetchAndSetProfile = async (userId: string, email?: string, userMetadata?: any, updateLastLogin: boolean = false) => {
     try {
+      // Update last_login if requested (on sign in)
+      if (updateLastLogin) {
+        await supabase
+          .from('profiles')
+          .update({ last_login: new Date().toISOString() })
+          .eq('id', userId);
+      }
+
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -94,6 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             last_name: lastName || null,
             role: 'admin',
             is_owner: false,
+            last_login: updateLastLogin ? new Date().toISOString() : null,
             updated_at: new Date().toISOString(),
           })
           .select()
@@ -143,11 +152,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (currentSession) {
         setSession(currentSession);
         setUser(currentSession.user);
+        // Update last_login on sign in
+        const isSignIn = event === 'SIGNED_IN';
         // Pass user metadata for OAuth users to extract name information
         await fetchAndSetProfile(
           currentSession.user.id, 
           currentSession.user.email,
-          currentSession.user.user_metadata
+          currentSession.user.user_metadata,
+          isSignIn // Update last_login only on actual sign in, not on session refresh
         );
       } else {
         setSession(null);
