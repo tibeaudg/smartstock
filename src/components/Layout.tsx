@@ -39,6 +39,8 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
     }
   }, [isMobile]); // Remove sidebarOpen from dependencies to prevent loops
 
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   const handleTabChange = (tab: string) => {
     onTabChange(tab);
   };
@@ -64,6 +66,8 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
             onToggle={() => setSidebarOpen(!sidebarOpen)}
             unreadCount={unreadCount}
             onNotificationClick={handleNotificationClick}
+            isCollapsed={sidebarCollapsed}
+            onCollapseChange={setSidebarCollapsed}
           />
         )}
         
@@ -85,7 +89,9 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           className={`flex-1 main-content-surface ${variant === 'admin' ? 'overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
-              : 'ml-64' // Always add left margin for fixed sidebar on desktop
+              : sidebarCollapsed
+                ? 'ml-20' // Match left margin to collapsed sidebar width
+                : 'ml-72' // Match left margin to expanded sidebar width
           } transition-colors`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'} transition-colors`}>
@@ -97,7 +103,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
 
       {/* Notification Overlay */}
       {showNotifications && user && (
-        <div className="fixed top-4 right-4 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4 w-80 max-h-[60vh] overflow-y-auto transition-colors">
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[100] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl p-4 w-180 overflow-y-auto transition-colors">
           <h4 className="font-semibold mb-2 text-gray-900 dark:text-gray-100">Notifications</h4>
           {notificationsLoading ? (
             <div className="text-gray-500 dark:text-gray-400 text-sm">Loading...</div>

@@ -24,12 +24,12 @@ import {
   Star
 } from 'lucide-react';
 import SEO from '@/components/SEO';
-import { FloatingChatButton } from '@/components/FloatingChatButton';
 import { createPortal } from 'react-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/useUnreadMessages';
 import { on } from 'events';
 import SupportModal from '@/components/SupportModal';
+import { ContactForm } from '@/components/ContactForm';
 
 
 
@@ -127,9 +127,9 @@ export default function HelpCenterPage() {
       title: 'Email Support',
       description: 'Send us your questions via email',
       icon: <Mail className="h-8 w-8" />,
-      availability: 'Business hours',
+      availability: 'Monday - Friday: 9:00 - 17:00',
       responseTime: '< 24 hours',
-      button: 'Send Email',
+      button: 'info@stockflow.be',
       onClick: () => {
         const link = document.createElement('a');
         link.href = 'mailto:info@stockflow.be';
@@ -146,9 +146,26 @@ export default function HelpCenterPage() {
       onClick: () => window.open('/videos')
     }
   ];
-  
+
+  const faqsData = [
+    {
+      question: 'How do I create a new inventory?',
+      answer: 'To create a new inventory, go to the inventory page and click on the "Create Inventory" button.'
+    },
     
-  
+    {
+      question: 'How do I create a new inventory?',
+      answer: 'To create a new inventory, go to the inventory page and click on the "Create Inventory" button.'
+    },
+    
+    {
+      question: 'How do I create a new inventory?',
+      answer: 'To create a new inventory, go to the inventory page and click on the "Create Inventory" button.'
+    },
+    
+  ];
+    
+
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -166,10 +183,9 @@ export default function HelpCenterPage() {
 
     <>
     
-    <Header />
 
 
-    <div className="min-h-screen bg-gray-50 mt-16">
+    <div className="min-h-screen bg-gray-50">
       <SEO
         title="Help Center - StockFlow"
         description="Get help with StockFlow inventory management. Find answers, tutorials, and contact our support team."
@@ -240,6 +256,34 @@ export default function HelpCenterPage() {
         </div>
       </div>
 
+      {/* Contact Form */}
+      <div className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">Contact Us</h2>
+          <div className="">
+            <ContactForm />
+          </div>
+        </div>
+      </div>
+
+      {/* Frequently Asked Questions */}
+
+      <div className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {faqsData.map((faq, index) => (
+              <div key={faq.question} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <details className="cursor-pointer bg-gray-50 p-4 rounded-lg">
+                  <summary className="font-semibold">{faq.question}</summary>
+                  <p className="mt-2 text-gray-700">{faq.answer}</p>
+                </details>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Popular Articles */}
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -249,7 +293,7 @@ export default function HelpCenterPage() {
               <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
-                    <Badge variant="outline">{article.category}</Badge>
+                    <Badge variant="default">{article.category}</Badge>
                     <span className="text-sm text-gray-500">{article.readTime}</span>
                   </div>
                   <CardTitle className="text-lg hover:text-blue-600 transition-colors">
@@ -282,7 +326,7 @@ export default function HelpCenterPage() {
                     </div>
                     <div>
                       <CardTitle className="text-xl">{category.name}</CardTitle>
-                      <Badge variant="secondary" className="mt-1">
+                      <Badge variant="default" className="mt-1">
                         {category.articles} articles
                       </Badge>
                     </div>
@@ -320,14 +364,7 @@ export default function HelpCenterPage() {
             document.body
           )}
 
-          {/* Floating Chat Button - Rendered using Portal */}
-          {!isMobile && createPortal(
-            <>
-              <FloatingChatButton onClick={() => setChatOpen(true)} />
-      
-            </>,
-            document.body
-          )}
+
 
           {/* Chat Modal - Rendered using Portal */}
           {chatOpen && createPortal(
