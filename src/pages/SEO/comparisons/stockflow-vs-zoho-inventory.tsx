@@ -65,6 +65,10 @@ export default function StockFlowVsZohoInventory() {
     {
       question: "What is the main advantage of StockFlow over Zoho Inventory for European businesses?",
       answer: "The main advantages are: (1) GDPR-first architecture with EU-only data hosting, (2) Completely free core plan vs Zoho's paid-only model, (3) Faster implementation (5-7 days vs 30-60 days), (4) Lower total cost of ownership (often 3-5x less over 3 years), and (5) EU-based customer support with local language support."
+    },
+    {
+      question: "What are Zoho Inventory free plan limits in 2026?",
+      answer: "Zoho Inventory free plan limits in 2026 include: 50 orders per month, 1 warehouse, 1 user, and basic features only. Most growing businesses quickly exceed these limits and must upgrade to paid plans starting at $59/month. StockFlow offers unlimited orders, unlimited warehouses, unlimited users, and full features at no cost—no upgrade required."
     }
   ];
 
@@ -85,9 +89,9 @@ export default function StockFlowVsZohoInventory() {
       faqData={faqData}
     >
       <SEO
-        title="StockFlow vs Zoho Inventory 2026 – Pricing, GDPR, Features, TCO"
-        description="Complete StockFlow vs Zoho Inventory comparison 2026: pricing (€0 vs €54-€229/month), GDPR compliance, EU data hosting, setup time (5-7 days vs 30-60 days), and total cost of ownership. Find out which inventory software is better for European SMEs."
-        keywords="stockflow vs zoho inventory, zoho inventory alternative europe, gdpr inventory software, inventory management comparison, stockflow vs zoho, zoho inventory vs stockflow"
+        title="Zoho Inventory Free Plan Limits 2026 | 50 Orders – StockFlow Unlimited | StockFlow"
+        description="Zoho inventory free plan limits 2026: 50 orders/month, 1 warehouse, 1 user. StockFlow: unlimited—no limits. Compare and switch."
+        keywords="zoho inventory free plan limits 2026, stockflow vs zoho inventory, zoho inventory alternative europe, gdpr inventory software, inventory management comparison, stockflow vs zoho, zoho inventory vs stockflow"
         url="https://www.stockflowsystems.com/stockflow-vs-zoho-inventory"
         publishedTime="2024-01-01T00:00:00Z"
         modifiedTime={new Date().toISOString()}
@@ -111,8 +115,39 @@ export default function StockFlowVsZohoInventory() {
         </div>
       </section>
 
+      {/* Zoho Inventory Free Plan Limits 2026 */}
+      <section className="py-16 px-4 bg-white" id="zoho-free-limits">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-center">Zoho Inventory Free Plan Limits 2026</h2>
+          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
+            Many businesses search for <strong>Zoho inventory free plan limits 2026</strong>. Zoho offers a limited free tier. Here's how it compares to StockFlow.
+          </p>
+          <div className="overflow-hidden border rounded-xl bg-white shadow-sm mb-8">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="p-4 text-left">Limit</th>
+                  <th className="p-4 text-left">Zoho Inventory Free 2026</th>
+                  <th className="p-4 text-left bg-blue-50">StockFlow</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t"><td className="p-4 font-medium">Orders/month</td><td className="p-4">50</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
+                <tr className="border-t"><td className="p-4 font-medium">Warehouses</td><td className="p-4">1</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
+                <tr className="border-t"><td className="p-4 font-medium">Users</td><td className="p-4">1</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
+                <tr className="border-t"><td className="p-4 font-medium">Products</td><td className="p-4">Limited</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
+                <tr className="border-t"><td className="p-4 font-medium">Upgrade required?</td><td className="p-4">Yes, for growth</td><td className="p-4 bg-blue-50/30 font-semibold">No—free forever</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-center text-gray-600">
+            Hit Zoho's free plan limits? StockFlow gives you unlimited everything at zero cost. <Link to="/auth?mode=register" className="text-blue-600 font-semibold hover:underline">Start free</Link>.
+          </p>
+        </div>
+      </section>
+
       {/* Comparison Table */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-slate-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold mb-10 text-center">Feature Comparison</h2>
           <ComparisonTable competitorName="Zoho Inventory" features={comparisonFeatures} />

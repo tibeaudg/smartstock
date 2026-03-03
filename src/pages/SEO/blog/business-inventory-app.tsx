@@ -64,9 +64,9 @@ export default function SmallBusinessInventoryAppPage() {
   ];
 
   const structuredData = generateSeoPageStructuredData({
-    title: 'Best Small Business Inventory App 2026 | StockFlow',
+    title: 'Small Business Inventory App | Best Inventory App 2026 | StockFlow',
     description:
-      'The simplest mobile inventory app for small businesses. Track stock, assets, and supplies from your smartphone. Built-in QR scanning and real-time syncing.',
+      'Small business inventory app—best inventory app for 2026. Mobile scanning, free. No credit card. StockFlow.',
     url: location.pathname,
     breadcrumbs,
     faqData,
@@ -135,16 +135,16 @@ export default function SmallBusinessInventoryAppPage() {
 
   return (
     <SeoPageLayout
-      title="What is the best inventory app for small business? 2026 | StockFlow"
-      heroTitle="What is the best inventory app for small business?"
+      title="Small Business Inventory App | Best Inventory App 2026 | StockFlow"
+      heroTitle="Best Inventory App for Small Business"
       dateUpdated="january 10, 2026"
       faqData={faqData}
         keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="What is the best inventory app for small business? 2026 | StockFlow"
-        description="Ditch the spreadsheets. Track stock, tools, and assets from your phone. The perfect inventory app for small business owners and teams."
-        keywords="small business inventory app, mobile inventory tracking, inventory app for iphone, android inventory scanner, smb asset tracking"
+        title="Small Business Inventory App | Best Inventory App 2026 | StockFlow"
+        description="Small business inventory app—best inventory app for 2026. Mobile scanning, free. No credit card. StockFlow."
+        keywords="small business inventory app, best inventory app, mobile inventory tracking, inventory app for iphone, android inventory scanner, smb asset tracking"
         url="https://www.stockflowsystems.com/business-inventory-app"
         structuredData={structuredData}
       />
@@ -152,9 +152,9 @@ export default function SmallBusinessInventoryAppPage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">What is the best inventory app for small business?</h1>
+          <h1 className="text-4xl font-bold mb-6">Best Inventory App for Small Business</h1>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
-            Business owners don't have time for complex ERP systems or "messy" manual spreadsheets. <strong>StockFlow</strong> is a dedicated <strong>mobile inventory app</strong> designed to give you total control over your stock, materials, and equipment at the touch of a button.
+            The <strong>best inventory app</strong> for 2026 is a <strong>small business inventory app</strong> that works on your phone. <strong>StockFlow</strong> gives you total control over stock, materials, and equipment at the touch of a button—no complex ERP or messy spreadsheets.
           </p>
           <p className="text-lg text-gray-600 leading-relaxed">
             Whether you are a retail shop owner, a contractor with a van full of tools, or an e-commerce seller, our app provides a <strong>centralized, automated system</strong> that works across all your devices. Real-time syncing means your data is always up to date, whether you're in the warehouse or at a client site.

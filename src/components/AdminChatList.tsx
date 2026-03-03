@@ -15,7 +15,12 @@ function isToday(date: Date) {
 }
 
 
-export const AdminChatList: React.FC = () => {
+interface AdminChatListProps {
+  initialUserId?: string | null;
+  onUserIdHandled?: () => void;
+}
+
+export const AdminChatList: React.FC<AdminChatListProps> = ({ initialUserId, onUserIdHandled }) => {
   const { user, session } = useAuth();
   const [chats, setChats] = useState<any[]>([]);
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
@@ -68,6 +73,18 @@ export const AdminChatList: React.FC = () => {
       mounted = false;
     };
   }, []);
+
+  // Auto-open chat when initialUserId is set (e.g. from User Management "Chat" button)
+  useEffect(() => {
+    if (!initialUserId || chats.length === 0) return;
+    const chatForUser = chats.find((c: any) => c.user_id === initialUserId);
+    if (chatForUser) {
+      openChat(chatForUser);
+      onUserIdHandled?.();
+    } else {
+      onUserIdHandled?.();
+    }
+  }, [initialUserId, chats]);
 
   async function openChat(chat: any) {
     try {

@@ -90,9 +90,9 @@ export default function InventoryManagementSoftwareFreePage() {
       pageLanguage="en"
     >
       <SEO
-        title="Free Inventory Software | No Credit Card | StockFlow"
-        description="Free inventory software: unlimited products, users, BOM, barcode scanning. No credit card—truly free forever. Start today."
-        keywords="free inventory software, inventory management software free, free inventory management, inventory software free, stock management free"
+        title="Inventory Software Free | Free Inventory Management | StockFlow"
+        description="Inventory software free and free inventory management: unlimited products, users, BOM, barcode scanning. No credit card—truly free forever. Start today."
+        keywords="inventory software free, free inventory management, free inventory software, inventory management software free, stock management free"
         url="https://www.stockflowsystems.com/inventory-management-software-free"
         structuredData={structuredData}
       />
@@ -105,7 +105,7 @@ export default function InventoryManagementSoftwareFreePage() {
             Is Inventory Management Software Free?
           </h2>
           <p className="text-lg text-gray-700 mb-8">
-            Yes. <strong>Inventory management software free</strong> options do exist—and StockFlow is one of them. 
+            Yes. <strong>Inventory software free</strong> and <strong>free inventory management</strong> options do exist—and StockFlow is one of them. 
             Unlike "free trials" that expire or "freemium" plans that cap your products or users, StockFlow offers 
             fully free inventory management software with no time limits and no artificial restrictions. All core 
             features are included: unlimited products, users, branches, barcode scanning, BOM management, and reporting.

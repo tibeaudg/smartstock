@@ -15,7 +15,6 @@ import SEO from '@/components/SEO';
 import AdminSmtpPage from '@/pages/AdminSmtpPage';
 import { EmailLogsView } from '@/components/admin/email/EmailLogsView';
 import { EmailSegmentsManager } from '@/components/admin/email/EmailSegmentsManager';
-import { EmailComposer } from '@/components/admin/email/EmailComposer';
 
 export default function EmailManagementPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -407,10 +406,6 @@ export default function EmailManagementPage() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-
-          <TabsContent value="compose">
-            <EmailComposer />
           </TabsContent>
 
           <TabsContent value="segments">

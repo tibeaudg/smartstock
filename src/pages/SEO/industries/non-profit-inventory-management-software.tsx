@@ -58,9 +58,9 @@ export default function NonProfitInventorySoftwarePage() {
   ];
 
   const structuredData = generateSeoPageStructuredData({
-    title: 'Non-Profit Inventory Software – Efficient Resource Tracking',
+    title: 'Inventory Management Software for Nonprofits | Free | StockFlow',
     description:
-      'Manage donations, assets, and supplies with the best inventory software for non-profits. Optimize your mission with real-time tracking and automated reporting.',
+      'Inventory management software for nonprofits. Free asset tracking, donations, multi-location. No credit card. StockFlow.',
     url: location.pathname,
     breadcrumbs,
     faqData,
@@ -136,9 +136,9 @@ export default function NonProfitInventorySoftwarePage() {
       keyTakeaways={<KeyTakeaways items={keyTakeaways} />}
     >
       <SEO
-        title="Non-Profit Inventory Management | Free Software | StockFlow"
-        description="Free non-profit inventory management. Track donations, assets & supplies. No credit card. Start free—built for NGOs and charities."
-        keywords="non profit inventory management, non-profit inventory software, asset tracking for non-profits, donation tracking system, inventory management for NGOs, free non-profit software"
+        title="Inventory Management Software for Nonprofits | Free | StockFlow"
+        description="Inventory management software for nonprofits. Free asset tracking, donations, multi-location. No credit card. StockFlow."
+        keywords="inventory management software for nonprofits, non profit inventory management, non-profit inventory software, asset tracking for non-profits, donation tracking system, inventory management for NGOs, free non-profit software"
         url="https://www.stockflowsystems.com/non-profit-inventory-software"
         structuredData={structuredData}
       />
@@ -146,9 +146,9 @@ export default function NonProfitInventorySoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">What Is Non-Profit Inventory Management?</h1>
+          <h1 className="text-4xl font-bold mb-6">Inventory Management Software for Nonprofits</h1>
           <p className="text-lg text-gray-600 leading-relaxed mb-4">
-            <strong>Non profit inventory management</strong> helps charities, NGOs, and mission-driven organizations 
+            <strong>Inventory management software for nonprofits</strong> helps charities, NGOs, and mission-driven organizations 
             track donated goods, supplies, and assets efficiently—so resources reach those in need.
           </p>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
@@ -163,7 +163,7 @@ export default function NonProfitInventorySoftwarePage() {
       {/* Why it Matters Section */}
       <section className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8">Stop Wasting Resources on Manual Tracking</h2>
+          <h2 className="text-3xl font-bold mb-8">Why Nonprofits Need Inventory Management Software</h2>
           <div className="prose prose-blue max-w-none text-gray-600">
             <p>
               Navigating <strong>inventory management for non-profits</strong> in 2026 requires speed and accountability. Every dollar spent replacing a "lost" tablet or over-ordering printer paper is a dollar taken away from your cause. 

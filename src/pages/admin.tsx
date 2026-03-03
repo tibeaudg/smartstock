@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle, MessageSquare } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -24,8 +24,11 @@ import EmailManagementPage from '@/pages/admin/EmailManagementPage';
 import { UserDetailModal } from '@/components/admin/UserDetailModal';
 
 // User management types
-type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'linkedUsers' | 'created';
+type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' | 'organization' | 'branches' | 'role' | 'openChats';
 type SortDirection = 'asc' | 'desc';
+type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'has-open-chat' | 'has-recent-errors';
+type PlanFilter = 'all' | string;
+type RoleFilter = 'all' | 'user' | 'admin' | 'staff';
 
 interface UserProfile {
   id: string;
@@ -39,6 +42,7 @@ interface UserProfile {
   blocked: boolean | null;
   last_login?: string | null;
   referral_source?: string | null;
+  organization_name?: string | null;
 }
 
 interface UserStats {
@@ -68,6 +72,12 @@ const plans = {
   'business': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
   'premium': { price: 0, limit: null, displayName: 'Enterprise', pricePerProduct: 0, includedProducts: 10000 }
 };
+
+function getPlanDisplayName(planId: string | null): string {
+  if (!planId) return '—';
+  const plan = plans[planId as keyof typeof plans];
+  return plan?.displayName ?? planId;
+}
 
 /**
  * Calculate Core Usage Score (CUS)
@@ -99,6 +109,42 @@ async function fetchUserProfiles(): Promise<UserProfile[]> {
     .select('*');
   if (error) throw error;
   return data || [];
+}
+
+/** Fetch open chat counts per user (chats where is_closed = false) */
+async function fetchOpenChatCounts(userIds: string[]): Promise<Record<string, number>> {
+  if (userIds.length === 0) return {};
+  const { data, error } = await supabase
+    .from('chats')
+    .select('user_id')
+    .in('user_id', userIds)
+    .eq('is_closed', false);
+  if (error) {
+    console.error('Error fetching open chats:', error);
+    return {};
+  }
+  const counts: Record<string, number> = {};
+  userIds.forEach(id => { counts[id] = 0; });
+  (data || []).forEach((row: { user_id: string }) => {
+    counts[row.user_id] = (counts[row.user_id] || 0) + 1;
+  });
+  return counts;
+}
+
+/** Fetch user IDs that have application_errors in the last 7 days */
+async function fetchUserIdsWithRecentErrors(): Promise<Set<string>> {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const { data, error } = await supabase
+    .from('application_errors')
+    .select('user_id')
+    .gte('created_at', sevenDaysAgo.toISOString())
+    .not('user_id', 'is', null);
+  if (error) {
+    console.error('Error fetching recent errors:', error);
+    return new Set();
+  }
+  return new Set((data || []).map((r: { user_id: string }) => r.user_id).filter(Boolean));
 }
 
 // Function to calculate user statistics
@@ -533,7 +579,14 @@ export default function AdminPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [quickFilter, setQuickFilter] = useState<'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in'>('all');
+  const [quickFilter, setQuickFilter] = useState<QuickFilter>('all');
+  const [planFilter, setPlanFilter] = useState<PlanFilter>('all');
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
+  const [openChatCounts, setOpenChatCounts] = useState<Record<string, number>>({});
+  const [userIdsWithRecentErrors, setUserIdsWithRecentErrors] = useState<Set<string>>(new Set());
+  const [chatForUserId, setChatForUserId] = useState<string | null>(null);
+  const [pageSize, setPageSize] = useState(50);
+  const [currentPage, setCurrentPage] = useState(0);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -585,14 +638,22 @@ export default function AdminPage() {
   // Filter users based on search and quick filter
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
-      // Search filter
+      // Search filter - extend to org, referral, id
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
-        const emailMatch = user.email.toLowerCase().includes(searchLower);
+        const emailMatch = (user.email || '').toLowerCase().includes(searchLower);
         const nameMatch = `${user.first_name || ''} ${user.last_name || ''}`.toLowerCase().includes(searchLower);
         const idMatch = user.id.toLowerCase().includes(searchLower);
-        if (!emailMatch && !nameMatch && !idMatch) return false;
+        const orgMatch = (user.organization_name || '').toLowerCase().includes(searchLower);
+        const referralMatch = (user.referral_source || '').toLowerCase().includes(searchLower);
+        if (!emailMatch && !nameMatch && !idMatch && !orgMatch && !referralMatch) return false;
       }
+      
+      // Plan filter
+      if (planFilter !== 'all' && (user.selected_plan || '') !== planFilter) return false;
+      
+      // Role filter
+      if (roleFilter !== 'all' && (user.role || 'user') !== roleFilter) return false;
       
       // Quick filter
       if (quickFilter === 'blocked') {
@@ -606,11 +667,19 @@ export default function AdminPage() {
         if (activity.days < 7 || (stats?.productCount || 0) > 0) return false;
       } else if (quickFilter === 'never-logged-in') {
         if (user.last_login) return false;
+      } else if (quickFilter === 'at-risk') {
+        const activity = calculateActivityStatus(user.last_login || null, user.created_at);
+        const stats = userStats.find(s => s.userId === user.id);
+        if (activity.days < 7 || (stats?.productCount || 0) === 0) return false;
+      } else if (quickFilter === 'has-open-chat') {
+        if ((openChatCounts[user.id] || 0) === 0) return false;
+      } else if (quickFilter === 'has-recent-errors') {
+        if (!userIdsWithRecentErrors.has(user.id)) return false;
       }
       
       return true;
     });
-  }, [users, searchTerm, quickFilter, userStats]);
+  }, [users, searchTerm, quickFilter, planFilter, roleFilter, userStats, openChatCounts, userIdsWithRecentErrors]);
 
   const sortedUsers = useMemo(() => {
     const sorted = [...filteredUsers];
@@ -620,12 +689,14 @@ export default function AdminPage() {
       const statsB = userStats.find(s => s.userId === b.id);
       const inactivityA = calculateActivityStatus(a.last_login || null, a.created_at);
       const inactivityB = calculateActivityStatus(b.last_login || null, b.created_at);
+      const openChatsA = openChatCounts[a.id] || 0;
+      const openChatsB = openChatCounts[b.id] || 0;
 
       let comparison = 0;
 
       switch (sortColumn) {
         case 'email':
-          comparison = a.email.localeCompare(b.email);
+          comparison = (a.email || '').localeCompare(b.email || '');
           break;
         case 'name':
           const nameA = `${a.first_name || ''} ${a.last_name || ''}`.trim();
@@ -644,13 +715,46 @@ export default function AdminPage() {
         case 'created':
           comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
           break;
+        case 'plan':
+          comparison = getPlanDisplayName(a.selected_plan).localeCompare(getPlanDisplayName(b.selected_plan));
+          break;
+        case 'organization':
+          comparison = (a.organization_name || '').localeCompare(b.organization_name || '');
+          break;
+        case 'branches':
+          comparison = (statsA?.branchCount || 0) - (statsB?.branchCount || 0);
+          break;
+        case 'role':
+          comparison = (a.role || '').localeCompare(b.role || '');
+          break;
+        case 'openChats':
+          comparison = openChatsA - openChatsB;
+          break;
       }
 
       return sortDirection === 'asc' ? comparison : -comparison;
     });
 
     return sorted;
-  }, [filteredUsers, userStats, sortColumn, sortDirection]);
+  }, [filteredUsers, userStats, openChatCounts, sortColumn, sortDirection]);
+
+  // Paginated users
+  const totalPages = Math.ceil(sortedUsers.length / pageSize) || 1;
+  const paginatedUsers = useMemo(() => {
+    const start = currentPage * pageSize;
+    return sortedUsers.slice(start, start + pageSize);
+  }, [sortedUsers, currentPage, pageSize]);
+
+  // Unique plan and referral values for filters
+  const uniquePlans = useMemo(() => {
+    const set = new Set(users.map(u => u.selected_plan).filter(Boolean) as string[]);
+    return Array.from(set).sort();
+  }, [users]);
+
+  const handleOpenUserChat = useCallback((userId: string) => {
+    setChatForUserId(userId);
+    setActiveTab('chats');
+  }, []);
 
   /**
    * Export user data to Excel
@@ -666,14 +770,18 @@ export default function AdminPage() {
           'First Name': user.first_name || '',
           'Last Name': user.last_name || '',
           'Full Name': `${user.first_name || ''} ${user.last_name || ''}`.trim() || '',
+          'Organization': user.organization_name || '',
           'Role': user.role,
+          'Plan': getPlanDisplayName(user.selected_plan),
           'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
           'Products': stats?.productCount || 0,
+          'Branches': stats?.branchCount || 0,
           'Linked Users': stats?.linkedUserCount || 0,
+          'Open Chats': openChatCounts[user.id] || 0,
           'License Cost': (stats?.licenseCost || 0).toFixed(2),
           'Blocked': user.blocked ? 'Yes' : 'No',
           'Created At': new Date(user.created_at).toLocaleString('en-US'),
-          'Plan': user.selected_plan || 'N/A'
+          'Referral Source': user.referral_source || ''
         };
       });
 
@@ -688,7 +796,7 @@ export default function AdminPage() {
       console.error('Error exporting to Excel:', error);
       toast.error('Failed to export data to Excel');
     }
-  }, [sortedUsers, userStats]);
+  }, [sortedUsers, userStats, openChatCounts]);
 
   /**
    * Export only email addresses to Excel
@@ -736,6 +844,25 @@ export default function AdminPage() {
 
     loadUserStats();
   }, [users]);
+
+  // Fetch open chat counts
+  useEffect(() => {
+    if (users.length === 0) {
+      setOpenChatCounts({});
+      return;
+    }
+    fetchOpenChatCounts(users.map(u => u.id)).then(setOpenChatCounts);
+  }, [users]);
+
+  // Fetch user IDs with recent errors
+  useEffect(() => {
+    fetchUserIdsWithRecentErrors().then(setUserIdsWithRecentErrors);
+  }, [users]);
+
+  // Reset to page 0 when filters change
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [searchTerm, quickFilter, planFilter, roleFilter]);
 
   // Calculate metric values
   const metricValues = useMemo(() => {
@@ -854,7 +981,10 @@ export default function AdminPage() {
                 {sidebarNavItems.map((item) => (
                   <button
                     key={item.id}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      if (item.id !== 'chats') setChatForUserId(null);
+                    }}
                     className={`
                       ${isMobile ? 'w-full text-left' : ''} px-3 py-2 rounded-lg transition-colors border
                       ${
@@ -917,11 +1047,37 @@ export default function AdminPage() {
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
                           type="text"
-                          placeholder="Search by email or name..."
+                          placeholder="Search by email, name, organization, referral, or ID..."
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
                           className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                      </div>
+                      
+                      {/* Plan and Role filters */}
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <Select value={planFilter} onValueChange={(v) => setPlanFilter(v)}>
+                          <SelectTrigger className="w-[140px]">
+                            <SelectValue placeholder="Plan" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All plans</SelectItem>
+                            {uniquePlans.map(p => (
+                              <SelectItem key={p} value={p}>{getPlanDisplayName(p)}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select value={roleFilter} onValueChange={(v) => setRoleFilter(v)}>
+                          <SelectTrigger className="w-[120px]">
+                            <SelectValue placeholder="Role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All roles</SelectItem>
+                            <SelectItem value="user">User</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                            <SelectItem value="staff">Staff</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       
                       {/* Quick Filters */}
@@ -967,6 +1123,16 @@ export default function AdminPage() {
                           Inactive (≥7d, no products)
                         </button>
                         <button
+                          onClick={() => setQuickFilter('at-risk')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'at-risk'
+                              ? 'bg-amber-50 border-amber-200 text-amber-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          At Risk
+                        </button>
+                        <button
                           onClick={() => setQuickFilter('never-logged-in')}
                           className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
                             quickFilter === 'never-logged-in'
@@ -976,16 +1142,40 @@ export default function AdminPage() {
                         >
                           Never Logged In
                         </button>
+                        <button
+                          onClick={() => setQuickFilter('has-open-chat')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors flex items-center gap-1 ${
+                            quickFilter === 'has-open-chat'
+                              ? 'bg-indigo-50 border-indigo-200 text-indigo-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          Open Chats
+                        </button>
+                        <button
+                          onClick={() => setQuickFilter('has-recent-errors')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                            quickFilter === 'has-recent-errors'
+                              ? 'bg-rose-50 border-rose-200 text-rose-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Recent Errors
+                        </button>
                       </div>
                       
                       {/* Results count */}
                       <div className="text-sm text-slate-600">
-                        Showing {sortedUsers.length} of {users.length} users
-                        {(searchTerm || quickFilter !== 'all') && (
+                        Showing {paginatedUsers.length} of {sortedUsers.length} users
+                        {sortedUsers.length !== users.length && ` (${users.length} total)`}
+                        {(searchTerm || quickFilter !== 'all' || planFilter !== 'all' || roleFilter !== 'all') && (
                           <button
                             onClick={() => {
                               setSearchTerm('');
                               setQuickFilter('all');
+                              setPlanFilter('all');
+                              setRoleFilter('all');
                             }}
                             className="ml-2 text-blue-600 hover:underline"
                           >
@@ -1023,15 +1213,70 @@ export default function AdminPage() {
                           <div className="text-xs sm:text-sm text-yellow-600">New this week</div>
                         </CardContent>
                       </Card>
-                     
+                      <Card className="bg-slate-50 border-slate-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-slate-700">{calculateUserStats(users).newUsersThisMonth}</div>
+                          <div className="text-xs sm:text-sm text-slate-600">New this month</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-red-50 border-red-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-red-700">{users.filter(u => u.blocked).length}</div>
+                          <div className="text-xs sm:text-sm text-red-600">Blocked</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-amber-50 border-amber-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-amber-700">{users.filter(u => {
+                            const activity = calculateActivityStatus(u.last_login || null, u.created_at);
+                            const stats = userStats.find(s => s.userId === u.id);
+                            return activity.days >= 7 && (stats?.productCount || 0) > 0;
+                          }).length}</div>
+                          <div className="text-xs sm:text-sm text-amber-600">At Risk</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-indigo-50 border-indigo-200">
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="text-lg sm:text-2xl font-bold text-indigo-700">{Object.keys(openChatCounts).filter(uid => (openChatCounts[uid] || 0) > 0).length}</div>
+                          <div className="text-xs sm:text-sm text-indigo-600">Open Chats</div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* Registration Chart */}
+                    <div className="mb-6">
+                      <RegistrationChart
+                        users={users}
+                        timeRange={chartTimeRange}
+                        onTimeRangeChange={setChartTimeRange}
+                      />
                     </div>
 
                   {/* Mobile: Card-based user list */}
                   {isMobile ? (
                     <div className="space-y-4">
-                      {sortedUsers.length === 0 ? (
-                        <div className="text-center py-8 text-slate-500">No users found.</div>
-                      ) : sortedUsers.map((user) => {
+                      {paginatedUsers.length === 0 ? (
+                        <div className="text-center py-12 text-slate-500">
+                          <p className="font-medium">
+                            {filteredUsers.length === 0 && users.length > 0
+                              ? 'No users match your filters.'
+                              : 'No users found.'}
+                          </p>
+                          {(searchTerm || quickFilter !== 'all' || planFilter !== 'all' || roleFilter !== 'all') && (
+                            <button
+                              onClick={() => {
+                                setSearchTerm('');
+                                setQuickFilter('all');
+                                setPlanFilter('all');
+                                setRoleFilter('all');
+                              }}
+                              className="mt-2 text-blue-600 hover:underline text-sm"
+                            >
+                              Clear filters
+                            </button>
+                          )}
+                        </div>
+                      ) : paginatedUsers.map((user) => {
                         const stats = userStats.find(s => s.userId === user.id);
                         const activity = calculateActivityStatus(user.last_login || null, user.created_at);
                         const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
@@ -1077,9 +1322,27 @@ export default function AdminPage() {
                                     {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}
                                   </div>
                                   <div className="text-gray-600">
+                                    <span className="font-medium">Branches:</span>{' '}
+                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}
+                                  </div>
+                                  <div className="text-gray-600">
                                     <span className="font-medium">Linked Users:</span>{' '}
                                     {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.linkedUserCount || 0}
                                   </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Plan:</span>{' '}
+                                    {getPlanDisplayName(user.selected_plan)}
+                                  </div>
+                                  <div className="text-gray-600">
+                                    <span className="font-medium">Role:</span>{' '}
+                                    {user.role || 'user'}
+                                  </div>
+                                  {(openChatCounts[user.id] || 0) > 0 && (
+                                    <div className="text-indigo-600 col-span-2 flex items-center gap-1">
+                                      <MessageSquare className="w-3 h-3" />
+                                      {openChatCounts[user.id]} open chat(s)
+                                    </div>
+                                  )}
                                   <div className="text-gray-600">
                                     <span className="font-medium">Created:</span>{' '}
                                     {new Date(user.created_at).toLocaleDateString('en-US')}
@@ -1087,6 +1350,15 @@ export default function AdminPage() {
                                 </div>
                                 <div className="flex justify-between items-center pt-2 gap-2">
                                   <div className="flex gap-1 flex-wrap">
+                                    {(openChatCounts[user.id] || 0) > 0 && (
+                                      <button
+                                        className="px-2 py-1 rounded text-xs bg-indigo-100 text-indigo-800 flex items-center gap-1"
+                                        onClick={e => { e.stopPropagation(); handleOpenUserChat(user.id); }}
+                                      >
+                                        <MessageSquare className="w-3 h-3" />
+                                        Chat
+                                      </button>
+                                    )}
                                     <button
                                       className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
                                       onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
@@ -1148,6 +1420,7 @@ export default function AdminPage() {
                     </div>
                   ) : (
                     /* Desktop: Table layout */
+                    <>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm text-left">
                         <thead className="text-xs uppercase bg-slate-50">
@@ -1186,6 +1459,28 @@ export default function AdminPage() {
                               </div>
                             </th>
                             <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
+                              onClick={() => handleSort('plan')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Plan
+                                {sortColumn === 'plan' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
+                              onClick={() => handleSort('organization')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Organization
+                                {sortColumn === 'organization' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('products')}
                             >
@@ -1198,11 +1493,44 @@ export default function AdminPage() {
                             </th>
                             <th 
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
+                              onClick={() => handleSort('branches')}
+                            >
+                              <div className="flex items-center justify-end gap-1">
+                                Branches
+                                {sortColumn === 'branches' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('linkedUsers')}
                             >
                               <div className="flex items-center justify-end gap-1">
-                                Linked Users
+                                Linked
                                 {sortColumn === 'linkedUsers' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
+                              onClick={() => handleSort('role')}
+                            >
+                              <div className="flex items-center gap-1">
+                                Role
+                                {sortColumn === 'role' && (
+                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                                )}
+                              </div>
+                            </th>
+                            <th 
+                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
+                              onClick={() => handleSort('openChats')}
+                            >
+                              <div className="flex items-center justify-end gap-1">
+                                Chats
+                                {sortColumn === 'openChats' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
                                 )}
                               </div>
@@ -1222,9 +1550,30 @@ export default function AdminPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {sortedUsers.length === 0 ? (
-                            <tr><td colSpan={7} className="text-center py-4">No users found.</td></tr>
-                          ) : sortedUsers.map((user) => {
+                          {paginatedUsers.length === 0 ? (
+                            <tr>
+                              <td colSpan={12} className="text-center py-12">
+                                {filteredUsers.length === 0 && users.length > 0 ? (
+                                  <>
+                                    <p className="font-medium text-slate-700">No users match your filters.</p>
+                                    <button
+                                      onClick={() => {
+                                        setSearchTerm('');
+                                        setQuickFilter('all');
+                                        setPlanFilter('all');
+                                        setRoleFilter('all');
+                                      }}
+                                      className="mt-2 text-blue-600 hover:underline text-sm"
+                                    >
+                                      Clear filters
+                                    </button>
+                                  </>
+                                ) : (
+                                  'No users found.'
+                                )}
+                              </td>
+                            </tr>
+                          ) : paginatedUsers.map((user) => {
                             const stats = userStats.find(s => s.userId === user.id);
                             const activity = calculateActivityStatus(user.last_login || null, user.created_at);
                             const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
@@ -1262,15 +1611,45 @@ export default function AdminPage() {
                                     </div>
                                   )}
                                 </td>
+                                <td className="px-4 py-2 text-left text-slate-600">{getPlanDisplayName(user.selected_plan)}</td>
+                                <td className="px-4 py-2 text-left max-w-[140px] truncate" title={user.organization_name || ''}>
+                                  {user.organization_name || '—'}
+                                </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.productCount || 0}
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.branchCount || 0}
+                                </td>
+                                <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.linkedUserCount || 0}
+                                </td>
+                                <td className="px-4 py-2 text-left">{user.role || 'user'}</td>
+                                <td className="px-4 py-2 text-right" onClick={e => e.stopPropagation()}>
+                                  {(openChatCounts[user.id] || 0) > 0 ? (
+                                    <button
+                                      className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-medium ml-auto"
+                                      onClick={e => { e.stopPropagation(); handleOpenUserChat(user.id); }}
+                                    >
+                                      <MessageSquare className="w-3.5 h-3.5" />
+                                      {openChatCounts[user.id]}
+                                    </button>
+                                  ) : (
+                                    <span className="text-slate-400">—</span>
+                                  )}
                                 </td>
                                 <td className="px-4 py-2 text-left">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
                                 <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
                                   <div className="flex gap-1">
+                                    {(openChatCounts[user.id] || 0) > 0 && (
+                                      <button
+                                        className="px-2 py-1 rounded text-xs bg-indigo-100 text-indigo-800 hover:bg-indigo-200 flex items-center gap-1"
+                                        onClick={() => handleOpenUserChat(user.id)}
+                                      >
+                                        <MessageSquare className="w-3 h-3" />
+                                        Chat
+                                      </button>
+                                    )}
                                     <button
                                       className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
                                       onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
@@ -1330,6 +1709,62 @@ export default function AdminPage() {
                         </tbody>
                       </table>
                     </div>
+                    {/* Pagination */}
+                    {sortedUsers.length > pageSize && (
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
+                        <div className="flex items-center gap-2 text-sm text-slate-600">
+                          <span>Rows per page:</span>
+                          <Select value={String(pageSize)} onValueChange={(v) => { setPageSize(Number(v)); setCurrentPage(0); }}>
+                            <SelectTrigger className="w-[70px] h-8">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="25">25</SelectItem>
+                              <SelectItem value="50">50</SelectItem>
+                              <SelectItem value="100">100</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <span>
+                            {currentPage * pageSize + 1}-{Math.min((currentPage + 1) * pageSize, sortedUsers.length)} of {sortedUsers.length}
+                          </span>
+                        </div>
+                        <div className="flex gap-1">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(0)}
+                            disabled={currentPage === 0}
+                          >
+                            First
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+                            disabled={currentPage === 0}
+                          >
+                            Previous
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+                            disabled={currentPage >= totalPages - 1}
+                          >
+                            Next
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage(totalPages - 1)}
+                            disabled={currentPage >= totalPages - 1}
+                          >
+                            Last
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    </>
                   )}
       
                 </CardContent>
@@ -1339,7 +1774,7 @@ export default function AdminPage() {
             )}
 
             {activeTab === 'chats' && (
-              <AdminChatList />
+              <AdminChatList initialUserId={chatForUserId} onUserIdHandled={() => setChatForUserId(null)} />
             )}
 
             {activeTab === 'notifications' && (

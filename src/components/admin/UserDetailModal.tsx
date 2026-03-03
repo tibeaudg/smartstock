@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Package, ShoppingCart, Layers, Wrench, TrendingUp, Building2, Users, Tag, Truck, FileText, Activity, Download } from 'lucide-react';
+import { Loader2, Package, ShoppingCart, Layers, Wrench, TrendingUp, Building2, Users, Tag, Truck, FileText, Activity, Download, MessageSquare, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -22,6 +22,8 @@ interface UserProfile {
   selected_plan: string | null;
   blocked: boolean | null;
   last_login?: string | null;
+  organization_name?: string | null;
+  referral_source?: string | null;
 }
 
 interface UserDetailModalProps {
@@ -181,6 +183,40 @@ async function fetchUserAuditLogs(userId: string) {
   return data || [];
 }
 
+async function fetchUserChats(userId: string) {
+  const { data, error } = await supabase
+    .from('chats')
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchUserFeedback(userId: string) {
+  const { data, error } = await supabase
+    .from('user_feedback')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchUserApplicationErrors(userId: string) {
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const { data, error } = await supabase
+    .from('application_errors')
+    .select('*')
+    .eq('user_id', userId)
+    .gte('created_at', thirtyDaysAgo.toISOString())
+    .order('created_at', { ascending: false })
+    .limit(50);
+  if (error) throw error;
+  return data || [];
+}
+
 export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   user,
   isOpen,
@@ -263,6 +299,24 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen && activeTab === 'activity',
   });
 
+  const { data: userChats = [], isLoading: loadingUserChats } = useQuery({
+    queryKey: ['userChats', user?.id],
+    queryFn: () => fetchUserChats(user!.id),
+    enabled: !!user && isOpen,
+  });
+
+  const { data: userFeedback = [], isLoading: loadingUserFeedback } = useQuery({
+    queryKey: ['userFeedback', user?.id],
+    queryFn: () => fetchUserFeedback(user!.id),
+    enabled: !!user && isOpen,
+  });
+
+  const { data: userAppErrors = [], isLoading: loadingUserAppErrors } = useQuery({
+    queryKey: ['userAppErrors', user?.id],
+    queryFn: () => fetchUserApplicationErrors(user!.id),
+    enabled: !!user && isOpen,
+  });
+
   // Export functions
   const exportData = (data: any[], filename: string) => {
     try {
@@ -290,8 +344,16 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-11 gap-1 mb-4 overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-12 gap-1 mb-4 overflow-x-auto">
             <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
+            <TabsTrigger value="support" className="text-xs">
+              Support
+              {(userChats.length > 0 || userFeedback.length > 0 || userAppErrors.length > 0) && (
+                <Badge variant="secondary" className="ml-1 text-xs">
+                  {userChats.length + userFeedback.length + userAppErrors.length}
+                </Badge>
+              )}
+            </TabsTrigger>
             <TabsTrigger value="products" className="text-xs">
               Products
               {products.length > 0 && (
@@ -379,6 +441,14 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       <p className="text-sm">{user.selected_plan || 'N/A'}</p>
                     </div>
                     <div>
+                      <span className="text-sm font-medium text-gray-600">Organization:</span>
+                      <p className="text-sm">{user.organization_name || '—'}</p>
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium text-gray-600">Referral Source:</span>
+                      <p className="text-sm">{user.referral_source || '—'}</p>
+                    </div>
+                    <div>
                       <span className="text-sm font-medium text-gray-600">Status:</span>
                       <Badge className={`ml-2 ${user.blocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
                         {user.blocked ? 'Blocked' : 'Active'}
@@ -435,6 +505,108 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Support Tab */}
+            <TabsContent value="support" className="mt-0">
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">Support History</h3>
+                  {(userChats.length > 0 || userFeedback.length > 0 || userAppErrors.length > 0) && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const allData = [
+                          ...userChats.map((c: any) => ({ type: 'Chat', id: c.id, created_at: c.updated_at, is_closed: c.is_closed })),
+                          ...userFeedback.map((f: any) => ({ type: 'Feedback', score: f.recommendation_score, text: f.feedback_text, created_at: f.created_at })),
+                          ...userAppErrors.map((e: any) => ({ type: 'Error', message: e.error_message, created_at: e.created_at }))
+                        ];
+                        exportData(allData, `user_${user.id}_support_history`);
+                      }}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export
+                    </Button>
+                  )}
+                </div>
+
+                {/* Chats */}
+                <div>
+                  <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4" />
+                    Chats ({userChats.length})
+                  </h4>
+                  {loadingUserChats ? (
+                    <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
+                  ) : userChats.length === 0 ? (
+                    <p className="text-sm text-gray-500">No support chats</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {userChats.map((chat: any) => (
+                        <Card key={chat.id}>
+                          <CardContent className="p-3">
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm font-medium">Chat {chat.id.slice(0, 8)}...</span>
+                              <Badge variant={chat.is_closed ? 'secondary' : 'default'}>{chat.is_closed ? 'Closed' : 'Open'}</Badge>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-1">Updated: {format(new Date(chat.updated_at), 'PPpp')}</p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Feedback */}
+                <div>
+                  <h4 className="text-sm font-semibold mb-2">Feedback ({userFeedback.length})</h4>
+                  {loadingUserFeedback ? (
+                    <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
+                  ) : userFeedback.length === 0 ? (
+                    <p className="text-sm text-gray-500">No feedback submitted</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {userFeedback.map((fb: any) => (
+                        <Card key={fb.id}>
+                          <CardContent className="p-3">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium">NPS: {fb.recommendation_score}/10</span>
+                              <span className="text-xs text-gray-500">{format(new Date(fb.created_at), 'PPpp')}</span>
+                            </div>
+                            {fb.feedback_text && <p className="text-sm text-gray-600 mt-1">{fb.feedback_text}</p>}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Application Errors */}
+                <div>
+                  <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Recent Errors (last 30 days) ({userAppErrors.length})
+                  </h4>
+                  {loadingUserAppErrors ? (
+                    <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
+                  ) : userAppErrors.length === 0 ? (
+                    <p className="text-sm text-gray-500">No application errors</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {userAppErrors.map((err: any) => (
+                        <Card key={err.id} className="border-rose-200">
+                          <CardContent className="p-3">
+                            <p className="text-sm font-medium text-rose-800">{err.error_message}</p>
+                            <p className="text-xs text-gray-500 mt-1">{format(new Date(err.created_at), 'PPpp')}</p>
+                            {err.page_url && <p className="text-xs text-gray-600 truncate">Page: {err.page_url}</p>}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </TabsContent>
 
             {/* Products Tab */}

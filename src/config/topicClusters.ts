@@ -474,7 +474,7 @@ export const englishMainCluster: TopicCluster = {
       title: 'Best Inventory Management Software',
       language: 'en',
       category: 'Inventory Management',
-      description: 'Top inventory management software 2026. Best inventory management software with barcode scanner. Compare features, pricing, implementation.',
+      description: 'Inventory management software best and top picks 2026. Best inventory management software with barcode scanner. Compare features, pricing.',
       image: '/dashboard.png'
     },
     {
@@ -482,7 +482,7 @@ export const englishMainCluster: TopicCluster = {
       title: 'BOM Management Software & Tools',
       language: 'en',
       category: 'Features',
-      description: 'BOM management software and tools. Free multi-level BOMs, version control, bill of materials software, and inventory integration',
+      description: 'BOM and part sourcing management platforms. Best bill of materials software 2026. Free multi-level BOMs, version control, inventory integration.',
       image: '/dashboard.png'
     },
     {
@@ -490,7 +490,7 @@ export const englishMainCluster: TopicCluster = {
       title: 'Free Inventory Software',
       language: 'en',
       category: 'Inventory Management',
-      description: 'Free inventory software. Unlimited products, users, BOM, barcode scanning. No credit card.',
+      description: 'Inventory software free and free inventory management. Unlimited products, users, BOM, barcode scanning. No credit card.',
       image: '/dashboard.png'
     },
     {
@@ -881,7 +881,7 @@ export const comparisonCluster: TopicCluster = {
       title: 'StockFlow vs Zoho Inventory',
       language: 'en',
       category: 'Vergelijkingen',
-      description: 'StockFlow vs Zoho Inventory comparison',
+      description: 'Zoho Inventory Free Plan Limits 2026. StockFlow vs Zoho: 50 orders/month limit, unlimited with StockFlow.',
       image: '/dashboard.png'
     },
     {

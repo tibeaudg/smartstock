@@ -51,8 +51,8 @@ export default function VoorraadbeheerRetailPage() {
   ];
 
   const structuredData = generateSeoPageStructuredData({
-    title: "Retail Voorraadbeheer Software voor Kleine Winkels",
-    description: "Complete retail voorraadbeheer oplossing voor kleine winkels. Volg voorraad, voorkom voorraadtekorten en verhoog winsten met real-time voorraadcontrole.",
+    title: "Voorraadbeheer in Kleinhandel | Retail Software | StockFlow",
+    description: "Voorraadbeheer in kleinhandel: software voor kleine winkels. Real-time tracking, barcode scanning. Gratis—geen creditcard.",
     url: location.pathname,
     breadcrumbs,
     faqData,
@@ -108,9 +108,9 @@ export default function VoorraadbeheerRetailPage() {
       faqData={faqData}
     >
       <SEO
-        title="Retail Voorraadbeheer Software voor Kleine Winkels | StockFlow"
-        description="Complete retail voorraadbeheer oplossing voor kleine winkels. Volg voorraad, voorkom voorraadtekorten en verhoog winsten met real-time voorraadcontrole."
-        keywords="retail voorraadbeheer, retail voorraad software, kleine winkel voorraadbeheer, retail voorraadbeheer software, winkel voorraadbeheer, retail stockbeheer, retail voorraadtracking, kleine retail voorraadbeheer"
+        title="Voorraadbeheer in Kleinhandel | Retail Software | StockFlow"
+        description="Voorraadbeheer in kleinhandel: software voor kleine winkels. Real-time tracking, barcode scanning. Gratis—geen creditcard."
+        keywords="voorraadbeheer in kleinhandel, retail voorraadbeheer, retail voorraad software, kleine winkel voorraadbeheer, retail voorraadbeheer software, winkel voorraadbeheer, retail stockbeheer, retail voorraadtracking"
         url="https://www.stockflowsystems.com/nl/industries/voorraadbeheer-retail"
         locale="nl-BE"
         alternateLanguages={[
@@ -119,6 +119,16 @@ export default function VoorraadbeheerRetailPage() {
         ]}
         structuredData={structuredData}
       />
+
+      {/* Intro - Voorraadbeheer in Kleinhandel */}
+      <section className="py-12 px-4 bg-slate-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Voorraadbeheer in Kleinhandel</h2>
+          <p className="text-lg text-gray-600 max-w-3xl">
+            <strong>Voorraadbeheer in kleinhandel</strong>—of retail voorraadbeheer—helpt kleine winkels voorraadniveaus real-time te volgen, voorraadtekorten te voorkomen en barcode scanning in te zetten. StockFlow biedt gratis software voor kleine winkels: geen creditcard nodig.
+          </p>
+        </div>
+      </section>
 
       {/* Features Section */}
       <section className="py-16 px-4 bg-white">
