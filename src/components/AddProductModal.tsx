@@ -31,7 +31,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 interface AddProductModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onProductAdded: () => void;
+  /** Called when a product is successfully added. In create mode, receives the created product for callers that need it (e.g. pre-selecting in a parent form). */
+  onProductAdded: (product?: { id: string; name: string; purchase_price?: number; unit_price?: number }) => void;
   onFirstProductAdded?: () => void;
   preFilledSKU?: string;
   preFilledName?: string;
@@ -42,6 +43,8 @@ interface AddProductModalProps {
   onProductUpdated?: () => void;
   onAdjustStock?: (product: any) => void;
   onDelete?: (product: any) => void;
+  /** When true (e.g. opened from purchase order flow), hide quantity and minimum stock fields since those are set in the PO. */
+  fromPurchaseOrder?: boolean;
 }
 
 interface VariantData {
@@ -95,7 +98,8 @@ export const AddProductModal = ({
   existingProduct,
   onProductUpdated,
   onAdjustStock,
-  onDelete
+  onDelete,
+  fromPurchaseOrder = false
 }: AddProductModalProps) => {
   console.log('[AddProductModal] Initialization: Component mounted with props.', { editMode, existingProduct: !!existingProduct });
 
@@ -293,6 +297,14 @@ export const AddProductModal = ({
       }
     }
   }, [preFilledCategoryId, isOpen, form, categories]);
+
+  // When from purchase order, default quantity/min stock to 0 (these are set in the PO modal)
+  useEffect(() => {
+    if (fromPurchaseOrder && isOpen && !editMode) {
+      form.setValue('quantityInStock', 0);
+      form.setValue('minimumStockLevel', 0);
+    }
+  }, [fromPurchaseOrder, isOpen, editMode, form]);
 
   // Cleanup object URLs on unmount
   useEffect(() => {
@@ -1057,7 +1069,7 @@ export const AddProductModal = ({
           onFirstProductAdded();
         }
         
-        onProductAdded();
+        onProductAdded(insertedProduct ?? undefined);
         onClose();
       } else {
         // In edit mode, just close and trigger update callback
@@ -1147,8 +1159,8 @@ export const AddProductModal = ({
                       )}
                     />
 
-                    {/* Stock and Minimum Stock */}
-                    {!hasVariants && (
+                    {/* Stock and Minimum Stock - hidden when from purchase order (quantity/min set in PO) */}
+                    {!hasVariants && !fromPurchaseOrder && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
@@ -1664,6 +1676,7 @@ export const AddProductModal = ({
                                   />
                                 </div>
                                 
+                                {!fromPurchaseOrder && (
                                 <div className="grid grid-cols-2 gap-2">
                                 <div>
                                   <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
@@ -1721,6 +1734,7 @@ export const AddProductModal = ({
                                   />
                                 </div>
                               </div>
+                                )}
                                 
                                 <div className="grid grid-cols-2 gap-2">
                                   <div>

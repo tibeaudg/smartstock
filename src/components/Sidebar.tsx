@@ -10,12 +10,14 @@ import {
   Sun,
   Layers,
   FileText,
+  ShoppingCart,
   Warehouse,
   Truck,
   ChevronLeft,
   ChevronRight,
   HelpCircle,
   Bell,
+  Contact,
 } 
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
@@ -180,9 +182,27 @@ export const Sidebar = ({
 
         { id: 'bom', label: 'Bill of Materials', icon: Layers, path: '/dashboard/bom', end: true },
 
-        { id: 'sales-orders', label: 'Sales Orders', icon: FileText, path: '/dashboard/sales-orders',end: true },
+        {
+          id: 'orders',
+          label: 'Orders',
+          icon: ShoppingCart,
+          path: '/dashboard/sales-orders',
+          subItems: [
+            { id: 'sales-orders', label: 'Sales Orders', path: '/dashboard/sales-orders' },
+            { id: 'purchase-orders', label: 'Purchase Orders', path: '/dashboard/purchase-orders' },
+          ],
+        },
 
-        { id: 'customer-management', label: 'Customers', icon: Truck, path: '/dashboard/customer-management',end: true },
+        {
+          id: 'contacts',
+          label: 'Contacts',
+          icon: Contact,
+          path: '/dashboard/customer-management',
+          subItems: [
+            { id: 'customers', label: 'Customers', path: '/dashboard/customer-management' },
+            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' },
+          ],
+        },
 
 
         { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/dashboard/analytics/reports', subItems: analyticsSubItems },
@@ -609,18 +629,7 @@ export const Sidebar = ({
                   </ul>
                 </div>
 
-                {/* Upgrade card */}
-                <div className="mt-4 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/60 dark:to-blue-900/40 px-4 py-3 border border-blue-100 dark:border-blue-900/60">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-100">
-                    Current plan: <span className="font-semibold"> Free</span>
-                  </p>
-                  <p className="mt-1 text-[11px] text-gray-500 dark:text-gray-300">
-                    Upgrade to Pro to get the latest and exclusive features.
-                  </p>
-                  <Button className="mt-3 w-full h-8 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700" size="sm">
-                    Coming Soon
-                  </Button>
-                </div>
+
 
                 {/* Bottom utilities: Preferences, Dark mode, Themes, Help */}
                 <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-800 space-y-1.5">

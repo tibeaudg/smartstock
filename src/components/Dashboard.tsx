@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart, Plus, ScanLine, FilePlus2, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart, Plus, ScanLine, FilePlus2, ArrowUpRight, ArrowDownRight, Layers, Upload } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
 import { useDashboardData, useBasicDashboardMetrics, useProductCount } from '@/hooks/useDashboardData';
@@ -466,10 +466,8 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       )}
 
       {/* Quick Actions */}
-      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50">
-          Warehouse Overview
-        </h1>
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-200 dark:border-gray-800 pb-4">
+   
         <div className="flex gap-2 overflow-x-auto pb-1 sm:pb-0">
           <Button
             onClick={() => navigate('/dashboard/products/new')}
@@ -477,7 +475,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             className="flex items-center gap-2 whitespace-nowrap"
           >
             <Plus className="h-4 w-4" />
-            <span className="text-sm">Add Item</span>
+            <span className="text-sm">Add Product Manually</span>
           </Button>
           <Button
             onClick={() => setShowScanner(true)}
@@ -485,21 +483,47 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             className="flex items-center gap-2 whitespace-nowrap"
           >
             <ScanLine className="h-4 w-4" />
-            <span className="text-sm">Scan Items</span>
+            <span className="text-sm">Scan Barcode</span>
           </Button>
           <Button
-            onClick={() => navigate('/purchase-orders')}
+            onClick={() => navigate('/dashboard/purchase-orders')}
             variant="outline"
             className="flex items-center gap-2 whitespace-nowrap"
           >
             <FilePlus2 className="h-4 w-4" />
             <span className="text-sm">Purchase Order</span>
           </Button>
+
+          <Button
+            onClick={() => navigate('/dashboard/sales-orders')}
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+          >
+            <Plus className="h-4 w-4" />
+            <span className="text-sm">Sales Order</span>
+          </Button>
+          <Button
+            onClick={() => navigate('/dashboard/bom')}
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+          >
+            <Layers className="h-4 w-4" />
+            <span className="text-sm">Bill of Materials</span>
+          </Button>
+
+          <Button
+            onClick={() => navigate('/dashboard/categories', { state: { openImport: true } })}
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+          >
+            <Upload className="h-4 w-4" />
+            <span className="text-sm">Import Products</span>
+          </Button>
         </div>
       </div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6">
         <Card className="bg-white hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
             <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Total Stock Value</CardTitle>

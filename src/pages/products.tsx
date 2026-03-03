@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown, ScanLine, MoreVertical } from 'lucide-react';
+import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown, ScanLine, MoreVertical, Import } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -261,6 +261,19 @@ const categoryProductsData = useMemo(() => {
     setMaxPrice('');
     setSearchTerm('');
   };
+
+  // Open import modal when navigating from Dashboard with state.openImport
+  useEffect(() => {
+    const shouldOpen = (location.state as { openImport?: boolean })?.openImport;
+    if (shouldOpen) {
+      setShowImportDialog(true);
+      // Clear state on next tick so modal opens first, avoiding re-navigation race
+      const id = setTimeout(() => {
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 0);
+      return () => clearTimeout(id);
+    }
+  }, [location.state, location.pathname, navigate]);
 
   // Create hierarchical product structure with variants grouped under parents
   const hierarchicalProducts = useMemo(() => {
@@ -847,6 +860,14 @@ const categoryProductsData = useMemo(() => {
             <Plus className="w-4 h-4 mr-2" /> Add Manually
           </Button>
 
+
+
+          <Button onClick={() => setShowImportDialog(true)} variant="outline" className="flex items-center gap-2">
+                <Import className="w-4 h-4 mr-2" />
+                <span className="text-sm">Import</span>
+          </Button>
+
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -871,10 +892,7 @@ const categoryProductsData = useMemo(() => {
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowImportDialog(true)}>
-                <Upload className="w-4 h-4 mr-2" />
-                Import
-              </DropdownMenuItem>
+   
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

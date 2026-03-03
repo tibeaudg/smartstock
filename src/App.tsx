@@ -55,9 +55,13 @@ import SupportPage from "./pages/help-center";
 import VideosPage from "./pages/videos";
 import IntegrationsPage from "./pages/integrations";
 import SalesOrdersPage from "./pages/sales-orders";
+import PurchaseOrdersPage from "./pages/purchase-orders";
 import VendorManagementPage from "./pages/customer-management";
-import CreateSupplierPage from "./pages/CreateCustomerPage";
-import EditSupplierPage from "./pages/EditCustomerPage";
+import CreateCustomerPage from "./pages/CreateCustomerPage";
+import EditCustomerPage from "./pages/EditCustomerPage";
+import SuppliersPage from "./pages/suppliers";
+import CreateSupplierPage from "./pages/CreateSupplierPage";
+import EditSupplierPage from "./pages/EditSupplierPage";
 
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
@@ -379,9 +383,13 @@ const AppRouter = () => {
             <Route path="invoicing" element={<InvoicingOverview />} />
           </Route>
           <Route path="sales-orders" element={<SalesOrdersPage />} />
+          <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
           <Route path="customer-management" element={<VendorManagementPage />} />
-          <Route path="customer-management/new" element={<CreateSupplierPage />} />
-          <Route path="customer-management/:id/edit" element={<EditSupplierPage />} />
+          <Route path="customer-management/new" element={<CreateCustomerPage />} />
+          <Route path="customer-management/:id/edit" element={<EditCustomerPage />} />
+          <Route path="suppliers" element={<SuppliersPage />} />
+          <Route path="suppliers/new" element={<CreateSupplierPage />} />
+          <Route path="suppliers/:id/edit" element={<EditSupplierPage />} />
         </Route>
 
         {/* ERROR & FALLBACK */}

@@ -12,6 +12,7 @@ import { PurchaseOrder } from '@/types/stockTypes';
 import { CreatePurchaseOrderModal } from '@/components/purchase-orders/CreatePurchaseOrderModal';
 import { PurchaseOrderDetail } from '@/components/purchase-orders/PurchaseOrderDetail';
 import { PurchaseOrderCard } from '@/components/purchase-orders/PurchaseOrderCard';
+import { PurchaseOrderStatistics } from '@/components/purchase-orders/PurchaseOrderStatistics';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -129,6 +130,9 @@ export default function PurchaseOrdersPage() {
           </SelectContent>
         </Select>
       </div>
+
+      {/* Statistics Cards */}
+      <PurchaseOrderStatistics purchaseOrders={purchaseOrders} />
 
       {/* Purchase Orders List */}
       {isLoading ? (

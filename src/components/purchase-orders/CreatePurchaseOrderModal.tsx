@@ -4,14 +4,27 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
-import { Plus, X, Trash2 } from 'lucide-react';
-import { PurchaseOrderItem } from '@/types/stockTypes';
+import { Plus, Trash2, ChevronDown, Check } from 'lucide-react';
 import { Product } from '@/types/stockTypes';
+import { cn } from '@/lib/utils';
+import { AddProductModal } from '@/components/AddProductModal';
 
 interface CreatePurchaseOrderModalProps {
   isOpen: boolean;
@@ -38,7 +51,9 @@ export const CreatePurchaseOrderModal = ({
     notes: string;
   }>>([{ product_id: null, variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '' }]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [openProductPopovers, setOpenProductPopovers] = useState<Record<number, boolean>>({});
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [addProductForItemIndex, setAddProductForItemIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (isOpen && activeBranch?.branch_id) {
@@ -48,12 +63,12 @@ export const CreatePurchaseOrderModal = ({
 
   const fetchProducts = async () => {
     if (!activeBranch?.branch_id) return;
-    
+
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .eq('branch_id', activeBranch.branch_id)
-      .eq('is_variant', false)
+      .or('is_variant.is.null,is_variant.eq.false')
       .order('name');
 
     if (error) {
@@ -64,10 +79,6 @@ export const CreatePurchaseOrderModal = ({
     setProducts(data || []);
   };
 
-  const filteredProducts = products.filter(p => 
-    p.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   const addItem = () => {
     setItems([...items, { product_id: null, variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '' }]);
   };
@@ -76,9 +87,9 @@ export const CreatePurchaseOrderModal = ({
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const updateItem = (index: number, field: string, value: any) => {
+  const updateItem = (index: number, updates: Partial<typeof items[0]>) => {
     const newItems = [...items];
-    newItems[index] = { ...newItems[index], [field]: value };
+    newItems[index] = { ...newItems[index], ...updates };
     setItems(newItems);
   };
 
@@ -172,6 +183,7 @@ export const CreatePurchaseOrderModal = ({
   if (!isOpen) return null;
 
   return (
+    <>
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -242,34 +254,74 @@ export const CreatePurchaseOrderModal = ({
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="md:col-span-2">
                       <Label>Product</Label>
-                      <Select
-                        value={item.product_id || ''}
-                        onValueChange={(value) => {
-                          const product = products.find(p => p.id === value);
-                          updateItem(index, 'product_id', value);
-                          if (product) {
-                            updateItem(index, 'unit_price', product.purchase_price || 0);
-                          }
-                        }}
+                      <Popover
+                        open={openProductPopovers[index] ?? false}
+                        onOpenChange={(open) =>
+                          setOpenProductPopovers((prev) => ({ ...prev, [index]: open }))
+                        }
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select product" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <Input
-                            placeholder="Search products..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="mb-2"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                          {filteredProducts.map((product) => (
-                            <SelectItem key={product.id} value={product.id}>
-                              {product.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={openProductPopovers[index] ?? false}
+                            className="w-full justify-between font-normal"
+                          >
+                            {item.product_id
+                              ? products.find((p) => p.id === item.product_id)?.name ?? 'Select product'
+                              : 'Select product'}
+                            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+                          <Command>
+                            <CommandInput placeholder="Search products..." />
+                            <CommandList>
+                              <CommandEmpty>No product found.</CommandEmpty>
+                              <CommandGroup>
+                                {products.map((product) => (
+                                  <CommandItem
+                                    key={product.id}
+                                    value={product.name}
+                                    onSelect={() => {
+                                      updateItem(index, {
+                                        product_id: product.id,
+                                        variant_id: null,
+                                        unit_price: product.purchase_price ?? product.unit_price ?? 0,
+                                      });
+                                      setOpenProductPopovers((prev) => ({ ...prev, [index]: false }));
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        'mr-2 h-4 w-4',
+                                        item.product_id === product.id ? 'opacity-100' : 'opacity-0'
+                                      )}
+                                    />
+                                    {product.name}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                          <div className="border-t p-1">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
+                              onClick={() => {
+                                setAddProductForItemIndex(index);
+                                setOpenProductPopovers((prev) => ({ ...prev, [index]: false }));
+                                setShowAddProductModal(true);
+                              }}
+                            >
+                              <Plus className="h-4 w-4" />
+                              add new
+                            </Button>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </div>
 
                     <div>
@@ -278,7 +330,7 @@ export const CreatePurchaseOrderModal = ({
                         type="number"
                         min="1"
                         value={item.quantity_ordered || ''}
-                        onChange={(e) => updateItem(index, 'quantity_ordered', parseInt(e.target.value) || 0)}
+                        onChange={(e) => updateItem(index, { quantity_ordered: parseInt(e.target.value) || 0 })}
                       />
                     </div>
 
@@ -289,7 +341,7 @@ export const CreatePurchaseOrderModal = ({
                         step="0.01"
                         min="0"
                         value={item.unit_price || ''}
-                        onChange={(e) => updateItem(index, 'unit_price', parseFloat(e.target.value) || 0)}
+                        onChange={(e) => updateItem(index, { unit_price: parseFloat(e.target.value) || 0 })}
                       />
                     </div>
                   </div>
@@ -298,7 +350,7 @@ export const CreatePurchaseOrderModal = ({
                     <Label>Item Notes</Label>
                     <Input
                       value={item.notes}
-                      onChange={(e) => updateItem(index, 'notes', e.target.value)}
+                      onChange={(e) => updateItem(index, { notes: e.target.value })}
                       placeholder="Optional notes for this item"
                     />
                   </div>
@@ -328,6 +380,30 @@ export const CreatePurchaseOrderModal = ({
         </div>
       </DialogContent>
     </Dialog>
+
+    {showAddProductModal && (
+      <AddProductModal
+        isOpen={showAddProductModal}
+        fromPurchaseOrder
+        onClose={() => {
+          setShowAddProductModal(false);
+          setAddProductForItemIndex(null);
+        }}
+        onProductAdded={(product) => {
+          if (addProductForItemIndex !== null && product) {
+            updateItem(addProductForItemIndex, {
+              product_id: product.id,
+              variant_id: null,
+              unit_price: product.purchase_price ?? product.unit_price ?? 0,
+            });
+          }
+          fetchProducts();
+          setShowAddProductModal(false);
+          setAddProductForItemIndex(null);
+        }}
+      />
+    )}
+  </>
   );
 };
 

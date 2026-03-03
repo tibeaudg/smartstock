@@ -8,10 +8,9 @@ import {
   Package, BarChart3, Zap, ChevronLeft, ChevronRight, 
   Scan, CheckCircle, Star, Shield, Users, TrendingUp,
   Clock, Smartphone, Building, Award, ArrowRight, WifiOff,
-  Camera, RefreshCw, BarChart
+  Camera, RefreshCw, BarChart, Globe
 } from 'lucide-react';
-import { Head } from 'react-day-picker';
-import { Navigate, useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Trust Badges Component
 const TrustBadges = () => {
@@ -159,43 +158,89 @@ export const HomePage = () => {
 
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-16">
       {/* Hero Section - Above the Fold */}
-      <section className="pt-20 pb-16 px-4">
+      <section className="pt-20 pb-12 md:pb-20 px-4">
         <div className="max-w-7xl mx-auto">
+          {/* Sub-header: Rating & Users */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-6">
+            <div className="flex items-center gap-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <span className="text-sm font-medium text-gray-700">4.9/5 rating</span>
+            </div>
+            <span className="hidden sm:inline text-gray-300">•</span>
+            <span className="text-sm font-medium text-gray-700">3200+ happy users</span>
+          </div>
+
           {/* H1 with Primary Keyword */}
-          <div className="text-center mb-8">
-            <Badge className="mb-4 bg-green-100 text-green-700 hover:bg-green-100">
-              ✓ Completely Free Forever • No Credit Card Required
-            </Badge>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 leading-tight">
               Free Inventory Management<br />
               <span className="text-blue-600">That Actually Works</span>
             </h1>
-
-
-            <p className="text-md md:text-md text-gray-600 mb-8 max-w-2xl mx-auto">
-              Stop stockouts. Recover dead stock capital. Track inventory in real-time with your phone. 
-              <span className="font-semibold text-gray-900"> Join 500+ businesses using StockFlow - free forever.</span>
+            <p className="text-lg md:text-xl text-blue-600/90 font-medium mb-4">
+              For Growing Businesses
+            </p>
+            <p className="text-base md:text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+              Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
             </p>
           </div>
 
-          {/* Primary CTA with Email Capture */}
-          <div className="max-w-md mx-auto mb-12">
-            <div>
-       
-              <Button 
-                onClick={handleGetStarted}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+          {/* Feature Batches */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
+            {[
+              { icon: CheckCircle, text: "GDPR Compliant", color: "text-green-600" },
+              { icon: Zap, text: "Fast & Reliable", color: "text-blue-600" },
+              { icon: Globe, text: "Global Infrastructure", color: "text-purple-600" },
+              { icon: Shield, text: "Secure Data", color: "text-green-600" }
+            ].map((batch, idx) => (
+              <div key={idx} className="flex items-center gap-2 justify-center md:justify-start">
+                <batch.icon className={`w-5 h-5 flex-shrink-0 ${batch.color}`} />
+                <span className="text-sm font-medium text-gray-700">{batch.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Primary CTA */}
+          <div className="max-w-md mx-auto mb-12 md:mb-16">
+            <Button 
+              onClick={handleGetStarted}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
+            >
+              Get My Free Account
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <p className="text-center text-sm text-gray-500 mt-3">
+              ✓ Free forever  ✓ 2 minute setup  ✓ Cancel anytime
+            </p>
+          </div>
+
+          {/* Platform Screenshot */}
+          <div className="relative max-w-5xl mx-auto">
+            <div className="rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
+              <img 
+                src="/adam.png" 
+                alt="StockFlow platform dashboard showing inventory management" 
+                className="w-full h-auto object-contain"
+                style={{ maxHeight: 'min(70vh, 600px)' }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div 
+                className="hidden w-full min-h-[300px] md:min-h-[400px] bg-gradient-to-br from-gray-50 to-gray-100 items-center justify-center"
+                style={{ display: 'none' }}
               >
-                Get My Free Account
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <p className="text-center text-sm text-gray-500 mt-3">
-                ✓ Free forever  ✓ 2 minute setup  ✓ Cancel anytime
-              </p>
+                <BarChart className="w-24 h-24 text-blue-600 opacity-50" />
+              </div>
             </div>
           </div>
         </div>
-        </section>
+      </section>
 
 
 
