@@ -7,11 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useEmailSegments, useSegmentUserCount } from '@/hooks/useEmailSegments';
-import { Plus, Edit, Trash2, Users, Calendar, Building, Crown, Clock, Activity, X, UserPlus } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Clock, Activity, X } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useEmailTemplates } from '@/hooks/useEmailTemplates';
+import { SegmentTemplateEditor } from '@/components/admin/email/SegmentTemplateEditor';
 
 interface DateFilter {
   operator: 'less_than' | 'greater_than' | 'equal' | 'between' | 'never';
@@ -36,13 +37,6 @@ const formatFilterDescription = (filters: any): string => {
     if (f.operator === 'greater_than') parts.push(`Last login > ${f.days} days ago`);
     if (f.operator === 'equal') parts.push(`Last login ${f.days} days ago`);
     if (f.operator === 'between') parts.push(`Last login ${f.daysFrom}-${f.daysTo} days ago`);
-  }
-  if (filters.accountAge) {
-    const f = filters.accountAge;
-    if (f.operator === 'less_than') parts.push(`Account age < ${f.days} days`);
-    if (f.operator === 'greater_than') parts.push(`Account age > ${f.days} days`);
-    if (f.operator === 'equal') parts.push(`Account age ${f.days} days`);
-    if (f.operator === 'between') parts.push(`Account age ${f.daysFrom}-${f.daysTo} days`);
   }
   if (filters.productCountMin !== undefined || filters.productCountMax !== undefined) {
     if (filters.productCountMin !== undefined && filters.productCountMax !== undefined) {
@@ -129,6 +123,7 @@ export function EmailSegmentsManager() {
   const { templates } = useEmailTemplates();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [templateEditorMode, setTemplateEditorMode] = useState<'select' | 'create' | 'edit'>('select');
   const [availablePlans, setAvailablePlans] = useState<string[]>([]);
   const [availableOrganizations, setAvailableOrganizations] = useState<string[]>([]);
 
@@ -141,7 +136,6 @@ export function EmailSegmentsManager() {
       isOwner: f.isOwner,
       accountCreated: f.accountCreated,
       lastLogin: f.lastLogin,
-      accountAge: f.accountAge,
       productCountMin: f.productCountMin,
       productCountMax: f.productCountMax,
     } as any;
@@ -152,6 +146,7 @@ export function EmailSegmentsManager() {
   const [formData, setFormData] = useState({
     name: '',
     automation_enabled: false,
+    automation_trigger: 'user_signup' as 'user_signup' | 'inactivity',
     automation_template_id: '',
     filters: {
       plan: [] as string[],
@@ -160,7 +155,6 @@ export function EmailSegmentsManager() {
       isOwner: undefined as boolean | undefined,
       accountCreated: undefined as DateFilter | undefined,
       lastLogin: undefined as DateFilter | undefined,
-      accountAge: undefined as DateFilter | undefined,
       productCountMin: undefined as number | undefined,
       productCountMax: undefined as number | undefined,
     },
@@ -198,12 +192,14 @@ export function EmailSegmentsManager() {
   const { data: userCount } = useSegmentUserCount(formData.filters);
 
   const handleOpenDialog = (segmentId?: string) => {
+    setTemplateEditorMode('select');
     if (segmentId) {
       const segment = segments.find(s => s.id === segmentId);
       if (segment) {
         setFormData({
           name: segment.name,
           automation_enabled: (segment as any).automation_enabled === true,
+          automation_trigger: ((segment as any).automation_trigger || 'user_signup') as 'user_signup' | 'inactivity',
           automation_template_id: (segment as any).automation_template_id || '',
           filters: normalizeFilters(segment.filters),
         });
@@ -213,6 +209,7 @@ export function EmailSegmentsManager() {
       setFormData({
         name: '',
         automation_enabled: false,
+        automation_trigger: 'user_signup',
         automation_template_id: '',
         filters: {
           plan: [],
@@ -221,7 +218,6 @@ export function EmailSegmentsManager() {
           isOwner: undefined,
           accountCreated: undefined,
           lastLogin: undefined,
-          accountAge: undefined,
           productCountMin: undefined,
           productCountMax: undefined,
         },
@@ -249,7 +245,6 @@ export function EmailSegmentsManager() {
     if (formData.filters.isOwner !== undefined) cleanedFilters.isOwner = formData.filters.isOwner;
     if (formData.filters.accountCreated) cleanedFilters.accountCreated = formData.filters.accountCreated;
     if (formData.filters.lastLogin) cleanedFilters.lastLogin = formData.filters.lastLogin;
-    if (formData.filters.accountAge) cleanedFilters.accountAge = formData.filters.accountAge;
     if (formData.filters.productCountMin !== undefined) cleanedFilters.productCountMin = formData.filters.productCountMin;
     if (formData.filters.productCountMax !== undefined) cleanedFilters.productCountMax = formData.filters.productCountMax;
 
@@ -260,7 +255,7 @@ export function EmailSegmentsManager() {
           name: formData.name,
           filters: cleanedFilters,
           automation_enabled: formData.automation_enabled,
-          automation_trigger: formData.automation_enabled ? 'user_signup' : null,
+          automation_trigger: formData.automation_enabled ? formData.automation_trigger : null,
           automation_template_id: formData.automation_enabled ? (formData.automation_template_id || null) : null,
         },
       });
@@ -269,7 +264,7 @@ export function EmailSegmentsManager() {
         name: formData.name,
         filters: cleanedFilters,
         automation_enabled: formData.automation_enabled,
-        automation_trigger: formData.automation_enabled ? 'user_signup' : null,
+        automation_trigger: formData.automation_enabled ? formData.automation_trigger : null,
         automation_template_id: formData.automation_enabled ? (formData.automation_template_id || null) : null,
       });
     }
@@ -302,7 +297,7 @@ export function EmailSegmentsManager() {
     }
   };
 
-  const updateDateFilter = (filterType: 'accountCreated' | 'lastLogin' | 'accountAge', filter: DateFilter | undefined) => {
+  const updateDateFilter = (filterType: 'accountCreated' | 'lastLogin', filter: DateFilter | undefined) => {
     setFormData({
       ...formData,
       filters: {
@@ -315,7 +310,7 @@ export function EmailSegmentsManager() {
   const renderDateFilter = (
     label: string,
     icon: React.ReactNode,
-    filterType: 'accountCreated' | 'lastLogin' | 'accountAge',
+    filterType: 'accountCreated' | 'lastLogin',
     currentFilter: DateFilter | undefined
   ) => {
     return (
@@ -464,7 +459,7 @@ export function EmailSegmentsManager() {
                 <div>
                   <h3 className="font-medium text-sm text-purple-900">Automation</h3>
                   <p className="text-xs text-purple-700 mt-1">
-                    Connect an email template to this segment and send it automatically when a user matches this segment on signup.
+                    Connect an email template to this segment and send it automatically based on the trigger you choose.
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -477,6 +472,7 @@ export function EmailSegmentsManager() {
                         automation_enabled: isEnabled,
                         automation_template_id: isEnabled ? formData.automation_template_id : '',
                       });
+                      if (!isEnabled) setTemplateEditorMode('select');
                     }}
                   />
                   <span className="text-xs text-purple-900">Enable</span>
@@ -484,32 +480,90 @@ export function EmailSegmentsManager() {
               </div>
 
               {formData.automation_enabled && (
-                <div className="space-y-2">
-                  <Label>Template to send (on signup)</Label>
-                  <Select
-                    value={formData.automation_template_id || 'none'}
-                    onValueChange={(value) => {
-                      setFormData({
-                        ...formData,
-                        automation_template_id: value === 'none' ? '' : value,
-                      });
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a template" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">No template</SelectItem>
-                      {activeTemplates.map((t) => (
-                        <SelectItem key={t.id} value={t.id}>
-                          {t.name} ({t.type})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground">
-                    Send-once semantics: a user can receive this automation at most once per segment+template (hard deduped).
-                  </p>
+                <div className="space-y-3">
+                  <div>
+                    <Label>Trigger</Label>
+                    <Select
+                      value={formData.automation_trigger}
+                      onValueChange={(v: 'user_signup' | 'inactivity') =>
+                        setFormData({ ...formData, automation_trigger: v })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="user_signup">On signup (welcome email)</SelectItem>
+                        <SelectItem value="inactivity">Periodically (e.g. inactive users)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {formData.automation_trigger === 'user_signup'
+                        ? 'Sent once when a new user matches this segment.'
+                        : 'Sent daily to users who match the filters (e.g. last login &gt; 30 days).'}
+                    </p>
+                  </div>
+
+                  {templateEditorMode === 'select' && (
+                    <div className="space-y-2">
+                      <Label>Email template</Label>
+                      <Select
+                        value={formData.automation_template_id || '__none__'}
+                        onValueChange={(value) => {
+                          if (value === '__create_new__') {
+                            setTemplateEditorMode('create');
+                          } else {
+                            setFormData({
+                              ...formData,
+                              automation_template_id: value === '__none__' ? '' : value,
+                            });
+                          }
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select or create template" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="__none__">No template</SelectItem>
+                          <SelectItem value="__create_new__">+ Create new template</SelectItem>
+                          {activeTemplates.map((t) => (
+                            <SelectItem key={t.id} value={t.id}>
+                              {t.name} ({t.type})
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {formData.automation_template_id && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setTemplateEditorMode('edit')}
+                        >
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edit template
+                        </Button>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        Each user receives this at most once per segment+template.
+                      </p>
+                    </div>
+                  )}
+
+                  {(templateEditorMode === 'create' || templateEditorMode === 'edit') && (
+                    <SegmentTemplateEditor
+                      initialTemplate={
+                        templateEditorMode === 'edit' && formData.automation_template_id
+                          ? templates.find((t) => t.id === formData.automation_template_id) || undefined
+                          : undefined
+                      }
+                      onSave={(templateId) => {
+                        setFormData({ ...formData, automation_template_id: templateId });
+                        setTemplateEditorMode('select');
+                      }}
+                      onCancel={() => setTemplateEditorMode('select')}
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -526,7 +580,7 @@ export function EmailSegmentsManager() {
                 Activity & Behavior Filters
               </h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {renderDateFilter(
                   'Account Created',
                   <Calendar className="w-4 h-4" />,
@@ -539,13 +593,6 @@ export function EmailSegmentsManager() {
                   <Clock className="w-4 h-4" />,
                   'lastLogin',
                   formData.filters.lastLogin
-                )}
-                
-                {renderDateFilter(
-                  'Account Age',
-                  <Activity className="w-4 h-4" />,
-                  'accountAge',
-                  formData.filters.accountAge
                 )}
               </div>
             </div>

@@ -8,7 +8,7 @@ export interface EmailSegment {
   filters: Record<string, any>;
   user_count: number;
   automation_enabled?: boolean;
-  automation_trigger?: 'user_signup' | null;
+  automation_trigger?: 'user_signup' | 'inactivity' | null;
   automation_template_id?: string | null;
   created_by: string;
   created_at: string;
@@ -19,7 +19,7 @@ export interface EmailSegmentInput {
   name: string;
   filters: Record<string, any>;
   automation_enabled?: boolean;
-  automation_trigger?: 'user_signup' | null;
+  automation_trigger?: 'user_signup' | 'inactivity' | null;
   automation_template_id?: string | null;
 }
 
@@ -192,7 +192,10 @@ const calculateSegmentUserCount = async (filters: Record<string, any>): Promise<
     const f = filters.lastLogin;
     filteredUsers = filteredUsers.filter((user: any) => {
       if (f.operator === 'never') return !user.last_login;
-      if (!user.last_login) return false;
+      // For "greater_than" (inactivity): include users who never logged in (null = infinitely inactive)
+      if (!user.last_login) {
+        return f.operator === 'greater_than' && f.days !== undefined;
+      }
 
       const loginDate = new Date(user.last_login);
       const daysAgo = Math.floor((now.getTime() - loginDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -202,23 +205,6 @@ const calculateSegmentUserCount = async (filters: Record<string, any>): Promise<
       if (f.operator === 'equal' && f.days !== undefined) return daysAgo === f.days;
       if (f.operator === 'between' && f.daysFrom !== undefined && f.daysTo !== undefined) {
         return daysAgo >= f.daysFrom && daysAgo <= f.daysTo;
-      }
-      return true;
-    });
-  }
-
-  if (filters.accountAge) {
-    const f = filters.accountAge;
-    filteredUsers = filteredUsers.filter((user: any) => {
-      if (!user.created_at) return false;
-      const createdDate = new Date(user.created_at);
-      const daysOld = Math.floor((now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
-
-      if (f.operator === 'less_than' && f.days !== undefined) return daysOld < f.days;
-      if (f.operator === 'greater_than' && f.days !== undefined) return daysOld > f.days;
-      if (f.operator === 'equal' && f.days !== undefined) return daysOld === f.days;
-      if (f.operator === 'between' && f.daysFrom !== undefined && f.daysTo !== undefined) {
-        return daysOld >= f.daysFrom && daysOld <= f.daysTo;
       }
       return true;
     });

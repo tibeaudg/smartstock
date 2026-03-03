@@ -20,7 +20,6 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
 import { AdminChatList } from '@/components/AdminChatList';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
-import AdminSmtpPage from '@/pages/AdminSmtpPage';
 import EmailManagementPage from '@/pages/admin/EmailManagementPage';
 import { UserDetailModal } from '@/components/admin/UserDetailModal';
 
@@ -524,7 +523,7 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'chats' | 'notifications' | 'smtp'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'chats' | 'notifications' | 'emails'>('users');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -674,7 +673,6 @@ export default function AdminPage() {
           'License Cost': (stats?.licenseCost || 0).toFixed(2),
           'Blocked': user.blocked ? 'Yes' : 'No',
           'Created At': new Date(user.created_at).toLocaleString('en-US'),
-          'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
           'Plan': user.selected_plan || 'N/A'
         };
       });
@@ -816,11 +814,10 @@ export default function AdminPage() {
     };
   }, [activeTab, queryClient]);
 
-  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'smtp' | 'emails'; label: string }[] = [
+  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'emails'; label: string }[] = [
     { id: 'users', label: 'User Management' },
     { id: 'chats', label: 'Chats' },
     { id: 'notifications', label: 'Notifications' },
-    { id: 'smtp', label: 'E-mail / SMTP' },
     { id: 'emails', label: 'Email Management' },
   ];
   
@@ -1347,10 +1344,6 @@ export default function AdminPage() {
 
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
-            )}
-
-            {activeTab === 'smtp' && (
-              <AdminSmtpPage />
             )}
 
             {activeTab === 'emails' && (

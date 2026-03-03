@@ -79,9 +79,9 @@ export default function AdminSmtpPage() {
       />
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">E-mail / SMTP</h1>
+          <h1 className="text-2xl font-semibold text-gray-900">SMTP Settings</h1>
           <p className="text-sm text-gray-600 mt-1">
-            Configure outgoing email for support replies and notifications to users.
+            Configure outgoing email for segment automations, support replies, and notifications.
           </p>
         </div>
 

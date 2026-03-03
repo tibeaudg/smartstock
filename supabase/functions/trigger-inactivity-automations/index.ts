@@ -8,7 +8,7 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-type AutomationTrigger = 'user_signup'
+type AutomationTrigger = 'inactivity'
 
 interface DateFilter {
   operator: 'less_than' | 'greater_than' | 'equal' | 'between' | 'never'
@@ -26,7 +26,6 @@ interface SegmentFilters {
   lastLogin?: DateFilter
   productCountMin?: number
   productCountMax?: number
-  // Legacy support
   signupDateFrom?: string
   signupDateTo?: string
   lastLoginFrom?: string
@@ -43,7 +42,6 @@ function replaceTemplateVariables(text: string, variables: Record<string, string
 }
 
 function userMatchesSegment(profile: any, filters: SegmentFilters): boolean {
-  // Simple filters
   if (filters.plan && Array.isArray(filters.plan) && filters.plan.length > 0) {
     if (!filters.plan.includes(profile.selected_plan)) return false
   }
@@ -59,7 +57,6 @@ function userMatchesSegment(profile: any, filters: SegmentFilters): boolean {
 
   const now = new Date()
 
-  // Legacy date filters
   if (filters.signupDateFrom) {
     if (!profile.created_at) return false
     if (new Date(profile.created_at) < new Date(filters.signupDateFrom)) return false
@@ -77,7 +74,6 @@ function userMatchesSegment(profile: any, filters: SegmentFilters): boolean {
     if (new Date(profile.last_login) > new Date(filters.lastLoginTo)) return false
   }
 
-  // accountCreated relative logic (supports fractional days for hours)
   if (filters.accountCreated) {
     const f = filters.accountCreated
     if (!profile.created_at) return false
@@ -102,7 +98,6 @@ function userMatchesSegment(profile: any, filters: SegmentFilters): boolean {
     return false
   }
 
-  // lastLogin relative logic
   if (filters.lastLogin) {
     const f = filters.lastLogin
     if (f.operator === 'never') return !profile.last_login
@@ -147,18 +142,13 @@ serve(async (req) => {
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? ''
-    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-
     const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader
-    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } },
-    })
 
-    const { data: { user }, error: userError } = await userClient.auth.getUser(token)
-    if (userError || !user) {
+    // Allow invocation with service role key (cron) - no user context
+    if (token !== supabaseServiceKey) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Invalid or expired token' }),
+        JSON.stringify({ success: false, error: 'Invalid or unauthorized' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -167,23 +157,8 @@ serve(async (req) => {
       auth: { autoRefreshToken: false, persistSession: false },
     })
 
-    // Load caller profile (the newly registered user)
-    const { data: profile, error: profileError } = await adminClient
-      .from('profiles')
-      .select('id, email, first_name, last_name, created_at, last_login, selected_plan, organization_name, role, is_owner')
-      .eq('id', user.id)
-      .single()
+    const trigger: AutomationTrigger = 'inactivity'
 
-    if (profileError || !profile?.email) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Profile not found or email missing' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
-
-    const trigger: AutomationTrigger = 'user_signup'
-
-    // Load segments with automations enabled
     const { data: segments, error: segmentsError } = await adminClient
       .from('email_segments')
       .select(`
@@ -208,7 +183,7 @@ serve(async (req) => {
       .eq('automation_trigger', trigger)
 
     if (segmentsError) {
-      console.error('[trigger-segment-automations] Error fetching segments:', segmentsError)
+      console.error('[trigger-inactivity-automations] Error fetching segments:', segmentsError)
       return new Response(
         JSON.stringify({ success: false, error: 'Failed to fetch segment automations' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -217,43 +192,41 @@ serve(async (req) => {
 
     if (!segments || segments.length === 0) {
       return new Response(
-        JSON.stringify({ success: true, processed: 0, message: 'No segment automations configured' }),
+        JSON.stringify({ success: true, processed: 0, message: 'No inactivity segment automations configured' }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    const recipientEmail = String(profile.email).trim().toLowerCase()
-    let processed = 0
-    const results: Array<{ segment_id: string; sent: boolean; reason?: string }> = []
+    const { data: profiles, error: profilesError } = await adminClient
+      .from('profiles')
+      .select('id, email, first_name, last_name, created_at, last_login, selected_plan, organization_name, role, is_owner')
+      .not('email', 'is', null)
+
+    if (profilesError || !profiles) {
+      console.error('[trigger-inactivity-automations] Error fetching profiles:', profilesError)
+      return new Response(
+        JSON.stringify({ success: false, error: 'Failed to fetch profiles' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    let totalProcessed = 0
+    const results: Array<{ segment_id: string; segment_name: string; sent: number; skipped: number; failed: number; total_matching?: number }> = []
+    const maxPerSegment = 500
 
     for (const segment of segments as any[]) {
       const template = segment.email_templates
       if (!template || template.is_active !== true) {
-        results.push({ segment_id: segment.id, sent: false, reason: 'Template missing or inactive' })
+        results.push({ segment_id: segment.id, segment_name: segment.name, sent: 0, skipped: 0, failed: 0, total_matching: 0 })
         continue
       }
 
       const filters = (segment.filters || {}) as SegmentFilters
-      if (!userMatchesSegment(profile, filters)) {
-        results.push({ segment_id: segment.id, sent: false, reason: 'User does not match segment' })
-        continue
-      }
+      const matchingProfiles = profiles.filter((p: any) => userMatchesSegment(p, filters))
+      let sent = 0
+      let skipped = 0
+      let failed = 0
 
-      // Dedup: already sent/queued for this segment+template+user/email?
-      const { data: existingSend } = await adminClient
-        .from('email_segment_sends')
-        .select('id, status')
-        .eq('segment_id', segment.id)
-        .eq('template_id', template.id)
-        .or(`user_id.eq.${profile.id},email.eq.${recipientEmail}`)
-        .maybeSingle()
-
-      if (existingSend) {
-        results.push({ segment_id: segment.id, sent: false, reason: `Already queued/sent (${existingSend.status})` })
-        continue
-      }
-
-      // SMTP settings from segment owner
       const { data: smtpRow, error: smtpError } = await adminClient
         .from('smtp_settings')
         .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
@@ -261,41 +234,9 @@ serve(async (req) => {
         .single()
 
       if (smtpError || !smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email || !smtpRow?.smtp_password) {
-        results.push({ segment_id: segment.id, sent: false, reason: 'SMTP not configured for segment owner' })
+        results.push({ segment_id: segment.id, segment_name: segment.name, sent: 0, skipped: 0, failed: 0, total_matching: matchingProfiles.length })
         continue
       }
-
-      // Insert send row (pending) - unique indexes enforce "send once" semantics
-      const { data: sendRow, error: insertError } = await adminClient
-        .from('email_segment_sends')
-        .insert({
-          segment_id: segment.id,
-          template_id: template.id,
-          user_id: profile.id,
-          email: recipientEmail,
-          trigger,
-          status: 'pending',
-          metadata: {},
-        })
-        .select('id')
-        .single()
-
-      if (insertError || !sendRow) {
-        results.push({ segment_id: segment.id, sent: false, reason: 'Failed to create send row (possibly duplicate)' })
-        continue
-      }
-
-      const variables: Record<string, string> = {
-        user_email: recipientEmail,
-        user_name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || recipientEmail.split('@')[0],
-        first_name: profile.first_name || '',
-        last_name: profile.last_name || '',
-        organization_name: profile.organization_name || '',
-      }
-
-      const finalSubject = replaceTemplateVariables(template.subject, variables)
-      const finalHtmlBody = replaceTemplateVariables(template.html_body, variables)
-      const finalTextBody = template.text_body ? replaceTemplateVariables(template.text_body, variables) : undefined
 
       const port = Number(smtpRow.smtp_port) || 587
       const secure = smtpRow.use_tls && port === 465
@@ -316,73 +257,138 @@ serve(async (req) => {
         },
       })
 
-      let emailStatus: 'delivered' | 'failed' = 'delivered'
-      let errorMessage: string | null = null
-      let messageId: string | null = null
+      const toProcess = matchingProfiles.slice(0, maxPerSegment)
 
-      try {
-        const info = await transporter.sendMail({
-          from: { name: smtpRow.from_name || 'StockFlow', address: smtpRow.from_email },
-          to: recipientEmail,
-          subject: finalSubject,
-          html: finalHtmlBody,
-          text: finalTextBody || finalHtmlBody.replace(/<[^>]*>/g, ''),
-        })
-        messageId = info.messageId || null
-      } catch (e) {
-        console.error('[trigger-segment-automations] sendMail failed:', e)
-        emailStatus = 'failed'
-        errorMessage = e instanceof Error ? e.message : 'Unknown error'
+      for (const profile of toProcess) {
+        const recipientEmail = String(profile.email).trim().toLowerCase()
+        if (!recipientEmail) {
+          skipped++
+          continue
+        }
+
+        const { data: existingSend } = await adminClient
+          .from('email_segment_sends')
+          .select('id, status')
+          .eq('segment_id', segment.id)
+          .eq('template_id', template.id)
+          .or(`user_id.eq.${profile.id},email.eq.${recipientEmail}`)
+          .limit(1)
+          .maybeSingle()
+
+        if (existingSend) {
+          skipped++
+          continue
+        }
+
+        const { data: sendRow, error: insertError } = await adminClient
+          .from('email_segment_sends')
+          .insert({
+            segment_id: segment.id,
+            template_id: template.id,
+            user_id: profile.id,
+            email: recipientEmail,
+            trigger,
+            status: 'pending',
+            metadata: {},
+          })
+          .select('id')
+          .single()
+
+        if (insertError || !sendRow) {
+          skipped++
+          continue
+        }
+
+        const variables: Record<string, string> = {
+          user_email: recipientEmail,
+          user_name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || recipientEmail.split('@')[0],
+          first_name: profile.first_name || '',
+          last_name: profile.last_name || '',
+          organization_name: profile.organization_name || '',
+        }
+
+        const finalSubject = replaceTemplateVariables(template.subject, variables)
+        const finalHtmlBody = replaceTemplateVariables(template.html_body, variables)
+        const finalTextBody = template.text_body ? replaceTemplateVariables(template.text_body, variables) : undefined
+
+        let emailStatus: 'delivered' | 'failed' = 'delivered'
+        let errorMessage: string | null = null
+        let messageId: string | null = null
+
+        try {
+          const info = await transporter.sendMail({
+            from: { name: smtpRow.from_name || 'StockFlow', address: smtpRow.from_email },
+            to: recipientEmail,
+            subject: finalSubject,
+            html: finalHtmlBody,
+            text: finalTextBody || finalHtmlBody.replace(/<[^>]*>/g, ''),
+          })
+          messageId = info.messageId || null
+        } catch (e) {
+          console.error('[trigger-inactivity-automations] sendMail failed:', e)
+          emailStatus = 'failed'
+          errorMessage = e instanceof Error ? e.message : 'Unknown error'
+          failed++
+        }
+
+        if (emailStatus === 'delivered') {
+          sent++
+          totalProcessed++
+        }
+
+        await adminClient
+          .from('email_segment_sends')
+          .update({
+            status: emailStatus,
+            error_message: errorMessage,
+            delivered_at: emailStatus === 'delivered' ? new Date().toISOString() : null,
+            metadata: { message_id: messageId },
+          })
+          .eq('id', sendRow.id)
+
+        await adminClient
+          .from('email_logs')
+          .insert({
+            campaign_id: null,
+            template_id: template.id,
+            recipient_email: recipientEmail,
+            recipient_user_id: profile.id,
+            subject: finalSubject,
+            email_type: template.type,
+            status: emailStatus,
+            error_message: errorMessage,
+            sent_at: new Date().toISOString(),
+            delivered_at: emailStatus === 'delivered' ? new Date().toISOString() : null,
+            metadata: {
+              segment_id: segment.id,
+              segment_name: segment.name,
+              automation_trigger: trigger,
+              message_id: messageId,
+            },
+          })
       }
 
-      // Update send row
-      await adminClient
-        .from('email_segment_sends')
-        .update({
-          status: emailStatus,
-          error_message: errorMessage,
-          delivered_at: emailStatus === 'delivered' ? new Date().toISOString() : null,
-          metadata: { message_id: messageId },
-        })
-        .eq('id', sendRow.id)
-
-      // Log email (segment_id stored in metadata)
-      await adminClient
-        .from('email_logs')
-        .insert({
-          campaign_id: null,
-          template_id: template.id,
-          recipient_email: recipientEmail,
-          recipient_user_id: profile.id,
-          subject: finalSubject,
-          email_type: template.type,
-          status: emailStatus,
-          error_message: errorMessage,
-          sent_at: new Date().toISOString(),
-          delivered_at: emailStatus === 'delivered' ? new Date().toISOString() : null,
-          metadata: {
-            segment_id: segment.id,
-            segment_name: segment.name,
-            automation_trigger: trigger,
-            message_id: messageId,
-          },
-        })
-
-      processed++
-      results.push({ segment_id: segment.id, sent: emailStatus === 'delivered', reason: emailStatus === 'failed' ? errorMessage || 'Failed' : undefined })
+      const skippedCount = toProcess.length - sent - failed
+      results.push({
+        segment_id: segment.id,
+        segment_name: segment.name,
+        sent,
+        skipped: skippedCount,
+        failed,
+        total_matching: matchingProfiles.length,
+      })
     }
 
     return new Response(
-      JSON.stringify({ success: true, processed, results }),
+      JSON.stringify({ success: true, processed: totalProcessed, results }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
-    console.error('[trigger-segment-automations]', error)
-    const message = error instanceof Error ? error.message : 'Failed to trigger segment automations'
+    console.error('[trigger-inactivity-automations]', error)
+    const message = error instanceof Error ? error.message : 'Failed to trigger inactivity automations'
     return new Response(
       JSON.stringify({ success: false, error: message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   }
 })
-

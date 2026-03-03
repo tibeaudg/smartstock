@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Mail, FileText, Send, Users, History, BarChart3, UserPlus, Sparkles } from 'lucide-react';
+import { Mail, Send, History, BarChart3, UserPlus, Sparkles } from 'lucide-react';
 import { useEmailLogs, useEmailLogStats } from '@/hooks/useEmailLogs';
-import { useEmailCampaigns } from '@/hooks/useEmailCampaigns';
+import { useEmailSegments } from '@/hooks/useEmailSegments';
 import { useEmailTemplates } from '@/hooks/useEmailTemplates';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
-import { EmailTemplatesManager } from '@/components/admin/email/EmailTemplatesManager';
-import { EmailCampaignsManager } from '@/components/admin/email/EmailCampaignsManager';
+import AdminSmtpPage from '@/pages/AdminSmtpPage';
 import { EmailLogsView } from '@/components/admin/email/EmailLogsView';
 import { EmailSegmentsManager } from '@/components/admin/email/EmailSegmentsManager';
 import { EmailComposer } from '@/components/admin/email/EmailComposer';
@@ -25,40 +24,14 @@ export default function EmailManagementPage() {
   const [timeRange, setTimeRange] = useState('1'); // hours
   const [isSending, setIsSending] = useState(false);
   const { data: stats } = useEmailLogStats();
-  const { campaigns, isLoading: campaignsLoading } = useEmailCampaigns();
-  const { templates, isLoading: templatesLoading } = useEmailTemplates();
+  const { segments, isLoading: segmentsLoading } = useEmailSegments();
+  const { templates } = useEmailTemplates();
   const { data: recentLogs } = useEmailLogs({});
 
   const recentLogsData = recentLogs?.slice(0, 10) || [];
-  const activeCampaigns = campaigns.filter(c => c.status === 'sending' || c.status === 'scheduled');
-  const recentCampaigns = campaigns.slice(0, 5);
+  const activeSegmentAutomations = segments.filter(s => (s as any).automation_enabled === true);
+  const recentSegmentSends = (recentLogs || []).filter((log: any) => log.metadata?.segment_id).slice(0, 5);
   const welcomeTemplates = templates.filter(t => t.type === 'welcome' && t.is_active);
-
-  // Auto-process scheduled campaigns every minute
-  useEffect(() => {
-    const processScheduledCampaigns = async () => {
-      const scheduledCampaigns = campaigns.filter(
-        c => c.status === 'scheduled' && 
-        c.scheduled_at && 
-        new Date(c.scheduled_at) <= new Date()
-      );
-
-      if (scheduledCampaigns.length > 0) {
-        try {
-          await supabase.functions.invoke('process-scheduled-campaigns');
-        } catch (error) {
-          console.error('Error processing scheduled campaigns:', error);
-        }
-      }
-    };
-
-    // Process immediately on mount
-    processScheduledCampaigns();
-
-    // Then check every minute
-    const interval = setInterval(processScheduledCampaigns, 60000);
-    return () => clearInterval(interval);
-  }, [campaigns]);
 
   const handleSendToNewAccounts = async () => {
     if (!selectedTemplateId) {
@@ -180,14 +153,16 @@ export default function EmailManagementPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="settings">Settings</TabsTrigger>
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="compose">Compose</TabsTrigger>
-            <TabsTrigger value="templates">Templates</TabsTrigger>
-            <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
             <TabsTrigger value="segments">Segments</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="settings" className="space-y-6">
+            <AdminSmtpPage />
+          </TabsContent>
 
           <TabsContent value="dashboard" className="space-y-6">
             {/* Quick Actions */}
@@ -252,7 +227,7 @@ export default function EmailManagementPage() {
                           </Select>
                           {welcomeTemplates.length === 0 && (
                             <p className="text-xs text-muted-foreground mt-1">
-                              Create a welcome template first in the Templates tab
+                              Create a welcome template in the Segments tab when creating a segment
                             </p>
                           )}
                         </div>
@@ -326,13 +301,13 @@ export default function EmailManagementPage() {
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+                  <CardTitle className="text-sm font-medium">Active Segment Automations</CardTitle>
                   <Send className="h-4 w-4 text-blue-600" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-blue-600">{activeCampaigns.length}</div>
+                  <div className="text-2xl font-bold text-blue-600">{activeSegmentAutomations.length}</div>
                   <p className="text-xs text-muted-foreground">
-                    {campaignsLoading ? 'Loading...' : `${campaigns.length} total campaigns`}
+                    {segmentsLoading ? 'Loading...' : `${segments.length} total segments`}
                   </p>
                 </CardContent>
               </Card>
@@ -397,33 +372,32 @@ export default function EmailManagementPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Recent Campaigns</CardTitle>
-                  <CardDescription>Latest email campaigns</CardDescription>
+                  <CardTitle>Recent Segment Automations</CardTitle>
+                  <CardDescription>Latest emails sent via segment automations</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {recentCampaigns.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No campaigns yet</p>
+                    {recentSegmentSends.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">No segment automation emails yet</p>
                     ) : (
-                      recentCampaigns.map((campaign) => (
-                        <div key={campaign.id} className="flex items-center justify-between border-b pb-2 last:border-0">
+                      recentSegmentSends.map((log: any) => (
+                        <div key={log.id} className="flex items-center justify-between border-b pb-2 last:border-0">
                           <div className="flex-1">
-                            <p className="text-sm font-medium">{campaign.name}</p>
+                            <p className="text-sm font-medium">{log.subject}</p>
                             <p className="text-xs text-muted-foreground">
-                              {campaign.total_recipients} recipients
+                              {log.recipient_email} • {log.metadata?.segment_name || 'Segment'}
                             </p>
                           </div>
                           <div className="text-right">
                             <span className={`text-xs px-2 py-1 rounded ${
-                              campaign.status === 'completed' ? 'bg-green-100 text-green-700' :
-                              campaign.status === 'sending' ? 'bg-blue-100 text-blue-700' :
-                              campaign.status === 'scheduled' ? 'bg-yellow-100 text-yellow-700' :
+                              log.status === 'delivered' ? 'bg-green-100 text-green-700' :
+                              log.status === 'failed' ? 'bg-red-100 text-red-700' :
                               'bg-gray-100 text-gray-700'
                             }`}>
-                              {campaign.status}
+                              {log.status}
                             </span>
                             <p className="text-xs text-muted-foreground mt-1">
-                              {campaign.sent_count}/{campaign.total_recipients} sent
+                              {new Date(log.sent_at).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
@@ -437,14 +411,6 @@ export default function EmailManagementPage() {
 
           <TabsContent value="compose">
             <EmailComposer />
-          </TabsContent>
-
-          <TabsContent value="templates">
-            <EmailTemplatesManager />
-          </TabsContent>
-
-          <TabsContent value="campaigns">
-            <EmailCampaignsManager />
           </TabsContent>
 
           <TabsContent value="segments">
