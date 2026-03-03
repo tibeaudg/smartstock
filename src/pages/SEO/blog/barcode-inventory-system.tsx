@@ -1,12 +1,13 @@
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { StructuredData } from "@/components/StructuredData";
+import { Link } from "react-router-dom";
 import { Target, Zap, Eye, Coins, TrendingUp, ClipboardCheck, Layout, Smartphone } from "lucide-react";
 
 const topicTitle = "Barcode Inventory System";
 const canonicalPath = "/barcode-inventory-system";
-const metaDescription = "Complete guide to barcode inventory systems. Learn how barcode inventory systems work, benefits, implementation, features, and how to choose the best barcode inventory software for your business.";
-const keywords = "barcode inventory system, barcode inventory software, barcode scanning inventory, barcode inventory tracking, inventory barcode scanner, mobile barcode scanning, QR code inventory system, barcode inventory management, how to implement barcode inventory system, benefits of barcode inventory system, barcode inventory system cost, barcode scanning software, inventory tracking system, barcode stock management, mobile inventory scanner, barcode reader for inventory, scan inventory app, barcode tracking system, inventory scanning solution, barcode inventory system setup, barcode inventory system implementation, barcode inventory system cost, barcode inventory system features, barcode inventory system benefits, barcode inventory system implementation, barcode inventory system cost, barcode inventory system features, barcode inventory system benefits, barcode inventory system software, barcode inventory system hardware, barcode inventory system setup, barcode inventory system implementation, barcode inventory system cost, barcode inventory system features, barcode inventory system benefits, barcode inventory system software, barcode inventory system hardware, barcode inventory system setup, barcode inventory system implementation, barcode inventory system cost, barcode inventory system features, barcode inventory system benefits, ";
+const metaDescription = "Barcode inventory system for small business free. Set up in minutes, no credit card. Mobile scanning, unlimited items. StockFlow—free forever.";
+const keywords = "barcode inventory system for small business free, barcode inventory system, barcode inventory software, barcode scanning inventory, barcode inventory tracking, inventory barcode scanner, mobile barcode scanning, QR code inventory system, barcode inventory management, how to implement barcode inventory system, benefits of barcode inventory system, barcode inventory system cost, barcode scanning software, inventory tracking system, barcode stock management, mobile inventory scanner, barcode reader for inventory, scan inventory app, barcode tracking system, inventory scanning solution, ";
 
 const faqData = [
   {
@@ -57,14 +58,11 @@ const faqData = [
   {
     question: "What is the difference between 1D barcodes and QR codes?",
     answer: "Traditional 1D barcodes are best for simple SKU identification and are compatible with all scanners. 2D QR codes can store significantly more data—over 4,000 characters—and can be scanned from any angle using a smartphone camera, making them ideal for mobile-first inventory systems."
+  },
+  {
+    question: "Is there a free barcode inventory system for small businesses?",
+    answer: "Yes. StockFlow offers a free barcode inventory system for small businesses with no credit card required. You get mobile barcode scanning (use your smartphone camera), unlimited products and locations, real-time sync, low-stock alerts, and setup in minutes. Unlike Sortly (100 items free) or Zoho (50 orders/month), StockFlow has no limits. It's ideal for small businesses upgrading from spreadsheets—no hardware needed, just a phone or tablet."
   }
-
-
-
-
-
-
-
 ];
 
 const structuredData = [
@@ -108,7 +106,7 @@ export default function BarcodeInventoryPage() {
       faqData={faqData}
     >
       <SEO
-        title={`${topicTitle} - Complete Guide 2025 | StockFlow`}
+        title="Barcode Inventory System for Small Business Free | Guide 2026 | StockFlow"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -141,6 +139,24 @@ export default function BarcodeInventoryPage() {
         </div>
       </section>
 
+      {/* Barcode Inventory System for Small Business Free */}
+      <section id="small-business-free" className="bg-slate-50 px-4 py-16 border-t border-slate-200">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold text-slate-900 mb-6">Barcode Inventory System for Small Business (Free)</h2>
+          <p className="text-lg leading-relaxed text-gray-700 mb-6">
+            A <strong>barcode inventory system for small business free</strong> helps you track stock without upfront costs. Small businesses often start with spreadsheets, but a dedicated free barcode system—like StockFlow—delivers mobile scanning, real-time updates, and unlimited items. No credit card required, no product limits.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-gray-700 mb-6">
+            <li><strong>Mobile scanning:</strong> Use your smartphone camera—no dedicated hardware</li>
+            <li><strong>Unlimited items:</strong> No caps on SKUs or locations</li>
+            <li><strong>Setup in minutes:</strong> Import from CSV or add products manually</li>
+            <li><strong>Low-stock alerts:</strong> Get notified when reorder points are reached</li>
+          </ul>
+          <p className="text-gray-700">
+            StockFlow is a free <strong>barcode inventory system for small business</strong> that grows with you. <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 font-semibold hover:underline">Compare free barcode scanning options</Link>.
+          </p>
+        </div>
+      </section>
 
       {/* Benefits Section - The "Efficiency Matrix" Layout */}
       <section id="benefits" className="bg-white px-4 py-24 border-t border-slate-200">

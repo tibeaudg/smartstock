@@ -106,9 +106,9 @@ export default function BestInventoryManagementSoftwarePage() {
       keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Best Inventory Management Software 2026 – Compare Top Tools"
-        description="Discover the best inventory management software of 2026. In-depth comparison of free and paid tools for tracking stock, managing assets, and scaling operations."
-        keywords="best inventory management software, stock tracking system, inventory software 2026, free inventory tools, warehouse management software, small business inventory"
+        title="Best Inventory Management Software 2026 | Free Comparison | StockFlow"
+        description="Top inventory management software 2026. Best inventory management software with barcode scanner. Free comparison—unlimited products, BOM. No credit card."
+        keywords="top inventory management software, best inventory management software with barcode scanner, best inventory management software, stock tracking system, inventory software 2026, free inventory tools, warehouse management software, small business inventory"
         url="https://www.stockflowsystems.com/best-inventory-management-software"
         structuredData={structuredData}
       />
@@ -142,6 +142,36 @@ export default function BestInventoryManagementSoftwarePage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Section: Top Inventory Management Software 2026 */}
+      <section className="py-20 bg-slate-50 border-y">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center" id="top-inventory-software">
+            Top Inventory Management Software 2026
+          </h2>
+          <p className="text-slate-600 leading-relaxed mb-6 max-w-3xl mx-auto text-center">
+            The <strong>top inventory management software</strong> in 2026 includes StockFlow (free, unlimited), Zoho Inventory, Odoo, Sortly, and inFlow. For <strong>best inventory management software with barcode scanner</strong>, StockFlow leads with native mobile scanning—no hardware needed. <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 hover:underline font-medium">Compare barcode scanning options</Link>.
+          </p>
+        </div>
+      </section>
+
+      {/* Section: Best Free Inventory Management Software */}
+      <section className="py-20 bg-blue-50 border-y">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-slate-900 mb-6 text-center">
+            Best Free Inventory Management Software
+          </h2>
+          <p className="text-slate-600 leading-relaxed mb-8 max-w-3xl mx-auto text-center">
+            The <strong>best free inventory management software</strong> in 2026 delivers the same core features as paid 
+            tools—real-time tracking, barcode scanning, multi-location support—without subscription fees. StockFlow leads 
+            with unlimited products, users, and BOM support at zero cost. Compare with Zoho Inventory (50 orders/month limit), 
+            Odoo (requires hosting), and Sortly ($25+/month) in our{' '}
+            <Link to="/inventory-management-software-free" className="text-blue-600 hover:underline font-medium">
+              free inventory management software guide
+            </Link>.
+          </p>
         </div>
       </section>
 

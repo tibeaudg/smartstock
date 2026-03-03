@@ -1,4 +1,4 @@
-﻿import SEO from '@/components/SEO';
+import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -218,6 +218,53 @@ export default function InventoryManagementSoftware() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Inventory Management Software with Bill of Materials */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            Inventory Management Software With Bill of Materials
+          </h2>
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            Manufacturers and assemblers need <strong>inventory management software with bill of materials</strong> (BOM) 
+            to track both stock levels and product structures. A combined solution lets you define which components 
+            are needed for each product, see real-time material availability, and automate purchase orders when 
+            parts run low. StockFlow includes full BOM support—multi-level assemblies, version control, cost roll-up—integrated 
+            with your inventory. Learn more in our guide to{' '}
+            <Link to="/inventory-management-software-with-bill-of-materials" className="text-blue-600 hover:underline">
+              inventory management software with bill of materials
+            </Link>{' '}
+            and our{' '}
+            <Link to="/bill-of-materials-software-free" className="text-blue-600 hover:underline">
+              free BOM software
+            </Link>.
+          </p>
+        </div>
+      </section>
+
+      {/* Free Inventory Management Software */}
+      <section className="py-16 px-4 bg-blue-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            Free Inventory Management Software
+          </h2>
+          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            Looking for <strong>free inventory management software</strong>? StockFlow is completely free forever—no 
+            credit card, no product limits, no time restrictions. You get unlimited products, users, and branches; 
+            barcode scanning; BOM management; and advanced reporting at no cost. Start tracking your inventory 
+            in minutes. Read our full guide to{' '}
+            <Link to="/inventory-management-software-free" className="text-blue-600 hover:underline">
+              free inventory management software
+            </Link>.
+          </p>
+          <Link 
+            to="/auth" 
+            className="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Start Free →
+          </Link>
         </div>
       </section>
 

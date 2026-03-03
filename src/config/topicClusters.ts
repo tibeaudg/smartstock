@@ -474,7 +474,39 @@ export const englishMainCluster: TopicCluster = {
       title: 'Best Inventory Management Software',
       language: 'en',
       category: 'Inventory Management',
-      description: 'Compare the best inventory management software with detailed feature analysis, pricing comparison, and implementation guides',
+      description: 'Top inventory management software 2026. Best inventory management software with barcode scanner. Compare features, pricing, implementation.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/bom-management-tools',
+      title: 'BOM Management Software & Tools',
+      language: 'en',
+      category: 'Features',
+      description: 'BOM management software and tools. Free multi-level BOMs, version control, bill of materials software, and inventory integration',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/inventory-management-software-free',
+      title: 'Free Inventory Software',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Free inventory software. Unlimited products, users, BOM, barcode scanning. No credit card.',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/inventory-management-software-with-bill-of-materials',
+      title: 'Inventory Management Software With Bill of Materials',
+      language: 'en',
+      category: 'Inventory Management',
+      description: 'Inventory management software with BOM integration. Bill of materials inventory management for manufacturers',
+      image: '/dashboard.png'
+    },
+    {
+      path: '/pricing',
+      title: 'StockFlow Pricing',
+      language: 'en',
+      category: 'General',
+      description: 'StockFlow pricing: free forever. No credit card. Prix abonnement inventory management.',
       image: '/dashboard.png'
     },
     {
@@ -495,10 +527,10 @@ export const englishMainCluster: TopicCluster = {
     },
     {
       path: '/best-online-inventory-software',
-      title: 'Best Online Inventory Software',
+      title: 'Inventory Management Software Online',
       language: 'en',
       category: 'Inventory Management',
-      description: 'Top online inventory software platforms',
+      description: 'Leading inventory management platforms with barcode scanning 2025 & 2026. Best online option—free forever, unlimited SKUs.',
       image: '/dashboard.png'
     },
     {
@@ -583,10 +615,10 @@ export const englishMainCluster: TopicCluster = {
     },
     {
       path: '/warehouse-management-system',
-      title: 'Warehouse Management System',
+      title: 'Warehouse Management System Process Flow',
       language: 'en',
       category: 'Inventory Management',
-      description: 'Complete warehouse management solutions',
+      description: 'Warehouse management system process flow: 6 steps—receiving, putaway, storage, picking, packing, shipping. Complete WMS guide.',
       image: '/dashboard.png'
     },
     {
@@ -1034,7 +1066,7 @@ export const featureCluster: TopicCluster = {
     { path: '/inventory-scanning-system', title: 'Inventory Scanning System', language: 'en', category: 'Features', description: 'Barcode and QR code scanning system for inventory tracking', image: '/dashboard.png' },
     { path: '/inventory-turnover-ratio', title: 'Inventory Turnover Ratio', language: 'en', category: 'Features', description: 'Calculate and optimize inventory turnover ratio for better cash flow', image: '/dashboard.png' },
     { path: '/purchase-order-form', title: 'Purchase Order Form', language: 'en', category: 'Features', description: 'Create and manage purchase orders with professional forms', image: '/dashboard.png' },
-    { path: '/features/purchase-requisition-software', title: 'Purchase Requisition Software', language: 'en', category: 'Features', description: 'Automate purchase requests, approvals, and PO generation with workflow automation', image: '/dashboard.png' }
+    { path: '/purchase-requisition-software', title: 'Purchase Requisition Software', language: 'en', category: 'Features', description: 'Purchase requisition software 2026. Purchasing requisition, workflow automation, PO generation.', image: '/dashboard.png' }
   ]
 };
 
@@ -1088,7 +1120,7 @@ export const extendedComparisonCluster: TopicCluster = {
     { path: '/stockflow-vs-shipstation', title: 'StockFlow vs ShipStation', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and ShipStation', image: '/dashboard.png' },
     { path: '/stockflow-vs-shopify', title: 'StockFlow vs Shopify', language: 'en', category: 'Comparisons', description: 'StockFlow vs Shopify inventory features', image: '/dashboard.png' },
     { path: '/stockflow-vs-square', title: 'StockFlow vs Square', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and Square inventory', image: '/dashboard.png' },
-    { path: '/stockflow-vs-lightspeed', title: 'StockFlow vs Lightspeed', language: 'en', category: 'Comparisons', description: 'StockFlow vs Lightspeed POS comparison', image: '/dashboard.png' },
+    { path: '/stockflow-vs-lightspeed', title: 'StockFlow vs Lightspeed', language: 'en', category: 'Comparisons', description: 'StockFlow Lightspeed integration. Compare StockFlow vs Lightspeed POS. Free migration, API integration.', image: '/dashboard.png' },
     { path: '/stockflow-vs-vend', title: 'StockFlow vs Vend', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and Vend', image: '/dashboard.png' },
     { path: '/stockflow-vs-clover', title: 'StockFlow vs Clover', language: 'en', category: 'Comparisons', description: 'StockFlow vs Clover inventory management', image: '/dashboard.png' },
     { path: '/stockflow-vs-tradegecko', title: 'StockFlow vs TradeGecko', language: 'en', category: 'Comparisons', description: 'Compare StockFlow and TradeGecko', image: '/dashboard.png' },

@@ -27,6 +27,10 @@ export default function PurchaseRequisitionSoftware() {
 
   const faqData = [
     {
+      question: "What is purchasing requisition software?",
+      answer: "Purchasing requisition software (also called purchase requisition software) automates the process of requesting, approving, and tracking purchase orders within an organization. Employees create requisitions for needed items, managers approve or reject requests, and approved requisitions automatically convert to purchase orders sent to suppliers. This streamlines procurement, enforces spending controls, maintains audit trails, and eliminates manual paperwork."
+    },
+    {
       question: "What is purchase requisition software?",
       answer: "Purchase requisition software automates the process of requesting, approving, and tracking purchase orders within an organization. Employees create requisitions for needed items, managers approve or reject requests, and approved requisitions automatically convert to purchase orders sent to suppliers. This streamlines procurement, enforces spending controls, maintains audit trails, and eliminates manual paperwork."
     },
@@ -210,7 +214,7 @@ export default function PurchaseRequisitionSoftware() {
     "dateModified": "2026-01-15",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflowsystems.com/features/purchase-requisition-software"
+      "@id": "https://www.stockflowsystems.com/purchase-requisition-software"
     }
   };
 
@@ -247,10 +251,10 @@ export default function PurchaseRequisitionSoftware() {
 
     >
       <SEO
-        title="Purchase Requisition Software 2026 - Save 10+ Hours/Week, Free Plan | StockFlow"
-        description="Purchase requisition software 2026 automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Save 10+ hours/week. Free plan available. Join for Free - no credit card required."
-        keywords="purchase requisition software, purchase requisition system, procurement software, purchase request software, requisition management software, purchase order software, procurement management, purchase approval software, requisition workflow, purchase requisition automation"
-        url="https://www.stockflowsystems.com/features/purchase-requisition-software"
+        title="Purchase Requisition Software 2026 – Purchasing Requisition | StockFlow"
+        description="Purchasing requisition software automates purchase requests and approvals. Workflow automation, spending controls, automatic PO generation. Free plan available. No credit card required."
+        keywords="purchasing requisition software, purchase requisition software, purchase requisition system, procurement software, purchase request software, requisition management software, purchase order software"
+        url="https://www.stockflowsystems.com/purchase-requisition-software"
         structuredData={[structuredData, faqStructuredData]}
       />
 
@@ -261,7 +265,7 @@ export default function PurchaseRequisitionSoftware() {
       <section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
-            <strong>Purchase requisition software</strong> automates the process of requesting, approving, and tracking purchase orders within an organization. Instead of manual processes (email requests, paper forms, spreadsheets), purchase requisition software provides a streamlined workflow: employees create requisitions for needed items, managers approve or reject requests based on spending limits and policies, and approved requisitions automatically convert to purchase orders sent to suppliers.
+            <strong>Purchase requisition software</strong> (also known as <strong>purchasing requisition software</strong>) automates the process of requesting, approving, and tracking purchase orders within an organization. Instead of manual processes (email requests, paper forms, spreadsheets), purchase requisition software provides a streamlined workflow: employees create requisitions for needed items, managers approve or reject requests based on spending limits and policies, and approved requisitions automatically convert to purchase orders sent to suppliers.
           </p>
 
           <p className="text-lg text-slate-700 leading-relaxed mb-6">

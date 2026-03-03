@@ -8,8 +8,8 @@ const Page = () => {
   return (
     <>
       <HeaderPublic
-        title="Bill of Materials Software | Automate BOM Management & Cut Production Costs by 40% | StockFlow"
-        description="Master manufacturing costs with automated Bill of Materials software. Real-time inventory tracking, multi-level assembly management, and instant COGS calculations. Free trial, no credit card required."
+        title="Bill of Materials Software | Automate BOM & Cut Production Costs 40% | StockFlow"
+        description="Bill of materials software with real-time COGS, multi-level BOMs, and auto inventory deduction. Trusted by 2,400+ teams. Start free—no credit card."
       />
 
       <div className="font-sans antialiased">

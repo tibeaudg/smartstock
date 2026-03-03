@@ -231,9 +231,9 @@ export default function BestFreeAlternativeToKatanaMRP() {
         { label: 'Home', href: '/' },
         { label: 'Best Free Alternative to Katana MRP', href: '/best-free-alternative-to-katana-mrp' }
       ]}
-      heroTitle="Best Free Alternative to Katana MRP - StockFlow"
+      heroTitle="Katana MRP Alternative | Best Free 2026 - StockFlow"
       dateUpdated="06/01/2026"
-      heroDescription="Completely free forever vs $200-1,000+/month • Fast setup vs weeks • Save $2,900-14,000+ annually • Unlimited users"
+      heroDescription="Katana MRP alternative: StockFlow is free forever. Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
       previousArticle={{
         title: "Best Free Alternative to Fishbowl Inventory",
         href: "/best-free-alternative-to-fishbowl-inventory"
@@ -244,9 +244,9 @@ export default function BestFreeAlternativeToKatanaMRP() {
       }}
     >
       <SEO
-        title="Best Free Alternative to Katana MRP 2026 - StockFlow | Free Forever"
-        description="StockFlow is the best free alternative to Katana MRP. Completely free forever vs $200-1,000+/month. Fast setup, save $2,900-14,000+ annually."
-        keywords="best free alternative to katana mrp, katana mrp free alternative, free katana mrp alternative, katana mrp alternative free, stockflow vs katana mrp, free mrp software, cloud inventory software, katana mrp alternative, free inventory management, katana mrp replacement, free manufacturing software"
+        title="Katana MRP Alternative | Best Free 2026 | StockFlow"
+        description="Katana MRP alternative: StockFlow is free forever. Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
+        keywords="katana mrp alternative, best free alternative to katana mrp, katana mrp free alternative, free katana mrp alternative, katana mrp alternative free, stockflow vs katana mrp, free mrp software, cloud inventory software, free inventory management, katana mrp replacement, free manufacturing software"
         url="https://www.stockflowsystems.com/best-free-alternative-to-katana-mrp"
         locale="en"
       />

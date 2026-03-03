@@ -43,6 +43,10 @@ export default function StockFlowVsLightspeed() {
     {
       question: "Can I migrate from Lightspeed to StockFlow?",
       answer: "Yes. StockFlow provides free assisted migration from Lightspeed including products, warehouses, suppliers, stock levels, and historical data. Most migrations complete within 2-3 business days without downtime."
+    },
+    {
+      question: "How does StockFlow integrate with Lightspeed?",
+      answer: "StockFlow Lightspeed integration works via API and data migration. If you're moving from Lightspeed to StockFlow, we offer free assisted migration—export your products, warehouses, suppliers, and stock levels from Lightspeed and import into StockFlow within 2-3 business days. StockFlow also integrates with POS systems via API, so if you keep Lightspeed POS, you can sync inventory data between systems. For inventory-first businesses, migrating fully to StockFlow typically provides better stock management at lower cost (free tier vs $69+/month)."
     }
   ];
 
@@ -63,9 +67,9 @@ export default function StockFlowVsLightspeed() {
       faqData={faqData}
     >
       <SEO
-        title="StockFlow vs Lightspeed 2026 – Inventory Software vs POS System"
-        description="StockFlow vs Lightspeed comparison: inventory-first software (€0) vs POS-first system ($69-$229/month), EU data hosting vs US/CA, and integration approach. Find out which is better for inventory management."
-        keywords="stockflow vs lightspeed, lightspeed alternative, inventory software vs pos, lightspeed vs stockflow, inventory management software"
+        title="StockFlow Lightspeed Integration | Compare & Integrate | StockFlow"
+        description="StockFlow Lightspeed integration: connect inventory with Lightspeed POS via API. Free migration. EU data hosting. Compare StockFlow vs Lightspeed."
+        keywords="stockflow lightspeed integration, stockx lightspeed integration, stockflow vs lightspeed, lightspeed alternative, inventory software vs pos, lightspeed vs stockflow, inventory management software"
         url="https://www.stockflowsystems.com/stockflow-vs-lightspeed"
         publishedTime="2026-01-22T00:00:00Z"
         modifiedTime={new Date().toISOString()}
@@ -115,6 +119,18 @@ export default function StockFlowVsLightspeed() {
               <li><strong>Result:</strong> StockFlow is better for inventory-focused businesses; Lightspeed is better if you need a new POS system.</li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6" id="stockflow-lightspeed-integration">StockFlow Lightspeed Integration</h2>
+          <p className="text-gray-600 mb-6">
+            <strong>StockFlow Lightspeed integration</strong> lets you connect inventory management with Lightspeed POS. Many businesses using Lightspeed need better inventory control—StockFlow offers two paths: (1) <strong>Full migration:</strong> Move from Lightspeed to StockFlow and get free migration assistance. Products, warehouses, suppliers, and stock levels transfer in 2-3 business days. (2) <strong>API integration:</strong> Keep Lightspeed POS and sync inventory data via API so both systems stay in sync.
+          </p>
+          <p className="text-gray-600 mb-4">
+            Free migration from Lightspeed includes data export, import, mapping, and team training. No downtime. EU data hosting for GDPR compliance. See the feature comparison above for pricing and details.
+          </p>
         </div>
       </section>
 

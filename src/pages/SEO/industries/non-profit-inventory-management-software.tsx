@@ -136,9 +136,9 @@ export default function NonProfitInventorySoftwarePage() {
       keyTakeaways={<KeyTakeaways items={keyTakeaways} />}
     >
       <SEO
-        title="Best Non-Profit Inventory Software 2026 | Asset Tracking | StockFlow"
-        description="Optimize your non-profit with specialized inventory management. Track donations, assets, and supplies across multiple locations with ease."
-        keywords="non-profit inventory software, asset tracking for non-profits, donation tracking system, inventory management for NGOs, free non-profit software"
+        title="Non-Profit Inventory Management | Free Software | StockFlow"
+        description="Free non-profit inventory management. Track donations, assets & supplies. No credit card. Start free—built for NGOs and charities."
+        keywords="non profit inventory management, non-profit inventory software, asset tracking for non-profits, donation tracking system, inventory management for NGOs, free non-profit software"
         url="https://www.stockflowsystems.com/non-profit-inventory-software"
         structuredData={structuredData}
       />
@@ -147,6 +147,10 @@ export default function NonProfitInventorySoftwarePage() {
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
           <h1 className="text-4xl font-bold mb-6">What Is Non-Profit Inventory Management?</h1>
+          <p className="text-lg text-gray-600 leading-relaxed mb-4">
+            <strong>Non profit inventory management</strong> helps charities, NGOs, and mission-driven organizations 
+            track donated goods, supplies, and assets efficiently—so resources reach those in need.
+          </p>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             For non-profits, inventory isn't just "stock" it's the lifeblood of your mission. Whether you are managing <strong>donated medical supplies</strong>, outreach materials, or <strong>high-value IT assets</strong>, a manual spreadsheet is a liability. <strong>Inventory software for non-profits</strong> provides the visibility needed to ensure resources reach those in need.
           </p>
@@ -215,6 +219,18 @@ export default function NonProfitInventorySoftwarePage() {
               </ul>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Why StockFlow Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-8">Why Non-Profits Choose StockFlow</h2>
+          <p className="text-lg text-gray-700 mb-8 max-w-3xl mx-auto">
+            StockFlow is built for organizations with limited budgets. Our free <strong>non profit inventory management</strong> software 
+            gives you donor-ready reporting, mobile scanning for volunteers, and multi-location tracking—without subscription fees. 
+            Hundreds of NGOs and charities use StockFlow to maintain accountability and optimize resource allocation.
+          </p>
         </div>
       </section>
 

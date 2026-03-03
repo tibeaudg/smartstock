@@ -7,8 +7,8 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How Do You Categorize Inventory Items";
 const canonicalPath = "/how-do-you-categorize-inventory-items";
-const metaDescription = "Learn how to categorize inventory items effectively. Methods for organizing inventory by type, value, movement, and other criteria. ABC analysis and categorization best practices.";
-const keywords = "how to categorize inventory, inventory categorization, inventory classification, categorize inventory items, inventory organization, ABC analysis, inventory categories";
+const metaDescription = "Learn how to categorize inventory items—including televisions, electronics, and more. ABC analysis, product types, best practices for inventory systems.";
+const keywords = "how to categorize televisions in inventory systems, how to categorize inventory, inventory categorization, inventory classification, categorize inventory items, inventory organization, ABC analysis, inventory categories, categorize electronics";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Categorize inventory items by product type (electronics, clothing, etc.), value (ABC analysis: A=high value, B=moderate, C=low), movement frequency (fast/slow-moving), location, supplier, or custom categories. Use consistent categorization rules and apply them to all items. Inventory management software helps maintain categories digitally with tags, custom fields, and category hierarchies. Effective categorization improves organization, reporting, analytics, and decision-making. ABC analysis helps prioritize management efforts on high-value items.";
 const takeaways = [
@@ -60,6 +60,10 @@ const faqData = [
   {
     "question": "How does software help with categorization?",
     "answer": "Software helps by: maintaining categories digitally with tags and custom fields, ensuring consistency across all items, enabling category-based reporting and analytics, supporting category hierarchies, and making it easy to update and manage categories as inventory grows."
+  },
+  {
+    "question": "How do you categorize televisions in an inventory system?",
+    "answer": "To categorize televisions in an inventory system: (1) Create an Electronics or TVs category with subcategories by screen size (32\", 55\", 65\", etc.) or type (Smart TV, OLED, QLED). (2) Use unique SKUs that include brand, model, and size. (3) Track serial numbers for warranty and support. (4) Apply ABC analysis—premium TVs as A-items, entry-level as C-items. (5) Use inventory management software like StockFlow with custom fields for specs (resolution, connectivity) and barcode scanning for fast lookup."
   }
 ];
 const structuredData = [
@@ -109,7 +113,7 @@ export default function SeoHowDoYouCategorizeInventoryItemsPage() {
       
     >
       <SEO
-        title={`How Do You Categorize Inventory Items 2025 - Complete Guide | StockFlow`}
+        title="How to Categorize Inventory – TVs, Electronics & More | StockFlow"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -152,6 +156,24 @@ export default function SeoHowDoYouCategorizeInventoryItemsPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="televisions-electronics" className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-6">How to Categorize Televisions and Electronics in Inventory Systems</h2>
+          <p className="text-lg text-gray-700 leading-relaxed mb-4">
+            <strong>Categorizing televisions and electronics in inventory systems</strong> requires a structured approach. For TVs, create a hierarchy by product type (Smart TV, OLED, QLED), screen size (32\", 43\", 55\", 65\", 75\"), and brand. Use unique SKUs that combine brand, model, and size (e.g., TV-SAMSUNG-55-Q80B) for easy search and reordering.
+          </p>
+          <p className="text-lg text-gray-700 leading-relaxed mb-4">
+            Track serial numbers for warranty claims and support. Apply ABC analysis: premium or high-margin TVs as A-items with tight control, mid-range as B-items, and entry-level or accessories as C-items. <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">Inventory management software</Link> like StockFlow supports custom fields for specs (resolution, HDMI ports, connectivity), barcode scanning for quick lookup, and category hierarchies—making it easy to <strong>categorize televisions in inventory systems</strong> efficiently.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-gray-700">
+            <li>Create subcategories by screen size, type, or brand</li>
+            <li>Use consistent SKU patterns with serial number tracking</li>
+            <li>Apply ABC analysis based on value and margin</li>
+            <li>Leverage custom fields for technical specifications</li>
+          </ul>
         </div>
       </section>
 

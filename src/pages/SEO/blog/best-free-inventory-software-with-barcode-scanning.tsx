@@ -47,15 +47,15 @@ export default function InventoryManagementSoftware() {
 
   return (
     <SeoPageLayout 
-      title="Best Free Inventory Software with Barcode Scanning 2026 | StockFlow"
-      heroTitle="Best Free Inventory Software with Barcode Scanning"
+      title="Free Inventory Management Software with Barcode Scanner 2026 | StockFlow"
+      heroTitle="Free Inventory Management Software with Barcode Scanner"
       dateUpdated="06/01/2026"
       faqData={faqData}
     >
       <SEO
-        title="Best Free Inventory Software with Barcode Scanning 2026 | StockFlow"
-        description="Scan items with your phone and update stock instantly. Compare free tools in 2026 and pick one with unlimited items. Save 5 hrs/week."
-        keywords="free inventory software, barcode scanning software, inventory management system, free inventory tracker, barcode inventory app, free stock management, inventory control software, warehouse management free"
+        title="Free Inventory Management Software with Barcode Scanner 2026 | StockFlow"
+        description="Free inventory management software with barcode scanner. Scan with your phone, unlimited items. No credit card. Best free option 2026."
+        keywords="free inventory management software with barcode scanner, inventory management software with barcode scanner, inventory software with barcode scanner, best inventory management software with barcode scanner, free inventory software, barcode scanning software, inventory management system, free inventory tracker, barcode inventory app, free stock management, inventory control software, warehouse management free"
         url="https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning"
         locale="en"
       />
@@ -64,7 +64,7 @@ export default function InventoryManagementSoftware() {
       <section className="prose max-w-none mb-12">
         <div className="mb-8">
           <p className="text-lg leading-relaxed">
-            Finding truly free inventory management software with reliable barcode scanning capabilities can be challenging. Most solutions impose strict limitations on the number of products, monthly transactions, or scanning features. This comprehensive guide reviews the best free inventory software options that include native barcode scanning functionality, helping you choose the right solution for your business needs without hidden costs or restrictive paywalls.
+            <strong>Free inventory management software with barcode scanner</strong> is essential for accurate, efficient stock tracking. Finding a truly free option with reliable barcode scanning can be challenging—most solutions impose strict limits on products, transactions, or scanning features. This guide reviews the best <strong>inventory management software with barcode scanner</strong> and <strong>inventory software with barcode scanner</strong> options that offer native scanning, helping you choose without hidden costs or restrictive paywalls.
           </p>
           <p className="text-lg leading-relaxed mt-4">
             Whether you're managing a small warehouse, running an e-commerce operation, or tracking assets across multiple locations, barcode scanning dramatically improves accuracy and efficiency. The software solutions below offer genuine free tiers with integrated scanning capabilities that work with smartphone cameras or dedicated barcode scanners.

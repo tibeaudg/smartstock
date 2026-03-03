@@ -265,8 +265,8 @@ export default function WarehouseManagementSystemPage() {
 <>
 <HeaderPublic />
       <SEO
-        title="Warehouse Management System (WMS): Complete Guide 2026 | Process Flow, Types & Costs"
-        description="What is a warehouse management system? Complete WMS guide: process flow (6 steps), types comparison (cloud vs on-premise), costs ($0-$199/mo cloud, $30K+ on-premise), features & benefits. Learn how WMS software optimizes warehouse operations for 99% accuracy."
+        title="Warehouse Management System Process Flow | WMS Guide | StockFlow"
+        description="Warehouse management system process flow: 6 steps—receiving, putaway, storage, picking, packing, shipping. Complete WMS guide. Free plan available."
         keywords="warehouse management system, WMS, warehouse management system process flow, wms warehouse management system, warehouse management systems, warehousing management system, wms systems, warehouse management system wms, what is a warehouse management system, warehouse management system software, WMS software, cloud based warehouse management system, wms saas pricing, warehouse management system cost, types of warehouse management systems, SAP WMS, warehouse inventory systems, warehouse tracking system"
         url="https://www.stockflowsystems.com/warehouse-management-system"
         structuredData={structuredData}

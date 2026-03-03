@@ -118,6 +118,14 @@ const FAQ = () => {
     {
       q: "Can I try it free? What if it doesn't work for my shop?",
       a: "Absolutely! StockFlow is completely free forever - no credit card required. Try it with your actual products and if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them."
+    },
+    {
+      q: "Wat kost StockFlow? Is StockFlow gratis?",
+      a: "StockFlow is volledig gratis voor altijd. Geen creditcard vereist, geen abonnementskosten. Alle functies zijn inbegrepen: onbeperkte producten, gebruikers, vestigingen, BOM-beheer en rapportage. Bekijk onze prijzenpagina voor meer informatie."
+    },
+    {
+      q: "How much does StockFlow cost? What is the subscription price?",
+      a: "StockFlow is free forever. There is no subscription fee—our core inventory management platform is completely free with unlimited products, users, branches, and orders. No credit card required to get started."
     }
   ];
 
@@ -581,6 +589,49 @@ export const HomePage = () => {
       </section>
 
 
+
+      {/* Pricing & Abonnement Section */}
+      <section id="pricing" className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+              Prijzen & Abonnement
+            </h2>
+            <p className="text-xl text-gray-600">
+              StockFlow is gratis voor altijd. Geen creditcard, geen verborgen kosten.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-blue-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h3>
+              <p className="text-4xl font-bold text-blue-600 mb-4">€0 / maand</p>
+              <ul className="space-y-2 text-gray-700 mb-6">
+                {["Onbeperkte producten & gebruikers", "BOM-beheer inbegrepen", "Barcode scanning", "Multi-locatie tracking", "Rapportage & analytics"].map((f, i) => (
+                  <li key={i} className="flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/pricing">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  Bekijk Prijzen
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+            </div>
+            <div>
+              <p className="text-lg text-gray-700">
+                StockFlow inventory management is <strong>volledig gratis</strong>. Geen proefperiode die afloopt, 
+                geen limieten op producten of gebruikers. Start vandaag en beheer je voorraad professioneel—zonder kosten.
+              </p>
+              <p className="text-gray-600 mt-4">
+                Lees meer op onze <Link to="/pricing" className="text-blue-600 hover:underline font-semibold">prijzenpagina</Link>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* How It Works Section */}
       <section className="py-16 px-4 bg-white">

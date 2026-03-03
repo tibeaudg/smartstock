@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -259,7 +259,7 @@ export default function BarcodingPage() {
       <SEO
         title="Barcoding for Inventory Management 2026 - 99.7% Accuracy, 5x Faster | StockFlow"
         description="Implement barcoding for inventory management 2026. Generate, print, scan barcodes with smartphone. Achieve 99.7% accuracy, 5x faster than manual entry. Free plan available. Join for Free - no credit card required."
-        keywords="barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
+        keywords="inventory software with barcode scanner, barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
         url="https://www.stockflowsystems.com/barcoding"
         structuredData={structuredData}
       />

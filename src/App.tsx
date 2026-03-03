@@ -310,6 +310,9 @@ const AppRouter = () => {
         <Route path="/asset-tracking" element={<Navigate to="/solutions/asset-tracking" replace />} />
         <Route path="/what-is-bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
+        <Route path="/prix" element={<Navigate to="/pricing" replace />} />
+        <Route path="/prix-abonnement" element={<Navigate to="/pricing" replace />} />
+        <Route path="/non-profit-inventory-management" element={<Navigate to="/non-profit-inventory-management-software" replace />} />
 
         {/* DYNAMIC SEO ROUTES */}
         {getSeoRoutes().map(r => (

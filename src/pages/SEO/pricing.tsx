@@ -1,186 +1,199 @@
-
-import React from 'react';
+import SEO from '@/components/SEO';
+import { useLocation, Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
+import { getBreadcrumbPath } from '@/config/topicClusters';
+import { StructuredData } from '@/components/StructuredData';
+import { CheckCircle, ArrowRight, Zap, Users, Package } from 'lucide-react';
 
-const keyTakeaways = [
-  'Enterprise-grade Pricing systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
-  'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
-  'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
-];
+/**
+ * StockFlow Pricing Page
+ * Targets: prix abonnement stockflow inventory management, pricing, subscription
+ * Updated: March 2026
+ */
+export default function PricingPage() {
+  const location = useLocation();
 
-const Page = () => {
+  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
+    name: item.name,
+    url: item.path,
+    position: index + 1,
+  }));
+
+  const faqData = [
+    {
+      question: 'What does StockFlow cost? Is there a free plan?',
+      answer:
+        'StockFlow is completely free forever. There is no credit card required, no time limits, and no artificial caps on products, users, or locations. All core features including inventory tracking, barcode scanning, BOM management, and reporting are included at no cost.',
+    },
+    {
+      question: 'Is there a catch with the free plan?',
+      answer:
+        'No catch. StockFlow offers free inventory management to help growing businesses succeed. We only charge for optional enterprise features or very large-scale operations. Your data is always yours and you can export it anytime.',
+    },
+    {
+      question: 'How does StockFlow compare to paid inventory software?',
+      answer:
+        'StockFlow delivers the same core features as paid alternatives like Fishbowl, Sortly, or Zoho Inventory—real-time tracking, barcode scanning, multi-location support, BOM management—but at zero cost. Most businesses save $500–$5,000 per year by switching.',
+    },
+    {
+      question: 'Wat kost StockFlow? Is StockFlow gratis?',
+      answer:
+        'StockFlow is volledig gratis voor altijd. Geen creditcard vereist, geen abonnementskosten. Alle functies zijn inbegrepen: onbeperkte producten, gebruikers, vestigingen, BOM-beheer en rapportage. Ideaal voor Belgische en Nederlandse bedrijven.',
+    },
+  ];
+
+  const keyTakeaways = [
+    'StockFlow is free forever with no credit card required.',
+    'Unlimited products, users, branches, and orders included.',
+    'All features: BOM management, barcode scanning, reporting—at no cost.',
+    'Optional paid tiers only for enterprise-scale or custom needs.',
+  ];
+
+  const structuredData = generateSeoPageStructuredData({
+    title: 'StockFlow Pricing – Free Inventory Management | Prix Abonnement',
+    description:
+      'StockFlow pricing: free forever. No credit card, unlimited products & users. Prix abonnement StockFlow inventory management – completely free.',
+    url: location.pathname,
+    breadcrumbs,
+    faqData,
+    softwareData: {
+      name: 'StockFlow Inventory Management',
+      description:
+        'Free inventory management software with BOM, barcode scanning, and multi-location tracking.',
+      category: 'BusinessApplication',
+      operatingSystem: 'Web, iOS, Android',
+      price: '0',
+      currency: 'EUR',
+      features: [
+        'Unlimited products and users',
+        'BOM management',
+        'Barcode scanning',
+        'Multi-location tracking',
+        'Automated reorder alerts',
+        'Advanced reporting',
+      ],
+      url: location.pathname,
+      offers: [{ price: '0', priceCurrency: 'EUR', description: 'Free forever' }],
+    },
+    pageType: 'software',
+    includeWebSite: false,
+  });
+
+  const breadcrumbItems = breadcrumbs.map((b) => ({ name: b.name, path: b.url }));
+
   return (
     <SeoPageLayout
-      heroTitle="Advancing Enterprise Pricing: A Technical Framework"
-      title="Pricing Strategy & Automation Guide | StockFlow"
-      dateUpdated="january 9, 2026"
+      breadcrumbItems={breadcrumbItems}
+      heroTitle="StockFlow Pricing – Free Forever"
+      dateUpdated="2026-03-03"
+      heroDescription="Prix abonnement StockFlow: free inventory management software. No credit card, unlimited products, BOM, barcode scanning. Start free today."
       keyTakeaways={keyTakeaways}
+      pageLanguage="en"
     >
-      <div className="space-y-20 max-w-5xl mx-auto">
-        
-        {/* Section 1: Strategic Context */}
-        <section className="prose max-w-none">
-          <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-6">
-            The Critical Role of Pricing in Modern Logistics
+      <SEO
+        title="StockFlow Pricing | Free Forever – Prix Abonnement Inventory Management"
+        description="StockFlow pricing: free forever. No credit card. Unlimited products, users, BOM. Prix abonnement stockflow inventory management – start free today."
+        keywords="stockflow pricing, prix abonnement stockflow, stockflow inventory management price, free inventory software, stockflow kosten, stockflow abonnement"
+        url="https://www.stockflowsystems.com/pricing"
+        structuredData={structuredData}
+        alternateLanguages={[
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/pricing' },
+          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/voorraad-software' },
+          { lang: 'fr-BE', url: 'https://www.stockflowsystems.com/pricing' },
+        ]}
+      />
+
+      <StructuredData data={structuredData} />
+
+      <section className="px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <h2 id="pricing-plans" className="text-2xl font-bold text-gray-900 mb-6">
+            Simple, Transparent Pricing
           </h2>
-          <p className="text-xl text-gray-700 leading-relaxed mb-8">
-            In high-throughput environments, <strong>Pricing</strong> is no longer a back-office utility but a core driver of operational 
-            efficiency. Inadequate pricing systems lead to "dark inventory"—stock that exists physically but is 
-            invisible to the digital ledger. StockFlow Systems addresses this through high-fidelity data capture and 
-            proprietary synchronization algorithms.
+          <p className="text-lg text-gray-700 mb-8">
+            <strong>StockFlow inventory management</strong> is free forever. No hidden fees, no credit card
+            required. Whether you are a small shop or a growing business, you get full access to all core
+            features at zero cost.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">The Cost of Inaccuracy</h3>
-              <p className="text-gray-600">
-                Industry data suggests that manual tracking results in a 15-20% variance between recorded and actual stock. 
-                For enterprise operations, this translates to millions in lost revenue, expedited shipping fees, and 
-                dissatisfied clients.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">The Solution: Real-Time Governance</h3>
-              <p className="text-gray-600">
-                Transitioning to a digital-first pricing model allows for proactive management. 
-                Rather than reacting to shortages, systems predict them based on velocity and lead times.
-              </p>
-            </div>
-          </div>
-        </section>
 
-        {/* Section 2: Comparative Analysis Table */}
-        <section>
-          <div className="overflow-hidden border border-gray-200 rounded-2xl shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase">Feature</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase">Legacy Methods</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase bg-blue-50/50">StockFlow Pricing</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Update Frequency</td>
-                  <td className="px-6 py-4 text-gray-600">Batch (Daily/Weekly)</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">Real-Time Event Driven</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Data Integrity</td>
-                  <td className="px-6 py-4 text-gray-600">High Error Rate (Manual Entry)</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">99.9% (Automated Scanning)</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Scalability</td>
-                  <td className="px-6 py-4 text-gray-600">Limited to Single Site</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">Global Multi-Node Support</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Analytics</td>
-                  <td className="px-6 py-4 text-gray-600">Reactive Reporting</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">Predictive Forecasting</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Section 3: Implementation Roadmap */}
-        <section className="bg-slate-900 text-white p-12 rounded-3xl">
-          <h2 className="text-3xl font-bold mb-10">4-Step Framework for Pricing Modernization</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">01</div>
-              <h4 className="text-lg font-bold">Audit & Mapping</h4>
-              <p className="text-slate-400 text-sm">Identify all physical nodes and current data silos to create a unified schema.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">02</div>
-              <h4 className="text-lg font-bold">Edge Integration</h4>
-              <p className="text-slate-400 text-sm">Deploy IoT sensors, RFID, or mobile scanners for direct point-of-truth capture.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">03</div>
-              <h4 className="text-lg font-bold">Cloud Sync</h4>
-              <p className="text-slate-400 text-sm">Connect edge data to the centralized StockFlow engine for global visibility.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">04</div>
-              <h4 className="text-lg font-bold">Automated Logic</h4>
-              <p className="text-slate-400 text-sm">Activate reorder triggers and AI-driven demand forecasting modules.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 4: Use Case Deep-Dive */}
-        <section className="prose max-w-none">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Sector-Specific Applications</h2>
-          <div className="space-y-12 mt-8">
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              <div className="bg-gray-100 p-6 rounded-xl md:w-1/3">
-                <h3 className="text-xl font-bold mt-0 text-blue-900">Manufacturing</h3>
-                <p className="text-sm mb-0">Synchronize raw material arrival with production scheduling to ensure Just-In-Time (JIT) efficiency.</p>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border-2 border-blue-200 mb-12">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Package className="w-7 h-7 text-white" />
               </div>
-              <div className="bg-gray-100 p-6 rounded-xl md:w-1/3">
-                <h3 className="text-xl font-bold mt-0 text-green-900">E-commerce</h3>
-                <p className="text-sm mb-0">Prevent overselling by updating stock levels across Amazon, Shopify, and local warehouses simultaneously.</p>
-              </div>
-              <div className="bg-gray-100 p-6 rounded-xl md:w-1/3">
-                <h3 className="text-xl font-bold mt-0 text-purple-900">Distribution</h3>
-                <p className="text-sm mb-0">Optimize picking routes and bin locations based on the movement velocity of specific inventory items.</p>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Free Plan</h3>
+                <p className="text-3xl font-bold text-blue-600 mt-1">€0 / month</p>
+                <p className="text-gray-600 mt-2">Forever free. No credit card required.</p>
               </div>
             </div>
+            <ul className="space-y-3 mb-8">
+              {[
+                'Unlimited products and SKUs',
+                'Unlimited users and branches',
+                'Bill of Materials (BOM) management',
+                'Barcode & QR code scanning',
+                'Multi-location inventory tracking',
+                'Automated low-stock alerts',
+                'Purchase orders & sales orders',
+                'Advanced reporting & analytics',
+                'Mobile app (iOS & Android)',
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-gray-700">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Get Started Free <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
-        </section>
 
-        {/* Section 5: Technical FAQ */}
-        <section className="border-t border-gray-200 pt-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Technical Specifications FAQ</h2>
-          <div className="max-w-3xl mx-auto space-y-6">
-            {[
-              { 
-                q: "Does StockFlow support offline Pricing updates?", 
-                a: "Yes. Our mobile architecture supports offline caching. Once connectivity is restored, the system performs a conflict-resolution sync to ensure data parity." 
-              },
-              { 
-                q: "How does Pricing integration affect current ERP performance?", 
-                a: "StockFlow operates on a microservices layer that interacts with your ERP via asynchronous APIs, ensuring zero impact on the primary system's performance." 
-              },
-              { 
-                q: "What security protocols govern the pricing data?", 
-                a: "All data is encrypted in transit (TLS 1.3) and at rest (AES-256), with SOC2-compliant access controls and detailed user activity logs." 
-              },
-              { 
-                q: "Can the system manage serialized Pricing?", 
-                a: "StockFlow supports full serialization and lot-tracking, providing end-to-end traceability from manufacturer to end-user." 
-              }
-            ].map((faq, i) => (
-              <details key={i} className="group border-b border-gray-200 pb-6">
-                <summary className="list-none cursor-pointer text-lg font-bold text-gray-900 flex justify-between items-center group-hover:text-blue-600 transition-colors">
-                  {faq.q}
-                  <span className="text-2xl font-light group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  {faq.a}
-                </p>
+          <h2 id="why-free" className="text-2xl font-bold text-gray-900 mb-6 mt-12">
+            Why StockFlow Is Free
+          </h2>
+          <p className="text-gray-700 mb-6">
+            We believe every business deserves professional <strong>inventory management software</strong>{' '}
+            without the barrier of subscription fees. StockFlow helps retailers, manufacturers, and
+            distributors save thousands per year—money you can reinvest in growth.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white p-6 rounded-xl border border-gray-200">
+              <Zap className="w-10 h-10 text-blue-600 mb-4" />
+              <h4 className="font-semibold text-gray-900 mb-2">No Credit Card</h4>
+              <p className="text-gray-600 text-sm">Sign up in 2 minutes. Start tracking immediately.</p>
+            </div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200">
+              <Users className="w-10 h-10 text-blue-600 mb-4" />
+              <h4 className="font-semibold text-gray-900 mb-2">Unlimited Scale</h4>
+              <p className="text-gray-600 text-sm">Grow without hitting product or user limits.</p>
+            </div>
+            <div className="bg-white p-6 rounded-xl border border-gray-200">
+              <Package className="w-10 h-10 text-blue-600 mb-4" />
+              <h4 className="font-semibold text-gray-900 mb-2">All Features Included</h4>
+              <p className="text-gray-600 text-sm">BOM, barcode scanning, reporting—all free.</p>
+            </div>
+          </div>
+
+          <h2 id="faq" className="text-2xl font-bold text-gray-900 mb-6">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4">
+            {faqData.map((faq, index) => (
+              <details key={index} className="bg-gray-50 p-4 rounded-lg">
+                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
+                <p className="mt-2 text-gray-700">{faq.answer}</p>
               </details>
             ))}
           </div>
-        </section>
-
-        {/* Section 6: ROI Summary */}
-        <section className="bg-blue-600 rounded-3xl p-12 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4 italic italic">Maximize Your Operational Yield</h2>
-          <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
-            Advanced <strong>Pricing</strong> is an investment in your company's future scalability. 
-            Reduce waste, empower your staff, and achieve the operational clarity required to dominate your sector.
-          </p>
-        </section>
-
-      </div>
+        </div>
+      </section>
     </SeoPageLayout>
   );
-};
-
-export default Page;
+}
