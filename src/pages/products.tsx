@@ -12,8 +12,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useCategoryTree } from '@/hooks/useCategories';
 import { Card, CardContent } from '@/components/ui/card';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
-import type { CategoryTree } from '@/types/categoryTypes';
-import { flattenCategoryTree } from '@/lib/categories/categoryUtils';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -108,7 +106,7 @@ export default function CategorysPageSecured() {
   /* ============================================================================
      FIXED: Use a custom query to fetch products with branch filtering
      ============================================================================ */
-  const { tree, categories, isLoading: categoriesLoading } = useCategoryTree();
+  const { isLoading: categoriesLoading } = useCategoryTree();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   
   // Custom query for products with branch filtering
@@ -210,12 +208,10 @@ const categoryProductsData = useMemo(() => {
   /* ============================================================================
      NORMAL UI STATE
      ============================================================================ */
-  const allCategories = useMemo(() => flattenCategoryTree(tree), [tree]);
   const [viewMode, setViewMode] = useState<'compact' | 'expanded'>('compact');
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-  const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterWarehouse, setFilterWarehouse] = useState<string>('all');
   const [filterStockStatus, setFilterStockStatus] = useState<string>('all');
   const [minStock, setMinStock] = useState<string>('');
@@ -243,16 +239,14 @@ const categoryProductsData = useMemo(() => {
 
   const activeFiltersCount = useMemo(() => {
     let count = 0;
-    if (filterCategory !== 'all') count++;
     if (filterWarehouse !== 'all') count++;
     if (filterStockStatus !== 'all') count++;
     if (minStock || maxStock) count++;
     if (minPrice || maxPrice) count++;
     return count;
-  }, [filterCategory, filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+  }, [filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
 
   const clearFilters = () => {
-    setFilterCategory('all');
     setFilterWarehouse('all');
     setFilterStockStatus('all');
     setMinStock('');
@@ -336,20 +330,25 @@ const categoryProductsData = useMemo(() => {
         return matchesParent || matchesVariant;
       });
     }
-    
-    if (filterCategory !== 'all') {
-      filtered = filtered.filter((p: any) => p.category_id === filterCategory);
-    }
 
     if (filterStockStatus !== 'all') {
-      const stock = (p: any) => p.quantity_in_stock || 0;
-      const minStockLevel = (p: any) => p.min_stock_level || 0;
-      if (filterStockStatus === 'in-stock') {
-        filtered = filtered.filter((p: any) => stock(p) > minStockLevel);
-      } else if (filterStockStatus === 'low-stock') {
-        filtered = filtered.filter((p: any) => stock(p) > 0 && stock(p) <= minStockLevel);
-      } else if (filterStockStatus === 'out-of-stock') {
+      const stock = (p: any) => Number(p.quantity_in_stock) || 0;
+      const minLevel = (p: any) => Number(p.min_stock_level) || 0;
+      // Align with getStockStatus: Out = 0, Low = min>0 && 0<qty<min, In Stock = qty>0 && (min=0 || qty>=min)
+      if (filterStockStatus === 'out-of-stock') {
         filtered = filtered.filter((p: any) => stock(p) === 0);
+      } else if (filterStockStatus === 'low-stock') {
+        filtered = filtered.filter((p: any) => {
+          const qty = stock(p);
+          const min = minLevel(p);
+          return min > 0 && qty > 0 && qty < min;
+        });
+      } else if (filterStockStatus === 'in-stock') {
+        filtered = filtered.filter((p: any) => {
+          const qty = stock(p);
+          const min = minLevel(p);
+          return qty > 0 && (min === 0 || qty >= min);
+        });
       }
     }
     
@@ -408,7 +407,7 @@ const categoryProductsData = useMemo(() => {
     });
     
     return result;
-  }, [hierarchicalProducts, searchTerm, filterCategory, filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+  }, [hierarchicalProducts, searchTerm, filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
 
   // Apply collapse/expand filter to hide variants of collapsed parents
   // collapsedParents contains parent IDs that are collapsed (variants hidden)
@@ -965,24 +964,6 @@ const categoryProductsData = useMemo(() => {
         {showAdvancedFilters && (
           <Card className="p-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Category Filter */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Category</Label>
-                <Select value={filterCategory} onValueChange={setFilterCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All categories" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    {allCategories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
               {/* Stock Status Filter */}
               <div className="space-y-2">
                 <Label className="text-sm font-medium">Stock Status</Label>

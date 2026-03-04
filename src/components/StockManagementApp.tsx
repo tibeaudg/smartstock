@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 import { Layout } from './Layout';
 import { CreateBranchModal } from './CreateBranchModal';
+import { CurrencyBranchSync } from './CurrencyBranchSync';
 import { AuthContext } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
@@ -77,6 +78,7 @@ export const StockManagementApp: React.FC = () => {
 
   return (
     <UnreadMessagesProvider>
+        <CurrencyBranchSync />
         <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0 bg-background text-foreground transition-colors">
         <Layout
           currentTab={getCurrentTab()}

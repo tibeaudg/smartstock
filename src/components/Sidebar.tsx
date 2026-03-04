@@ -567,14 +567,19 @@ export const Sidebar = ({
                               transition-all duration-200
                               ${
                                 isActive
-                                  ? 'bg-white text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
+                                  ? 'bg-blue-100/25 text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
                                   : isExpanded
-                                    ? 'text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-950/80 border border-transparent'
-                                    : 'text-gray-600 hover:bg-white hover:text-blue-700 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border border-transparent'
+                                    ? 'text-gray-700 dark:text-gray-200 bg-blue-100/25 dark:bg-gray-950/80 border border-transparent'
+                                    : 'text-gray-600 hover:bg-blue-100/25 hover:text-blue-700 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border border-transparent'
                               }
                             `}
                           >
-                            <Icon className="w-4 h-4 mr-2 text-gray-400 group-hover:text-blue-600 dark:text-gray-500 dark:group-hover:text-blue-300" />
+                            <Icon className={`w-4 h-4 mr-2 ${isActive ? 'text-blue-700' : 'text-gray-600 group-hover:text-blue-600 dark:text-gray-500 dark:group-hover:text-blue-300'}`} />
+
+
+
+
+
                             <span className="flex-1 truncate">{label}</span>
                             {hasSubItems && (
                               <ChevronDown
@@ -606,8 +611,8 @@ export const Sidebar = ({
                                       text-left font-medium text-[11px] sm:text-xs transition-all duration-200
                                       ${
                                         isActive
-                                          ? 'bg-white text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
-                                          : 'text-gray-600 hover:bg-white hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
+                                          ? 'bg-blue-100/25 text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
+                                          : 'text-gray-600 hover:bg-blue-100/25 hover:text-blue-600 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
                                       }
                                     `}
                                   >

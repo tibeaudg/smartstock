@@ -233,29 +233,8 @@ export default function HelpCenterPage() {
       responseTime: '< 5 minutes',
       button: 'Start Chat',
       onClick: () => setChatOpen(true)
-    },
-    {
-      title: 'Email Support',
-      description: 'Send us your questions via email',
-      icon: <Mail className="h-8 w-8" />,
-      availability: 'Monday - Friday: 9:00 - 17:00',
-      responseTime: 'Typical response within 1 business day',
-      button: 'info@stockflow.be',
-      onClick: () => {
-        const link = document.createElement('a');
-        link.href = 'mailto:info@stockflow.be';
-        link.click();
-      }
-    },
-    {
-      title: 'Video Tutorials',
-      description: 'Watch step-by-step video guides',
-      icon: <Video className="h-8 w-8" />,
-      availability: 'Always available',
-      responseTime: 'Instant access',
-      button: 'Open tutorials',
-      onClick: () => window.open('/videos')
     }
+ 
   ];
 
   const filteredFaqs = useMemo(() => {
@@ -349,10 +328,7 @@ export default function HelpCenterPage() {
                 className="pl-9 pr-4 py-2.5 text-sm"
               />
             </div>
-            <p className="text-xs text-gray-500">
-              Search looks through FAQs and popular articles. For urgent production issues,
-              use live chat or email support.
-            </p>
+  
 
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <span className="text-xs font-medium text-gray-500">Filter by topic:</span>
@@ -507,62 +483,7 @@ export default function HelpCenterPage() {
               ))}
             </div>
 
-            <section aria-labelledby="contact-heading" className="space-y-4">
-              <div>
-                <h3 id="contact-heading" className="text-sm font-semibold text-gray-900">
-                  Contact Us
-                </h3>
-                <p className="mt-1 text-xs text-gray-500">
-                  Send us a message and we&apos;ll get back to you as soon as possible.
-                </p>
-              </div>
-              <Card>
-                <CardContent className="pt-6">
-                  <ContactForm />
-                </CardContent>
-              </Card>
-            </section>
 
-            <section aria-labelledby="popular-heading" className="space-y-4">
-              <div>
-                <h3 id="popular-heading" className="text-sm font-semibold text-gray-900">
-                  Popular Articles
-                </h3>
-                <p className="mt-1 text-xs text-gray-500">
-                  Most viewed help articles and guides.
-                </p>
-              </div>
-              {filteredArticles.length === 0 && hasSearchResults ? (
-                <p className="text-xs text-gray-500">
-                  No popular articles match your filters, but you may still find answers in
-                  the FAQ section.
-                </p>
-              ) : (
-                <div className="grid gap-3">
-                  {filteredArticles.map((article, index) => (
-                    <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardHeader className="pb-3">
-                        <div className="flex justify-between items-start mb-2">
-                          <Badge variant="secondary" className="text-[10px]">
-                            {article.category}
-                          </Badge>
-                          <span className="text-xs text-gray-500">{article.readTime}</span>
-                        </div>
-                        <CardTitle className="text-sm hover:text-blue-600 transition-colors">
-                          {article.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center text-xs text-gray-500">
-                          <Users className="h-3 w-3 mr-1" />
-                          {article.views.toLocaleString()} views
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </section>
           </section>
         </div>
       </div>

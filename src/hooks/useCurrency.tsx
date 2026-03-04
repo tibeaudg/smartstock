@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, createContext, useContext, ReactNode } from 'react';
 
-type Currency = 'EUR' | 'USD';
+type Currency = 'EUR' | 'USD' | 'GBP';
 
 interface CurrencyState {
   currency: Currency;
@@ -25,6 +25,19 @@ export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
   useEffect(() => {
     localStorage.setItem('currency', currency);
   }, [currency]);
+
+  // Listen for currency sync from branch_settings (when user is in dashboard)
+  useEffect(() => {
+    const handler = (e: CustomEvent<{ currency: string }>) => {
+      const c = e.detail?.currency;
+      if (c === 'EUR' || c === 'USD' || c === 'GBP') {
+        setCurrencyState(c as Currency);
+        setCurrencyState(c as Currency);
+      }
+    };
+    window.addEventListener('stockflow-currency-sync' as never, handler as EventListener);
+    return () => window.removeEventListener('stockflow-currency-sync' as never, handler as EventListener);
+  }, []);
 
   const setCurrency = useCallback((newCurrency: Currency) => {
     setCurrencyState(newCurrency);
