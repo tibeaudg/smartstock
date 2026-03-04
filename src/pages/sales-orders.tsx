@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
@@ -91,9 +92,20 @@ export default function SalesOrdersPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const navigate = useNavigate();
   
   // Modal states
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  // Open create modal when navigating from products table "-" button
+  useEffect(() => {
+    const state = location.state as { openCreate?: boolean } | undefined;
+    if (state?.openCreate) {
+      setShowCreateModal(true);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
   const [selectedSO, setSelectedSO] = useState<SalesOrder | null>(null);
   
   // Search and filter states

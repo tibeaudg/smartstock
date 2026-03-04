@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,7 +21,18 @@ export default function PurchaseOrdersPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  // Open create modal when navigating from products table "+" button
+  useEffect(() => {
+    const state = location.state as { openCreate?: boolean } | undefined;
+    if (state?.openCreate) {
+      setShowCreateModal(true);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
   const [selectedPO, setSelectedPO] = useState<PurchaseOrder | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');

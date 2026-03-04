@@ -4,11 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown, ScanLine, MoreVertical, Import } from 'lucide-react';
+import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown, ScanLine, MoreVertical, Import, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useCategoryTree } from '@/hooks/useCategories';
 import { Card, CardContent } from '@/components/ui/card';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
@@ -29,6 +29,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { StockQuickActionModal } from '@/components/products/StockQuickActionModal';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -208,12 +209,18 @@ const categoryProductsData = useMemo(() => {
   /* ============================================================================
      NORMAL UI STATE
      ============================================================================ */
+  const [searchParams] = useSearchParams();
+  const stockStatusParam = searchParams.get('stockStatus');
+  const initialStockStatusFromUrl = (stockStatusParam === 'low-stock' || stockStatusParam === 'out-of-stock')
+    ? stockStatusParam
+    : 'all';
+
   const [viewMode, setViewMode] = useState<'compact' | 'expanded'>('compact');
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
   const [isSelectAll, setIsSelectAll] = useState(false);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(initialStockStatusFromUrl !== 'all');
   const [filterWarehouse, setFilterWarehouse] = useState<string>('all');
-  const [filterStockStatus, setFilterStockStatus] = useState<string>('all');
+  const [filterStockStatus, setFilterStockStatus] = useState<string>(initialStockStatusFromUrl);
   const [minStock, setMinStock] = useState<string>('');
   const [maxStock, setMaxStock] = useState<string>('');
   const [minPrice, setMinPrice] = useState<string>('');
@@ -226,6 +233,10 @@ const categoryProductsData = useMemo(() => {
 
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
+  const [stockActionModal, setStockActionModal] = useState<{
+    product: any;
+    actionType: 'add' | 'remove';
+  } | null>(null);
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -480,17 +491,17 @@ const categoryProductsData = useMemo(() => {
     
     // Out of stock: quantity is 0
     if (qty === 0) {
-      return { label: 'Out', variant: 'destructive' as const, color: 'bg-red-100 text-red-800 border-red-200' };
+      return { label: 'Out', variant: 'destructive' as const, color: 'bg-red-50 text-red-700 border-2 border-red-300' };
     }
     
     // Low stock: quantity is greater than 0 but less than minimum level
     // Only check for low stock if minimum level is greater than 0
     if (min > 0 && qty < min) {
-      return { label: 'Low', variant: 'secondary' as const, color: 'bg-yellow-100 text-yellow-800 border-yellow-200' };
+      return { label: 'Low', variant: 'secondary' as const, color: 'bg-amber-50 text-amber-800 border-2 border-amber-300' };
     }
     
     // In stock: quantity is greater than or equal to minimum level
-    return { label: 'In Stock', variant: 'default' as const, color: 'bg-green-100 text-green-800 border-green-200' };
+    return { label: 'In Stock', variant: 'default' as const, color: 'bg-emerald-50 text-emerald-700 border-2 border-emerald-300' };
   };
 
   useEffect(() => {
@@ -1064,7 +1075,7 @@ const categoryProductsData = useMemo(() => {
           <div>
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full divide-y divide-gray-200">
+                <table className="w-full table-fixed divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                 <tr>
                   <th className={cn("text-left w-12", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>
@@ -1081,14 +1092,16 @@ const categoryProductsData = useMemo(() => {
                   <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>SKU</th>
                   <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Category</th>
                   <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Stock</th>
+                  <th className={cn("text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-20", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")}>Status</th>
                   {viewMode === 'expanded' && (
                     <>
                       <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                       <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost</th>
                       <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Availability</th>
                     </>
                   )}
+                  <th className={cn("w-16", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")} />
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -1212,7 +1225,7 @@ const categoryProductsData = useMemo(() => {
                         </div>
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm")}>
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           <span className={cn(
                             "font-medium",
                             (p.quantity_in_stock || 0) === 0 && "text-red-600",
@@ -1224,27 +1237,29 @@ const categoryProductsData = useMemo(() => {
                         >
                             {p.quantity_in_stock || 0}
                           </span>
-                          {(() => {
-                            const qty = Number(p.quantity_in_stock) || 0;
-                            const min = Number(p.min_stock_level) || 0;
-                            const stockStatus = getStockStatus(qty, min);
-                            return (
-                              <Badge 
-                                className={cn(
-                                  "text-xs px-1.5 py-0.5 font-medium rounded-full border",
-                                  stockStatus.color
-                                )}
-                              >
-                                {stockStatus.label}
-                              </Badge>
-                            );
-                          })()}
                         </div>
                         {viewMode === 'expanded' && p.min_stock_level !== undefined && (
-                          <div className="text-xs text-gray-500 mt-0.5">
+                          <div className="text-xs text-gray-500 mt-0.5 ">
                             Min: {p.min_stock_level || 0}
                           </div>
                         )}
+                      </td>
+                      <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4", "text-center w-20")}>
+                        {(() => {
+                          const qty = Number(p.quantity_in_stock) || 0;
+                          const min = Number(p.min_stock_level) || 0;
+                          const stockStatus = getStockStatus(qty, min);
+                          return (
+                            <Badge
+                              className={cn(
+                                "inline-flex items-center justify-center w-20 text-xs py-1 font-semibold rounded-md border-2 shadow-sm",
+                                stockStatus.color
+                              )}
+                            >
+                              {stockStatus.label}
+                            </Badge>
+                          );
+                        })()}
                       </td>
                       {viewMode === 'expanded' && (
                         <>
@@ -1284,6 +1299,40 @@ const categoryProductsData = useMemo(() => {
                           </td>
                         </>
                       )}
+                      <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4")} onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center gap-0.5 justify-end">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "h-6 w-6 text-green-600 hover:text-green-700 hover:bg-green-50",
+                              viewMode === 'compact' && "h-5 w-5"
+                            )}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setStockActionModal({ product: p, actionType: 'add' });
+                            }}
+                            title="Add stock"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className={cn(
+                              "h-6 w-6 text-red-600 hover:text-red-700 hover:bg-red-50",
+                              viewMode === 'compact' && "h-5 w-5"
+                            )}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setStockActionModal({ product: p, actionType: 'remove' });
+                            }}
+                            title="Remove stock"
+                          >
+                            <Minus className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
                   );
                 })}
@@ -1504,6 +1553,25 @@ const categoryProductsData = useMemo(() => {
           queryClient.invalidateQueries({ queryKey: ['products', 'categoryProducts', branchId, selectedCategoryIds, user?.id] });
           setShowImportDialog(false);
         }}
+      />
+
+      {/* Stock Quick Action Modal (+ / - buttons) */}
+      <StockQuickActionModal
+        isOpen={!!stockActionModal}
+        onClose={() => setStockActionModal(null)}
+        product={stockActionModal ? {
+          id: stockActionModal.product.id,
+          name: stockActionModal.product.name,
+          quantity_in_stock: stockActionModal.product.quantity_in_stock,
+          min_stock_level: stockActionModal.product.min_stock_level,
+          unit_price: stockActionModal.product.unit_price ?? stockActionModal.product.price,
+          branch_id: stockActionModal.product.branch_id ?? branchId ?? undefined,
+          is_variant: stockActionModal.product.is_variant,
+          variant_name: stockActionModal.product.variant_name,
+          parent_product_id: stockActionModal.product.parent_product_id,
+        } : null}
+        actionType={stockActionModal?.actionType ?? 'add'}
+        onSuccess={() => refetchProducts()}
       />
 
       {/* Barcode Scanner Modal */}

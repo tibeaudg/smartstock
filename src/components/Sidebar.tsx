@@ -25,6 +25,7 @@ import { ChatModal } from './ChatModal';
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
+import { useBranchSettings } from '@/hooks/useBranchSettings';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
@@ -80,6 +81,7 @@ export const Sidebar = ({
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { user } = useAuth();
+  const { organisationName } = useBranchSettings();
   const navigate = useNavigate();
   const location = useLocation();
   const [supportOpen, setSupportOpen] = useState(false);
@@ -353,8 +355,8 @@ export const Sidebar = ({
                 <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               {!isCollapsed && (
-                <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">
-                  stockflow
+                <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
+                  {organisationName?.trim() || 'stockflow'}
                 </h1>
               )}
             </div>

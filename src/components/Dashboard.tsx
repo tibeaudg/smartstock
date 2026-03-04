@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart, Plus, ScanLine, FilePlus2, ArrowUpRight, ArrowDownRight, Layers, Upload } from 'lucide-react';
+import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart, Plus, ScanLine, FilePlus2, ArrowUpRight, ArrowDownRight, Layers, Upload, AlertCircle, ClockIcon } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
+import { useQuery } from '@tanstack/react-query';
 import { useDashboardData, useBasicDashboardMetrics, useProductCount } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -14,6 +15,9 @@ import { AllProductsAnalytics } from '@/components/categories/AllProductsAnalyti
 import { useCategoryProducts } from '@/hooks/useCategories';
 import { Link, useNavigate } from 'react-router-dom';
 import { useBranches } from '@/hooks/useBranches';
+
+const LOW_STOCK_PRODUCTS_LINK = '/dashboard/categories?stockStatus=low-stock';
+const EMPTY_STOCK_PRODUCTS_LINK = '/dashboard/categories?stockStatus=out-of-stock';
 import { BarcodeScanner } from './BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { toast } from 'sonner';
@@ -217,6 +221,24 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   // Fetch all products for analytics
   const { data: allProducts = [] } = useCategoryProducts('all');
 
+  // Empty stock count: dedicated query matching products page filter (quantity === 0)
+  const { data: emptyStockCount = 0 } = useQuery({
+    queryKey: ['emptyStockCount', user?.id, activeBranch?.branch_id],
+    queryFn: async () => {
+      if (!user || !activeBranch?.branch_id) return 0;
+      const { count, error } = await supabase
+        .from('products')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('branch_id', activeBranch.branch_id)
+        .or('quantity_in_stock.eq.0,quantity_in_stock.is.null');
+      if (error) return 0;
+      return count ?? 0;
+    },
+    enabled: !!user && !!activeBranch?.branch_id,
+    staleTime: 1000 * 30, // 30 seconds
+  });
+
   // State voor grafiek-periode
   const [chartRangeType, setChartRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
   
@@ -281,10 +303,13 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     if (percent == null) {
       return (
         <div className="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-          No prior week data
         </div>
       );
     }
+
+
+
+
 
     const isUp = percent >= 0;
     const Icon = isUp ? ArrowUpRight : ArrowDownRight;
@@ -343,6 +368,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     totalValue: 0,
     totalProducts: 0,
     lowStockCount: 0,
+    emptyStockCount: 0,
     incomingToday: 0,
     outgoingToday: 0,
     totalTransactions: 0,
@@ -434,6 +460,10 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     const netPrev = weeklyOutgoingPrev - weeklyIncomingPrev;
     lowStockTrendPercent = computeTrendPercent(netCurrent, netPrev);
   }
+
+  // Empty stock trend: no prior week comparison data available yet
+  const emptyStockTrendPercent: number | null = null;
+  
 
   return (
     <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6 ">
@@ -536,6 +566,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             {renderTrend(totalValueTrendPercent)}
           </CardContent>
         </Card>
+      
 
 
 
@@ -565,9 +596,13 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
           </CardContent>
         </Card>
 
-        <Card className="bg-white hover:shadow-lg transition-shadow">
+
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
+        <Card className="bg-white hover:shadow-lg transition-shadow border-b border-orange-300 dark:border-yellow-800 col-span-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Low Stock Alerts</CardTitle>
+            <CardTitle className="text-sm sm:text-base font-semibold text-yellow-600">Low Stock Alerts</CardTitle>
             <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-600" />
           </CardHeader>
           <CardContent className="pt-0">
@@ -575,74 +610,47 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
               {safeMetrics.lowStockCount}
             </div>
             {renderTrend(lowStockTrendPercent)}
+            <Link to={LOW_STOCK_PRODUCTS_LINK}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 h-8 px-2 text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50"
+              >
+                View all
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 
-        {/* Warehouse Capacity */}
-        <Card className="bg-white hover:shadow-lg transition-shadow col-span-2 sm:col-span-1">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">Warehouse Capacity</CardTitle>
-            <Package className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600" />
-          </CardHeader>
-          <CardContent className="pt-0 flex items-center gap-4">
-            <div className="relative h-16 w-16 sm:h-20 sm:w-20">
-              <svg viewBox="0 0 36 36" className="h-full w-full">
-                <path
-                  className="text-gray-200"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                  d="M18 2.0845
-                     a 15.9155 15.9155 0 0 1 0 31.831
-                     a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  className="text-indigo-500"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeDasharray={`${capacityPercent}, 100`}
-                  strokeLinecap="round"
-                  fill="none"
-                  d="M18 2.0845
-                     a 15.9155 15.9155 0 0 1 0 31.831
-                     a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm sm:text-base font-semibold text-gray-900">
-                  {capacityPercent}%
-                </span>
-              </div>
-            </div>
-            <div className="flex-1">
-              <p className="text-xs sm:text-sm text-gray-500">
-                Based on current stock value vs 30-day peak
-              </p>
-              {renderTrend(totalValueTrendPercent)}
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Weekly Movements */}
-        <Card className="bg-white hover:shadow-lg transition-shadow">
+        <Card className="bg-white hover:shadow-lg transition-shadow border-b border-red-300 dark:border-red-800 col-span-1">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 sm:pb-3">
-            <CardTitle className="text-sm sm:text-base font-semibold text-gray-700">
-              Weekly Movements
-            </CardTitle>
-            <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+            <CardTitle className="text-sm sm:text-base font-semibold text-red-600">Empty Stock Alerts</CardTitle>
+            <AlertCircle className="h-5 w-5 sm:h-6 sm:w-6 text-red-600" />
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900">
-              {weeklyThroughputCurrent.toLocaleString()}
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-red-600">
+              {emptyStockCount}
             </div>
-            {renderTrend(throughputTrendPercent)}
+            {renderTrend(emptyStockTrendPercent)}
+            <Link to={EMPTY_STOCK_PRODUCTS_LINK}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mt-2 h-8 px-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                View all
+              </Button>
+            </Link>
           </CardContent>
         </Card>
-      </div>
+        </div>
 
 
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
+
+
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 sm:gap-6 mt-4 sm:mt-6">
 
 
               {/* Stock Movement Chart */}
@@ -710,78 +718,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
       </div>
 
 
-        {/* Low Stock Products / Suggested Restock */}
-        <div className="bg-white dark:bg-gray-950 rounded-lg shadow p-4 sm:p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-100">
-              {safeMetrics.lowStockProducts && safeMetrics.lowStockProducts.length > 0
-                ? 'Low Stock Alerts'
-                : 'Suggested Restock'}
-            </h2>
-          </div>
-
-          {safeMetrics.lowStockProducts && safeMetrics.lowStockProducts.length > 0 ? (
-            <div className="space-y-3">
-              {safeMetrics.lowStockProducts.slice(0, 5).map((product: any, index: number) => (
-                <div
-                  key={index}
-                  className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-950/30 rounded-lg border border-red-200 dark:border-red-800"
-                >
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 dark:text-gray-100 truncate">
-                      {product.product_name}
-                    </p>
-                    <p className="text-sm text-red-600 dark:text-red-400">
-                      Stock: {product.quantity_in_stock} | Min: {product.minimum_stock_level}
-                    </p>
-                  </div>
-                  <div className="text-right flex-shrink-0 ml-4">
-                    <p className="font-semibold text-red-600 dark:text-red-400">
-                      {formatPrice(product.unit_price)}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">per unit</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-2 overflow-x-auto">
-              <table className="min-w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-800">
-                    <th className="py-2 pr-4 font-semibold text-gray-600 dark:text-gray-300">
-                      Item Name
-                    </th>
-                    <th className="py-2 pr-4 font-semibold text-gray-600 dark:text-gray-300">
-                      Current Qty
-                    </th>
-                    <th className="py-2 pr-4 font-semibold text-gray-600 dark:text-gray-300">
-                      Reorder Point
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {suggestedRestock.map((item, index) => (
-                    <tr
-                      key={index}
-                      className="border-b last:border-b-0 border-gray-100 dark:border-gray-800"
-                    >
-                      <td className="py-2 pr-4 text-gray-900 dark:text-gray-100 truncate max-w-xs">
-                        {item.name}
-                      </td>
-                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">
-                        {item.currentQty.toLocaleString()}
-                      </td>
-                      <td className="py-2 pr-4 text-gray-700 dark:text-gray-200">
-                        {item.reorderPoint.toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+   
       </div>
 
       {/* Barcode Scanner Modal */}

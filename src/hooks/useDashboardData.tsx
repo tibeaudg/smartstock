@@ -13,6 +13,7 @@ interface DashboardData {
   totalValue: number;
   totalProducts: number;
   lowStockCount: number;
+  emptyStockCount: number;
   incomingToday: number;
   outgoingToday: number;
   totalTransactions: number;
@@ -73,6 +74,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           parent_product_id,
           categories(name)
         `)
+        .eq('user_id', user.id)
         .eq('branch_id', activeBranch.branch_id)
         .order('name');
 
@@ -99,6 +101,11 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         
         return isLowStock;
       }).length || 0;
+
+      // Calculate empty/out-of-stock count (quantity === 0) - must match products page "Out of Stock" filter
+      const emptyStockCount = productsData?.filter(product =>
+        (product.quantity_in_stock ?? 0) === 0
+      ).length || 0;
 
       // Get transactions for the selected range - limit to last 1000 transactions for performance
       let query = supabase
@@ -166,6 +173,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         totalValue,
         totalProducts: productsData?.length || 0,
         lowStockCount,
+        emptyStockCount,
         incomingToday,
         outgoingToday,
         totalTransactions: transactions?.length || 0,
@@ -318,7 +326,7 @@ export const useBasicDashboardMetrics = () => {
   const { activeBranch } = useBranches();
 
   const queryResult = useQuery({
-    queryKey: ['basicDashboardMetrics', activeBranch?.branch_id],
+    queryKey: ['basicDashboardMetrics', activeBranch?.branch_id, 'v2'],
     queryFn: async () => {
       if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
       
@@ -327,6 +335,7 @@ export const useBasicDashboardMetrics = () => {
         supabase
           .from('products')
           .select('quantity_in_stock, unit_price, minimum_stock_level')
+          .eq('user_id', user.id)
           .eq('branch_id', activeBranch.branch_id),
         supabase
           .from('stock_transactions')
@@ -350,6 +359,10 @@ export const useBasicDashboardMetrics = () => {
         product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0
       ).length;
 
+      const emptyStockCount = products.filter(product =>
+        (product.quantity_in_stock ?? 0) === 0
+      ).length;
+
       const incomingToday = transactions
         .filter(t => t.transaction_type === 'incoming' || t.transaction_type === 'in')
         .reduce((sum, t) => sum + t.quantity, 0);
@@ -362,6 +375,7 @@ export const useBasicDashboardMetrics = () => {
         totalValue,
         totalProducts: products.length,
         lowStockCount,
+        emptyStockCount,
         incomingToday,
         outgoingToday,
       };
