@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
+import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
 
 interface Product {
   id: string;
@@ -128,6 +129,7 @@ export const EditProductModal = ({
       }
 
       toast.success(`Stock successfully ${currentActionType === 'in' ? 'added' : 'removed'}`);
+      if (product.branch_id) triggerStockAlertIfNeeded(product.id, product.branch_id);
       onProductUpdated();
       // Invalideer relevante queries zodat data automatisch wordt gerefetched
       queryClient.invalidateQueries({ queryKey: ['products'] });

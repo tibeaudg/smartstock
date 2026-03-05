@@ -43,15 +43,34 @@ serve(async (req) => {
   })
 
   const body = await req.json().catch(() => ({}))
-  const { product_id, branch_id, alert_type, test, toEmail } = body
+  const { product_id, branch_id, alert_type, test, toEmail, check_alert } = body
 
   const isServiceRoleCall = token === supabaseServiceKey && supabaseServiceKey.length > 0
   const isTriggerCall = isServiceRoleCall && product_id && branch_id && alert_type
   const isTestCall = test === true && toEmail
+  const isCheckAlertCall = check_alert === true && product_id && branch_id
 
   if (isTriggerCall) {
     // Invoked by database trigger via pg_net
     return handleTriggerAlert(adminClient, body)
+  }
+
+  if (isCheckAlertCall) {
+    // Invoked by app after stock update - fallback when pg_net/vault unavailable
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    const { data: { user }, error: userError } = await adminClient.auth.getUser(token)
+    if (userError || !user) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid or expired token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+    return handleCheckAlert(adminClient, product_id, branch_id, user.id)
   }
 
   if (isTestCall) {
@@ -96,10 +115,137 @@ serve(async (req) => {
   }
 
   return new Response(
-    JSON.stringify({ success: false, error: 'Invalid request. Provide product_id, branch_id, alert_type (trigger) or test: true, toEmail (test).' }),
+    JSON.stringify({ success: false, error: 'Invalid request. Provide product_id, branch_id, alert_type (trigger), check_alert: true (app fallback), or test: true, toEmail (test).' }),
     { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
   )
 })
+
+/** App-level fallback: check if product warrants an alert and send. Called after stock updates when DB trigger/pg_net may not have fired. */
+async function handleCheckAlert(
+  adminClient: ReturnType<typeof createClient>,
+  productId: string,
+  branchId: string,
+  userId: string
+): Promise<Response> {
+  // Verify user has access to branch
+  const { data: membership } = await adminClient
+    .from('branches')
+    .select('id, user_id')
+    .eq('id', branchId)
+    .single()
+
+  if (!membership) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Branch not found' }),
+      { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const { data: bu } = await adminClient.from('branch_users').select('id').eq('branch_id', branchId).eq('user_id', userId).maybeSingle()
+  const { data: profile } = await adminClient.from('profiles').select('is_owner').eq('id', userId).single()
+  const hasAccess = membership.user_id === userId || bu != null || profile?.is_owner === true
+
+  if (!hasAccess) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Access denied' }),
+      { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const { data: product, error: productError } = await adminClient
+    .from('products')
+    .select('id, name, sku, quantity_in_stock, minimum_stock_level')
+    .eq('id', productId)
+    .single()
+
+  if (productError || !product) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Product not found' }),
+      { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const qty = Number(product.quantity_in_stock) ?? 0
+  const min = Number(product.minimum_stock_level) ?? 0
+  let alertType: 'low' | 'empty' | null = null
+
+  if (qty === 0) {
+    alertType = 'empty'
+  } else if (min > 0 && qty <= min) {
+    alertType = 'low'
+  }
+
+  if (!alertType) {
+    return new Response(
+      JSON.stringify({ success: true, message: 'No alert needed' }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const { data: branchSettings, error: bsError } = await adminClient
+    .from('branch_settings')
+    .select('stock_alert_enabled, stock_alert_email, stock_alert_low_enabled, stock_alert_empty_enabled')
+    .eq('branch_id', branchId)
+    .single()
+
+  if (bsError || !branchSettings?.stock_alert_email?.trim()) {
+    return new Response(
+      JSON.stringify({ success: true, message: 'Alerts not configured' }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  if (!branchSettings.stock_alert_enabled) {
+    return new Response(
+      JSON.stringify({ success: true, message: 'Alerts disabled' }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const lowEnabled = branchSettings.stock_alert_low_enabled ?? true
+  const emptyEnabled = branchSettings.stock_alert_empty_enabled ?? true
+  if (alertType === 'low' && !lowEnabled) {
+    return new Response(
+      JSON.stringify({ success: true, message: 'Low stock alerts disabled' }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+  if (alertType === 'empty' && !emptyEnabled) {
+    return new Response(
+      JSON.stringify({ success: true, message: 'Out of stock alerts disabled' }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const { data: recentAlert } = await adminClient
+    .from('stock_alert_log')
+    .select('id')
+    .eq('product_id', productId)
+    .eq('branch_id', branchId)
+    .eq('alert_type', alertType)
+    .gte('alerted_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+    .limit(1)
+    .maybeSingle()
+
+  if (recentAlert) {
+    return new Response(
+      JSON.stringify({ success: true, message: 'Alert recently sent (cooldown)' }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  await adminClient.from('stock_alert_log').insert({
+    product_id: productId,
+    branch_id: branchId,
+    alert_type: alertType,
+  })
+
+  return handleTriggerAlert(adminClient, {
+    product_id: productId,
+    branch_id: branchId,
+    alert_type: alertType,
+  })
+}
 
 async function handleTriggerAlert(
   adminClient: ReturnType<typeof createClient>,

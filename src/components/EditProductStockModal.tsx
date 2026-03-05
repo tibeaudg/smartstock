@@ -11,6 +11,7 @@ import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
 
 interface Product {
   id: string;
@@ -176,6 +177,7 @@ export const EditProductStockModal = ({
         throw new Error(`Error updating stock: ${updateError.message}`);
       }
       toast.success(`Stock successfully ${currentActionType === 'in' ? 'added' : 'removed'}`);
+      triggerStockAlertIfNeeded(prodId, branchId);
       onProductUpdated();
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });

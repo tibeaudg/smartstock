@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
 
 interface Product {
   id: string;
@@ -115,6 +116,9 @@ export const useStockMovement = (
           ? `Added ${quantityNum} items to stock`
           : `Removed ${quantityNum} items from stock`
       );
+
+      const branchId = product.branch_id || activeBranch?.branch_id;
+      if (branchId) triggerStockAlertIfNeeded(product.id, branchId);
 
       // Invalidate stock transactions query to refresh the movements list
       queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });

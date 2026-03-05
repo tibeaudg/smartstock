@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
 import { ArrowLeft, Plus, Minus } from 'lucide-react';
+import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
 
 // Enhanced Product interface with all possible fields
 interface Product {
@@ -354,6 +355,8 @@ export const ManualStockAdjustModal = ({
       }
 
       toast.success(`Stock successfully ${actionType === 'in' ? 'added' : 'removed'}`);
+
+      triggerStockAlertIfNeeded(productId, branchIdSanitized);
 
       // Invalidate queries
       queryClient.invalidateQueries({ queryKey: ['products'] });

@@ -13,6 +13,8 @@ export interface BranchSettings {
   organisation_name: string | null;
   stock_alert_enabled: boolean;
   stock_alert_email: string | null;
+  stock_alert_low_enabled: boolean | null;
+  stock_alert_empty_enabled: boolean | null;
   created_at: string;
   updated_at: string;
 }
@@ -24,6 +26,8 @@ export interface BranchSettingsUpdate {
   organisation_name?: string | null;
   stock_alert_enabled?: boolean;
   stock_alert_email?: string | null;
+  stock_alert_low_enabled?: boolean | null;
+  stock_alert_empty_enabled?: boolean | null;
 }
 
 const fetchBranchSettings = async (branchId: string): Promise<BranchSettings | null> => {
@@ -97,13 +101,15 @@ export const useBranchSettings = () => {
     },
   });
 
-  // Resolved values with fallbacks
+  // Resolved values with fallbacks (null = use default true for backward compat)
   const organisationName = branchSettings?.organisation_name ?? userProfile?.organization_name ?? '';
   const language = branchSettings?.language ?? 'en';
   const currency = branchSettings?.currency ?? 'USD';
   const country = branchSettings?.country ?? null;
   const stockAlertEnabled = branchSettings?.stock_alert_enabled ?? false;
   const stockAlertEmail = branchSettings?.stock_alert_email ?? null;
+  const stockAlertLowEnabled = branchSettings?.stock_alert_low_enabled ?? true;
+  const stockAlertEmptyEnabled = branchSettings?.stock_alert_empty_enabled ?? true;
 
   return {
     branchSettings,
@@ -119,5 +125,7 @@ export const useBranchSettings = () => {
     country,
     stockAlertEnabled,
     stockAlertEmail,
+    stockAlertLowEnabled,
+    stockAlertEmptyEnabled,
   };
 };

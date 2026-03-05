@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -90,6 +91,8 @@ export const GeneralSettings = () => {
     country,
     stockAlertEnabled,
     stockAlertEmail,
+    stockAlertLowEnabled,
+    stockAlertEmptyEnabled,
   } = useBranchSettings();
   const queryClient = useQueryClient();
 
@@ -99,6 +102,8 @@ export const GeneralSettings = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('');
   const [alertEnabled, setAlertEnabled] = useState(false);
   const [alertEmail, setAlertEmail] = useState('');
+  const [alertLowEnabled, setAlertLowEnabled] = useState(true);
+  const [alertEmptyEnabled, setAlertEmptyEnabled] = useState(true);
   const [isSendingTestAlert, setIsSendingTestAlert] = useState(false);
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -117,7 +122,9 @@ export const GeneralSettings = () => {
     setSelectedCurrency(currency ?? 'USD');
     setAlertEnabled(stockAlertEnabled ?? false);
     setAlertEmail(stockAlertEmail ?? '');
-  }, [organisationName, country, language, currency, stockAlertEnabled, stockAlertEmail]);
+    setAlertLowEnabled(stockAlertLowEnabled ?? true);
+    setAlertEmptyEnabled(stockAlertEmptyEnabled ?? true);
+  }, [organisationName, country, language, currency, stockAlertEnabled, stockAlertEmail, stockAlertLowEnabled, stockAlertEmptyEnabled]);
 
   const hasChanges =
     orgName !== (organisationName ?? '') ||
@@ -125,7 +132,9 @@ export const GeneralSettings = () => {
     selectedLanguage !== (language ?? 'en') ||
     selectedCurrency !== (currency ?? 'USD') ||
     alertEnabled !== (stockAlertEnabled ?? false) ||
-    alertEmail !== (stockAlertEmail ?? '');
+    alertEmail !== (stockAlertEmail ?? '') ||
+    alertLowEnabled !== (stockAlertLowEnabled ?? true) ||
+    alertEmptyEnabled !== (stockAlertEmptyEnabled ?? true);
 
   const handleSaveGeneral = () => {
     updateBranchSettings({
@@ -135,6 +144,8 @@ export const GeneralSettings = () => {
       currency: selectedCurrency || 'USD',
       stock_alert_enabled: alertEnabled,
       stock_alert_email: alertEmail?.trim() || null,
+      stock_alert_low_enabled: alertLowEnabled,
+      stock_alert_empty_enabled: alertEmptyEnabled,
     });
   };
 
@@ -419,6 +430,37 @@ export const GeneralSettings = () => {
           </div>
           {alertEnabled && (
             <>
+              <div className="space-y-3">
+                <Label>Alert types</Label>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="alert-low"
+                      checked={alertLowEnabled}
+                      onCheckedChange={(checked) => setAlertLowEnabled(checked === true)}
+                    />
+                    <label
+                      htmlFor="alert-low"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Low stock – when products go below minimum level
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="alert-empty"
+                      checked={alertEmptyEnabled}
+                      onCheckedChange={(checked) => setAlertEmptyEnabled(checked === true)}
+                    />
+                    <label
+                      htmlFor="alert-empty"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Out of stock – when products run out
+                    </label>
+                  </div>
+                </div>
+              </div>
               <div className="space-y-2 max-w-md">
                 <Label htmlFor="alert-email">Alert email address(es)</Label>
                 <Input

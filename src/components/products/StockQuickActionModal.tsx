@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Minus, FileText } from 'lucide-react';
+import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
 
 export interface ProductForStockAction {
   id: string;
@@ -140,6 +141,7 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
       if (updateError) throw updateError;
 
       toast.success(`Stock ${actionType === 'add' ? 'added' : 'removed'} successfully`);
+      triggerStockAlertIfNeeded(product.id, branchId);
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['categoryProducts'] });
       queryClient.invalidateQueries({ queryKey: ['dashboardData'] });
