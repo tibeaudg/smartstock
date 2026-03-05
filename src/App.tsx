@@ -48,7 +48,7 @@ import AdminPage from './pages/admin';
 import ResourcesPage from './pages/resources';
 import CustomersPage from './pages/customers';
 import CustomerDetailPage from './pages/customers/[id]';
-import ReportingPage from './pages/reporting';
+const ReportingPage = React.lazy(() => import('./pages/reporting'));
 import WarehousePage from "./pages/WarehousePage";
 import AboutPage from "./pages/about";
 import SupportPage from "./pages/help-center";
@@ -292,7 +292,12 @@ const AppRouter = () => {
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<><SEO title="Free Inventory Management Software" /><HomePage /></>} />
         <Route path="/features" element={<><SEO title="Features & Capabilities" /><FeaturesPage /></>} />
-        <Route path="/reporting" element={<><SEO title="Inventory Reporting & Analytics" /><ReportingPage /></>} />
+        <Route path="/reporting" element={
+          <React.Suspense fallback={<ContentLoadingScreen />}>
+            <SEO title="Inventory Reporting & Analytics" />
+            <ReportingPage />
+          </React.Suspense>
+        } />
         <Route path="/resources" element={<><SEO title="Resources & Guides" /><ResourcesPage /></>} />
         <Route path="/customers" element={<><SEO title="Our Customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />

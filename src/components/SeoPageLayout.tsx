@@ -31,14 +31,16 @@ const PRODUCTION_URL = 'https://www.stockflowsystems.com';
 /* ---------------------------------------------
    SEO Auto Discovery
 --------------------------------------------- */
-const seoPages = import.meta.glob('/src/pages/seo/**/*.tsx', { eager: true });
+const seoPagesUpper = import.meta.glob('/src/pages/SEO/**/*.tsx', { eager: false });
+const seoPagesLower = import.meta.glob('/src/pages/seo/**/*.tsx', { eager: false });
+const seoPages = { ...seoPagesUpper, ...seoPagesLower };
 
 const getAllArticles = () => {
   const articles: Array<{ title: string; href: string; category: string }> = [];
 
   Object.keys(seoPages).forEach((path) => {
     const fullPath = path
-      .replace('/src/pages/seo', '')
+      .replace(/\/src\/pages\/(SEO|seo)\//, '')
       .replace('.tsx', '')
       .replace('/index', '');
 
