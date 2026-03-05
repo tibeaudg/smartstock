@@ -495,8 +495,8 @@ const categoryProductsData = useMemo(() => {
         label: 'Out', 
         variant: 'destructive' as const, 
         color: 'bg-red-50 text-red-700 border-2 border-red-300',
-        stockTextClass: 'text-red-700 font-semibold',
-        borderLeftClass: 'border-l-4 border-l-red-600'
+        stockTextClass: 'text-red-500',
+        barBgClass: 'bg-red-600'
       };
     }
     
@@ -507,8 +507,8 @@ const categoryProductsData = useMemo(() => {
         label: 'Low', 
         variant: 'secondary' as const, 
         color: 'bg-amber-50 text-amber-800 border-2 border-amber-300',
-        stockTextClass: 'text-amber-800 font-semibold',
-        borderLeftClass: 'border-l-4 border-l-amber-500'
+        stockTextClass: 'text-yellow-500',
+        barBgClass: 'bg-amber-500'
       };
     }
     
@@ -517,8 +517,8 @@ const categoryProductsData = useMemo(() => {
       label: 'In Stock', 
       variant: 'default' as const, 
       color: 'bg-emerald-50 text-emerald-700 border-2 border-emerald-300',
-      stockTextClass: 'text-emerald-700 font-semibold',
-      borderLeftClass: 'border-l-4 border-l-emerald-600'
+      stockTextClass: 'text-emerald-800',
+      barBgClass: 'bg-emerald-600'
     };
   };
 
@@ -1095,10 +1095,11 @@ const categoryProductsData = useMemo(() => {
           <div className="-mx-4 sm:-mx-6">
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
+                <table className="w-full table-fixed divide-y divide-gray-200 border-collapse [&_th]:border-r [&_th]:border-gray-200 [&_th:last-child]:border-r-0 [&_td]:border-r [&_td]:border-gray-200 [&_td:last-child]:border-r-0">
                   <thead className="bg-gray-50">
                 <tr>
-                  <th className="w-1 min-w-[4px] p-0" aria-hidden="true" />
+                  <th className="w-[0px] min-w-[0px] p-0" aria-hidden="true" />
+                  <th className="w-[6px] min-w-[6px] p-0" aria-hidden="true" />
                   <th className={cn("text-left w-12", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>
                     <Checkbox
                       checked={isSelectAll}
@@ -1112,8 +1113,8 @@ const categoryProductsData = useMemo(() => {
                   <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Product</th>
                   <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>SKU</th>
                   <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Category</th>
-                  <th className={cn("text-left text-xs font-medium text-gray-500 uppercase tracking-wider", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Stock</th>
-                  <th className={cn("text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-20", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")}>Status</th>
+                  <th className={cn("text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[4rem]", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>Stock</th>
+                  <th className={cn("text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[5rem]", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")}>Status</th>
                   {viewMode === 'expanded' && (
                     <>
                       <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
@@ -1122,10 +1123,10 @@ const categoryProductsData = useMemo(() => {
                       <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Availability</th>
                     </>
                   )}
-                  <th className={cn("w-16", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")} />
+                  <th className={cn("text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[5rem]", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")}>Quick</th>
                 </tr>
               </thead>
-              <tbody className="bg-white ">
+              <tbody className="bg-white">
                 {paginatedProducts.map((p: any, index: number) => {
                   const isSelected = selectedProductIds.has(p.id);
                   const isVariant = p.isVariant || false;
@@ -1156,17 +1157,21 @@ const categoryProductsData = useMemo(() => {
                         navigate(`/dashboard/products/${p.id}`);
                       }}
                     >
-                      <td className={cn("w-1 min-w-[4px] p-0 align-top", stockStatus.borderLeftClass)} aria-hidden="true" />
+                      <td className="w-[2px] min-w-[2px] p-0 align-stretch" aria-hidden="true">
+                        <div className={cn("w-full min-h-[2rem] h-full", stockStatus.barBgClass)} />
+                      </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4")} onClick={(e) => e.stopPropagation()}>
                         <Checkbox
                           checked={isSelected}
                           onCheckedChange={() => toggleProductSelection(p.id)}
                         />
                       </td>
+                      
+
                       {viewMode === 'expanded' && (
                         <td className="px-4 py-4">
                           {!isVariant && (
-                            <div className="w-16 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden relative">
+                            <div className="w-16 h-16 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center overflow-hidden relative"> 
                               {p.image_url ? (
                                 <img 
                                   src={p.image_url} 
@@ -1249,27 +1254,33 @@ const categoryProductsData = useMemo(() => {
                           {p.category_name || '—'}
                         </div>
                       </td>
-                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm")}>
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={cn("font-medium", stockStatus.stockTextClass)}>
-                            {p.quantity_in_stock || 0}
+                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-center" : "px-4 py-4 text-center")}>
+                        <div className="flex flex-col items-center justify-center">
+                          <span className={cn(
+                            "font-bold tabular-nums min-w-[1.5rem]",
+                            viewMode === 'compact' ? "text-sm" : "text-base",
+                            stockStatus.stockTextClass
+                          )}>
+                            {p.quantity_in_stock ?? 0}
                           </span>
-                        </div>
-                        {viewMode === 'expanded' && p.min_stock_level !== undefined && (
-                          <div className="text-xs text-gray-500 mt-0.5 ">
-                            Min: {p.min_stock_level || 0}
-                          </div>
-                        )}
-                      </td>
-                      <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4", "text-center w-20")}>
-                        <Badge
-                          className={cn(
-                            "inline-flex items-center justify-center w-20 text-xs py-1 font-semibold rounded-md border-2 shadow-sm",
-                            stockStatus.color
+                          {viewMode === 'expanded' && p.min_stock_level !== undefined && (
+                            <div className="text-xs text-gray-500 mt-0.5">
+                              Min: {p.min_stock_level || 0}
+                            </div>
                           )}
-                        >
-                          {stockStatus.label}
-                        </Badge>
+                        </div>
+                      </td>
+                      <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4", "text-center min-w-[5rem]")}>
+                        <div className="flex justify-center">
+                          <Badge
+                            className={cn(
+                              "inline-flex items-center justify-center min-w-[4.5rem] text-xs py-1 font-semibold rounded-md border-2 shadow-sm",
+                              stockStatus.color
+                            )}
+                          >
+                            {stockStatus.label}
+                          </Badge>
+                        </div>
                       </td>
                       {viewMode === 'expanded' && (
                         <>
@@ -1309,14 +1320,14 @@ const categoryProductsData = useMemo(() => {
                           </td>
                         </>
                       )}
-                      <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4")} onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center gap-0.5 justify-end">
+                      <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4", "text-center min-w-[5rem]")} onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-center gap-1">
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
                             className={cn(
-                              "h-6 w-6 text-green-600 hover:text-green-700 hover:bg-green-50",
-                              viewMode === 'compact' && "h-5 w-5"
+                              "h-7 w-7 rounded-md border-green-300 bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800 hover:border-green-400 shadow-sm",
+                              viewMode === 'compact' && "h-6 w-6"
                             )}
                             onClick={(e) => {
                               e.stopPropagation();
@@ -1324,14 +1335,14 @@ const categoryProductsData = useMemo(() => {
                             }}
                             title="Add stock"
                           >
-                            <Plus className="h-3.5 w-3.5" />
+                            <Plus className="h-3.5 w-3.5 stroke-[2.5]" />
                           </Button>
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
                             className={cn(
-                              "h-6 w-6 text-red-600 hover:text-red-700 hover:bg-red-50",
-                              viewMode === 'compact' && "h-5 w-5"
+                              "h-7 w-7 rounded-md border-red-300 bg-red-50 text-red-700 hover:bg-red-100 hover:text-red-800 hover:border-red-400 shadow-sm",
+                              viewMode === 'compact' && "h-6 w-6"
                             )}
                             onClick={(e) => {
                               e.stopPropagation();
@@ -1339,7 +1350,7 @@ const categoryProductsData = useMemo(() => {
                             }}
                             title="Remove stock"
                           >
-                            <Minus className="h-3.5 w-3.5" />
+                            <Minus className="h-3.5 w-3.5 stroke-[2.5]" />
                           </Button>
                         </div>
                       </td>
