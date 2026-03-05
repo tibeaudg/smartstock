@@ -10,6 +10,7 @@ import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon
 import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { useQueryClient } from '@tanstack/react-query';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { useWarehouses } from '@/hooks/useWarehouses';
@@ -116,7 +117,7 @@ export default function ProductDetailPage() {
   const [showScanner, setShowScanner] = useState(false);
   
   // Categories state
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const { categories } = useCategoriesFetch();
   const [categoryOpen, setCategoryOpen] = useState(false);
 
   // Modal states
@@ -210,13 +211,6 @@ export default function ProductDetailPage() {
     }
   }, [currentProduct?.id, activeBranch?.branch_id]);
 
-  // Fetch categories
-  useEffect(() => {
-    if (user) {
-      fetchCategories();
-    }
-  }, [user]);
-
   const fetchVariants = async () => {
     if (!currentProduct || !activeBranch) return;
     
@@ -236,27 +230,6 @@ export default function ProductDetailPage() {
       toast.error('Failed to load variants');
     } finally {
       setIsLoadingVariants(false);
-    }
-  };
-
-  const fetchCategories = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      
-      setCategories(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
     }
   };
 

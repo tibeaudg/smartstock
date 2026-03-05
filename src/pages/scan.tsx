@@ -8,6 +8,7 @@ import { Scan, Plus, Camera, Package, AlertCircle, ArrowUpDown, Check, ChevronsU
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { useMobile } from '@/hooks/use-mobile';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { supabase } from '@/integrations/supabase/client';
@@ -63,7 +64,7 @@ export default function ScanPage() {
   });
 
   // State for categories and suppliers dropdowns
-  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const { categories, refetch: refetchCategories } = useCategoriesFetch();
   const [suppliers, setSuppliers] = useState<Array<{ id: string; name: string }>>([]);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [supplierOpen, setSupplierOpen] = useState(false);
@@ -190,34 +191,12 @@ export default function ScanPage() {
     }
   };
 
-  // Fetch categories and suppliers on component mount
+  // Fetch suppliers on component mount
   useEffect(() => {
     if (user) {
-      fetchCategorys();
       fetchSuppliers();
     }
   }, [user]);
-
-  const fetchCategorys = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      
-      setCategorys(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
 
   const fetchSuppliers = async () => {
     try {
@@ -779,8 +758,7 @@ export default function ScanPage() {
                                             return;
                                           }
                                           
-                                          setCategorys(prev => [...prev, newCategory]);
-                                          // Also set the category ID in the form
+                                          refetchCategories();
                                           setFormData(prev => ({ ...prev, categoryId: newCategory.id }));
                                           setCategoryOpen(false);
                                           toast.success('New category added!');

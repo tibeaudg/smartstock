@@ -12,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { categoryIcons, searchIcons, getIconSuggestions, type CategoryIcon } from '@/lib/categories/categoryIcons';
 import { categoryColors, getColorSuggestions, type CategoryColor } from '@/lib/categories/categoryColors';
 import { Search } from 'lucide-react';
-import * as LucideIcons from 'lucide-react';
+import { categoryIconMap } from '@/lib/categories/categoryIcons';
 import type { Category } from '@/types/categoryTypes';
 import { cn } from '@/lib/utils';
 
@@ -73,7 +73,7 @@ export const CategoryCustomizationModal: React.FC<CategoryCustomizationModalProp
                 <Label className="text-sm text-gray-600 mb-2 block">Suggestions</Label>
                 <div className="flex flex-wrap gap-2">
                   {iconSuggestions.map((icon) => {
-                    const IconComponent = LucideIcons[icon as keyof typeof LucideIcons] as React.ComponentType<{ className?: string }>;
+                    const IconComponent = categoryIconMap[icon] ?? categoryIconMap['Package'];
                     return (
                       <button
                         key={icon}
@@ -108,7 +108,7 @@ export const CategoryCustomizationModal: React.FC<CategoryCustomizationModalProp
             <ScrollArea className="h-64 border rounded-lg p-4">
               <div className="grid grid-cols-8 gap-2">
                 {filteredIcons.map((icon) => {
-                  const IconComponent = LucideIcons[icon as keyof typeof LucideIcons] as React.ComponentType<{ className?: string }>;
+                  const IconComponent = categoryIconMap[icon] ?? categoryIconMap['Package'];
                   return (
                     <button
                       key={icon}
@@ -216,11 +216,14 @@ export const CategoryCustomizationModal: React.FC<CategoryCustomizationModalProp
               >
                 {selectedIcon ? (
                   (() => {
-                    const IconComponent = LucideIcons[selectedIcon as keyof typeof LucideIcons] as React.ComponentType<{ className?: string }>;
+                    const IconComponent = categoryIconMap[selectedIcon] ?? categoryIconMap['Package'];
                     return <IconComponent className="w-6 h-6" />;
                   })()
                 ) : (
-                  <LucideIcons.Tag className="w-6 h-6" />
+                  (() => {
+                    const PlaceholderIcon = categoryIconMap['Tag'] ?? categoryIconMap['Package'];
+                    return <PlaceholderIcon className="w-6 h-6" />;
+                  })()
                 )}
               </div>
               <div>

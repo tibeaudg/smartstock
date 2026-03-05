@@ -3,6 +3,24 @@
  * Using lucide-react icon names
  */
 
+import React from 'react';
+import {
+  Package, Box, ShoppingCart, Tag, Tags,
+  Smartphone, Laptop, Monitor, Headphones, Radio, Camera, Gamepad2, Tv, Watch,
+  Utensils, Coffee, Wine, Beer, Apple, Carrot, Fish, ChefHat, IceCream,
+  Shirt, ShirtIcon, Shoe, Glasses, Bag, Handbag,
+  Home, Sofa, Lamp, Bed, Bath, Kitchen, Flower, TreePine, Sprout,
+  Wrench, Hammer, Screwdriver, Drill, Paintbrush, Paintbrush2, Ruler,
+  Dumbbell, Bike, Football, Basketball, Tennis, Swimming,
+  Heart, Pill, Stethoscope, Scissors, Sparkles, Droplet,
+  Book, BookOpen, Library, Music, Film, Video,
+  Car, Truck, Fuel,
+  Pen, PenTool, FileText, Folder, Printer, Calculator, Briefcase,
+  ToyBrick, Puzzle, Baby,
+  Dog, Cat, Bird,
+  Gift, Star, Diamond, Gem, Crown, Trophy, Award, Zap, Flame, Snowflake, Sun, Moon, Cloud,
+} from 'lucide-react';
+
 export const categoryIcons = [
   // General
   'Package',
@@ -133,6 +151,24 @@ export const categoryIcons = [
 ] as const;
 
 export type CategoryIcon = typeof categoryIcons[number];
+
+/** Map of icon names to components - avoids pulling in entire lucide-react barrel */
+export const categoryIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Package, Box, ShoppingCart, Tag, Tags,
+  Smartphone, Laptop, Monitor, Headphones, Radio, Camera, Gamepad2, Tv, Watch,
+  Utensils, Coffee, Wine, Beer, Apple, Carrot, Fish, ChefHat, IceCream,
+  Shirt, ShirtIcon, Shoe, Glasses, Bag, Handbag,
+  Home, Sofa, Lamp, Bed, Bath, Kitchen, Flower, TreePine, Sprout,
+  Wrench, Hammer, Screwdriver, Drill, Paintbrush, Paintbrush2, Ruler,
+  Dumbbell, Bike, Football, Basketball, Tennis, Swimming,
+  Heart, Pill, Stethoscope, Scissors, Sparkles, Droplet,
+  Book, BookOpen, Library, Music, Film, Video,
+  Car, Truck, Fuel,
+  Pen, PenTool, FileText, Folder, Printer, Calculator, Briefcase,
+  ToyBrick, Puzzle, Baby,
+  Dog, Cat, Bird,
+  Gift, Star, Diamond, Gem, Crown, Trophy, Award, Zap, Flame, Snowflake, Sun, Moon, Cloud,
+};
 
 /**
  * Get icon by name (case-insensitive)

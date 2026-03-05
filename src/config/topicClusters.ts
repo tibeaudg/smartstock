@@ -1240,10 +1240,15 @@ export function getRelatedPages(currentPath: string, limit: number = 6): PageMet
   return relatedPages.sort(() => 0.5 - Math.random()).slice(0, limit);
 }
 
+// Cached result for getAllSeoPages (pure function, computed once)
+let cachedAllSeoPages: PageMetadata[] | null = null;
+
 // Helper function to get ALL SEO pages from all clusters
 export function getAllSeoPages(): PageMetadata[] {
+  if (cachedAllSeoPages !== null) return cachedAllSeoPages;
+
   const allPages: PageMetadata[] = [];
-  
+
   for (const cluster of allClusters) {
     // Add pillar page
     if (isExistingSeoPath(cluster.pillar.path)) {
@@ -1256,7 +1261,7 @@ export function getAllSeoPages(): PageMetadata[] {
       }
     }
   }
-  
+
   // Remove duplicates (in case a page appears in multiple clusters)
   const uniquePages = new Map<string, PageMetadata>();
   for (const page of allPages) {
@@ -1264,9 +1269,12 @@ export function getAllSeoPages(): PageMetadata[] {
       uniquePages.set(page.path, page);
     }
   }
-  
-  // Sort by title for consistency
-  return Array.from(uniquePages.values()).sort((a, b) => a.title.localeCompare(b.title));
+
+  // Sort by title for consistency and cache
+  cachedAllSeoPages = Array.from(uniquePages.values()).sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+  return cachedAllSeoPages;
 }
 
 // Helper function to get breadcrumb path

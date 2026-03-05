@@ -12,7 +12,7 @@ import { useCategoryTree } from '@/hooks/useCategories';
 import { getCategoryIdsIncludingDescendants } from '@/lib/categories/categoryUtils';
 import type { CategoryTree } from '@/types/categoryTypes';
 import { cn } from '@/lib/utils';
-import * as LucideIcons from 'lucide-react';
+import { categoryIconMap } from '@/lib/categories/categoryIcons';
 
 interface Product {
   id: string;
@@ -89,9 +89,7 @@ export const CategoryGroupedProductList: React.FC<CategoryGroupedProductListProp
     if (!categoryInfo) return null;
 
     const isExpanded = expandedCategories.has(categoryId);
-    const IconComponent = categoryInfo.icon
-      ? (LucideIcons[categoryInfo.icon as keyof typeof LucideIcons] as React.ComponentType<{ className?: string }>)
-      : Package;
+    const IconComponent = (categoryInfo.icon && categoryIconMap[categoryInfo.icon]) || Package;
 
     const categoryColor = categoryInfo.color || '#6B7280';
     const textColor = categoryInfo.color ? '#FFFFFF' : '#000000';

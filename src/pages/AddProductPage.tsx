@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/errorHandler';
 import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, ArrowLeft, Package } from 'lucide-react';
@@ -141,7 +142,7 @@ export default function AddProductPage() {
     };
   }, [loading]);
   
-  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const { categories } = useCategoriesFetch();
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [variants, setVariants] = useState<VariantData[]>([]);
   const [showVariantsSection, setShowVariantsSection] = useState(false);
@@ -360,38 +361,6 @@ export default function AddProductPage() {
     };
      
   }, [form, activeBranch, hasVariants]);
-
-  // Fetch Categories
-  useEffect(() => {
-    if (user) {
-      console.log('[AddProductPage] Fetching categories.');
-      fetchCategorys();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
-
-  // --- Data Fetching Functions ---
-
-  const fetchCategorys = useCallback(async () => {
-    if (!user) return;
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      setCategorys(data || []);
-      console.log(`[AddProductPage] Fetched ${data?.length || 0} categories.`);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  }, [user]);
-
 
   // --- Utility Functions ---
 

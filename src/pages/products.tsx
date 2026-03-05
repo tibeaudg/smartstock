@@ -491,17 +491,35 @@ const categoryProductsData = useMemo(() => {
     
     // Out of stock: quantity is 0
     if (qty === 0) {
-      return { label: 'Out', variant: 'destructive' as const, color: 'bg-red-50 text-red-700 border-2 border-red-300' };
+      return { 
+        label: 'Out', 
+        variant: 'destructive' as const, 
+        color: 'bg-red-50 text-red-700 border-2 border-red-300',
+        stockTextClass: 'text-red-700 font-semibold',
+        borderLeftClass: 'border-l-4 border-l-red-600'
+      };
     }
     
     // Low stock: quantity is greater than 0 but less than minimum level
     // Only check for low stock if minimum level is greater than 0
     if (min > 0 && qty < min) {
-      return { label: 'Low', variant: 'secondary' as const, color: 'bg-amber-50 text-amber-800 border-2 border-amber-300' };
+      return { 
+        label: 'Low', 
+        variant: 'secondary' as const, 
+        color: 'bg-amber-50 text-amber-800 border-2 border-amber-300',
+        stockTextClass: 'text-amber-800 font-semibold',
+        borderLeftClass: 'border-l-4 border-l-amber-500'
+      };
     }
     
     // In stock: quantity is greater than or equal to minimum level
-    return { label: 'In Stock', variant: 'default' as const, color: 'bg-emerald-50 text-emerald-700 border-2 border-emerald-300' };
+    return { 
+      label: 'In Stock', 
+      variant: 'default' as const, 
+      color: 'bg-emerald-50 text-emerald-700 border-2 border-emerald-300',
+      stockTextClass: 'text-emerald-700 font-semibold',
+      borderLeftClass: 'border-l-4 border-l-emerald-600'
+    };
   };
 
   useEffect(() => {
@@ -885,24 +903,10 @@ const categoryProductsData = useMemo(() => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setViewMode(viewMode === 'compact' ? 'expanded' : 'compact')}>
-                {viewMode === 'compact' ? (
-                  <>
-                    <Maximize2 className="w-4 h-4 mr-2" />
-                    Expanded
-                  </>
-                ) : (
-                  <>
-                    <Minimize2 className="w-4 h-4 mr-2" />
-                    Compact
-                  </>
-                )}
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={exportToCSV}>
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </DropdownMenuItem>
-   
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -920,6 +924,22 @@ const categoryProductsData = useMemo(() => {
             className="pl-10"
           />
         </div>
+        <Button
+          variant="outline"
+          onClick={() => setViewMode(viewMode === 'compact' ? 'expanded' : 'compact')}
+          className="flex items-center gap-2"
+          title={viewMode === 'compact' ? 'Switch to expanded view' : 'Switch to compact view'}
+        >
+          {viewMode === 'compact' ? (
+            <>
+              <Maximize2 className="w-4 h-4" />
+            </>
+          ) : (
+            <>
+              <Minimize2 className="w-4 h-4" />
+            </>
+          )}
+        </Button>
         <Button 
           variant="outline" 
           onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
@@ -1072,12 +1092,13 @@ const categoryProductsData = useMemo(() => {
         </Card>
       ) : (
         <>
-          <div>
+          <div className="-mx-4 sm:-mx-6">
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full table-fixed divide-y divide-gray-200">
+                <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
                   <thead className="bg-gray-50">
                 <tr>
+                  <th className="w-1 min-w-[4px] p-0" aria-hidden="true" />
                   <th className={cn("text-left w-12", viewMode === 'compact' ? "px-2 py-2" : "px-4 py-2")}>
                     <Checkbox
                       checked={isSelectAll}
@@ -1104,11 +1125,14 @@ const categoryProductsData = useMemo(() => {
                   <th className={cn("w-16", viewMode === 'compact' ? "px-1 py-2" : "px-2 py-2")} />
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white ">
                 {paginatedProducts.map((p: any, index: number) => {
                   const isSelected = selectedProductIds.has(p.id);
                   const isVariant = p.isVariant || false;
                   const isParent = p.isParent || false;
+                  const qty = Number(p.quantity_in_stock) || 0;
+                  const min = Number(p.min_stock_level) || 0;
+                  const stockStatus = getStockStatus(qty, min);
                   // For alternating colors, only count parent rows
                   const parentIndex = paginatedProducts.slice(0, index).filter((item: any) => !item.isVariant).length;
                   const isEven = parentIndex % 2 === 0;
@@ -1117,21 +1141,22 @@ const categoryProductsData = useMemo(() => {
                     <tr 
                       key={p.id}
                       className={cn(
-                        "border-b transition-colors",
+                        "relative border-b transition-colors",
+                        "before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-white before:z-10",
                         isSelected && "bg-blue-50",
                         !isSelected && isVariant && isEven && "bg-gray-50",
                         !isSelected && isVariant && !isEven && "bg-gray-100",
                         !isSelected && !isVariant && isEven && "bg-white",
                         !isSelected && !isVariant && !isEven && "bg-gray-50",
                         !isSelected && "hover:bg-gray-100",
-                        viewMode === 'expanded' && "cursor-pointer",
-                        isVariant && "border-l-4 border-l-blue-300"
+                        viewMode === 'expanded' && "cursor-pointer"
                       )}
                       onClick={(e) => {
                         if ((e.target as HTMLElement).closest('input[type="checkbox"]')) return;
                         navigate(`/dashboard/products/${p.id}`);
                       }}
                     >
+                      <td className={cn("w-1 min-w-[4px] p-0 align-top", stockStatus.borderLeftClass)} aria-hidden="true" />
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4")} onClick={(e) => e.stopPropagation()}>
                         <Checkbox
                           checked={isSelected}
@@ -1226,15 +1251,7 @@ const categoryProductsData = useMemo(() => {
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm")}>
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className={cn(
-                            "font-medium",
-                            (p.quantity_in_stock || 0) === 0 && "text-red-600",
-                            (p.quantity_in_stock || 0) > 0 && (p.quantity_in_stock || 0) <= (p.min_stock_level || 0) && "text-yellow-600 bg-yellow-100"
-                          )}
-                          style={{
-                            backgroundColor: (p.quantity_in_stock || 0) > 0 && (p.quantity_in_stock || 0) <= (p.min_stock_level || 0) ? 'bg-yellow-300' : 'bg-transparent'
-                          }}
-                        >
+                          <span className={cn("font-medium", stockStatus.stockTextClass)}>
                             {p.quantity_in_stock || 0}
                           </span>
                         </div>
@@ -1245,21 +1262,14 @@ const categoryProductsData = useMemo(() => {
                         )}
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-1 py-1.5" : "px-2 py-4", "text-center w-20")}>
-                        {(() => {
-                          const qty = Number(p.quantity_in_stock) || 0;
-                          const min = Number(p.min_stock_level) || 0;
-                          const stockStatus = getStockStatus(qty, min);
-                          return (
-                            <Badge
-                              className={cn(
-                                "inline-flex items-center justify-center w-20 text-xs py-1 font-semibold rounded-md border-2 shadow-sm",
-                                stockStatus.color
-                              )}
-                            >
-                              {stockStatus.label}
-                            </Badge>
-                          );
-                        })()}
+                        <Badge
+                          className={cn(
+                            "inline-flex items-center justify-center w-20 text-xs py-1 font-semibold rounded-md border-2 shadow-sm",
+                            stockStatus.color
+                          )}
+                        >
+                          {stockStatus.label}
+                        </Badge>
                       </td>
                       {viewMode === 'expanded' && (
                         <>

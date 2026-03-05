@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { StockManagementApp } from "./components/StockManagementApp";
 import { HomePage } from "./components/HomePage";
 import { AuthPage } from "./components/AuthPage";
-import NotFound from "./pages/NotFound";
 import ServerError from "./pages/ServerError";
 import { Dashboard } from './components/Dashboard';
 import { StockMovements } from './components/StockMovements';
@@ -24,44 +23,45 @@ import { CurrencyProvider } from "./hooks/useCurrency";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
 import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
-import AdminUserDetailPage from './pages/AdminUserDetailPage';
-import AdminNotificationsPage from './pages/AdminNotificationsPage';
-import AdminSmtpPage from './pages/AdminSmtpPage';
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
 import { AdminChatList } from './components/AdminChatList';
-import { CustomReports } from './components/analytics/CustomReports';
-import { ExportData } from './components/analytics/ExportData';
-import { AdvancedReports } from './components/analytics/AdvancedReports';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { ErrorTestComponent } from './components/ErrorTestComponent';
-import FeaturesPage from './components/FeaturesPage';
 import CookieConsent from './components/CookieConsent';
 import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
-import HelpCenterPage from "./pages/help-center";
-import BillOfMaterialsPage from './components/products/BillOfMaterials';
-import BOMEditPage from './components/products/BillOfMaterials'
-import AdminPage from './pages/admin';
-import ResourcesPage from './pages/resources';
-import CustomersPage from './pages/customers';
-import CustomerDetailPage from './pages/customers/[id]';
+
 const ReportingPage = React.lazy(() => import('./pages/reporting'));
-import WarehousePage from "./pages/WarehousePage";
-import AboutPage from "./pages/about";
-import SupportPage from "./pages/help-center";
-import VideosPage from "./pages/videos";
-import IntegrationsPage from "./pages/integrations";
-import SalesOrdersPage from "./pages/sales-orders";
-import PurchaseOrdersPage from "./pages/purchase-orders";
-import VendorManagementPage from "./pages/customer-management";
-import CreateCustomerPage from "./pages/CreateCustomerPage";
-import EditCustomerPage from "./pages/EditCustomerPage";
-import SuppliersPage from "./pages/suppliers";
-import CreateSupplierPage from "./pages/CreateSupplierPage";
-import EditSupplierPage from "./pages/EditSupplierPage";
+const AdminUserDetailPage = React.lazy(() => import('./pages/AdminUserDetailPage'));
+const AdminNotificationsPage = React.lazy(() => import('./pages/AdminNotificationsPage'));
+const AdminSmtpPage = React.lazy(() => import('./pages/AdminSmtpPage'));
+const FeaturesPage = React.lazy(() => import('./components/FeaturesPage'));
+const ResourcesPage = React.lazy(() => import('./pages/resources'));
+const CustomersPage = React.lazy(() => import('./pages/customers'));
+const CustomerDetailPage = React.lazy(() => import('./pages/customers/[id]'));
+const WarehousePage = React.lazy(() => import("./pages/WarehousePage"));
+const AboutPage = React.lazy(() => import("./pages/about"));
+const ContactPage = React.lazy(() => import("./pages/contact"));
+const VideosPage = React.lazy(() => import("./pages/videos"));
+const IntegrationsPage = React.lazy(() => import("./pages/integrations"));
+const SalesOrdersPage = React.lazy(() => import("./pages/sales-orders"));
+const PurchaseOrdersPage = React.lazy(() => import("./pages/purchase-orders"));
+const VendorManagementPage = React.lazy(() => import("./pages/customer-management"));
+const CreateCustomerPage = React.lazy(() => import("./pages/CreateCustomerPage"));
+const EditCustomerPage = React.lazy(() => import("./pages/EditCustomerPage"));
+const SuppliersPage = React.lazy(() => import("./pages/suppliers"));
+const CreateSupplierPage = React.lazy(() => import("./pages/CreateSupplierPage"));
+const EditSupplierPage = React.lazy(() => import("./pages/EditSupplierPage"));
+const AdminPage = React.lazy(() => import('./pages/admin'));
+const BillOfMaterialsPage = React.lazy(() => import('./components/products/BillOfMaterials'));
+const BOMEditPage = React.lazy(() => import('./components/products/BillOfMaterials'));
+const CustomReports = React.lazy(() => import('./components/analytics/CustomReports').then(m => ({ default: m.CustomReports })));
+const ExportData = React.lazy(() => import('./components/analytics/ExportData').then(m => ({ default: m.ExportData })));
+const AdvancedReports = React.lazy(() => import('./components/analytics/AdvancedReports').then(m => ({ default: m.AdvancedReports })));
+const HelpCenterPage = React.lazy(() => import("./pages/help-center"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
@@ -288,6 +288,7 @@ const AppRouter = () => {
 
   return (
     <ContentWrapper>
+      <Suspense fallback={<ContentLoadingScreen />}>
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<><SEO title="Free Inventory Management Software" /><HomePage /></>} />
@@ -302,6 +303,7 @@ const AppRouter = () => {
         <Route path="/customers" element={<><SEO title="Our Customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" /><AuthRoute /></>} />
+        <Route path="/contact" element={<><SEO title="Contact" /><ContactPage /></>} />
         <Route path="/about" element={<><SEO title="About StockFlow" /><AboutPage /></>} />
         <Route
           path="/help-center"
@@ -404,6 +406,7 @@ const AppRouter = () => {
         <Route path="/500" element={<ServerError />} />
         <Route path="*" element={<><SEO title="Page Not Found" /><NotFound /></>} />
       </Routes>
+      </Suspense>
     </ContentWrapper>
   );
 };

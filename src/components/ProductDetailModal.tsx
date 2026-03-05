@@ -29,6 +29,7 @@ import { useCurrency } from '@/hooks/useCurrency';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
+import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { useWarehouses } from '@/hooks/useWarehouses';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { toast } from 'sonner';
@@ -131,7 +132,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [showScanner, setShowScanner] = useState(false);
   
   // Categories state
-  const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
+  const { categories, refetch: refetchCategories } = useCategoriesFetch({ enabled: !!user && isOpen });
   const [categoryOpen, setCategoryOpen] = useState(false);
   
   // Current product state (refreshed after updates)
@@ -185,34 +186,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       setVariants([]);
     }
   }, [isOpen, currentProduct?.id, activeBranch?.branch_id, fetchVariants]);
-
-  // Fetch categories
-  useEffect(() => {
-    if (user && isOpen) {
-      fetchCategories();
-    }
-  }, [user, isOpen]);
-
-  const fetchCategories = async () => {
-    if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      
-      setCategories(data || []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
 
   const handleVariantAdded = () => {
     fetchVariants();
@@ -1216,7 +1189,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                           return;
                                         }
                                         
-                                        setCategories(prev => [...prev, newCategory]);
+                                        refetchCategories();
                                         setForm(prev => ({ ...prev, category_id: newCategory.id }));
                                         setCategoryOpen(false);
                                         toast.success('New category added!');

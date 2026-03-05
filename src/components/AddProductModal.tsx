@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { toast } from 'sonner';
 import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -159,7 +160,7 @@ export const AddProductModal = ({
     };
   }, [loading]);
   
-  const [categories, setCategorys] = useState<Array<{ id: string; name: string }>>([]);
+  const { categories } = useCategoriesFetch({ enabled: !!user && isOpen });
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [variants, setVariants] = useState<VariantData[]>([]);
   const [showVariantsSection, setShowVariantsSection] = useState(false);
@@ -387,38 +388,6 @@ export const AddProductModal = ({
     };
      
   }, [form, activeBranch, hasVariants]);
-
-  // Fetch Categories
-  useEffect(() => {
-    if (user && isOpen) {
-      console.log('[AddProductModal] Fetching categories.');
-      fetchCategorys();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isOpen]);
-
-  // --- Data Fetching Functions ---
-
-  const fetchCategorys = useCallback(async () => {
-    if (!user) return;
-    try {
-      const { data, error } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('user_id', user.id)
-        .order('name');
-      
-      if (error) {
-        console.error('Error fetching categories:', error);
-        return;
-      }
-      setCategorys(data || []);
-      console.log(`[AddProductModal] Fetched ${data?.length || 0} categories.`);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  }, [user]);
-
 
   // --- Utility Functions ---
 

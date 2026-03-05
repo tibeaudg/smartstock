@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { CategoryTree } from '@/types/categoryTypes';
 import { cn } from '@/lib/utils';
-import * as LucideIcons from 'lucide-react';
+import { categoryIconMap } from '@/lib/categories/categoryIcons';
 
 interface CategoryGridViewProps {
   tree: CategoryTree[];
@@ -50,9 +50,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   onAddChild,
 }) => {
   // Get icon component
-  const IconComponent = category.icon 
-    ? (LucideIcons[category.icon as keyof typeof LucideIcons] as React.ComponentType<{ className?: string }>)
-    : Package;
+  const IconComponent = (category.icon && categoryIconMap[category.icon]) || Package;
 
   const categoryColor = category.color || '#6B7280';
   const textColor = category.color ? '#FFFFFF' : '#000000';
