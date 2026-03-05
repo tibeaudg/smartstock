@@ -1158,7 +1158,7 @@ const categoryProductsData = useMemo(() => {
                       }}
                     >
                       <td className="w-[2px] min-w-[2px] p-0 align-stretch" aria-hidden="true">
-                        <div className={cn("w-full min-h-[2rem] h-full", stockStatus.barBgClass)} />
+                        <div className={cn("w-full min-h-[2.5rem] ", stockStatus.barBgClass)} />
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4")} onClick={(e) => e.stopPropagation()}>
                         <Checkbox
