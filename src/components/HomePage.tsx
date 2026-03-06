@@ -120,12 +120,12 @@ const FAQ = () => {
       a: "Absolutely! StockFlow is completely free forever - no credit card required. Try it with your actual products and if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them."
     },
     {
-      q: "Wat kost StockFlow? Is StockFlow gratis?",
-      a: "StockFlow is volledig gratis voor altijd. Geen creditcard vereist, geen abonnementskosten. Alle functies zijn inbegrepen: onbeperkte producten, gebruikers, vestigingen, BOM-beheer en rapportage. Bekijk onze prijzenpagina voor meer informatie."
+      q: "How much does StockFlow cost? Is StockFlow free?",
+      a: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, branches, BOM management and reporting. Read our pricing page for more information."
     },
     {
       q: "How much does StockFlow cost? What is the subscription price?",
-      a: "StockFlow is free forever. There is no subscription fee—our core inventory management platform is completely free with unlimited products, users, branches, and orders. No credit card required to get started."
+      a: "StockFlow is free forever. There is no subscription fee our core inventory management platform is completely free with unlimited products, users, branches, and orders. No credit card required to get started."
     }
   ];
 
@@ -135,13 +135,13 @@ const FAQ = () => {
         <div key={idx} className="mb-4">
           <button
             onClick={() => setOpenIndex(openIndex === idx ? -1 : idx)}
-            className="w-full text-left p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow flex justify-between items-center"
+            className="w-full text-left p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow flex justify-between items-center"
           >
             <span className="font-semibold text-gray-900 pr-4">{faq.q}</span>
             <ChevronRight className={`w-5 h-5 text-blue-600 transition-transform ${openIndex === idx ? 'rotate-90' : ''}`} />
           </button>
           {openIndex === idx && (
-            <div className="mt-2 p-6 bg-gray-50 rounded-lg">
+            <div className="mt-2 p-6 bg-gray-50 rounded-lg border border-gray-200">
               <p className="text-gray-700 leading-relaxed">{faq.a}</p>
             </div>
           )}
@@ -342,7 +342,7 @@ export const HomePage = () => {
       </section>
 
       {/* Social Proof Section */}
-      <section className="py-16 px-4 bg-blue-50">
+      <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -370,7 +370,7 @@ export const HomePage = () => {
               See It In Action
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Scan a barcode and watch stock update instantly. No special hardware needed—just your phone's camera.
+              Scan a barcode and watch stock update instantly. No special hardware needed just your phone's camera.
             </p>
           </div>
 
@@ -595,38 +595,33 @@ export const HomePage = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Prijzen & Abonnement
+              Pricing & Subscription
             </h2>
             <p className="text-xl text-gray-600">
-              StockFlow is gratis voor altijd. Geen creditcard, geen verborgen kosten.
+              StockFlow is free forever with no credit card required.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-blue-200">
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h3>
-              <p className="text-4xl font-bold text-blue-600 mb-4">€0 / maand</p>
+              <p className="text-4xl font-bold text-blue-600 mb-4">$0 / month</p>
               <ul className="space-y-2 text-gray-700 mb-6">
-                {["Onbeperkte producten & gebruikers", "BOM-beheer inbegrepen", "Barcode scanning", "Multi-locatie tracking", "Rapportage & analytics"].map((f, i) => (
+                {["Unlimited products & users", "BOM management included", "Barcode scanning", "Multi-location tracking", "Reporting & analytics"].map((f, i) => (
                   <li key={i} className="flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
                     {f}
                   </li>
                 ))}
               </ul>
-              <Link to="/pricing">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  Bekijk Prijzen
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+             
             </div>
             <div>
               <p className="text-lg text-gray-700">
-                StockFlow inventory management is <strong>volledig gratis</strong>. Geen proefperiode die afloopt, 
-                geen limieten op producten of gebruikers. Start vandaag en beheer je voorraad professioneel—zonder kosten.
+                StockFlow inventory management is <strong>free forever</strong>. No trial period, 
+                no limits on products or users. Start today and manage your inventory professionally without costs.
               </p>
               <p className="text-gray-600 mt-4">
-                Lees meer op onze <Link to="/pricing" className="text-blue-600 hover:underline font-semibold">prijzenpagina</Link>.
+                Read more on our <Link to="/pricing" className="text-blue-600 hover:underline font-semibold">pricing page</Link>.
               </p>
             </div>
           </div>
@@ -634,7 +629,7 @@ export const HomePage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 px-4 bg-white">
+      <section className="py-16 px-4 bg-blue-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -660,7 +655,7 @@ export const HomePage = () => {
                 description: "Get alerts, identify bestsellers, and flag dead stock automatically."
               }
             ].map((step, idx) => (
-              <div key={idx} className="flex items-start gap-6 bg-white p-6 rounded-xl shadow-md">
+              <div key={idx} className="flex items-start gap-6 bg-white p-6 rounded-xl border border-gray-200 shadow-md">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white text-2xl font-bold">{step.step}</span>
                 </div>

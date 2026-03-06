@@ -17,15 +17,14 @@ import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useMobile } from '@/hooks/use-mobile';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   useCategories, 
-  useCreateCategory, 
   useUpdateCategory, 
   useDeleteCategory,
   useCategoryRealtime
 } from '@/hooks/useCategories';
-import type { Category, CategoryCreateData } from '@/types/categoryTypes';
+import type { Category } from '@/types/categoryTypes';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { getCategoryProductCounts } from '@/lib/categories/categoryService';
@@ -82,7 +81,6 @@ export default function CategoriesPage() {
   const navigate = useNavigate();
   
   // Modal states
-  const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -114,7 +112,6 @@ export default function CategoriesPage() {
 
   // Hooks
   const { data: categories = [], isLoading } = useCategories();
-  const createCategory = useCreateCategory();
   const updateCategory = useUpdateCategory();
   const deleteCategoryMutation = useDeleteCategory();
   useCategoryRealtime();
@@ -225,11 +222,6 @@ export default function CategoriesPage() {
     }
   };
 
-  const handleAddCategory = () => {
-    setFormData({ name: '', description: '' });
-    setShowAddModal(true);
-  };
-
   const handleEditCategory = (category: Category) => {
     setSelectedCategory(category);
     setFormData({
@@ -246,28 +238,6 @@ export default function CategoriesPage() {
 
   const handleViewProducts = (category: Category) => {
     navigate(`/dashboard/categories?category=${encodeURIComponent(category.id)}`);
-  };
-
-  const handleSubmitAdd = async () => {
-    if (!formData.name.trim()) {
-      toast.error('Category name is required');
-      return;
-    }
-
-    try {
-      const categoryData: CategoryCreateData = {
-        name: formData.name.trim(),
-        description: formData.description.trim() || null,
-        parent_category_id: null, // Root category
-        is_active: true,
-      };
-      await createCategory.mutateAsync(categoryData);
-      setShowAddModal(false);
-      setFormData({ name: '', description: '' });
-      toast.success('Category created successfully');
-    } catch (error) {
-      console.error('Error adding category:', error);
-    }
   };
 
   const handleSubmitEdit = async () => {
@@ -339,11 +309,13 @@ export default function CategoriesPage() {
           
         </div>
 
-        <Button onClick={handleAddCategory} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
-          <Plus className="w-4 h-4" />
-          <span className="hidden sm:inline">Add Category</span>
-          <span className="sm:hidden">Add</span>
-        </Button>
+        <Link to="/dashboard/categories-management/new">
+          <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+            <Plus className="w-4 h-4" />
+            <span className="hidden sm:inline">Add Category</span>
+            <span className="sm:hidden">Add</span>
+          </Button>
+        </Link>
 
 
       </div>
@@ -467,21 +439,27 @@ export default function CategoriesPage() {
 
       {/* Categories Table */}
       {sortedCategories.length === 0 ? (
-        <div>
-          <div className="p-12 text-center">
-            <Tags className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No categories yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              {searchQuery ? 'No categories match your search.' : 'Create your first category to organize your products.'}
+        <Card className="p-12">
+          <div className="text-center">
+            <Tags className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {searchQuery ? 'No categories found' : 'No categories yet'}
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              {searchQuery
+                ? 'Try adjusting your search query'
+                : 'Create your first category to organize your products'}
             </p>
             {!searchQuery && (
-            <Button onClick={handleAddCategory}>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Your First Category
-            </Button>
+              <Link to="/dashboard/categories-management/new">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Category
+                </Button>
+              </Link>
             )}
           </div>
-        </div>
+        </Card>
       ) : (
         <>
           <div>
@@ -734,49 +712,6 @@ export default function CategoriesPage() {
 
 
 
-
-      {/* Add Category Modal */}
-      <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add New Category</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="name">Category Name *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="e.g. Electronics, Clothing, Food"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && formData.name.trim()) {
-                    handleSubmitAdd();
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Optional description of the category"
-                rows={3}
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddModal(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmitAdd} disabled={createCategory.isPending || !formData.name.trim()}>
-              {createCategory.isPending ? 'Adding...' : 'Add Category'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Edit Category Modal */}
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>

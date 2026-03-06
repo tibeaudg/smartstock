@@ -10,8 +10,9 @@ import { IOSCameraHelper } from './IOSCameraHelper';
 
 interface BarcodeScannerProps {
   onBarcodeDetected: (barcode: string) => void;
-  onClose: () => void;
+  onClose?: () => void;
   onScanSuccess?: () => void;
+  variant?: 'modal' | 'inline';
   settings?: {
     sound_enabled?: boolean;
     vibration_enabled?: boolean;
@@ -22,7 +23,7 @@ interface BarcodeScannerProps {
   };
 }
 
-export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetected, onClose, onScanSuccess, settings }) => {
+export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetected, onClose, onScanSuccess, variant = 'modal', settings }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [manualBarcode, setManualBarcode] = useState('');
   const [scanResult, setScanResult] = useState<string | null>(null);
@@ -39,15 +40,15 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
-  // Prevent body scroll when modal is open
+  // Prevent body scroll when modal is open (not for inline)
   useEffect(() => {
+    if (variant !== 'modal') return;
     const originalStyle = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = 'hidden';
-    
     return () => {
       document.body.style.overflow = originalStyle;
     };
-  }, []);
+  }, [variant]);
 
   useEffect(() => {
     const initializeScanner = async () => {
@@ -309,48 +310,22 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
     setShowIOSHelper(false);
   };
 
-  const modalContent = (
+  const scannerContent = (
     <>
-      <div 
-        className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999] p-4"
-        style={{ 
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          margin: 0,
-          padding: '1rem'
-        }}
-        onClick={(e) => {
-          // Close on backdrop click
-          if (e.target === e.currentTarget) {
-            onClose();
-          }
-        }}
-      >
-        <div 
-          className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-          style={{
-            maxWidth: '28rem',
-            width: '100%',
-            maxHeight: '90vh',
-            margin: 'auto'
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Barcode Scanner</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+    <div className="p-6">
+      {variant === 'modal' && (
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-900">Barcode Scanner</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="h-8 w-8 p-0"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
 
             {error && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -506,9 +481,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
                 </div>
               </div>
             )}
-          </div>
         </div>
-      </div>
 
       {/* iOS Camera Helper Modal */}
       {showIOSHelper && (
@@ -520,10 +493,27 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({ onBarcodeDetecte
     </>
   );
 
-  // Use portal to render at document root level, ensuring it's always on top
-  if (typeof window !== 'undefined') {
-    return createPortal(modalContent, document.body);
+  const wrappedContent = variant === 'modal' ? (
+    <div
+      className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[9999] p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && onClose) onClose();
+      }}
+    >
+      <div
+        className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {scannerContent}
+      </div>
+    </div>
+  ) : (
+    <div className="w-full">{scannerContent}</div>
+  );
+
+  if (variant === 'modal' && typeof window !== 'undefined') {
+    return createPortal(wrappedContent, document.body);
   }
-  
-  return modalContent;
+
+  return wrappedContent;
 };

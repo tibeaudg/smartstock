@@ -14,7 +14,7 @@ export function setupPersistedQueryClient(queryClient: QueryClient) {
           key.includes('dashboardData') || 
           key.includes('products') || 
           key.includes('basicDashboardMetrics') ||
-          key.includes('productCount') ||
+          // Exclude productCount - must always be fresh for checklist logic (0 products = show checklist)
           key.includes('user-subscription') ||
           key.includes('pricing-tiers') ||
           key.includes('stockTransactions') ||
@@ -28,7 +28,17 @@ export function setupPersistedQueryClient(queryClient: QueryClient) {
     },
     deserialize: (data) => {
       try {
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        // Strip productCount from restored cache - it must always be fetched fresh.
+        // Otherwise: first paint shows checklist (no cache), then hydrate restores
+        // stale productCount, and we incorrectly show full dashboard.
+        if (parsed?.clientState?.queries) {
+          parsed.clientState.queries = parsed.clientState.queries.filter(
+            (q: { queryKey?: unknown[] }) =>
+              q.queryKey?.[0] !== 'productCount'
+          );
+        }
+        return parsed;
       } catch {
         return {};
       }
@@ -39,6 +49,6 @@ export function setupPersistedQueryClient(queryClient: QueryClient) {
     queryClient,
     persister,
     maxAge: Infinity, // Never expire cache - persist indefinitely
-    buster: 'v2', // Version busting for cache invalidation - increment when schema changes
+    buster: 'v3', // Version busting - bumped to clear stale productCount from persist
   });
 }

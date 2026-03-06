@@ -52,6 +52,22 @@ export function useCreateSupplier() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) throw new Error('No active session');
 
+      const name = (newSupplier.name || '').trim();
+      if (!name) throw new Error('Name is required');
+
+      // Check for duplicate supplier name (case-insensitive)
+      const { data: existing } = await supabase
+        .from('suppliers')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .ilike('name', name)
+        .limit(1)
+        .maybeSingle();
+
+      if (existing) {
+        throw new Error('Supplier already exists');
+      }
+
       const { data, error } = await supabase
         .from('suppliers')
         .insert([{ ...newSupplier, user_id: session.user.id }])
@@ -72,6 +88,25 @@ export function useUpdateSupplier() {
 
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: SupplierUpdateData }) => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No active session');
+
+      const name = data.name?.trim();
+      if (name) {
+        const { data: existing } = await supabase
+          .from('suppliers')
+          .select('id')
+          .eq('user_id', session.user.id)
+          .ilike('name', name)
+          .neq('id', id)
+          .limit(1)
+          .maybeSingle();
+
+        if (existing) {
+          throw new Error('Supplier already exists');
+        }
+      }
+
       const { data: updatedData, error } = await supabase
         .from('suppliers')
         .update(data)

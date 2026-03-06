@@ -224,8 +224,15 @@ export const useStockMovements = (): {
   // Stats berekenen uit data
   const stats = transactions.reduce(
     (acc, curr) => {
-      if (curr.transaction_type === 'incoming') acc.totalIncoming += curr.quantity;
-      else acc.totalOutgoing += curr.quantity;
+      const isIncoming =
+        curr.transaction_type === 'incoming' ||
+        curr.transaction_type === 'purchase_order';
+      const isOutgoing =
+        curr.transaction_type === 'outgoing' ||
+        curr.transaction_type === 'sales_order' ||
+        (curr.transaction_type === 'manual_adjustment' && curr.reference_number?.includes('_OUT'));
+      if (isIncoming) acc.totalIncoming += curr.quantity;
+      else if (isOutgoing) acc.totalOutgoing += curr.quantity;
       acc.totalValue += Number(curr.total_value) || (curr.quantity * Number(curr.unit_price));
       acc.transactionCount++;
       return acc;

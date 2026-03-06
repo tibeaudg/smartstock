@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -33,6 +33,19 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onChang
       onChange(editor.getHTML());
     },
   });
+
+  // Sync editor content when the content prop changes from outside (e.g. when loading a template)
+  useEffect(() => {
+    if (!editor) return;
+    const newContent = content ?? '';
+    const currentHtml = editor.getHTML();
+    const isEmpty = (html: string) => !html || html === '<p></p>' || html === '<p><br></p>';
+    const contentChanged = newContent !== currentHtml;
+    const editorEmptyButHasContent = isEmpty(currentHtml) && newContent.length > 0;
+    if (contentChanged || editorEmptyButHasContent) {
+      editor.commands.setContent(newContent || '<p></p>', { emitUpdate: false });
+    }
+  }, [content, editor]);
 
   const setLink = React.useCallback(() => {
     if (!editor) return;

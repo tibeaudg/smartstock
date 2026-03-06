@@ -186,11 +186,11 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
                   ? 'Create a purchase order or add stock manually?'
                   : 'Create a sales order or remove stock manually?'}
               </p>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col">
                 <Button
                   onClick={handleCreateOrder}
-                  variant="outline"
-                  className="w-full justify-start gap-2"
+                  variant="default"
+                  className="w-full justify-start gap-2 bg-blue-600 hover:bg-blue-700"
                 >
                   <FileText className="h-4 w-4" />
                   {actionType === 'add'
@@ -199,8 +199,8 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
                 </Button>
                 <Button
                   onClick={handleAddManually}
-                  variant="outline"
-                  className="w-full justify-start gap-2"
+                  variant="default"
+                  className="w-full justify-start gap-2 bg-blue-600 hover:bg-blue-700"
                 >
                   {actionType === 'add' ? (
                     <Plus className="h-4 w-4" />
@@ -231,7 +231,7 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
                 <Button
                   onClick={handleManualSubmit}
                   disabled={loading || !amount || parseInt(amount, 10) <= 0}
-                  className={actionType === 'add' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
+                  className={actionType === 'add' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-red-600 hover:bg-red-700'}
                 >
                   {loading ? 'Updating...' : actionType === 'add' ? 'Add' : 'Remove'}
                 </Button>

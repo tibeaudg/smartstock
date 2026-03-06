@@ -174,7 +174,8 @@ export const CreateCustomerModal: React.FC<CreateCustomerModalProps> = ({
       
       onClose();
     } catch (error: any) {
-      toast.error(`Failed to create customer: ${error.message}`);
+      toast.error(`Customer already exists`);
+      return;
     }
   };
   

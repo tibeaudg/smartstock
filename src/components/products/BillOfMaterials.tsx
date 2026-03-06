@@ -3,9 +3,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { AddProductModal } from '@/components/AddProductModal';
+import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 
 // UI Components
 import { Card } from '@/components/ui/card';
@@ -157,8 +158,6 @@ function BOMListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedBOMs, setSelectedBOMs] = useState<Set<string>>(new Set());
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [newBOMProductId, setNewBOMProductId] = useState('');
   const [selectedComponentForWhereUsed, setSelectedComponentForWhereUsed] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -408,28 +407,6 @@ function BOMListPage() {
     retry: 2,
   });
 
-  // Fetch available products for BOM creation
-  const { data: availableProducts } = useQuery({
-    queryKey: ['availableProductsForBOM', activeBranch?.branch_id],
-    queryFn: async () => {
-      if (!activeBranch) return [];
-
-      const { data, error } = await supabase
-        .from('products')
-        .select('id, name, sku')
-        .eq('branch_id', activeBranch.branch_id)
-        .eq('is_variant', false)
-        .order('name');
-
-      if (error) {
-        console.error('Error fetching products:', error);
-        return [];
-      }
-      return data || [];
-    },
-    enabled: !!activeBranch,
-  });
-
   // Fetch where-used data for selected component
   const { data: whereUsedData } = useQuery<WhereUsedItem[]>({
     queryKey: ['whereUsed', selectedComponentForWhereUsed, activeBranch?.branch_id],
@@ -539,16 +516,6 @@ function BOMListPage() {
   }, [filteredBOMList, currentPage, itemsPerPage]);
 
   // Handlers
-  const handleCreateBOM = () => {
-    if (!newBOMProductId) {
-      toast.error('Please select a product');
-      return;
-    }
-    navigate(`/dashboard/bom/edit/${newBOMProductId}?create=true`);
-    setIsCreateDialogOpen(false);
-    setNewBOMProductId('');
-  };
-
   const handleExport = () => {
     try {
       const exportData = filteredBOMList.map(item => ({
@@ -857,10 +824,12 @@ function BOMListPage() {
                   : 'Create your first BOM to define product recipes and track production capacity'}
               </p>
               {!searchQuery && (
-                <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create BOM
-                </Button>
+                <Link to="/dashboard/bom/new">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create BOM
+                  </Button>
+                </Link>
               )}
             </div>
           </Card>
@@ -1028,18 +997,6 @@ function BOMListPage() {
       </div>
 
       {/* Dialogs */}
-      <CreateBOMDialog
-        isOpen={isCreateDialogOpen}
-        onClose={() => {
-          setIsCreateDialogOpen(false);
-          setNewBOMProductId('');
-        }}
-        availableProducts={availableProducts || []}
-        selectedProductId={newBOMProductId}
-        onSelectProduct={setNewBOMProductId}
-        onConfirm={handleCreateBOM}
-      />
-
       <WhereUsedDialog
         isOpen={selectedComponentForWhereUsed !== null}
         onClose={() => setSelectedComponentForWhereUsed(null)}
@@ -1067,6 +1024,7 @@ function BOMEditPage() {
   // State for inline product creation
   const [isCreatingProduct, setIsCreatingProduct] = useState(false);
   const [componentIndexForNewProduct, setComponentIndexForNewProduct] = useState<number | null>(null);
+  const [showBulkImporterSuggestion, setShowBulkImporterSuggestion] = useState(false);
 
   // Fetch product details
   const { data: product, isLoading: isProductLoading, error: productError } = useQuery({
@@ -1634,7 +1592,11 @@ function BOMEditPage() {
           setComponentIndexForNewProduct(null);
         }}
         onProductAdded={handleProductAdded}
-        onFirstProductAdded={handleProductAdded}
+        onFirstProductAdded={() => setShowBulkImporterSuggestion(true)}
+      />
+      <BulkImporterSuggestionModal
+        isOpen={showBulkImporterSuggestion}
+        onClose={() => setShowBulkImporterSuggestion(false)}
       />
     </div>
   );
@@ -1746,183 +1708,6 @@ function BOMRow({ item, isSelected, onToggleSelect, onDelete, onEdit, onViewProd
 }
 
 // Dialog Components
-function CreateBOMDialog({ 
-  isOpen, 
-  onClose, 
-  availableProducts, 
-  selectedProductId, 
-  onSelectProduct, 
-  onConfirm 
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  availableProducts: Product[];
-  selectedProductId: string;
-  onSelectProduct: (id: string) => void;
-  onConfirm: () => void;
-}) {
-  const { activeBranch } = useBranches();
-  const queryClient = useQueryClient();
-  
-  // State for product creation modal
-  const [isCreatingProduct, setIsCreatingProduct] = useState(false);
-
-  // Handle product creation completion
-  const handleProductAdded = async () => {
-    if (!activeBranch) return;
-
-    // Invalidate all product-related queries to ensure products appear in categories page
-    await queryClient.invalidateQueries({
-      queryKey: ['products'],
-      refetchType: 'active',
-    });
-
-    await queryClient.invalidateQueries({
-      queryKey: ['products', activeBranch.branch_id],
-      refetchType: 'active',
-    });
-
-    // Invalidate the specific query key pattern used by categories page
-    await queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = query.queryKey;
-        return (
-          Array.isArray(key) &&
-          key.length >= 2 &&
-          key[0] === 'products' &&
-          key[1] === 'categoryProducts'
-        );
-      },
-      refetchType: 'active',
-    });
-
-    // Invalidate category products queries
-    queryClient.invalidateQueries({
-      queryKey: ['categoryProducts'],
-      refetchType: 'active',
-    });
-
-    queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = query.queryKey;
-        return (
-          Array.isArray(key) &&
-          key.length >= 1 &&
-          key[0] === 'categoryProducts'
-        );
-      },
-      refetchType: 'active',
-    });
-
-    // Invalidate stock transactions queries
-    queryClient.invalidateQueries({
-      queryKey: ['stockTransactions'],
-      refetchType: 'active',
-    });
-
-    queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = query.queryKey;
-        return (
-          Array.isArray(key) &&
-          key.length >= 1 &&
-          key[0] === 'stockTransactions'
-        );
-      },
-      refetchType: 'active',
-    });
-
-    // Refresh available products for BOM creation
-    await queryClient.invalidateQueries({ queryKey: ['availableProductsForBOM', activeBranch.branch_id] });
-    
-    // Wait a bit for the query to complete, then find and select the most recently created product
-    setTimeout(async () => {
-      if (!activeBranch) return;
-      
-      try {
-        const { data: products } = await supabase
-          .from('products')
-          .select('id, name')
-          .eq('branch_id', activeBranch.branch_id)
-          .eq('is_variant', false)
-          .order('created_at', { ascending: false })
-          .limit(1);
-
-        if (products && products.length > 0) {
-          // Check if this product is not already in the available products list
-          // (meaning it was just created)
-          const isNewProduct = !availableProducts.some(p => p.id === products[0].id);
-          if (isNewProduct) {
-            onSelectProduct(products[0].id);
-          }
-        }
-      } catch (error) {
-        console.error('Error finding newly created product:', error);
-      }
-    }, 500);
-  };
-
-  return (
-    <>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create Bill of Materials</DialogTitle>
-            <DialogDescription>
-              Select a product to create a BOM for
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div>
-              <Label>Select Product</Label>
-              <Select value={selectedProductId} onValueChange={onSelectProduct}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose a product" />
-                </SelectTrigger>
-                <SelectContent>
-                  <div className="p-2 border-b mb-1">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full justify-start"
-                      onClick={() => setIsCreatingProduct(true)}
-                    >
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create New Product
-                    </Button>
-                  </div>
-                  {availableProducts.map((product) => (
-                    <SelectItem key={product.id} value={product.id}>
-                      {product.name} {product.sku && `(${product.sku})`}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={onClose}>Cancel</Button>
-            <Button onClick={onConfirm} disabled={!selectedProductId}>
-              Continue <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-
-
-
-      {/* Product Creation Modal - Using AddProductModal for consistency */}
-      <AddProductModal
-        isOpen={isCreatingProduct}
-        onClose={() => setIsCreatingProduct(false)}
-        onProductAdded={handleProductAdded}
-        onFirstProductAdded={handleProductAdded}
-      />
-    </>
-  );
-}
-
 function WhereUsedDialog({ 
   isOpen, 
   onClose, 

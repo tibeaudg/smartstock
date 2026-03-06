@@ -207,7 +207,7 @@ export const Sidebar = ({
         },
 
 
-        { id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/dashboard/analytics/reports', subItems: analyticsSubItems },
+        //{ id: 'analytics', label: 'Analytics', icon: TrendingUp, path: '/dashboard/analytics/reports', subItems: analyticsSubItems },
 
 
 

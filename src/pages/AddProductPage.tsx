@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,7 +12,7 @@ import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/errorHandler';
 import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, ArrowLeft, Package } from 'lucide-react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -21,12 +21,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { HierarchicalCategorySelector } from '@/components/categories/HierarchicalCategorySelector';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import { BarcodeScanner } from '@/components/BarcodeScanner';
-import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 
 // --- Data Interfaces ---
 
@@ -104,9 +103,8 @@ export default function AddProductPage() {
   const [showUpgradeNotice, setShowUpgradeNotice] = useState(false); 
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
-  const [showScanner, setShowScanner] = useState(false);
+  const [showBulkImporterSuggestion, setShowBulkImporterSuggestion] = useState(false);
   const { isMobile } = useMobile();
-  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
   // Get pre-filled data from URL params
   const preFilledSKU = searchParams.get('sku') || undefined;
@@ -161,7 +159,7 @@ export default function AddProductPage() {
       categoryId: '',
       categoryName: '',
       quantityInStock: 0,
-      minimumStockLevel: 10,
+      minimumStockLevel: 0,
       purchasePrice: 0,
       salePrice: 0,
       location: '',
@@ -171,61 +169,31 @@ export default function AddProductPage() {
     },
   });
 
-  // Restore draft on mount
+  // Always start with empty form when creating a new product (no draft restoration)
   useEffect(() => {
     if (!activeBranch?.branch_id) return;
-    
+    // Clear any stale draft from previous sessions
     const draftKey = getDraftStorageKey(activeBranch.branch_id);
-    const savedDraft = safeLocalStorage.getItem(draftKey);
-    
-    if (savedDraft) {
-      try {
-        const draft = JSON.parse(savedDraft);
-        // Restore form values
-        if (draft.formValues) {
-          form.reset(draft.formValues);
-        }
-        // Restore variants
-        if (draft.variants && Array.isArray(draft.variants)) {
-          setVariants(draft.variants);
-        }
-        // Restore image previews (URLs only, not File objects)
-        if (draft.imagePreviews && Array.isArray(draft.imagePreviews)) {
-          setUploadedImages(draft.imagePreviews.map((preview: string, index: number) => ({
-            file: new File([], `restored-${index}.png`), // Placeholder file
-            preview,
-            size: 0,
-          })));
-        }
-        if (draft.showVariantsSection) {
-          setShowVariantsSection(draft.showVariantsSection);
-        }
-      } catch (error) {
-        console.error('Error restoring draft:', error);
-        // Clear corrupted draft
-        safeLocalStorage.removeItem(draftKey);
-      }
-    } else {
-      // No draft found, reset form for new product
-      form.reset({
-        name: '',
-        description: '',
-        categoryId: '',
-        categoryName: '',
-        quantityInStock: 0,
-        minimumStockLevel: 10,
-        purchasePrice: 0,
-        salePrice: 0,
-        location: '',
-        sku: '',
-        taxRate: 0,
-        taxInclusive: false,
-      });
-      setVariants([]);
-      setShowVariantsSection(false);
-      setImagePreview(null);
-      setUploadedImages([]);
-    }
+    safeLocalStorage.removeItem(draftKey);
+    // Reset form to empty defaults
+    form.reset({
+      name: '',
+      description: '',
+      categoryId: '',
+      categoryName: '',
+      quantityInStock: 0,
+      minimumStockLevel: 0,
+      purchasePrice: 0,
+      salePrice: 0,
+      location: '',
+      sku: '',
+      taxRate: 0,
+      taxInclusive: false,
+    });
+    setVariants([]);
+    setShowVariantsSection(false);
+    setImagePreview(null);
+    setUploadedImages([]);
   }, [form, activeBranch?.branch_id]);
 
   // Note: fetchExistingVariants removed - this is an Add Product page, not an edit page
@@ -269,55 +237,13 @@ export default function AddProductPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Fallback: if name was persisted in localStorage by the opener, use it once
+  // Clear any stale localStorage prefill so form always starts empty for new product
   useEffect(() => {
     try {
-      if (!preFilledName) {
-        const stored = localStorage.getItem('prefillAddProductName');
-        if (stored && stored.trim()) {
-          console.log('[AddProductPage] Applying localStorage prefill for product name:', stored);
-          form.setValue('name', stored.trim(), { shouldDirty: true });
-        }
-        localStorage.removeItem('prefillAddProductName');
-      } else {
-        // Clear any stale value if prop is present
-        localStorage.removeItem('prefillAddProductName');
-      }
+      localStorage.removeItem('prefillAddProductName');
     } catch {}
-  }, [preFilledName, form]);
+  }, []);
 
-  // Auto-save draft to localStorage with debouncing
-  useEffect(() => {
-    if (!activeBranch?.branch_id) return;
-    
-    const subscription = form.watch((value) => {
-      // Debounce saves to localStorage (500ms delay)
-      const timeoutId = setTimeout(() => {
-        try {
-          const draftKey = getDraftStorageKey(activeBranch.branch_id);
-          const draft = {
-            formValues: value,
-            variants: variants,
-            imagePreviews: uploadedImages.map(img => img.preview), // Store preview URLs only
-            showVariantsSection: showVariantsSection,
-            timestamp: Date.now(),
-          };
-          safeLocalStorage.setItem(draftKey, JSON.stringify(draft));
-        } catch (error) {
-          // Handle localStorage quota errors gracefully
-          if (error instanceof Error && error.name === 'QuotaExceededError') {
-            console.warn('localStorage quota exceeded, draft not saved');
-          } else {
-            console.error('Error saving draft:', error);
-          }
-        }
-      }, 500);
-      
-      return () => clearTimeout(timeoutId);
-    });
-    
-    return () => subscription.unsubscribe();
-  }, [form, activeBranch?.branch_id, variants, uploadedImages, showVariantsSection]);
 
   // Check for duplicate product name - debounced
   useEffect(() => {
@@ -446,15 +372,7 @@ export default function AddProductPage() {
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   };
 
-  // Handle barcode scanning result
-  const handleBarcodeDetected = (barcode: string) => {
-    if (showScanner) {
-      form.setValue('sku', barcode);
-      setShowScanner(false);
-      toast.success(`SKU scanned: ${barcode}`);
-      console.log(`[AddProductModal] Barcode scanned and set as SKU: ${barcode}`);
-    }
-  };
+  // Barcode is handled via URL params when returning from /dashboard/scan
 
   // Generate SKU
   const generateSKU = () => {
@@ -571,8 +489,15 @@ export default function AddProductPage() {
     };
     
     setLoading(true);
+    let wasFirstProduct = false;
 
     try {
+      // 1. Check for first product before insertion
+      const { count } = await supabase
+        .from('products')
+        .select('id', { count: 'exact', head: true })
+        .eq('branch_id', activeBranch.branch_id);
+      wasFirstProduct = (count || 0) === 0;
 
       // 2. Handle Image Upload (use first uploaded image)
       let imageUrl: string | null = null;
@@ -868,13 +793,20 @@ export default function AddProductPage() {
       
       toast.success(hasVariants ? 'Product and variants added.' : 'Product successfully added.');
       
-      // Clear draft on successful submission
-      if (activeBranch?.branch_id) {
-        const draftKey = getDraftStorageKey(activeBranch.branch_id);
-        safeLocalStorage.removeItem(draftKey);
-      }
-      
-      form.reset();
+      form.reset({
+        name: '',
+        description: '',
+        categoryId: '',
+        categoryName: '',
+        quantityInStock: 0,
+        minimumStockLevel: 0,
+        purchasePrice: 0,
+        salePrice: 0,
+        location: '',
+        sku: '',
+        taxRate: 0,
+        taxInclusive: false,
+      });
       setVariants([]);
       setShowVariantsSection(false);
       setImagePreview(null);
@@ -883,7 +815,11 @@ export default function AddProductPage() {
       uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
       setUploadedImages([]);
       
-      navigate('/dashboard/categories');
+      if (wasFirstProduct) {
+        setShowBulkImporterSuggestion(true);
+      } else {
+        navigate('/dashboard/categories');
+      }
     } catch (error) {
       console.error('Unexpected error during product submission:', error);
       toast.error('Unexpected error during product addition.');
@@ -915,151 +851,274 @@ export default function AddProductPage() {
 
   return (
     <>
-      {/* Main AddProductPage Content */}
-      <div className="h-full flex flex-col bg-white ">
+      {/* Main AddProductPage Content - h-full + max-h so only inner card scrolls, not layout main */}
+      <div className="h-full max-h-[calc(100vh-5rem)] flex flex-col min-h-0 bg-white border border-gray-200 rounded-lg shadow-sm ">
         {/* Header */}
-        <div className="border-b px-6 py-4 bg-white">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate('/dashboard/categories')}
-              className="gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </Button>
-            <h1 className="text-2xl font-bold">Add Product</h1>
+        
+        <div className="flex-shrink-0 border-b px-6 py-4 bg-white rounded-t-lg shadow-sm sticky top-0 z-10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => navigate('/dashboard/categories')}
+                className="gap-2 border-gray-300 shadow-sm hover:bg-gray-50"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back
+              </Button>
+              <h1 className="text-2xl font-bold">Add Product</h1>
+            </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <Button
+                type="submit"
+                form="add-product-form"
+                disabled={loading || (duplicateName && !hasVariants)}
+                className={isMobile ? 'w-full' : 'shrink-0'}
+              >
+                {loading ? 'Adding...' : 'Add Product'}
+              </Button>
+              <p className="text-sm text-gray-500">
+                <Link
+                  to="/dashboard/products/import"
+                  className="hover:text-blue-600 transition-colors"
+                >
+                  Have a lot to add? Try Import.
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className={`flex-1 overflow-y-auto  ${isMobile ? 'p-4' : 'p-6'}`}>
+        
+
+        <div className={`flex-1 min-h-0 overflow-y-auto ${isMobile ? 'p-4 pt-6' : 'p-6 pt-8 '}`}>
+          <div className="mx-auto">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                {/* Product Information Card */}
+              <form id="add-product-form" onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+                {/* General Info */}
                 <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                  <div className="space-y-4">
-                    {/* Product Name */}
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      rules={{ required: 'Product name is mandatory' }}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-lg font-semibold text-gray-900">Product Name *</FormLabel>
-                          <FormControl>
-                            <Input 
+             
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    rules={{ required: 'Product name is mandatory' }}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-900 tracking-tight">Product Name *</FormLabel>
+                        <FormControl>
+                          <Input 
                               {...field} 
                               placeholder="Enter product name" 
                               disabled={loading} 
-                              className="border-gray-300 focus:border-gray-500 text-lg" 
+                              className="border-gray-300 focus:border-gray-500 text-lg overflow-hidden text-ellipsis" 
                             />
-                          </FormControl>
-                          {duplicateName && !hasVariants && (
-                            <div className="flex items-center text-sm text-red-600 mt-1">
-                              <AlertCircle className="w-4 h-4 mr-1" />
-                              This product name already exists for a main product in this branch.
-                            </div>
-                          )}
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Stock and Minimum Stock */}
-                    {!hasVariants && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="quantityInStock"
-                          rules={{ 
-                            min: { value: 0, message: 'Stock must be 0 or more' }
-                          }}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-lg font-semibold text-gray-900">Stock Quantity</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="number" 
-                                  inputMode="numeric"
-                                  min="0"
-                                  placeholder="0"
-                                  disabled={loading}
-                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                  value={field.value === 0 ? '' : field.value.toString()} 
-                                  className="border-gray-300 focus:border-gray-500 text-lg" 
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="minimumStockLevel"
-                          rules={{ 
-                            min: { value: 0, message: 'Minimum level must be 0 or more' }
-                          }}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-lg font-semibold text-gray-900">Minimum Stock</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="number" 
-                                  inputMode="numeric"
-                                  min="0"
-                                  placeholder="10"
-                                  disabled={loading}
-                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                  value={field.value.toString()}
-                                  className="border-gray-300 focus:border-gray-500 text-lg"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                        </FormControl>
+                        {duplicateName && !hasVariants && (
+                          <div className="flex items-center text-sm text-red-600 mt-1">
+                            <AlertCircle className="w-4 h-4 mr-1" />
+                            This product name already exists for a main product in this branch.
+                          </div>
+                        )}
+                        <FormMessage />
+                      </FormItem>
                     )}
+                  />
+                </div>
 
-                    {/* SKU Field */}
-                    {!hasVariants && (
+                {/* Inventory */}
+                {!hasVariants && (
+                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="quantityInStock"
+                        rules={{ min: { value: 0, message: 'Stock must be 0 or more' } }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-900">Stock Quantity</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                inputMode="numeric"
+                                min="0"
+                                placeholder="0"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                value={field.value === 0 ? '' : field.value.toString()} 
+                                className="border-gray-300 focus:border-gray-500" 
+                              />
+                            </FormControl>
+                            <FormDescription>Current quantity on hand.</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="minimumStockLevel"
+                        rules={{ min: { value: 0, message: 'Minimum level must be 0 or more' } }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-900">Minimum Stock</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                inputMode="numeric"
+                                min="0"
+                                placeholder="10"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                value={field.value === 0 ? '' : field.value.toString()}
+                                className="border-gray-300 focus:border-gray-500"
+                              />
+                            </FormControl>
+                            <FormDescription>We'll alert you when stock hits this level.</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                       <FormField
                         control={form.control}
                         name="sku"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-lg font-semibold text-gray-900">SKU</FormLabel>
+                            <FormLabel className="text-gray-900">SKU</FormLabel>
                             <FormControl>
                               <div className="flex gap-2">
                                 <Input 
                                   {...field} 
                                   placeholder="Enter SKU or scan barcode" 
                                   disabled={loading || hasVariants}
-                                  className="border-gray-300 focus:border-gray-500 text-lg flex-1" 
+                                  className="border-gray-300 focus:border-gray-500 flex-1" 
                                 />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => setShowScanner(true)}
-                                  disabled={loading || hasVariants}
-                                  className="px-4"
-                                  title="Scan barcode"
-                                >
-                                  <Scan className="w-4 h-4" />
-                                </Button>
+                                <Link to="/dashboard/scan" state={{ returnTo: '/dashboard/products/new', barcodeField: 'sku' }}>
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    disabled={loading || hasVariants}
+                                    className="px-4 shrink-0"
+                                    title="Scan barcode"
+                                  >
+                                    <Scan className="w-4 h-4" />
+                                  </Button>
+                                </Link>
                               </div>
+                            </FormControl>
+                            <FormDescription>Unique identifier. Scan barcode to auto-fill.</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Pricing - Promoted from Additional Info */}
+                {!hasVariants && (
+                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="purchasePrice"
+                        rules={{ min: { value: 0, message: 'Must be 0 or more' } }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Purchase Price</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                inputMode="decimal"
+                                step="0.01"
+                                min="0"
+                                placeholder="0"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                value={field.value === 0 ? '' : field.value.toString()}
+                                className="border-gray-300 focus:border-gray-500"
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
+                      <FormField
+                        control={form.control}
+                        name="salePrice"
+                        rules={{ min: { value: 0, message: 'Must be 0 or more' } }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Sale Price</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                inputMode="decimal"
+                                step="0.01"
+                                min="0"
+                                placeholder="0"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                value={field.value === 0 ? '' : field.value.toString()}
+                                className="border-gray-300 focus:border-gray-500"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    {purchasePrice > 0 && salePrice > 0 && (
+                      <div className={`mt-4 p-3 rounded-lg border ${marginAmount >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                        <div className="space-y-1 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Margin Amount:</span>
+                            <span className={`font-semibold ${marginAmount >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                              {marginAmount >= 0 ? '+' : ''}{marginAmount.toFixed(2)}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Margin %:</span>
+                            <span className={`font-semibold ${marginPercent >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                              {marginPercent >= 0 ? '+' : ''}{marginPercent.toFixed(2)}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
+                )}
+
+                {/* Category - Promoted from Additional Info */}
+                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                 
+                  <FormField
+                    control={form.control}
+                    name="categoryId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <HierarchicalCategorySelector
+                            value={field.value || null}
+                            onValueChange={(categoryId, categoryName) => {
+                              field.onChange(categoryId || '');
+                              form.setValue('categoryName', categoryName || '');
+                            }}
+                            placeholder="Select category..."
+                            allowCreate={true}
+                            showPath={true}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
-                {/* Collapsible Additional Information Section */}
+                {/* Collapsible Additional Information - Image, Description, Location, Tax */}
                 <Collapsible open={showAdditionalInfo} onOpenChange={setShowAdditionalInfo}>
                   <CollapsibleTrigger asChild>
                     <Button
@@ -1082,10 +1141,8 @@ export default function AddProductPage() {
                       <div className="space-y-3">
                         <h3 className="text-sm font-medium text-gray-600">Product Image</h3>
                       
-                        {/* Main image preview or thumbnail grid - only show when images are uploaded */}
                         {uploadedImages.length > 0 && (
                           <div className="space-y-3">
-                            {/* First image as main preview */}
                             <div className="bg-gray-50 rounded-lg border border-gray-200 p-3 flex items-center justify-center">
                               <img
                                 src={uploadedImages[0].preview}
@@ -1093,14 +1150,10 @@ export default function AddProductPage() {
                                 className="max-w-full max-h-48 object-contain"
                               />
                             </div>
-                            {/* Remaining images as compact thumbnails */}
                             {uploadedImages.length > 1 && (
                               <div className="grid grid-cols-4 gap-2">
                                 {uploadedImages.slice(1).map((image, index) => (
-                                  <div
-                                    key={index + 1}
-                                    className="relative group"
-                                  >
+                                  <div key={index + 1} className="relative group">
                                     <img
                                       src={image.preview}
                                       alt={`Thumbnail ${index + 2}`}
@@ -1120,29 +1173,18 @@ export default function AddProductPage() {
                                 ))}
                               </div>
                             )}
-                            {/* Image list with remove buttons */}
                             <div className="space-y-1">
                               {uploadedImages.map((image, index) => (
                                 <div
                                   key={index}
                                   className="flex items-center gap-2 p-2 bg-white border border-gray-200 rounded text-xs"
                                 >
-                                  <img
-                                    src={image.preview}
-                                    alt={`Preview ${index + 1}`}
-                                    className="w-10 h-10 object-cover rounded"
-                                  />
+                                  <img src={image.preview} alt={`Preview ${index + 1}`} className="w-10 h-10 object-cover rounded" />
                                   <div className="flex-1 min-w-0">
-                                    <p className="font-medium text-gray-900 truncate">
-                                      {image.file.name}
-                                    </p>
-                                    <p className="text-gray-500">
-                                      {formatFileSize(image.size)}
-                                    </p>
+                                    <p className="font-medium text-gray-900 truncate">{image.file.name}</p>
+                                    <p className="text-gray-500">{formatFileSize(image.size)}</p>
                                   </div>
-                                  {index === 0 && uploadedImages.length > 1 && (
-                                    <span className="text-xs text-gray-500">Main</span>
-                                  )}
+                                  {index === 0 && uploadedImages.length > 1 && <span className="text-xs text-gray-500">Main</span>}
                                   <Button
                                     type="button"
                                     variant="ghost"
@@ -1159,7 +1201,6 @@ export default function AddProductPage() {
                           </div>
                         )}
                       
-                        {/* Upload area - more compact */}
                         <div
                           onDragEnter={handleDragEnter}
                           onDragOver={handleDragOver}
@@ -1214,51 +1255,22 @@ export default function AddProductPage() {
                       </div>
                     </div>
 
-                    {/* Bottom Row: Additional Information and Pricing cards with matching heights */}
+                    {/* Location and Tax Configuration */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                      {/* Left Column - Additional Information */}
-                      <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3 h-full flex flex-col">
-                        <div className="text-sm font-medium text-gray-600 mb-2">Additional Information</div>
-                        <div className="flex-1 space-y-3">
-                          {/* Location */}
-                          {!hasVariants && (
-                            <FormField
-                              control={form.control}
-                              name="location"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="text-sm">Location</FormLabel>
-                                  <FormControl>
-                                    <Input 
-                                      {...field} 
-                                      placeholder="Enter location (e.g. A1, Shelf 3)" 
-                                      disabled={loading}
-                                      className="border-gray-300 focus:border-gray-500"
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          )}
-
-                          {/* Category */}
+                      {!hasVariants && (
+                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
+                          <div className="text-sm font-medium text-gray-600 mb-2">Storage Location</div>
                           <FormField
                             control={form.control}
-                            name="categoryId"
+                            name="location"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-sm">Category</FormLabel>
                                 <FormControl>
-                                  <HierarchicalCategorySelector
-                                    value={field.value || null}
-                                    onValueChange={(categoryId, categoryName) => {
-                                      field.onChange(categoryId || '');
-                                      form.setValue('categoryName', categoryName || '');
-                                    }}
-                                    placeholder="Select category..."
-                                    allowCreate={true}
-                                    showPath={true}
+                                  <Input 
+                                    {...field} 
+                                    placeholder="Enter location (e.g. A1, Shelf 3)" 
+                                    disabled={loading}
+                                    className="border-gray-300 focus:border-gray-500"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -1266,91 +1278,13 @@ export default function AddProductPage() {
                             )}
                           />
                         </div>
-                      </div>
+                      )}
 
-                      {/* Right Column - Pricing */}
+                      {/* Tax Configuration */}
                       {!hasVariants && (
-                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 h-full flex flex-col">
-                          <div className="text-sm font-medium text-gray-600 mb-3">Pricing</div>
-                          <div className="space-y-3 flex-1">
-                          <FormField
-                            control={form.control}
-                            name="purchasePrice"
-                            rules={{ 
-                              min: { value: 0, message: 'Must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Purchase Price</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    inputMode="decimal"
-                                    step="0.01"
-                                    min="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          {/* Margin/Markup Display */}
-                          {purchasePrice > 0 && salePrice > 0 && (
-                            <div className={`p-3 rounded-lg border ${marginAmount >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-                              <div className="space-y-1 text-sm">
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Margin Amount:</span>
-                                  <span className={`font-semibold ${marginAmount >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                                    {marginAmount >= 0 ? '+' : ''}{marginAmount.toFixed(2)}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-gray-600">Margin %:</span>
-                                  <span className={`font-semibold ${marginPercent >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                                    {marginPercent >= 0 ? '+' : ''}{marginPercent.toFixed(2)}%
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          <FormField
-                            control={form.control}
-                            name="salePrice"
-                            rules={{ 
-                              min: { value: 0, message: 'Must be 0 or more' }
-                            }}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Sale Price</FormLabel>
-                                <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    inputMode="decimal"
-                                    step="0.01"
-                                    min="0"
-                                    disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-
-                          {/* Tax Configuration */}
-                          <div className="space-y-3 pt-2 border-t border-gray-200">
-                            <div className="flex items-center justify-between">
-                              <Label className="text-sm font-medium">Tax Configuration</Label>
-                            </div>
-                            
+                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                          <div className="text-sm font-medium text-gray-600 mb-3">Tax Configuration</div>
+                          <div className="space-y-3">
                             <FormField
                               control={form.control}
                               name="taxRate"
@@ -1375,7 +1309,6 @@ export default function AddProductPage() {
                                 </FormItem>
                               )}
                             />
-
                             <FormField
                               control={form.control}
                               name="taxInclusive"
@@ -1395,8 +1328,6 @@ export default function AddProductPage() {
                                 </FormItem>
                               )}
                             />
-
-                            {/* Tax Calculation Display */}
                             {form.watch('taxRate') > 0 && salePrice > 0 && (
                               <div className="p-3 rounded-lg border bg-blue-50 border-blue-200">
                                 <div className="space-y-1 text-sm">
@@ -1443,7 +1374,6 @@ export default function AddProductPage() {
                               </div>
                             )}
                           </div>
-                          </div>
                         </div>
                       )}
                     </div>
@@ -1455,18 +1385,18 @@ export default function AddProductPage() {
 
                 {/* Variants Section */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Product Variants {hasVariants && <span className="text-sm font-normal text-gray-500">(Active)</span>}
-                    </h3>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setShowVariantsSection(!showVariantsSection);
-                        // If opening and no variants exist, add an empty variant
-                        if (!showVariantsSection && variants.length === 0) {
+                  <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
+                    Product Variants {hasVariants && <span className="normal-case font-normal text-gray-500">(Active)</span>}
+                  </h3>
+                  {!showVariantsSection ? (
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <p className="text-sm text-gray-600 mb-4">Add variants to manage sizes, colors, or other options.</p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setShowVariantsSection(true);
                           setVariants([{
                             variantName: '',
                             quantityInStock: 0,
@@ -1477,31 +1407,34 @@ export default function AddProductPage() {
                             barcode: '',
                             location: ''
                           }]);
-                        }
-                      }}
-                      className="flex items-center gap-2"
-                    >
-                      {showVariantsSection ? (
-                        <>
+                        }}
+                        className="flex items-center gap-2 mx-auto"
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                        Add Variants
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-between">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setShowVariantsSection(false)}
+                          className="flex items-center gap-2 text-gray-600"
+                        >
                           <ChevronUp className="w-4 h-4" />
-                          Hide
-                        </>
-                      ) : (
-                        <>
-                          <ChevronDown className="w-4 h-4" />
-                          Add Variants
-                        </>
+                          Hide Variants
+                        </Button>
+                      </div>
+                      {hasVariants && (
+                        <p className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded p-2">
+                          Variants are enabled. Stock, prices, and location are managed per variant below.
+                        </p>
                       )}
-                    </Button>
-                  </div>
-                  {hasVariants && showVariantsSection && (
-                    <p className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded p-2">
-                      Variants are enabled. Stock, prices, and location are managed per variant below.
-                    </p>
-                  )}
                   
-                  {/* Variant Input Section - Only show when toggled */}
-                  {showVariantsSection && (
+                  {/* Variant Input Section - Only show when expanded */}
                     <div className="bg-white border border-gray-200 rounded-lg p-4 space-y-4">
                       <div className="space-y-3">
                         {(variants.length === 0 ? [{
@@ -1808,36 +1741,16 @@ export default function AddProductPage() {
                         </Button>
                       </div>
                     </div>
+                    </>
                   )}
                 </div>
 
-
-
+                
               </form>
-
-
-
             </Form>
-
-
-            
           </div>
-
-
-            {/* Action Buttons - Footer */}
-            <div className={`flex-shrink-0 bg-white border-t ${isMobile ? 'p-4' : 'p-6'} shadow-lg z-10`}>
-              <div className={`flex gap-2 ${isMobile ? 'flex-col' : 'flex-row justify-end'}`}>
-                <Button 
-                  type="button"
-                  onClick={() => form.handleSubmit(handleSubmit)()}
-                  disabled={loading || (duplicateName && !hasVariants)} 
-                  className={isMobile ? 'w-full' : 'w-auto'}
-                >
-                  {loading ? 'Adding...' : 'Add Product'}
-                </Button>
-              </div>
-            </div>
         </div>
+      </div>
       
       {/* 2. Upgrade Notice Modal (Correctly isolated and conditional) */}
       {showUpgradeNotice && (
@@ -1868,15 +1781,14 @@ export default function AddProductPage() {
         </div>
       )}
 
-      {/* 3. Barcode Scanner Modal (Correctly isolated and conditional) */}
-      {showScanner && (
-        <BarcodeScanner
-          onBarcodeDetected={handleBarcodeDetected}
-          onClose={() => setShowScanner(false)}
-          onScanSuccess={onScanSuccess}
-          settings={scannerSettings}
-        />
-      )}
+      {/* 3. Bulk Importer Suggestion Modal (first product added) */}
+      <BulkImporterSuggestionModal
+        isOpen={showBulkImporterSuggestion}
+        onClose={() => {
+          setShowBulkImporterSuggestion(false);
+          navigate('/dashboard/categories');
+        }}
+      />
     </>
   );
 }

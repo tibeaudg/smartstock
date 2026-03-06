@@ -67,6 +67,15 @@ const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
 const AddProductPage = React.lazy(() => import('./pages/AddProductPage'));
+const AddCategoryPage = React.lazy(() => import('./pages/AddCategoryPage'));
+const CreateBOMPage = React.lazy(() => import('./pages/CreateBOMPage'));
+const BulkImportPage = React.lazy(() => import('./pages/BulkImportPage'));
+const CreateSalesOrderPage = React.lazy(() => import('./pages/CreateSalesOrderPage'));
+const CreatePurchaseOrderPage = React.lazy(() => import('./pages/CreatePurchaseOrderPage'));
+const EditPurchaseOrderPage = React.lazy(() => import('./pages/EditPurchaseOrderPage'));
+const EditSalesOrderPage = React.lazy(() => import('./pages/EditSalesOrderPage'));
+const BarcodeScannerPage = React.lazy(() => import('./pages/BarcodeScannerPage'));
+const ScanPage = React.lazy(() => import('./pages/scan'));
 
 // Skeletal Loading Components
 const SkeletonCard = () => (
@@ -371,11 +380,16 @@ const AppRouter = () => {
         >
           <Route index element={<><SEO title="StockFlow Dashboard" /><Dashboard userRole="staff" /></>} />
           <Route path="categories" element={<><SEO title="Product Inventory" /><CategorysPage /></>} />
+          <Route path="products/import" element={<BulkImportPage />} />
+          <Route path="scan" element={<BarcodeScannerPage />} />
+          <Route path="scan-flow" element={<ScanPage />} />
           <Route path="categories-management" element={<CategoriesPage />} />
+          <Route path="categories-management/new" element={<AddCategoryPage />} />
           <Route path="products/new" element={<AddProductPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="categoriesManagement" element={<CategoriesPage />} />
           <Route path="warehouses" element={<><SEO title="Warehouse Management" /><WarehousePage /></>} />
+          <Route path="bom/new" element={<CreateBOMPage />} />
           <Route path="bom" element={<BillOfMaterialsPage />}>
             <Route path="edit/:productId" element={<BOMEditPage />} />
           </Route>
@@ -393,7 +407,11 @@ const AppRouter = () => {
             <Route path="invoicing" element={<InvoicingOverview />} />
           </Route>
           <Route path="sales-orders" element={<SalesOrdersPage />} />
+          <Route path="sales-orders/new" element={<CreateSalesOrderPage />} />
           <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
+          <Route path="purchase-orders/new" element={<CreatePurchaseOrderPage />} />
+          <Route path="purchase-orders/:id/edit" element={<EditPurchaseOrderPage />} />
+          <Route path="sales-orders/:id/edit" element={<EditSalesOrderPage />} />
           <Route path="customer-management" element={<VendorManagementPage />} />
           <Route path="customer-management/new" element={<CreateCustomerPage />} />
           <Route path="customer-management/:id/edit" element={<EditCustomerPage />} />

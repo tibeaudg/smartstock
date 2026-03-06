@@ -5,8 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { PurchaseOrder, PurchaseOrderItem } from '@/types/stockTypes';
+import { PurchaseOrder } from '@/types/stockTypes';
 
 interface ReceivePurchaseOrderModalProps {
   purchaseOrder: PurchaseOrder;
@@ -22,6 +23,7 @@ export const ReceivePurchaseOrderModal = ({
   onReceived
 }: ReceivePurchaseOrderModalProps) => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [receivedQuantities, setReceivedQuantities] = useState<Record<string, number>>({});
 
@@ -87,6 +89,9 @@ export const ReceivePurchaseOrderModal = ({
           .eq('id', purchaseOrder.id);
       }
 
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+      queryClient.invalidateQueries({ queryKey: ['productTransactions'] });
       toast.success('Items received successfully');
       onReceived();
       onClose();

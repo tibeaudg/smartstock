@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PurchaseOrder } from '@/types/stockTypes';
 import { format } from 'date-fns';
-import { Package, Calendar, DollarSign, FileText, X } from 'lucide-react';
+import { Package, Calendar, DollarSign, FileText, X, Pencil } from 'lucide-react';
 import { ReceivePurchaseOrderModal } from './ReceivePurchaseOrderModal';
 
 interface PurchaseOrderDetailProps {
@@ -20,7 +21,10 @@ export const PurchaseOrderDetail = ({
   onClose,
   onPOUpdated
 }: PurchaseOrderDetailProps) => {
+  const navigate = useNavigate();
   const [showReceiveModal, setShowReceiveModal] = useState(false);
+
+  const canEdit = ['draft', 'pending'].includes(purchaseOrder.status);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -33,7 +37,7 @@ export const PurchaseOrderDetail = ({
     }
   };
 
-  const canReceive = purchaseOrder.status === 'ordered' || purchaseOrder.status === 'pending';
+  const canReceive = ['draft', 'ordered', 'pending'].includes(purchaseOrder.status);
 
   if (!isOpen) return null;
 
@@ -119,16 +123,28 @@ export const PurchaseOrderDetail = ({
             </div>
 
             {/* Actions */}
-            {canReceive && (
-              <div className="flex justify-end gap-2 pt-4 border-t">
-                <Button variant="outline" onClick={onClose}>
-                  Close
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              {canEdit && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    onClose();
+                    navigate(`/dashboard/purchase-orders/${purchaseOrder.id}/edit`);
+                  }}
+                >
+                  <Pencil className="w-4 h-4 mr-2" />
+                  Edit
                 </Button>
+              )}
+              {canReceive && (
                 <Button onClick={() => setShowReceiveModal(true)}>
                   Receive Items
                 </Button>
-              </div>
-            )}
+              )}
+              <Button variant="outline" onClick={onClose}>
+                Close
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

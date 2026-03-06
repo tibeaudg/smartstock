@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,35 +12,18 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { 
   Plus, 
   Search, 
   ShoppingCart, 
   Download, 
-  Grid3x3, 
-  Filter, 
   ArrowUpDown, 
-  MoreVertical,
   ChevronLeft,
   ChevronRight,
-  RefreshCw,
-  Calendar,
-  Eye,
-  Edit,
-  Trash2,
-  Copy
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { SalesOrder } from '@/types/stockTypes';
-import { CreateSalesOrderModal } from '@/components/sales-orders/CreateSalesOrderModal';
-import { SalesOrderDetail } from '@/components/sales-orders/SalesOrderDetail';
 import { SalesOrderStatistics } from '@/components/sales-orders/SalesOrderStatistics';
 import { SalesOrderBulkActionBar } from '@/components/sales-orders/SalesOrderBulkActionBar';
 import { format } from 'date-fns';
@@ -96,17 +79,14 @@ export default function SalesOrdersPage() {
   const navigate = useNavigate();
   
   // Modal states
-  const [showCreateModal, setShowCreateModal] = useState(false);
 
-  // Open create modal when navigating from products table "-" button
+  // Navigate to create page when coming with state.openCreate
   useEffect(() => {
     const state = location.state as { openCreate?: boolean } | undefined;
     if (state?.openCreate) {
-      setShowCreateModal(true);
-      navigate(location.pathname, { replace: true, state: {} });
+      navigate('/dashboard/sales-orders/new', { replace: true, state: {} });
     }
-  }, [location.state, location.pathname, navigate]);
-  const [selectedSO, setSelectedSO] = useState<SalesOrder | null>(null);
+  }, [location.state, navigate]);
   
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState('');
@@ -130,7 +110,7 @@ export default function SalesOrdersPage() {
         .from('sales_orders')
         .select(`
           *,
-          items:sales_order_items(*)
+          items:sales_order_items(*, product:products!sales_order_items_product_id_fkey(name), variant:products!sales_order_items_variant_id_fkey(name))
         `)
         .eq('branch_id', activeBranch.branch_id);
 
@@ -249,16 +229,19 @@ export default function SalesOrdersPage() {
       ? sortedSOs.filter(so => selectedOrderIds.has(so.id))
       : sortedSOs;
 
-    const headers = ['SO Number', 'Date', 'Customer', 'Delivery', 'Items', 'Total', 'Payment', 'Status'];
+    const headers = ['SO Number', 'Date', 'Customer', 'Delivery', 'Products', 'Qty', 'Total', 'Payment', 'Status'];
     const csvRows = [headers.join(',')];
 
     ordersToExport.forEach(so => {
+      const productsCell = formatOrderItemsDisplay(so.items, 10).replace(/"/g, '""');
+      const qtyCell = formatOrderQuantitiesDisplay(so.items, 10);
       const row = [
         so.so_number,
         format(new Date(so.order_date), 'MMM dd, yyyy'),
         `"${(so.customer_name || 'N/A').replace(/"/g, '""')}"`,
         so.delivery_status || 'N/A',
-        (so.items?.length || 0).toString(),
+        `"${productsCell}"`,
+        qtyCell,
         so.total_amount.toFixed(2),
         so.payment_status || 'pending',
         so.status,
@@ -307,12 +290,6 @@ export default function SalesOrdersPage() {
     } catch (error: any) {
       toast.error('Failed to delete sales orders: ' + (error.message || 'Unknown error'));
     }
-  };
-
-  const handleSOCreated = () => {
-    setShowCreateModal(false);
-    refetch();
-    queryClient.invalidateQueries({ queryKey: ['salesOrders'] });
   };
 
   const getStatusColor = (status: string) => {
@@ -374,6 +351,23 @@ export default function SalesOrdersPage() {
     return name.substring(0, 2).toUpperCase();
   };
 
+  const formatOrderItemsDisplay = (items: SalesOrder['items'], maxItems = 3) => {
+    if (!items?.length) return '—';
+    const parts = items.slice(0, maxItems).map((item: { product?: { name?: string }; variant?: { name?: string } }) => {
+      return item.variant?.name || item.product?.name || 'Unknown product';
+    });
+    const remainder = items.length - maxItems;
+    return remainder > 0 ? `${parts.join(', ')} and ${remainder} more` : parts.join(', ');
+  };
+
+  const formatOrderQuantitiesDisplay = (items: SalesOrder['items'], maxItems = 3) => {
+    if (!items?.length) return '—';
+    const quantities = items.slice(0, maxItems).map((item: { quantity_ordered?: number }) => item.quantity_ordered ?? 0);
+    const remainder = items.length - maxItems;
+    const qtyStr = quantities.join(', ');
+    return remainder > 0 ? `${qtyStr} +${remainder} more` : qtyStr;
+  };
+
   if (!user || !activeBranch) {
     return (
       <div className="p-6">
@@ -404,13 +398,14 @@ export default function SalesOrdersPage() {
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
-          <Button 
-            onClick={() => setShowCreateModal(true)} 
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Create Sales Order
-          </Button>
+          <Link to="/dashboard/sales-orders/new">
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Create Sales Order
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -449,25 +444,26 @@ export default function SalesOrdersPage() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
       ) : sortedSOs.length === 0 ? (
-        <Card>
-          <CardContent className="p-12 text-center">
-            <ShoppingCart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No sales orders found</h3>
-            <p className="text-gray-600 mb-4">
-              {searchQuery || statusFilter !== 'all' 
-                ? 'Try adjusting your filters'
-                : 'Create your first sales order to get started'}
+        <Card className="p-12">
+          <div className="text-center">
+            <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {searchQuery || statusFilter !== 'all' ? 'No sales orders found' : 'No Sales Orders yet'}
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              {searchQuery || statusFilter !== 'all'
+                ? 'Try adjusting your search or filters'
+                : 'Create your first sales order to track customer orders and fulfillment'}
             </p>
             {!searchQuery && statusFilter === 'all' && (
-              <Button 
-                onClick={() => setShowCreateModal(true)} 
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Create Sales Order
-              </Button>
+              <Link to="/dashboard/sales-orders/new">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Sales Order
+                </Button>
+              </Link>
             )}
-          </CardContent>
+          </div>
         </Card>
       ) : (
         <>
@@ -489,6 +485,22 @@ export default function SalesOrdersPage() {
                       <div className="flex items-center gap-2">
                         Orders
                         {sortColumn === 'order_date' && (
+                          <ArrowUpDown className={cn(
+                            "w-3 h-3",
+                            sortDirection === 'asc' ? 'rotate-180' : ''
+                          )} />
+                        )}
+                      </div>
+                    </TableHead>
+                    <TableHead className="min-w-[180px]">Items</TableHead>
+                    <TableHead className="min-w-[80px]">Qty</TableHead>
+                    <TableHead 
+                      className="cursor-pointer min-w-[90px]"
+                      onClick={() => handleSort('total_amount')}
+                    >
+                      <div className="flex items-center gap-2">
+                        Amount
+                        {sortColumn === 'total_amount' && (
                           <ArrowUpDown className={cn(
                             "w-3 h-3",
                             sortDirection === 'asc' ? 'rotate-180' : ''
@@ -525,21 +537,6 @@ export default function SalesOrdersPage() {
                       </div>
                     </TableHead>
                     <TableHead>Delivery</TableHead>
-                    <TableHead>Items</TableHead>
-                    <TableHead 
-                      className="cursor-pointer"
-                      onClick={() => handleSort('total_amount')}
-                    >
-                      <div className="flex items-center gap-2">
-                        Total
-                        {sortColumn === 'total_amount' && (
-                          <ArrowUpDown className={cn(
-                            "w-3 h-3",
-                            sortDirection === 'asc' ? 'rotate-180' : ''
-                          )} />
-                        )}
-                      </div>
-                    </TableHead>
                     <TableHead 
                       className="cursor-pointer"
                       onClick={() => handleSort('payment_status')}
@@ -554,7 +551,6 @@ export default function SalesOrdersPage() {
                         )}
                       </div>
                     </TableHead>
-                    <TableHead>Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -572,7 +568,7 @@ export default function SalesOrdersPage() {
                               (e.target as HTMLElement).closest('button')) {
                             return;
                           }
-                          setSelectedSO(so);
+                          navigate(`/dashboard/sales-orders/${so.id}/edit`);
                         }}
                       >
                         <TableCell onClick={(e) => e.stopPropagation()}>
@@ -582,6 +578,15 @@ export default function SalesOrdersPage() {
                           />
                         </TableCell>
                         <TableCell className="font-medium">{so.so_number}</TableCell>
+                        <TableCell className="min-w-[180px]">
+                          <span className="truncate block" title={formatOrderItemsDisplay(so.items, 10)}>
+                            {formatOrderItemsDisplay(so.items)}
+                          </span>
+                        </TableCell>
+                        <TableCell className="min-w-[80px] text-muted-foreground">
+                          {formatOrderQuantitiesDisplay(so.items)}
+                        </TableCell>
+                        <TableCell className="font-medium min-w-[90px]">${so.total_amount.toFixed(2)}</TableCell>
                         <TableCell>
                           {format(new Date(so.order_date), 'd MMM yyyy')}
                         </TableCell>
@@ -600,63 +605,10 @@ export default function SalesOrdersPage() {
                             {getDeliveryStatusLabel(so.delivery_status)}
                           </Badge>
                         </TableCell>
-                        <TableCell>{so.items?.length || 0} Items</TableCell>
-                        <TableCell className="font-medium">${so.total_amount.toFixed(2)}</TableCell>
                         <TableCell>
                           <Badge className={getPaymentStatusColor(so.payment_status)}>
                             {getPaymentStatusLabel(so.payment_status)}
                           </Badge>
-                        </TableCell>
-                        <TableCell onClick={(e) => e.stopPropagation()}>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => setSelectedSO(so)}>
-                                <Eye className="w-4 h-4 mr-2" />
-                                View Details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => {
-                                // TODO: Implement edit
-                                toast.info('Edit functionality coming soon');
-                              }}>
-                                <Edit className="w-4 h-4 mr-2" />
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => {
-                                // TODO: Implement duplicate
-                                toast.info('Duplicate functionality coming soon');
-                              }}>
-                                <Copy className="w-4 h-4 mr-2" />
-                                Duplicate
-                              </DropdownMenuItem>
-                              <DropdownMenuItem 
-                                onClick={async () => {
-                                  if (confirm('Are you sure you want to delete this sales order?')) {
-                                    try {
-                                      const { error } = await supabase
-                                        .from('sales_orders')
-                                        .delete()
-                                        .eq('id', so.id);
-                                      
-                                      if (error) throw error;
-                                      toast.success('Sales order deleted');
-                                      refetch();
-                                    } catch (error: any) {
-                                      toast.error('Failed to delete: ' + (error.message || 'Unknown error'));
-                                    }
-                                  }
-                                }}
-                                className="text-red-600"
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     );
@@ -778,23 +730,6 @@ export default function SalesOrdersPage() {
         </>
       )}
 
-      {/* Modals */}
-      {showCreateModal && (
-        <CreateSalesOrderModal
-          isOpen={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          onSOCreated={handleSOCreated}
-        />
-      )}
-
-      {selectedSO && (
-        <SalesOrderDetail
-          salesOrder={selectedSO}
-          isOpen={!!selectedSO}
-          onClose={() => setSelectedSO(null)}
-          onSOUpdated={refetch}
-        />
-      )}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upl
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams, Link } from 'react-router-dom';
 import { useCategoryTree } from '@/hooks/useCategories';
 import { Card, CardContent } from '@/components/ui/card';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
@@ -20,9 +20,6 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { supabase } from '@/integrations/supabase/client';
 import { Progress } from '@/components/ui/progress';
-import { BulkImportModal } from '@/components/BulkImportModal';
-import { BarcodeScanner } from '@/components/BarcodeScanner';
-import { useScannerSettings } from '@/hooks/useScannerSettings';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { StockQuickActionModal } from '@/components/products/StockQuickActionModal';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -67,6 +65,29 @@ const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number)
         Go
       </Button>
     </>
+  );
+};
+
+// Truncates text with ellipsis and shows full value on hover
+const TruncatableCell: React.FC<{ 
+  value: string; 
+  className?: string;
+  fallback?: string;
+}> = ({ value, className, fallback = '—' }) => {
+  const display = value?.trim() || fallback;
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className={cn("min-w-0 truncate", className)} title="">
+            {display}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="max-w-xs break-words">
+          {display}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
@@ -231,13 +252,10 @@ const categoryProductsData = useMemo(() => {
   const [bulkDeleteProgress, setBulkDeleteProgress] = useState(0);
   const [showBulkDeleteDialog, setShowBulkDeleteDialog] = useState(false);
 
-  const [showImportDialog, setShowImportDialog] = useState(false);
-  const [showScanner, setShowScanner] = useState(false);
   const [stockActionModal, setStockActionModal] = useState<{
     product: any;
     actionType: 'add' | 'remove';
   } | null>(null);
-  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -267,18 +285,13 @@ const categoryProductsData = useMemo(() => {
     setSearchTerm('');
   };
 
-  // Open import modal when navigating from Dashboard with state.openImport
+  // Navigate to import page when coming from Dashboard/AddProduct with state.openImport
   useEffect(() => {
     const shouldOpen = (location.state as { openImport?: boolean })?.openImport;
     if (shouldOpen) {
-      setShowImportDialog(true);
-      // Clear state on next tick so modal opens first, avoiding re-navigation race
-      const id = setTimeout(() => {
-        navigate(location.pathname, { replace: true, state: {} });
-      }, 0);
-      return () => clearTimeout(id);
+      navigate('/dashboard/products/import', { replace: true, state: {} });
     }
-  }, [location.state, location.pathname, navigate]);
+  }, [location.state, navigate]);
 
   // Create hierarchical product structure with variants grouped under parents
   const hierarchicalProducts = useMemo(() => {
@@ -773,6 +786,12 @@ const categoryProductsData = useMemo(() => {
         queryKey: ['products'],
         refetchType: 'none'
       });
+      if (successfulDeletions > 0 && branchId && user?.id) {
+        const prevCount = queryClient.getQueryData<number>(['productCount', branchId, user.id]);
+        const newCount = Math.max(0, (prevCount ?? 0) - successfulDeletions);
+        queryClient.setQueryData(['productCount', branchId, user.id], newCount);
+      }
+      await queryClient.invalidateQueries({ queryKey: ['productCount'] });
   
       // Show results
       if (successfulDeletions > 0) {
@@ -875,14 +894,15 @@ const categoryProductsData = useMemo(() => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button 
-            onClick={() => setShowScanner(true)}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <ScanLine className="w-4 h-4" />
-            Scan Item
-          </Button>
+          <Link to="/dashboard/scan" state={{ returnTo: '/dashboard/categories' }}>
+            <Button 
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <ScanLine className="w-4 h-4" />
+              Scan Item
+            </Button>
+          </Link>
 
           <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-600 text-white hover:bg-blue-700">
             <Plus className="w-4 h-4 mr-2" /> Add Manually
@@ -890,11 +910,12 @@ const categoryProductsData = useMemo(() => {
 
 
 
-          <Button onClick={() => setShowImportDialog(true)} variant="outline" className="flex items-center gap-2">
+          <Link to="/dashboard/products/import">
+            <Button variant="outline" className="flex items-center gap-2">
                 <Import className="w-4 h-4 mr-2" />
                 <span className="text-sm">Import</span>
-          </Button>
-
+            </Button>
+          </Link>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -1079,22 +1100,36 @@ const categoryProductsData = useMemo(() => {
       {categoriesLoading || productsLoading ? (
         <div className="py-12 text-center">Loading…</div>
       ) : filteredProducts.length === 0 ? (
-        <Card>
-          <CardContent className="p-12 text-center">
-            <Package className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-            <p>No products found</p>
-            {activeFiltersCount > 0 && (
-              <Button variant="outline" className="mt-4" onClick={clearFilters}>
+        <Card className="p-12">
+          <div className="text-center">
+            <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {searchTerm || activeFiltersCount > 0 ? 'No products found' : 'No products yet'}
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              {searchTerm || activeFiltersCount > 0
+                ? 'Try adjusting your search or filters'
+                : 'Add your first product to start tracking inventory and managing your catalog'}
+            </p>
+            {searchTerm || activeFiltersCount > 0 ? (
+              <Button variant="outline" onClick={clearFilters}>
                 Clear Filters
               </Button>
+            ) : (
+              <Link to="/dashboard/products/new">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Product
+                </Button>
+              </Link>
             )}
-          </CardContent>
+          </div>
         </Card>
       ) : (
         <>
-          <div className="-mx-4 sm:-mx-6">
+          <div className="-mx-4 sm:-mx-6 pl-6 pr-6">
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto ">
                 <table className="w-full table-fixed divide-y divide-gray-200 border-collapse [&_th]:border-r [&_th]:border-gray-200 [&_th:last-child]:border-r-0 [&_td]:border-r [&_td]:border-gray-200 [&_td:last-child]:border-r-0">
                   <thead className="bg-gray-50">
                 <tr>
@@ -1192,16 +1227,16 @@ const categoryProductsData = useMemo(() => {
                           )}
                         </td>
                       )}
-                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4")}>
+                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5" : "px-4 py-4", "min-w-0 overflow-hidden")}>
                         <div className={cn(
-                          "flex items-center gap-2",
+                          "flex items-center gap-2 min-w-0",
                           isVariant && "pl-6"
                         )}>
                           {isParent && p.hasVariants && (
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-5 w-5 p-0 hover:bg-gray-200"
+                              className="h-5 w-5 p-0 hover:bg-gray-200 shrink-0"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toggleParentExpansion(p.id);
@@ -1216,43 +1251,50 @@ const categoryProductsData = useMemo(() => {
                             </Button>
                           )}
                           {!isParent && isVariant && (
-                            <span className="text-gray-400 text-xs w-5">└─</span>
+                            <span className="text-gray-400 text-xs w-5 shrink-0">└─</span>
                           )}
                           {!isParent && !isVariant && (
-                            <span className="w-5"></span>
+                            <span className="w-5 shrink-0"></span>
                           )}
-                          <div className="flex-1 flex items-center gap-2">
-                            <div className="flex-1">
+                          <div className="flex-1 flex items-center gap-2 min-w-0">
+                            <div className="flex-1 min-w-0">
                               <div className={cn("font-medium", viewMode === 'compact' ? "text-xs" : "text-sm")}>
-                                {isVariant ? (
-                                  <span className="text-gray-600">
-                                    {p.variant_name || p.name}
-                                  </span>
-                                ) : (
-                                  p.name
-                                )}
+                                <TruncatableCell
+                                  value={isVariant ? (p.variant_name || p.name || '') : (p.name || '')}
+                                  className={isVariant ? "text-gray-600" : ""}
+                                />
                               </div>
                               {viewMode === 'expanded' && p.description && !isVariant && (
-                                <div className="text-xs text-gray-500 mt-1 line-clamp-2 max-w-md">
-                                  {p.description}
-                                </div>
+                                <TooltipProvider delayDuration={200}>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <div className="text-xs text-gray-500 mt-1 line-clamp-2 max-w-md overflow-hidden">
+                                        {p.description}
+                                      </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top" className="max-w-sm">
+                                      {p.description}
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               )}
                             </div>
                             {isParent && p.hasVariants && p.variantCount > 0 && (
-                              <Badge variant="secondary" className="text-xs">
+                              <Badge variant="secondary" className="text-xs shrink-0">
                                 {p.variantCount} {p.variantCount === 1 ? 'variant' : 'variants'}
                               </Badge>
                             )}
                           </div>
                         </div>
                       </td>
-                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs text-gray-600" : "px-4 py-4 text-sm")}>
-                        {isVariant ? (p.variant_sku || p.sku || '—') : (p.sku || '—')}
+                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs text-gray-600" : "px-4 py-4 text-sm", "min-w-0 overflow-hidden")}>
+                        <TruncatableCell
+                          value={isVariant ? (p.variant_sku || p.sku || '') : (p.sku || '')}
+                          className={cn("text-gray-600", viewMode === 'compact' && "text-xs")}
+                        />
                       </td>
-                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm")}>
-                        <div className={cn(viewMode === 'expanded' && "max-w-xs truncate")}>
-                          {p.category_name || '—'}
-                        </div>
+                      <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-xs" : "px-4 py-4 text-sm", "min-w-0 overflow-hidden")}>
+                        <TruncatableCell value={p.category_name || ''} />
                       </td>
                       <td className={cn(viewMode === 'compact' ? "px-2 py-1.5 text-center" : "px-4 py-4 text-center")}>
                         <div className="flex flex-col items-center justify-center">
@@ -1291,18 +1333,9 @@ const categoryProductsData = useMemo(() => {
                             {p.cost_price ? `$${parseFloat(p.cost_price).toFixed(2)}` : '—'}
                           </td>
                         
-                          <td className="px-4 py-4 text-sm">
+                          <td className="px-4 py-4 text-sm min-w-0 overflow-hidden">
                             {p.location ? (
-                              <div className="flex flex-wrap gap-1">
-                                {p.location.split(',').map((loc: string, idx: number) => {
-                                  const trimmedLoc = loc.trim();
-                                  return trimmedLoc ? (
-                                    <Badge key={idx} variant="secondary" className="text-xs">
-                                      {trimmedLoc}
-                                    </Badge>
-                                  ) : null;
-                                })}
-                              </div>
+                              <TruncatableCell value={p.location} />
                             ) : (
                               '—'
                             )}
@@ -1566,16 +1599,6 @@ const categoryProductsData = useMemo(() => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Bulk Import Modal (Excel / CSV) */}
-      <BulkImportModal
-        isOpen={showImportDialog}
-        onClose={() => setShowImportDialog(false)}
-        onImportComplete={() => {
-          queryClient.invalidateQueries({ queryKey: ['products', 'categoryProducts', branchId, selectedCategoryIds, user?.id] });
-          setShowImportDialog(false);
-        }}
-      />
-
       {/* Stock Quick Action Modal (+ / - buttons) */}
       <StockQuickActionModal
         isOpen={!!stockActionModal}
@@ -1595,20 +1618,6 @@ const categoryProductsData = useMemo(() => {
         onSuccess={() => refetchProducts()}
       />
 
-      {/* Barcode Scanner Modal */}
-      {showScanner && (
-        <BarcodeScanner
-          onBarcodeDetected={(barcode) => {
-            setShowScanner(false);
-            // Navigate to scan page with the barcode
-            navigate('/scan', { state: { barcode } });
-            toast.success(`Barcode scanned: ${barcode}`);
-          }}
-          onClose={() => setShowScanner(false)}
-          onScanSuccess={onScanSuccess}
-          settings={scannerSettings}
-        />
-      )}
     </div>
   );
 }

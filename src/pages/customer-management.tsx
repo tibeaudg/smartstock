@@ -286,9 +286,27 @@ export default function CustomerManagementPage() {
       {/* Main Table Content */}
       <Card className="border-none shadow-sm overflow-hidden">
         {sortedCustomers.length === 0 ? (
-          <div className="p-20 text-center">
-            <Truck className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No customers found.</p>
+          <div className="p-12">
+            <div className="text-center">
+              <Truck className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {searchQuery ? 'No customers found' : 'No Customers yet'}
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                {searchQuery
+                  ? 'Try adjusting your search query'
+                  : 'Add your first customer to start managing sales orders and deliveries'}
+              </p>
+              {!searchQuery && (
+                <Button
+                  onClick={() => navigate('/dashboard/customer-management/new')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Customer
+                </Button>
+              )}
+            </div>
           </div>
         ) : (
           <div className="overflow-x-auto">

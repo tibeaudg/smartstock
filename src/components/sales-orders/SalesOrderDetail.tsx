@@ -24,6 +24,7 @@ import { FulfillSalesOrderModal } from './FulfillSalesOrderModal';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 import { useBranches } from '@/hooks/useBranches';
 
 interface SalesOrderDetailProps {
@@ -54,6 +55,7 @@ export const SalesOrderDetail = ({
 }: SalesOrderDetailProps) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
   const [showFulfillModal, setShowFulfillModal] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -111,11 +113,12 @@ export const SalesOrderDetail = ({
   }, [isOpen, salesOrder, activeBranch?.branch_id]);
 
   const fetchProducts = async () => {
-    if (!activeBranch?.branch_id) return;
+    if (!user || !activeBranch?.branch_id) return;
     
     const { data, error } = await supabase
       .from('products')
       .select('*')
+      .eq('user_id', user.id)
       .eq('branch_id', activeBranch.branch_id)
       .order('name');
 
@@ -246,6 +249,7 @@ export const SalesOrderDetail = ({
           notes: notes.trim() || null,
           order_date: new Date(orderDate).toISOString(),
           total_amount: totalAmount,
+          ...(status === 'fulfilled' && { fulfillment_date: new Date().toISOString() }),
         })
         .eq('id', salesOrder.id);
 
@@ -297,6 +301,30 @@ export const SalesOrderDetail = ({
             });
           if (insertError) throw insertError;
         }
+      }
+
+      // When status is fulfilled, deduct stock for any unfulfilled quantities
+      if (status === 'fulfilled' && user) {
+        const { data: soItems } = await supabase
+          .from('sales_order_items')
+          .select('id, quantity_ordered, quantity_fulfilled')
+          .eq('sales_order_id', salesOrder.id);
+
+        for (const soi of soItems || []) {
+          const remaining = soi.quantity_ordered - (soi.quantity_fulfilled || 0);
+          if (remaining > 0) {
+            const { error: txError } = await supabase.rpc('create_sales_order_transaction', {
+              p_so_item_id: soi.id,
+              p_quantity_fulfilled: remaining,
+              p_fulfilled_by: user.id,
+            });
+            if (txError) throw txError;
+          }
+        }
+
+        queryClient.invalidateQueries({ queryKey: ['products'] });
+        queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+        queryClient.invalidateQueries({ queryKey: ['productTransactions'] });
       }
 
       toast.success(`Sales order ${salesOrder.so_number} updated successfully`);

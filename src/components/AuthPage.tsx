@@ -31,8 +31,7 @@ export const AuthPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   // Field-level errors (displayed inline)
@@ -62,8 +61,7 @@ export const AuthPage = () => {
     setEmail('');
     setPassword('');
     setConfirmPassword('');
-    setFirstName('');
-    setLastName('');
+    setName('');
     setAcceptTerms(false);
     setShowPassword(false);
     setShowConfirmPassword(false);
@@ -188,16 +186,9 @@ export const AuthPage = () => {
         }, 500);
         
       } else if (mode === 'register') {
-        // Validate first name
-        if (!firstName.trim()) {
-          toast.error('First name is required');
-          setIsSubmitting(false);
-          return;
-        }
-        
-        // Validate last name
-        if (!lastName.trim()) {
-          toast.error('Last name is required');
+        // Validate name
+        if (!name.trim()) {
+          toast.error('Name is required');
           setIsSubmitting(false);
           return;
         }
@@ -242,9 +233,8 @@ export const AuthPage = () => {
         const { error } = await signUp(
           email.trim(), 
           password, 
-          firstName.trim(), 
-          lastName.trim(), 
-          'admin'
+          name.trim(), 
+          ''
         );
 
         if (error) {
@@ -438,7 +428,7 @@ export const AuthPage = () => {
                   {/* Email Field */}
                   <div>
                     <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                      Email Address
+                      Email Address 
                     </Label>
                     <div className="relative mt-1">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -461,46 +451,25 @@ export const AuthPage = () => {
                     </div>
                   </div>
 
-                  {/* First Name and Last Name for Registration */}
+                  {/* Name for Registration */}
                   {mode === 'register' && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">
-                          First Name
-                        </Label>
-                        <div className="relative mt-1">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <Input 
-                            id="firstName" 
-                            type="text" 
-                            value={firstName} 
-                            onChange={(e) => setFirstName(e.target.value)} 
-                            required 
-                            disabled={isSubmitting}
-                            className="h-11 pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="John"
-                            autoComplete="given-name"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">
-                          Last Name
-                        </Label>
-                        <div className="relative mt-1">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <Input 
-                            id="lastName" 
-                            type="text" 
-                            value={lastName} 
-                            onChange={(e) => setLastName(e.target.value)} 
-                            required 
-                            disabled={isSubmitting}
-                            className="h-11 pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                            placeholder="Doe"
-                            autoComplete="family-name"
-                          />
-                        </div>
+                    <div>
+                      <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                        Name 
+                      </Label>
+                      <div className="relative mt-1">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <Input 
+                          id="name" 
+                          type="text" 
+                          value={name} 
+                          onChange={(e) => setName(e.target.value)} 
+                          required 
+                          disabled={isSubmitting}
+                          className="h-11 pl-10 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                          placeholder="Your name"
+                          autoComplete="name"
+                        />
                       </div>
                     </div>
                   )}
@@ -509,7 +478,7 @@ export const AuthPage = () => {
                   {mode !== 'reset' && (
                     <div>
                       <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                        Password
+                        Password 
                       </Label>
                       <div className="relative mt-1">
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -716,8 +685,13 @@ export const AuthPage = () => {
                   {/* Submit Button */}
                   <Button 
                     type="submit" 
-                    className="w-full h-11 text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-300" 
-                    disabled={isSubmitting}
+                    className={cn(
+                      "w-full h-11 text-base font-semibold transition-all duration-300",
+                      mode === 'register' && !acceptTerms
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-black hover:bg-gray-800"
+                    )}
+                    disabled={isSubmitting || (mode === 'register' && !acceptTerms)}
                   >
                     {isSubmitting ? (
                       <>

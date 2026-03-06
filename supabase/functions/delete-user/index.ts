@@ -115,12 +115,19 @@ serve(async (req) => {
       'onboarding_answers',
       'scanner_settings',
       'user_feedback',
+      // Orders and transfers (before products - items cascade from parents)
+      'purchase_orders',
+      'sales_orders',
+      'stock_transfers',
+      'cycle_counts',
+      'customers',
       // Inventory and products (delete transactions before products)
       'stock_transactions',
       'delivery_notes',
       'products',
       'categories',
       'suppliers',
+      'warehouses',
       // Branches (delete last as other tables might reference them)
       'branches', // Delete branches owned by user
     ]

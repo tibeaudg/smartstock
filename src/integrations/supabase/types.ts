@@ -809,6 +809,7 @@ export type Database = {
           is_owner: boolean | null
           onboarding: string | null
           organization_name: string | null
+          force_show_checklist: boolean | null
         }
         Insert: {
           created_at?: string | null
@@ -824,6 +825,7 @@ export type Database = {
           is_owner?: boolean | null
           onboarding?: string | null
           organization_name?: string | null
+          force_show_checklist?: boolean | null
         }
         Update: {
           created_at?: string | null
@@ -839,6 +841,7 @@ export type Database = {
           is_owner?: boolean | null
           onboarding?: string | null
           organization_name?: string | null
+          force_show_checklist?: boolean | null
         }
         Relationships: [        ]
       }

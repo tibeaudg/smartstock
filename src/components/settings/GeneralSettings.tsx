@@ -282,6 +282,11 @@ export const GeneralSettings = () => {
       if (successfulDeletions > 0) {
         await queryClient.cancelQueries({ queryKey: ['products'] });
         await queryClient.invalidateQueries({ queryKey: ['products'] });
+        await queryClient.invalidateQueries({ queryKey: ['dashboardData'] });
+        if (branchId && user?.id) {
+          queryClient.setQueryData(['productCount', branchId, user.id], 0);
+        }
+        await queryClient.invalidateQueries({ queryKey: ['productCount'] });
         toast.success(`Successfully deleted ${successfulDeletions} product(s)`);
       }
 

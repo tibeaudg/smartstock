@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,7 +40,7 @@ export function EmailTemplatesManager() {
           name: template.name,
           type: template.type,
           subject: template.subject,
-          html_body: template.html_body,
+          html_body: template.html_body ?? '',
           text_body: template.text_body || '',
           is_active: template.is_active,
         });
@@ -59,6 +59,19 @@ export function EmailTemplatesManager() {
     }
     setIsDialogOpen(true);
   };
+
+  useEffect(() => {
+    if (editingId && fullTemplate) {
+      setFormData({
+        name: fullTemplate.name,
+        type: fullTemplate.type,
+        subject: fullTemplate.subject,
+        html_body: fullTemplate.html_body ?? '',
+        text_body: fullTemplate.text_body || '',
+        is_active: fullTemplate.is_active,
+      });
+    }
+  }, [editingId, fullTemplate]);
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -286,6 +299,7 @@ export function EmailTemplatesManager() {
 
               <TabsContent value="html" className="space-y-2">
                 <RichTextEditor
+                  key={editingId ?? 'new'}
                   content={formData.html_body}
                   onChange={(html) => setFormData({ ...formData, html_body: html })}
                 />

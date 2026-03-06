@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp, ArrowUpRight, Minus } from 'lucide-react';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,16 +16,20 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { useWarehouses } from '@/hooks/useWarehouses';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+import type { Product as StockProduct } from '@/types/stockTypes';
 import { toast } from 'sonner';
+
+type ProductRow = Database['public']['Tables']['products']['Row'];
+type Product = ProductRow & { sku?: string | null };
 import { EditProductStockModal } from '@/components/EditProductStockModal';
-import { WarehouseTransferModal } from '@/components/WarehouseTransferModal';
-import { CategorySelectionModal } from '@/components/CategorySelectionModal';
 import { AddVariantModal } from '@/components/AddVariantModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BillOfMaterials from '@/components/products/BillOfMaterials';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format } from 'date-fns';
 
 export default function ProductDetailPage() {
@@ -54,7 +58,7 @@ export default function ProductDetailPage() {
   }, []);
   
   // Variants state
-  const [variants, setVariants] = useState<any[]>([]);
+  const [variants, setVariants] = useState<Product[]>([]);
   const [isLoadingVariants, setIsLoadingVariants] = useState(false);
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   
@@ -84,8 +88,8 @@ export default function ProductDetailPage() {
   });
   
   // Current product state
-  const [currentProduct, setCurrentProduct] = useState<any>(null);
-  const [parentProduct, setParentProduct] = useState<any>(null);
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [parentProduct, setParentProduct] = useState<Product | null>(null);
   
   // Form state
   const [form, setForm] = useState({
@@ -117,13 +121,11 @@ export default function ProductDetailPage() {
   const [showScanner, setShowScanner] = useState(false);
   
   // Categories state
-  const { categories } = useCategoriesFetch();
-  const [categoryOpen, setCategoryOpen] = useState(false);
-
+  const { categories, refetch: refetchCategories } = useCategoriesFetch();
+  const [newCategoryName, setNewCategoryName] = useState('');
   // Modal states
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
-  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [stockModalActionType, setStockModalActionType] = useState<'in' | 'out'>('in');
   const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
 
   // Fetch product data
@@ -143,22 +145,23 @@ export default function ProductDetailPage() {
         if (error) throw error;
         
         if (data) {
-          setCurrentProduct(data);
+          const product = data as Product;
+          setCurrentProduct(product);
           setForm({
-            name: data.name || '',
-            description: data.description || '',
-            quantity_in_stock: data.quantity_in_stock || 0,
-            minimum_stock_level: data.minimum_stock_level || 0,
-            purchase_price: data.purchase_price || 0,
-            sale_price: data.sale_price || 0,
-            sku: data.sku || '',
-            location: data.location || '',
-            category_id: data.category_id || '',
-            category_name: data.category_name || '',
+            name: product.name || '',
+            description: product.description || '',
+            quantity_in_stock: product.quantity_in_stock || 0,
+            minimum_stock_level: product.minimum_stock_level || 0,
+            purchase_price: product.purchase_price || 0,
+            sale_price: product.sale_price || 0,
+            sku: product.sku || '',
+            location: product.location || '',
+            category_id: product.category_id || '',
+            category_name: product.category_name || '',
           });
           // Initialize locations array from comma-separated string
-          if (data.location) {
-            const locationArray = data.location.split(',').map(l => l.trim()).filter(l => l);
+          if (product.location) {
+            const locationArray = product.location.split(',').map(l => l.trim()).filter(l => l);
             setLocations(locationArray.length > 0 ? locationArray : ['']);
           } else {
             setLocations(['']);
@@ -224,7 +227,7 @@ export default function ProductDetailPage() {
         .order('variant_name');
 
       if (error) throw error;
-      setVariants(data || []);
+      setVariants((data || []) as Product[]);
     } catch (error) {
       console.error('Error fetching variants:', error);
       toast.error('Failed to load variants');
@@ -240,7 +243,7 @@ export default function ProductDetailPage() {
   };
 
   // Handle variant editing
-  const handleEditVariant = (variant: any) => {
+  const handleEditVariant = (variant: Product) => {
     setEditingVariantId(variant.id);
     setVariantForm({
       variant_name: variant.variant_name || '',
@@ -273,6 +276,7 @@ export default function ProductDetailPage() {
 
       const { error: updateError } = await supabase
         .from('products')
+        // @ts-expect-error - Supabase products update type inference can fail
         .update(updateData)
         .eq('id', variantId);
         
@@ -404,11 +408,13 @@ export default function ProductDetailPage() {
           .eq('user_id', user.id)
           .maybeSingle();
 
-        if (existingCategory) {
-          categoryId = existingCategory.id;
+        const existing = existingCategory as { id: string } | null;
+        if (existing) {
+          categoryId = existing.id;
         } else {
           const { data: newCategory, error: categoryError } = await supabase
             .from('categories')
+            // @ts-expect-error - Supabase categories insert type inference can fail
             .insert({ name: form.category_name.trim(), user_id: user.id })
             .select('id')
             .single();
@@ -418,7 +424,7 @@ export default function ProductDetailPage() {
             setLoading(false);
             return;
           }
-          categoryId = newCategory.id;
+          categoryId = (newCategory as { id: string }).id;
         }
       }
 
@@ -483,6 +489,7 @@ export default function ProductDetailPage() {
 
       const { error: updateError } = await supabase
         .from('products')
+        // @ts-expect-error - Supabase products update type inference can fail
         .update(updateData)
         .eq('id', currentProduct.id);
         
@@ -494,13 +501,14 @@ export default function ProductDetailPage() {
       }
 
       // Refresh product data
-      const { data: updatedProduct } = await supabase
+      const { data: updatedData } = await supabase
         .from('products')
         .select('*')
         .eq('id', currentProduct.id)
         .single();
 
-      if (updatedProduct) {
+      if (updatedData) {
+        const updatedProduct = updatedData as Product;
         setCurrentProduct(updatedProduct);
         setForm(prev => ({
           ...prev,
@@ -535,9 +543,20 @@ export default function ProductDetailPage() {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
       queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+      if (field === 'category') {
+        queryClient.invalidateQueries({ queryKey: ['categories'] });
+        queryClient.invalidateQueries({ queryKey: ['categories-fetch'] });
+        refetchCategories();
+      }
 
       toast.success('Product updated successfully');
       setEditingField(null);
+      if (field === 'sku') {
+        setShowScanner(false);
+      }
+      if (field === 'category') {
+        setNewCategoryName('');
+      }
     } catch (error) {
       console.error('Error updating product:', error);
       toast.error('Unexpected error updating product');
@@ -575,22 +594,40 @@ export default function ProductDetailPage() {
       setUploadedImages([]);
       setNewProductImage(null);
     }
+
+    // Close barcode scanner when canceling SKU edit
+    if (field === 'sku') {
+      setShowScanner(false);
+    }
+
+    // Clear new category input when canceling category edit
+    if (field === 'category') {
+      setNewCategoryName('');
+    }
     
     setEditingField(null);
   };
 
   const handleCategoryChange = (value: string) => {
-    const category = categories.find(cat => cat.name === value);
-    setForm({ 
-      ...form, 
-      category_id: category?.id || '', 
-      category_name: value 
-    });
+    setNewCategoryName('');
+    if (value === '__none__') {
+      setForm(prev => ({ ...prev, category_id: '', category_name: '' }));
+      return;
+    }
+    const category = categories.find(cat => cat.id === value);
+    if (category) {
+      setForm(prev => ({ ...prev, category_id: category.id, category_name: category.name }));
+    }
   };
 
-  const [selectedProductForStock, setSelectedProductForStock] = useState<any>(null);
+  const handleNewCategoryInput = (value: string) => {
+    setNewCategoryName(value);
+    setForm(prev => ({ ...prev, category_id: '', category_name: value.trim() }));
+  };
 
-  const handleAdjustStock = async (product?: any) => {
+  const [selectedProductForStock, setSelectedProductForStock] = useState<Product | null>(null);
+
+  const handleAdjustStock = async (product?: Product | null) => {
     const prodToUse = product || currentProduct;
     if (!prodToUse) {
       toast.error('No product selected');
@@ -638,6 +675,7 @@ export default function ProductDetailPage() {
       console.warn('handleAdjustStock: missing branch id on product, attempting to resolve user branch', prodToUse);
       if (user?.id) {
         try {
+          // @ts-expect-error - Supabase RPC type inference can fail
           const res: any = await supabase.rpc('get_user_branches', { user_id: user.id });
           const branches = res?.data || res;
           if (Array.isArray(branches) && branches.length > 0) {
@@ -646,6 +684,7 @@ export default function ProductDetailPage() {
             if (fallbackBranchId) {
               console.log('handleAdjustStock: using fallback branch id from RPC', fallbackBranchId);
               const fallbackProduct = { ...prodToUse, branch_id: fallbackBranchId };
+              setStockModalActionType('in');
               setSelectedProductForStock(fallbackProduct);
               setIsStockAdjustModalOpen(true);
               return;
@@ -661,63 +700,23 @@ export default function ProductDetailPage() {
       return;
     }
 
+    setStockModalActionType('in');
     setSelectedProductForStock(prodToUse);
     setIsStockAdjustModalOpen(true);
   };
 
-  const handleSetWarehouse = () => {
+  const handleStockIn = () => {
     if (!currentProduct) return;
-    setIsTransferModalOpen(true);
+    setStockModalActionType('in');
+    setSelectedProductForStock(currentProduct);
+    setIsStockAdjustModalOpen(true);
   };
 
-  const handleSetCategory = () => {
+  const handleStockOut = () => {
     if (!currentProduct) return;
-    setIsCategoryModalOpen(true);
-  };
-
-  const handleTransferComplete = async () => {
-    if (id && activeBranch) {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .eq('branch_id', activeBranch.branch_id)
-        .single();
-
-      if (!error && data) {
-        setCurrentProduct(data);
-        setForm(prev => ({
-          ...prev,
-          location: data.location || '',
-        }));
-      }
-    }
-    
-    queryClient.invalidateQueries({ queryKey: ['products'] });
-    queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
-  };
-
-  const handleCategorySetComplete = async () => {
-    if (id && activeBranch) {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .eq('branch_id', activeBranch.branch_id)
-        .single();
-
-      if (!error && data) {
-        setCurrentProduct(data);
-        setForm(prev => ({
-          ...prev,
-          category_id: data.category_id || '',
-          category_name: data.category_name || '',
-        }));
-      }
-    }
-    
-    queryClient.invalidateQueries({ queryKey: ['products'] });
-    queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+    setStockModalActionType('out');
+    setSelectedProductForStock(currentProduct);
+    setIsStockAdjustModalOpen(true);
   };
 
   const handleGenerateBarcode = () => {
@@ -784,14 +783,6 @@ export default function ProductDetailPage() {
           case 'a':
             e.preventDefault();
             handleAdjustStock();
-            break;
-          case 't':
-            e.preventDefault();
-            handleSetWarehouse();
-            break;
-          case 'c':
-            e.preventDefault();
-            handleSetCategory();
             break;
           case 'b':
             e.preventDefault();
@@ -866,26 +857,28 @@ export default function ProductDetailPage() {
   const stockDotColor = getDotColor(totalStock, currentProduct.minimum_stock_level);
 
   const getProductStatus = () => {
-    if (currentProduct.status === 'inactive') return { label: 'Inactive', variant: 'secondary' as const };
-    if (currentProduct.status === 'discontinued') return { label: 'Discontinued', variant: 'destructive' as const };
+    const status = currentProduct.status as string | null;
+    if (status === 'inactive') return { label: 'Inactive', variant: 'secondary' as const };
+    if (status === 'discontinued') return { label: 'Discontinued', variant: 'destructive' as const };
     return { label: 'Active', variant: 'default' as const };
   };
 
   const productStatus = getProductStatus();
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-lg">
+    <div className="h-screen pb-6 flex flex-col bg-white rounded-lg">
       {/* Breadcrumb + Header */}
-      <div className="border-b px-6 py-2 bg-white rounded-t-xl">
-        <div className="flex items-center justify-between">
+      <div className="border-b  px-6 py-2 bg-white rounded-t-xl">
+        <div className="flex items-center justify-between ">
           <div className="flex items-center gap-3">
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={() => navigate('/dashboard/categories')}
-              className="p-0"
+              className="gap-2 border-gray-300 hover:bg-gray-50 p-2"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4 text-gray-500" />
+              <span className="text-xs">Back</span>
             </Button>
             <nav className="text-xs text-gray-500">
               <span className="cursor-pointer hover:underline" onClick={() => navigate('/dashboard/categories')}>Products</span>
@@ -913,30 +906,25 @@ export default function ProductDetailPage() {
           </div>
           <div className="px-6 py-3">
             <Button
-              onClick={handleAdjustStock}
+              onClick={handleStockIn}
               variant="outline"
               size="sm"
-              className="gap-2 text-xs mr-2"
+              className="gap-2 text-xs mr-2 text-green-600 hover:text-green-600 hover:bg-green-50"
               title="Adjust Stock (A)"
             >
               <Plus className="w-3 h-3" />
-              Adjust
+              In
             </Button>
-            <Button
-              onClick={handleSetCategory}
-              variant="outline"
-              size="sm"
-              className="gap-2 text-xs mr-2"
-              title="Set Category (C)"
-            >
-              <Tag className="w-3 h-3" />
-              {currentProduct?.category_name || 'Set Category'}
+
+            <Button onClick={handleStockOut} variant="outline" size="sm" className="gap-2 text-xs mr-2 text-red-600 hover:text-red-600 hover:bg-red-50" title="Stock Out (O)">
+              <Minus className="w-3 h-3" />
+              Out
             </Button>
             <Button
               onClick={handleDelete}
-              variant="outline"
+              variant="default"
               size="sm"
-              className="gap-2 mr-2 text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="gap-2 bg-red-600 mr-2 text-xs text-white hover:text-white hover:bg-red-600"
             >
               <Trash2 className="w-3 h-3" />
               Delete
@@ -1038,26 +1026,141 @@ export default function ProductDetailPage() {
 
             {/* Product Metadata */}
             <div className="space-y-3">
+              {/* Category */}
+              <div className="bg-white border border-gray-200 rounded-md p-2">
+                <div className="text-xs font-medium text-gray-500 mb-1">Category</div>
+                {editingField === 'category' ? (
+                  <div className="space-y-2">
+                    <Select
+                      value={newCategoryName ? '__none__' : (form.category_id || '__none__')}
+                      onValueChange={handleCategoryChange}
+                      disabled={loading}
+                    >
+                      <SelectTrigger className="h-9 text-sm">
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__none__">No Category</SelectItem>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <div className="space-y-1">
+                      <label className="text-xs text-gray-500">Or add new category</label>
+                      <Input
+                        value={newCategoryName}
+                        onChange={(e) => handleNewCategoryInput(e.target.value)}
+                        placeholder="Type new category name"
+                        disabled={loading}
+                        className="h-9 text-sm"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => handleSave('category')}
+                        disabled={loading}
+                        className="flex-1 h-7 text-xs"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleCancel('category')}
+                        disabled={loading}
+                        className="flex-1 h-7 text-xs"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-900">
+                      {currentProduct.category_name || 'Not set'}
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditingField('category')}
+                      className="h-6 w-6 p-0"
+                      title="Edit category"
+                    >
+                      <Edit className="w-3 h-3" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+
               {/* SKU */}
-              <div>
+              <div className="bg-white border border-gray-200 rounded-md p-2">
                 <div className="text-xs font-medium text-gray-500 mb-1">SKU</div>
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-sm text-gray-900">
-                    {currentProduct.sku || 'Not set'}
-                  </span>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setEditingField('sku')}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Edit className="w-3 h-3" />
-                  </Button>
-                </div>
+                {editingField === 'sku' ? (
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        value={form.sku}
+                        onChange={(e) => setForm(prev => ({ ...prev, sku: e.target.value }))}
+                        placeholder="Enter SKU"
+                        disabled={loading}
+                        className="text-sm font-mono flex-1"
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setShowScanner(true)}
+                        disabled={loading}
+                        className="h-9 shrink-0 gap-1.5"
+                        title="Scan barcode"
+                      >
+                        <Scan className="w-4 h-4" />
+                        Scan
+                      </Button>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => handleSave('sku')}
+                        disabled={loading}
+                        className="flex-1 h-7 text-xs"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleCancel('sku')}
+                        disabled={loading}
+                        className="flex-1 h-7 text-xs"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-sm text-gray-900">
+                      {currentProduct.sku || 'Not set'}
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setEditingField('sku')}
+                      className="h-6 w-6 p-0"
+                      title="Edit SKU"
+                    >
+                      <Edit className="w-3 h-3" />
+                    </Button>
+                  </div>
+                )}
               </div>
 
               {/* Location */}
-              <div>
+              <div className="bg-white border border-gray-200 rounded-md p-2">
                 <div className="text-xs font-medium text-gray-500 mb-1">Location</div>
                 {editingField === 'location' ? (
                   <div className="space-y-2">
@@ -1186,9 +1289,9 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Right Pane - Scrollable */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden shadow-xl">
           {/* Sticky Header Actions */}
-          <div className="sticky top-0 z-10 bg-white border-b px-6 py-3">
+          <div className="sticky top-0 z-10 bg-white border-b px-6 py-3 ">
             <div className="flex items-center justify-between">
               {editingField === 'name' ? (
                 <div className="flex-1 flex items-center gap-2">
@@ -1283,7 +1386,7 @@ export default function ProductDetailPage() {
                 {/* Overview Tab */}
                 <TabsContent value="overview" className="mt-0 space-y-6">
                   {/* Description Section */}
-                  <div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold text-gray-900">Description</h3>
                       {editingField !== 'description' && (
@@ -1334,10 +1437,9 @@ export default function ProductDetailPage() {
                     )}
                   </div>
 
-                  <Separator />
 
                   {/* Stock Information */}
-                  <div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold text-gray-900">Stock Information</h3>
                       {editingField !== 'stock' && (
@@ -1406,10 +1508,8 @@ export default function ProductDetailPage() {
                     )}
                   </div>
 
-                  <Separator />
-
                   {/* Pricing Information */}
-                  <div>
+                  <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold text-gray-900">Pricing</h3>
                       {editingField !== 'pricing' && (
@@ -1755,7 +1855,7 @@ export default function ProductDetailPage() {
       <AddVariantModal
         isOpen={isAddVariantModalOpen}
         onClose={() => setIsAddVariantModalOpen(false)}
-        parentProduct={currentProduct}
+        parentProduct={currentProduct as StockProduct}
         onVariantAdded={handleVariantAdded}
       />
       {/* Modals */}
@@ -1766,7 +1866,8 @@ export default function ProductDetailPage() {
             setIsStockAdjustModalOpen(false);
             setSelectedProductForStock(null);
           }}
-          product={selectedProductForStock || currentProduct}
+          product={(selectedProductForStock || currentProduct) as StockProduct}
+          actionType={stockModalActionType}
           onProductUpdated={async () => {
             if (id && activeBranch) {
               const { data, error } = await supabase
@@ -1777,12 +1878,16 @@ export default function ProductDetailPage() {
                 .single();
 
               if (!error && data) {
-                setCurrentProduct(data);
+                const product = data as Product;
+                setCurrentProduct(product);
                 setForm(prev => ({
                   ...prev,
-                  quantity_in_stock: data.quantity_in_stock || 0,
-                  minimum_stock_level: data.minimum_stock_level || 0,
+                  quantity_in_stock: product.quantity_in_stock || 0,
+                  minimum_stock_level: product.minimum_stock_level || 0,
                 }));
+                if (!product.is_variant) {
+                  fetchVariants();
+                }
               }
             }
 
@@ -1794,26 +1899,13 @@ export default function ProductDetailPage() {
         />
       )}
 
-      {isTransferModalOpen && currentProduct && (
-        <WarehouseTransferModal
-          isOpen={isTransferModalOpen}
-          onClose={() => setIsTransferModalOpen(false)}
-          product={currentProduct}
-          onTransferComplete={handleTransferComplete}
-        />
-      )}
-
-      {isCategoryModalOpen && currentProduct && (
-        <CategorySelectionModal
-          isOpen={isCategoryModalOpen}
-          onClose={() => setIsCategoryModalOpen(false)}
-          product={{
-            id: currentProduct.id,
-            name: currentProduct.name,
-            category_id: currentProduct.category_id,
-            category_name: currentProduct.category_name,
-          }}
-          onCategorySet={handleCategorySetComplete}
+      {showScanner && (
+        <BarcodeScanner
+          onBarcodeDetected={handleBarcodeDetected}
+          onClose={() => setShowScanner(false)}
+          onScanSuccess={onScanSuccess}
+          settings={scannerSettings}
+          variant="modal"
         />
       )}
 

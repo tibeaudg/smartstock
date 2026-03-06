@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, MessageSquare, AlertCircle } from 'lucide-react';
+import { Loader2, Users, Download, MessageSquare, AlertCircle, ListChecks } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -53,102 +53,17 @@ async function fetchUserSalesOrders(userId: string) {
   return data || [];
 }
 
-async function fetchUserBOMs(userId: string) {
-  // Get BOMs for user's products
-  const { data: products, error: productsError } = await supabase
-    .from('products')
-    .select('id')
-    .eq('user_id', userId);
-  
-  if (productsError) throw productsError;
-  if (!products || products.length === 0) return [];
-  
-  const productIds = products.map(p => p.id);
-  const { data, error } = await supabase
-    .from('product_bom')
-    .select(`
-      *,
-      parent_product:products!product_bom_parent_product_id_fkey(name),
-      component_product:products!product_bom_component_product_id_fkey(name)
-    `)
-    .in('parent_product_id', productIds)
-    .order('created_at', { ascending: false });
-  
-  if (error) throw error;
-  return data || [];
-}
 
-async function fetchUserWorkOrders(userId: string) {
-  const { data, error } = await supabase
-    .from('work_orders')
-    .select('*')
-    .eq('created_by', userId)
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data || [];
-}
 
-async function fetchUserStockTransactions(userId: string) {
-  const { data, error } = await supabase
-    .from('stock_transactions')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false })
-    .limit(1000); // Limit to prevent performance issues
-  if (error) throw error;
-  return data || [];
-}
 
-async function fetchUserBranches(userId: string) {
-  const result = await (supabase.rpc as any)('get_admin_branches', {
-    admin_id: userId
-  });
-  if (result.error) throw result.error;
-  return result.data || [];
-}
 
-async function fetchUserCustomers(userId: string) {
-  // Extract unique customers from sales orders
-  const { data, error } = await supabase
-    .from('sales_orders')
-    .select('customer_id, customer_name')
-    .eq('user_id', userId)
-    .not('customer_name', 'is', null);
-  
-  if (error) throw error;
-  
-  // Group by customer and count orders
-  const customerMap = new Map<string, { name: string; orderCount: number }>();
-  (data || []).forEach(order => {
-    if (order.customer_name) {
-      const key = order.customer_id || order.customer_name;
-      const existing = customerMap.get(key) || { name: order.customer_name, orderCount: 0 };
-      customerMap.set(key, { ...existing, orderCount: existing.orderCount + 1 });
-    }
-  });
-  
-  return Array.from(customerMap.values());
-}
 
-async function fetchUserCategories(userId: string) {
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data || [];
-}
 
-async function fetchUserSuppliers(userId: string) {
-  const { data, error } = await supabase
-    .from('suppliers')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data || [];
-}
+
+
+
+
+
 
 async function fetchUserBilling(userId: string) {
   // Try to find license_id first
@@ -183,39 +98,8 @@ async function fetchUserAuditLogs(userId: string) {
   return data || [];
 }
 
-async function fetchUserChats(userId: string) {
-  const { data, error } = await supabase
-    .from('chats')
-    .select('*')
-    .eq('user_id', userId)
-    .order('updated_at', { ascending: false });
-  if (error) throw error;
-  return data || [];
-}
 
-async function fetchUserFeedback(userId: string) {
-  const { data, error } = await supabase
-    .from('user_feedback')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data || [];
-}
 
-async function fetchUserApplicationErrors(userId: string) {
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  const { data, error } = await supabase
-    .from('application_errors')
-    .select('*')
-    .eq('user_id', userId)
-    .gte('created_at', thirtyDaysAgo.toISOString())
-    .order('created_at', { ascending: false })
-    .limit(50);
-  if (error) throw error;
-  return data || [];
-}
 
 export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   user,
@@ -223,6 +107,23 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   onClose,
 }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [resettingChecklist, setResettingChecklist] = useState(false);
+
+  const handleRetriggerChecklist = async () => {
+    if (!user) return;
+    setResettingChecklist(true);
+    try {
+      const { error } = await supabase.functions.invoke('reset-checklist', {
+        body: { user_id: user.id },
+      });
+      if (error) throw error;
+      toast.success('Checklist will be shown to user on their next dashboard visit');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to retrigger checklist');
+    } finally {
+      setResettingChecklist(false);
+    }
+  };
 
   // Reset tab when modal opens
   useEffect(() => {
@@ -245,47 +146,11 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen && (activeTab === 'sales-orders' || activeTab === 'overview'),
   });
 
-  const { data: branches = [], isLoading: loadingBranches } = useQuery({
-    queryKey: ['userBranches', user?.id],
-    queryFn: () => fetchUserBranches(user!.id),
-    enabled: !!user && isOpen && (activeTab === 'branches' || activeTab === 'overview'),
-  });
 
-  const { data: customers = [], isLoading: loadingCustomers } = useQuery({
-    queryKey: ['userCustomers', user?.id],
-    queryFn: () => fetchUserCustomers(user!.id),
-    enabled: !!user && isOpen && (activeTab === 'customers' || activeTab === 'overview'),
-  });
 
-  const { data: boms = [], isLoading: loadingBOMs } = useQuery({
-    queryKey: ['userBOMs', user?.id],
-    queryFn: () => fetchUserBOMs(user!.id),
-    enabled: !!user && isOpen && activeTab === 'boms',
-  });
 
-  const { data: workOrders = [], isLoading: loadingWorkOrders } = useQuery({
-    queryKey: ['userWorkOrders', user?.id],
-    queryFn: () => fetchUserWorkOrders(user!.id),
-    enabled: !!user && isOpen && activeTab === 'work-orders',
-  });
 
-  const { data: stockTransactions = [], isLoading: loadingStockTransactions } = useQuery({
-    queryKey: ['userStockTransactions', user?.id],
-    queryFn: () => fetchUserStockTransactions(user!.id),
-    enabled: !!user && isOpen && activeTab === 'stock-transactions',
-  });
 
-  const { data: categories = [], isLoading: loadingCategories } = useQuery({
-    queryKey: ['userCategories', user?.id],
-    queryFn: () => fetchUserCategories(user!.id),
-    enabled: !!user && isOpen && activeTab === 'categories-suppliers',
-  });
-
-  const { data: suppliers = [], isLoading: loadingSuppliers } = useQuery({
-    queryKey: ['userSuppliers', user?.id],
-    queryFn: () => fetchUserSuppliers(user!.id),
-    enabled: !!user && isOpen && activeTab === 'categories-suppliers',
-  });
 
   const { data: billing = [], isLoading: loadingBilling } = useQuery({
     queryKey: ['userBilling', user?.id],
@@ -299,23 +164,9 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen && activeTab === 'activity',
   });
 
-  const { data: userChats = [], isLoading: loadingUserChats } = useQuery({
-    queryKey: ['userChats', user?.id],
-    queryFn: () => fetchUserChats(user!.id),
-    enabled: !!user && isOpen,
-  });
 
-  const { data: userFeedback = [], isLoading: loadingUserFeedback } = useQuery({
-    queryKey: ['userFeedback', user?.id],
-    queryFn: () => fetchUserFeedback(user!.id),
-    enabled: !!user && isOpen,
-  });
 
-  const { data: userAppErrors = [], isLoading: loadingUserAppErrors } = useQuery({
-    queryKey: ['userAppErrors', user?.id],
-    queryFn: () => fetchUserApplicationErrors(user!.id),
-    enabled: !!user && isOpen,
-  });
+
 
   // Export functions
   const exportData = (data: any[], filename: string) => {
@@ -344,66 +195,15 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-          <TabsList className="grid w-full grid-cols-5 lg:grid-cols-12 gap-1 mb-4 overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-3 gap-1 mb-4 overflow-x-auto">
             <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
-            <TabsTrigger value="support" className="text-xs">
-              Support
-              {(userChats.length > 0 || userFeedback.length > 0 || userAppErrors.length > 0) && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {userChats.length + userFeedback.length + userAppErrors.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="products" className="text-xs">
-              Products
-              {products.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {products.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="sales-orders" className="text-xs">
-              Orders
-              {salesOrders.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {salesOrders.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="boms" className="text-xs">
-              BOMs
-              {boms.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {boms.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="work-orders" className="text-xs">
-              Work Orders
-              {workOrders.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {workOrders.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="stock-transactions" className="text-xs">Stock</TabsTrigger>
-            <TabsTrigger value="branches" className="text-xs">
-              Branches
-              {branches.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {branches.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="customers" className="text-xs">
-              Customers
-              {customers.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {customers.length}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="categories-suppliers" className="text-xs">Categories</TabsTrigger>
+           
+          
+           
+        
+      
+            
+          
             <TabsTrigger value="billing" className="text-xs">
               Billing
               {billing.length > 0 && (
@@ -454,6 +254,25 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         {user.blocked ? 'Blocked' : 'Active'}
                       </Badge>
                     </div>
+                    <div className="pt-3 border-t mt-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleRetriggerChecklist}
+                        disabled={resettingChecklist}
+                        className="text-gray-600"
+                      >
+                        {resettingChecklist ? (
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        ) : (
+                          <ListChecks className="h-4 w-4 mr-2" />
+                        )}
+                        Retrigger onboarding checklist
+                      </Button>
+                      <p className="text-xs text-gray-500 mt-1">
+                        User will see the account setup steps again on next login
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -494,486 +313,16 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       <div className="text-2xl font-bold text-green-600">{salesOrders.length}</div>
                       <div className="text-sm text-gray-600">Sales Orders</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600">{branches.length}</div>
-                      <div className="text-sm text-gray-600">Branches</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-600">{customers.length}</div>
-                      <div className="text-sm text-gray-600">Customers</div>
-                    </div>
+                  
+                
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
 
-            {/* Support Tab */}
-            <TabsContent value="support" className="mt-0">
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">Support History</h3>
-                  {(userChats.length > 0 || userFeedback.length > 0 || userAppErrors.length > 0) && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        const allData = [
-                          ...userChats.map((c: any) => ({ type: 'Chat', id: c.id, created_at: c.updated_at, is_closed: c.is_closed })),
-                          ...userFeedback.map((f: any) => ({ type: 'Feedback', score: f.recommendation_score, text: f.feedback_text, created_at: f.created_at })),
-                          ...userAppErrors.map((e: any) => ({ type: 'Error', message: e.error_message, created_at: e.created_at }))
-                        ];
-                        exportData(allData, `user_${user.id}_support_history`);
-                      }}
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Export
-                    </Button>
-                  )}
-                </div>
 
-                {/* Chats */}
-                <div>
-                  <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4" />
-                    Chats ({userChats.length})
-                  </h4>
-                  {loadingUserChats ? (
-                    <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
-                  ) : userChats.length === 0 ? (
-                    <p className="text-sm text-gray-500">No support chats</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {userChats.map((chat: any) => (
-                        <Card key={chat.id}>
-                          <CardContent className="p-3">
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm font-medium">Chat {chat.id.slice(0, 8)}...</span>
-                              <Badge variant={chat.is_closed ? 'secondary' : 'default'}>{chat.is_closed ? 'Closed' : 'Open'}</Badge>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-1">Updated: {format(new Date(chat.updated_at), 'PPpp')}</p>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </div>
 
-                {/* Feedback */}
-                <div>
-                  <h4 className="text-sm font-semibold mb-2">Feedback ({userFeedback.length})</h4>
-                  {loadingUserFeedback ? (
-                    <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
-                  ) : userFeedback.length === 0 ? (
-                    <p className="text-sm text-gray-500">No feedback submitted</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {userFeedback.map((fb: any) => (
-                        <Card key={fb.id}>
-                          <CardContent className="p-3">
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium">NPS: {fb.recommendation_score}/10</span>
-                              <span className="text-xs text-gray-500">{format(new Date(fb.created_at), 'PPpp')}</span>
-                            </div>
-                            {fb.feedback_text && <p className="text-sm text-gray-600 mt-1">{fb.feedback_text}</p>}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Application Errors */}
-                <div>
-                  <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    Recent Errors (last 30 days) ({userAppErrors.length})
-                  </h4>
-                  {loadingUserAppErrors ? (
-                    <div className="flex justify-center py-4"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
-                  ) : userAppErrors.length === 0 ? (
-                    <p className="text-sm text-gray-500">No application errors</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {userAppErrors.map((err: any) => (
-                        <Card key={err.id} className="border-rose-200">
-                          <CardContent className="p-3">
-                            <p className="text-sm font-medium text-rose-800">{err.error_message}</p>
-                            <p className="text-xs text-gray-500 mt-1">{format(new Date(err.created_at), 'PPpp')}</p>
-                            {err.page_url && <p className="text-xs text-gray-600 truncate">Page: {err.page_url}</p>}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
-
-            {/* Products Tab */}
-            <TabsContent value="products" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Products ({products.length})</h3>
-                {products.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(products, `user_${user.id}_products`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingProducts ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : products.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No products found</div>
-              ) : (
-                <div className="space-y-2">
-                  {products.map((product: any) => (
-                    <Card key={product.id}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-semibold">{product.name}</h4>
-                            <p className="text-sm text-gray-600">Stock: {product.current_stock || 0}</p>
-                            <p className="text-sm text-gray-600">Status: {product.status}</p>
-                          </div>
-                          <Badge>{product.status}</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Sales Orders Tab */}
-            <TabsContent value="sales-orders" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Sales Orders ({salesOrders.length})</h3>
-                {salesOrders.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(salesOrders, `user_${user.id}_sales_orders`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingSalesOrders ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : salesOrders.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No sales orders found</div>
-              ) : (
-                <div className="space-y-2">
-                  {salesOrders.map((order: any) => (
-                    <Card key={order.id}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-semibold">{order.so_number}</h4>
-                            <p className="text-sm text-gray-600">Customer: {order.customer_name || 'N/A'}</p>
-                            <p className="text-sm text-gray-600">Amount: ${order.total_amount || 0}</p>
-                            <p className="text-sm text-gray-600">Date: {format(new Date(order.order_date), 'PP')}</p>
-                          </div>
-                          <Badge>{order.status}</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* BOMs Tab */}
-            <TabsContent value="boms" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Bill of Materials ({boms.length})</h3>
-                {boms.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(boms, `user_${user.id}_boms`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingBOMs ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : boms.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No BOMs found</div>
-              ) : (
-                <div className="space-y-2">
-                  {boms.map((bom: any) => (
-                    <Card key={bom.id}>
-                      <CardContent className="p-4">
-                        <div>
-                          <h4 className="font-semibold">Parent: {bom.parent_product?.name || 'N/A'}</h4>
-                          <p className="text-sm text-gray-600">Component: {bom.component_product?.name || 'N/A'}</p>
-                          <p className="text-sm text-gray-600">Quantity: {bom.quantity_required}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Work Orders Tab */}
-            <TabsContent value="work-orders" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Work Orders ({workOrders.length})</h3>
-                {workOrders.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(workOrders, `user_${user.id}_work_orders`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingWorkOrders ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : workOrders.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No work orders found</div>
-              ) : (
-                <div className="space-y-2">
-                  {workOrders.map((wo: any) => (
-                    <Card key={wo.id}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-semibold">{wo.wo_number}</h4>
-                            <p className="text-sm text-gray-600">Status: {wo.status}</p>
-                            <p className="text-sm text-gray-600">Quantity: {wo.quantity_to_build}</p>
-                          </div>
-                          <Badge>{wo.status}</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Stock Transactions Tab */}
-            <TabsContent value="stock-transactions" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Stock Transactions ({stockTransactions.length})</h3>
-                {stockTransactions.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(stockTransactions, `user_${user.id}_stock_transactions`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingStockTransactions ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : stockTransactions.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No stock transactions found</div>
-              ) : (
-                <div className="space-y-2">
-                  {stockTransactions.slice(0, 100).map((tx: any) => (
-                    <Card key={tx.id}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="text-sm font-medium">Type: {tx.transaction_type}</p>
-                            <p className="text-sm text-gray-600">Quantity: {tx.quantity}</p>
-                            <p className="text-sm text-gray-600">Reason: {tx.reason || 'N/A'}</p>
-                            <p className="text-sm text-gray-600">Date: {format(new Date(tx.created_at), 'PPpp')}</p>
-                          </div>
-                          <Badge>{tx.transaction_type}</Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                  {stockTransactions.length > 100 && (
-                    <p className="text-sm text-gray-500 text-center py-2">
-                      Showing first 100 of {stockTransactions.length} transactions
-                    </p>
-                  )}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Branches Tab */}
-            <TabsContent value="branches" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Branches ({branches.length})</h3>
-                {branches.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(branches, `user_${user.id}_branches`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingBranches ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : branches.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No branches found</div>
-              ) : (
-                <div className="space-y-2">
-                  {branches.map((branch: any) => (
-                    <Card key={branch.branch_id}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-semibold">{branch.branch_name}</h4>
-                            <p className="text-sm text-gray-600">Users: {branch.user_count}</p>
-                            <p className="text-sm text-gray-600">Main: {branch.is_main ? 'Yes' : 'No'}</p>
-                          </div>
-                          {branch.is_main && <Badge>Main</Badge>}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Customers Tab */}
-            <TabsContent value="customers" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Customers ({customers.length})</h3>
-                {customers.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(customers, `user_${user.id}_customers`)}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
-              </div>
-              {loadingCustomers ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : customers.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No customers found</div>
-              ) : (
-                <div className="space-y-2">
-                  {customers.map((customer: any, index: number) => (
-                    <Card key={index}>
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-semibold">{customer.name}</h4>
-                            <p className="text-sm text-gray-600">Orders: {customer.orderCount}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Categories & Suppliers Tab */}
-            <TabsContent value="categories-suppliers" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold">Categories ({categories.length})</h3>
-                    {categories.length > 0 && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => exportData(categories, `user_${user.id}_categories`)}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Export
-                      </Button>
-                    )}
-                  </div>
-                  {loadingCategories ? (
-                    <div className="flex justify-center py-8">
-                      <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                    </div>
-                  ) : categories.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">No categories found</div>
-                  ) : (
-                    <div className="space-y-2">
-                      {categories.map((cat: any) => (
-                        <Card key={cat.id}>
-                          <CardContent className="p-4">
-                            <h4 className="font-semibold">{cat.name}</h4>
-                            {cat.description && (
-                              <p className="text-sm text-gray-600">{cat.description}</p>
-                            )}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold">Suppliers ({suppliers.length})</h3>
-                    {suppliers.length > 0 && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => exportData(suppliers, `user_${user.id}_suppliers`)}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Export
-                      </Button>
-                    )}
-                  </div>
-                  {loadingSuppliers ? (
-                    <div className="flex justify-center py-8">
-                      <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                    </div>
-                  ) : suppliers.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">No suppliers found</div>
-                  ) : (
-                    <div className="space-y-2">
-                      {suppliers.map((supplier: any) => (
-                        <Card key={supplier.id}>
-                          <CardContent className="p-4">
-                            <h4 className="font-semibold">{supplier.name}</h4>
-                            {supplier.contact_info && (
-                              <p className="text-sm text-gray-600">{supplier.contact_info}</p>
-                            )}
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
+   
 
             {/* Billing Tab */}
             <TabsContent value="billing" className="mt-0">

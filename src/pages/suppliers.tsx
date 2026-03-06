@@ -245,16 +245,27 @@ export default function SuppliersPage() {
 
       <Card className="border-none shadow-sm overflow-hidden">
         {sorted.length === 0 ? (
-          <div className="p-20 text-center">
-            <Package className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-            <p className="text-gray-500 dark:text-gray-400">No suppliers found.</p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={() => navigate('/dashboard/suppliers/new')}
-            >
-              Add your first supplier
-            </Button>
+          <div className="p-12">
+            <div className="text-center">
+              <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {searchQuery ? 'No suppliers found' : 'No Suppliers yet'}
+              </h3>
+              <p className="text-sm text-gray-600 mb-4">
+                {searchQuery
+                  ? 'Try adjusting your search query'
+                  : 'Add your first supplier to link purchase orders and manage vendor contacts'}
+              </p>
+              {!searchQuery && (
+                <Button
+                  onClick={() => navigate('/dashboard/suppliers/new')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Supplier
+                </Button>
+              )}
+            </div>
           </div>
         ) : (
           <div className="overflow-x-auto">

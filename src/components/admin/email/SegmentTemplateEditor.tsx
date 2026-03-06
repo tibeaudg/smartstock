@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RichTextEditor } from '@/components/RichTextEditor';
-import { useEmailTemplates } from '@/hooks/useEmailTemplates';
+import { useEmailTemplates, useEmailTemplate } from '@/hooks/useEmailTemplates';
 import { Eye, Save, X } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -42,31 +42,49 @@ const availableVariables = [
   { key: 'last_name', description: 'User last name' },
 ];
 
+const emptyFormData: EmailTemplateFormData = {
+  name: '',
+  type: 'followup',
+  subject: '',
+  html_body: '',
+  text_body: '',
+  is_active: true,
+};
+
 export function SegmentTemplateEditor({ initialTemplate, onSave, onCancel }: SegmentTemplateEditorProps) {
   const { createTemplate, updateTemplate, isCreating, isUpdating } = useEmailTemplates();
+  const { data: fullTemplate } = useEmailTemplate(initialTemplate?.id);
   const [previewHtml, setPreviewHtml] = useState('');
 
-  const [formData, setFormData] = useState<EmailTemplateFormData>({
-    name: '',
-    type: 'followup',
-    subject: '',
-    html_body: '',
-    text_body: '',
-    is_active: true,
-  });
+  const template = fullTemplate ?? initialTemplate ?? null;
+
+  const [formData, setFormData] = useState<EmailTemplateFormData>(() =>
+    template
+      ? {
+          name: template.name,
+          type: template.type as EmailTemplateFormData['type'],
+          subject: template.subject,
+          html_body: template.html_body ?? '',
+          text_body: template.text_body ?? '',
+          is_active: template.is_active,
+        }
+      : emptyFormData
+  );
 
   useEffect(() => {
-    if (initialTemplate) {
+    if (template) {
       setFormData({
-        name: initialTemplate.name,
-        type: initialTemplate.type as EmailTemplateFormData['type'],
-        subject: initialTemplate.subject,
-        html_body: initialTemplate.html_body,
-        text_body: initialTemplate.text_body || '',
-        is_active: initialTemplate.is_active,
+        name: template.name,
+        type: template.type as EmailTemplateFormData['type'],
+        subject: template.subject,
+        html_body: template.html_body ?? '',
+        text_body: template.text_body ?? '',
+        is_active: template.is_active,
       });
+    } else {
+      setFormData(emptyFormData);
     }
-  }, [initialTemplate]);
+  }, [template]);
 
   const handleSaveClick = () => {
     if (!formData.name.trim() || !formData.subject.trim() || !formData.html_body.trim()) {
@@ -190,6 +208,7 @@ export function SegmentTemplateEditor({ initialTemplate, onSave, onCancel }: Seg
         </TabsList>
         <TabsContent value="html" className="space-y-2">
           <RichTextEditor
+            key={template?.id ?? 'new'}
             content={formData.html_body}
             onChange={(html) => setFormData({ ...formData, html_body: html })}
           />

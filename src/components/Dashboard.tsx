@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { CalendarIcon, DollarSign, Package, TrendingUp, TrendingDown, AlertTriangle, Euro, Users, ShoppingCart, RefreshCw, BarChart3, PieChart, LineChart, Plus, ScanLine, FilePlus2, ArrowUpRight, ArrowDownRight, Layers, Upload, AlertCircle, ClockIcon } from 'lucide-react';
 import { format, addDays, startOfWeek, startOfMonth, startOfQuarter, startOfYear, endOfToday } from 'date-fns';
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, BarChart, Bar, Area, AreaChart } from 'recharts';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDashboardData, useBasicDashboardMetrics, useProductCount } from '@/hooks/useDashboardData';
 import { useMobile } from '@/hooks/use-mobile';
 import { useCurrency } from '@/hooks/useCurrency';
@@ -18,9 +18,9 @@ import { useBranches } from '@/hooks/useBranches';
 
 const LOW_STOCK_PRODUCTS_LINK = '/dashboard/categories?stockStatus=low-stock';
 const EMPTY_STOCK_PRODUCTS_LINK = '/dashboard/categories?stockStatus=out-of-stock';
-import { BarcodeScanner } from './BarcodeScanner';
-import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { toast } from 'sonner';
+import { AccountChecklist } from './AccountChecklist';
+import { useAccountChecklist } from '@/hooks/useAccountChecklist';
 
 
 
@@ -64,16 +64,29 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   const navigate = useNavigate();
   const { activeBranch } = useBranches();
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showScanner, setShowScanner] = useState(false);
-  const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   const handleNotificationClick = () => {
     setShowNotifications((prev) => !prev);
     if (unreadCount > 0) markAllAsRead();
   };
   const { isMobile } = useMobile();
   const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
+  const queryClient = useQueryClient();
   const { productCount, isLoading: productCountLoading } = useProductCount();
-  
+  const { isChecklistComplete, forceShowChecklist } = useAccountChecklist();
+  const [productCountVerified, setProductCountVerified] = useState(false);
+
+  // Clear potentially stale productCount from persist, then mark verified when fetch completes.
+  // This prevents showing full dashboard based on restored cache from before products were deleted.
+  useEffect(() => {
+    queryClient.removeQueries({ queryKey: ['productCount'] });
+  }, [queryClient]);
+
+  useEffect(() => {
+    if (!productCountLoading) {
+      setProductCountVerified(true);
+    }
+  }, [productCountLoading]);
+
   // Analytics state
   const { user } = useAuth();
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
@@ -363,6 +376,14 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     );
   }
 
+  if (forceShowChecklist || !productCountVerified || productCountLoading || (!isChecklistComplete && productCount === 0)) {
+    return (
+      <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6">
+        <AccountChecklist onOpenScanner={() => navigate('/dashboard/scan', { state: { returnTo: '/dashboard/scan-flow' } })} />
+      </div>
+    );
+  }
+
   // Fallback waarden als metrics undefined is
   const safeMetrics = (displayMetrics as any) || {
     totalValue: 0,
@@ -467,34 +488,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
 
   return (
     <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6 ">
-  {/* ...existing code... (removed duplicate header and notification bell, now handled globally) */}
-
-      {/* Action-Oriented CTA for First Product */}
-      {!productCountLoading && productCount === 0 && (
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-200 shadow-lg">
-          <CardContent className="p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex-1 text-center sm:text-left">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                  Get Started with Your First Product
-                </h2>
-                <p className="text-sm sm:text-base text-gray-700">
-                  Add your first product to start managing your inventory and tracking stock movements.
-                </p>
-              </div>
-              <Button
-                onClick={() => navigate('/dashboard/products/new')}
-                className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6 sm:px-8 whitespace-nowrap"
-                size="lg"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Add Your First Product
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Quick Actions */}
       <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-200 dark:border-gray-800 pb-4">
    
@@ -508,7 +501,7 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
             <span className="text-sm">Add Product Manually</span>
           </Button>
           <Button
-            onClick={() => setShowScanner(true)}
+            onClick={() => navigate('/dashboard/scan', { state: { returnTo: '/dashboard/scan-flow' } })}
             variant="outline"
             className="flex items-center gap-2 whitespace-nowrap"
           >
@@ -721,20 +714,6 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
    
       </div>
 
-      {/* Barcode Scanner Modal */}
-      {showScanner && (
-        <BarcodeScanner
-          onBarcodeDetected={(barcode) => {
-            setShowScanner(false);
-            // Navigate to scan page with the barcode
-            navigate('/scan', { state: { barcode } });
-            toast.success(`Barcode scanned: ${barcode}`);
-          }}
-          onClose={() => setShowScanner(false)}
-          onScanSuccess={onScanSuccess}
-          settings={scannerSettings}
-        />
-      )}
     </div>
   );
 };

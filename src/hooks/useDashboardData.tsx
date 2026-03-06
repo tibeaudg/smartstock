@@ -441,8 +441,9 @@ export const useProductCount = () => {
     queryKey: ['productCount', activeBranch?.branch_id, user?.id],
     queryFn: fetchProductCount,
     enabled: !!user && !!activeBranch,
-    refetchOnWindowFocus: false, // Disabled - show cached data immediately
-    staleTime: Infinity, // Never mark as stale - persist until invalidated
+    refetchOnWindowFocus: true, // Refetch when returning to tab (e.g. after bulk delete elsewhere)
+    staleTime: 30 * 1000, // 30s - allow refetch after deletions
+    placeholderData: undefined, // Never use cached data as placeholder - critical for checklist (0 products)
   });
 
   return { productCount: productCount ?? 0, isLoading };

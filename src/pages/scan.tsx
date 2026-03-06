@@ -14,10 +14,11 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 
 interface ProductFormData {
   name: string;
@@ -39,13 +40,27 @@ export default function ScanPage() {
   const { isMobile, isIOS, isSafari, cameraSupported } = useMobile();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  
+  const location = useLocation();
+
+  // Pre-fill barcode from navigation state (e.g. from BarcodeScannerPage)
+  const initialBarcodeRef = React.useRef((location.state as { barcode?: string })?.barcode);
+  const hasProcessedInitialRef = React.useRef(false);
+  useEffect(() => {
+    const barcode = initialBarcodeRef.current;
+    if (barcode && activeBranch && !hasProcessedInitialRef.current) {
+      hasProcessedInitialRef.current = true;
+      handleBarcodeDetected(barcode);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [activeBranch]);
+
   // Get scanner settings
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
   
   const [showScanner, setShowScanner] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showBulkImporterSuggestion, setShowBulkImporterSuggestion] = useState(false);
   const [loading, setLoading] = useState(false);
   const [transactionType, setTransactionType] = useState<'incoming' | 'outgoing'>('incoming');
   const [scanHistory, setScanHistory] = useState<Array<{barcode: string; name: string; timestamp: Date}>>([]);
@@ -253,6 +268,7 @@ export default function ScanPage() {
     }
 
     setLoading(true);
+    let wasFirstProduct = false;
 
     try {
       let existingProduct: any = null;
@@ -307,6 +323,13 @@ export default function ScanPage() {
           setLoading(false);
           return;
         }
+
+        // Check for first product before insert (for bulk importer suggestion)
+        const { count } = await supabase
+          .from('products')
+          .select('id', { count: 'exact', head: true })
+          .eq('branch_id', activeBranch.branch_id);
+        wasFirstProduct = (count || 0) === 0;
 
         // Handle supplier
         let supplierId = null;
@@ -478,8 +501,12 @@ export default function ScanPage() {
       });
       setShowProductForm(false);
       
-      // Navigate to categories page
-      navigate('/dashboard/categories');
+      // Show bulk importer suggestion for first product, else navigate
+      if (transactionType === 'incoming' && wasFirstProduct) {
+        setShowBulkImporterSuggestion(true);
+      } else {
+        navigate('/dashboard/categories');
+      }
       
     } catch (error) {
       console.error('Error adding product:', error);
@@ -1122,6 +1149,15 @@ export default function ScanPage() {
           </div>
         </div>
       )}
+
+      {/* Bulk Importer Suggestion Modal (first product added) */}
+      <BulkImporterSuggestionModal
+        isOpen={showBulkImporterSuggestion}
+        onClose={() => {
+          setShowBulkImporterSuggestion(false);
+          navigate('/dashboard/categories');
+        }}
+      />
     </div>
   );
 }

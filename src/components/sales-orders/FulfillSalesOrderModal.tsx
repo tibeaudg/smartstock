@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { SalesOrder } from '@/types/stockTypes';
 
@@ -22,6 +23,7 @@ export const FulfillSalesOrderModal = ({
   onFulfilled
 }: FulfillSalesOrderModalProps) => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [fulfilledQuantities, setFulfilledQuantities] = useState<Record<string, number>>({});
 
@@ -87,6 +89,9 @@ export const FulfillSalesOrderModal = ({
           .eq('id', salesOrder.id);
       }
 
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+      queryClient.invalidateQueries({ queryKey: ['productTransactions'] });
       toast.success('Items fulfilled successfully');
       onFulfilled();
       onClose();
@@ -110,7 +115,7 @@ export const FulfillSalesOrderModal = ({
 
         <div className="space-y-4">
           <p className="text-sm text-gray-600">
-            Enter the quantities fulfilled for each item. Stock transactions will be created automatically.
+            Enter the quantities fulfilled for each item. Stock will be deducted from inventory and a stock transaction will be created for each fulfilled item.
           </p>
 
           {salesOrder.items && salesOrder.items.length > 0 ? (
