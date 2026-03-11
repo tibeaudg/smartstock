@@ -62,6 +62,13 @@ serve(async (req) => {
               userId = profile.id
               userSource = 'email'
             }
+            if (!userId) {
+              const { data: authUser } = await supabase.rpc('get_user_id_by_email', { p_email: customerEmail })
+              if (authUser) {
+                userId = authUser
+                userSource = 'email_auth_users'
+              }
+            }
           }
         }
         if (userId) {
@@ -164,6 +171,13 @@ serve(async (req) => {
             if (profile) {
               userId = profile.id
               userSource = 'email'
+            }
+            if (!userId) {
+              const { data: authUser } = await supabase.rpc('get_user_id_by_email', { p_email: customerEmail })
+              if (authUser) {
+                userId = authUser
+                userSource = 'email_auth_users'
+              }
             }
           }
         }

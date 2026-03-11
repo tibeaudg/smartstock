@@ -16,7 +16,7 @@ export const BillingSuccessRedirect = () => {
   useEffect(() => {
     if (loading) return;
 
-    const success = searchParams.get('success') === 'true';
+    const success = searchParams.get('success') === 'true' || !!searchParams.get('session_id');
     const canceled = searchParams.get('canceled') === 'true';
     const targetPath = '/dashboard/settings/billing';
     const targetSearch = success ? '?success=true' : canceled ? '?canceled=true' : '';
