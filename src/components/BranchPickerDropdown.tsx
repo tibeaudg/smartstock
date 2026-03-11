@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Plus, Check, Loader2 } from 'lucide-react';
+import { Plus, Check, Loader2, Lock } from 'lucide-react';
 
 interface BranchPickerDropdownProps {
   children: React.ReactNode;
@@ -29,15 +30,13 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
     refreshBranches,
     loading: branchesLoading,
   } = useBranches();
-  const { currentTier } = useSubscription();
+  const navigate = useNavigate();
+  const { canUseFeature } = useSubscription();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newBranchName, setNewBranchName] = useState('');
   const [creating, setCreating] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const maxBranches = currentTier?.max_branches ?? null;
-  const canAddBranch =
-    maxBranches === null || (branches?.length ?? 0) < maxBranches;
+  const canAddBranch = canUseFeature('add_branch');
 
   const handleSwitchBranch = (branch: {
     branch_id: string;
@@ -201,9 +200,17 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
                   Add branch
                 </button>
               ) : (
-                <p className="text-xs text-gray-500 dark:text-gray-400 text-center py-2 mt-2 border-t border-gray-200 dark:border-gray-800">
-                  Branch limit reached.
-                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false);
+                    navigate('/dashboard/settings/billing');
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 mt-2 rounded-lg text-sm font-medium text-amber-700 hover:bg-amber-50 dark:text-amber-300 dark:hover:bg-amber-950/30 transition-colors border-t border-gray-200 dark:border-gray-800 pt-2"
+                >
+                  <Lock className="w-4 h-4" />
+                  Add branch (upgrade required)
+                </button>
               )}
             </>
           )}

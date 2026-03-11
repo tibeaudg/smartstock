@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useSubscription } from '@/hooks/useSubscription';
+import { PaywallGate } from '@/components/PaywallGate';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,7 +49,9 @@ interface PricingInfo {
 
 const UserManagement = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { branches, activeBranch } = useBranches();
+  const { canUseFeature } = useSubscription();
   const queryClient = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
@@ -308,43 +313,55 @@ const UserManagement = () => {
         
         {/* Action Button */}
         <div className="flex items-center gap-2">
-          <Button 
-            onClick={handleInviteUser} 
-            disabled={inviting || !inviteEmail || !selectedBranchId}
-            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-            {inviting ? 'Inviting...' : 'Invite User'}
-          </Button>
+          {canUseFeature('add_user') ? (
+            <Button 
+              onClick={handleInviteUser} 
+              disabled={inviting || !inviteEmail || !selectedBranchId}
+              className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {inviting ? 'Inviting...' : 'Invite User'}
+            </Button>
+          ) : (
+            <Button 
+              onClick={() => navigate('/dashboard/settings/billing')}
+              variant="outline"
+              className="h-9"
+            >
+              Invite User (upgrade required)
+            </Button>
+          )}
         </div>
       </div>
 
       {/* Invite User Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Invite User</CardTitle>
-          <CardDescription>Add a new user.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
-            </div>
-            <div>
-              <Label>Role</Label>
-              <Select value={inviteRole} onValueChange={setInviteRole}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="staff">Staff</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+      <PaywallGate feature="add_user">
+        <Card>
+          <CardHeader>
+            <CardTitle>Invite User</CardTitle>
+            <CardDescription>Add a new user.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
+              </div>
+              <div>
+                <Label>Role</Label>
+                <Select value={inviteRole} onValueChange={setInviteRole}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="staff">Staff</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
+      </PaywallGate>
 
       {/* Check if branches are available */}
       {(!branches || !Array.isArray(branches)) ? (

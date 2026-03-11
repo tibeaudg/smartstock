@@ -64,19 +64,59 @@ interface AdminBranch {
 }
 
 
-// Plan information for usage-based pricing
+// Plan information for usage-based pricing (includes Stripe-based tiers)
 const plans = {
   'free': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
   'basic': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
   'growth': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
   'business': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
-  'premium': { price: 0, limit: null, displayName: 'Enterprise', pricePerProduct: 0, includedProducts: 10000 }
+  'premium': { price: 0, limit: null, displayName: 'Enterprise', pricePerProduct: 0, includedProducts: 10000 },
+  'advance': { price: 9.99, limit: null, displayName: 'Advance', pricePerProduct: 0, includedProducts: 10000 },
+  'advance_trial': { price: 9.99, limit: null, displayName: 'Advance (Trial)', pricePerProduct: 0, includedProducts: 10000 },
 };
 
 function getPlanDisplayName(planId: string | null): string {
   if (!planId) return '—';
   const plan = plans[planId as keyof typeof plans];
   return plan?.displayName ?? planId;
+}
+
+/** Plan info derived from user_subscriptions (Stripe source of truth) */
+interface UserPlanInfo {
+  displayName: string;
+  filterKey: string;
+}
+
+async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo>> {
+  const { data: subs, error } = await supabase
+    .from('user_subscriptions')
+    .select('user_id, status, tier_id');
+  if (error) {
+    console.error('Error fetching user subscriptions:', error);
+    return {};
+  }
+  const tierIds = [...new Set((subs || []).map((s) => s.tier_id).filter(Boolean))];
+  const { data: tiers } = tierIds.length
+    ? await supabase.from('pricing_tiers').select('id, name, display_name').in('id', tierIds)
+    : { data: [] };
+  const tierMap = new Map((tiers || []).map((t) => [t.id, t]));
+  const map: Record<string, UserPlanInfo> = {};
+  for (const row of subs || []) {
+    const tier = row.tier_id ? tierMap.get(row.tier_id) : null;
+    const tierName = tier?.name ?? 'free';
+    if (tierName === 'advance' && row.status === 'trial') {
+      map[row.user_id] = { displayName: 'Advance (Trial)', filterKey: 'advance_trial' };
+    } else if (tierName === 'advance') {
+      map[row.user_id] = { displayName: 'Advance', filterKey: 'advance' };
+    } else {
+      map[row.user_id] = { displayName: 'Free', filterKey: 'free' };
+    }
+  }
+  return map;
+}
+
+function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: string): UserPlanInfo {
+  return planMap[userId] ?? { displayName: 'Free', filterKey: 'free' };
 }
 
 /**
@@ -599,6 +639,11 @@ export default function AdminPage() {
     queryFn: fetchUserProfiles,
   });
 
+  const { data: subscriptionPlanMap = {} } = useQuery({
+    queryKey: ['userSubscriptionPlans'],
+    queryFn: fetchUserSubscriptionPlans,
+  });
+
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
@@ -608,6 +653,7 @@ export default function AdminPage() {
     mutationFn: (id: string) => deleteUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
       toast.success('User deleted successfully');
       setDeletingUserId(null);
     },
@@ -649,8 +695,11 @@ export default function AdminPage() {
         if (!emailMatch && !nameMatch && !idMatch && !orgMatch && !referralMatch) return false;
       }
       
-      // Plan filter
-      if (planFilter !== 'all' && (user.selected_plan || '') !== planFilter) return false;
+      // Plan filter (from Stripe user_subscriptions)
+      if (planFilter !== 'all') {
+        const plan = getPlanForUser(subscriptionPlanMap, user.id);
+        if (plan.filterKey !== planFilter) return false;
+      }
       
       // Role filter
       if (roleFilter !== 'all' && (user.role || 'user') !== roleFilter) return false;
@@ -679,7 +728,7 @@ export default function AdminPage() {
       
       return true;
     });
-  }, [users, searchTerm, quickFilter, planFilter, roleFilter, userStats, openChatCounts, userIdsWithRecentErrors]);
+  }, [users, searchTerm, quickFilter, planFilter, roleFilter, userStats, openChatCounts, userIdsWithRecentErrors, subscriptionPlanMap]);
 
   const sortedUsers = useMemo(() => {
     const sorted = [...filteredUsers];
@@ -716,7 +765,7 @@ export default function AdminPage() {
           comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
           break;
         case 'plan':
-          comparison = getPlanDisplayName(a.selected_plan).localeCompare(getPlanDisplayName(b.selected_plan));
+          comparison = getPlanForUser(subscriptionPlanMap, a.id).displayName.localeCompare(getPlanForUser(subscriptionPlanMap, b.id).displayName);
           break;
         case 'organization':
           comparison = (a.organization_name || '').localeCompare(b.organization_name || '');
@@ -736,7 +785,7 @@ export default function AdminPage() {
     });
 
     return sorted;
-  }, [filteredUsers, userStats, openChatCounts, sortColumn, sortDirection]);
+  }, [filteredUsers, userStats, openChatCounts, sortColumn, sortDirection, subscriptionPlanMap]);
 
   // Paginated users
   const totalPages = Math.ceil(sortedUsers.length / pageSize) || 1;
@@ -745,11 +794,12 @@ export default function AdminPage() {
     return sortedUsers.slice(start, start + pageSize);
   }, [sortedUsers, currentPage, pageSize]);
 
-  // Unique plan and referral values for filters
+  // Unique plan filter keys from subscription data (Stripe source of truth)
   const uniquePlans = useMemo(() => {
-    const set = new Set(users.map(u => u.selected_plan).filter(Boolean) as string[]);
-    return Array.from(set).sort();
-  }, [users]);
+    const keys = new Set<string>();
+    users.forEach((u) => keys.add(getPlanForUser(subscriptionPlanMap, u.id).filterKey));
+    return Array.from(keys).sort();
+  }, [users, subscriptionPlanMap]);
 
   const handleOpenUserChat = useCallback((userId: string) => {
     setChatForUserId(userId);
@@ -772,7 +822,7 @@ export default function AdminPage() {
           'Full Name': `${user.first_name || ''} ${user.last_name || ''}`.trim() || '',
           'Organization': user.organization_name || '',
           'Role': user.role,
-          'Plan': getPlanDisplayName(user.selected_plan),
+          'Plan': getPlanForUser(subscriptionPlanMap, user.id).displayName,
           'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
           'Products': stats?.productCount || 0,
           'Branches': stats?.branchCount || 0,
@@ -796,7 +846,7 @@ export default function AdminPage() {
       console.error('Error exporting to Excel:', error);
       toast.error('Failed to export data to Excel');
     }
-  }, [sortedUsers, userStats, openChatCounts]);
+  }, [sortedUsers, userStats, openChatCounts, subscriptionPlanMap]);
 
   /**
    * Export only email addresses to Excel
@@ -1331,7 +1381,7 @@ export default function AdminPage() {
                                   </div>
                                   <div className="text-gray-600">
                                     <span className="font-medium">Plan:</span>{' '}
-                                    {getPlanDisplayName(user.selected_plan)}
+                                    {getPlanForUser(subscriptionPlanMap, user.id).displayName}
                                   </div>
                                   <div className="text-gray-600">
                                     <span className="font-medium">Role:</span>{' '}
@@ -1611,7 +1661,7 @@ export default function AdminPage() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="px-4 py-2 text-left text-slate-600">{getPlanDisplayName(user.selected_plan)}</td>
+                                <td className="px-4 py-2 text-left text-slate-600">{getPlanForUser(subscriptionPlanMap, user.id).displayName}</td>
                                 <td className="px-4 py-2 text-left max-w-[140px] truncate" title={user.organization_name || ''}>
                                   {user.organization_name || '—'}
                                 </td>

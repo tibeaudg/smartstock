@@ -33,7 +33,6 @@ import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
 import { useProductCount } from '@/hooks/useDashboardData';
-import { useSubscription } from '@/hooks/useSubscription';
 import { useTheme } from '@/hooks/useTheme';
 import {
   DropdownMenu,
@@ -42,8 +41,17 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { LogOut } from 'lucide-react';
+
+interface NotificationItem {
+  id: string;
+  title: string;
+  message: string;
+  created_at: string;
+  read: boolean;
+}
 
 interface SidebarProps {
   currentTab: string;
@@ -53,7 +61,11 @@ interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
   unreadCount?: number;
-  onNotificationClick?: () => void;
+  notificationsOpen?: boolean;
+  onNotificationsOpenChange?: (open: boolean) => void;
+  notifications?: NotificationItem[];
+  notificationsLoading?: boolean;
+  onMarkNotificationsRead?: () => void;
   isCollapsed?: boolean;
   onCollapseChange?: (collapsed: boolean) => void;
 }
@@ -77,7 +89,11 @@ export const Sidebar = ({
   isOpen,
   onToggle,
   unreadCount = 0,
-  onNotificationClick,
+  notificationsOpen = false,
+  onNotificationsOpenChange,
+  notifications = [],
+  notificationsLoading = false,
+  onMarkNotificationsRead,
   isCollapsed: controlledCollapsed,
   onCollapseChange,
 }: SidebarProps) => {
@@ -153,6 +169,8 @@ export const Sidebar = ({
     { id: 'general', label: 'General', path: '/dashboard/settings/general' },
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
+    { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
+    { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing' },
   ];
 
   const adminSubItems = [
@@ -250,6 +268,58 @@ export const Sidebar = ({
                 </span>
               </button>
             </BranchPickerDropdown>
+            {/* Notifications - mobile */}
+            {onNotificationsOpenChange && (
+              <Popover open={notificationsOpen} onOpenChange={(open) => {
+                onNotificationsOpenChange(open);
+                if (open && unreadCount > 0 && onMarkNotificationsRead) onMarkNotificationsRead();
+              }}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex flex-col items-center justify-center flex-1 h-full px-2 transition-colors min-w-0 rounded-2xl text-gray-600 dark:text-gray-300"
+                    aria-label="Notifications"
+                  >
+                    <span className="relative inline-block">
+                      <Bell className="w-5 h-5 mb-0.5 flex-shrink-0" />
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-0.5 -right-1 w-2 h-2 bg-red-500 rounded-full" aria-hidden />
+                      )}
+                    </span>
+                    <span className="text-[11px] font-medium truncate w-full text-center leading-tight">
+                      Alerts
+                    </span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="w-[calc(100vw-2rem)] max-w-sm max-h-[min(24rem,70vh)] overflow-y-auto p-0 dark:bg-gray-950 dark:border-gray-800"
+                  align="center"
+                  side="top"
+                  sideOffset={8}
+                >
+                  <div className="p-3 border-b border-gray-200 dark:border-gray-800">
+                    <h4 className="font-semibold text-gray-900 dark:text-gray-100">Notifications</h4>
+                  </div>
+                  <div className="p-2">
+                    {notificationsLoading ? (
+                      <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">Loading...</div>
+                    ) : notifications.length === 0 ? (
+                      <div className="py-4 text-center text-sm text-gray-600 dark:text-gray-300">No notifications.</div>
+                    ) : (
+                      <ul className="divide-y divide-gray-200 dark:divide-gray-800">
+                        {notifications.map((n) => (
+                          <li key={n.id} className={`py-2 px-2 rounded-lg ${!n.read ? 'bg-blue-50/50 dark:bg-blue-500/10' : ''}`}>
+                            <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">{n.title}</div>
+                            <div className="text-gray-600 dark:text-gray-300 text-xs mt-0.5">{n.message}</div>
+                            <div className="text-gray-400 dark:text-gray-500 text-xs mt-1">{new Date(n.created_at).toLocaleString()}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
             {menuItems.map((item) => {
               const Icon = item.icon;
               const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -378,19 +448,52 @@ export const Sidebar = ({
               )}
             </div>
             <div className="flex items-center gap-1 flex-shrink-0">
-              {onNotificationClick && (
-                <button
-                  type="button"
-                  onClick={onNotificationClick}
-                  aria-label="Notifications"
-                  className="relative flex items-center justify-center h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <Bell className="w-4 h-4" />
-                  {typeof unreadCount === 'number' && unreadCount > 0 && (
-                    <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" aria-hidden />
-                  )}
-                </button>
-              )}
+              {onNotificationsOpenChange ? (
+                <Popover open={notificationsOpen} onOpenChange={(open) => {
+                  onNotificationsOpenChange(open);
+                  if (open && unreadCount > 0 && onMarkNotificationsRead) onMarkNotificationsRead();
+                }}>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label="Notifications"
+                      className="relative flex items-center justify-center h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      <Bell className="w-4 h-4" />
+                      {typeof unreadCount === 'number' && unreadCount > 0 && (
+                        <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" aria-hidden />
+                      )}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-80 max-h-[min(24rem,80vh)] overflow-y-auto p-0 dark:bg-gray-950 dark:border-gray-800"
+                    align="end"
+                    side="bottom"
+                    sideOffset={8}
+                  >
+                    <div className="p-3 border-b border-gray-200 dark:border-gray-800">
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100">Notifications</h4>
+                    </div>
+                    <div className="p-2">
+                      {notificationsLoading ? (
+                        <div className="py-4 text-center text-sm text-gray-500 dark:text-gray-400">Loading...</div>
+                      ) : notifications.length === 0 ? (
+                        <div className="py-4 text-center text-sm text-gray-600 dark:text-gray-300">No notifications.</div>
+                      ) : (
+                        <ul className="divide-y divide-gray-200 dark:divide-gray-800">
+                          {notifications.map((n) => (
+                            <li key={n.id} className={`py-2 px-2 rounded-lg ${!n.read ? 'bg-blue-50/50 dark:bg-blue-500/10' : ''}`}>
+                              <div className="font-medium text-gray-900 dark:text-gray-100 text-sm">{n.title}</div>
+                              <div className="text-gray-600 dark:text-gray-300 text-xs mt-0.5">{n.message}</div>
+                              <div className="text-gray-400 dark:text-gray-500 text-xs mt-1">{new Date(n.created_at).toLocaleString()}</div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              ) : null}
               <Button
                 size="icon"
                 variant="ghost"

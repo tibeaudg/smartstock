@@ -180,9 +180,13 @@ export const AuthPage = () => {
         setPasswordError(null);
         toast.success('Welcome back!');
         
-        // Redirect to dashboard
+        // Redirect to intended destination or dashboard
+        const from = (location.state as { from?: { pathname?: string; search?: string } })?.from;
+        const redirectTo = from
+          ? (from.pathname || '/dashboard') + (from.search || '')
+          : '/dashboard';
         setTimeout(() => {
-          navigate('/dashboard', { replace: true });
+          navigate(redirectTo, { replace: true });
         }, 500);
         
       } else if (mode === 'register') {

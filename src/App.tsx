@@ -16,7 +16,11 @@ import { ProfileSettings } from './components/settings/ProfileSettings';
 import { UserManagement } from './components/settings/UserManagement';
 import { LicenseOverview } from './components/settings/LicenseOverview';
 import { InvoicingOverview } from './components/settings/InvoicingOverview';
+import { BillingPage } from './components/settings/BillingPage';
+import { BillingSuccessRedirect } from './components/BillingSuccessRedirect';
+import { BranchesSettings } from './components/settings/BranchesSettings';
 import { GeneralSettings } from './components/settings/GeneralSettings';
+import { PaywallGate } from './components/PaywallGate';
 import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
@@ -312,6 +316,7 @@ const AppRouter = () => {
         <Route path="/customers" element={<><SEO title="Our Customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" /><AuthRoute /></>} />
+        <Route path="/billing-success" element={<BillingSuccessRedirect />} />
         <Route path="/contact" element={<><SEO title="Contact" /><ContactPage /></>} />
         <Route path="/about" element={<><SEO title="About StockFlow" /><AboutPage /></>} />
         <Route
@@ -405,19 +410,21 @@ const AppRouter = () => {
             <Route path="help-center" element={<HelpCenterPage />} />
             <Route path="license" element={<LicenseOverview />} />
             <Route path="invoicing" element={<InvoicingOverview />} />
+            <Route path="billing" element={<BillingPage />} />
+            <Route path="branches" element={<BranchesSettings />} />
           </Route>
-          <Route path="sales-orders" element={<SalesOrdersPage />} />
-          <Route path="sales-orders/new" element={<CreateSalesOrderPage />} />
-          <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
-          <Route path="purchase-orders/new" element={<CreatePurchaseOrderPage />} />
-          <Route path="purchase-orders/:id/edit" element={<EditPurchaseOrderPage />} />
-          <Route path="sales-orders/:id/edit" element={<EditSalesOrderPage />} />
-          <Route path="customer-management" element={<VendorManagementPage />} />
-          <Route path="customer-management/new" element={<CreateCustomerPage />} />
-          <Route path="customer-management/:id/edit" element={<EditCustomerPage />} />
-          <Route path="suppliers" element={<SuppliersPage />} />
-          <Route path="suppliers/new" element={<CreateSupplierPage />} />
-          <Route path="suppliers/:id/edit" element={<EditSupplierPage />} />
+          <Route path="sales-orders" element={<PaywallGate feature="orders"><SalesOrdersPage /></PaywallGate>} />
+          <Route path="sales-orders/new" element={<PaywallGate feature="orders"><CreateSalesOrderPage /></PaywallGate>} />
+          <Route path="purchase-orders" element={<PaywallGate feature="orders"><PurchaseOrdersPage /></PaywallGate>} />
+          <Route path="purchase-orders/new" element={<PaywallGate feature="orders"><CreatePurchaseOrderPage /></PaywallGate>} />
+          <Route path="purchase-orders/:id/edit" element={<PaywallGate feature="orders"><EditPurchaseOrderPage /></PaywallGate>} />
+          <Route path="sales-orders/:id/edit" element={<PaywallGate feature="orders"><EditSalesOrderPage /></PaywallGate>} />
+          <Route path="customer-management" element={<PaywallGate feature="contacts"><VendorManagementPage /></PaywallGate>} />
+          <Route path="customer-management/new" element={<PaywallGate feature="contacts"><CreateCustomerPage /></PaywallGate>} />
+          <Route path="customer-management/:id/edit" element={<PaywallGate feature="contacts"><EditCustomerPage /></PaywallGate>} />
+          <Route path="suppliers" element={<PaywallGate feature="contacts"><SuppliersPage /></PaywallGate>} />
+          <Route path="suppliers/new" element={<PaywallGate feature="contacts"><CreateSupplierPage /></PaywallGate>} />
+          <Route path="suppliers/:id/edit" element={<PaywallGate feature="contacts"><EditSupplierPage /></PaywallGate>} />
         </Route>
 
         {/* ERROR & FALLBACK */}

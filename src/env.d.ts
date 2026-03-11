@@ -5,6 +5,8 @@ interface ImportMetaEnv {
   readonly VITE_STRIPE_PRICE_STARTER: string
   readonly VITE_STRIPE_PRICE_BUSINESS: string
   readonly VITE_STRIPE_PRICE_ENTERPRISE: string
+  readonly VITE_STRIPE_PRICE_ADVANCE: string
+  readonly VITE_STRIPE_PAYMENT_LINK: string
   readonly VITE_SUPABASE_URL: string
   readonly VITE_SUPABASE_ANON_KEY: string
 }
