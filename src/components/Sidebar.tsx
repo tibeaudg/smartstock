@@ -18,14 +18,17 @@ import {
   HelpCircle,
   Bell,
   Contact,
+  GitBranch,
 } 
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
 import { ChatModal } from './ChatModal';
+import { BranchPickerDropdown } from './BranchPickerDropdown';
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
 import { useBranchSettings } from '@/hooks/useBranchSettings';
+import { useBranches } from '@/hooks/useBranches';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { useUnreadMessages } from '@/hooks/UnreadMessagesContext';
@@ -94,6 +97,7 @@ export const Sidebar = ({
   const { signOut } = useAuth();
   const [uncontrolledCollapsed, setUncontrolledCollapsed] = useState(false);
   const [helpCenterOpen, setHelpCenterOpen] = useState(false);
+  const { activeBranch } = useBranches();
 
   const isCollapsed =
     typeof controlledCollapsed === 'boolean' ? controlledCollapsed : uncontrolledCollapsed;
@@ -233,6 +237,19 @@ export const Sidebar = ({
         {/* Mobile Bottom Navbar */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-950/95 border-t border-gray-200 dark:border-gray-800 z-50 md:hidden safe-area-bottom backdrop-blur-sm transition-colors">
           <div className="flex items-center justify-around h-16 px-2">
+            {/* Branch Picker - first item on mobile */}
+            <BranchPickerDropdown side="top" align="center">
+              <button
+                type="button"
+                className="flex flex-col items-center justify-center flex-1 h-full px-2 transition-colors min-w-0 rounded-2xl text-gray-600 dark:text-gray-300"
+                aria-label="Switch branch"
+              >
+                <GitBranch className="w-5 h-5 mb-0.5 flex-shrink-0" />
+                <span className="text-[11px] font-medium truncate w-full text-center leading-tight">
+                  Branch
+                </span>
+              </button>
+            </BranchPickerDropdown>
             {menuItems.map((item) => {
               const Icon = item.icon;
               const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -350,30 +367,45 @@ export const Sidebar = ({
         {/* Logo / Header Section */}
         <div className="px-2 sm:px-3 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               {!isCollapsed && (
                 <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
-                  {organisationName?.trim() || 'stockflow'}
+                  StockFlow
                 </h1>
               )}
             </div>
-            <Button
-              size="icon"
-              variant="ghost"
-              aria-label="Toggle sidebar"
-              aria-expanded={!isCollapsed}
-              onClick={() => setCollapsed((prev) => !prev)}
-              className="h-8 w-8 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              {isCollapsed ? (
-                <ChevronRight className="w-4 h-4" />
-              ) : (
-                <ChevronLeft className="w-4 h-4" />
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {onNotificationClick && (
+                <button
+                  type="button"
+                  onClick={onNotificationClick}
+                  aria-label="Notifications"
+                  className="relative flex items-center justify-center h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <Bell className="w-4 h-4" />
+                  {typeof unreadCount === 'number' && unreadCount > 0 && (
+                    <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" aria-hidden />
+                  )}
+                </button>
               )}
-            </Button>
+              <Button
+                size="icon"
+                variant="ghost"
+                aria-label="Toggle sidebar"
+                aria-expanded={!isCollapsed}
+                onClick={() => setCollapsed((prev) => !prev)}
+                className="h-8 w-8 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                {isCollapsed ? (
+                  <ChevronRight className="w-4 h-4" />
+                ) : (
+                  <ChevronLeft className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -383,18 +415,6 @@ export const Sidebar = ({
             // Collapsed: thin icon rail only
             <div className="flex flex-col justify-between items-center h-full">
               <div className="flex flex-col items-center gap-2">
-                {/* Notifications icon to mirror uncollapsed state */}
-                {onNotificationClick && (
-                  <button
-                    type="button"
-                    onClick={onNotificationClick}
-                    aria-label="Notifications"
-                    className="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-900"
-                  >
-                    <Bell className="w-5 h-5" />
-                  </button>
-                )}
-
                 {/* Main menu icons, excluding settings (moved to bottom utilities) */}
                 {menuItems.map((item) => {
                   if (item.id === 'settings') return null;
@@ -492,30 +512,20 @@ export const Sidebar = ({
             <div className="h-full flex flex-col rounded-2xl bg-white dark:bg-gray-900/60">
               {/* Upper content */}
               <div className="space-y-4">
-                {/* Quick search / Notifications */}
-                <div className="border-b border-gray-200 dark:border-gray-800 pb-3">
-                  <div className="hidden flex items-center justify-between px-3 py-2 rounded-xl bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800">
-                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                      Quick search
-                    </span>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="w-full group flex items-center px-3 py-2 rounded-xl bg-white dark:bg-gray-950 text-xs sm:text-sm font-medium text-gray-600 hover:bg-white hover:text-blue-700 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 transition-colors"
-                    onClick={onNotificationClick}
-                  >
-                    <Bell className="w-4 h-4 mr-2 text-gray-400 group-hover:text-blue-600 dark:text-gray-500 dark:group-hover:text-blue-300" />
-                    <span className="flex-1 text-left">
-                      Notifications
-                    </span>
-                    {typeof unreadCount === 'number' && unreadCount > 0 && (
-                      <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 ml-2">
-                        {unreadCount}+
+                {/* Branch Picker */}
+                <div className="">
+                  <BranchPickerDropdown side="bottom" align="start">
+                    <button
+                      type="button"
+                      className="w-full group flex items-center px-3 py-2 rounded-xl  border border-gray-200 dark:bg-gray-950 text-xs sm:text-sm font-medium text-gray-600 hover:bg-white hover:text-blue-700 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 transition-colors"
+                    >
+                      <GitBranch className="w-4 h-4 mr-2 text-gray-400 group-hover:text-blue-600 dark:text-gray-500 dark:group-hover:text-blue-300" />
+                      <span className="flex-1 text-left truncate">
+                        {activeBranch?.branch_name ?? 'Switch branch'}
                       </span>
-                    )}
-                  </button>
-
+                      <ChevronDown className="w-3 h-3 text-gray-400" />
+                    </button>
+                  </BranchPickerDropdown>
                 </div>
 
                 {/* Menu section */}
@@ -784,6 +794,7 @@ export const Sidebar = ({
         />,
         document.body
       )}
+
 
 
 

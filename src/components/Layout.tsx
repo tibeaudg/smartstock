@@ -86,7 +86,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         )}
 
         <main
-          className={`flex-1 main-content-surface ${variant === 'admin' ? 'overflow-y-auto' : 'p-4 pt-8 overflow-y-hidden'} ${
+          className={`flex-1 min-h-0 main-content-surface ${variant === 'admin' ? 'overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
               : sidebarCollapsed

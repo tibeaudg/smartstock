@@ -123,8 +123,8 @@ export default function BillOfMaterialsManagementPage() {
       keyTakeaways={KeyTakeaways}
     >
       <SEO
-        title="Free Bill of Materials Software 2026 | No Credit Card | StockFlow"
-        description="Free bill of materials management software. No credit card, unlimited BOMs. Reduce build errors 40%. Inventory management software with bill of materials—start free."
+        title="Free BOM Software 2026: Cut Build Errors 40% | No Signup"
+        description="Free bill of materials software: unlimited BOMs, reduce build errors 40%, replace spreadsheets. No credit card. Start free—manufacturing inventory management with BOM."
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
         image="https://www.stockflowsystems.com/images/bom-management-hero.jpg"

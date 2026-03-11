@@ -136,10 +136,10 @@ export default function NonProfitInventorySoftwarePage() {
       keyTakeaways={<KeyTakeaways items={keyTakeaways} />}
     >
       <SEO
-        title="Inventory Management Software for Nonprofits | Free | StockFlow"
-        description="Inventory management software for nonprofits. Free asset tracking, donations, multi-location. No credit card. StockFlow."
+        title="Free Non-Profit Inventory Software: Donations & Assets | 2026"
+        description="Free non-profit inventory software for donations, assets & multi-location tracking. Mobile scanning, audit-ready reports. No credit card required."
         keywords="inventory management software for nonprofits, non profit inventory management, non-profit inventory software, asset tracking for non-profits, donation tracking system, inventory management for NGOs, free non-profit software"
-        url="https://www.stockflowsystems.com/non-profit-inventory-software"
+        url="https://www.stockflowsystems.com/non-profit-inventory-management-software"
         structuredData={structuredData}
       />
 

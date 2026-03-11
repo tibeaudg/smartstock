@@ -70,6 +70,13 @@ const setBranchIdToStorage = (branchId: string | null) => {
   }
 };
 
+// Case-insensitive branch ID match (UUIDs can differ in casing)
+const branchIdMatches = (a: string | null | undefined, b: string | null | undefined) =>
+  a && b && a.toLowerCase() === b.toLowerCase();
+
+const findBranchById = (branchList: { branch_id?: string | null }[], id: string | null | undefined) =>
+  id ? branchList.find(b => b?.branch_id && branchIdMatches(b.branch_id, id)) ?? null : null;
+
 export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, authLoading } = useAuth();
   const queryClient = useQueryClient();
@@ -170,11 +177,12 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       }
     },
     enabled: !!user && !authLoading,
-    // Keep previous data visible while refetching, refresh on focus/reconnect
-    // Use finite stale time so background refetches run, but do not block UI
+    // Keep previous data visible while refetching
+    // Disable refetchOnWindowFocus and refetchOnMount to prevent branch reset when switching tabs
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     refetchOnReconnect: true,
     placeholderData: (prev) => prev as Branch[] | undefined,
     retry: 1, // Only retry once to prevent infinite loops
@@ -226,7 +234,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (branches.length > 0 && !activeBranch) {
       const storedId = getBranchIdFromStorage();
-      const found = storedId ? branches.find(b => b.branch_id === storedId) : null;
+      const found = findBranchById(branches, storedId);
       
       if (found) {
         console.log('[useBranches] Restoring branch from localStorage:', found.branch_name);
@@ -248,30 +256,42 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   }, [branches, activeBranch]);
 
   // Update active branch when branches data changes (e.g., after refetch)
+  // IMPORTANT: Preserve user's branch choice from localStorage - only fall back to main if stored branch truly doesn't exist
   useEffect(() => {
-    if (activeBranch && branches.length > 0) {
-      // Check if current active branch still exists in updated branches list
-      const stillExists = branches.find(b => b.branch_id === activeBranch.branch_id);
+    if (branches.length === 0) return;
+
+    const storedId = getBranchIdFromStorage();
+
+    if (activeBranch) {
+      // Check if current active branch still exists in updated branches list (case-insensitive)
+      const stillExists = findBranchById(branches, activeBranch.branch_id);
       if (stillExists) {
-        // Update active branch with latest data
+        // Update with latest data from refetch
         setActiveBranchState(stillExists);
-      } else {
-        // Active branch no longer exists, select a new one
-        const mainBranch = branches.find(b => b.is_main) || branches[0];
-        if (mainBranch) {
-          setActiveBranchState(mainBranch);
-          setBranchIdToStorage(mainBranch.branch_id);
-        }
+        return;
       }
+    }
+
+    // Active branch not found in list - try restoring from localStorage first (user's explicit choice)
+    const storedBranch = findBranchById(branches, storedId);
+    if (storedBranch) {
+      setActiveBranchState(storedBranch);
+      return;
+    }
+
+    // Stored branch doesn't exist in list (e.g. user lost access) - fall back to main
+    const mainBranch = branches.find(b => b.is_main) || branches[0];
+    if (mainBranch) {
+      setActiveBranchState(mainBranch);
+      setBranchIdToStorage(mainBranch.branch_id);
     }
   }, [branches]);
 
   // Synchroniseer branch tussen tabbladen
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
-      if (e.key === BRANCH_STORAGE_KEY && e.newValue !== activeBranch?.branch_id) {
-        // Zoek branch object bij id
-        const found = branches.find(b => b.branch_id === e.newValue);
+      if (e.key === BRANCH_STORAGE_KEY && !branchIdMatches(e.newValue, activeBranch?.branch_id)) {
+        const found = findBranchById(branches, e.newValue);
         if (found) setActiveBranchState(found);
       }
     };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,9 +20,6 @@ const LOW_STOCK_PRODUCTS_LINK = '/dashboard/categories?stockStatus=low-stock';
 const EMPTY_STOCK_PRODUCTS_LINK = '/dashboard/categories?stockStatus=out-of-stock';
 import { toast } from 'sonner';
 import { AccountChecklist } from './AccountChecklist';
-import { useAccountChecklist } from '@/hooks/useAccountChecklist';
-
-
 
 interface DashboardProps {
   userRole: 'admin' | 'staff';
@@ -72,20 +69,12 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
   const [rangeType, setRangeType] = useState<'week' | 'month' | 'quarter' | 'year' | 'all'>('month');
   const queryClient = useQueryClient();
   const { productCount, isLoading: productCountLoading } = useProductCount();
-  const { isChecklistComplete, forceShowChecklist } = useAccountChecklist();
-  const [productCountVerified, setProductCountVerified] = useState(false);
 
-  // Clear potentially stale productCount from persist, then mark verified when fetch completes.
-  // This prevents showing full dashboard based on restored cache from before products were deleted.
-  useEffect(() => {
+  // Force fresh productCount on mount (before paint) so we correctly show/hide checklist
+  // when returning after deleting all products. Runs synchronously to avoid flashing wrong UI.
+  useLayoutEffect(() => {
     queryClient.removeQueries({ queryKey: ['productCount'] });
   }, [queryClient]);
-
-  useEffect(() => {
-    if (!productCountLoading) {
-      setProductCountVerified(true);
-    }
-  }, [productCountLoading]);
 
   // Analytics state
   const { user } = useAuth();
@@ -376,7 +365,9 @@ export const Dashboard = ({ userRole }: DashboardProps) => {
     );
   }
 
-  if (forceShowChecklist || !productCountVerified || productCountLoading || (!isChecklistComplete && productCount === 0)) {
+  // Show account setup only when product count is 0 (or while loading).
+  // Product count > 0 → always show full dashboard, regardless of other checklist states.
+  if (productCountLoading || productCount === 0) {
     return (
       <div className="space-y-4 sm:space-y-6 max-w-[1600px] mx-auto relative pt-4 sm:pt-6 pb-16 sm:pb-24 md:pt-0 px-4 sm:px-6">
         <AccountChecklist onOpenScanner={() => navigate('/dashboard/scan', { state: { returnTo: '/dashboard/scan-flow' } })} />

@@ -441,8 +441,9 @@ export const useProductCount = () => {
     queryKey: ['productCount', activeBranch?.branch_id, user?.id],
     queryFn: fetchProductCount,
     enabled: !!user && !!activeBranch,
+    refetchOnMount: 'always', // Always refetch when component mounts - critical for checklist after product deletions
     refetchOnWindowFocus: true, // Refetch when returning to tab (e.g. after bulk delete elsewhere)
-    staleTime: 30 * 1000, // 30s - allow refetch after deletions
+    staleTime: 0, // Always consider stale - ensures we refetch after deletions from any path
     placeholderData: undefined, // Never use cached data as placeholder - critical for checklist (0 products)
   });
 

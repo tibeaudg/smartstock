@@ -252,10 +252,10 @@ export default function RestaurantInventoryManagementPage() {
 <>
 <HeaderPublic />
       <SEO
-        title="Best Restaurant Inventory Software 2026 | MarketMan, Restaurant365, Toast Comparison"
-        description="Compare top restaurant inventory management software for 2026. Reduce food costs 3-5% with real-time tracking, recipe costing & automated ordering. Free trials available."
+        title="Restaurant Inventory Software 2026: Cut Food Costs 3–5% | Free"
+        description="Restaurant inventory software 2026: reduce food costs 3-5% with real-time tracking, recipe costing & automated ordering. Free plan. No credit card."
         keywords="restaurant inventory software, restaurant inventory management system, inventory software for restaurants, food and beverage inventory management software, restaurant inventory app, MarketMan, Restaurant365, best inventory software for restaurants, restaurant management software, hospitality inventory tracking software"
-        url="https://www.stockflowsystems.com/restaurant-inventory-software"
+        url="https://www.stockflowsystems.com/restaurant-inventory-management-software"
         structuredData={structuredData}
       />
 

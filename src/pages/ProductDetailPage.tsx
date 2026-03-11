@@ -754,6 +754,7 @@ export default function ProductDetailPage() {
         queryClient.invalidateQueries({ queryKey: ['products'] });
         queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
         queryClient.invalidateQueries({ queryKey: ['categoryProductCounts'] });
+        queryClient.invalidateQueries({ queryKey: ['productCount'] });
         navigate('/dashboard/categories');
       } catch (err) {
         console.error('Unexpected error deleting product:', err);

@@ -64,9 +64,9 @@ export default function SmallBusinessInventoryAppPage() {
   ];
 
   const structuredData = generateSeoPageStructuredData({
-    title: 'Small Business Inventory App | Best Inventory App 2026 | StockFlow',
+    title: 'Best Business Inventory App 2026: Free, Mobile Scanning | StockFlow',
     description:
-      'Small business inventory app—best inventory app for 2026. Mobile scanning, free. No credit card. StockFlow.',
+      'Best business inventory app 2026: free mobile scanning, real-time sync, unlimited items. No credit card. StockFlow.',
     url: location.pathname,
     breadcrumbs,
     faqData,
@@ -135,15 +135,15 @@ export default function SmallBusinessInventoryAppPage() {
 
   return (
     <SeoPageLayout
-      title="Small Business Inventory App | Best Inventory App 2026 | StockFlow"
+      title="Best Business Inventory App 2026: Free, Mobile Scanning"
       heroTitle="Best Inventory App for Small Business"
       dateUpdated="january 10, 2026"
       faqData={faqData}
         keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Small Business Inventory App | Best Inventory App 2026 | StockFlow"
-        description="Small business inventory app—best inventory app for 2026. Mobile scanning, free. No credit card. StockFlow."
+        title="Best Business Inventory App 2026: Free, Mobile Scanning"
+        description="Best business inventory app 2026: free mobile scanning, real-time sync, unlimited items. No credit card. StockFlow."
         keywords="small business inventory app, best inventory app, mobile inventory tracking, inventory app for iphone, android inventory scanner, smb asset tracking"
         url="https://www.stockflowsystems.com/business-inventory-app"
         structuredData={structuredData}
