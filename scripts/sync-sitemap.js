@@ -7,7 +7,7 @@ const BASE_URL = 'https://www.stockflowsystems.com';
 const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
 const SEO_DIR_LOWER = path.join(process.cwd(), 'src/pages/seo');
 const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
-const XML_DATE = '2026-01-22';
+const CURRENT_DATE = new Date().toISOString().split('T')[0];
 
 async function syncSitemap() {
   console.log('--- Starting Sitemap Sync & Cleanup ---');
@@ -29,7 +29,7 @@ async function syncSitemap() {
   ];
 
   // 2. Map local SEO files to root URLs (English pages)
-  const files = await globby('**/*.{js,jsx,ts,tsx}', { 
+  const files = await globby('**/*.{js,jsx,ts,tsx}', {
     cwd: seoDir,
     ignore: ['**/nl/**'] // Exclude Dutch pages from this scan
   });
@@ -94,7 +94,7 @@ async function syncSitemap() {
     // Force HTTPS and remove trailing slash for comparison
     let url = entry.loc.trim().replace(/^http:/, 'https:');
     if (url.endsWith('/') && url !== `${BASE_URL}/`) {
-        url = url.slice(0, -1);
+      url = url.slice(0, -1);
     }
     entry.loc = url; // Update the entry with normalized URL
 
@@ -105,11 +105,11 @@ async function syncSitemap() {
 
     // PROTECTED: Non-SEO core folders (Case Insensitive)
     const protectedFolders = [
-      'case-studies', 'customers', 'integrations', 
+      'case-studies', 'customers', 'integrations',
       'blog', 'glossary', 'categoriespage', 'nl'
     ];
-    
-    const isProtected = protectedFolders.some(p => 
+
+    const isProtected = protectedFolders.some(p =>
       route.toLowerCase().startsWith(p.toLowerCase())
     );
 
@@ -119,7 +119,7 @@ async function syncSitemap() {
     // Check both English routes and Dutch routes
     const isEnglishRoute = localRoutes.has(route);
     const isDutchRoute = route.startsWith('nl/') && nlRoutes.has(route);
-    
+
     if (!isEnglishRoute && !isDutchRoute) {
       console.log(`- Removed: ${url}`);
       return false;
@@ -140,7 +140,7 @@ async function syncSitemap() {
       const priority = url === BASE_URL ? '1.0' : (url.includes('/nl/') ? '0.8' : '0.8');
       sitemapData.urlset.url.push({
         loc: url,
-        lastmod: XML_DATE,
+        lastmod: CURRENT_DATE,
         priority: priority
       });
       addedCount++;
@@ -153,7 +153,7 @@ async function syncSitemap() {
   if (addedCount > 0 || initialCount !== finalCount) {
     const builder = new XMLBuilder({ format: true, ignoreAttributes: false, attributeNamePrefix: "@_" });
     sitemapData.urlset["@_xmlns"] = "http://www.sitemaps.org/schemas/sitemap/0.9";
-    
+
     const finalXml = `<?xml version="1.0" encoding="UTF-8"?>\n${builder.build(sitemapData)}`;
     fs.writeFileSync(SITEMAP_PATH, finalXml);
     console.log(`--- Sync Complete: Added ${addedCount}, Final Total: ${finalCount} ---`);

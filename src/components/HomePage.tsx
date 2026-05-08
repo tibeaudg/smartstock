@@ -11,6 +11,82 @@ import {
   Camera, RefreshCw, BarChart, Globe
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
+import { StructuredData } from '@/components/StructuredData';
+
+const homeFaqData = [
+  {
+    question: "Why is StockFlow free? What's the catch?",
+    answer: "Our basic plan is free forever for small shops. We only charge for extra-large warehouses or custom features. Your data is always yours, and you can export it anytime."
+  },
+  {
+    question: "What is the best inventory management software?",
+    answer: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, and excellent customer service - completely free forever with all features included."
+  },
+  {
+    question: "Is inventory management software free?",
+    answer: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, users, branches, orders, real-time tracking, barcode scanning, low stock alerts, and advanced reporting at no cost."
+  },
+  {
+    question: "How does inventory management software work?",
+    answer: "StockFlow tracks your stock levels in real-time across all locations. Scan barcodes or manually enter products, set reorder points, and the system automatically alerts you when stock is low. It eliminates manual counting and spreadsheet errors."
+  },
+  {
+    question: "Can I try it free? What if it doesn't work for my shop?",
+    answer: "Absolutely! StockFlow is completely free forever - no credit card required. Try it with your actual products and if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them."
+  },
+  {
+    question: "How much does StockFlow cost? Is StockFlow free?",
+    answer: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, branches, BOM management and reporting. Read our pricing page for more information."
+  },
+  {
+    question: "How much does StockFlow cost? What is the subscription price?",
+    answer: "StockFlow is free forever. There is no subscription fee — our core inventory management platform is completely free with unlimited products, users, branches, and orders. No credit card required to get started."
+  }
+];
+
+const homeStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "StockFlow",
+    "url": "https://www.stockflowsystems.com",
+    "logo": "https://www.stockflowsystems.com/logo.png",
+    "sameAs": [
+      "https://www.facebook.com/profile.php?id=61578067034898",
+      "https://twitter.com/stockflow",
+      "https://www.linkedin.com/company/stockflow",
+      "https://www.instagram.com/stockflowbe"
+    ],
+    "description": "StockFlow is free inventory management software for growing businesses. Manage stock, barcode scanning, BOMs, and orders with no hidden costs."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://www.stockflowsystems.com",
+    "name": "StockFlow",
+    "description": "Free inventory management software that tracks stock, orders, and barcode scans for small businesses.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "StockFlow",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.stockflowsystems.com/logo.png"
+      }
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": homeFaqData.map((faq) => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  }
+];
 
 // Trust Badges Component
 const TrustBadges = () => {
@@ -97,12 +173,8 @@ const SocialProof = () => {
 // FAQ Component
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
-  
-  const faqs = [
-    {
-      q: "Why is StockFlow free? What's the catch?",
-      a: "Our basic plan is free forever for small shops. We only charge for extra-large warehouses or custom features. Your data is always yours, and you can export it anytime."
-    },
+
+  const faqs = homeFaqData;
     {
       q: "What is the best inventory management software?",
       a: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, and excellent customer service - completely free forever with all features included."
@@ -162,6 +234,7 @@ export const HomePage = () => {
 
   return (
     <>
+    <StructuredData data={homeStructuredData} />
     <Header />
 
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-16">

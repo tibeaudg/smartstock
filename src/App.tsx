@@ -305,26 +305,26 @@ const AppRouter = () => {
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<><SEO title="Inventory Chaos? Track Stock in Real-Time (Completely Free) | StockFlow" description="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Completely free. 15+ hours saved weekly." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
-        <Route path="/features" element={<><SEO title="Features & Capabilities" /><FeaturesPage /></>} />
+        <Route path="/features" element={<><SEO title="Inventory Management Features & Capabilities | StockFlow" description="Explore StockFlow features: barcode scanning, BOM management, stock alerts, reporting, and offline support. Free inventory software for growing businesses." url="https://www.stockflowsystems.com/features" /><FeaturesPage /></>} />
         <Route path="/reporting" element={
           <React.Suspense fallback={<ContentLoadingScreen />}>
-            <SEO title="Inventory Reporting & Analytics" />
+            <SEO title="Inventory Reporting & Analytics Software | StockFlow" description="Discover inventory reporting and analytics tools from StockFlow. Track stock, sales and performance in real time with free software built for small business." url="https://www.stockflowsystems.com/reporting" />
             <ReportingPage />
           </React.Suspense>
         } />
-        <Route path="/resources" element={<><SEO title="Resources & Guides" /><ResourcesPage /></>} />
-        <Route path="/customers" element={<><SEO title="Our Customers" /><CustomersPage /></>} />
-        <Route path="/customers/:id" element={<><SEO title="Customer Details" /><CustomerDetailPage /></>} />
-        <Route path="/auth" element={<><SEO title="Login to StockFlow" /><AuthRoute /></>} />
+        <Route path="/resources" element={<><SEO title="Inventory Management Resources & Guides | StockFlow" description="Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management." url="https://www.stockflowsystems.com/resources" /><ResourcesPage /></>} />
+        <Route path="/customers" element={<><SEO title="StockFlow Customers & Success Stories | Inventory Software" description="Read customer success stories from businesses using StockFlow for inventory management, barcode scanning, and BOM tracking." url="https://www.stockflowsystems.com/customers" /><CustomersPage /></>} />
+        <Route path="/customers/:id" element={<><SEO title="Customer Success Story | StockFlow" description="Learn how a StockFlow customer solved inventory issues with barcode scanning and real-time stock visibility." /><CustomerDetailPage /></>} />
+        <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." /><AuthRoute /></>} />
         <Route path="/billing-success" element={<BillingSuccessRedirect />} />
-        <Route path="/contact" element={<><SEO title="Contact" /><ContactPage /></>} />
-        <Route path="/about" element={<><SEO title="About StockFlow" /><AboutPage /></>} />
+        <Route path="/contact" element={<><SEO title="Contact StockFlow | Free Inventory Software Support" description="Contact StockFlow to get help with inventory software, barcode scanning setup, or getting started with the free plan." url="https://www.stockflowsystems.com/contact" /><ContactPage /></>} />
+        <Route path="/about" element={<><SEO title="About StockFlow: Free Inventory Management for SMEs" description="Learn about StockFlow, the free inventory management platform that helps small businesses manage stock, orders and barcode scanning." url="https://www.stockflowsystems.com/about" /><AboutPage /></>} />
         <Route
           path="/help-center"
           element={<Navigate to="/dashboard/settings/help-center" replace />}
         />
-        <Route path='/videos' element={<><SEO title="Instruction Videos" /><VideosPage /></>} />
-        <Route path='/integrations' element={<><SEO title="Integrations"/><IntegrationsPage /></>} />
+        <Route path='/videos' element={<><SEO title="StockFlow Instruction Videos | Inventory & Barcode Training" description="Watch StockFlow tutorial videos for inventory management, barcode scanning, reporting, and using the free app effectively." url="https://www.stockflowsystems.com/videos" /><VideosPage /></>} />
+        <Route path='/integrations' element={<><SEO title="Inventory Software Integrations | StockFlow" description="Discover which tools integrate with StockFlow for inventory, ecommerce, accounting, and barcode workflows." url="https://www.stockflowsystems.com/integrations"/><IntegrationsPage /></>} />
 
         {/* REDIRECTS */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />

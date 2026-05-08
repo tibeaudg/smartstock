@@ -1,10 +1,12 @@
 import SEO from '@/components/SEO';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { StructuredData } from '@/components/StructuredData';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { Camera, Smartphone, CheckCircle, Zap } from 'lucide-react';
 
 export default function BesteGratisVoorraadSoftwareMetBarcodeScannenPage() {
+  const location = useLocation();
+
   const faqData = [
     {
       question: "Is er gratis voorraad software met barcode scanning?",
@@ -28,23 +30,41 @@ export default function BesteGratisVoorraadSoftwareMetBarcodeScannenPage() {
     }
   ];
 
+  const structuredData = generateSeoPageStructuredData({
+    title: 'Beste Gratis Voorraad Software met Barcode Scannen | StockFlow',
+    description: 'Ontdek de beste gratis voorraad software met barcode scanning. Gebruik uw smartphone als scanner en beheer uw voorraad zonder extra hardware. Geen verborgen kosten, geen limieten.',
+    url: location.pathname,
+    breadcrumbs: [
+      { name: 'Home', url: '/nl', position: 1 },
+      { name: 'Gratis barcode scanning voorraad software', url: location.pathname, position: 2 }
+    ],
+    faqData,
+    pageType: 'article',
+    datePublished: '2026-01-22',
+    dateModified: '2026-01-22',
+    includeWebSite: false
+  });
+
   return (
     <SeoPageLayout 
       title="Beste Gratis Voorraad Software met Barcode Scannen"
       heroTitle="Beste Gratis Voorraad Software met Barcode Scannen"
+      heroDescription="Ontdek gratis voorraadbeheer met barcode scanning op uw smartphone. Geen hardware nodig, direct realtime voorraad updates."
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
       <SEO
         title="Beste Gratis Voorraad Software met Barcode Scannen 2026 | StockFlow"
-        description="Ontdek de beste gratis voorraad software met barcode scanning. Scan barcodes met uw smartphone camera, geen dure hardware nodig. 99,9% nauwkeurigheid, volledig gratis. Start vandaag - geen creditcard vereist."
-        keywords="gratis voorraad software barcode, gratis voorraadbeheer barcode scanner, gratis barcode scanning software, gratis voorraad app barcode, gratis stockbeheer barcode, gratis voorraad software met scanner, gratis barcode scanner app voorraad"
+        description="Ontdek de beste gratis voorraad software met barcode scanning. Scan barcodes met uw telefooncamera, geen dure hardware nodig. 99,9% nauwkeurigheid, volledig gratis."
+        keywords="gratis voorraad software barcode, gratis voorraadbeheer barcode scanner, gratis barcode scanning software, gratis voorraad app barcode, gratis voorraadbeheer met scannen"
         url="https://www.stockflowsystems.com/nl/beste-gratis-voorraad-software-met-barcode-scannen"
         locale="nl-BE"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning' },
           { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/beste-gratis-voorraad-software-met-barcode-scannen' }
         ]}
+        structuredData={structuredData}
       />
 
       {/* Main Content */}

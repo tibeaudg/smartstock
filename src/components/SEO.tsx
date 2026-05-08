@@ -23,8 +23,8 @@ interface SEOProps {
   appUrl?: string;
 }
 
-const defaultTitle = 'StockFlow - Smart Inventory Management';
-const defaultDescription = 'Manage your inventory easily, quickly and smartly with StockFlow. Cloud-based Inventory Management Platform for growing businesses.';
+const defaultTitle = 'StockFlow - Free Inventory Management Software';
+const defaultDescription = 'StockFlow is free inventory management software for small businesses. Track stock, barcode scanning, BOMs, and orders with no hidden costs.';
 const defaultImage = '/Inventory-Management.png';
 const defaultUrl = 'https://www.stockflowsystems.com';
 
@@ -148,8 +148,8 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="ICBM" content="50.8503, 4.3517" />
       
       {/* Enhanced Open Graph for better social sharing */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
+      <meta property="og:title" content={optimizedTitle} />
+      <meta property="og:description" content={optimizedDescription} />
       <meta property="og:image" content={image} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -187,8 +187,8 @@ export const SEO: React.FC<SEOProps> = ({
       
       {/* Enhanced Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:title" content={optimizedTitle} />
+      <meta name="twitter:description" content={optimizedDescription} />
       <meta name="twitter:image" content={image} />
       <meta name="twitter:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta name="twitter:site" content="@stockflowapp" />

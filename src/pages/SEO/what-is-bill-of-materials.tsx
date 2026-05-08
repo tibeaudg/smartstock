@@ -1,22 +1,50 @@
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
+import { generateSeoPageStructuredData } from '@/lib/structuredData';
 
 const keyTakeaways = [
   'Enterprise-grade What Is Bill Of Materials systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
   'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
   'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
+  'Enhanced visibility into BOM cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {
+  const location = useLocation();
+
+  const structuredData = generateSeoPageStructuredData({
+    title: 'What Is Bill Of Materials Strategy & Automation Guide | StockFlow',
+    description: 'Learn what a bill of materials is, how BOM automation works, and why modern inventory systems require BOM control for accurate production planning.',
+    url: location.pathname,
+    breadcrumbs: [
+      { name: 'Home', url: '/', position: 1 },
+      { name: 'What Is Bill Of Materials', url: location.pathname, position: 2 }
+    ],
+    pageType: 'article',
+    datePublished: '2026-01-09',
+    dateModified: '2026-01-09',
+    includeWebSite: false
+  });
+
   return (
     <SeoPageLayout
       heroTitle="Advancing Enterprise What Is Bill Of Materials: A Technical Framework"
       title="What Is Bill Of Materials Strategy & Automation Guide | StockFlow"
-      dateUpdated="january 9, 2026"
+      heroDescription="A practical framework for modern BOM automation, production planning, and real-time inventory accuracy."
+      dateUpdated="January 9, 2026"
       keyTakeaways={keyTakeaways}
     >
+      <SEO
+        title="What Is Bill Of Materials? Free Guide to BOM Automation | StockFlow"
+        description="Learn what a bill of materials is, how BOM automation works, and why BOM control improves inventory accuracy, planning, and production efficiency."
+        keywords="what is bill of materials, bill of materials software, BOM automation, free BOM guide, inventory BOM, BOM planning"
+        url="https://www.stockflowsystems.com/what-is-bill-of-materials"
+        locale="en-US"
+        structuredData={structuredData}
+      />
       <div className="space-y-20 max-w-5xl mx-auto">
         
         {/* Section 1: Strategic Context */}

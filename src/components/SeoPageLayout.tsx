@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet-async';
 import { BookOpen, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import HeaderPublic from '@/components/HeaderPublic';
+import { StructuredData } from '@/components/StructuredData';
+import { generateFAQSchema } from '@/lib/structuredData';
 import { SEOPageHero } from './SeoPageHero';
 import FooterLanding from './Footer';
 import TableOfContents from './TableOfContents';
@@ -15,15 +17,18 @@ interface TOCItem {
 }
 
 interface SEOPageLayoutProps {
-  breadcrumbItems: any[];
+  breadcrumbItems?: any[];
+  title?: string;
   heroTitle: string;
-  dateUpdated: string;
-  heroDescription: string;
+  dateUpdated?: string;
+  heroDescription?: string;
   children: React.ReactNode;
   pageLanguage?: 'nl' | 'en';
   previousArticle?: any | null;
   nextArticle?: any | null;
   keyTakeaways?: string[];
+  faqData?: Array<{ question: string; answer: string }>;
+  structuredData?: object | object[];
 }
 
 const PRODUCTION_URL = 'https://www.stockflowsystems.com';
@@ -146,17 +151,27 @@ RelatedArticlesSection.displayName = 'RelatedArticlesSection';
    Main Layout
 --------------------------------------------- */
 const SEOPageLayout = memo(({
-  breadcrumbItems,
+  breadcrumbItems = [],
+  title,
   heroTitle,
   dateUpdated,
-  heroDescription,
+  heroDescription = '',
   children,
   pageLanguage = 'nl',
   previousArticle = null,
   nextArticle = null,
-  keyTakeaways = []
+  keyTakeaways = [],
+  faqData = [],
+  structuredData
 }: SEOPageLayoutProps) => {
   const location = useLocation();
+
+  const pageSchemas = useMemo(() => {
+    if (structuredData) return null;
+    if (!faqData?.length) return null;
+
+    return [generateFAQSchema(faqData)];
+  }, [faqData, structuredData]);
   const contentRef = useRef<HTMLDivElement>(null);
   const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState('');
@@ -333,6 +348,7 @@ const SEOPageLayout = memo(({
       </main>
 
       <FooterLanding />
+      {pageSchemas && <StructuredData data={pageSchemas} />}
     </div>
   );
 });
