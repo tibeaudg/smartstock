@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { BookOpen, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import HeaderPublic from '@/components/HeaderPublic';
+import { SEOEnhancer } from '@/components/seo/SEOEnhancer';
 import { StructuredData } from '@/components/StructuredData';
 import { generateFAQSchema } from '@/lib/structuredData';
 import { SEOPageHero } from './SeoPageHero';
@@ -250,6 +251,7 @@ const SEOPageLayout = memo(({
       </Helmet>
 
       <HeaderPublic />
+      <SEOEnhancer includeWebSite includeOrganization baseUrl={PRODUCTION_URL} />
 
       <main>
         <SEOPageHero

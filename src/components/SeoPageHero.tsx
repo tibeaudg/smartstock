@@ -1,11 +1,17 @@
 import React, { memo } from 'react';
 
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
 interface SEOPageHeroProps {
   title: string;
   description?: string;
   dateUpdated?: string;
   readingTime?: string;
   authorName?: string;
+  breadcrumbItems?: BreadcrumbItem[];
 }
 
 export const SEOPageHero = memo(({
@@ -14,6 +20,7 @@ export const SEOPageHero = memo(({
   dateUpdated,
   readingTime = "12 min read",
   authorName = "Toby Gray",
+  breadcrumbItems = []
 }: SEOPageHeroProps) => {
   return (
     <header style={{ 
@@ -38,6 +45,17 @@ export const SEOPageHero = memo(({
       }}>
         {title}
       </h1>
+
+      {breadcrumbItems.length > 0 && (
+        <nav aria-label="Breadcrumb" style={{ display: 'inline-flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+          {breadcrumbItems.map((item, index) => (
+            <span key={item.url || item.name} style={{ color: '#64748b', fontSize: '0.95rem' }}>
+              <a href={item.url} style={{ color: '#334155', textDecoration: 'none' }}>{item.name}</a>
+              {index < breadcrumbItems.length - 1 && <span aria-hidden="true"> / </span>}
+            </span>
+          ))}
+        </nav>
+      )}
       
       {description && (
         <p style={{ 

@@ -9,7 +9,7 @@ interface SEOProps {
   image?: string;
   url?: string;
   canonical?: string;
-  structuredData?: object;
+  structuredData?: object | object[];
   hreflang?: Array<{ lang: string; url: string }>;
   alternateLanguages?: Array<{ lang: string; url: string }>;
   locale?: string;
@@ -70,6 +70,9 @@ export const SEO: React.FC<SEOProps> = ({
 }) => {
   const resolvedLocale = locale || 'en';
   const currentModifiedTime = modifiedTime || new Date().toISOString();
+  const imageUrl = image?.startsWith('http')
+    ? image
+    : `${defaultUrl}${image?.startsWith('/') ? '' : '/'}${image}`;
   const localeToHrefLang = (value: string) => {
     if (!value) {
       return 'en-US';
@@ -150,12 +153,12 @@ export const SEO: React.FC<SEOProps> = ({
       {/* Enhanced Open Graph for better social sharing */}
       <meta property="og:title" content={optimizedTitle} />
       <meta property="og:description" content={optimizedDescription} />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={imageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta property="og:url" content={normalizedUrl} />
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={publishedTime ? 'article' : 'website'} />
       <meta property="og:locale" content={defaultOgLocale} />
       <meta property="og:site_name" content="StockFlow" />
       <meta property="og:updated_time" content={currentModifiedTime} />
@@ -189,7 +192,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={optimizedTitle} />
       <meta name="twitter:description" content={optimizedDescription} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={imageUrl} />
       <meta name="twitter:image:alt" content="StockFlow - Cloud-based Inventory Management Platform for SMEs" />
       <meta name="twitter:site" content="@stockflowapp" />
       <meta name="twitter:creator" content="@stockflowapp" />
@@ -254,8 +257,8 @@ export const SEO: React.FC<SEOProps> = ({
       {/* Enhanced Image SEO */}
       {image && (
         <>
-          <meta property="og:image:secure_url" content={image.startsWith('http') ? image : `${defaultUrl}${image}`} />
-          <meta name="twitter:image:src" content={image.startsWith('http') ? image : `${defaultUrl}${image}`} />
+          <meta property="og:image:secure_url" content={imageUrl} />
+          <meta name="twitter:image:src" content={imageUrl} />
         </>
       )}
       
@@ -266,7 +269,8 @@ export const SEO: React.FC<SEOProps> = ({
       {/* Structured Data */}
       {structuredData && (() => {
         try {
-          const jsonString = JSON.stringify(structuredData, null, 0);
+          const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
+          const jsonString = JSON.stringify(dataArray, null, 0);
           return (
             <script 
               type="application/ld+json" 

@@ -174,7 +174,7 @@ const SocialProof = () => {
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const faqs = homeFaqData;
+  const faqs = homeFaqData;[
     {
       q: "What is the best inventory management software?",
       a: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, and excellent customer service - completely free forever with all features included."

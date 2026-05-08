@@ -1,12 +1,10 @@
 import SEO from '@/components/SEO';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useState } from 'react';
-import { StructuredData } from '@/components/StructuredData';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
-import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 
 export default function InventoryManagementSoftware() {
@@ -49,15 +47,34 @@ export default function InventoryManagementSoftware() {
     <SeoPageLayout 
       title="Free Inventory Management Software with Barcode Scanner 2026 | StockFlow"
       heroTitle="Free Inventory Management Software with Barcode Scanner"
+      heroDescription="Compare the best free inventory apps with mobile barcode scanning. Unlimited products, no credit card required. Real-time tracking, iOS & Android support."
       dateUpdated="06/01/2026"
+      pageLanguage="en"
       faqData={faqData}
     >
       <SEO
         title="Best Free Inventory Software with Barcode Scanning 2026"
-        description="Best free inventory software with barcode scanning 2026. Scan with your phone, unlimited items. No credit card. Top-rated free option."
+        description="Best free inventory software with barcode scanning. Scan products with your phone camera, no hardware costs. Unlimited items, unlimited users. Compare top options."
         keywords="free inventory management software with barcode scanner, inventory management software with barcode scanner, inventory software with barcode scanner, best inventory management software with barcode scanner, free inventory software, barcode scanning software, inventory management system, free inventory tracker, barcode inventory app, free stock management, inventory control software, warehouse management free"
         url="https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning"
-        locale="en"
+        locale="en-US"
+        publishedTime="2026-01-06"
+        modifiedTime="2026-01-06"
+        structuredData={generateSeoPageStructuredData({
+          title: 'Best Free Inventory Software with Barcode Scanning 2026 | StockFlow',
+          description: 'Compare top 5 free inventory management software with native barcode scanning. Evaluate features, pricing, and mobile capabilities for SMBs.',
+          url: location.pathname,
+          breadcrumbs: getBreadcrumbPath(location.pathname).map((item, index) => ({
+            name: item.name,
+            url: item.path,
+            position: index + 1
+          })),
+          faqData,
+          pageType: 'article',
+          datePublished: '2026-01-06',
+          dateModified: '2026-01-06',
+          includeWebSite: true
+        })}
       />
 
       {/* Introduction Section */}
