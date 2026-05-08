@@ -26,7 +26,7 @@ export interface UserSubscription {
   id: string;
   user_id: string;
   tier_id: string;
-  status: 'active' | 'cancelled' | 'expired' | 'trial';
+  status: 'active' | 'cancelled' | 'expired' | 'trial' | 'past_due';
   billing_cycle: 'monthly' | 'yearly';
   start_date: string;
   end_date: string;
@@ -53,11 +53,15 @@ export interface UseSubscriptionReturn {
   nextTier: PricingTier | null;
   productCount: number;
   branchCount: number;
+  maxBranches: number;
+  maxUsers: number;
   isLoading: boolean;
   error: unknown;
   canUseFeature: (featureName: string) => boolean;
   isPaidPlan: boolean;
   isOnTrial: boolean;
+  isPastDue: boolean;
+  subscriptionStatus: 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
   trialEndDate: string | null;
   refetch: () => void;
 }
@@ -85,11 +89,11 @@ function normalizeTier(row: Record<string, unknown> | null): PricingTier | null 
   };
 }
 
-// Free tier: 1 branch, 1 user, no Contacts, no Orders
+// Free/Starter tier: 1 branch, 1 user, no Contacts, no Orders
 const FREE_TIER: PricingTier = {
   id: 'free',
   name: 'free',
-  display_name: 'Free',
+  display_name: 'Starter',
   description: 'Core inventory features',
   price_monthly: 0,
   price_yearly: 0,
@@ -174,34 +178,37 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     staleTime: 1000 * 60,
   });
 
-  const { currentTier, isPaidPlan, isOnTrial, trialEndDate } = useMemo(() => {
+  const { currentTier, isPaidPlan, isOnTrial, isPastDue, subscriptionStatus, trialEndDate } = useMemo(() => {
     const sub = subscriptionData as { status?: string; trial_end_date?: string | null; pricing_tiers?: Record<string, unknown> | Record<string, unknown>[] } | null;
-    // Both 'active' and 'trial' grant paid feature access
-    const hasAccess = sub && (sub.status === 'active' || sub.status === 'trial');
+    const status = (sub?.status ?? null) as 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
+    // active, trial, and past_due all retain the paid tier (past_due is blocked in UI via PaymentGate)
+    const hasAccess = sub && (status === 'active' || status === 'trial' || status === 'past_due');
     if (!sub || !hasAccess) {
-      return { currentTier: FREE_TIER, isPaidPlan: false, isOnTrial: false, trialEndDate: null };
+      return { currentTier: FREE_TIER, isPaidPlan: false, isOnTrial: false, isPastDue: false, subscriptionStatus: status, trialEndDate: null };
     }
     const tierRow = Array.isArray(sub.pricing_tiers) ? sub.pricing_tiers[0] : sub.pricing_tiers;
     const tier = normalizeTier(tierRow as Record<string, unknown> | null) ?? FREE_TIER;
-    const paid = tier.name === 'advance' || (tier.price_monthly > 0 && tier.name !== 'free');
-    const onTrial = sub.status === 'trial';
-    return { currentTier: tier, isPaidPlan: paid, isOnTrial: onTrial, trialEndDate: sub.trial_end_date ?? null };
+    const paid = tier.name !== 'free';
+    const onTrial = status === 'trial';
+    const pastDue = status === 'past_due';
+    return { currentTier: tier, isPaidPlan: paid, isOnTrial: onTrial, isPastDue: pastDue, subscriptionStatus: status, trialEndDate: sub.trial_end_date ?? null };
   }, [subscriptionData]);
 
   const branchCount = branchCountFallback ?? 0;
   const maxBranches = currentTier?.max_branches ?? 1;
+  const maxUsers = currentTier?.max_users ?? 1;
 
   const canUseFeature = useMemo(() => {
     return (featureName: string): boolean => {
       switch (featureName) {
         case 'add_branch':
-          return isPaidPlan || branchCount < maxBranches;
+          return true; // Extra branches are charged separately, no upgrade required
         case 'add_user':
-          return isPaidPlan;
+          return true; // Extra users are charged separately, no upgrade required
         case 'billing':
-          return true; // Always allow - page shows upgrade CTA for free
+          return true;
         case 'branches_management':
-          return true; // Allow page access; add_branch is gated separately
+          return true;
         case 'contacts':
           return isPaidPlan;
         case 'orders':
@@ -210,18 +217,22 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
           return true;
       }
     };
-  }, [isPaidPlan, branchCount, maxBranches]);
+  }, [isPaidPlan]);
 
   return {
     currentTier,
     nextTier: null,
     productCount: productCountFallback ?? 0,
     branchCount,
+    maxBranches,
+    maxUsers,
     isLoading: subLoading,
     error: subError,
     canUseFeature,
     isPaidPlan,
     isOnTrial,
+    isPastDue,
+    subscriptionStatus,
     trialEndDate,
     refetch,
   };

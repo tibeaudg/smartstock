@@ -66,13 +66,20 @@ interface AdminBranch {
 
 // Plan information for usage-based pricing (includes Stripe-based tiers)
 const plans = {
-  'free': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
-  'basic': { price: 0, limit: 100, displayName: 'Free', pricePerProduct: 0, includedProducts: 100 },
-  'growth': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
-  'business': { price: 0, limit: 10000, displayName: 'Business', pricePerProduct: 0.008, includedProducts: 100 },
-  'premium': { price: 0, limit: null, displayName: 'Enterprise', pricePerProduct: 0, includedProducts: 10000 },
-  'advance': { price: 9.99, limit: null, displayName: 'Advance', pricePerProduct: 0, includedProducts: 10000 },
-  'advance_trial': { price: 9.99, limit: null, displayName: 'Advance (Trial)', pricePerProduct: 0, includedProducts: 10000 },
+  'free':              { price: 0,   limit: 100,  displayName: 'Starter',                  pricePerProduct: 0,     includedProducts: 100 },
+  'basic':             { price: 0,   limit: 100,  displayName: 'Starter',                  pricePerProduct: 0,     includedProducts: 100 },
+  'essential':         { price: 39,  limit: 500,  displayName: 'Essential',                pricePerProduct: 0,     includedProducts: 500 },
+  'essential_trial':   { price: 39,  limit: 500,  displayName: 'Essential (Trial)',        pricePerProduct: 0,     includedProducts: 500 },
+  'professional':      { price: 119, limit: 2000, displayName: 'Professional',             pricePerProduct: 0,     includedProducts: 2000 },
+  'professional_trial':{ price: 119, limit: 2000, displayName: 'Professional (Trial)',     pricePerProduct: 0,     includedProducts: 2000 },
+  'business':          { price: 239, limit: 5000, displayName: 'Business',                 pricePerProduct: 0,     includedProducts: 5000 },
+  'business_trial':    { price: 239, limit: 5000, displayName: 'Business (Trial)',         pricePerProduct: 0,     includedProducts: 5000 },
+  'custom':            { price: 0,   limit: null, displayName: 'Custom',                   pricePerProduct: 0,     includedProducts: 10000 },
+  // Legacy names kept for backward compatibility
+  'advance':           { price: 39,  limit: 500,  displayName: 'Essential (legacy)',       pricePerProduct: 0,     includedProducts: 500 },
+  'advance_trial':     { price: 39,  limit: 500,  displayName: 'Essential Trial (legacy)', pricePerProduct: 0,     includedProducts: 500 },
+  'growth':            { price: 0,   limit: 10000,displayName: 'Business (legacy)',        pricePerProduct: 0.008, includedProducts: 100 },
+  'premium':           { price: 0,   limit: null, displayName: 'Custom (legacy)',          pricePerProduct: 0,     includedProducts: 10000 },
 };
 
 function getPlanDisplayName(planId: string | null): string {
@@ -104,12 +111,16 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
   for (const row of subs || []) {
     const tier = row.tier_id ? tierMap.get(row.tier_id) : null;
     const tierName = tier?.name ?? 'free';
-    if (tierName === 'advance' && row.status === 'trial') {
-      map[row.user_id] = { displayName: 'Advance (Trial)', filterKey: 'advance_trial' };
-    } else if (tierName === 'advance') {
-      map[row.user_id] = { displayName: 'Advance', filterKey: 'advance' };
+    const displayName = tier?.display_name ?? plans[tierName as keyof typeof plans]?.displayName ?? 'Starter';
+    const isOnTrial = row.status === 'trial';
+    if (tierName === 'free' || !tierName) {
+      map[row.user_id] = { displayName: 'Starter', filterKey: 'free' };
     } else {
-      map[row.user_id] = { displayName: 'Free', filterKey: 'free' };
+      const filterKey = isOnTrial ? `${tierName}_trial` : tierName;
+      map[row.user_id] = {
+        displayName: isOnTrial ? `${displayName} (Trial)` : displayName,
+        filterKey,
+      };
     }
   }
   return map;

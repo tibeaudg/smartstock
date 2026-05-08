@@ -87,16 +87,27 @@ serve(async (req) => {
         )
         const priceId = sub.items.data[0]?.price?.id
 
-        const { data: advanceTier } = await supabase
+        // Resolve tier from plan_name in subscription metadata; fall back to 'essential'
+        const planName = sub.metadata?.plan_name || 'essential'
+        const { data: resolvedTier } = await supabase
           .from('pricing_tiers')
           .select('id')
-          .eq('name', 'advance')
+          .eq('name', planName)
           .single()
 
-        const tierId = advanceTier?.id
+        // Final fallback: try 'essential' explicitly if planName lookup failed
+        let tierId = resolvedTier?.id
+        if (!tierId) {
+          const { data: fallback } = await supabase
+            .from('pricing_tiers')
+            .select('id')
+            .eq('name', 'essential')
+            .single()
+          tierId = fallback?.id
+        }
 
         if (!tierId) {
-          console.error('[stripe-webhook] Advance tier not found')
+          console.error('[stripe-webhook] Could not resolve tier for plan:', planName)
           break
         }
 
@@ -126,12 +137,12 @@ serve(async (req) => {
         if (session.customer) {
           await supabase
             .from('profiles')
-            .update({ stripe_customer_id: session.customer as string, selected_plan: 'advance' })
+            .update({ stripe_customer_id: session.customer as string, selected_plan: planName })
             .eq('id', userId)
         } else {
           await supabase
             .from('profiles')
-            .update({ selected_plan: 'advance' })
+            .update({ selected_plan: planName })
             .eq('id', userId)
         }
         break
@@ -195,14 +206,25 @@ serve(async (req) => {
           break
         }
 
-        const { data: advanceTier } = await supabase
+        const subPlanName = sub.metadata?.plan_name || 'essential'
+        const { data: resolvedSubTier } = await supabase
           .from('pricing_tiers')
           .select('id')
-          .eq('name', 'advance')
+          .eq('name', subPlanName)
           .single()
 
-        if (!advanceTier?.id) {
-          console.error('[stripe-webhook] Advance tier not found')
+        let subTierId = resolvedSubTier?.id
+        if (!subTierId) {
+          const { data: fallback } = await supabase
+            .from('pricing_tiers')
+            .select('id')
+            .eq('name', 'essential')
+            .single()
+          subTierId = fallback?.id
+        }
+
+        if (!subTierId) {
+          console.error('[stripe-webhook] Could not resolve tier for plan:', subPlanName)
           break
         }
 
@@ -217,7 +239,7 @@ serve(async (req) => {
         await supabase.from('user_subscriptions').upsert(
           {
             user_id: userId,
-            tier_id: advanceTier.id,
+            tier_id: subTierId,
             status,
             billing_cycle: sub.items.data[0]?.plan?.interval === 'year' ? 'yearly' : 'monthly',
             start_date: new Date().toISOString(),
@@ -235,10 +257,10 @@ serve(async (req) => {
         if (customerId) {
           await supabase
             .from('profiles')
-            .update({ stripe_customer_id: customerId, selected_plan: 'advance' })
+            .update({ stripe_customer_id: customerId, selected_plan: subPlanName })
             .eq('id', userId)
         } else {
-          await supabase.from('profiles').update({ selected_plan: 'advance' }).eq('id', userId)
+          await supabase.from('profiles').update({ selected_plan: subPlanName }).eq('id', userId)
         }
         break
       }
@@ -257,9 +279,14 @@ serve(async (req) => {
           userId = us.user_id
         }
 
-        // trialing and active both grant paid access; canceled/expired/past_due downgrade to free
-        const isPaidStatus = sub.status === 'active' || sub.status === 'trialing'
-        const status = sub.status === 'trialing' ? 'trial' : sub.status === 'active' ? 'active' : sub.status === 'canceled' ? 'cancelled' : 'expired'
+        // past_due keeps tier but is flagged — UI will block the user until resolved
+        // canceled/unpaid revoke access and revert to free tier
+        const isPaidStatus = sub.status === 'active' || sub.status === 'trialing' || sub.status === 'past_due'
+        const status = sub.status === 'trialing' ? 'trial'
+          : sub.status === 'active' ? 'active'
+          : sub.status === 'past_due' ? 'past_due'
+          : sub.status === 'canceled' ? 'cancelled'
+          : 'expired'
 
         const { data: freeTier } = await supabase
           .from('pricing_tiers')
@@ -304,7 +331,7 @@ serve(async (req) => {
         if (!us) break
 
         const amount = (invoice.amount_paid ?? 0) / 100
-        const currency = invoice.currency?.toUpperCase() || 'EUR'
+        const currency = invoice.currency?.toUpperCase() || 'USD'
         const invoiceNumber = invoice.number || `inv_${invoice.id?.slice(-8) || Date.now()}`
 
         const { data: existing } = await supabase
@@ -329,6 +356,57 @@ serve(async (req) => {
             status: 'paid',
             stripe_invoice_id: invoice.id,
             paid_at: new Date().toISOString(),
+            due_date: invoice.due_date ? new Date(invoice.due_date * 1000).toISOString() : null,
+          })
+        }
+        break
+      }
+
+      case 'invoice.payment_failed': {
+        const invoice = event.data.object as Stripe.Invoice
+        if (!invoice.customer || !invoice.subscription) break
+
+        const subId = typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription.id
+
+        const { data: us } = await supabase
+          .from('user_subscriptions')
+          .select('user_id, id')
+          .eq('stripe_subscription_id', subId)
+          .maybeSingle()
+
+        if (!us) break
+
+        // Mark subscription as past_due so the UI gate can block access
+        await supabase
+          .from('user_subscriptions')
+          .update({ status: 'past_due', updated_at: new Date().toISOString() })
+          .eq('stripe_subscription_id', subId)
+
+        const amount = (invoice.amount_due ?? 0) / 100
+        const currency = invoice.currency?.toUpperCase() || 'USD'
+        const invoiceNumber = invoice.number || `inv_${invoice.id?.slice(-8) || Date.now()}`
+
+        const { data: existing } = await supabase
+          .from('invoices')
+          .select('id')
+          .eq('stripe_invoice_id', invoice.id)
+          .maybeSingle()
+
+        if (existing) {
+          await supabase
+            .from('invoices')
+            .update({ status: 'failed', updated_at: new Date().toISOString() })
+            .eq('id', existing.id)
+        } else {
+          await supabase.from('invoices').insert({
+            user_id: us.user_id,
+            user_subscription_id: us.id,
+            invoice_number: invoiceNumber,
+            amount,
+            currency: currency.toLowerCase(),
+            status: 'failed',
+            stripe_invoice_id: invoice.id,
+            paid_at: null,
             due_date: invoice.due_date ? new Date(invoice.due_date * 1000).toISOString() : null,
           })
         }

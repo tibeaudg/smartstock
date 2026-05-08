@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -17,14 +16,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Loader2, GitBranch, Plus, Pencil, Trash2 } from 'lucide-react';
+import { Loader2, GitBranch, Plus, Pencil, Trash2, Info } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const BranchesSettings = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const { branches, refreshBranches, loading } = useBranches();
-  const { canUseFeature } = useSubscription();
+  const { maxBranches } = useSubscription();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
@@ -149,7 +147,7 @@ export const BranchesSettings = () => {
                 Edit, delete, or add new branches.
               </CardDescription>
             </div>
-            {canUseFeature('add_branch') ? (
+            <div className="flex flex-col items-end gap-1">
               <Button
                 size="sm"
                 variant="outline"
@@ -158,15 +156,13 @@ export const BranchesSettings = () => {
                 <Plus className="w-4 h-4 mr-1" />
                 Add branch
               </Button>
-            ) : (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => navigate('/dashboard/settings/billing')}
-              >
-                Add branch (upgrade required)
-              </Button>
-            )}
+              {branches.length >= maxBranches && (
+                <p className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
+                  <Info className="w-3 h-3" />
+                  +$5/mo per extra branch
+                </p>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -179,25 +175,14 @@ export const BranchesSettings = () => {
               <GitBranch className="w-12 h-12 mx-auto mb-3 opacity-50" />
               <p className="font-medium">No branches yet</p>
               <p className="text-sm mt-1">Create your first branch to get started.</p>
-              {canUseFeature('add_branch') ? (
-                <Button
-                  className="mt-4"
-                  size="sm"
-                  onClick={() => setShowAddForm(true)}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add branch
-                </Button>
-              ) : (
-                <Button
-                  className="mt-4"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => navigate('/dashboard/settings/billing')}
-                >
-                  Add branch (upgrade required)
-                </Button>
-              )}
+              <Button
+                className="mt-4"
+                size="sm"
+                onClick={() => setShowAddForm(true)}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add branch
+              </Button>
             </div>
           ) : (
             <ul className="space-y-2">

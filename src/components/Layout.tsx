@@ -5,6 +5,7 @@ import { UserProfile } from '@/hooks/useAuth';
 import { useNotifications } from '../hooks/useNotifications';
 import { EmailVerificationBanner } from './EmailVerificationBanner';
 import { TrialBanner } from './TrialBanner';
+import { PaymentGate } from './PaymentGate';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,6 +41,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   }, [isMobile]); // Remove sidebarOpen from dependencies to prevent loops
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [secondarySidebarOpen, setSecondarySidebarOpen] = useState(false);
 
   const handleTabChange = (tab: string) => {
     onTabChange(tab);
@@ -68,6 +70,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
             onMarkNotificationsRead={markAllAsRead}
             isCollapsed={sidebarCollapsed}
             onCollapseChange={setSidebarCollapsed}
+            onSecondarySidebarOpenChange={setSecondarySidebarOpen}
           />
         )}
         
@@ -94,14 +97,16 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
             isMobile 
               ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
               : sidebarCollapsed
-                ? 'ml-20' // Match left margin to collapsed sidebar width
-                : 'ml-72' // Match left margin to expanded sidebar width
-          } transition-colors`}
+                ? secondarySidebarOpen ? 'ml-[288px]' : 'ml-20'
+                : secondarySidebarOpen ? 'ml-[496px]' : 'ml-72'
+          } transition-[margin-left,color,background-color] duration-300`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'} transition-colors`}>
             <EmailVerificationBanner />
             <TrialBanner />
-            {children}
+            <PaymentGate>
+              {children}
+            </PaymentGate>
           </div>
         </main>
       </div>

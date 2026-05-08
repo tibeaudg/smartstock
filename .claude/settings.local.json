@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(winget install Stripe.StripeCLI 2>&1)",
+      "PowerShell($env:PATH += \";$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\\\\Links\"; stripe --version)",
+      "Bash(node -e \"import\\('stripe'\\).then\\(\\(\\) => console.log\\('stripe ok'\\)\\).catch\\(e => console.log\\('stripe missing:', e.message\\)\\)\")",
+      "Bash(node -e \"import\\('@supabase/supabase-js'\\).then\\(\\(\\) => console.log\\('supabase ok'\\)\\).catch\\(e => console.log\\('supabase missing:', e.message\\)\\)\")"
+    ]
+  }
+}
