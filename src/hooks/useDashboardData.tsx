@@ -291,13 +291,10 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           console.log('Product change detected, refreshing dashboard...');
           // Invalidate all dashboard-related queries
           queryClient.invalidateQueries({ 
-            queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
-          });
-          queryClient.invalidateQueries({ 
             queryKey: ['dashboardData'] 
           });
           queryClient.invalidateQueries({ 
-            queryKey: ['basicDashboardMetrics', activeBranch.branch_id] 
+            queryKey: ['basicDashboardMetrics'] 
           });
         }
       )
@@ -313,13 +310,10 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           console.log('Stock transaction change detected, refreshing dashboard...');
           // Invalidate all dashboard-related queries
           queryClient.invalidateQueries({ 
-            queryKey: ['dashboardData', activeBranch.branch_id, dateFrom, dateTo] 
-          });
-          queryClient.invalidateQueries({ 
             queryKey: ['dashboardData'] 
           });
           queryClient.invalidateQueries({ 
-            queryKey: ['basicDashboardMetrics', activeBranch.branch_id] 
+            queryKey: ['basicDashboardMetrics'] 
           });
         }
       )
@@ -335,7 +329,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       console.log('Cleaning up dashboard real-time subscription');
       supabase.removeChannel(dashboardChannel);
     };
-  }, [user?.id, activeBranch?.branch_id, queryClient, dateFrom, dateTo]);
+  }, [user?.id, activeBranch?.branch_id, queryClient]);
 
   const {
     data: dashboardData,
@@ -488,7 +482,6 @@ export const useProductCount = () => {
     queryKey: ['productCount', activeBranch?.branch_id, user?.id],
     queryFn: fetchProductCount,
     enabled: !!user && !!activeBranch,
-    refetchOnMount: 'always', // Always refetch when component mounts - critical for checklist after product deletions
     refetchOnWindowFocus: true, // Refetch when returning to tab (e.g. after bulk delete elsewhere)
     staleTime: 0, // Always consider stale - ensures we refetch after deletions from any path
     placeholderData: undefined, // Never use cached data as placeholder - critical for checklist (0 products)

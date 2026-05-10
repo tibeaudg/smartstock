@@ -70,7 +70,7 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
         {messages[feature]}
       </p>
       <p className="text-xs text-amber-700 dark:text-amber-300 mb-4">
-        No credit card required. Advance includes Contacts, Orders, unlimited branches and users.
+        No credit card required.
       </p>
       <Button onClick={handleUpgrade} size="sm">
         Start free trial

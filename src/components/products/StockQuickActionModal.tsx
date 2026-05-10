@@ -190,7 +190,7 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
                 <Button
                   onClick={handleCreateOrder}
                   variant="default"
-                  className="w-full justify-start gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="w-full justify-start gap-2 bg-blue-600 hover:bg-blue-100 hover:text-blue-600 hover:border hover:border-blue-600 mb-2"
                 >
                   <FileText className="h-4 w-4" />
                   {actionType === 'add'
@@ -200,7 +200,7 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
                 <Button
                   onClick={handleAddManually}
                   variant="default"
-                  className="w-full justify-start gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="w-full justify-start gap-2 bg-white text-blue-600 border border-blue-600 hover:bg-blue-700 hover:text-white"
                 >
                   {actionType === 'add' ? (
                     <Plus className="h-4 w-4" />

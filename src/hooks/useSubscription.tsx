@@ -112,7 +112,7 @@ const FREE_TIER: PricingTier = {
 };
 
 export const useSubscription: () => UseSubscriptionReturn = () => {
-  const { user } = useAuth();
+  const { user, authLoading } = useAuth();
 
   const {
     data: subscriptionData,
@@ -232,7 +232,7 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     maxBranches,
     maxUsers,
     isOverProductLimit,
-    isLoading: subLoading,
+    isLoading: authLoading || subLoading,
     error: subError,
     canUseFeature,
     isPaidPlan,

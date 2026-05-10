@@ -397,7 +397,11 @@ export const Sidebar = ({
                       onClick={(e) => {
                         if (hasSubItems && !item.navigateOnClick) {
                           e.preventDefault();
+                          const isOpening = activeSecondarySidebar !== item.id;
                           toggleSecondarySidebar(item.id);
+                          if (isOpening && item.subItems?.[0]) {
+                            navigate(item.subItems[0].path);
+                          }
                         } else {
                           setActiveSecondarySidebar(null);
                           if (isMobile) {
@@ -528,9 +532,17 @@ export const Sidebar = ({
                               if (hasSubItems && !item.navigateOnClick) {
                                 e.preventDefault();
                                 if (isMobile) {
+                                  const isOpening = activeSubmenu !== item.id;
                                   setActiveSubmenu(prev => prev === item.id ? null : item.id);
+                                  if (isOpening && item.subItems?.[0]) {
+                                    navigate(item.subItems[0].path);
+                                  }
                                 } else {
+                                  const isOpening = activeSecondarySidebar !== item.id;
                                   toggleSecondarySidebar(item.id);
+                                  if (isOpening && item.subItems?.[0]) {
+                                    navigate(item.subItems[0].path);
+                                  }
                                 }
                               } else {
                                 setActiveSecondarySidebar(null);

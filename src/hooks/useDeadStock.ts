@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -38,8 +39,25 @@ export const useDeadStock = ({
 }: UseDeadStockOptions = {}) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
 
   const effectiveBranchId = branchId || activeBranch?.branch_id || null;
+
+  useEffect(() => {
+    if (!user?.id || !effectiveBranchId) return;
+
+    const channel = supabase
+      .channel(`dead-stock-rt-${effectiveBranchId}-${Date.now()}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products', filter: `branch_id=eq.${effectiveBranchId}` }, () => {
+        queryClient.invalidateQueries({ queryKey: ['deadStock'] });
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'stock_transactions', filter: `branch_id=eq.${effectiveBranchId}` }, () => {
+        queryClient.invalidateQueries({ queryKey: ['deadStock'] });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [user?.id, effectiveBranchId, queryClient]);
 
   return useQuery({
     queryKey: ['deadStock', effectiveBranchId, thresholdDays, minStockLevel],
@@ -104,7 +122,7 @@ export const useDeadStock = ({
       };
     },
     enabled: !!user && !!effectiveBranchId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0,
   });
 };
 

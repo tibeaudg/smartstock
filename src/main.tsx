@@ -1,325 +1,276 @@
-// Initialize Trusted Types FIRST, before any other imports
-import { initializeTrustedTypes, initializeDefaultPolicy } from './utils/trustedTypes';
+import { Suspense } from 'react';
+import { createRoot, Root } from 'react-dom/client';
+import {
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+  MutationCache,
+  onlineManager,
+} from '@tanstack/react-query';
 
-// Initialize Trusted Types policies early
+import App from './App';
+import './index.css';
+
+import { HelmetProvider } from 'react-helmet-async';
+
+import { AuthProvider } from './hooks/useAuth';
+import { UnreadMessagesProvider } from './hooks/UnreadMessagesContext';
+
+import { ErrorBoundary } from './components/ErrorBoundary';
+
+import {
+  initializeTrustedTypes,
+  initializeDefaultPolicy,
+} from './utils/trustedTypes';
+
+import { initializePerformanceOptimizations } from './utils/performanceOptimization';
+import { initPerformanceMonitoring } from './utils/performanceMonitor';
+
+import { checkSupabaseConnection } from './integrations/supabase/client';
+
+import { logError } from './lib/errorHandler';
+
+// OPTIONAL — keep disabled until stability confirmed
+// import { setupPersistedQueryClient } from './persistQueryClient';
+
+//
+// --------------------------------------------------
+// TRUSTED TYPES
+// --------------------------------------------------
+//
+
 if (typeof window !== 'undefined') {
   initializeTrustedTypes();
-  // Create a default policy exactly once; utils guards duplicates + CSP noise
   initializeDefaultPolicy();
 }
 
-// Import error handler for database logging
-import { logError } from './lib/errorHandler';
+//
+// --------------------------------------------------
+// LOADING UI
+// --------------------------------------------------
+//
 
-import { createRoot, Root } from 'react-dom/client';
-import App from './App';
-import { UnreadMessagesProvider } from './hooks/UnreadMessagesContext';
-import { AuthProvider } from './hooks/useAuth';
-import './index.css';
-import { checkSupabaseConnection } from './integrations/supabase/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { setupPersistedQueryClient } from './persistQueryClient';
-import { HelmetProvider } from 'react-helmet-async';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { initializePerformanceOptimizations } from './utils/performanceOptimization';
-import { initPerformanceMonitoring } from './utils/performanceMonitor';
-import { Suspense } from 'react';
-
-// Debug code for tracking React.createContext calls
-// Disabled to avoid readonly property assignment
-// If needed for debugging, temporarily enable this code
-
-
-
-const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error('Root element not found in the document');
-}
-
-// Store root instance globally to prevent multiple createRoot() calls
-let appRoot: Root | null = (window as { __APP_ROOT__?: Root }).__APP_ROOT__ || null;
-
-// ErrorBoundary wordt nu geïmporteerd vanuit components/ErrorBoundary.tsx
-
-// --- VERNIEUWDE LOADING FALLBACK UI ---
 const LoadingFallback = () => (
   <div className="min-h-screen bg-gray-100 flex items-center justify-center">
     <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
-      <p className="text-gray-600 text-lg">Loading application...</p>
+      <p className="text-gray-600 text-lg">
+        Loading application...
+      </p>
     </div>
   </div>
 );
 
-// --- VERNIEUWDE CONNECTION ERROR UI ---
-const ConnectionErrorUI = () => (
-  <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
-    <div className="bg-white p-8 rounded-xl shadow-md max-w-lg w-full text-center">
-        <svg className="mx-auto h-12 w-12 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636a9 9 0 010 12.728m-12.728 0a9 9 0 010-12.728m12.728 0L5.636 18.364m0-12.728L18.364 5.636" />
-        </svg>
-        <h1 className="text-2xl font-bold text-gray-800 mt-4">Connection Error</h1>
-        <p className="text-gray-600 mt-2">
-          Cannot connect to the server. Check your internet connection and try again.
-        </p>
-        <div className="mt-6">
-            <button
-                onClick={() => window.location.reload()}
-                className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-            >
-                Try Again
-            </button>
-        </div>
-    </div>
-  </div>
-);
+//
+// --------------------------------------------------
+// QUERY CLIENT
+// --------------------------------------------------
+//
 
-// Initialiseer de React-app met een Supabase-verbindingscontrole
-async function init() {
-  try {
-    // Safety check: Ensure React and its core APIs are loaded before proceeding
-    // Skipping React.createContext check as it's handled by bundler
-    
-    // Trusted Types policies already initialized at top of file
-    
-    // Initialize performance optimizations
-    initializePerformanceOptimizations();
-    
-    // Register service worker for caching external resources (Stripe, etc.)
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('[SW] Service Worker registered:', registration.scope);
-          // Check for updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('[SW] New service worker available');
-                }
-              });
-            }
-          });
-        })
-        .catch((error) => {
-          console.warn('[SW] Service Worker registration failed:', error);
-        });
-    }
-    
-    // Initialize performance monitoring in development
-    if (process.env.NODE_ENV === 'development') {
-      initPerformanceMonitoring();
-    }
-    
-    // Check Supabase connection - be lenient and don't block app initialization
-    let isConnected = false;
-    
-    try {
-      // Use a shorter timeout for better UX
-      const connectionTimeout = new Promise<boolean>((_, reject) => {
-        setTimeout(() => reject(new Error('Supabase connection timeout')), 3000); // 3 second timeout
-      });
-      
-      isConnected = await Promise.race([
-        checkSupabaseConnection(),
-        connectionTimeout
-      ]) as boolean;
-
-      if (isConnected) {
-        console.log('[StockFlow] Supabase connection successful');
-      } else {
-        console.warn('[StockFlow] Supabase connection failed, continuing in offline mode');
-        // Set a flag to indicate offline mode
-        (window as { __STOCKFLOW_OFFLINE__?: boolean }).__STOCKFLOW_OFFLINE__ = true;
-      }
-    } catch (error: unknown) {
-      console.warn('[StockFlow] Supabase connection error:', error instanceof Error ? error.message : String(error));
-      console.warn('[StockFlow] Continuing in offline mode - some features may be limited');
-      // Don't throw - continue with app initialization
-      // The app should work with limited functionality
-      isConnected = false;
-      // Set a flag to indicate offline mode
-      (window as any).__STOCKFLOW_OFFLINE__ = true;
-    }
-
-    // Create or reuse the root instance
-    if (!appRoot) {
-      appRoot = createRoot(rootElement);
-      (window as { __APP_ROOT__?: Root }).__APP_ROOT__ = appRoot;
-    }
-    
-    const AppTree = (
-      <ErrorBoundary>
-        <QueryClientProvider client={queryClient}>
-          <HelmetProvider>
-            {/* AuthProvider must wrap UnreadMessagesProvider */}
-            <AuthProvider>
-              <UnreadMessagesProvider>
-                <Suspense fallback={<LoadingFallback />}>
-                  <App />
-                </Suspense>
-              </UnreadMessagesProvider>
-            </AuthProvider>
-          </HelmetProvider>
-        </QueryClientProvider>
-      </ErrorBoundary>
-    );
-    appRoot.render(AppTree);
-  } catch (error: unknown) {
-    console.error('App initialization failed:', error);
-
-    // Create or reuse the root instance for error UI
-    if (!appRoot) {
-      appRoot = createRoot(rootElement);
-      (window as { __APP_ROOT__?: Root }).__APP_ROOT__ = appRoot;
-    }
-    
-    // Show connection error UI with retry option
-    appRoot.render(
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
-        <div className="bg-white p-8 rounded-xl shadow-md max-w-lg w-full text-center">
-          <svg className="mx-auto h-12 w-12 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636a9 9 0 010 12.728m-12.728 0a9 9 0 010-12.728m12.728 0L5.636 18.364m0-12.728L18.364 5.636" />
-          </svg>
-          <h1 className="text-2xl font-bold text-gray-800 mt-4">Connection Error</h1>
-          <p className="text-gray-600 mt-2 mb-4">
-            {error.message?.includes('timeout') 
-              ? 'Connection timed out. Please check your internet connection and try again.'
-              : 'Cannot connect to the server. Check your internet connection and try again.'
-            }
-          </p>
-          <div className="flex gap-3 justify-center">
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-            >
-              Try Again
-            </button>
-            <button
-              onClick={() => {
-                // Try to load app without connection check as fallback
-                try {
-                  const AppTree = (
-                    <ErrorBoundary>
-                      <QueryClientProvider client={queryClient}>
-                        <HelmetProvider>
-                          <AuthProvider>
-                            <UnreadMessagesProvider>
-                              <Suspense fallback={<LoadingFallback />}>
-                                <App />
-                              </Suspense>
-                            </UnreadMessagesProvider>
-                          </AuthProvider>
-                        </HelmetProvider>
-                      </QueryClientProvider>
-                    </ErrorBoundary>
-                  );
-                  appRoot!.render(AppTree);
-                } catch (fallbackError: unknown) {
-                  console.error('Fallback initialization failed:', fallbackError);
-                  window.location.reload();
-                }
-              }}
-              className="bg-gray-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors"
-            >
-              Continue Offline
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-// Initialize QueryClient for React Query with optimized configuration
 const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error, query) => {
+      console.error(
+        '[React Query] Query Error:',
+        query.queryKey,
+        error
+      );
+
+      logError(error as Error, {
+        message: `Query error: ${JSON.stringify(query.queryKey)}`,
+      }).catch(() => {});
+    },
+  }),
+
+  mutationCache: new MutationCache({
+    onError: (error) => {
+      console.error('[React Query] Mutation Error:', error);
+
+      logError(error as Error, {
+        message: 'Mutation error',
+      }).catch(() => {});
+    },
+  }),
+
+
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes - data becomes stale after 5 minutes
-      gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days - keep unused data in cache for a week
-      refetchOnWindowFocus: true, // Always revalidate on focus to prevent stale UI after tab switch
-      refetchOnMount: true, // Refetch on mount to fix remount issues, individual queries can override
-      refetchOnReconnect: true, // Always refetch when network reconnects
-      refetchIntervalInBackground: false, // Prevent unnecessary background fetches
-      networkMode: 'online', // Only run queries when online
-      retry: (failureCount, error) => {
-        // Retry logic: try 3 times, except for 4xx errors and timeouts
-        if (failureCount < 3) {
-          const status = (error as { status?: number; response?: { status?: number } })?.status || (error as { status?: number; response?: { status?: number } })?.response?.status;
-          if (status >= 400 && status < 500) {
-            return false; // No retry for client errors (bad request, unauthorized, etc.)
-          }
-          // Don't retry on timeout errors
-          if (error instanceof Error && error.message.includes('timeout')) {
-            return false;
-          }
-          return true;
-        }
-        return false;
+      staleTime: 1000 * 60 * 2,
+      gcTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: true,
+      refetchOnMount: false,
+      refetchOnReconnect: true,
+      retry: (failureCount, error: any) => {
+        const status = error?.status || error?.response?.status;
+        if (status === 401 || status === 403) return false;
+        return failureCount < 3;
       },
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
-      // Keep previous data while fetching new data for smoother UX
-      placeholderData: (previousData) => previousData,
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10000),
     },
     mutations: {
-      retry: 1, // Only retry mutations once
-      retryDelay: 1000,
-      networkMode: 'online', // Only run mutations when online
+      retry: 1,
     },
   },
 });
 
-// Make queryClient available globally for tab switching optimization
-(window as { queryClient?: QueryClient }).queryClient = queryClient;
+//
+// --------------------------------------------------
+// ONLINE MANAGER
+// --------------------------------------------------
+//
 
-if (typeof window !== 'undefined') {
-  setupPersistedQueryClient(queryClient);
-}
+onlineManager.setEventListener((setOnline) => {
+  const updateOnlineStatus = () => {
+    setOnline(navigator.onLine);
+  };
 
-// Onderdruk debug logs altijd
-console.debug = () => {};
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
 
-// Globale error handler voor onverwachte errors
+  return () => {
+    window.removeEventListener('online', updateOnlineStatus);
+    window.removeEventListener('offline', updateOnlineStatus);
+  };
+});
+
+//
+// --------------------------------------------------
+// GLOBAL ERROR HANDLING
+// --------------------------------------------------
+//
+
 window.addEventListener('error', (event) => {
-  console.error('Global error caught:', {
-    message: event.message,
-    filename: event.filename,
-    lineno: event.lineno,
-    colno: event.colno,
-    error: event.error,
-    timestamp: new Date().toISOString(),
-  });
+  console.error('[Global Error]', event.error);
 
-  // Log to database (non-blocking)
   if (event.error) {
     logError(event.error, {
-      message: `Global error: ${event.message}`,
-    }).catch(() => {
-      // Silently fail if logging fails
-    });
+      message: event.message,
+    }).catch(() => {});
   }
 });
 
-// Globale handler voor unhandled promise rejections
 window.addEventListener('unhandledrejection', (event) => {
-  console.error('Unhandled promise rejection:', {
-    reason: event.reason,
-    promise: event.promise,
-    timestamp: new Date().toISOString(),
-  });
+  console.error('[Unhandled Rejection]', event.reason);
 
-  // Log to database (non-blocking)
-  const error = event.reason instanceof Error 
-    ? event.reason 
-    : new Error(String(event.reason));
-  
+  const error =
+    event.reason instanceof Error
+      ? event.reason
+      : new Error(String(event.reason));
+
   logError(error, {
-    message: `Unhandled promise rejection: ${error.message}`,
-  }).catch(() => {
-    // Silently fail if logging fails
-  });
+    message: 'Unhandled promise rejection',
+  }).catch(() => {});
 });
 
-// Start de applicatie
+//
+// --------------------------------------------------
+// APP TREE
+// --------------------------------------------------
+//
+
+function AppTree() {
+  return (
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <AuthProvider>
+            <UnreadMessagesProvider>
+              <Suspense fallback={<LoadingFallback />}>
+                <App />
+              </Suspense>
+            </UnreadMessagesProvider>
+          </AuthProvider>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
+  );
+}
+
+//
+// --------------------------------------------------
+// ROOT MANAGEMENT
+// --------------------------------------------------
+//
+
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
+
+let appRoot: Root | null =
+  (window as any).__APP_ROOT__ || null;
+
+function renderApp() {
+  if (!appRoot) {
+    appRoot = createRoot(rootElement);
+    (window as any).__APP_ROOT__ = appRoot;
+  }
+
+  appRoot.render(<AppTree />);
+}
+
+//
+// --------------------------------------------------
+// INIT
+// --------------------------------------------------
+//
+
+async function init() {
+  try {
+    initializePerformanceOptimizations();
+
+    if (process.env.NODE_ENV === 'development') {
+      initPerformanceMonitoring();
+    }
+
+    //
+    // Check Supabase connection
+    //
+
+    try {
+      const connected = await Promise.race([
+        checkSupabaseConnection(),
+        new Promise<boolean>((_, reject) =>
+          setTimeout(
+            () => reject(new Error('timeout')),
+            5000
+          )
+        ),
+      ]);
+
+      console.log(
+        connected
+          ? '[Supabase] Connected'
+          : '[Supabase] Connection unavailable'
+      );
+    } catch (err) {
+      console.warn(
+        '[Supabase] Continuing despite failed connection check'
+      );
+    }
+
+
+
+
+    // setupPersistedQueryClient(queryClient);
+
+    //
+    // Render app
+    //
+
+    renderApp();
+  } catch (error) {
+    console.error('[App Init Failed]', error);
+
+    renderApp();
+  }
+}
+
+//
+// --------------------------------------------------
+// START
+// --------------------------------------------------
+//
+
 init();

@@ -111,16 +111,23 @@ export default function CategorysPageSecured() {
     if (authLoading) return;
 
     const currentUserId = user?.id ?? null;
+    let timeoutId: number | null = null;
 
     if (lastUserIdRef.current !== currentUserId) {
       console.warn('[SECURITY] User changed → clearing cache');
-      queryClient.clear();
+      queryClient.cancelQueries();
       lastUserIdRef.current = currentUserId;
       setSessionReady(false);
-      setTimeout(() => setSessionReady(true), 0);
+      timeoutId = window.setTimeout(() => setSessionReady(true), 0);
     } else if (currentUserId && !sessionReady) {
       setSessionReady(true);
     }
+
+    return () => {
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
   }, [user?.id, authLoading, queryClient, sessionReady]);
 
   const authReady = !!user && !authLoading && sessionReady;

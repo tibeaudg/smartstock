@@ -70,7 +70,6 @@ export const useNavigationQueryReset = () => {
   // Return a function to manually reset queries if needed
   const resetAllQueries = () => {
     queryClient.cancelQueries();
-    queryClient.resetQueries();
     console.log('[NavigationQueryReset] Manual query reset triggered');
   };
 

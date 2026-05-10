@@ -39,39 +39,6 @@ function getSafeLocalStorage() {
   };
 }
 
-// Defensive: intercept fetch calls that would send 'eq.undefined' in query params
-// This prevents PostgREST requests like `.../products?id=eq.undefined` which
-// cause Postgres UUID parsing errors. We block those requests early and log
-// a helpful message to aid debugging; callers should still be fixed to avoid
-// passing undefined IDs.
-try {
-  const globalAny: any = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : undefined);
-  if (globalAny && typeof globalAny.fetch === 'function') {
-    const _origFetch = globalAny.fetch.bind(globalAny);
-    globalAny.fetch = async (input: any, init?: any) => {
-      try {
-        const url = typeof input === 'string' ? input : input?.url || '';
-        if (typeof url === 'string' && url.includes('=eq.undefined')) {
-          const stack = (new Error()).stack;
-          console.error('[supabase][block] Prevented request with undefined id in query:', url);
-          if (stack) console.error('[supabase][block] Stack trace for blocked request:\n', stack);
-          const body = JSON.stringify({
-            message: 'Blocked request: query contained undefined id',
-            details: 'Request blocked by client-side guard to avoid invalid UUID parsing on server',
-            client_stack: stack || null
-          });
-          return new Response(body, { status: 400, headers: { 'Content-Type': 'application/json' } });
-        }
-      } catch (err) {
-        // swallow and fallthrough to original fetch
-      }
-      return _origFetch(input, init);
-    };
-  }
-} catch (e) {
-  // ignore in environments where fetch override isn't permitted
-}
-
 // Create Supabase client with proper configuration
 export const supabase = createClient<Database>(
   SUPABASE_URL,
@@ -92,11 +59,6 @@ export const supabase = createClient<Database>(
   }
 );
 
-// Listen for auth state changes
-supabase.auth.onAuthStateChange(() => {
-  // Auth state change logging removed for production security
-});
-
 // Export a function to check connection with timeout
 export const checkSupabaseConnection = async () => {
   try {
@@ -107,13 +69,7 @@ export const checkSupabaseConnection = async () => {
     
     // Try auth session check (lightest operation, doesn't require database access)
     try {
-      const authCheck = await Promise.race([
-        supabase.auth.getSession(),
-        timeoutPromise
-      ]) as any;
-      
-      // If we get here, the connection is working (even if no session exists)
-      // getSession() only requires API access, not database access
+      await Promise.race([supabase.auth.getSession(), timeoutPromise]);
       return true;
     } catch (authError) {
       // Timeout or network error - this is expected in offline scenarios
@@ -129,47 +85,51 @@ export const checkSupabaseConnection = async () => {
 };
 
 // BlogPost CRUD functions
+// Cast needed because 'blogposts' is not in the auto-generated Database type
+const db = supabase as any;
+
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
-  const { data, error } = await supabase.from('blogposts').select('*').order('date_published', { ascending: false });
+  const { data, error } = await db.from('blogposts').select('*').order('date_published', { ascending: false });
   if (error) throw error;
   return data || [];
 }
 
 export async function addBlogPost(post: Omit<BlogPost, 'id'>): Promise<BlogPost> {
-  const insertData = {
-    title: post.title,
-    slug: post.slug,
-    content: post.content,
-    author: post.author || null,
-    date_published: post.date_published || null,
-    published: post.published,
-    excerpt: null,
-  };
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('blogposts')
-    .insert([insertData])
+    .insert([{
+      title: post.title,
+      slug: post.slug,
+      content: post.content,
+      author: post.author || null,
+      date_published: post.date_published || null,
+      published: post.published,
+      excerpt: null,
+    }])
     .select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
 
 export async function updateBlogPost(id: string, post: Partial<BlogPost>): Promise<BlogPost> {
-  const updateData = {
-    title: post.title,
-    slug: post.slug,
-    content: post.content,
-    author: post.author,
-    date_published: post.date_published,
-    published: post.published,
-  };
-  const { data, error } = await supabase.from('blogposts').update(updateData).eq('id', id).select();
+  const { data, error } = await db
+    .from('blogposts')
+    .update({
+      title: post.title,
+      slug: post.slug,
+      content: post.content,
+      author: post.author,
+      date_published: post.date_published,
+      published: post.published,
+    })
+    .eq('id', id)
+    .select();
   if (error) throw error;
   return data?.[0] as BlogPost;
 }
 
 export async function deleteBlogPost(id: string): Promise<BlogPost[]> {
-  // Use array response to avoid 406 when zero rows are returned
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('blogposts')
     .delete()
     .eq('id', id)
@@ -179,19 +139,17 @@ export async function deleteBlogPost(id: string): Promise<BlogPost[]> {
 }
 
 export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('blogposts')
     .select('*')
     .eq('slug', slug)
     .single();
-  
+
   if (error) {
-    if (error.code === 'PGRST116') { // Record not found
-      return null;
-    }
+    if (error.code === 'PGRST116') return null;
     throw error;
   }
-  
+
   return data;
 }
 

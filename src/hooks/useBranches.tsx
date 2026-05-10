@@ -48,6 +48,17 @@ function getSafeLocalStorage() {
 const BRANCH_STORAGE_KEY = 'active-branch-id';
 const safeStorage = getSafeLocalStorage();
 
+// Detect localStorage availability once at module load (not on every render)
+const localStorageAvailable = (() => {
+  try {
+    window.localStorage.setItem('__test__', '1');
+    window.localStorage.removeItem('__test__');
+    return true;
+  } catch {
+    return false;
+  }
+})();
+
 // Helper: haal branch uit localStorage
 const getBranchIdFromStorage = () => {
   try {
@@ -94,8 +105,8 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
   } = useQuery<Branch[]>({
     queryKey: ['branches', user?.id],
     queryFn: async () => {
-      if (!user || !user.id) {
-        return [];
+      if (!user?.id) {
+        throw new Error('No authenticated user');
       }
 
       console.debug('[fetchBranches] Calling get_user_branches RPC for user:', user.id);
@@ -119,7 +130,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         // If we timed out, serve previous data and let background refetch retry later
         if (raced && raced.__timedOut) {
           console.warn('Branch fetch timed out, serving cached data');
-          return previous;
+          throw new Error('Branch fetch failed');
         }
 
         const { data, error } = raced as any;
@@ -153,7 +164,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           if (directError) {
             console.error('Direct query also failed:', directError);
             // Preserve previous data on failure
-            return previous;
+            throw new Error('Branch fetch failed');
           }
 
           // Transform direct data to match expected format
@@ -173,7 +184,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (timeoutError) {
         console.warn('Branch fetch failed, serving cached data', timeoutError);
         // Preserve previous data instead of empty array
-        return previous;
+        throw new Error('Branch fetch failed');
       }
     },
     enabled: !!user && !authLoading,
@@ -184,7 +195,6 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: true,
-    placeholderData: (prev) => prev as Branch[] | undefined,
     retry: 1, // Only retry once to prevent infinite loops
     retryDelay: 2000, // 2 second delay between retries
   });
@@ -285,7 +295,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       setActiveBranchState(mainBranch);
       setBranchIdToStorage(mainBranch.branch_id);
     }
-  }, [branches]);
+  }, [branches, activeBranch]);
 
   // Synchroniseer branch tussen tabbladen
   useEffect(() => {
@@ -299,6 +309,26 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     return () => window.removeEventListener('storage', onStorage);
   }, [branches, activeBranch]);
 
+  const safeRefetchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const safeRefetch = () => {
+    if (safeRefetchTimeoutRef.current) {
+      clearTimeout(safeRefetchTimeoutRef.current);
+    }
+
+    safeRefetchTimeoutRef.current = setTimeout(() => {
+      refetch().catch((error) => console.error('[useBranches] Refetch failed', error));
+    }, 500);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (safeRefetchTimeoutRef.current) {
+        clearTimeout(safeRefetchTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Real-time updates voor branches
   useEffect(() => {
     if (!user?.id) return;
@@ -309,13 +339,13 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: 'UPDATE',
           schema: 'public',
           table: 'branches',
         },
         () => {
           console.log('Branch wijziging gedetecteerd, refresh branches...');
-          refetch();
+          safeRefetch();
         }
       )
       .on(
@@ -327,7 +357,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
         },
         () => {
           console.log('Branch user wijziging gedetecteerd, refresh branches...');
-          refetch();
+          safeRefetch();
         }
       )
       .subscribe();
@@ -335,7 +365,7 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       supabase.removeChannel(branchesChannel);
     };
-  }, [user?.id, refetch]);
+  }, [user?.id]);
 
   const setActiveBranch = (branch: Branch) => {
     setActiveBranchState(branch);
@@ -346,13 +376,8 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
     await refetch();
   };
 
-  if (typeof window !== 'undefined') {
-    try {
-      const testKey = '__test__';
-      window.localStorage.setItem(testKey, '1');
-      window.localStorage.removeItem(testKey);
-    } catch {
-      return (
+  if (!localStorageAvailable) {
+    return (
         <div style={{ padding: 32, textAlign: 'center', color: '#b91c1c', background: '#fef2f2', minHeight: '100vh' }}>
           <h1 style={{ fontSize: 28, marginBottom: 16 }}>Opslag niet beschikbaar</h1>
           <p style={{ marginBottom: 16 }}>
@@ -369,7 +394,6 @@ export const BranchProvider = ({ children }: { children: React.ReactNode }) => {
           <button onClick={() => window.location.reload()} style={{ background: '#2563eb', color: 'white', padding: '10px 24px', borderRadius: 6, fontSize: 16, border: 'none' }}>Opnieuw proberen</button>
         </div>
       );
-    }
   }
 
   return (

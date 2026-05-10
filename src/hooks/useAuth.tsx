@@ -3,20 +3,15 @@ import React, {
   useEffect,
   createContext,
   useContext,
-  ReactNode,
-  useRef
+  useMemo,
+  useRef,
+  useCallback,
 } from 'react';
-import { supabase } from '@/integrations/supabase/client'; // getypeerd met Database
+import { supabase } from '@/integrations/supabase/client';
+import { useQueryClient } from '@tanstack/react-query';
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
-import { useSessionRevalidation } from './useSessionRevalidation';
-import { useTabSyncSession } from './useTabSyncSession';
-import { captureReferralInfo } from '@/utils/referralTracking';
-import { useQueryClient } from '@tanstack/react-query';
 
-
-
-// UserProfile type from database schema
 export type UserProfile = Database['public']['Tables']['profiles']['Row'];
 
 interface AuthContextType {
@@ -24,14 +19,14 @@ interface AuthContextType {
   session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
-  authLoading: boolean; // Alias for loading for clarity
-  emailVerified: boolean; // Email verification status
+  authLoading: boolean; 
+  emailVerified: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
+    email: string, 
+    password: string, 
+    firstName: string, 
+    lastName: string, 
     role?: 'admin' | 'staff'
   ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
@@ -40,10 +35,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Export AuthContext for direct access when needed (e.g., during hot reload)
-export { AuthContext };
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
@@ -51,261 +43,147 @@ export const useAuth = (): AuthContextType => {
   return context;
 };
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-
-
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [userProfile, setUserProfile] = useState<any | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  
   const isInitialized = useRef(false);
+  const userIdRef = useRef<string | null>(null);
 
-  // ✅ THE SECURITY FIX: Clears data so new users don't see old data
-  const purgeAllData = () => {
-    console.log('[Security] Purging React Query Cache');
-    queryClient.clear();
-  };
+  const purge = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['user'] })
+    queryClient.invalidateQueries({ queryKey: ['branches'] })
+  }, [queryClient]);
 
-  const fetchAndSetProfile = async (userId: string, email?: string, userMetadata?: any, updateLastLogin: boolean = false) => {
-    try {
-      // Update last_login if requested (on sign in)
-      if (updateLastLogin) {
-        await supabase
-          .from('profiles')
-          .update({ last_login: new Date().toISOString() })
-          .eq('id', userId);
-      }
+  const fetchProfile = useCallback(async (userId: string, metadata?: any) => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
 
-      const { data, error } = await supabase
+    if (error || !data) {
+      const { data: newProfile } = await supabase
         .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (error || !data) {
-        // Profile doesn't exist, create one (for OAuth users or edge cases)
-        const firstName = userMetadata?.first_name || userMetadata?.full_name?.split(' ')[0] || '';
-        const lastName = userMetadata?.last_name || userMetadata?.full_name?.split(' ').slice(1).join(' ') || '';
-        
-        const { data: newProfile, error: createError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: userId,
-            email: email || '',
-            first_name: firstName || null,
-            last_name: lastName || null,
-            role: 'admin',
-            is_owner: false,
-            last_login: updateLastLogin ? new Date().toISOString() : null,
-            updated_at: new Date().toISOString(),
-          })
-          .select()
-          .single();
-
-        if (createError || !newProfile) {
-          // If creation fails, use fallback
-          const fallback = { id: userId, email: email || '', role: 'staff', is_owner: false };
-          setUserProfile(fallback);
-          return fallback;
-        }
-        
-        setUserProfile(newProfile);
-        return newProfile;
-      }
+        .upsert({
+          id: userId,
+          first_name: metadata?.first_name || '',
+          last_name: metadata?.last_name || '',
+          role: 'admin',
+          updated_at: new Date().toISOString(),
+        })
+        .select()
+        .single();
+      setUserProfile(newProfile);
+    } else {
       setUserProfile(data);
-      return data;
-    } catch (err) {
-      return null;
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const initSession = async () => {
-      const { data: { session: initialSession } } = await supabase.auth.getSession();
-      if (initialSession) {
-        setSession(initialSession);
-        setUser(initialSession.user);
-        await fetchAndSetProfile(
-          initialSession.user.id, 
-          initialSession.user.email,
-          initialSession.user.user_metadata
-        );
+    // Initial fetch
+    supabase.auth.getSession().then(({ data: { session: initSession } }) => {
+      if (initSession) {
+        userIdRef.current = initSession.user.id;
+        setSession(initSession);
+        setUser(initSession.user);
+        fetchProfile(initSession.user.id, initSession.user.user_metadata);
       }
-      setLoading(false);
       isInitialized.current = true;
-    };
-
-    initSession();
+      setLoading(false);
+    });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
-      // ✅ Wipe cache on every login/logout event
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-        purgeAllData();
+      const newUserId = currentSession?.user?.id ?? null;
+      const oldUserId = userIdRef.current;
+
+      // Prevent redundant re-renders on token refresh
+      if (newUserId === oldUserId && isInitialized.current && event !== 'SIGNED_OUT') return;
+
+      if (event === 'SIGNED_OUT') {
+        purge();
+        setUser(null);
+        setSession(null);
+        setUserProfile(null);
+      } else {
+        if (oldUserId && newUserId !== oldUserId) purge();
+        setUser(currentSession?.user ?? null);
+        setSession(currentSession);
+        if (newUserId) fetchProfile(newUserId, currentSession?.user.user_metadata);
       }
 
-      if (currentSession) {
-        setSession(currentSession);
-        setUser(currentSession.user);
-        // Update last_login on sign in
-        const isSignIn = event === 'SIGNED_IN';
-        // Pass user metadata for OAuth users to extract name information
-        await fetchAndSetProfile(
-          currentSession.user.id, 
-          currentSession.user.email,
-          currentSession.user.user_metadata,
-          isSignIn // Update last_login only on actual sign in, not on session refresh
-        );
-      } else {
-        setSession(null);
-        setUser(null);
-        setUserProfile(null);
-      }
+      userIdRef.current = newUserId;
       setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [queryClient]);
+  }, [fetchProfile, purge]);
 
-  // --- AUTH METHODS (Restored for your AuthPage.tsx) ---
+  const methods = useMemo(() => ({
+    signIn: async (email: string, pass: string) => 
+      supabase.auth.signInWithPassword({ email, password: pass }),
+    
+    signOut: async () => { 
+      purge(); 
+      await supabase.auth.signOut(); 
+    },
+    
+    signInWithGoogle: async () => 
+      supabase.auth.signInWithOAuth({ 
+        provider: 'google', 
+        options: { redirectTo: `${window.location.origin}/auth` } 
+      }),
+    
+    resetPassword: async (email: string) => 
+      supabase.auth.resetPasswordForEmail(email),
+    
+    resendVerificationEmail: async () => {
+      if (!user?.email) return { error: { message: 'No email found' } as AuthError };
+      return supabase.auth.resend({ type: 'signup', email: user.email });
+    },
 
-  const signIn = async (email: string, password: string) => {
-    setLoading(true);
-    const result = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    return result;
-  };
-
-  const signUp = async (email: string, password: string, firstName: string, lastName: string) => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { first_name: firstName, last_name: lastName } },
+    signUp: async (email: string, pass: string, fn: string, ln: string, role: 'admin' | 'staff' = 'admin') => {
+      const res = await supabase.auth.signUp({ 
+        email, 
+        password: pass, 
+        options: { data: { first_name: fn, last_name: ln } } 
       });
-
-      if (error) return { error };
-
-      // Create the profile entry immediately
-      if (data.user) {
-        await supabase.from('profiles').upsert({
-          id: data.user.id,
-          email,
-          first_name: firstName,
-          last_name: lastName,
-          role: 'admin',
-          updated_at: new Date().toISOString(),
+      if (res.data.user) {
+        await supabase.from('profiles').upsert({ 
+          id: res.data.user.id, 
+          email, 
+          first_name: fn, 
+          last_name: ln, 
+          role: role 
         });
-
-        // Trigger segment automations immediately after registration (e.g. welcome email tied to "New Accounts" segment).
-        // This is hard-deduped per segment+template+user/email.
-        try {
-          await supabase.functions.invoke('trigger-segment-automations', { body: {} });
-        } catch (e) {
-          // Don't block signup if email automation fails.
-          console.error('[signUp] trigger-segment-automations failed:', e);
-        }
       }
-      return { data, error: null };
-    } finally {
-      setLoading(false);
+      return { error: res.error };
     }
-  };
+  }), [purge, user?.email]);
 
-  const signOut = async () => {
-    purgeAllData();
-    await supabase.auth.signOut();
-  };
-
-  const signInWithGoogle = async () => {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth?mode=login`,
-        },
-      });
-      return { error };
-    } catch (err) {
-      return { error: err as AuthError };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resetPassword = async (email: string) => {
-    setLoading(true);
-    const result = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth?mode=reset`,
-    });
-    setLoading(false);
-    return result;
-  };
-
-  // ✅ CRITICAL: Ensure all methods are in the value object!
-  const value = {
+  const value = useMemo(() => ({
     user,
     session,
     userProfile,
     loading,
     authLoading: loading,
     emailVerified: !!user?.email_confirmed_at,
-    signIn,
-    signUp, // This fixes the "signUp is not a function" error
-    signInWithGoogle,
-    resetPassword,
-    signOut,
-  };
+    ...methods
+  }), [user, session, userProfile, loading, methods]);
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {/* Ensure children only hide on the absolute first mount 
+          to prevent the "Function not implemented" error during hydration/routing.
+      */}
+      {!isInitialized.current && loading ? (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
+        </div>
+      ) : children}
     </AuthContext.Provider>
   );
 };
-
-
-
-
-
-
-
-
-// Helper functions for session tracking and event linking
-function getSessionId(): string {
-  // Get or create session ID from localStorage
-  let sessionId = localStorage.getItem('session_id');
-  if (!sessionId) {
-    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
-    localStorage.setItem('session_id', sessionId);
-  }
-  return sessionId;
-}
-
-async function linkAnonymousEventsToUser(userId: string, sessionId: string): Promise<{ linked: number }> {
-  try {
-    const { data, error } = await supabase
-      .from('website_events')
-      .update({ user_id: userId })
-      .eq('session_id', sessionId)
-      .is('user_id', null)
-      .select();
-
-    if (error) {
-      console.error('Error linking anonymous events:', error);
-      return { linked: 0 };
-    }
-
-    return { linked: data?.length || 0 };
-  } catch (error) {
-    console.error('Exception linking anonymous events:', error);
-    return { linked: 0 };
-  }
-}

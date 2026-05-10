@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -30,15 +31,32 @@ interface UseInventoryValuationOptions {
   branchId?: string;
 }
 
-export const useInventoryValuation = ({ 
-  method, 
-  categoryId, 
-  branchId 
+export const useInventoryValuation = ({
+  method,
+  categoryId,
+  branchId
 }: UseInventoryValuationOptions) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const queryClient = useQueryClient();
 
   const effectiveBranchId = branchId || activeBranch?.branch_id || null;
+
+  useEffect(() => {
+    if (!user?.id || !effectiveBranchId) return;
+
+    const channel = supabase
+      .channel(`inventory-valuation-rt-${effectiveBranchId}-${Date.now()}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products', filter: `branch_id=eq.${effectiveBranchId}` }, () => {
+        queryClient.invalidateQueries({ queryKey: ['inventoryValuation'] });
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'stock_transactions', filter: `branch_id=eq.${effectiveBranchId}` }, () => {
+        queryClient.invalidateQueries({ queryKey: ['inventoryValuation'] });
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [user?.id, effectiveBranchId, queryClient]);
 
   return useQuery({
     queryKey: ['inventoryValuation', method, effectiveBranchId, categoryId],
@@ -109,7 +127,7 @@ export const useInventoryValuation = ({
       };
     },
     enabled: !!user && !!effectiveBranchId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 0,
   });
 };
 
