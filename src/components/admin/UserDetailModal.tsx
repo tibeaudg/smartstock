@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, MessageSquare, AlertCircle, ListChecks } from 'lucide-react';
+import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 
@@ -32,7 +33,67 @@ interface UserDetailModalProps {
   onClose: () => void;
 }
 
-// Data fetching functions
+interface SubscriptionInfo {
+  planDisplayName: string;
+  planName: string;
+  status: 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
+  trialEndDate: string | null;
+  endDate: string | null;
+  maxProducts: number | null;
+  stripeSubscriptionId: string | null;
+}
+
+interface InvoiceRow {
+  id: string;
+  invoice_number: string;
+  amount: number;
+  currency: string;
+  status: string;
+  paid_at: string | null;
+  due_date: string | null;
+  created_at: string;
+}
+
+async function fetchUserSubscription(userId: string): Promise<SubscriptionInfo | null> {
+  const { data: sub, error } = await supabase
+    .from('user_subscriptions')
+    .select('status, tier_id, trial_end_date, end_date, stripe_subscription_id')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if (error || !sub) return null;
+
+  let planDisplayName = 'Starter';
+  let planName = 'free';
+  let maxProducts: number | null = 100;
+
+  if (sub.tier_id) {
+    const { data: tier } = await supabase
+      .from('pricing_tiers')
+      .select('name, display_name, max_products')
+      .eq('id', sub.tier_id)
+      .single();
+    if (tier) {
+      planName = tier.name ?? 'free';
+      planDisplayName = tier.display_name ?? 'Starter';
+      maxProducts = tier.max_products ?? null;
+    }
+  }
+
+  const status = (sub.status ?? null) as SubscriptionInfo['status'];
+  const isOnTrial = status === 'trial';
+
+  return {
+    planDisplayName: isOnTrial ? `${planDisplayName} (Trial)` : planDisplayName,
+    planName,
+    status,
+    trialEndDate: sub.trial_end_date ?? null,
+    endDate: sub.end_date ?? null,
+    maxProducts,
+    stripeSubscriptionId: sub.stripe_subscription_id ?? null,
+  };
+}
+
 async function fetchUserProducts(userId: string) {
   const { data, error } = await supabase
     .from('products')
@@ -53,38 +114,14 @@ async function fetchUserSalesOrders(userId: string) {
   return data || [];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-async function fetchUserBilling(userId: string) {
-  // Try to find license_id first
-  const { data: licenses, error: licenseError } = await supabase
-    .from('licenses')
-    .select('id')
-    .eq('user_id', userId)
-    .maybeSingle();
-  
-  if (licenseError) throw licenseError;
-  
-  if (!licenses) return [];
-  
+async function fetchUserInvoices(userId: string): Promise<InvoiceRow[]> {
   const { data, error } = await supabase
-    .from('billing_periods')
-    .select('*')
-    .eq('license_id', licenses.id)
-    .order('period_start', { ascending: false });
-  
+    .from('invoices')
+    .select('id, invoice_number, amount, currency, status, paid_at, due_date, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
   if (error) throw error;
-  return data || [];
+  return (data || []) as InvoiceRow[];
 }
 
 async function fetchUserAuditLogs(userId: string) {
@@ -98,16 +135,44 @@ async function fetchUserAuditLogs(userId: string) {
   return data || [];
 }
 
+function SubStatusBadge({ status }: { status: SubscriptionInfo['status'] }) {
+  if (!status) return null;
+  const map: Record<string, { label: string; className: string }> = {
+    active:    { label: 'Active',    className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' },
+    trial:     { label: 'Trial',     className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' },
+    past_due:  { label: 'Past Due',  className: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' },
+    cancelled: { label: 'Cancelled', className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
+    expired:   { label: 'Expired',   className: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' },
+  };
+  const cfg = map[status] ?? { label: status, className: 'bg-gray-100 text-gray-600' };
+  return <Badge className={`ml-2 text-xs ${cfg.className}`}>{cfg.label}</Badge>;
+}
 
-
+function InvoiceStatusBadge({ status }: { status: string }) {
+  const map: Record<string, string> = {
+    paid:    'bg-green-100 text-green-800',
+    failed:  'bg-red-100 text-red-800',
+    pending: 'bg-yellow-100 text-yellow-800',
+    open:    'bg-blue-100 text-blue-800',
+  };
+  return (
+    <Badge className={`text-xs ${map[status] ?? 'bg-gray-100 text-gray-600'}`}>
+      {status.charAt(0).toUpperCase() + status.slice(1)}
+    </Badge>
+  );
+}
 
 export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   user,
   isOpen,
   onClose,
 }) => {
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('overview');
   const [resettingChecklist, setResettingChecklist] = useState(false);
+  const [settingPlan, setSettingPlan] = useState(false);
+  const [selectedTierId, setSelectedTierId] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<'active' | 'trial'>('active');
 
   const handleRetriggerChecklist = async () => {
     if (!user) return;
@@ -125,36 +190,80 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     }
   };
 
-  // Reset tab when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setActiveTab('overview');
+  const handleSetPlan = async () => {
+    if (!user || !selectedTierId) return;
+    setSettingPlan(true);
+    try {
+      const now = new Date().toISOString();
+      const trialEndDate = selectedStatus === 'trial'
+        ? new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString()
+        : null;
+      const endDate = selectedStatus === 'trial'
+        ? trialEndDate
+        : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+      const { error } = await supabase
+        .from('user_subscriptions')
+        .upsert(
+          {
+            user_id: user.id,
+            tier_id: selectedTierId,
+            status: selectedStatus,
+            billing_cycle: 'monthly',
+            start_date: now,
+            end_date: endDate,
+            trial_end_date: trialEndDate,
+            stripe_subscription_id: null,
+          },
+          { onConflict: 'user_id' }
+        );
+      if (error) throw error;
+      toast.success('Plan updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['adminUserSubscription', user.id] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to update plan');
+    } finally {
+      setSettingPlan(false);
     }
+  };
+
+  useEffect(() => {
+    if (isOpen) setActiveTab('overview');
   }, [isOpen]);
 
-  // Queries for each tab (lazy loaded)
-  // Overview tab needs basic stats, so fetch products and sales orders
-  const { data: products = [], isLoading: loadingProducts } = useQuery({
+  const { data: subscription, isLoading: loadingSubscription } = useQuery({
+    queryKey: ['adminUserSubscription', user?.id],
+    queryFn: () => fetchUserSubscription(user!.id),
+    enabled: !!user && isOpen,
+  });
+
+  const { data: pricingTiers = [] } = useQuery({
+    queryKey: ['pricingTiers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('pricing_tiers')
+        .select('id, name, display_name')
+        .order('price_monthly', { ascending: true });
+      if (error) throw error;
+      return (data || []) as { id: string; name: string; display_name: string }[];
+    },
+    enabled: isOpen,
+  });
+
+  const { data: products = [] } = useQuery({
     queryKey: ['userProducts', user?.id],
     queryFn: () => fetchUserProducts(user!.id),
     enabled: !!user && isOpen && (activeTab === 'products' || activeTab === 'overview'),
   });
 
-  const { data: salesOrders = [], isLoading: loadingSalesOrders } = useQuery({
+  const { data: salesOrders = [] } = useQuery({
     queryKey: ['userSalesOrders', user?.id],
     queryFn: () => fetchUserSalesOrders(user!.id),
     enabled: !!user && isOpen && (activeTab === 'sales-orders' || activeTab === 'overview'),
   });
 
-
-
-
-
-
-
-  const { data: billing = [], isLoading: loadingBilling } = useQuery({
-    queryKey: ['userBilling', user?.id],
-    queryFn: () => fetchUserBilling(user!.id),
+  const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
+    queryKey: ['userInvoices', user?.id],
+    queryFn: () => fetchUserInvoices(user!.id),
     enabled: !!user && isOpen && activeTab === 'billing',
   });
 
@@ -164,11 +273,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen && activeTab === 'activity',
   });
 
-
-
-
-
-  // Export functions
   const exportData = (data: any[], filename: string) => {
     try {
       const ws = XLSX.utils.json_to_sheet(data);
@@ -177,12 +281,16 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
       XLSX.writeFile(wb, `${filename}_${new Date().toISOString().split('T')[0]}.xlsx`);
       toast.success(`Exported ${data.length} records`);
     } catch (error) {
-      console.error('Export error:', error);
       toast.error('Failed to export data');
     }
   };
 
   if (!user) return null;
+
+  const isOverLimit =
+    subscription?.maxProducts != null &&
+    products.length > subscription.maxProducts &&
+    subscription.planName === 'free';
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -195,29 +303,35 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-3 gap-1 mb-4 overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-3 gap-1 mb-4">
             <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
-           
-          
-           
-        
-      
-            
-          
             <TabsTrigger value="billing" className="text-xs">
               Billing
-              {billing.length > 0 && (
-                <Badge variant="secondary" className="ml-1 text-xs">
-                  {billing.length}
-                </Badge>
+              {invoices.length > 0 && (
+                <Badge variant="secondary" className="ml-1 text-xs">{invoices.length}</Badge>
               )}
             </TabsTrigger>
             <TabsTrigger value="activity" className="text-xs">Activity</TabsTrigger>
           </TabsList>
 
           <div className="flex-1 overflow-y-auto">
+
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-4 mt-0">
+
+              {/* Over-limit warning */}
+              {isOverLimit && (
+                <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-3">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
+                  <p className="text-sm text-amber-800 dark:text-amber-200">
+                    This user has <strong>{products.length} products</strong> but their{' '}
+                    <strong>Starter</strong> plan only allows{' '}
+                    <strong>{subscription.maxProducts}</strong>. They need to upgrade before
+                    they can add more products or use workflows.
+                  </p>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card>
                   <CardHeader>
@@ -236,10 +350,33 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       <span className="text-sm font-medium text-gray-600">Role:</span>
                       <Badge className="ml-2">{user.role}</Badge>
                     </div>
-                    <div>
+                    <div className="flex items-center">
                       <span className="text-sm font-medium text-gray-600">Plan:</span>
-                      <p className="text-sm">{user.selected_plan || 'N/A'}</p>
+                      {loadingSubscription ? (
+                        <Loader2 className="w-3 h-3 animate-spin ml-2" />
+                      ) : subscription ? (
+                        <>
+                          <span className="ml-2 text-sm">{subscription.planDisplayName}</span>
+                          <SubStatusBadge status={subscription.status} />
+                        </>
+                      ) : (
+                        <span className="ml-2 text-sm text-gray-400">Starter</span>
+                      )}
                     </div>
+                    {subscription?.status === 'trial' && subscription.trialEndDate && (
+                      <div>
+                        <span className="text-sm font-medium text-gray-600">Trial ends:</span>
+                        <span className="ml-2 text-sm text-blue-600">
+                          {format(new Date(subscription.trialEndDate), 'PP')}
+                        </span>
+                      </div>
+                    )}
+                    {subscription?.status === 'past_due' && (
+                      <div className="flex items-center gap-1 text-sm text-red-600">
+                        <CreditCard className="w-3 h-3" />
+                        Payment overdue — Stripe will retry automatically
+                      </div>
+                    )}
                     <div>
                       <span className="text-sm font-medium text-gray-600">Organization:</span>
                       <p className="text-sm">{user.organization_name || '—'}</p>
@@ -254,6 +391,41 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         {user.blocked ? 'Blocked' : 'Active'}
                       </Badge>
                     </div>
+                    <div className="pt-3 border-t mt-3">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Set Plan (Admin Override)</p>
+                      <div className="flex items-center gap-2">
+                        <Select value={selectedTierId} onValueChange={setSelectedTierId}>
+                          <SelectTrigger className="h-8 text-xs flex-1">
+                            <SelectValue placeholder="Select plan..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {pricingTiers.map((tier) => (
+                              <SelectItem key={tier.id} value={tier.id} className="text-xs">
+                                {tier.display_name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select value={selectedStatus} onValueChange={(v) => setSelectedStatus(v as 'active' | 'trial')}>
+                          <SelectTrigger className="h-8 text-xs w-24">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="active" className="text-xs">Active</SelectItem>
+                            <SelectItem value="trial" className="text-xs">Trial</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Button
+                          size="sm"
+                          onClick={handleSetPlan}
+                          disabled={settingPlan || !selectedTierId}
+                          className="h-8 text-xs px-3"
+                        >
+                          {settingPlan ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Apply'}
+                        </Button>
+                      </div>
+                    </div>
+
                     <div className="pt-3 border-t mt-3">
                       <Button
                         variant="outline"
@@ -306,59 +478,96 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">{products.length}</div>
-                      <div className="text-sm text-gray-600">Products</div>
+                      <div className={`text-2xl font-bold ${isOverLimit ? 'text-amber-600' : 'text-blue-600'}`}>
+                        {products.length}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        Products
+                        {subscription?.maxProducts != null && (
+                          <span className="text-xs text-gray-400 block">
+                            / {subscription.maxProducts} limit
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-green-600">{salesOrders.length}</div>
                       <div className="text-sm text-gray-600">Sales Orders</div>
                     </div>
-                  
-                
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
 
-
-
-   
-
             {/* Billing Tab */}
             <TabsContent value="billing" className="mt-0">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Billing Periods ({billing.length})</h3>
-                {billing.length > 0 && (
+                <h3 className="text-lg font-semibold">Invoice History ({invoices.length})</h3>
+                {invoices.length > 0 && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => exportData(billing, `user_${user.id}_billing`)}
+                    onClick={() => exportData(invoices, `user_${user.id}_invoices`)}
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Export
                   </Button>
                 )}
               </div>
-              {loadingBilling ? (
+
+              {/* Subscription summary */}
+              {subscription && (
+                <div className="mb-4 p-3 rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/40">
+                  <div className="flex items-center justify-between text-sm">
+                    <div>
+                      <span className="font-medium">{subscription.planDisplayName}</span>
+                      <SubStatusBadge status={subscription.status} />
+                    </div>
+                    {subscription.stripeSubscriptionId && (
+                      <span className="text-xs text-gray-400 font-mono truncate max-w-[160px]">
+                        {subscription.stripeSubscriptionId}
+                      </span>
+                    )}
+                  </div>
+                  {subscription.status === 'trial' && subscription.trialEndDate && (
+                    <p className="text-xs text-blue-600 mt-1">
+                      Trial ends {format(new Date(subscription.trialEndDate), 'PP')}
+                    </p>
+                  )}
+                  {subscription.status === 'past_due' && (
+                    <p className="text-xs text-red-600 mt-1">
+                      Payment failed — Stripe retry in progress
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {loadingInvoices ? (
                 <div className="flex justify-center py-8">
                   <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
                 </div>
-              ) : billing.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No billing records found</div>
+              ) : invoices.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">No invoices found</div>
               ) : (
                 <div className="space-y-2">
-                  {billing.map((period: any) => (
-                    <Card key={period.id}>
+                  {invoices.map((inv) => (
+                    <Card key={inv.id}>
                       <CardContent className="p-4">
                         <div className="flex justify-between items-start">
                           <div>
-                            <h4 className="font-semibold">
-                              {format(new Date(period.period_start), 'PP')} - {format(new Date(period.period_end), 'PP')}
-                            </h4>
-                            <p className="text-sm text-gray-600">Amount: ${period.total_amount || 0}</p>
-                            <p className="text-sm text-gray-600">Status: {period.status}</p>
+                            <h4 className="font-semibold text-sm">{inv.invoice_number}</h4>
+                            <p className="text-sm text-gray-600">
+                              {inv.amount.toLocaleString('en-US', { style: 'currency', currency: inv.currency.toUpperCase() })}
+                            </p>
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              {inv.paid_at
+                                ? `Paid ${format(new Date(inv.paid_at), 'PP')}`
+                                : inv.due_date
+                                  ? `Due ${format(new Date(inv.due_date), 'PP')}`
+                                  : format(new Date(inv.created_at), 'PP')}
+                            </p>
                           </div>
-                          <Badge>{period.status}</Badge>
+                          <InvoiceStatusBadge status={inv.status} />
                         </div>
                       </CardContent>
                     </Card>
@@ -393,13 +602,13 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   {auditLogs.map((log: any) => (
                     <Card key={log.id}>
                       <CardContent className="p-4">
-                        <div>
-                          <p className="text-sm font-medium">{log.action} on {log.table_name}</p>
-                          <p className="text-sm text-gray-600">Date: {format(new Date(log.created_at), 'PPpp')}</p>
-                          {log.record_id && (
-                            <p className="text-sm text-gray-600">Record ID: {log.record_id}</p>
-                          )}
-                        </div>
+                        <p className="text-sm font-medium">{log.action} on {log.table_name}</p>
+                        <p className="text-sm text-gray-600">
+                          {format(new Date(log.created_at), 'PPpp')}
+                        </p>
+                        {log.record_id && (
+                          <p className="text-xs text-gray-400">Record ID: {log.record_id}</p>
+                        )}
                       </CardContent>
                     </Card>
                   ))}

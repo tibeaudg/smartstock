@@ -26,6 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
+import { useSubscription } from '@/hooks/useSubscription';
 
 // --- Data Interfaces ---
 
@@ -82,6 +83,7 @@ export default function AddProductPage() {
   // --- Hooks and State ---
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
+  const { productCount, maxProducts, isOverProductLimit } = useSubscription();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -445,7 +447,14 @@ export default function AddProductPage() {
 
   const handleSubmit = async (data: FormData) => {
     console.log('[AddProductModal] Submission started. Mode: CREATE, Data:', data);
-    
+
+    if (isOverProductLimit) {
+      toast.error(`You've reached your ${maxProducts}-product limit. Upgrade your plan to add more products.`, {
+        action: { label: 'Upgrade', onClick: () => navigate('/dashboard/settings/billing') },
+      });
+      return;
+    }
+
     // Check for duplicate name in create mode
     if (duplicateName && !hasVariants) {
       toast.error('Product name already exists for a main product in this branch.');
@@ -874,7 +883,7 @@ export default function AddProductPage() {
               <Button
                 type="submit"
                 form="add-product-form"
-                disabled={loading || (duplicateName && !hasVariants)}
+                disabled={loading || (duplicateName && !hasVariants) || isOverProductLimit}
                 className={isMobile ? 'w-full' : 'shrink-0'}
               >
                 {loading ? 'Adding...' : 'Add Product'}
@@ -891,7 +900,21 @@ export default function AddProductPage() {
           </div>
         </div>
 
-        
+        {/* Over-limit warning */}
+        {isOverProductLimit && (
+          <div className="flex-shrink-0 flex items-center gap-3 bg-amber-50 border-b border-amber-200 px-6 py-3">
+            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+            <p className="text-sm text-amber-800">
+              You have <strong>{productCount}</strong> products but your Starter plan only allows{' '}
+              <strong>{maxProducts}</strong>.{' '}
+              <Link to="/dashboard/settings/billing" className="font-semibold underline hover:text-amber-900">
+                Upgrade your plan
+              </Link>{' '}
+              to add more products.
+            </p>
+          </div>
+        )}
+
 
         <div className={`flex-1 min-h-0 overflow-y-auto ${isMobile ? 'p-4 pt-6' : 'p-6 pt-8 '}`}>
           <div className="mx-auto">

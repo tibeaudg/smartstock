@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle, MessageSquare } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -26,7 +26,7 @@ import { UserDetailModal } from '@/components/admin/UserDetailModal';
 // User management types
 type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' | 'organization' | 'branches' | 'role' | 'openChats';
 type SortDirection = 'asc' | 'desc';
-type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'has-open-chat' | 'has-recent-errors';
+type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'has-open-chat' | 'has-recent-errors' | 'payment-issues';
 type PlanFilter = 'all' | string;
 type RoleFilter = 'all' | 'user' | 'admin' | 'staff';
 
@@ -92,34 +92,63 @@ function getPlanDisplayName(planId: string | null): string {
 interface UserPlanInfo {
   displayName: string;
   filterKey: string;
+  subStatus: 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
+  endDate: string | null;
+  trialEndDate: string | null;
+  hasFailedInvoice: boolean;
 }
 
 async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo>> {
-  const { data: subs, error } = await supabase
-    .from('user_subscriptions')
-    .select('user_id, status, tier_id');
-  if (error) {
-    console.error('Error fetching user subscriptions:', error);
+  const [subsResult, failedInvoicesResult] = await Promise.all([
+    supabase
+      .from('user_subscriptions')
+      .select('user_id, status, tier_id, end_date, trial_end_date'),
+    supabase
+      .from('invoices')
+      .select('user_id')
+      .eq('status', 'failed'),
+  ]);
+
+  if (subsResult.error) {
+    console.error('Error fetching user subscriptions:', subsResult.error);
     return {};
   }
-  const tierIds = [...new Set((subs || []).map((s) => s.tier_id).filter(Boolean))];
+
+  const subs = subsResult.data || [];
+  const failedUserIds = new Set((failedInvoicesResult.data || []).map((r: { user_id: string }) => r.user_id));
+
+  const tierIds = [...new Set(subs.map((s) => s.tier_id).filter(Boolean))];
   const { data: tiers } = tierIds.length
     ? await supabase.from('pricing_tiers').select('id, name, display_name').in('id', tierIds)
     : { data: [] };
   const tierMap = new Map((tiers || []).map((t) => [t.id, t]));
+
   const map: Record<string, UserPlanInfo> = {};
-  for (const row of subs || []) {
+  for (const row of subs) {
     const tier = row.tier_id ? tierMap.get(row.tier_id) : null;
     const tierName = tier?.name ?? 'free';
     const displayName = tier?.display_name ?? plans[tierName as keyof typeof plans]?.displayName ?? 'Starter';
-    const isOnTrial = row.status === 'trial';
+    const status = (row.status ?? null) as UserPlanInfo['subStatus'];
+    const isOnTrial = status === 'trial';
+
     if (tierName === 'free' || !tierName) {
-      map[row.user_id] = { displayName: 'Starter', filterKey: 'free' };
+      map[row.user_id] = {
+        displayName: 'Starter',
+        filterKey: 'free',
+        subStatus: status,
+        endDate: row.end_date ?? null,
+        trialEndDate: row.trial_end_date ?? null,
+        hasFailedInvoice: failedUserIds.has(row.user_id),
+      };
     } else {
       const filterKey = isOnTrial ? `${tierName}_trial` : tierName;
       map[row.user_id] = {
         displayName: isOnTrial ? `${displayName} (Trial)` : displayName,
         filterKey,
+        subStatus: status,
+        endDate: row.end_date ?? null,
+        trialEndDate: row.trial_end_date ?? null,
+        hasFailedInvoice: failedUserIds.has(row.user_id),
       };
     }
   }
@@ -127,7 +156,32 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
 }
 
 function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: string): UserPlanInfo {
-  return planMap[userId] ?? { displayName: 'Free', filterKey: 'free' };
+  return planMap[userId] ?? { displayName: 'Free', filterKey: 'free', subStatus: null, endDate: null, trialEndDate: null, hasFailedInvoice: false };
+}
+
+/** Render a coloured badge for subscription status */
+function SubStatusBadge({ status, hasFailedInvoice }: { status: UserPlanInfo['subStatus']; hasFailedInvoice: boolean }) {
+  if (status === 'past_due' || hasFailedInvoice) {
+    return (
+      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-800">
+        <AlertTriangle className="w-3 h-3" />
+        Past Due
+      </span>
+    );
+  }
+  if (status === 'trial') {
+    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800">Trial</span>;
+  }
+  if (status === 'active') {
+    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-green-100 text-green-800">Active</span>;
+  }
+  if (status === 'cancelled') {
+    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-600">Cancelled</span>;
+  }
+  if (status === 'expired') {
+    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-orange-100 text-orange-800">Expired</span>;
+  }
+  return <span className="text-slate-400 text-xs">—</span>;
 }
 
 /**
@@ -735,6 +789,9 @@ export default function AdminPage() {
         if ((openChatCounts[user.id] || 0) === 0) return false;
       } else if (quickFilter === 'has-recent-errors') {
         if (!userIdsWithRecentErrors.has(user.id)) return false;
+      } else if (quickFilter === 'payment-issues') {
+        const plan = getPlanForUser(subscriptionPlanMap, user.id);
+        if (plan.subStatus !== 'past_due' && !plan.hasFailedInvoice) return false;
       }
       
       return true;
@@ -1224,6 +1281,17 @@ export default function AdminPage() {
                         >
                           Recent Errors
                         </button>
+                        <button
+                          onClick={() => setQuickFilter('payment-issues')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors flex items-center gap-1 ${
+                            quickFilter === 'payment-issues'
+                              ? 'bg-red-50 border-red-300 text-red-700 font-semibold'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          <CreditCard className="w-3.5 h-3.5" />
+                          Payment Issues
+                        </button>
                       </div>
                       
                       {/* Results count */}
@@ -1296,6 +1364,20 @@ export default function AdminPage() {
                           <div className="text-xs sm:text-sm text-amber-600">At Risk</div>
                         </CardContent>
                       </Card>
+                      <Card className="bg-red-50 border-red-300 cursor-pointer hover:bg-red-100 transition-colors" onClick={() => setQuickFilter('payment-issues')}>
+                        <CardContent className="p-2 sm:p-4">
+                          <div className="flex items-center gap-1">
+                            <div className="text-lg sm:text-2xl font-bold text-red-700">
+                              {users.filter(u => {
+                                const plan = getPlanForUser(subscriptionPlanMap, u.id);
+                                return plan.subStatus === 'past_due' || plan.hasFailedInvoice;
+                              }).length}
+                            </div>
+                            <CreditCard className="w-4 h-4 text-red-500 mt-0.5" />
+                          </div>
+                          <div className="text-xs sm:text-sm text-red-600 font-medium">Payment Issues</div>
+                        </CardContent>
+                      </Card>
                       <Card className="bg-indigo-50 border-indigo-200">
                         <CardContent className="p-2 sm:p-4">
                           <div className="text-lg sm:text-2xl font-bold text-indigo-700">{Object.keys(openChatCounts).filter(uid => (openChatCounts[uid] || 0) > 0).length}</div>
@@ -1342,8 +1424,10 @@ export default function AdminPage() {
                         const activity = calculateActivityStatus(user.last_login || null, user.created_at);
                         const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
                         
+                        const mPlanInfo = getPlanForUser(subscriptionPlanMap, user.id);
+                        const mIsPaymentIssue = mPlanInfo.subStatus === 'past_due' || mPlanInfo.hasFailedInvoice;
                         return (
-                          <Card key={user.id} className={`cursor-pointer hover:bg-gray-50 ${activity.isActive ? 'border-green-200 bg-green-50/30' : ''}`} onClick={() => setSelectedUser(user)}>
+                          <Card key={user.id} className={`cursor-pointer hover:bg-gray-50 ${mIsPaymentIssue ? 'border-red-300 bg-red-50/30' : activity.isActive ? 'border-green-200 bg-green-50/30' : ''}`} onClick={() => setSelectedUser(user)}>
                             <CardContent className="p-4">
                               <div className="space-y-2">
                                 <div className="flex justify-between items-start">
@@ -1390,9 +1474,10 @@ export default function AdminPage() {
                                     <span className="font-medium">Linked Users:</span>{' '}
                                     {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.linkedUserCount || 0}
                                   </div>
-                                  <div className="text-gray-600">
+                                  <div className="text-gray-600 flex items-center gap-2 flex-wrap">
                                     <span className="font-medium">Plan:</span>{' '}
-                                    {getPlanForUser(subscriptionPlanMap, user.id).displayName}
+                                    {mPlanInfo.displayName}
+                                    <SubStatusBadge status={mPlanInfo.subStatus} hasFailedInvoice={mPlanInfo.hasFailedInvoice} />
                                   </div>
                                   <div className="text-gray-600">
                                     <span className="font-medium">Role:</span>{' '}
@@ -1530,7 +1615,10 @@ export default function AdminPage() {
                                 )}
                               </div>
                             </th>
-                            <th 
+                            <th className="px-4 py-2 text-left select-none">
+                              Sub Status
+                            </th>
+                            <th
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('organization')}
                             >
@@ -1613,7 +1701,7 @@ export default function AdminPage() {
                         <tbody>
                           {paginatedUsers.length === 0 ? (
                             <tr>
-                              <td colSpan={12} className="text-center py-12">
+                              <td colSpan={13} className="text-center py-12">
                                 {filteredUsers.length === 0 && users.length > 0 ? (
                                   <>
                                     <p className="font-medium text-slate-700">No users match your filters.</p>
@@ -1639,12 +1727,15 @@ export default function AdminPage() {
                             const activity = calculateActivityStatus(user.last_login || null, user.created_at);
                             const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
                             
+                            const planInfo = getPlanForUser(subscriptionPlanMap, user.id);
+                            const isPaymentIssue = planInfo.subStatus === 'past_due' || planInfo.hasFailedInvoice;
                             return (
-                              <tr 
-                                key={user.id} 
+                              <tr
+                                key={user.id}
                                 className={`border-b hover:bg-slate-50 cursor-pointer ${
+                                  isPaymentIssue ? 'bg-red-50/50 border-red-100' :
                                   activity.isActive ? 'bg-green-50/30 border-green-100' : 'bg-white'
-                                }`} 
+                                }`}
                                 onClick={() => setSelectedUser(user)}
                               >
                                 <td className="px-4 py-2 text-left">
@@ -1672,7 +1763,10 @@ export default function AdminPage() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="px-4 py-2 text-left text-slate-600">{getPlanForUser(subscriptionPlanMap, user.id).displayName}</td>
+                                <td className="px-4 py-2 text-left text-slate-600">{planInfo.displayName}</td>
+                                <td className="px-4 py-2 text-left">
+                                  <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
+                                </td>
                                 <td className="px-4 py-2 text-left max-w-[140px] truncate" title={user.organization_name || ''}>
                                   {user.organization_name || '—'}
                                 </td>

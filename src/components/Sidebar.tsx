@@ -19,6 +19,7 @@ import {
   Bell,
   Contact,
   GitBranch,
+  Workflow,
 }
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
@@ -77,6 +78,7 @@ interface MenuItem {
   icon: React.ComponentType;
   path: string;
   end?: boolean;
+  navigateOnClick?: boolean;
   subItems?: {
     id: string;
     label: string;
@@ -119,6 +121,8 @@ export const Sidebar = ({
 
   const isCollapsed =
     typeof controlledCollapsed === 'boolean' ? controlledCollapsed : uncontrolledCollapsed;
+
+  const effectiveCollapsed = isMobile ? false : isCollapsed;
 
   const setCollapsed = (value: boolean | ((prev: boolean) => boolean)) => {
     if (typeof value === 'function') {
@@ -193,22 +197,16 @@ export const Sidebar = ({
         { id: 'bom', label: 'Bill of Materials', icon: Layers, path: '/dashboard/bom', end: true },
 
         {
-          id: 'orders',
-          label: 'Orders',
-          icon: ShoppingCart,
-          path: '/dashboard/sales-orders',
+          id: 'workflows',
+          label: 'Workflows',
+          icon: Workflow,
+          path: '/dashboard/workflows',
+          navigateOnClick: true,
           subItems: [
+            { id: 'pick-lists', label: 'Pick Lists', path: '/dashboard/pick-lists' },
             { id: 'sales-orders', label: 'Sales Orders', path: '/dashboard/sales-orders' },
             { id: 'purchase-orders', label: 'Purchase Orders', path: '/dashboard/purchase-orders' },
-          ],
-        },
-
-        {
-          id: 'contacts',
-          label: 'Contacts',
-          icon: Contact,
-          path: '/dashboard/customer-management',
-          subItems: [
+            { id: 'stock-counts', label: 'Stock Counts', path: '/dashboard/stock-counts' },
             { id: 'customers', label: 'Customers', path: '/dashboard/customer-management' },
             { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' },
           ],
@@ -253,192 +251,30 @@ export const Sidebar = ({
     setActiveSecondarySidebar(prev => prev === menuId ? null : menuId);
   };
 
-  // Mobile Bottom Navbar - render separately for mobile
-  if (isMobile) {
-    return (
-      <>
-        {/* Mobile Bottom Navbar */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-gray-950/95 border-t border-gray-200 dark:border-gray-800 z-50 md:hidden safe-area-bottom backdrop-blur-sm transition-colors">
-          <div className="flex items-center justify-around h-16 px-2">
-            {/* Branch Picker - first item on mobile */}
-            <BranchPickerDropdown side="top" align="center">
-              <button
-                type="button"
-                className="flex flex-col items-center justify-center flex-1 h-full px-2 transition-colors min-w-0 rounded-2xl text-white-600 dark:text-white-300"
-                aria-label="Switch branch"
-              >
-                <GitBranch className="w-5 h-5 mb-0.5 flex-shrink-0" />
-                <span className="text-[11px] font-medium truncate w-full text-center leading-tight">
-                  Branch
-                </span>
-              </button>
-            </BranchPickerDropdown>
-            {/* Notifications - mobile */}
-            {onNotificationsOpenChange && (
-              <Popover open={notificationsOpen} onOpenChange={(open) => {
-                onNotificationsOpenChange(open);
-                if (open && unreadCount > 0 && onMarkNotificationsRead) onMarkNotificationsRead();
-              }}>
-                <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className="flex flex-col items-center justify-center flex-1 h-full px-2 transition-colors min-w-0 rounded-2xl text-white-600 dark:text-white-300"
-                    aria-label="Notifications"
-                  >
-                    <span className="relative inline-block">
-                      <Bell className="w-5 h-5 mb-0.5 flex-shrink-0" />
-                      {unreadCount > 0 && (
-                        <span className="absolute -top-0.5 -right-1 w-2 h-2 bg-red-500 rounded-full" aria-hidden />
-                      )}
-                    </span>
-                    <span className="text-[11px] font-medium truncate w-full text-center leading-tight">
-                      Alerts
-                    </span>
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-[calc(100vw-2rem)] max-w-sm max-h-[min(24rem,70vh)] overflow-y-auto p-0 dark:bg-gray-950 dark:border-gray-800"
-                  align="center"
-                  side="top"
-                  sideOffset={8}
-                >
-                  <div className="p-3 border-b border-gray-200 dark:border-gray-800">
-                    <h4 className="font-semibold text-white-900 dark:text-white-100">Notifications</h4>
-                  </div>
-                  <div className="p-2">
-                    {notificationsLoading ? (
-                      <div className="py-4 text-center text-sm text-white-500 dark:text-white-400">Loading...</div>
-                    ) : notifications.length === 0 ? (
-                      <div className="py-4 text-center text-sm text-white-600 dark:text-white-300">No notifications.</div>
-                    ) : (
-                      <ul className="divide-y divide-gray-200 dark:divide-gray-800">
-                        {notifications.map((n) => (
-                          <li key={n.id} className={`py-2 px-2 rounded-lg ${!n.read ? 'bg-blue-50/50 dark:bg-blue-500/10' : ''}`}>
-                            <div className="font-medium text-white-900 dark:text-white-100 text-sm">{n.title}</div>
-                            <div className="text-white-600 dark:text-white-300 text-xs mt-0.5">{n.message}</div>
-                            <div className="text-white-400 dark:text-white-500 text-xs mt-1">{new Date(n.created_at).toLocaleString()}</div>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            )}
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const hasSubItems = item.subItems && item.subItems.length > 0;
-              const isParentActive = location.pathname === item.path &&
-                (!hasSubItems || !item.subItems.some(sub => sub.path === item.path));
-              const isAnySubItemActive = hasSubItems && item.subItems.some(sub => location.pathname === sub.path);
-              const isActive = isParentActive || isAnySubItemActive;
-
-              const shouldAnimateProducts = item.id === 'products' && productCount === 0 && !isLoading;
-
-              return (
-                <React.Fragment key={item.id}>
-                  {hasSubItems ? (
-                    <button
-                      onClick={() => {
-                        setActiveSubmenu(item.id);
-                      }}
-                      className={`
-                        flex flex-col items-center justify-center flex-1 h-full px-2 transition-colors min-w-0 rounded-2xl
-                        ${isActive ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-500/10' : 'text-white-600 dark:text-white-300'}
-                        ${shouldAnimateProducts ? 'animate-pulse-glow-scale ring-2 ring-blue-400/50 dark:ring-blue-500/50' : ''}
-                      `}
-                    >
-                      <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
-                      <span className="text-[11px] font-medium truncate w-full text-center leading-tight">
-                        {item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label}
-                      </span>
-                    </button>
-                  ) : (
-                    <NavLink
-                      to={item.path}
-                      end={item.end}
-                      className={({ isActive: navIsActive }) => `
-                        flex flex-col items-center justify-center flex-1 h-full px-2 transition-colors min-w-0 rounded-2xl
-                        ${navIsActive || isActive ? 'text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-500/10' : 'text-white-600 dark:text-white-300'}
-                        ${shouldAnimateProducts ? 'animate-pulse-glow-scale ring-2 ring-blue-400/50 dark:ring-blue-500/50' : ''}
-                      `}
-                    >
-                      <Icon className="w-5 h-5 mb-0.5 flex-shrink-0" />
-                      <span className="text-[11px] font-medium truncate w-full text-center leading-tight">
-                        {item.label.length > 10 ? item.label.substring(0, 8) + '..' : item.label}
-                      </span>
-                    </NavLink>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Submenu Modal for mobile */}
-        {activeSubmenu && (() => {
-          const menuItem = menuItems.find(item => item.id === activeSubmenu);
-          if (!menuItem || !menuItem.subItems) return null;
-
-          return (
-            <div className="fixed inset-0 bg-black/60 z-[60] md:hidden" onClick={() => setActiveSubmenu(null)}>
-              <div className="fixed bottom-20 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-xl shadow-lg max-h-[60vh] overflow-y-auto transition-colors" onClick={(e) => e.stopPropagation()}>
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-white-900 dark:text-white-100">{menuItem.label}</h3>
-                    <button
-                      onClick={() => setActiveSubmenu(null)}
-                      className="text-white-500 hover:text-white-700 dark:text-white-400 dark:hover:text-white-200"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  <div className="space-y-2">
-                    {menuItem.subItems.map((subItem) => (
-                      <NavLink
-                        key={subItem.id}
-                        to={subItem.path}
-                        onClick={() => {
-                          setActiveSubmenu(null);
-                        }}
-                        className={({ isActive }) => `
-                          block w-full px-4 py-3 rounded-lg text-left font-medium text-sm transition-all duration-200
-                          ${isActive
-                            ? 'bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
-                            : 'text-white-600 hover:bg-blue-50 hover:text-blue-600 dark:text-white-300 dark:hover:bg-gray-800 dark:hover:text-blue-300'
-                          }
-                        `}
-                      >
-                        {subItem.label}
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
-      </>
-    );
-  }
-
-  // Desktop Sidebar
+  // Mobile & Desktop Sidebar
   return (
     <>
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={onToggle}
+          aria-hidden="true"
+        />
+      )}
       {/* Main Sidebar - FIXED positioning */}
       <div
         className={`
           fixed left-0 top-0 h-screen
-          ${isCollapsed ? 'w-20' : 'w-60'}
+          ${isMobile ? 'w-72' : (effectiveCollapsed ? 'w-20' : 'w-60')}
           bg-blue-600 dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800
-          transition-[width,background-color,border-color] duration-300
+          transition-[width,background-color,border-color,transform] duration-300
           z-50 flex flex-col rounded-r-xl
+          ${isMobile ? (isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full') : 'translate-x-0'}
         `}
       >
         {/* Logo / Header Section */}
         <div className="sm:px-3 py-3 flex-shrink-0">
-          {isCollapsed ? (
+          {effectiveCollapsed ? (
             <div className="flex items-center justify-center">
               <Button
                 size="icon"
@@ -508,16 +344,28 @@ export const Sidebar = ({
                     </PopoverContent>
                   </Popover>
                 ) : null}
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  aria-label="Toggle sidebar"
-                  aria-expanded={true}
-                  onClick={() => setCollapsed((prev) => !prev)}
-                  className="h-8 w-8 rounded-full hover:bg-gray-100"
-                >
-                  <ChevronLeft className="w-4 h-4 text-white hover:text-blue-600" />
-                </Button>
+                {isMobile ? (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Close sidebar"
+                    onClick={onToggle}
+                    className="h-8 w-8 rounded-full hover:bg-gray-100"
+                  >
+                    <X className="w-4 h-4 text-white" />
+                  </Button>
+                ) : (
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    aria-label="Toggle sidebar"
+                    aria-expanded={true}
+                    onClick={() => setCollapsed((prev) => !prev)}
+                    className="h-8 w-8 rounded-full hover:bg-gray-100"
+                  >
+                    <ChevronLeft className="w-4 h-4 text-white hover:text-blue-600" />
+                  </Button>
+                )}
               </div>
             </div>
           )}
@@ -525,7 +373,7 @@ export const Sidebar = ({
 
         {/* Navigation - collapsed vs expanded */}
         <nav className="flex-1 px-2 sm:px-3 py-3 sm:py-4 text-xs sm:text-sm overflow-y-auto pb-4">
-          {isCollapsed ? (
+          {effectiveCollapsed ? (
             // Collapsed: thin icon rail only
             <div className="flex flex-col justify-between items-center h-full">
               <div className="flex flex-col items-center gap-2">
@@ -544,10 +392,10 @@ export const Sidebar = ({
                   return (
                     <NavLink
                       key={item.id}
-                      to={hasSubItems ? '#' : item.path}
+                      to={hasSubItems && !item.navigateOnClick ? '#' : item.path}
                       end={item.end}
                       onClick={(e) => {
-                        if (hasSubItems) {
+                        if (hasSubItems && !item.navigateOnClick) {
                           e.preventDefault();
                           toggleSecondarySidebar(item.id);
                         } else {
@@ -674,12 +522,16 @@ export const Sidebar = ({
                       return (
                         <li key={item.id}>
                           <NavLink
-                            to={hasSubItems ? '#' : item.path}
+                            to={hasSubItems && !item.navigateOnClick ? '#' : item.path}
                             end={item.end}
                             onClick={(e) => {
-                              if (hasSubItems) {
+                              if (hasSubItems && !item.navigateOnClick) {
                                 e.preventDefault();
-                                toggleSecondarySidebar(item.id);
+                                if (isMobile) {
+                                  setActiveSubmenu(prev => prev === item.id ? null : item.id);
+                                } else {
+                                  toggleSecondarySidebar(item.id);
+                                }
                               } else {
                                 setActiveSecondarySidebar(null);
                                 if (isMobile) {
@@ -699,8 +551,28 @@ export const Sidebar = ({
                           >
                             <Icon className={`w-4 h-4 mr-2 ${showActive ? 'text-white' : 'text-white group-hover:text-white dark:text-white-500 dark:group-hover:text-blue-300'}`} />
                             <span className="flex-1 truncate">{label}</span>
-                            
                           </NavLink>
+                          {isMobile && activeSubmenu === item.id && item.subItems && (
+                            <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
+                              {item.subItems.map(sub => (
+                                <li key={sub.id}>
+                                  <NavLink
+                                    to={sub.path}
+                                    onClick={() => { setActiveSubmenu(null); onToggle(); }}
+                                    className={({ isActive }) => `
+                                      block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                                      ${isActive
+                                        ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                                        : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'
+                                      }
+                                    `}
+                                  >
+                                    {sub.label}
+                                  </NavLink>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </li>
                       );
                     })}
@@ -714,22 +586,52 @@ export const Sidebar = ({
                     const isSettingsOpen = activeSecondarySidebar === 'settings';
 
                     return (
-                      <button
-                        type="button"
-                        onClick={() => toggleSecondarySidebar('settings')}
-                        className={`
-                          w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium
-                          transition-colors border
-                          ${
-                            isSettingsActive || isSettingsOpen
-                              ? 'bg-white text-blue-700 border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
-                              : 'text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border-transparent'
-                          }
-                        `}
-                      >
-                        <Settings className="w-4 h-4 mr-2 text-white-400" />
-                        <span className="flex-1 truncate text-left">Settings</span>
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (isMobile) {
+                              setActiveSubmenu(prev => prev === 'settings' ? null : 'settings');
+                            } else {
+                              toggleSecondarySidebar('settings');
+                            }
+                          }}
+                          className={`
+                            w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium
+                            transition-colors border
+                            ${
+                              isSettingsActive || isSettingsOpen
+                                ? 'bg-white text-blue-700 border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
+                                : 'text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border-transparent'
+                            }
+                          `}
+                        >
+                          <Settings className="w-4 h-4 mr-2 text-white-400" />
+                          <span className="flex-1 truncate text-left">Settings</span>
+                        </button>
+                        {isMobile && activeSubmenu === 'settings' && (() => {
+                          const settingsItem = menuItems.find(item => item.id === 'settings');
+                          if (!settingsItem?.subItems) return null;
+                          return (
+                            <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
+                              {settingsItem.subItems.map(sub => (
+                                <li key={sub.id}>
+                                  <NavLink
+                                    to={sub.path}
+                                    onClick={() => { setActiveSubmenu(null); onToggle(); }}
+                                    className={({ isActive }) => `
+                                      block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                                      ${isActive ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300' : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'}
+                                    `}
+                                  >
+                                    {sub.label}
+                                  </NavLink>
+                                </li>
+                              ))}
+                            </ul>
+                          );
+                        })()}
+                      </>
                     );
                   })()}
 
@@ -748,22 +650,48 @@ export const Sidebar = ({
                     const isAdminActive = location.pathname.startsWith('/admin');
                     const isAdminOpen = activeSecondarySidebar === 'admin';
                     return (
-                      <button
-                        type="button"
-                        onClick={() => toggleSecondarySidebar('admin')}
-                        className={`
-                          w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium
-                          transition-colors border
-                          ${
-                            isAdminActive || isAdminOpen
-                              ? 'bg-white text-blue-700 border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
-                              : 'text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border-transparent'
-                          }
-                        `}
-                      >
-                        <Users className="w-4 h-4 mr-2 text-white-400" />
-                        <span className="flex-1 truncate text-left">Admin</span>
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (isMobile) {
+                              setActiveSubmenu(prev => prev === 'admin' ? null : 'admin');
+                            } else {
+                              toggleSecondarySidebar('admin');
+                            }
+                          }}
+                          className={`
+                            w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium
+                            transition-colors border
+                            ${
+                              isAdminActive || isAdminOpen
+                                ? 'bg-white text-blue-700 border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
+                                : 'text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border-transparent'
+                            }
+                          `}
+                        >
+                          <Users className="w-4 h-4 mr-2 text-white-400" />
+                          <span className="flex-1 truncate text-left">Admin</span>
+                        </button>
+                        {isMobile && activeSubmenu === 'admin' && adminItem?.subItems && (
+                          <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
+                            {adminItem.subItems.map(sub => (
+                              <li key={sub.id}>
+                                <NavLink
+                                  to={sub.path}
+                                  onClick={() => { setActiveSubmenu(null); onToggle(); }}
+                                  className={({ isActive }) => `
+                                    block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                                    ${isActive ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300' : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'}
+                                  `}
+                                >
+                                  {sub.label}
+                                </NavLink>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </>
                     );
                   })()}
                 </div>
@@ -820,8 +748,8 @@ export const Sidebar = ({
         </nav>
       </div>
 
-      {/* Secondary Sidebar - slides in to the right of the main sidebar */}
-      {activeSecondarySidebar && (() => {
+      {/* Secondary Sidebar - desktop only, slides in to the right of the main sidebar */}
+      {!isMobile && activeSecondarySidebar && (() => {
         const activeItem = menuItems.find(item => item.id === activeSecondarySidebar);
         if (!activeItem?.subItems) return null;
         const title = activeItem.id === 'settings' ? 'Settings' : activeItem.label;

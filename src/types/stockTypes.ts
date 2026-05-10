@@ -39,7 +39,7 @@ export type TransactionType =
 
 export type AdjustmentMethod = 'manual' | 'scan' | 'system';
 
-export type SourceType = 'purchase_orders' | 'sales_orders' | 'stock_transfers' | 'cycle_counts' | null;
+export type SourceType = 'purchase_orders' | 'sales_orders' | 'stock_transfers' | 'cycle_counts' | 'pick_lists' | null;
 
 export type StockTransaction = {
   id: string;
@@ -199,6 +199,76 @@ export type StockTransferItem = {
 };
 
 
+
+// Stock Count (Cycle Count) types
+export type StockCountStatus = 'draft' | 'in_progress' | 'completed' | 'approved';
+
+export type StockCount = {
+  id: string;
+  count_number: string;
+  status: StockCountStatus;
+  count_date: string;
+  completed_date?: string | null;
+  approved_date?: string | null;
+  approved_by?: string | null;
+  branch_id: string;
+  user_id: string;
+  created_by?: string | null;
+  location_filter?: string | null;
+  notes?: string | null;
+  discrepancy_count: number;
+  total_items_counted: number;
+  created_at: string;
+  updated_at: string;
+  items?: StockCountItem[];
+};
+
+export type StockCountItem = {
+  id: string;
+  cycle_count_id: string;
+  product_id?: string | null;
+  variant_id?: string | null;
+  expected_quantity: number;
+  counted_quantity: number;
+  variance: number;
+  variance_value: number;
+  notes?: string | null;
+  counted_by?: string | null;
+  counted_at?: string | null;
+  counting_method?: 'manual' | 'scan' | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+};
+
+// Pick List types
+export type PickListStatus = 'draft' | 'pending' | 'in_progress' | 'completed' | 'cancelled';
+
+export type PickList = {
+  id: string;
+  pick_number: string;
+  status: PickListStatus;
+  branch_id: string;
+  user_id: string;
+  created_by?: string | null;
+  assigned_to?: string | null;
+  notes?: string | null;
+  created_at: string;
+  updated_at: string;
+  items?: PickListItem[];
+};
+
+export type PickListItem = {
+  id: string;
+  pick_list_id: string;
+  product_id?: string | null;
+  quantity_requested: number;
+  quantity_picked: number;
+  notes?: string | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+};
 
 export type StockMovementStats = {
   totalIncoming: number;

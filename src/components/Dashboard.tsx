@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
   FileText, Folder, Layers, Euro, Plus, ScanLine, 
   FilePlus2, Upload, Filter, Settings2, Clock 
 } from 'lucide-react';
-import { useQueryClient, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -13,20 +13,16 @@ import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useProductCount, useBasicDashboardMetrics, useDashboardData } from '@/hooks/useDashboardData';
 import { AccountChecklist } from './AccountChecklist';
+import { OverLimitBanner } from './OverLimitBanner';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { formatPrice } = useCurrency();
   const { activeBranch } = useBranches();
-  const queryClient = useQueryClient();
   const { productCount, isLoading: productCountLoading } = useProductCount();
   const { data: metrics } = useBasicDashboardMetrics();
   const { data: fullMetrics } = useDashboardData();
-
-  useLayoutEffect(() => {
-    queryClient.removeQueries({ queryKey: ['productCount'] });
-  }, [queryClient]);
 
   // Checklist view for new accounts
   if (productCountLoading || productCount === 0) {
@@ -39,11 +35,13 @@ export const Dashboard = () => {
 
   const safeMetrics = metrics || { totalValue: 0, totalProducts: 0, lowStockCount: 0 };
   const recentActivity = (fullMetrics as any)?.recentActivity || [];
+  const recentItems = (fullMetrics as any)?.recentItems || [];
   const lowStockItems = (fullMetrics as any)?.lowStockProducts || [];
 
   return (
     <div className="p-4 sm:p-6 max-w-[1600px] mx-auto space-y-8 min-h-screen">
-      
+      <OverLimitBanner />
+
       {/* 1. Header & Quick Actions */}
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
@@ -95,7 +93,7 @@ export const Dashboard = () => {
             <div className="divide-y divide-slate-50">
               {lowStockItems.map((item: any, i: number) => (
                 <div key={i} className="p-4 flex justify-between items-center hover:bg-slate-50">
-                  <span className="text-sm font-medium text-slate-600">{item.name}</span>
+                  <span className="text-sm font-medium text-slate-600">{item.product_name}</span>
                   <span className="text-sm text-blue-500 font-bold">{item.quantity_in_stock} in stock</span>
                 </div>
               ))}
@@ -112,8 +110,19 @@ export const Dashboard = () => {
           <div className="p-6 border-b border-slate-100">
             <h2 className="font-semibold text-slate-700">Recent Items</h2>
           </div>
-          <CardContent className="min-h-[200px] flex items-center justify-center">
-            <EmptyState message="No recent items." />
+          <CardContent className="p-0">
+            {recentItems.length > 0 ? (
+              <div className="divide-y divide-slate-50">
+                {recentItems.map((item: any) => (
+                  <div key={item.id} className="p-4 flex justify-between items-center hover:bg-slate-50">
+                    <span className="text-sm font-medium text-slate-600">{item.name}</span>
+                    <span className="text-sm text-slate-400">{item.quantity_in_stock} in stock</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <EmptyState message="No recent items." />
+            )}
           </CardContent>
         </Card>
 

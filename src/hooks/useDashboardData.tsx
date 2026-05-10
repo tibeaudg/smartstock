@@ -48,6 +48,17 @@ interface DashboardData {
     turnover_rate: number;
     days_since_last_movement: number;
   }>;
+  recentItems?: Array<{
+    id: string;
+    name: string;
+    quantity_in_stock: number;
+    unit_price: number;
+    created_at: string;
+  }>;
+  recentActivity?: Array<{
+    description: string;
+    timestamp: string;
+  }>;
 }
 
 export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = {}) => {
@@ -64,14 +75,15 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         .from('products')
         .select(`
           id,
-          name, 
-          quantity_in_stock, 
-          unit_price, 
-          minimum_stock_level, 
+          name,
+          quantity_in_stock,
+          unit_price,
+          minimum_stock_level,
           category_id,
           is_variant,
           variant_name,
           parent_product_id,
+          created_at,
           categories(name)
         `)
         .eq('user_id', user.id)
@@ -169,6 +181,39 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       // Calculate turnover rates
       const turnoverRates = calculateTurnoverRates(transactions || [], productsData || []);
 
+      // Recent items: last 5 products by creation date
+      const recentItems = [...(productsData || [])]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 5)
+        .map(p => ({
+          id: p.id,
+          name: p.is_variant ? `${p.name} - ${p.variant_name}` : p.name,
+          quantity_in_stock: p.quantity_in_stock,
+          unit_price: p.unit_price,
+          created_at: p.created_at,
+        }));
+
+      // Recent activity: last 10 transactions as human-readable items
+      const typeLabels: Record<string, string> = {
+        incoming: 'Stock in',
+        in: 'Stock in',
+        outgoing: 'Stock out',
+        out: 'Stock out',
+        adjustment: 'Adjusted',
+        manual_adjustment: 'Adjusted',
+        scan_adjustment: 'Adjusted',
+        purchase_order: 'Purchase order',
+        sales_order: 'Sales order',
+        stock_transfer: 'Transfer',
+        cycle_count: 'Cycle count',
+        damage: 'Damage',
+        return: 'Return',
+      };
+      const recentActivity = (transactions || []).slice(0, 10).map(t => ({
+        description: `${typeLabels[t.transaction_type] ?? t.transaction_type}: ${t.quantity} × ${t.product_name}`,
+        timestamp: formatRelativeTime(t.created_at),
+      }));
+
       return {
         totalValue,
         totalProducts: productsData?.length || 0,
@@ -183,6 +228,8 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         stockValueTrend,
         lowStockProducts,
         turnoverRates,
+        recentItems,
+        recentActivity,
       };
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -451,6 +498,18 @@ export const useProductCount = () => {
 };
 
 // Helper functions for dashboard calculations
+const formatRelativeTime = (isoString: string): string => {
+  const diff = Date.now() - new Date(isoString).getTime();
+  const minutes = Math.floor(diff / 60000);
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(isoString).toLocaleDateString();
+};
+
 const calculateCategoryDistribution = (products: any[]) => {
   const categoryMap = new Map<string, { count: number; value: number }>();
   

@@ -53,8 +53,10 @@ export interface UseSubscriptionReturn {
   nextTier: PricingTier | null;
   productCount: number;
   branchCount: number;
+  maxProducts: number;
   maxBranches: number;
   maxUsers: number;
+  isOverProductLimit: boolean;
   isLoading: boolean;
   error: unknown;
   canUseFeature: (featureName: string) => boolean;
@@ -89,7 +91,7 @@ function normalizeTier(row: Record<string, unknown> | null): PricingTier | null 
   };
 }
 
-// Free/Starter tier: 1 branch, 1 user, no Contacts, no Orders
+// Free/Starter tier: 100 products, 1 branch, 1 user, no Contacts, no Orders
 const FREE_TIER: PricingTier = {
   id: 'free',
   name: 'free',
@@ -99,8 +101,8 @@ const FREE_TIER: PricingTier = {
   price_yearly: 0,
   yearly_discount_percentage: 0,
   price_per_product_monthly: null,
-  included_products: null,
-  max_products: null,
+  included_products: 100,
+  max_products: 100,
   max_orders_per_month: null,
   max_users: 1,
   max_branches: 1,
@@ -195,8 +197,10 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
   }, [subscriptionData]);
 
   const branchCount = branchCountFallback ?? 0;
+  const maxProducts = currentTier?.max_products ?? 100;
   const maxBranches = currentTier?.max_branches ?? 1;
   const maxUsers = currentTier?.max_users ?? 1;
+  const isOverProductLimit = !isPaidPlan && (productCountFallback ?? 0) > maxProducts;
 
   const canUseFeature = useMemo(() => {
     return (featureName: string): boolean => {
@@ -224,8 +228,10 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     nextTier: null,
     productCount: productCountFallback ?? 0,
     branchCount,
+    maxProducts,
     maxBranches,
     maxUsers,
+    isOverProductLimit,
     isLoading: subLoading,
     error: subError,
     canUseFeature,

@@ -107,7 +107,7 @@ const PLAN_CUSTOM_FIELD_LIMITS: Record<string, number> = {
 
 export const BillingPage = () => {
   const { user } = useAuth();
-  const { currentTier, isPaidPlan, isOnTrial, isPastDue, trialEndDate, refetch, productCount, branchCount } = useSubscription();
+  const { currentTier, isPaidPlan, isOnTrial, isPastDue, trialEndDate, refetch, productCount, branchCount, maxBranches, maxUsers } = useSubscription();
   const [searchParams, setSearchParams] = useSearchParams();
   const [loadingPortal, setLoadingPortal] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
@@ -203,23 +203,42 @@ export const BillingPage = () => {
   const formatPeriod = (d: string) =>
     new Date(d).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
+  const { data: userCount = 1 } = useQuery<number>({
+    queryKey: ['billing-user-count', user?.id],
+    queryFn: async () => {
+      if (!user) return 1;
+      const { data: userBranches } = await supabase
+        .from('branches')
+        .select('id')
+        .eq('user_id', user.id);
+      if (!userBranches?.length) return 1;
+      const branchIds = userBranches.map((b) => b.id);
+      const { data: branchUsers } = await supabase
+        .from('branch_users')
+        .select('user_id')
+        .in('branch_id', branchIds);
+      const unique = new Set((branchUsers ?? []).map((u) => u.user_id));
+      return unique.size || 1;
+    },
+    enabled: !!user,
+    staleTime: 1000 * 60 * 2,
+  });
+
   const tierName = currentTier?.name ?? 'free';
   const itemLimit = currentTier?.max_products ?? PLAN_ITEM_LIMITS[tierName] ?? 100;
-  const userLimit = currentTier?.max_users ?? 1;
-  const branchLimit = currentTier?.max_branches ?? 1;
-  const customFieldLimit = PLAN_CUSTOM_FIELD_LIMITS[tierName] ?? 1;
+  const branchLimit = maxBranches;
+  const userLimit = maxUsers;
 
   const itemCount = productCount ?? 0;
-  const userCount = 1;
   const currentBranchCount = branchCount ?? 0;
-  const customFieldCount = 0;
 
   const itemPct = Math.min(100, Math.round((itemCount / itemLimit) * 100));
   const userPct = Math.min(100, Math.round((userCount / userLimit) * 100));
   const branchPct = Math.min(100, Math.round((currentBranchCount / branchLimit) * 100));
-  const customFieldPct = Math.min(100, Math.round((customFieldCount / customFieldLimit) * 100));
 
-  const atLimit = itemCount >= itemLimit || userCount >= userLimit;
+  const extraBranches = Math.max(0, currentBranchCount - branchLimit);
+  const extraUsers = Math.max(0, userCount - userLimit);
+  const atItemLimit = itemCount >= itemLimit;
 
   const planPrice = currentTier?.price_monthly ?? 0;
   const planDisplayName = currentTier?.display_name ?? 'Starter';
@@ -238,8 +257,19 @@ export const BillingPage = () => {
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">Current Plan</p>
             <div className="flex items-start justify-between">
               <div className="space-y-1">
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{planDisplayName}</p>
-                {planPrice > 0 ? (
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                  {isOnTrial ? `${planDisplayName} (Free Trial)` : planDisplayName}
+                </p>
+                {isOnTrial ? (
+                  <>
+                    <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">Free</p>
+                    {trialEndDate && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        then ${planPrice.toFixed(2)}/mo after trial
+                      </p>
+                    )}
+                  </>
+                ) : planPrice > 0 ? (
                   <>
                     <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">
                       ${planPrice.toFixed(2)}
@@ -283,11 +313,16 @@ export const BillingPage = () => {
                   <span className="text-gray-600 dark:text-gray-400">User Licenses</span>
                   <span className="font-medium text-gray-900 dark:text-gray-100">
                     {userCount} / {userLimit}
+                    {extraUsers > 0 && (
+                      <span className="ml-1 text-xs text-amber-600 dark:text-amber-400">
+                        +{extraUsers} extra (${extraUsers * 2}/mo)
+                      </span>
+                    )}
                   </span>
                 </div>
                 <Progress
                   value={userPct}
-                  className={`h-2 ${userPct >= 100 ? '[&>div]:bg-blue-600' : ''}`}
+                  className={`h-2 ${userPct >= 100 ? '[&>div]:bg-amber-500' : ''}`}
                 />
               </div>
 
@@ -296,21 +331,26 @@ export const BillingPage = () => {
                   <span className="text-gray-600 dark:text-gray-400">Branches</span>
                   <span className="font-medium text-gray-900 dark:text-gray-100">
                     {currentBranchCount} / {branchLimit}
-                    {isPaidPlan && currentBranchCount > branchLimit && (
+                    {extraBranches > 0 && (
                       <span className="ml-1 text-xs text-amber-600 dark:text-amber-400">
-                        +{currentBranchCount - branchLimit} extra (${(currentBranchCount - branchLimit) * 5}/mo)
+                        +{extraBranches} extra (${extraBranches * 5}/mo)
                       </span>
                     )}
                   </span>
                 </div>
                 <Progress
                   value={branchPct}
-                  className={`h-2 ${branchPct >= 100 ? '[&>div]:bg-blue-600' : ''}`}
+                  className={`h-2 ${branchPct >= 100 ? '[&>div]:bg-amber-500' : ''}`}
                 />
               </div>
             </div>
 
-          
+            {atItemLimit && (
+              <div className="flex items-start gap-2 text-sm text-red-600 dark:text-red-400">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <p>You've reached your item limit. Upgrade your plan to add more items.</p>
+              </div>
+            )}
 
             <div className="flex gap-3 pt-1">
               {isPaidPlan ? (
@@ -517,9 +557,14 @@ export const BillingPage = () => {
               </Button>
             </div>
           ) : (
-            <p className="text-sm text-amber-600 dark:text-amber-400">
-              You don't have any payment methods added. Upgrade to add one.
-            </p>
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                A payment method is required to be billed for extra branches (+$5/mo) or extra users (+$2/mo) beyond your plan limits.
+              </p>
+              <Button onClick={() => setShowUpgradePlans((v) => !v)} variant="outline" className="gap-2">
+                Add Payment Method
+              </Button>
+            </div>
           )}
         </CardContent>
       </Card>

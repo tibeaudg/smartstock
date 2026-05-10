@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useSubscription } from '@/hooks/useSubscription';
-import { PaywallGate } from '@/components/PaywallGate';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { Loader2, Euro, Users, Building2, AlertCircle } from 'lucide-react';
+import { Loader2, Users, Info } from 'lucide-react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
@@ -49,9 +47,8 @@ interface PricingInfo {
 
 const UserManagement = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const { branches, activeBranch } = useBranches();
-  const { canUseFeature } = useSubscription();
+  const { maxUsers } = useSubscription();
   const queryClient = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
@@ -130,25 +127,28 @@ const UserManagement = () => {
     const uniqueUsers = new Set((branchUsers || []).map((u: { user_id: string }) => u.user_id));
     const totalUsers = uniqueUsers.size;
     const totalBranches = branchIds.length;
-    
-    const extraUsers = Math.max(0, totalUsers - 1); // First user is free
+
+    const extraUsers = Math.max(0, totalUsers - maxUsers);
+    const extraBranches = 0; // branches are tracked separately in BranchesSettings
     const userCost = extraUsers * 2;
+    const branchCost = extraBranches * 5;
     const totalCost = userCost + branchCost;
-    
+
     return {
       totalUsers,
       totalBranches,
       extraUsers,
+      extraBranches,
       userCost,
-      totalCost
+      branchCost,
+      totalCost,
     };
   };
 
   const {
     data: pricingInfo,
-    isLoading: pricingLoading,
   } = useQuery<PricingInfo>({
-    queryKey: ['pricingInfo', user?.id],
+    queryKey: ['pricingInfo', user?.id, maxUsers],
     queryFn: fetchPricingInfo,
     enabled: !!user,
     refetchOnWindowFocus: true,
@@ -312,56 +312,49 @@ const UserManagement = () => {
         </div>
         
         {/* Action Button */}
-        <div className="flex items-center gap-2">
-          {canUseFeature('add_user') ? (
-            <Button 
-              onClick={handleInviteUser} 
-              disabled={inviting || !inviteEmail || !selectedBranchId}
-              className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              {inviting ? 'Inviting...' : 'Invite User'}
-            </Button>
-          ) : (
-            <Button 
-              onClick={() => navigate('/dashboard/settings/billing')}
-              variant="outline"
-              className="h-9"
-            >
-              Invite User (upgrade required)
-            </Button>
+        <div className="flex flex-col items-end gap-1">
+          <Button
+            onClick={handleInviteUser}
+            disabled={inviting || !inviteEmail || !selectedBranchId}
+            className="h-9 bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+            {inviting ? 'Inviting...' : 'Invite User'}
+          </Button>
+          {pricingInfo && pricingInfo.totalUsers >= maxUsers && (
+            <p className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
+              <Info className="w-3 h-3" />
+              +$2/mo per extra user
+            </p>
           )}
         </div>
       </div>
 
       {/* Invite User Form */}
-      <PaywallGate feature="add_user">
-        <Card>
-          <CardHeader>
-            <CardTitle>Invite User</CardTitle>
-            <CardDescription>Add a new user.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
-              </div>
-              <div>
-                <Label>Role</Label>
-                <Select value={inviteRole} onValueChange={setInviteRole}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="staff">Staff</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
+      <Card>
+        <CardHeader>
+          <CardTitle>Invite User</CardTitle>
+          <CardDescription>Add a new user.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)} placeholder="user@email.com" />
             </div>
-          </CardContent>
-        </Card>
-      </PaywallGate>
+            <div>
+              <Label>Role</Label>
+              <Select value={inviteRole} onValueChange={setInviteRole}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="staff">Staff</SelectItem>
+                  <SelectItem value="admin">Admin</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Check if branches are available */}
       {(!branches || !Array.isArray(branches)) ? (

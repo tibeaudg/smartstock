@@ -50,6 +50,13 @@ const AboutPage = React.lazy(() => import("./pages/about"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
 const VideosPage = React.lazy(() => import("./pages/videos"));
 const IntegrationsPage = React.lazy(() => import("./pages/integrations"));
+const WorkflowsPage = React.lazy(() => import("./pages/workflows"));
+const StockCountsPage = React.lazy(() => import("./pages/stock-counts"));
+const CreateStockCountPage = React.lazy(() => import("./pages/CreateStockCountPage"));
+const EditStockCountPage = React.lazy(() => import("./pages/EditStockCountPage"));
+const PickListsPage = React.lazy(() => import("./pages/pick-lists"));
+const CreatePickListPage = React.lazy(() => import("./pages/CreatePickListPage"));
+const EditPickListPage = React.lazy(() => import("./pages/EditPickListPage"));
 const SalesOrdersPage = React.lazy(() => import("./pages/sales-orders"));
 const PurchaseOrdersPage = React.lazy(() => import("./pages/purchase-orders"));
 const VendorManagementPage = React.lazy(() => import("./pages/customer-management"));
@@ -413,6 +420,13 @@ const AppRouter = () => {
             <Route path="billing" element={<BillingPage />} />
             <Route path="branches" element={<BranchesSettings />} />
           </Route>
+          <Route path="workflows" element={<PaywallGate feature="orders"><WorkflowsPage /></PaywallGate>} />
+          <Route path="stock-counts" element={<StockCountsPage />} />
+          <Route path="stock-counts/new" element={<CreateStockCountPage />} />
+          <Route path="stock-counts/:id/edit" element={<EditStockCountPage />} />
+          <Route path="pick-lists" element={<PickListsPage />} />
+          <Route path="pick-lists/new" element={<CreatePickListPage />} />
+          <Route path="pick-lists/:id/edit" element={<EditPickListPage />} />
           <Route path="sales-orders" element={<PaywallGate feature="orders"><SalesOrdersPage /></PaywallGate>} />
           <Route path="sales-orders/new" element={<PaywallGate feature="orders"><CreateSalesOrderPage /></PaywallGate>} />
           <Route path="purchase-orders" element={<PaywallGate feature="orders"><PurchaseOrdersPage /></PaywallGate>} />

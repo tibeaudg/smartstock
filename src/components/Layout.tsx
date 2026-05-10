@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { useMobile } from '@/hooks/use-mobile';
 import { UserProfile } from '@/hooks/useAuth';
@@ -52,50 +53,41 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
 
   return (
     <div className="h-screen flex flex-col bg-slate-100 dark:bg-slate-950 text-foreground transition-colors">
+      {isMobile && (
+        <div className="flex items-center h-14 px-4 bg-blue-600 dark:bg-gray-950 border-b border-blue-500 dark:border-gray-800 flex-shrink-0">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <span className="ml-3 text-base font-semibold text-white">StockFlow</span>
+        </div>
+      )}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - directly render without wrapper div */}
-        {!isMobile && (
-          <Sidebar
-            currentTab={currentTab}
-            onTabChange={handleTabChange}
-            userRole={userRole}
-            userProfile={userProfile}
-            isOpen={sidebarOpen}
-            onToggle={() => setSidebarOpen(!sidebarOpen)}
-            unreadCount={unreadCount}
-            notificationsOpen={showNotifications}
-            onNotificationsOpenChange={setShowNotifications}
-            notifications={notifications}
-            notificationsLoading={notificationsLoading}
-            onMarkNotificationsRead={markAllAsRead}
-            isCollapsed={sidebarCollapsed}
-            onCollapseChange={setSidebarCollapsed}
-            onSecondarySidebarOpenChange={setSecondarySidebarOpen}
-          />
-        )}
-        
-        {/* Mobile Bottom Navbar - rendered inside Sidebar component */}
-        {isMobile && (
-          <Sidebar
-            currentTab={currentTab}
-            onTabChange={handleTabChange}
-            userRole={userRole}
-            userProfile={userProfile}
-            isOpen={false}
-            onToggle={() => {}}
-            unreadCount={unreadCount}
-            notificationsOpen={showNotifications}
-            onNotificationsOpenChange={setShowNotifications}
-            notifications={notifications}
-            notificationsLoading={notificationsLoading}
-            onMarkNotificationsRead={markAllAsRead}
-          />
-        )}
+        <Sidebar
+          currentTab={currentTab}
+          onTabChange={handleTabChange}
+          userRole={userRole}
+          userProfile={userProfile}
+          isOpen={sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+          unreadCount={unreadCount}
+          notificationsOpen={showNotifications}
+          onNotificationsOpenChange={setShowNotifications}
+          notifications={notifications}
+          notificationsLoading={notificationsLoading}
+          onMarkNotificationsRead={markAllAsRead}
+          isCollapsed={sidebarCollapsed}
+          onCollapseChange={setSidebarCollapsed}
+          onSecondarySidebarOpenChange={setSecondarySidebarOpen}
+        />
 
         <main
           className={`flex-1 min-h-0 main-content-surface ${variant === 'admin' ? 'overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
-            isMobile 
-              ? 'ml-0 pb-20' // On mobile, add bottom padding for navbar
+            isMobile
+              ? 'ml-0'
               : sidebarCollapsed
                 ? secondarySidebarOpen ? 'ml-[288px]' : 'ml-20'
                 : secondarySidebarOpen ? 'ml-[496px]' : 'ml-72'
