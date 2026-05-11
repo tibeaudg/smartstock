@@ -184,6 +184,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const [creditAmount, setCreditAmount] = useState('');
   const [creditNote, setCreditNote] = useState('');
   const [loadingCredit, setLoadingCredit] = useState(false);
+  const [showAdminOnly, setShowAdminOnly] = useState(false);
 
   const handleRetriggerChecklist = async () => {
     if (!user) return;
@@ -269,6 +270,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
       });
       toast.success('Trial extended by 7 days');
       queryClient.invalidateQueries({ queryKey: ['adminUserSubscription', user.id] });
+      queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to extend trial');
     } finally {
@@ -354,7 +356,10 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   };
 
   useEffect(() => {
-    if (isOpen) setActiveTab('overview');
+    if (isOpen) {
+      setActiveTab('overview');
+      setShowAdminOnly(false);
+    }
   }, [isOpen]);
 
   const { data: subscription, isLoading: loadingSubscription } = useQuery({
@@ -798,18 +803,33 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
             {/* Activity Log Tab */}
             <TabsContent value="activity" className="mt-0">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Activity Log ({auditLogs.length})</h3>
-                {auditLogs.length > 0 && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => exportData(auditLogs, `user_${user.id}_activity`)}
+              <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+                <h3 className="text-lg font-semibold">
+                  Activity Log ({auditLogs.length})
+                </h3>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowAdminOnly(v => !v)}
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs border transition-colors ${
+                      showAdminOnly
+                        ? 'bg-purple-50 border-purple-200 text-purple-700 font-semibold'
+                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
                   >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
-                )}
+                    <Shield className="w-3 h-3" />
+                    Admin Only
+                  </button>
+                  {auditLogs.length > 0 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => exportData(auditLogs, `user_${user.id}_activity`)}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export
+                    </Button>
+                  )}
+                </div>
               </div>
               {loadingAuditLogs ? (
                 <div className="flex justify-center py-8">
@@ -819,7 +839,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                 <div className="text-center py-8 text-gray-500">No activity logs found</div>
               ) : (
                 <div className="space-y-2">
-                  {auditLogs.map((log: any) => {
+                  {auditLogs.filter((log: any) => !showAdminOnly || (typeof log.action === 'string' && log.action.startsWith('ADMIN:'))).map((log: any) => {
                     const isAdminAction = typeof log.action === 'string' && log.action.startsWith('ADMIN:');
                     return (
                       <Card key={log.id} className={isAdminAction ? 'border-purple-200 bg-purple-50/40' : ''}>

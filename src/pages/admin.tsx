@@ -231,11 +231,21 @@ function calculateUserLicenseCost(
 
 // User management functions
 async function fetchUserProfiles(): Promise<UserProfile[]> {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*');
-  if (error) throw error;
-  return data || [];
+  const batchSize = 1000;
+  let page = 0;
+  const all: UserProfile[] = [];
+  while (true) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .range(page * batchSize, (page + 1) * batchSize - 1);
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    all.push(...data);
+    if (data.length < batchSize) break;
+    page++;
+  }
+  return all;
 }
 
 /** Fetch open chat counts per user (chats where is_closed = false) */
@@ -898,6 +908,12 @@ export default function AdminPage() {
     return sortedUsers.slice(start, start + pageSize);
   }, [sortedUsers, currentPage, pageSize]);
 
+  // Stable string key so the stats effect only re-fires when the actual user IDs change
+  const paginatedUserIds = useMemo(
+    () => paginatedUsers.map(u => u.id).join(','),
+    [paginatedUsers]
+  );
+
   // Unique plan filter keys from subscription data (Stripe source of truth)
   const uniquePlans = useMemo(() => {
     const keys = new Set<string>();
@@ -974,30 +990,33 @@ export default function AdminPage() {
     }
   }, [sortedUsers]);
 
-  // Bereken statistieken voor gebruikers
+  // Load stats only for the current page (perf: avoids N×3 queries for all users)
   useEffect(() => {
-    if (users.length === 0) {
+    if (!paginatedUserIds) {
       setUserStats([]);
       return;
     }
+    const ids = paginatedUserIds.split(',');
+    const usersOnPage = users.filter(u => ids.includes(u.id));
+    if (usersOnPage.length === 0) { setUserStats([]); return; }
 
+    let cancelled = false;
     const loadUserStats = async () => {
       setLoadingStats(true);
       try {
-        const stats = await Promise.all(
-          users.map(user => fetchUserStats(user.id))
-        );
-        setUserStats(stats);
+        const stats = await Promise.all(usersOnPage.map(u => fetchUserStats(u.id)));
+        if (!cancelled) setUserStats(stats);
       } catch (error) {
         console.error('Error loading user stats:', error);
-        setUserStats([]);
+        if (!cancelled) setUserStats([]);
       } finally {
-        setLoadingStats(false);
+        if (!cancelled) setLoadingStats(false);
       }
     };
 
     loadUserStats();
-  }, [users]);
+    return () => { cancelled = true; };
+  }, [paginatedUserIds, users]);
 
   // Fetch open chat counts
   useEffect(() => {
@@ -1065,7 +1084,7 @@ export default function AdminPage() {
       totalCapacity,
       totalAssigned,
     };
-  }, [users, userStats, subscriptionPlanMap, loadingStats]);
+  }, [users, userStats, subscriptionPlanMap]);
 
   // Haal company_types op voor alle users
   useEffect(() => {
@@ -1506,15 +1525,6 @@ export default function AdminPage() {
                       </Card>
                     </div>
 
-                    {/* Registration Chart */}
-                    <div className="mb-6">
-                      <RegistrationChart
-                        users={users}
-                        timeRange={chartTimeRange}
-                        onTimeRangeChange={setChartTimeRange}
-                      />
-                    </div>
-
                   {/* Mobile: Card-based user list */}
                   {isMobile ? (
                     <div className="space-y-4">
@@ -1584,7 +1594,15 @@ export default function AdminPage() {
                                   </div>
                                   <div className="text-gray-600">
                                     <span className="font-medium">Products:</span>{' '}
-                                    {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.productCount || 0}
+                                    {loadingStats ? (
+                                      <Loader2 className="w-3 h-3 animate-spin inline" />
+                                    ) : mPlanInfo.maxProducts != null ? (
+                                      <span className={(stats?.productCount || 0) >= mPlanInfo.maxProducts * 0.9 ? 'text-amber-600 font-semibold' : ''}>
+                                        {stats?.productCount || 0} / {mPlanInfo.maxProducts}
+                                      </span>
+                                    ) : (
+                                      stats?.productCount || 0
+                                    )}
                                   </div>
                                   <div className="text-gray-600">
                                     <span className="font-medium">Branches:</span>{' '}
@@ -1603,6 +1621,12 @@ export default function AdminPage() {
                                     <span className="font-medium">Role:</span>{' '}
                                     {user.role || 'user'}
                                   </div>
+                                  {mPlanInfo.subStatus === 'trial' && mPlanInfo.trialEndDate && (
+                                    <div className="text-purple-600 col-span-2">
+                                      <span className="font-medium">Trial:</span>{' '}
+                                      {Math.max(0, Math.ceil((new Date(mPlanInfo.trialEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))}d left
+                                    </div>
+                                  )}
                                   {(openChatCounts[user.id] || 0) > 0 && (
                                     <div className="text-indigo-600 col-span-2 flex items-center gap-1">
                                       <MessageSquare className="w-3 h-3" />
@@ -2054,7 +2078,16 @@ export default function AdminPage() {
                     )}
                     </>
                   )}
-      
+
+                  {/* Registration Chart — below the user table */}
+                  <div className="mt-6">
+                    <RegistrationChart
+                      users={users}
+                      timeRange={chartTimeRange}
+                      onTimeRangeChange={setChartTimeRange}
+                    />
+                  </div>
+
                 </CardContent>
               </Card>
             </div>

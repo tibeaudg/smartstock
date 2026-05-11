@@ -1,11 +1,10 @@
 import SEO from '@/components/SEO';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { useCurrency } from '@/hooks/useCurrency';
 import { useState } from 'react';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
+import { StructuredData } from '@/components/StructuredData';
 
 export default function InventoryManagementSoftware() {
   
@@ -53,13 +52,13 @@ export default function InventoryManagementSoftware() {
       faqData={faqData}
     >
       <SEO
-        title="Best Free Inventory Software with Barcode Scanning 2026"
-        description="Best free inventory software with barcode scanning. Scan products with your phone camera, no hardware costs. Unlimited items, unlimited users. Compare top options."
-        keywords="free inventory management software with barcode scanner, inventory management software with barcode scanner, inventory software with barcode scanner, best inventory management software with barcode scanner, free inventory software, barcode scanning software, inventory management system, free inventory tracker, barcode inventory app, free stock management, inventory control software, warehouse management free"
+        title="Best Free Inventory Software with Barcode Scanner 2026 | No Limits"
+        description="Free inventory management software with barcode scanner — scan with your phone, no hardware needed. Unlimited items, users & locations. No credit card. Compare top 5 options."
+        keywords="free inventory management software with barcode scanner, barcode system for inventory free, inventory management software with barcode scanner, free barcode inventory system, barcode inventory system for small business free, inventory software with barcode scanner, best inventory management software with barcode scanner, free inventory software, barcode scanning software, inventory management system, free inventory tracker, barcode inventory app, free stock management, inventory control software"
         url="https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning"
         locale="en-US"
         publishedTime="2026-01-06"
-        modifiedTime="2026-01-06"
+        modifiedTime="2026-05-11"
         structuredData={generateSeoPageStructuredData({
           title: 'Best Free Inventory Software with Barcode Scanning 2026 | StockFlow',
           description: 'Compare top 5 free inventory management software with native barcode scanning. Evaluate features, pricing, and mobile capabilities for SMBs.',
@@ -583,6 +582,39 @@ export default function InventoryManagementSoftware() {
       </section>
 
 
+
+      {/* Related guides */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-bold mb-6">Related Guides</h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            {
+              href: "/barcode-inventory-system-for-small-business",
+              title: "Barcode Inventory System for Small Business",
+              desc: "Step-by-step guide for small businesses: equipment, setup, and cost breakdown.",
+            },
+            {
+              href: "/barcode-inventory-system",
+              title: "How Barcode Inventory Systems Work",
+              desc: "A complete technical overview of barcode inventory systems.",
+            },
+            {
+              href: "/bill-of-materials-software-free",
+              title: "Free BOM Software for Manufacturers",
+              desc: "Combine barcode scanning with Bill of Materials management.",
+            },
+          ].map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="block bg-gray-50 rounded-lg p-5 hover:bg-gray-100 transition-colors border border-gray-200"
+            >
+              <p className="font-semibold text-blue-700 mb-1">{link.title}</p>
+              <p className="text-gray-600 text-sm">{link.desc}</p>
+            </a>
+          ))}
+        </div>
+      </section>
 
       {/* Schema.org Structured Data */}
       <StructuredData data={generateSeoPageStructuredData({

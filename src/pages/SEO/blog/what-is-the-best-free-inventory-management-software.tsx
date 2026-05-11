@@ -171,10 +171,11 @@ export default function SeoBestInventoryManagementSoftwarePage() {
       faqData={faqData}
     >
       <SEO
-        title="Best Free Inventory Software 2026: No Limits, No Credit Card"
-        description="Best free inventory software 2026: no SKU limits, no user caps. Compare top options, save 5 hours/week. Real-time tracking, mobile scanning. Start free."
+        title="Best Free Inventory Management Software 2026 | No Limits, No Credit Card"
+        description="The best free inventory management software for 2026, compared. No SKU limits, no user caps, no credit card. Real-time tracking, barcode scanning, BOM included."
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
+        modifiedTime="2026-05-11"
       />
 
       <StructuredData data={structuredData} />

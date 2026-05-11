@@ -125,20 +125,12 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
       if (!user?.id) return null;
       const { data: sub, error } = await supabase
         .from('user_subscriptions')
-        .select('id, tier_id, status, stripe_subscription_id, trial_end_date')
+        .select('id, tier_id, status, stripe_subscription_id, trial_end_date, pricing_tiers(*)')
         .eq('user_id', user.id)
         .maybeSingle();
 
       if (error) throw error;
-      if (!sub?.tier_id) return sub;
-
-      const { data: tier } = await supabase
-        .from('pricing_tiers')
-        .select('*')
-        .eq('id', sub.tier_id)
-        .single();
-
-      return { ...sub, pricing_tiers: tier };
+      return sub;
     },
     enabled: !!user,
     staleTime: 1000 * 60,
@@ -181,7 +173,7 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
   });
 
   const { currentTier, isPaidPlan, isOnTrial, isPastDue, subscriptionStatus, trialEndDate } = useMemo(() => {
-    const sub = subscriptionData as { status?: string; trial_end_date?: string | null; pricing_tiers?: Record<string, unknown> | Record<string, unknown>[] } | null;
+    const sub = subscriptionData as { status?: string; tier_id?: string | null; trial_end_date?: string | null; pricing_tiers?: Record<string, unknown> | Record<string, unknown>[] } | null;
     const status = (sub?.status ?? null) as 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
     // active, trial, and past_due all retain the paid tier (past_due is blocked in UI via PaymentGate)
     const hasAccess = sub && (status === 'active' || status === 'trial' || status === 'past_due');
@@ -190,7 +182,10 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     }
     const tierRow = Array.isArray(sub.pricing_tiers) ? sub.pricing_tiers[0] : sub.pricing_tiers;
     const tier = normalizeTier(tierRow as Record<string, unknown> | null) ?? FREE_TIER;
-    const paid = tier.name !== 'free';
+    // If tier data is unavailable but the user has an active subscription with a tier_id,
+    // infer they're on a paid plan rather than locking them out silently.
+    const tierDataMissing = !tierRow && !!sub.tier_id;
+    const paid = tier.name !== 'free' || (tierDataMissing && status === 'active');
     const onTrial = status === 'trial';
     const pastDue = status === 'past_due';
     return { currentTier: tier, isPaidPlan: paid, isOnTrial: onTrial, isPastDue: pastDue, subscriptionStatus: status, trialEndDate: sub.trial_end_date ?? null };

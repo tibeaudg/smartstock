@@ -25,7 +25,15 @@ async function syncSitemap() {
     `${BASE_URL}/inventory-software`,
     `${BASE_URL}/mobile-inventory-management`,
     `${BASE_URL}/simple-stock-management`,
-    `${BASE_URL}/stock-management-software`
+    `${BASE_URL}/stock-management-software`,
+    `${BASE_URL}/features`,
+    `${BASE_URL}/about`,
+    `${BASE_URL}/contact`,
+    `${BASE_URL}/videos`,
+    `${BASE_URL}/resources`,
+    `${BASE_URL}/customers`,
+    `${BASE_URL}/integrations`,
+    `${BASE_URL}/reporting`,
   ];
 
   // 2. Map local SEO files to root URLs (English pages)
@@ -33,9 +41,11 @@ async function syncSitemap() {
     cwd: seoDir,
     ignore: ['**/nl/**'] // Exclude Dutch pages from this scan
   });
+  const excludedFilenames = new Set(['createGlossaryPage', 'resources']);
   const localRoutes = new Set(
     files
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
+      .filter(file => !excludedFilenames.has(path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '')))
       .map(file => {
         const filename = path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '');
         // Handle nested paths (glossary, solutions, industries, etc.)
@@ -89,7 +99,7 @@ async function syncSitemap() {
 
   const initialCount = sitemapData.urlset.url.length;
 
-  // 4. REMOVE & NORMALIZE: Cleanup logic
+  // 4. REMOVE & NORMALIZE: Cleanup logic — also refresh lastmod for all kept entries
   sitemapData.urlset.url = sitemapData.urlset.url.filter(entry => {
     // Force HTTPS and remove trailing slash for comparison
     let url = entry.loc.trim().replace(/^http:/, 'https:');
@@ -99,7 +109,10 @@ async function syncSitemap() {
     entry.loc = url; // Update the entry with normalized URL
 
     // NEVER REMOVE Permanent URLs
-    if (permanentUrls.includes(url) || url === `${BASE_URL}/`) return true;
+    if (permanentUrls.includes(url) || url === `${BASE_URL}/`) {
+      entry.lastmod = CURRENT_DATE;
+      return true;
+    }
 
     const route = url.replace(`${BASE_URL}/`, '');
 
@@ -113,7 +126,10 @@ async function syncSitemap() {
       route.toLowerCase().startsWith(p.toLowerCase())
     );
 
-    if (isProtected) return true;
+    if (isProtected) {
+      entry.lastmod = CURRENT_DATE;
+      return true;
+    }
 
     // REMOVE MISSING: If not in local file set and not protected
     // Check both English routes and Dutch routes
@@ -125,6 +141,8 @@ async function syncSitemap() {
       return false;
     }
 
+    // Refresh lastmod for all kept entries
+    entry.lastmod = CURRENT_DATE;
     return true;
   });
 
@@ -148,9 +166,9 @@ async function syncSitemap() {
     }
   });
 
-  // 6. Final Save
+  // 6. Final Save (always write since lastmod dates are refreshed)
   const finalCount = sitemapData.urlset.url.length;
-  if (addedCount > 0 || initialCount !== finalCount) {
+  if (true) {
     const builder = new XMLBuilder({ format: true, ignoreAttributes: false, attributeNamePrefix: "@_" });
     sitemapData.urlset["@_xmlns"] = "http://www.sitemaps.org/schemas/sitemap/0.9";
 

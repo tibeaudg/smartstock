@@ -135,8 +135,8 @@ export const SEO: React.FC<SEOProps> = ({
     }
   }
 
-  // Truncate title and description to enforce limits (prevent SEO issues)
-  const optimizedTitle = title.length > 60 ? title.substring(0, 57) + '...' : title;
+  // Let Google handle display truncation — pre-truncating with "..." harms CTR
+  const optimizedTitle = title;
   const optimizedDescription = description.length > 160 ? description.substring(0, 157) + '...' : description;
 
   return (

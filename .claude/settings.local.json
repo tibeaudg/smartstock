@@ -13,7 +13,11 @@
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\\" -Filter \"*.tsx\" -Force)",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\" -Recurse -Directory)",
       "Bash(Select-Object FullName)",
-      "PowerShell(cd \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\"; \\(Get-Content package.json | ConvertFrom-Json\\).'dependencies'.'@tanstack/react-query')"
+      "PowerShell(cd \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\"; \\(Get-Content package.json | ConvertFrom-Json\\).'dependencies'.'@tanstack/react-query')",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" -Recurse -Directory | Where-Object { $_.Name -eq 'src' -or $_.Name -eq 'pages' -or $_.Name -eq 'app' -or $_.Name -eq 'public' } | Select-Object -ExpandProperty FullName)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" | Where-Object { $_.PSIsContainer -eq $false } | Select-Object Name)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\" -Recurse -Directory | Where-Object { $_.Name -in 'pages', 'app' } | Select-Object -ExpandProperty FullName)",
+      "Bash(node scripts/sync-sitemap.js)"
     ]
   }
 }

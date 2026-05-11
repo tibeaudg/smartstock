@@ -2,13 +2,15 @@
 User-agent: *
 Allow: /
 
-# Disallow authenticated pages
+# Disallow authenticated and utility pages
 Disallow: /dashboard
 Disallow: /dashboard/*
 Disallow: /auth
 Disallow: /checkout
+Disallow: /billing-success
 Disallow: /admin
 Disallow: /admin/*
+Disallow: /500
 
 # Sitemaps
 Sitemap: https://www.stockflowsystems.com/sitemap.xml
