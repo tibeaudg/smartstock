@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard, Clock, TrendingDown, Gauge } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -26,7 +26,7 @@ import { UserDetailModal } from '@/components/admin/UserDetailModal';
 // User management types
 type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' | 'organization' | 'branches' | 'role' | 'openChats';
 type SortDirection = 'asc' | 'desc';
-type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'has-open-chat' | 'has-recent-errors' | 'payment-issues';
+type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'trialing' | 'has-open-chat' | 'has-recent-errors' | 'payment-issues';
 type PlanFilter = 'all' | string;
 type RoleFilter = 'all' | 'user' | 'admin' | 'staff';
 
@@ -92,17 +92,20 @@ function getPlanDisplayName(planId: string | null): string {
 interface UserPlanInfo {
   displayName: string;
   filterKey: string;
-  subStatus: 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
+  subStatus: 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | 'paused' | null;
   endDate: string | null;
   trialEndDate: string | null;
+  trialStartDate: string | null;
   hasFailedInvoice: boolean;
+  maxProducts: number | null;
+  planPrice: number;
 }
 
 async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo>> {
   const [subsResult, failedInvoicesResult] = await Promise.all([
     supabase
       .from('user_subscriptions')
-      .select('user_id, status, tier_id, end_date, trial_end_date'),
+      .select('user_id, status, tier_id, end_date, trial_end_date, start_date'),
     supabase
       .from('invoices')
       .select('user_id')
@@ -119,7 +122,7 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
 
   const tierIds = [...new Set(subs.map((s) => s.tier_id).filter(Boolean))];
   const { data: tiers } = tierIds.length
-    ? await supabase.from('pricing_tiers').select('id, name, display_name').in('id', tierIds)
+    ? await supabase.from('pricing_tiers').select('id, name, display_name, max_products, price_monthly').in('id', tierIds)
     : { data: [] };
   const tierMap = new Map((tiers || []).map((t) => [t.id, t]));
 
@@ -138,7 +141,10 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
         subStatus: status,
         endDate: row.end_date ?? null,
         trialEndDate: row.trial_end_date ?? null,
+        trialStartDate: row.start_date ?? null,
         hasFailedInvoice: failedUserIds.has(row.user_id),
+        maxProducts: 100,
+        planPrice: 0,
       };
     } else {
       const filterKey = isOnTrial ? `${tierName}_trial` : tierName;
@@ -148,7 +154,10 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
         subStatus: status,
         endDate: row.end_date ?? null,
         trialEndDate: row.trial_end_date ?? null,
+        trialStartDate: row.start_date ?? null,
         hasFailedInvoice: failedUserIds.has(row.user_id),
+        maxProducts: tier?.max_products ?? null,
+        planPrice: tier?.price_monthly ?? 0,
       };
     }
   }
@@ -156,7 +165,17 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
 }
 
 function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: string): UserPlanInfo {
-  return planMap[userId] ?? { displayName: 'Free', filterKey: 'free', subStatus: null, endDate: null, trialEndDate: null, hasFailedInvoice: false };
+  return planMap[userId] ?? {
+    displayName: 'Free',
+    filterKey: 'free',
+    subStatus: null,
+    endDate: null,
+    trialEndDate: null,
+    trialStartDate: null,
+    hasFailedInvoice: false,
+    maxProducts: 100,
+    planPrice: 0,
+  };
 }
 
 /** Render a coloured badge for subscription status */
@@ -170,10 +189,13 @@ function SubStatusBadge({ status, hasFailedInvoice }: { status: UserPlanInfo['su
     );
   }
   if (status === 'trial') {
-    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800">Trial</span>;
+    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-800">Trial</span>;
   }
   if (status === 'active') {
     return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-green-100 text-green-800">Active</span>;
+  }
+  if (status === 'paused') {
+    return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-slate-200 text-slate-700">Paused</span>;
   }
   if (status === 'cancelled') {
     return <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-600">Cancelled</span>;
@@ -783,8 +805,11 @@ export default function AdminPage() {
         if (user.last_login) return false;
       } else if (quickFilter === 'at-risk') {
         const activity = calculateActivityStatus(user.last_login || null, user.created_at);
-        const stats = userStats.find(s => s.userId === user.id);
-        if (activity.days < 7 || (stats?.productCount || 0) === 0) return false;
+        const plan = getPlanForUser(subscriptionPlanMap, user.id);
+        if (activity.days < 3 || plan.subStatus !== 'active') return false;
+      } else if (quickFilter === 'trialing') {
+        const plan = getPlanForUser(subscriptionPlanMap, user.id);
+        if (plan.subStatus !== 'trial') return false;
       } else if (quickFilter === 'has-open-chat') {
         if ((openChatCounts[user.id] || 0) === 0) return false;
       } else if (quickFilter === 'has-recent-errors') {
@@ -800,7 +825,18 @@ export default function AdminPage() {
 
   const sortedUsers = useMemo(() => {
     const sorted = [...filteredUsers];
-    
+
+    // When trialing filter is active, always sort by trial end date ascending (most urgent first)
+    if (quickFilter === 'trialing') {
+      return sorted.sort((a, b) => {
+        const planA = getPlanForUser(subscriptionPlanMap, a.id);
+        const planB = getPlanForUser(subscriptionPlanMap, b.id);
+        const endA = planA.trialEndDate ? new Date(planA.trialEndDate).getTime() : Infinity;
+        const endB = planB.trialEndDate ? new Date(planB.trialEndDate).getTime() : Infinity;
+        return endA - endB;
+      });
+    }
+
     sorted.sort((a, b) => {
       const statsA = userStats.find(s => s.userId === a.id);
       const statsB = userStats.find(s => s.userId === b.id);
@@ -986,20 +1022,50 @@ export default function AdminPage() {
   const metricValues = useMemo(() => {
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const in48h = new Date(now.getTime() + 48 * 60 * 60 * 1000);
 
-    // Users created in last 30 days
     const usersLast30Days = users.filter(u => new Date(u.created_at) >= thirtyDaysAgo);
     const activatedLast30Days = usersLast30Days.filter(u => {
       const stats = userStats.find(s => s.userId === u.id);
       return (stats?.coreUsageScore || 0) > 0;
     });
 
+    const activeTrials = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).subStatus === 'trial').length;
+
+    const trialsExpiringSoon = users.filter(u => {
+      const plan = getPlanForUser(subscriptionPlanMap, u.id);
+      return plan.subStatus === 'trial' &&
+             plan.trialEndDate &&
+             new Date(plan.trialEndDate) <= in48h &&
+             new Date(plan.trialEndDate) > now;
+    }).length;
+
+    const mrrAtRisk = users.reduce((sum, u) => {
+      const plan = getPlanForUser(subscriptionPlanMap, u.id);
+      if (plan.subStatus === 'past_due' || plan.hasFailedInvoice) return sum + plan.planPrice;
+      return sum;
+    }, 0);
+
+    const totalCapacity = users.reduce((sum, u) => {
+      const plan = getPlanForUser(subscriptionPlanMap, u.id);
+      if ((plan.subStatus === 'active' || plan.subStatus === 'trial') && plan.maxProducts != null) {
+        return sum + plan.maxProducts;
+      }
+      return sum;
+    }, 0);
+
+    const totalAssigned = loadingStats ? null : userStats.reduce((sum, s) => sum + s.productCount, 0);
+
     return {
       usersLast30Days: usersLast30Days.length,
       activatedLast30Days: activatedLast30Days.length,
+      activeTrials,
+      trialsExpiringSoon,
+      mrrAtRisk,
+      totalCapacity,
+      totalAssigned,
     };
-  }, [users, userStats]);
+  }, [users, userStats, subscriptionPlanMap, loadingStats]);
 
   // Haal company_types op voor alle users
   useEffect(() => {
@@ -1248,7 +1314,18 @@ export default function AdminPage() {
                               : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                           }`}
                         >
-                          At Risk
+                          At Risk (≥3d)
+                        </button>
+                        <button
+                          onClick={() => setQuickFilter('trialing')}
+                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors flex items-center gap-1 ${
+                            quickFilter === 'trialing'
+                              ? 'bg-purple-50 border-purple-200 text-purple-700'
+                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          <Clock className="w-3.5 h-3.5" />
+                          Trialing
                         </button>
                         <button
                           onClick={() => setQuickFilter('never-logged-in')}
@@ -1322,6 +1399,49 @@ export default function AdminPage() {
                       </div>
                     </div>
                     
+                    {/* Pulse Row — urgent alerts at a glance */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                      <Card className={`border-purple-200 cursor-pointer hover:bg-purple-50 transition-colors ${metricValues.activeTrials > 0 ? 'bg-purple-50' : 'bg-white'}`} onClick={() => setQuickFilter('trialing')}>
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="text-lg sm:text-2xl font-bold text-purple-700">{metricValues.activeTrials}</div>
+                          <div className="text-xs text-purple-600 font-medium">Active Trials</div>
+                        </CardContent>
+                      </Card>
+                      <Card className={`cursor-pointer hover:bg-orange-50 transition-colors ${metricValues.trialsExpiringSoon > 0 ? 'bg-orange-50 border-orange-300' : 'bg-white border-slate-200'}`} onClick={() => setQuickFilter('trialing')}>
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="flex items-center gap-1">
+                            <div className={`text-lg sm:text-2xl font-bold ${metricValues.trialsExpiringSoon > 0 ? 'text-orange-600' : 'text-slate-500'}`}>{metricValues.trialsExpiringSoon}</div>
+                            {metricValues.trialsExpiringSoon > 0 && <Clock className="w-4 h-4 text-orange-500" />}
+                          </div>
+                          <div className={`text-xs font-medium ${metricValues.trialsExpiringSoon > 0 ? 'text-orange-600' : 'text-slate-500'}`}>Expiring &lt;48h</div>
+                        </CardContent>
+                      </Card>
+                      <Card className={`cursor-pointer hover:bg-red-50 transition-colors ${metricValues.mrrAtRisk > 0 ? 'bg-red-50 border-red-300' : 'bg-white border-slate-200'}`} onClick={() => setQuickFilter('payment-issues')}>
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="flex items-center gap-1">
+                            <div className={`text-lg sm:text-2xl font-bold ${metricValues.mrrAtRisk > 0 ? 'text-red-700' : 'text-slate-500'}`}>
+                              ${metricValues.mrrAtRisk.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                            </div>
+                            {metricValues.mrrAtRisk > 0 && <TrendingDown className="w-4 h-4 text-red-500" />}
+                          </div>
+                          <div className={`text-xs font-medium ${metricValues.mrrAtRisk > 0 ? 'text-red-600' : 'text-slate-500'}`}>MRR at Risk</div>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-white border-slate-200">
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="flex items-center gap-1">
+                            <div className="text-lg sm:text-2xl font-bold text-teal-700">
+                              {loadingStats ? '…' : `${metricValues.totalAssigned?.toLocaleString() ?? 0}`}
+                            </div>
+                            <Gauge className="w-4 h-4 text-teal-400" />
+                          </div>
+                          <div className="text-xs text-teal-600 font-medium">
+                            Products / {metricValues.totalCapacity.toLocaleString()} cap
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
                     {/* Stats Cards - responsive grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-6">
                       <Card className="bg-blue-50 border-blue-200">
@@ -1354,14 +1474,14 @@ export default function AdminPage() {
                           <div className="text-xs sm:text-sm text-red-600">Blocked</div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-amber-50 border-amber-200">
+                      <Card className="bg-amber-50 border-amber-200 cursor-pointer hover:bg-amber-100 transition-colors" onClick={() => setQuickFilter('at-risk')}>
                         <CardContent className="p-2 sm:p-4">
                           <div className="text-lg sm:text-2xl font-bold text-amber-700">{users.filter(u => {
                             const activity = calculateActivityStatus(u.last_login || null, u.created_at);
-                            const stats = userStats.find(s => s.userId === u.id);
-                            return activity.days >= 7 && (stats?.productCount || 0) > 0;
+                            const plan = getPlanForUser(subscriptionPlanMap, u.id);
+                            return activity.days >= 3 && plan.subStatus === 'active';
                           }).length}</div>
-                          <div className="text-xs sm:text-sm text-amber-600">At Risk</div>
+                          <div className="text-xs sm:text-sm text-amber-600">At Risk (≥3d)</div>
                         </CardContent>
                       </Card>
                       <Card className="bg-red-50 border-red-300 cursor-pointer hover:bg-red-100 transition-colors" onClick={() => setQuickFilter('payment-issues')}>
@@ -1763,7 +1883,14 @@ export default function AdminPage() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="px-4 py-2 text-left text-slate-600">{planInfo.displayName}</td>
+                                <td className="px-4 py-2 text-left text-slate-600">
+                                  <div>{planInfo.displayName}</div>
+                                  {planInfo.subStatus === 'trial' && planInfo.trialEndDate && (
+                                    <div className="text-xs text-purple-600 font-medium">
+                                      {Math.max(0, Math.ceil((new Date(planInfo.trialEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))}d left
+                                    </div>
+                                  )}
+                                </td>
                                 <td className="px-4 py-2 text-left">
                                   <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
                                 </td>
@@ -1771,7 +1898,13 @@ export default function AdminPage() {
                                   {user.organization_name || '—'}
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.productCount || 0}
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : (
+                                    planInfo.maxProducts != null
+                                      ? <span className={stats?.productCount && planInfo.maxProducts && stats.productCount >= planInfo.maxProducts * 0.9 ? 'text-amber-600 font-semibold' : ''}>
+                                          {stats?.productCount || 0}<span className="text-slate-400 font-normal"> / {planInfo.maxProducts}</span>
+                                        </span>
+                                      : stats?.productCount || 0
+                                  )}
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.branchCount || 0}

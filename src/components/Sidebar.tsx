@@ -234,6 +234,7 @@ export const Sidebar = ({
         location.pathname === sub.path || location.pathname.startsWith(sub.path + '/')
       )) {
         setActiveSecondarySidebar(item.id);
+        setActiveSubmenu(item.id);
         return;
       }
     }
@@ -431,7 +432,11 @@ export const Sidebar = ({
                 <button
                   type="button"
                   aria-label="Settings"
-                  onClick={() => toggleSecondarySidebar('settings')}
+                  onClick={() => {
+                    const isOpening = activeSecondarySidebar !== 'settings';
+                    toggleSecondarySidebar('settings');
+                    if (isOpening && settingsSubItems[0]) navigate(settingsSubItems[0].path);
+                  }}
                   className="flex items-center justify-center w-10 h-10 rounded-xl text-white hover:bg-gray-100 dark:text-white-400 dark:hover:bg-gray-900"
                 >
                   <Settings className="w-5 h-5" />
@@ -450,7 +455,11 @@ export const Sidebar = ({
                   <button
                     type="button"
                     aria-label="Admin"
-                    onClick={() => toggleSecondarySidebar('admin')}
+                    onClick={() => {
+                      const isOpening = activeSecondarySidebar !== 'admin';
+                      toggleSecondarySidebar('admin');
+                      if (isOpening && adminSubItems[0]) navigate(adminSubItems[0].path);
+                    }}
                     className="flex items-center justify-center w-10 h-10 rounded-xl text-white hover:bg-gray-100 dark:text-white-400 dark:hover:bg-gray-900"
                   >
                     <Users className="w-5 h-5" />
@@ -472,7 +481,7 @@ export const Sidebar = ({
             </div>
           ) : (
             // Expanded: full panel
-            <div className="h-full flex flex-col rounded-2xl bg-blue-600 text-white dark:bg-gray-900/60">
+            <div className="min-h-full flex flex-col rounded-2xl bg-blue-600 text-white dark:bg-gray-900/60">
               <div className="space-y-4">
                 {/* Branch Picker */}
                 <div>
@@ -563,6 +572,9 @@ export const Sidebar = ({
                           >
                             <Icon className={`w-4 h-4 mr-2 ${showActive ? 'text-white' : 'text-white group-hover:text-white dark:text-white-500 dark:group-hover:text-blue-300'}`} />
                             <span className="flex-1 truncate">{label}</span>
+                            {isMobile && hasSubItems && (
+                              <ChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 transition-transform duration-200 ${activeSubmenu === item.id ? 'rotate-180' : ''}`} />
+                            )}
                           </NavLink>
                           {isMobile && activeSubmenu === item.id && item.subItems && (
                             <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
@@ -603,9 +615,13 @@ export const Sidebar = ({
                           type="button"
                           onClick={() => {
                             if (isMobile) {
+                              const isOpening = activeSubmenu !== 'settings';
                               setActiveSubmenu(prev => prev === 'settings' ? null : 'settings');
+                              if (isOpening && settingsSubItems[0]) navigate(settingsSubItems[0].path);
                             } else {
+                              const isOpening = activeSecondarySidebar !== 'settings';
                               toggleSecondarySidebar('settings');
+                              if (isOpening && settingsSubItems[0]) navigate(settingsSubItems[0].path);
                             }
                           }}
                           className={`
@@ -620,6 +636,9 @@ export const Sidebar = ({
                         >
                           <Settings className="w-4 h-4 mr-2 text-white-400" />
                           <span className="flex-1 truncate text-left">Settings</span>
+                          {isMobile && (
+                            <ChevronDown className={`w-3.5 h-3.5 ml-1 flex-shrink-0 transition-transform duration-200 ${activeSubmenu === 'settings' ? 'rotate-180' : ''}`} />
+                          )}
                         </button>
                         {isMobile && activeSubmenu === 'settings' && (() => {
                           const settingsItem = menuItems.find(item => item.id === 'settings');
@@ -667,9 +686,13 @@ export const Sidebar = ({
                           type="button"
                           onClick={() => {
                             if (isMobile) {
+                              const isOpening = activeSubmenu !== 'admin';
                               setActiveSubmenu(prev => prev === 'admin' ? null : 'admin');
+                              if (isOpening && adminSubItems[0]) navigate(adminSubItems[0].path);
                             } else {
+                              const isOpening = activeSecondarySidebar !== 'admin';
                               toggleSecondarySidebar('admin');
+                              if (isOpening && adminSubItems[0]) navigate(adminSubItems[0].path);
                             }
                           }}
                           className={`

@@ -70,30 +70,46 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
     if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
 
     try {
-      // Fetch total stock value and product count with additional fields
-      const { data: productsData, error: productsError } = await supabase
-        .from('products')
-        .select(`
-          id,
-          name,
-          quantity_in_stock,
-          unit_price,
-          minimum_stock_level,
-          category_id,
-          is_variant,
-          variant_name,
-          parent_product_id,
-          created_at,
-          categories(name)
-        `)
-        .eq('user_id', user.id)
-        .eq('branch_id', activeBranch.branch_id)
-        .order('name');
+      // Fetch all products with pagination to avoid Supabase's default 1000-row limit
+      const BATCH_SIZE = 1000;
+      const allProductsData: any[] = [];
+      let page = 0;
 
-      if (productsError) {
-        console.error('Products error:', productsError);
-        throw new Error('Failed to fetch products data');
+      while (true) {
+        const { data: batch, error: batchError } = await supabase
+          .from('products')
+          .select(`
+            id,
+            name,
+            quantity_in_stock,
+            unit_price,
+            minimum_stock_level,
+            category_id,
+            is_variant,
+            variant_name,
+            parent_product_id,
+            created_at,
+            categories(name)
+          `)
+          .eq('user_id', user.id)
+          .eq('branch_id', activeBranch.branch_id)
+          .order('name')
+          .range(page * BATCH_SIZE, (page + 1) * BATCH_SIZE - 1);
+
+        if (batchError) {
+          console.error('Products error:', batchError);
+          throw new Error('Failed to fetch products data');
+        }
+
+        if (batch && batch.length > 0) {
+          allProductsData.push(...batch);
+        }
+
+        if (!batch || batch.length < BATCH_SIZE) break;
+        page++;
       }
+
+      const productsData = allProductsData;
 
       // Calculate metrics
       const totalValue = productsData?.reduce((sum, product) => 

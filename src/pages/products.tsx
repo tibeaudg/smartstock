@@ -151,35 +151,47 @@ const {
 
     try {
       console.log('[Products Query] Fetching products for branch:', branchId, 'user:', user.id);
-      
-      // FIX: Use simpler select without complex joins, or fix the join syntax
-      let query = supabase
-        .from('products')
-        .select(`
-          *,
-          categories (
-            name
-          )
-        `)
-        .eq('user_id', user.id);
 
-      // Apply branch filter - CRITICAL: Only show products for current branch
-      query = query.eq('branch_id', branchId);
+      // Supabase PostgREST has a default 1000-row limit. We paginate in batches
+      // of 1000 until all products are fetched to avoid silent truncation.
+      const BATCH_SIZE = 1000;
+      const allProducts: any[] = [];
+      let page = 0;
 
-      // Apply category filter if specified
-      if (selectedCategoryIds.length > 0) {
-        query = query.in('category_id', selectedCategoryIds);
+      while (true) {
+        let query = supabase
+          .from('products')
+          .select(`
+            *,
+            categories (
+              name
+            )
+          `)
+          .eq('user_id', user.id)
+          .eq('branch_id', branchId)
+          .range(page * BATCH_SIZE, (page + 1) * BATCH_SIZE - 1);
+
+        if (selectedCategoryIds.length > 0) {
+          query = query.in('category_id', selectedCategoryIds);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+          console.error('Error fetching products:', error);
+          return [];
+        }
+
+        if (data && data.length > 0) {
+          allProducts.push(...data);
+        }
+
+        if (!data || data.length < BATCH_SIZE) break;
+        page++;
       }
 
-      const { data, error } = await query;
-
-      if (error) {
-        console.error('Error fetching products:', error);
-        return [];
-      }
-
-      console.log('[Products Query] Fetched:', data?.length || 0, 'products');
-      return data || [];
+      console.log('[Products Query] Fetched:', allProducts.length, 'products');
+      return allProducts;
     } catch (error) {
       console.error('Error in products query:', error);
       return [];

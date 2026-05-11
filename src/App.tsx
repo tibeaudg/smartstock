@@ -420,7 +420,7 @@ const AppRouter = () => {
             <Route path="billing" element={<BillingPage />} />
             <Route path="branches" element={<BranchesSettings />} />
           </Route>
-          <Route path="workflows" element={<PaywallGate feature="orders"><WorkflowsPage /></PaywallGate>} />
+          <Route path="workflows" element={<WorkflowsPage />} />
           <Route path="stock-counts" element={<StockCountsPage />} />
           <Route path="stock-counts/new" element={<CreateStockCountPage />} />
           <Route path="stock-counts/:id/edit" element={<EditStockCountPage />} />
