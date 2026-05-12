@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
+import { useLocations, useCreateLocation } from '@/hooks/useLocations';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/errorHandler';
 import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, ArrowLeft, Package } from 'lucide-react';
@@ -22,6 +23,204 @@ import { HierarchicalCategorySelector } from '@/components/categories/Hierarchic
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { z } from 'zod';
+
+const LocationSelector: React.FC<{
+  value?: string;
+  onValueChange: (location: string | null) => void;
+  placeholder?: string;
+}> = ({ value, onValueChange, placeholder = 'Select location...' }) => {
+  const { data: locations = [] } = useLocations();
+  const createLocation = useCreateLocation();
+  const { activeBranch } = useBranches();
+  const [open, setOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  const [newLocationName, setNewLocationName] = useState('');
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  const normalizedSearch = searchTerm.trim();
+  const selectedLocation = useMemo(
+    () => locations.find((location) => location.name === value) || null,
+    [locations, value]
+  );
+
+  const filteredLocations = useMemo(() => {
+    if (!normalizedSearch) return locations;
+    return locations.filter((location) =>
+      location.name.toLowerCase().includes(normalizedSearch.toLowerCase())
+    );
+  }, [locations, normalizedSearch]);
+
+  const exactMatch = normalizedSearch
+    ? locations.some((location) => location.name.toLowerCase() === normalizedSearch.toLowerCase())
+    : false;
+  const canCreate = normalizedSearch.length > 0 && !exactMatch && !!activeBranch;
+
+  const handleCreateButtonClick = () => {
+    setIsAddingNew(true);
+    setNewLocationName('');
+  };
+
+  const handleSaveNewLocation = async () => {
+    const trimmedName = newLocationName.trim();
+    if (!trimmedName) return;
+
+    if (!activeBranch) {
+      toast.error('Cannot create location: No active branch selected');
+      return;
+    }
+
+    const exactMatch = locations.some((location) => location.name.toLowerCase() === trimmedName.toLowerCase());
+    if (exactMatch) {
+      toast.error('Location already exists');
+      return;
+    }
+
+    await createLocation.mutateAsync({ name: trimmedName });
+    setIsAddingNew(false);
+    setNewLocationName('');
+  };
+
+  const handleCancelNewLocation = () => {
+    setIsAddingNew(false);
+    setNewLocationName('');
+  };
+
+  const displayValue = value ? selectedLocation?.name ?? value : placeholder;
+
+  const handleSelect = (location: { name: string }) => {
+    onValueChange(location.name);
+    setOpen(false);
+    setSearchTerm('');
+  };
+
+  const handleCreate = async () => {
+    if (!canCreate) return;
+
+    if (!activeBranch) {
+      toast.error('Cannot create location: No active branch selected');
+      return;
+    }
+
+    try {
+      await createLocation.mutateAsync({ name: normalizedSearch });
+      onValueChange(normalizedSearch);
+      setOpen(false);
+      setSearchTerm('');
+    } catch (error) {
+      console.error('Error creating location:', error);
+    }
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+        >
+          <span className="truncate">{displayValue}</span>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+        <Command>
+          <CommandInput
+            ref={searchInputRef}
+            value={searchTerm}
+            onValueChange={setSearchTerm}
+            placeholder="Search or type to add a location..."
+            autoComplete="off"
+          />
+          <div className="border-b bg-slate-50 px-3 py-2">
+            {isAddingNew ? (
+              <div className="space-y-2">
+                <Input
+                  value={newLocationName}
+                  onChange={(e) => setNewLocationName(e.target.value)}
+                  placeholder="Enter location name..."
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSaveNewLocation();
+                    } else if (e.key === 'Escape') {
+                      handleCancelNewLocation();
+                    }
+                  }}
+                />
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    onClick={handleSaveNewLocation}
+                    disabled={!newLocationName.trim()}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCancelNewLocation}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button
+                variant="ghost"
+                className="w-full justify-between"
+                onClick={handleCreateButtonClick}
+                disabled={!activeBranch}
+              >
+                <span>Add new location</span>
+                <Plus className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <CommandList>
+            <CommandEmpty>
+              {canCreate ? (
+                <div className="p-2 text-center">
+                  <p className="text-sm text-gray-500 mb-2">No location found</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCreate}
+                    className="w-full"
+                    disabled={!canCreate}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create "{normalizedSearch}"
+                  </Button>
+                </div>
+              ) : !activeBranch ? (
+                <p className="text-sm text-gray-500">Select a branch to create locations</p>
+              ) : (
+                <p className="text-sm text-gray-500">No locations found</p>
+              )}
+            </CommandEmpty>
+            <CommandGroup>
+              {filteredLocations.map((location) => (
+                <CommandItem
+                  key={location.id ?? location.name}
+                  value={location.name}
+                  onSelect={() => handleSelect(location)}
+                >
+                  <div className="flex-1">
+                    <div className="font-medium">{location.name}</div>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -226,7 +425,6 @@ export default function AddProductPage() {
       const category = categories.find(c => c.id === preFilledCategoryId);
       if (category) {
         form.setValue('categoryName', category.name);
-        console.log(`[AddProductPage] Found category name: ${category.name}`);
       }
     }
   }, [preFilledCategoryId, form, categories]);
@@ -1041,81 +1239,6 @@ export default function AddProductPage() {
                   </div>
                 )}
 
-                {/* Pricing - Promoted from Additional Info */}
-                {!hasVariants && (
-                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="purchasePrice"
-                        rules={{ min: { value: 0, message: 'Must be 0 or more' } }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Purchase Price</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                inputMode="decimal"
-                                step="0.01"
-                                min="0"
-                                placeholder="0"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                value={field.value === 0 ? '' : field.value.toString()}
-                                className="border-gray-300 focus:border-gray-500"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="salePrice"
-                        rules={{ min: { value: 0, message: 'Must be 0 or more' } }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Sale Price</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                inputMode="decimal"
-                                step="0.01"
-                                min="0"
-                                placeholder="0"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                value={field.value === 0 ? '' : field.value.toString()}
-                                className="border-gray-300 focus:border-gray-500"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    {purchasePrice > 0 && salePrice > 0 && (
-                      <div className={`mt-4 p-3 rounded-lg border ${marginAmount >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Margin Amount:</span>
-                            <span className={`font-semibold ${marginAmount >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                              {marginAmount >= 0 ? '+' : ''}{marginAmount.toFixed(2)}
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Margin %:</span>
-                            <span className={`font-semibold ${marginPercent >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-                              {marginPercent >= 0 ? '+' : ''}{marginPercent.toFixed(2)}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
                 {/* Category - Promoted from Additional Info */}
                 <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
                  
@@ -1134,6 +1257,25 @@ export default function AddProductPage() {
                             placeholder="Select category..."
                             allowCreate={true}
                             showPath={true}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <LocationSelector
+                            value={field.value || ''}
+                            onValueChange={(location) => field.onChange(location || '')}
+                            placeholder="Select location..."
                           />
                         </FormControl>
                         <FormMessage />
@@ -1279,32 +1421,82 @@ export default function AddProductPage() {
                       </div>
                     </div>
 
-                    {/* Location and Tax Configuration */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    {/* Pricing and Tax Configuration */}
+                    <div className="grid grid-cols-1 gap-6">
                       {!hasVariants && (
-                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
-                          <div className="text-sm font-medium text-gray-600 mb-2">Storage Location</div>
-                          <FormField
-                            control={form.control}
-                            name="location"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormControl>
-                                  <Input 
-                                    {...field} 
-                                    placeholder="Enter location (e.g. A1, Shelf 3)" 
-                                    disabled={loading}
-                                    className="border-gray-300 focus:border-gray-500"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                        <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
+                          <div className="text-sm font-medium text-gray-600 mb-3">Pricing</div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name="purchasePrice"
+                              rules={{ min: { value: 0, message: 'Must be 0 or more' } }}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Purchase Price</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      type="number" 
+                                      inputMode="decimal"
+                                      step="0.01"
+                                      min="0"
+                                      placeholder="0"
+                                      disabled={loading}
+                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                      value={field.value === 0 ? '' : field.value.toString()}
+                                      className="border-gray-300 focus:border-gray-500"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="salePrice"
+                              rules={{ min: { value: 0, message: 'Must be 0 or more' } }}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Sale Price</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      type="number" 
+                                      inputMode="decimal"
+                                      step="0.01"
+                                      min="0"
+                                      placeholder="0"
+                                      disabled={loading}
+                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                                      value={field.value === 0 ? '' : field.value.toString()}
+                                      className="border-gray-300 focus:border-gray-500"
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                          {purchasePrice > 0 && salePrice > 0 && (
+                            <div className={`mt-4 p-3 rounded-lg border ${marginAmount >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                              <div className="space-y-1 text-sm">
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">Margin Amount:</span>
+                                  <span className={`font-semibold ${marginAmount >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                    {marginAmount >= 0 ? '+' : ''}{marginAmount.toFixed(2)}
+                                  </span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600">Margin %:</span>
+                                  <span className={`font-semibold ${marginPercent >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                    {marginPercent >= 0 ? '+' : ''}{marginPercent.toFixed(2)}%
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
 
-                      {/* Tax Configuration */}
                       {!hasVariants && (
                         <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
                           <div className="text-sm font-medium text-gray-600 mb-3">Tax Configuration</div>

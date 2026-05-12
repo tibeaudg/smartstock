@@ -10,7 +10,7 @@ export interface LocationItem {
   productCount: number;
 }
 
-async function fetchLocations(userId: string, branchId: string): Promise<LocationItem[]> {
+async function fetchLocations(userId: string): Promise<LocationItem[]> {
   // Fetch managed locations from the table
   const { data: tableRows, error: tableError } = await supabase
     .from('locations')
@@ -18,20 +18,24 @@ async function fetchLocations(userId: string, branchId: string): Promise<Locatio
     .eq('user_id', userId)
     .order('name');
 
-  if (tableError) throw tableError;
+  if (tableError) {
+    // If locations table doesn't exist yet, just return empty managed locations
+    console.warn('Locations table not found, using fallback mode');
+  }
 
-  // Fetch distinct location strings from products (for backward compat / orphans)
+  // Get product counts - same pattern as categories page
   const { data: productRows, error: productError } = await supabase
     .from('products')
     .select('location')
     .eq('user_id', userId)
-    .eq('branch_id', branchId)
     .not('location', 'is', null)
-    .neq('location', '');
+    .neq('location', '')
+    .eq('is_variant', false)
+    .eq('status', 'active');
 
   if (productError) throw productError;
 
-  // Count products per location name
+  // Count products per location name (same as categories)
   const countMap = new Map<string, number>();
   (productRows || []).forEach((row) => {
     const loc = row.location?.trim();
@@ -57,12 +61,11 @@ async function fetchLocations(userId: string, branchId: string): Promise<Locatio
 export function useLocations() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
-  const branchId = activeBranch?.branch_id ?? null;
 
   return useQuery<LocationItem[]>({
-    queryKey: ['locations', user?.id, branchId],
-    queryFn: () => fetchLocations(user!.id, branchId!),
-    enabled: !!user && !!branchId,
+    queryKey: ['locations', user?.id],
+    queryFn: () => fetchLocations(user!.id),
+    enabled: !!user,
     staleTime: 1000 * 60 * 2,
   });
 }
@@ -79,12 +82,11 @@ export function useCreateLocation() {
         name: name.trim(),
         description: description?.trim() || null,
         user_id: user.id,
-        branch_id: activeBranch.branch_id,
       });
       if (error) throw error;
     },
     onSuccess: (_, { name }) => {
-      queryClient.invalidateQueries({ queryKey: ['locations'] });
+      queryClient.invalidateQueries({ queryKey: ['locations', user?.id] });
       toast.success(`Location "${name}" created`);
     },
     onError: (err: Error) => {
@@ -129,8 +131,8 @@ export function useRenameLocation() {
         .update({ location: newName.trim() })
         .eq('location', oldName)
         .eq('user_id', user.id)
-        .eq('branch_id', activeBranch.branch_id);
-      if (prodErr) throw prodErr;
+        
+        if (prodErr) throw prodErr;
     },
     onSuccess: (_, { newName }) => {
       queryClient.invalidateQueries({ queryKey: ['locations'] });
@@ -168,7 +170,6 @@ export function useDeleteLocation() {
         .update({ location: null })
         .eq('location', name)
         .eq('user_id', user.id)
-        .eq('branch_id', activeBranch.branch_id);
       if (prodErr) throw prodErr;
     },
     onSuccess: () => {

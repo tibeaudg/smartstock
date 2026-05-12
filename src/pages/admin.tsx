@@ -24,7 +24,7 @@ import { UserDetailModal } from '@/components/admin/UserDetailModal';
 // User management types
 type SortColumn = 'email' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' |'branches' ;
 type SortDirection = 'asc' | 'desc';
-type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'trialing' | 'has-recent-errors' | 'payment-issues';
+type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'trialing' | 'paying' | 'has-recent-errors' | 'payment-issues';
 type PlanFilter = 'all' | string;
 type RoleFilter = 'all' | 'user' | 'admin' | 'staff';
 
@@ -42,6 +42,7 @@ interface UserProfile {
   referral_source?: string | null;
   organization_name?: string | null;
   is_owner?: boolean | null;
+  stripe_customer_id?: string | null;
 }
 
 interface UserStats {
@@ -101,6 +102,9 @@ interface UserPlanInfo {
   hasFailedInvoice: boolean;
   maxProducts: number | null;
   planPrice: number;
+  hasPaymentInfo: boolean;
+  isPayingCustomer: boolean;
+  missingPaymentInfo: boolean;
 }
 
 async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo>> {
@@ -122,9 +126,18 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
   const subs = subsResult.data || [];
   const failedUserIds = new Set((failedInvoicesResult.data || []).map((r: { user_id: string }) => r.user_id));
 
+  const userIds = [...new Set(subs.map((s) => s.user_id).filter(Boolean))];
+  const { data: profileData, error: profileError } = userIds.length
+    ? await supabase.from('profiles').select('id, stripe_customer_id').in('id', userIds)
+    : { data: [] as Array<{ id: string; stripe_customer_id: string | null }>, error: null };
+  if (profileError) {
+    console.error('Error fetching profile payment info:', profileError);
+  }
+  const stripeCustomerMap = new Map((profileData || []).map((p: { id: string; stripe_customer_id: string | null }) => [p.id, p.stripe_customer_id]));
+
   const tierIds = [...new Set(subs.map((s) => s.tier_id).filter(Boolean))];
   const { data: tiers } = tierIds.length
-    ? await supabase.from('pricing_tiers').select('id, name, display_name, max_products, price_monthly').in('id', tierIds)
+    ? await supabase.from('pricing_tiers').select('id, name, display_name, max_products, price_monthly, price_per_product_monthly').in('id', tierIds)
     : { data: [] };
   const tierMap = new Map((tiers || []).map((t) => [t.id, t]));
 
@@ -135,6 +148,11 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
     const displayName = tier?.display_name ?? plans[tierName as keyof typeof plans]?.displayName ?? 'Starter';
     const status = (row.status ?? null) as UserPlanInfo['subStatus'];
     const isOnTrial = status === 'trial';
+
+    const hasPaymentInfo = !!stripeCustomerMap.get(row.user_id);
+    const isPaidTier = !!tier && ((tier.price_monthly ?? 0) > 0 || (tier.price_per_product_monthly ?? 0) > 0);
+    const isPayingCustomer = status === 'active' && isPaidTier;
+    const missingPaymentInfo = isPayingCustomer && !hasPaymentInfo;
 
     if (tierName === 'free' || !tierName) {
       map[row.user_id] = {
@@ -147,6 +165,9 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
         hasFailedInvoice: failedUserIds.has(row.user_id),
         maxProducts: 100,
         planPrice: 0,
+        hasPaymentInfo,
+        isPayingCustomer,
+        missingPaymentInfo,
       };
     } else {
       const filterKey = isOnTrial ? `${tierName}_trial` : tierName;
@@ -160,6 +181,9 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
         hasFailedInvoice: failedUserIds.has(row.user_id),
         maxProducts: tier?.max_products ?? null,
         planPrice: tier?.price_monthly ?? 0,
+        hasPaymentInfo,
+        isPayingCustomer,
+        missingPaymentInfo,
       };
     }
   }
@@ -177,6 +201,9 @@ function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: string): 
     hasFailedInvoice: false,
     maxProducts: 100,
     planPrice: 0,
+    hasPaymentInfo: false,
+    isPayingCustomer: false,
+    missingPaymentInfo: false,
   };
 }
 
@@ -803,6 +830,9 @@ export default function AdminPage() {
       } else if (quickFilter === 'trialing') {
         const plan = getPlanForUser(subscriptionPlanMap, user.id);
         if (plan.subStatus !== 'trial') return false;
+      } else if (quickFilter === 'paying') {
+        const plan = getPlanForUser(subscriptionPlanMap, user.id);
+        if (!plan.isPayingCustomer) return false;
       } else if (quickFilter === 'has-open-chat') {
         if ((openChatCounts[user.id] || 0) === 0) return false;
       } else if (quickFilter === 'has-recent-errors') {
@@ -1010,6 +1040,8 @@ export default function AdminPage() {
     });
 
     const activeTrials = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).subStatus === 'trial').length;
+    const activePayingCustomers = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).isPayingCustomer).length;
+    const activePayingCustomersMissingInfo = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).missingPaymentInfo).length;
 
     const trialsExpiringSoon = users.filter(u => {
       const plan = getPlanForUser(subscriptionPlanMap, u.id);
@@ -1039,6 +1071,8 @@ export default function AdminPage() {
       usersLast30Days: usersLast30Days.length,
       activatedLast30Days: activatedLast30Days.length,
       activeTrials,
+      activePayingCustomers,
+      activePayingCustomersMissingInfo,
       trialsExpiringSoon,
       mrrAtRisk,
       totalCapacity,
@@ -1192,7 +1226,7 @@ export default function AdminPage() {
                     </div>
                     
                     {/* Pulse Row — urgent alerts at a glance */}
-                    <div className="grid grid-cols-5 md:grid-cols-5 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
                       <Card className={`border-purple-200 cursor-pointer hover:bg-purple-50 transition-colors ${metricValues.activeTrials > 0 ? 'bg-purple-50' : 'bg-white'}`} onClick={() => setQuickFilter('trialing')}>
                         <CardContent className="p-2 sm:p-3">
                           <div className="text-lg sm:text-2xl font-bold text-purple-700">{metricValues.activeTrials}</div>
@@ -1206,6 +1240,20 @@ export default function AdminPage() {
                             {metricValues.trialsExpiringSoon > 0 && <Clock className="w-4 h-4 text-orange-500" />}
                           </div>
                           <div className={`text-xs font-medium ${metricValues.trialsExpiringSoon > 0 ? 'text-orange-600' : 'text-slate-500'}`}>Expiring &lt;48h</div>
+                        </CardContent>
+                      </Card>
+                      <Card className={`border-blue-200 cursor-pointer hover:bg-blue-50 transition-colors ${metricValues.activePayingCustomers > 0 ? 'bg-blue-50' : 'bg-white'}`} onClick={() => setQuickFilter('paying')}>
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="flex items-center gap-2">
+                            <div className="text-lg sm:text-2xl font-bold text-blue-700">{metricValues.activePayingCustomers}</div>
+                            <CreditCard className="w-4 h-4 text-blue-500" />
+                          </div>
+                          <div className="text-xs text-blue-600 font-medium">Paying Customers</div>
+                          {metricValues.activePayingCustomersMissingInfo > 0 && (
+                            <div className="text-[11px] text-orange-700 mt-1">
+                              {metricValues.activePayingCustomersMissingInfo} missing payment info
+                            </div>
+                          )}
                         </CardContent>
                       </Card>
                       
@@ -1266,8 +1314,9 @@ export default function AdminPage() {
                         
                         const mPlanInfo = getPlanForUser(subscriptionPlanMap, user.id);
                         const mIsPaymentIssue = mPlanInfo.subStatus === 'past_due' || mPlanInfo.hasFailedInvoice;
+                        const mMissingPaymentInfo = mPlanInfo.missingPaymentInfo;
                         return (
-                          <Card key={user.id} className={`cursor-pointer hover:bg-gray-50 ${mIsPaymentIssue ? 'border-red-300 bg-red-50/30' : activity.isActive ? 'border-green-200 bg-green-50/30' : ''}`} onClick={() => setSelectedUser(user)}>
+                          <Card key={user.id} className={`cursor-pointer hover:bg-gray-50 ${mMissingPaymentInfo ? 'border-amber-300 bg-amber-50/30' : mIsPaymentIssue ? 'border-red-300 bg-red-50/30' : activity.isActive ? 'border-green-200 bg-green-50/30' : ''}`} onClick={() => setSelectedUser(user)}>
                             <CardContent className="p-4">
                               <div className="space-y-2">
                                 <div className="flex justify-between items-start">
@@ -1329,6 +1378,12 @@ export default function AdminPage() {
                                     <span className="font-medium">Plan:</span>{' '}
                                     {mPlanInfo.displayName}
                                     <SubStatusBadge status={mPlanInfo.subStatus} hasFailedInvoice={mPlanInfo.hasFailedInvoice} />
+                                    {mPlanInfo.missingPaymentInfo && (
+                                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold bg-amber-100 text-amber-800">
+                                        <CreditCard className="w-3 h-3" />
+                                        No payment info
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="text-gray-600">
                                     <span className="font-medium">Role:</span>{' '}
@@ -1481,10 +1536,12 @@ export default function AdminPage() {
                             
                             const planInfo = getPlanForUser(subscriptionPlanMap, user.id);
                             const isPaymentIssue = planInfo.subStatus === 'past_due' || planInfo.hasFailedInvoice;
+                            const isMissingPaymentInfo = planInfo.missingPaymentInfo;
                             return (
                               <tr
                                 key={user.id}
                                 className={`border-b hover:bg-slate-50 cursor-pointer ${
+                                  isMissingPaymentInfo ? 'bg-amber-50/30 border-amber-100' :
                                   isPaymentIssue ? 'bg-red-50/50 border-red-100' :
                                   activity.isActive ? 'bg-green-50/30 border-green-100' : 'bg-white'
                                 }`}
@@ -1518,12 +1575,22 @@ export default function AdminPage() {
                                   )}
                                 </td>
                                 <td className="px-4 py-2 text-left text-slate-600">
-                                  <div>{planInfo.displayName}</div>
-                                  {planInfo.subStatus === 'trial' && planInfo.trialEndDate && (
-                                    <div className="text-xs text-purple-600 font-medium">
-                                      {Math.max(0, Math.ceil((new Date(planInfo.trialEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))}d left
+                                  <div className="flex flex-col gap-1">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <span>{planInfo.displayName}</span>
+                                      {planInfo.missingPaymentInfo && (
+                                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-semibold bg-amber-100 text-amber-800">
+                                          <CreditCard className="w-3 h-3" />
+                                          No payment info
+                                        </span>
+                                      )}
                                     </div>
-                                  )}
+                                    {planInfo.subStatus === 'trial' && planInfo.trialEndDate && (
+                                      <div className="text-xs text-purple-600 font-medium">
+                                        {Math.max(0, Math.ceil((new Date(planInfo.trialEndDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))}d left
+                                      </div>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="px-4 py-2 text-left">
                                   <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
