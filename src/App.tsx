@@ -25,6 +25,7 @@ import { useAuth, AuthProvider } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
+import { usePageViewLogger } from "./hooks/usePageViewLogger";
 import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import SEO from './components/SEO';
@@ -195,6 +196,7 @@ const ContentLoadingScreen = () => <SkeletonContent />;
 
 const AppRouter = () => {
   useNavigationQueryReset();
+  usePageViewLogger();
 
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user, loading, userProfile } = useAuth();

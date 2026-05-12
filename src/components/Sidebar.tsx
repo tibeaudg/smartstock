@@ -20,6 +20,18 @@ import {
   Contact,
   GitBranch,
   Workflow,
+  User,
+  SlidersHorizontal,
+  UserCog,
+  Building2,
+  CreditCard,
+  ClipboardList,
+  ShoppingBag,
+  Hash,
+  ArrowLeftRight,
+  Tag,
+  MessageSquare,
+  Mail,
 }
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
@@ -72,6 +84,14 @@ interface SidebarProps {
   onSecondarySidebarOpenChange?: (open: boolean) => void;
 }
 
+interface SubItem {
+  id: string;
+  label: string;
+  path: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  divider?: boolean;
+}
+
 interface MenuItem {
   id: string;
   label: string;
@@ -79,11 +99,7 @@ interface MenuItem {
   path: string;
   end?: boolean;
   navigateOnClick?: boolean;
-  subItems?: {
-    id: string;
-    label: string;
-    path: string;
-  }[];
+  subItems?: SubItem[];
 }
 
 export const Sidebar = ({
@@ -157,16 +173,21 @@ export const Sidebar = ({
   const isBlocked = userProfile?.blocked;
   const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
 
-  const settingsSubItems = [
-    { id: 'general', label: 'General', path: '/dashboard/settings/general' },
-    { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile' },
-    { id: 'users', label: 'Users', path: '/dashboard/settings/users' },
-    { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches' },
-    { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing' },
+  const settingsSubItems: SubItem[] = [
+    { id: 'general', label: 'General', path: '/dashboard/settings/general', icon: SlidersHorizontal },
+    { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: User },
+    { id: 'users', label: 'Users', path: '/dashboard/settings/users', icon: UserCog, divider: true },
+    { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches', icon: Building2 },
+    { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard },
   ];
 
-  const adminSubItems = [
-    { id: 'overview', label: 'Overview', path: '/admin' },
+  const adminSubItems: SubItem[] = [
+    { id: 'users', label: 'User Management', path: '/admin?tab=users', icon: Users },
+    { id: 'chats', label: 'Chats', path: '/admin?tab=chats', icon: MessageSquare },
+    { id: 'notifications', label: 'Notifications', path: '/admin?tab=notifications', icon: Bell },
+    { id: 'emails', label: 'Email Management', path: '/admin?tab=emails', icon: Mail },
+    // sentinel entry so bare /admin also opens the sidebar
+    { id: '_admin_root', label: '', path: '/admin' },
   ];
 
   const analyticsSubItems = [
@@ -179,7 +200,7 @@ export const Sidebar = ({
     ? [
         {
           id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings',
-          subItems: [{ id: 'invoicing', label: 'Billing', path: '/dashboard/settings/invoicing' }]
+          subItems: [{ id: 'invoicing', label: 'Billing', path: '/dashboard/settings/invoicing', icon: CreditCard }]
         },
       ]
     : [
@@ -188,9 +209,9 @@ export const Sidebar = ({
         {
           id: 'inventory', label: 'Inventory', icon: Package, path: 'dashboard/inventory',
           subItems: [
-            { id: 'products', label: 'Products', path: '/dashboard/categories' },
-            { id: 'transactions', label: 'Transactions', path: '/dashboard/transactions' },
-            { id: 'categories', label: 'Categories', path: '/dashboard/categoriesManagement' }
+            { id: 'products', label: 'Products', path: '/dashboard/categories', icon: Package },
+            { id: 'transactions', label: 'Transactions', path: '/dashboard/transactions', icon: ArrowLeftRight },
+            { id: 'categories', label: 'Categories', path: '/dashboard/categoriesManagement', icon: Tag },
           ]
         },
 
@@ -203,12 +224,12 @@ export const Sidebar = ({
           path: '/dashboard/workflows',
           navigateOnClick: true,
           subItems: [
-            { id: 'pick-lists', label: 'Pick Lists', path: '/dashboard/pick-lists' },
-            { id: 'sales-orders', label: 'Sales Orders', path: '/dashboard/sales-orders' },
-            { id: 'purchase-orders', label: 'Purchase Orders', path: '/dashboard/purchase-orders' },
-            { id: 'stock-counts', label: 'Stock Counts', path: '/dashboard/stock-counts' },
-            { id: 'customers', label: 'Customers', path: '/dashboard/customer-management' },
-            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers' },
+            { id: 'pick-lists', label: 'Pick Lists', path: '/dashboard/pick-lists', icon: ClipboardList },
+            { id: 'sales-orders', label: 'Sales Orders', path: '/dashboard/sales-orders', icon: ShoppingCart },
+            { id: 'purchase-orders', label: 'Purchase Orders', path: '/dashboard/purchase-orders', icon: ShoppingBag },
+            { id: 'stock-counts', label: 'Stock Counts', path: '/dashboard/stock-counts', icon: Hash },
+            { id: 'customers', label: 'Customers', path: '/dashboard/customer-management', icon: Contact, divider: true },
+            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers', icon: Truck },
           ],
         },
 
@@ -230,9 +251,13 @@ export const Sidebar = ({
   // Auto-open secondary sidebar based on current route
   useEffect(() => {
     for (const item of menuItems) {
-      if (item.subItems?.some(sub =>
-        location.pathname === sub.path || location.pathname.startsWith(sub.path + '/')
-      )) {
+      if (item.subItems?.some(sub => {
+        if (sub.path.includes('?')) {
+          const [subPath, subSearch] = sub.path.split('?');
+          return location.pathname === subPath && location.search === `?${subSearch}`;
+        }
+        return location.pathname === sub.path || location.pathname.startsWith(sub.path + '/');
+      })) {
         setActiveSecondarySidebar(item.id);
         setActiveSubmenu(item.id);
         return;
@@ -240,7 +265,7 @@ export const Sidebar = ({
     }
     setActiveSecondarySidebar(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   // Notify parent when secondary sidebar opens/closes
   useEffect(() => {
@@ -267,7 +292,7 @@ export const Sidebar = ({
         className={`
           fixed left-0 top-0 h-screen
           ${isMobile ? 'w-72' : (effectiveCollapsed ? 'w-20' : 'w-60')}
-          bg-blue-600 dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800
+          bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800
           transition-[width,background-color,border-color,transform] duration-300
           z-50 flex flex-col rounded-r-xl
           ${isMobile ? (isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full') : 'translate-x-0'}
@@ -291,7 +316,7 @@ export const Sidebar = ({
           ) : (
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Package className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
                 <h1 className="text-lg sm:text-xl font-semibold text-white truncate">
@@ -470,7 +495,7 @@ export const Sidebar = ({
                   <button
                     type="button"
                     aria-label="Profile"
-                    className="rounded-full bg-blue-600 w-9 h-9 flex items-center justify-center flex-shrink-0 text-white text-sm font-semibold hover:ring-2 hover:ring-blue-300 dark:hover:ring-blue-500"
+                    className="rounded-full bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 w-9 h-9 flex items-center justify-center flex-shrink-0 text-white text-sm font-semibold hover:ring-2 hover:ring-blue-300 dark:hover:ring-blue-500"
                   >
                     {userProfile?.first_name?.[0] ||
                       userProfile?.email?.[0] ||
@@ -481,7 +506,7 @@ export const Sidebar = ({
             </div>
           ) : (
             // Expanded: full panel
-            <div className="min-h-full flex flex-col rounded-2xl bg-blue-600 text-white dark:bg-gray-900/60">
+            <div className="min-h-full flex flex-col rounded-2xl bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 text-white dark:bg-gray-900/60">
               <div className="space-y-4">
                 {/* Branch Picker */}
                 <div>
@@ -501,9 +526,7 @@ export const Sidebar = ({
 
                 {/* Menu section */}
                 <div className="space-y-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-wide text-white-400 dark:text-white-500">
-                    Menu
-                  </p>
+                
                   <ul className="space-y-1.5">
                     {menuItems.map((item) => {
                       if (item.id === 'settings' || item.id === 'admin') return null;
@@ -578,23 +601,27 @@ export const Sidebar = ({
                           </NavLink>
                           {isMobile && activeSubmenu === item.id && item.subItems && (
                             <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
-                              {item.subItems.map(sub => (
-                                <li key={sub.id}>
-                                  <NavLink
-                                    to={sub.path}
-                                    onClick={() => { setActiveSubmenu(null); onToggle(); }}
-                                    className={({ isActive }) => `
-                                      block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                                      ${isActive
-                                        ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300'
-                                        : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'
-                                      }
-                                    `}
-                                  >
-                                    {sub.label}
-                                  </NavLink>
-                                </li>
-                              ))}
+                              {item.subItems.map(sub => {
+                                const MobileSubIcon = sub.icon;
+                                return (
+                                  <li key={sub.id}>
+                                    <NavLink
+                                      to={sub.path}
+                                      onClick={() => { setActiveSubmenu(null); onToggle(); }}
+                                      className={({ isActive }) => `
+                                        flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                                        ${isActive
+                                          ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                                          : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'
+                                        }
+                                      `}
+                                    >
+                                      {MobileSubIcon && <MobileSubIcon className="w-3.5 h-3.5 flex-shrink-0 opacity-70" />}
+                                      {sub.label}
+                                    </NavLink>
+                                  </li>
+                                );
+                              })}
                             </ul>
                           )}
                         </li>
@@ -645,20 +672,24 @@ export const Sidebar = ({
                           if (!settingsItem?.subItems) return null;
                           return (
                             <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
-                              {settingsItem.subItems.map(sub => (
-                                <li key={sub.id}>
-                                  <NavLink
-                                    to={sub.path}
-                                    onClick={() => { setActiveSubmenu(null); onToggle(); }}
-                                    className={({ isActive }) => `
-                                      block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                                      ${isActive ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300' : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'}
-                                    `}
-                                  >
-                                    {sub.label}
-                                  </NavLink>
-                                </li>
-                              ))}
+                              {settingsItem.subItems.map(sub => {
+                                const MobSettingsIcon = sub.icon;
+                                return (
+                                  <li key={sub.id}>
+                                    <NavLink
+                                      to={sub.path}
+                                      onClick={() => { setActiveSubmenu(null); onToggle(); }}
+                                      className={({ isActive }) => `
+                                        flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                                        ${isActive ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300' : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'}
+                                      `}
+                                    >
+                                      {MobSettingsIcon && <MobSettingsIcon className="w-3.5 h-3.5 flex-shrink-0 opacity-70" />}
+                                      {sub.label}
+                                    </NavLink>
+                                  </li>
+                                );
+                              })}
                             </ul>
                           );
                         })()}
@@ -710,20 +741,24 @@ export const Sidebar = ({
                         </button>
                         {isMobile && activeSubmenu === 'admin' && adminItem?.subItems && (
                           <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
-                            {adminItem.subItems.map(sub => (
-                              <li key={sub.id}>
-                                <NavLink
-                                  to={sub.path}
-                                  onClick={() => { setActiveSubmenu(null); onToggle(); }}
-                                  className={({ isActive }) => `
-                                    block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                                    ${isActive ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300' : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'}
-                                  `}
-                                >
-                                  {sub.label}
-                                </NavLink>
-                              </li>
-                            ))}
+                            {adminItem.subItems.filter(sub => !sub.id.startsWith('_')).map(sub => {
+                              const MobAdminIcon = sub.icon;
+                              return (
+                                <li key={sub.id}>
+                                  <NavLink
+                                    to={sub.path}
+                                    onClick={() => { setActiveSubmenu(null); onToggle(); }}
+                                    className={({ isActive }) => `
+                                      flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                                      ${isActive ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300' : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'}
+                                    `}
+                                  >
+                                    {MobAdminIcon && <MobAdminIcon className="w-3.5 h-3.5 flex-shrink-0 opacity-70" />}
+                                    {sub.label}
+                                  </NavLink>
+                                </li>
+                              );
+                            })}
                           </ul>
                         )}
                       </>
@@ -742,7 +777,7 @@ export const Sidebar = ({
                         className="w-full justify-start px-3 py-3 h-auto hover:bg-gray-100 dark:hover:bg-gray-800"
                       >
                         <div className="flex items-center gap-3 w-full">
-                          <div className="rounded-full bg-blue-600 w-10 h-10 flex items-center justify-center flex-shrink-0">
+                          <div className="rounded-full bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 w-10 h-10 flex items-center justify-center flex-shrink-0">
                             <span className="text-white text-sm font-semibold">
                               {userProfile?.first_name?.[0] ||
                                 userProfile?.email?.[0] ||
@@ -788,40 +823,55 @@ export const Sidebar = ({
         const activeItem = menuItems.find(item => item.id === activeSecondarySidebar);
         if (!activeItem?.subItems) return null;
         const title = activeItem.id === 'settings' ? 'Settings' : activeItem.label;
-        const SecIcon = activeItem.icon as React.ComponentType<{ className?: string }>;
 
         return (
           <div
-            className="fixed top-0 h-screen w-52 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-40 flex flex-col shadow-sm transition-[left] duration-300"
+            className="fixed top-0 h-screen w-56 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 z-40 flex flex-col shadow-md transition-[left] duration-300"
             style={{ left: isCollapsed ? '5rem' : '15rem' }}
           >
             {/* Header */}
-            <div className="px-4 py-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
-              <div className="flex items-center gap-2">
-                <SecIcon className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{title}</h3>
-              </div>
+            <div className="px-5 pt-7 pb-5 flex-shrink-0">
+              <h3 className="text-[20px] font-semibold text-gray-800 tracking-tight border-b border-gray-200/50 pb-4">{title}</h3>
             </div>
 
             {/* Nav items */}
-            <nav className="flex-1 px-2 py-3 overflow-y-auto">
+            <nav className="flex-1 px-3 pb-4 overflow-y-auto">
               <ul className="space-y-0.5">
-                {activeItem.subItems.map((subItem) => (
-                  <li key={subItem.id}>
-                    <NavLink
-                      to={subItem.path}
-                      className={({ isActive }) => `
-                        block w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                        ${isActive
-                          ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'
-                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-                        }
-                      `}
-                    >
-                      {subItem.label}
-                    </NavLink>
-                  </li>
-                ))}
+                {activeItem.subItems.filter(sub => !sub.id.startsWith('_')).map((subItem) => {
+                  const isItemActive = subItem.path.includes('?')
+                    ? (() => {
+                        const [subPath, subSearch] = subItem.path.split('?');
+                        return location.pathname === subPath && location.search === `?${subSearch}`;
+                      })()
+                    : location.pathname === subItem.path || location.pathname.startsWith(subItem.path + '/');
+                  const SubIcon = subItem.icon;
+                  return (
+                    <React.Fragment key={subItem.id}>
+                      {subItem.divider && (
+                        <li aria-hidden="true" className="my-2 px-1">
+                          <div className="h-px bg-gray-100 dark:bg-gray-800" />
+                        </li>
+                      )}
+                      <li>
+                        <NavLink
+                          to={subItem.path}
+                          className={`
+                            flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                            ${isItemActive
+                              ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200'
+                            }
+                          `}
+                        >
+                          {SubIcon && (
+                            <SubIcon className={`w-4 h-4 flex-shrink-0 ${isItemActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500'}`} />
+                          )}
+                          <span className="truncate">{subItem.label}</span>
+                        </NavLink>
+                      </li>
+                    </React.Fragment>
+                  );
+                })}
               </ul>
             </nav>
           </div>

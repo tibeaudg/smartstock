@@ -22,7 +22,7 @@ export function EmailLogsView() {
   const [selectedLog, setSelectedLog] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: logs, isLoading } = useEmailLogs(filters);
+  const { data: logs, isLoading, isError, error } = useEmailLogs(filters);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters({ ...filters, [key]: value });
@@ -59,6 +59,8 @@ export function EmailLogsView() {
       newsletter: 'bg-blue-100 text-blue-700',
       followup: 'bg-yellow-100 text-yellow-700',
       support: 'bg-green-100 text-green-700',
+      lifecycle: 'bg-indigo-100 text-indigo-700',
+      deletion_warning: 'bg-red-100 text-red-700',
       custom: 'bg-gray-100 text-gray-700',
     };
     return variants[type] || 'bg-gray-100 text-gray-700';
@@ -104,6 +106,8 @@ export function EmailLogsView() {
                   <SelectItem value="newsletter">Newsletter</SelectItem>
                   <SelectItem value="followup">Follow-up</SelectItem>
                   <SelectItem value="support">Support</SelectItem>
+                  <SelectItem value="lifecycle">Lifecycle</SelectItem>
+                  <SelectItem value="deletion_warning">Deletion Warning</SelectItem>
                   <SelectItem value="custom">Custom</SelectItem>
                 </SelectContent>
               </Select>
@@ -177,6 +181,13 @@ export function EmailLogsView() {
           {isLoading ? (
             <div className="text-center py-8">
               <p className="text-muted-foreground">Loading email logs...</p>
+            </div>
+          ) : isError ? (
+            <div className="text-center py-8">
+              <p className="text-sm font-medium text-red-600">Failed to load email logs</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {(error as any)?.message || 'Check your permissions and try again'}
+              </p>
             </div>
           ) : logs && logs.length > 0 ? (
             <div className="border rounded-md">

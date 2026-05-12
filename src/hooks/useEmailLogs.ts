@@ -8,7 +8,7 @@ export interface EmailLog {
   recipient_email: string;
   recipient_user_id: string | null;
   subject: string;
-  email_type: 'welcome' | 'newsletter' | 'followup' | 'support' | 'custom';
+  email_type: 'welcome' | 'newsletter' | 'followup' | 'support' | 'custom' | 'lifecycle' | 'deletion_warning';
   status: 'sent' | 'delivered' | 'failed' | 'bounced';
   error_message: string | null;
   sent_at: string;
@@ -134,7 +134,8 @@ export const useEmailLogs = (filters?: EmailLogFilters) => {
   return useQuery<EmailLog[]>({
     queryKey: ['email-logs', filters],
     queryFn: () => fetchEmailLogs(filters),
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    staleTime: 1000 * 60 * 2,
+    retry: 1,
   });
 };
 
@@ -142,6 +143,7 @@ export const useEmailLogStats = () => {
   return useQuery({
     queryKey: ['email-log-stats'],
     queryFn: fetchEmailLogStats,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
   });
 };

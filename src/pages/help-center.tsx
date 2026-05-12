@@ -1,29 +1,21 @@
 import React, { useMemo, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { ChatModal } from '@/components/ChatModal';
-
-
-import { 
-  Search, 
-  HelpCircle, 
-  BookOpen, 
-  Video, 
-  MessageCircle, 
+import {
+  Search,
+  HelpCircle,
   Mail,
   ChevronRight,
   Play,
-  FileText,
-  Users,
   Clock,
-  Star
+  Star,
+  Package,
+  Puzzle,
+  Smartphone,
+  Wrench,
+  CreditCard,
 } from 'lucide-react';
-import { createPortal } from 'react-dom';
-import { useUnreadMessages } from '@/hooks/useUnreadMessages';
-import SupportModal from '@/components/SupportModal';
-import { ContactForm } from '@/components/ContactForm';
 
 type FaqCategory =
   | 'Getting Started'
@@ -45,88 +37,64 @@ interface FAQItem {
   difficulty?: FaqDifficulty;
 }
 
-const categories: {
+interface Category {
   name: FaqCategory;
   icon: React.ReactNode;
-  articles: number;
   description: string;
-}[] = [
+  color: string;
+}
+
+const categories: Category[] = [
   {
     name: 'Getting Started',
-    icon: <Play className="h-6 w-6" />,
-    articles: 12,
-    description: 'Learn the basics of StockFlow'
+    icon: <Play className="h-7 w-7" />,
+    description: 'Set up your workspace, import stock and invite your team.',
+    color: 'text-blue-600 bg-blue-50',
   },
   {
     name: 'Inventory Management',
-    icon: <BookOpen className="h-6 w-6" />,
-    articles: 25,
-    description: 'Managing your stock and products'
-  },
-  {
-    name: 'Mobile App',
-    icon: <Users className="h-6 w-6" />,
-    articles: 8,
-    description: 'Using the StockFlow mobile app'
+    icon: <Package className="h-7 w-7" />,
+    description: 'Manage products, track movements and run stock counts.',
+    color: 'text-indigo-600 bg-indigo-50',
   },
   {
     name: 'Billing & Subscriptions',
-    icon: <FileText className="h-6 w-6" />,
-    articles: 6,
-    description: 'Payment and subscription questions'
+    icon: <CreditCard className="h-7 w-7" />,
+    description: 'Plans, invoices, payment details and upgrades.',
+    color: 'text-violet-600 bg-violet-50',
   },
   {
     name: 'Integrations',
-    icon: <HelpCircle className="h-6 w-6" />,
-    articles: 15,
-    description: 'Connecting with other tools'
+    icon: <Puzzle className="h-7 w-7" />,
+    description: 'Connect StockFlow to your existing tools via API.',
+    color: 'text-sky-600 bg-sky-50',
+  },
+  {
+    name: 'Mobile App',
+    icon: <Smartphone className="h-7 w-7" />,
+    description: 'Scan barcodes and adjust stock from your phone.',
+    color: 'text-teal-600 bg-teal-50',
   },
   {
     name: 'Troubleshooting',
-    icon: <MessageCircle className="h-6 w-6" />,
-    articles: 18,
-    description: 'Common issues and solutions'
-  }
+    icon: <Wrench className="h-7 w-7" />,
+    description: 'Diagnose common issues with counts, emails and syncing.',
+    color: 'text-orange-600 bg-orange-50',
+  },
 ];
 
 const popularArticles = [
-  {
-    title: 'How to set up your first inventory',
-    category: 'Getting Started',
-    readTime: '5 min',
-    views: 1250
-  },
-  {
-    title: 'Using barcode scanning effectively',
-    category: 'Inventory Management',
-    readTime: '3 min',
-    views: 980
-  },
-  {
-    title: 'Mobile app installation guide',
-    category: 'Mobile App',
-    readTime: '4 min',
-    views: 750
-  },
-  {
-    title: 'Understanding stock movements',
-    category: 'Inventory Management',
-    readTime: '6 min',
-    views: 620
-  },
-  {
-    title: 'Setting up user permissions',
-    category: 'Getting Started',
-    readTime: '7 min',
-    views: 580
-  }
+  { title: 'How to set up your first inventory', category: 'Getting Started', readTime: '5 min', views: 1250 },
+  { title: 'Using barcode scanning effectively', category: 'Inventory Management', readTime: '3 min', views: 980 },
+  { title: 'Mobile app installation guide', category: 'Mobile App', readTime: '4 min', views: 750 },
+  { title: 'Understanding stock movements', category: 'Inventory Management', readTime: '6 min', views: 620 },
+  { title: 'Setting up user permissions', category: 'Getting Started', readTime: '7 min', views: 580 },
 ];
 
 const faqsData: FAQItem[] = [
   {
     question: 'How do I create a new inventory?',
-    answer:
-      'Go to Dashboard \u2192 Inventory \u2192 Products and click on \u201cAdd product\u201d. Once your products are created, you can group them into locations and warehouses under Warehouse Management.',
+    answer: 'Go to Dashboard → Inventory → Products and click on "Add product". Once your products are created, you can group them into locations and warehouses under Warehouse Management.',
     category: 'Getting Started',
     tags: ['inventory', 'products', 'onboarding'],
     difficulty: 'Beginner',
@@ -134,8 +102,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'What is the best way to onboard my existing stock?',
-    answer:
-      'Use the Excel import option in the Products section to upload your existing items in bulk. We recommend starting with one warehouse and validating key SKUs before importing your full catalog.',
+    answer: 'Use the Excel import option in the Products section to upload your existing items in bulk. We recommend starting with one warehouse and validating key SKUs before importing your full catalog.',
     category: 'Getting Started',
     tags: ['import', 'excel', 'migration'],
     difficulty: 'Intermediate',
@@ -143,8 +110,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'How do I track stock movements over time?',
-    answer:
-      'Navigate to Inventory \u2192 Transactions to see all incoming and outgoing movements. You can filter by product, date range, user, or transaction type to investigate specific changes.',
+    answer: 'Navigate to Inventory → Transactions to see all incoming and outgoing movements. You can filter by product, date range, user, or transaction type to investigate specific changes.',
     category: 'Inventory Management',
     tags: ['transactions', 'audit', 'history'],
     difficulty: 'Intermediate',
@@ -152,8 +118,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'Can I restrict access to certain products or warehouses?',
-    answer:
-      'Yes. As an admin, go to Settings \u2192 Users to assign roles and permissions. You can limit access to specific features such as inventory edits, reporting, or billing settings.',
+    answer: 'Yes. As an admin, go to Settings → Users to assign roles and permissions. You can limit access to specific features such as inventory edits, reporting, or billing settings.',
     category: 'Inventory Management',
     tags: ['permissions', 'roles', 'security'],
     role: 'admin',
@@ -162,8 +127,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'How does billing work and where can I download invoices?',
-    answer:
-      'Billing is managed under Settings \u2192 Invoicing. From there you can review your current plan, update payment details, and download past invoices in PDF format.',
+    answer: 'Billing is managed under Settings → Invoicing. From there you can review your current plan, update payment details, and download past invoices in PDF format.',
     category: 'Billing & Subscriptions',
     tags: ['billing', 'invoices', 'subscription'],
     role: 'admin',
@@ -172,8 +136,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'How do I invite new team members to StockFlow?',
-    answer:
-      'Go to Settings \u2192 Users and click \u201cInvite user\u201d. Enter their email address, assign a role (Admin or Staff), and they will receive an email with instructions to join your workspace.',
+    answer: 'Go to Settings → Users and click "Invite user". Enter their email address, assign a role (Admin or Staff), and they will receive an email with instructions to join your workspace.',
     category: 'Getting Started',
     tags: ['users', 'team', 'invite'],
     role: 'admin',
@@ -182,8 +145,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'How do I connect StockFlow to other systems?',
-    answer:
-      'You can configure integrations from the Integrations page. Depending on the integration, you may need API keys or admin access in the external system. Our step\u2011by\u2011step guides walk you through each setup.',
+    answer: 'You can configure integrations from the Integrations page. Depending on the integration, you may need API keys or admin access in the external system. Our step‑by‑step guides walk you through each setup.',
     category: 'Integrations',
     tags: ['integrations', 'api', 'connections'],
     difficulty: 'Intermediate',
@@ -191,8 +153,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'Is there a mobile app and what can I do with it?',
-    answer:
-      'Yes. The StockFlow mobile app allows you to scan barcodes, receive inventory, and adjust stock levels directly from your phone. It is optimized for warehouse and shop\u2011floor workflows.',
+    answer: 'Yes. The StockFlow mobile app allows you to scan barcodes, receive inventory, and adjust stock levels directly from your phone. It is optimized for warehouse and shop‑floor workflows.',
     category: 'Mobile App',
     tags: ['mobile', 'barcode', 'scanning'],
     difficulty: 'Beginner',
@@ -200,8 +161,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'What should I do if my stock counts are incorrect?',
-    answer:
-      'Start by reviewing recent transactions for the affected products in the Transactions view. If needed, perform a stock correction from the product detail page and document the reason in the notes field.',
+    answer: 'Start by reviewing recent transactions for the affected products in the Transactions view. If needed, perform a stock correction from the product detail page and document the reason in the notes field.',
     category: 'Troubleshooting',
     tags: ['stock', 'corrections', 'discrepancies'],
     difficulty: 'Intermediate',
@@ -209,8 +169,7 @@ const faqsData: FAQItem[] = [
   },
   {
     question: 'Why am I not receiving notification emails?',
-    answer:
-      'Check your spam folder first. If emails are missing, verify your email address under Settings \u2192 Profile and ensure that your organization\u2019s spam filters allow messages from StockFlow.',
+    answer: 'Check your spam folder first. If emails are missing, verify your email address under Settings → Profile and ensure that your organisation’s spam filters allow messages from StockFlow.',
     category: 'Troubleshooting',
     tags: ['notifications', 'email', 'support'],
     difficulty: 'Beginner',
@@ -219,297 +178,213 @@ const faqsData: FAQItem[] = [
 ];
 
 export default function HelpCenterPage() {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [chatOpen, setChatOpen] = useState(false);
-  const [supportOpen, setSupportOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<FaqCategory | 'All'>('All');
-  const { unreadCount: unreadMessages, resetUnreadCount } = useUnreadMessages();
-  const supportOptions = [
-    {
-      title: 'Live Chat',
-      description: 'Get instant help from our support team',
-      icon: <MessageCircle className="h-8 w-8" />,
-      availability: 'Available 24/7',
-      responseTime: '< 5 minutes',
-      button: 'Start Chat',
-      onClick: () => setChatOpen(true)
-    }
- 
-  ];
 
   const filteredFaqs = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
-
     return faqsData.filter((faq) => {
       const matchesCategory = selectedCategory === 'All' || faq.category === selectedCategory;
-
-      if (!query) {
-        return matchesCategory;
-      }
-
-      const haystack = [
-        faq.question,
-        faq.answer,
-        faq.category,
-        ...(faq.tags || []),
-      ]
-        .join(' ')
-        .toLowerCase();
-
+      if (!query) return matchesCategory;
+      const haystack = [faq.question, faq.answer, faq.category, ...(faq.tags || [])].join(' ').toLowerCase();
       return matchesCategory && haystack.includes(query);
     });
   }, [searchQuery, selectedCategory]);
 
-  const filteredArticles = useMemo(() => {
-    const query = searchQuery.toLowerCase().trim();
-
-    return popularArticles.filter((article) => {
-      const matchesCategory =
-        selectedCategory === 'All' || article.category === selectedCategory;
-
-      if (!query) {
-        return matchesCategory;
-      }
-
-      const haystack = `${article.title} ${article.category}`.toLowerCase();
-      return matchesCategory && haystack.includes(query);
-    });
-  }, [searchQuery, selectedCategory]);
-
-  const hasSearchResults = filteredFaqs.length > 0 || filteredArticles.length > 0;
+  const activeCategory = categories.find((c) => c.name === selectedCategory);
 
   return (
-    <>
-      <div className="space-y-10">
-        {/* Page header & search */}
-        <section aria-labelledby="help-center-header">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                <HelpCircle className="h-4 w-4" />
-                <span>Support &amp; Documentation</span>
-              </div>
-              <h1
-                id="help-center-header"
-                className="mt-4 text-2xl md:text-3xl font-semibold tracking-tight text-gray-900"
-              >
-                Help Center
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm text-gray-600">
-                Search best‑practice guides, FAQs, and troubleshooting steps for StockFlow. If
-                you can&apos;t find what you need, our team is one click away.
-              </p>
-            </div>
-            {typeof unreadMessages === 'number' && unreadMessages > 0 && (
-              <div className="hidden md:flex flex-col items-end text-xs text-gray-500">
-                <span className="font-medium text-gray-700">
-                  {unreadMessages} unread message{unreadMessages === 1 ? '' : 's'}
-                </span>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="mt-2"
-                  onClick={() => setChatOpen(true)}
-                >
-                  Reopen chat
-                </Button>
-              </div>
-            )}
+    <div>
+      {/* ── Hero ────────────────────────────────────────────────────────── */}
+      <div className="-mx-4 md:-mx-8 -mt-4 md:-mt-8 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 rounded-xl shadow-lg">
+        <div className="px-6 py-14 md:py-20 text-center">
+          <p className="text-blue-200 text-sm font-medium tracking-wide uppercase mb-3">
+            StockFlow Help Center
+          </p>
+          <h1 className="text-3xl md:text-4xl font-bold text-white">
+            Looking for answers? Start here.
+          </h1>
+          <p className="mt-3 text-blue-100 text-sm max-w-lg mx-auto">
+            Guides, FAQs, and troubleshooting for every part of StockFlow.
+          </p>
+          <div className="relative max-w-xl mx-auto mt-8">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search for a topic, question, or keyword…"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (e.target.value) setSelectedCategory('All');
+              }}
+              className="pl-10 pr-4 h-12 text-sm rounded-xl shadow-lg bg-white border-0 focus-visible:ring-2 focus-visible:ring-white/60"
+            />
           </div>
-
-          <div className="mt-6 space-y-3">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search by question, topic, or keyword..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 pr-4 py-2.5 text-sm"
-              />
-            </div>
-  
-
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="text-xs font-medium text-gray-500">Filter by topic:</span>
-              <Button
-                size="sm"
-                variant={selectedCategory === 'All' ? 'default' : 'secondary'}
-                className="text-xs"
-                onClick={() => setSelectedCategory('All')}
-              >
-                All
-              </Button>
-              {categories.map((category) => (
-                <Button
-                  key={category.name}
-                  size="sm"
-                  variant={selectedCategory === category.name ? 'default' : 'secondary'}
-                  className="text-xs"
-                  onClick={() => setSelectedCategory(category.name)}
-                >
-                  {category.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
-          {/* Left column: FAQs */}
-          <section aria-labelledby="faq-heading" className="space-y-6">
-            <div className="flex items-center justify-between gap-2">
-              <div>
-                <h2 id="faq-heading" className="text-lg font-semibold text-gray-900">
-                  Frequently Asked Questions
-                </h2>
-                <p className="mt-1 text-xs text-gray-500">
-                  Curated answers for the most common workflows and configuration questions.
-                </p>
-              </div>
-              <Badge variant="secondary" className="hidden md:inline-flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                <span>Updated regularly</span>
-              </Badge>
-            </div>
-
-            {filteredFaqs.length === 0 ? (
-              <Card className="border-dashed">
-                <CardHeader>
-                  <CardTitle className="text-sm">No FAQs match your search</CardTitle>
-                  <CardDescription className="text-xs">
-                    Try a different keyword, or reach out to our team for personal assistance.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-wrap gap-3">
-                  <Button size="sm" onClick={() => setChatOpen(true)}>
-                    Open live chat
-                  </Button>
-                  <Button size="sm" variant="secondary" onClick={() => setSupportOpen(true)}>
-                    Contact support
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-3 md:grid-cols-2">
-                {filteredFaqs.map((faq) => (
-                  <Card
-                    key={faq.question}
-                    className="overflow-hidden border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all"
-                  >
-                    <details className="group">
-                      <summary className="cursor-pointer list-none px-4 py-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="text-sm font-medium text-gray-900 group-open:text-blue-700">
-                              {faq.question}
-                            </p>
-                            <div className="mt-1 flex flex-wrap items-center gap-2">
-                              <Badge variant="secondary" className="text-[10px]">
-                                {faq.category}
-                              </Badge>
-                              {faq.role && (
-                                <Badge variant="secondary" className="text-[10px]">
-                                  {faq.role === 'admin' ? 'Admin' : 'Staff'}
-                                </Badge>
-                              )}
-                              {faq.difficulty && (
-                                <span className="text-[10px] text-gray-500">
-                                  Difficulty: {faq.difficulty}
-                                </span>
-                              )}
-                              {faq.lastUpdated && (
-                                <span className="text-[10px] text-gray-400">
-                                  Last updated {faq.lastUpdated}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <ChevronRight className="mt-1 h-4 w-4 flex-shrink-0 text-gray-400 transition-transform group-open:rotate-90" />
-                        </div>
-                      </summary>
-                      <div className="border-t border-gray-100 bg-gray-50 px-4 py-3 text-xs text-gray-700">
-                        {faq.answer}
-                      </div>
-                    </details>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </section>
-
-          {/* Right column: Support options, contact & popular articles */}
-          <section aria-labelledby="support-heading" className="space-y-6">
-            <div>
-              <h2 id="support-heading" className="text-lg font-semibold text-gray-900">
-                Get Support
-              </h2>
-              <p className="mt-1 text-xs text-gray-500">
-                Choose the best way to reach our team for assistance.
-              </p>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              {supportOptions.map((option, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
-                        {option.icon}
-                      </div>
-                      <CardTitle className="text-sm">{option.title}</CardTitle>
-                    </div>
-                    <CardDescription className="text-xs">{option.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <Clock className="h-3 w-3" />
-                      <span>{option.availability}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <Star className="h-3 w-3" />
-                      <span>{option.responseTime}</span>
-                    </div>
-                    <Button
-                      size="sm"
-                      className="w-full mt-3"
-                      onClick={option.onClick}
-                    >
-                      {option.button}
-                      <ChevronRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-
-          </section>
         </div>
       </div>
 
-      {/* Support & chat overlays */}
-      {chatOpen && createPortal(
-        <ChatModal
-          open={chatOpen}
-          onClose={() => {
-            setChatOpen(false);
-            resetUnreadCount();
-          }}
-          aria-describedby="chat-modal-description"
-          resetUnreadMessages={resetUnreadCount}
-        />,
-        document.body
-      )}
+      {/* ── Categories ──────────────────────────────────────────────────── */}
+      <div className="-mx-4 md:-mx-8 ">
+        <div className="px-4 md:px-8 py-10">
+          <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-6 text-center">
+            Browse by topic
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 max-w-5xl mx-auto">
+            {categories.map((cat) => (
+              <button
+                key={cat.name}
+                onClick={() => setSelectedCategory(selectedCategory === cat.name ? 'All' : cat.name)}
+                className={`flex flex-col items-center gap-3 rounded-xl border p-4 text-center transition-all hover:shadow-md ${
+                  selectedCategory === cat.name
+                    ? 'border-blue-400 bg-white shadow-md ring-2 ring-blue-200'
+                    : 'border-gray-200 bg-white hover:border-blue-200'
+                }`}
+              >
+                <div className={`rounded-lg p-2.5 ${cat.color}`}>{cat.icon}</div>
+                <span className="text-xs font-semibold text-gray-800 leading-tight">{cat.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      {supportOpen && createPortal(
-        <SupportModal
-          open={supportOpen}
-          onClose={() => setSupportOpen(false)}
-          aria-describedby="support-modal-description"
-        />,
-        document.body
-      )}
-    </>
+      {/* ── FAQ + Popular Articles ───────────────────────────────────────── */}
+      <div className="py-10 grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        {/* Left: FAQ */}
+        <section>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h2 className="text-base font-semibold text-gray-900">
+                {selectedCategory === 'All' ? 'Frequently Asked Questions' : selectedCategory}
+              </h2>
+              <p className="mt-0.5 text-xs text-gray-500">
+                {filteredFaqs.length} {filteredFaqs.length === 1 ? 'result' : 'results'}
+                {selectedCategory !== 'All' && (
+                  <button
+                    className="ml-2 text-blue-600 hover:underline"
+                    onClick={() => setSelectedCategory('All')}
+                  >
+                    Clear filter
+                  </button>
+                )}
+              </p>
+            </div>
+            <Badge variant="secondary" className="hidden md:inline-flex items-center gap-1 text-[11px]">
+              <Clock className="h-3 w-3" />
+              Updated regularly
+            </Badge>
+          </div>
+
+          {filteredFaqs.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
+              <HelpCircle className="h-8 w-8 text-gray-300 mx-auto mb-3" />
+              <p className="text-sm font-medium text-gray-700">No results found</p>
+              <p className="mt-1 text-xs text-gray-500">Try a different keyword or browse all topics above.</p>
+              <a href="mailto:support@stockflow.be" className="mt-4 inline-block">
+                <Button size="sm" variant="outline">
+                  <Mail className="mr-2 h-4 w-4" />
+                  Email support
+                </Button>
+              </a>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {filteredFaqs.map((faq) => (
+                <div
+                  key={faq.question}
+                  className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:border-blue-200 hover:shadow-sm transition-all"
+                >
+                  <details className="group">
+                    <summary className="cursor-pointer list-none px-5 py-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-gray-900 group-open:text-blue-700 leading-snug">
+                            {faq.question}
+                          </p>
+                          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                            {activeCategory ? (
+                              <span className={`inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${activeCategory.color}`}>
+                                {faq.category}
+                              </span>
+                            ) : (
+                              <Badge variant="secondary" className="text-[10px]">{faq.category}</Badge>
+                            )}
+                            {faq.role && (
+                              <Badge variant="secondary" className="text-[10px]">
+                                {faq.role === 'admin' ? 'Admin only' : 'Staff'}
+                              </Badge>
+                            )}
+                            {faq.difficulty && (
+                              <span className="text-[10px] text-gray-400">{faq.difficulty}</span>
+                            )}
+                            {faq.lastUpdated && (
+                              <span className="text-[10px] text-gray-300">· {faq.lastUpdated}</span>
+                            )}
+                          </div>
+                        </div>
+                        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-gray-400 transition-transform group-open:rotate-90" />
+                      </div>
+                    </summary>
+                    <div className="border-t border-gray-100 bg-gray-50/70 px-5 py-4 text-xs text-gray-700 leading-relaxed">
+                      {faq.answer}
+                    </div>
+                  </details>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Right: Popular articles + Contact */}
+        <aside className="space-y-8">
+          {/* Popular articles */}
+          <section>
+            <h3 className="text-base font-semibold text-gray-900 mb-4">Popular Articles</h3>
+            <div className="space-y-2">
+              {popularArticles.map((article) => (
+                <div
+                  key={article.title}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 hover:border-blue-200 hover:bg-blue-50/30 transition-colors cursor-pointer group"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-gray-800 leading-snug">{article.title}</p>
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                        <Clock className="h-2.5 w-2.5" /> {article.readTime}
+                      </span>
+                      <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                        <Star className="h-2.5 w-2.5" /> {article.views.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-3.5 w-3.5 shrink-0 text-gray-300 group-hover:text-blue-400 transition-colors" />
+                </div>
+              ))}
+            </div>
+          </section>
+
+
+        </aside>
+      </div>
+
+      {/* ── Footer CTA ──────────────────────────────────────────────────── */}
+      <div className="-mx-4 md:-mx-8 -mb-4 md:-mb-8 bg-gradient-to-r from-blue-700 to-blue-500 rounded-xl shadow-md">
+        <div className="px-6 py-12 text-center">
+          <h2 className="text-xl font-bold text-white">Contact support</h2>
+          <p className="mt-2 text-blue-100 text-sm max-w-sm mx-auto">
+            Our team is here to help. Reach out and we&apos;ll respond within one business day.
+          </p>
+          <a href="mailto:support@stockflow.be" className="inline-block mt-6">
+            <Button
+              size="sm"
+              className="bg-white text-blue-700 hover:bg-blue-50 border-0 font-semibold px-6"
+            >
+              <Mail className="mr-2 h-4 w-4" />
+              support@stockflow.be
+            </Button>
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }

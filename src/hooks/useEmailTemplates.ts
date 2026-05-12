@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 export interface EmailTemplate {
   id: string;
   name: string;
-  type: 'welcome' | 'newsletter' | 'followup' | 'support' | 'custom';
+  type: 'welcome' | 'newsletter' | 'followup' | 'support' | 'custom' | 'lifecycle' | 'deletion_warning';
   subject: string;
   html_body: string;
   text_body: string | null;
@@ -19,7 +19,7 @@ export interface EmailTemplate {
 
 export interface EmailTemplateInput {
   name: string;
-  type: 'welcome' | 'newsletter' | 'followup' | 'support' | 'custom';
+  type: 'welcome' | 'newsletter' | 'followup' | 'support' | 'custom' | 'lifecycle' | 'deletion_warning';
   subject: string;
   html_body: string;
   text_body?: string;

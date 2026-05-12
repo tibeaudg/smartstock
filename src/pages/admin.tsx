@@ -8,7 +8,7 @@ import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useMobile } from '@/hooks/use-mobile';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
@@ -706,7 +706,22 @@ export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'users' | 'chats' | 'notifications' | 'emails'>('users');
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab') as 'users' | 'chats' | 'notifications' | 'emails' | null;
+  const [activeTab, setActiveTabState] = useState<'users' | 'chats' | 'notifications' | 'emails'>(
+    tabParam && ['users', 'chats', 'notifications', 'emails'].includes(tabParam) ? tabParam : 'users'
+  );
+
+  const setActiveTab = (tab: 'users' | 'chats' | 'notifications' | 'emails') => {
+    setActiveTabState(tab);
+    navigate(`/admin?tab=${tab}`, { replace: true });
+  };
+
+  useEffect(() => {
+    if (tabParam && ['users', 'chats', 'notifications', 'emails'].includes(tabParam)) {
+      setActiveTabState(tabParam);
+    }
+  }, [tabParam]);
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [companyTypes, setCompanyTypes] = useState<Record<string, { type: string; custom_type: string | null }>>({});
   const [userStats, setUserStats] = useState<UserStats[]>([]);
@@ -1144,13 +1159,6 @@ export default function AdminPage() {
     };
   }, [activeTab, queryClient]);
 
-  const sidebarNavItems: { id: 'users' | 'chats' | 'notifications' | 'emails'; label: string }[] = [
-    { id: 'users', label: 'User Management' },
-    { id: 'chats', label: 'Chats' },
-    { id: 'notifications', label: 'Notifications' },
-    { id: 'emails', label: 'Email Management' },
-  ];
-  
   // Access control - only owners can view the admin page
   useEffect(() => {
     if (userProfile && userProfile.is_owner !== true) {
@@ -1176,36 +1184,9 @@ export default function AdminPage() {
       >
         <>
           <div className="flex-grow ml-6 mr-6 min-h-screen overflow-y-auto">
-          {/* Top navigation bar - responsive design */}
-          <div className="w-full">
-            <div className="mt-16 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-6 py-6">
-              {/* Tab navigation */}
-              <nav className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2 font-semibold text-sm`}>
-                {sidebarNavItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      setActiveTab(item.id);
-                      if (item.id !== 'chats') setChatForUserId(null);
-                    }}
-                    className={`
-                      ${isMobile ? 'w-full text-left' : ''} px-3 py-2 rounded-lg transition-colors border
-                      ${
-                        activeTab === item.id
-                          ? 'bg-blue-50 text-blue-700 border-blue-200'
-                          : 'text-slate-600 border-transparent hover:bg-slate-50 hover:text-slate-900'
-                      }
-                    `}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </nav>
-            </div>
-          </div>
 
           {/* Main content area */}
-          <div className="w-full flex-grow space-y-8 mb-24">
+          <div className="w-full flex-grow space-y-8 mb-24 mt-16">
 
             {activeTab === 'users' && (
               <div className="space-y-8">

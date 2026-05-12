@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign } from 'lucide-react';
+import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -136,6 +136,27 @@ async function fetchUserAuditLogs(userId: string) {
     .limit(100);
   if (error) throw error;
   return data || [];
+}
+
+interface AppEvent {
+  id: string;
+  user_id: string;
+  event_type: string;
+  page: string;
+  label: string | null;
+  metadata: Record<string, unknown> | null;
+  created_at: string;
+}
+
+async function fetchUserAppEvents(userId: string): Promise<AppEvent[]> {
+  const { data, error } = await (supabase as any)
+    .from('app_events')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(200);
+  if (error) throw error;
+  return (data || []) as AppEvent[];
 }
 
 function SubStatusBadge({ status }: { status: SubscriptionInfo['status'] }) {
@@ -402,6 +423,12 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const { data: auditLogs = [], isLoading: loadingAuditLogs } = useQuery({
     queryKey: ['userAuditLogs', user?.id],
     queryFn: () => fetchUserAuditLogs(user!.id),
+    enabled: !!user && isOpen && activeTab === 'activity',
+  });
+
+  const { data: appEvents = [], isLoading: loadingAppEvents } = useQuery({
+    queryKey: ['userAppEvents', user?.id],
+    queryFn: () => fetchUserAppEvents(user!.id),
     enabled: !!user && isOpen && activeTab === 'activity',
   });
 
@@ -803,66 +830,132 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
             {/* Activity Log Tab */}
             <TabsContent value="activity" className="mt-0">
-              <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
-                <h3 className="text-lg font-semibold">
-                  Activity Log ({auditLogs.length})
-                </h3>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowAdminOnly(v => !v)}
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs border transition-colors ${
-                      showAdminOnly
-                        ? 'bg-purple-50 border-purple-200 text-purple-700 font-semibold'
-                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    <Shield className="w-3 h-3" />
-                    Admin Only
-                  </button>
-                  {auditLogs.length > 0 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => exportData(auditLogs, `user_${user.id}_activity`)}
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Export
-                    </Button>
-                  )}
-                </div>
-              </div>
-              {loadingAuditLogs ? (
-                <div className="flex justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-              ) : auditLogs.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">No activity logs found</div>
-              ) : (
-                <div className="space-y-2">
-                  {auditLogs.filter((log: any) => !showAdminOnly || (typeof log.action === 'string' && log.action.startsWith('ADMIN:'))).map((log: any) => {
-                    const isAdminAction = typeof log.action === 'string' && log.action.startsWith('ADMIN:');
-                    return (
-                      <Card key={log.id} className={isAdminAction ? 'border-purple-200 bg-purple-50/40' : ''}>
-                        <CardContent className="p-3">
-                          {isAdminAction && (
-                            <div className="flex items-center gap-1 text-xs text-purple-600 font-semibold mb-1">
-                              <Shield className="w-3 h-3" />
-                              Admin Action
-                            </div>
-                          )}
-                          <p className="text-sm font-medium">{isAdminAction ? log.action.replace('ADMIN: ', '') : `${log.action} on ${log.table_name}`}</p>
-                          <p className="text-xs text-gray-500 mt-0.5">
-                            {format(new Date(log.created_at), 'PPpp')}
-                          </p>
-                          {!isAdminAction && log.record_id && (
-                            <p className="text-xs text-gray-400">Record: {log.record_id}</p>
-                          )}
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              )}
+              {(() => {
+                const loadingActivity = loadingAuditLogs || loadingAppEvents;
+
+                // Merge and sort all events newest-first
+                type TimelineEntry =
+                  | { kind: 'page_view'; id: string; label: string; page: string; created_at: string }
+                  | { kind: 'admin'; id: string; action: string; created_at: string }
+                  | { kind: 'mutation'; id: string; action: string; table_name: string; record_id: string | null; created_at: string };
+
+                const pageEntries: TimelineEntry[] = appEvents.map((e) => ({
+                  kind: 'page_view',
+                  id: e.id,
+                  label: e.label ?? e.page,
+                  page: e.page,
+                  created_at: e.created_at,
+                }));
+
+                const auditEntries: TimelineEntry[] = auditLogs.map((log: any) => {
+                  const isAdmin = typeof log.action === 'string' && log.action.startsWith('ADMIN:');
+                  return isAdmin
+                    ? { kind: 'admin', id: log.id, action: log.action.replace('ADMIN: ', ''), created_at: log.created_at }
+                    : { kind: 'mutation', id: log.id, action: log.action, table_name: log.table_name, record_id: log.record_id ?? null, created_at: log.created_at };
+                });
+
+                const allEntries = [...pageEntries, ...auditEntries].sort(
+                  (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+                );
+
+                const visible = showAdminOnly
+                  ? allEntries.filter((e) => e.kind === 'admin')
+                  : allEntries;
+
+                const exportAll = () => exportData(
+                  visible.map((e) => ({
+                    type: e.kind,
+                    label: e.kind === 'page_view' ? e.label : e.kind === 'admin' ? e.action : `${e.action} on ${e.table_name}`,
+                    date: e.created_at,
+                  })),
+                  `user_${user.id}_activity`
+                );
+
+                return (
+                  <>
+                    <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+                      <div>
+                        <h3 className="text-lg font-semibold">Activity Log</h3>
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          {pageEntries.length} page view{pageEntries.length !== 1 ? 's' : ''} · {auditEntries.length} data event{auditEntries.length !== 1 ? 's' : ''}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setShowAdminOnly(v => !v)}
+                          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs border transition-colors ${
+                            showAdminOnly
+                              ? 'bg-purple-50 border-purple-200 text-purple-700 font-semibold'
+                              : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          <Shield className="w-3 h-3" />
+                          Admin Only
+                        </button>
+                        {visible.length > 0 && (
+                          <Button variant="outline" size="sm" onClick={exportAll}>
+                            <Download className="w-4 h-4 mr-2" />
+                            Export
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+
+                    {loadingActivity ? (
+                      <div className="flex justify-center py-8">
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                      </div>
+                    ) : visible.length === 0 ? (
+                      <div className="text-center py-8 text-gray-500">No activity logs found</div>
+                    ) : (
+                      <div className="relative">
+                        {/* Timeline line */}
+                        <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700" />
+                        <div className="space-y-1 pl-10">
+                          {visible.map((entry) => {
+                            if (entry.kind === 'page_view') {
+                              return (
+                                <div key={entry.id} className="relative py-2">
+                                  <div className="absolute -left-[26px] top-3 w-4 h-4 rounded-full bg-blue-100 border-2 border-blue-400 flex items-center justify-center">
+                                    <Navigation className="w-2 h-2 text-blue-600" />
+                                  </div>
+                                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{entry.label}</p>
+                                  <p className="text-xs text-gray-400 font-mono">{entry.page}</p>
+                                  <p className="text-xs text-gray-400">{format(new Date(entry.created_at), 'PPpp')}</p>
+                                </div>
+                              );
+                            }
+                            if (entry.kind === 'admin') {
+                              return (
+                                <div key={entry.id} className="relative py-2">
+                                  <div className="absolute -left-[26px] top-3 w-4 h-4 rounded-full bg-purple-100 border-2 border-purple-400 flex items-center justify-center">
+                                    <Shield className="w-2 h-2 text-purple-600" />
+                                  </div>
+                                  <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-0.5">Admin Action</p>
+                                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{entry.action}</p>
+                                  <p className="text-xs text-gray-400">{format(new Date(entry.created_at), 'PPpp')}</p>
+                                </div>
+                              );
+                            }
+                            // mutation
+                            return (
+                              <div key={entry.id} className="relative py-2">
+                                <div className="absolute -left-[26px] top-3 w-4 h-4 rounded-full bg-green-100 border-2 border-green-400 flex items-center justify-center">
+                                  <Database className="w-2 h-2 text-green-600" />
+                                </div>
+                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                  {entry.action} on <span className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">{entry.table_name}</span>
+                                </p>
+                                <p className="text-xs text-gray-400">{format(new Date(entry.created_at), 'PPpp')}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </TabsContent>
           </div>
         </Tabs>
