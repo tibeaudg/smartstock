@@ -1026,7 +1026,8 @@ export default function AddProductPage() {
                                     className="px-4 shrink-0"
                                     title="Scan barcode"
                                   >
-                                    <Scan className="w-4 h-4" />
+                                    <Scan className="w-4 h-4 pr-2" />
+                                    Scan Code
                                   </Button>
                                 </Link>
                               </div>
