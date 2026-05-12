@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/integrations/supabase/client';
+import { UpgradeOrPayModal } from '@/components/UpgradeOrPayModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -48,7 +49,7 @@ interface PricingInfo {
 const UserManagement = () => {
   const { user } = useAuth();
   const { branches, activeBranch } = useBranches();
-  const { maxUsers } = useSubscription();
+  const { maxUsers, isOverUserLimit } = useSubscription();
   const queryClient = useQueryClient();
   const [inviting, setInviting] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
@@ -58,6 +59,7 @@ const UserManagement = () => {
   const [userBranches, setUserBranches] = useState<string[]>([]);
   const [savingBranches, setSavingBranches] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     if (activeBranch?.branch_id && !selectedBranchId) {
@@ -200,7 +202,12 @@ const UserManagement = () => {
 
   const handleInviteUser = async () => {
     if (!inviteEmail || !selectedBranchId || !user) return;
-    
+
+    if (isOverUserLimit) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     setInviting(true);
 
     const { error } = await supabase.functions.invoke('invite-user', {
@@ -310,7 +317,7 @@ const UserManagement = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Manage Users</h1>
         </div>
-        
+
         {/* Action Button */}
         <div className="flex flex-col items-end gap-1">
           <Button
@@ -329,6 +336,12 @@ const UserManagement = () => {
           )}
         </div>
       </div>
+
+      <UpgradeOrPayModal
+        type="user"
+        open={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+      />
 
       {/* Invite User Form */}
       <Card>

@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { toast } from 'sonner';
 import { Plus, Trash2, User, Calendar, CreditCard, Truck, Package, FileText, DollarSign, PackageCheck } from 'lucide-react';
@@ -49,6 +50,7 @@ export default function EditSalesOrderPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [soLoading, setSoLoading] = useState(true);
@@ -608,7 +610,7 @@ export default function EditSalesOrderPage() {
                     </div>
                     {item.product_id && item.quantity_ordered > 0 && item.unit_price > 0 && (
                       <div className="text-right text-sm text-gray-600 font-medium">
-                        Subtotal: ${(item.quantity_ordered * item.unit_price).toFixed(2)}
+                        Subtotal: {formatPrice(item.quantity_ordered * item.unit_price)}
                       </div>
                     )}
                   </div>
@@ -633,7 +635,7 @@ export default function EditSalesOrderPage() {
                   <DollarSign className="w-5 h-5 text-blue-600" />
                   <span className="text-lg font-semibold text-gray-900">Total Amount:</span>
                 </div>
-                <span className="text-2xl font-bold text-blue-600">${calculateTotal().toFixed(2)}</span>
+                <span className="text-2xl font-bold text-blue-600">{formatPrice(calculateTotal())}</span>
               </div>
             </div>
           </div>

@@ -8,27 +8,41 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-type LifecycleStage = '24h_nudge' | '7d_inactive' | '14d_inactive' | '25d_warning' | '29d_final_warning'
+type LifecycleStage = 'welcome' | '24h_nudge' | '7d_inactive' | '14d_inactive' | '25d_warning' | '29d_final_warning'
 
 interface StageConfig {
-  emailType: 'lifecycle' | 'deletion_warning'
+  emailType: 'welcome' | 'lifecycle' | 'deletion_warning'
   defaultSubject: string
   defaultHtml: string
 }
 
 const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
+  welcome: {
+    emailType: 'welcome',
+    defaultSubject: 'Welcome to StockFlow, {{first_name}}!',
+    defaultHtml: `<p>Hi {{first_name}},</p>
+<p>Welcome to StockFlow! Your account is ready and we're excited to help you take control of your inventory.</p>
+<p>Here's how to get started:</p>
+<ol>
+  <li><strong>Add your first product</strong> — Go to Products and add your inventory items</li>
+  <li><strong>Set up a location</strong> — Create warehouses or storage locations</li>
+  <li><strong>Invite your team</strong> — Add staff members under Settings → Users</li>
+</ol>
+<p><a href="https://app.stockflowsystems.com/dashboard">Log in and get started →</a></p>
+<p>Questions? Just reply to this email — we're happy to help.</p>`,
+  },
   '24h_nudge': {
     emailType: 'lifecycle',
     defaultSubject: 'Get started with StockFlow — your account is ready',
     defaultHtml: `<p>Hi {{first_name}},</p>
-<p>You created your StockFlow account yesterday but haven't had a chance to explore yet.</p>
+<p>You created your StockFlow account but haven't had a chance to explore yet.</p>
 <p>Getting started takes less than 5 minutes:</p>
 <ul>
   <li>Add your first product to the inventory</li>
   <li>Set up a warehouse or storage location</li>
   <li>Invite a team member</li>
 </ul>
-<p><a href="https://app.stockflowsystems.com">Log in and get started →</a></p>
+<p><a href="https://app.stockflowsystems.com/dashboard">Log in and get started →</a></p>
 <p>Have questions? Just reply to this email.</p>`,
   },
   '7d_inactive': {
@@ -42,7 +56,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li>Generate purchase orders automatically when stock runs low</li>
   <li>Reduce stockouts and overstocking by up to 30%</li>
 </ul>
-<p><a href="https://app.stockflowsystems.com">Come back and pick up where you left off →</a></p>`,
+<p><a href="https://app.stockflowsystems.com/dashboard">Come back and pick up where you left off →</a></p>`,
   },
   '14d_inactive': {
     emailType: 'lifecycle',
@@ -51,14 +65,14 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
 <p>It's been two weeks. Life gets busy — we completely understand.</p>
 <p>When you're ready, StockFlow will be here to help you take control of your inventory.</p>
 <p>Not finding what you need? Reply to this email and tell us what's missing — we read every response.</p>
-<p><a href="https://app.stockflowsystems.com">Log back in →</a></p>`,
+<p><a href="https://app.stockflowsystems.com/dashboard">Log back in →</a></p>`,
   },
   '25d_warning': {
     emailType: 'deletion_warning',
     defaultSubject: 'Action required: Your account will be deleted in 5 days',
     defaultHtml: `<p>Hi {{first_name}},</p>
 <p><strong>Important notice:</strong> Your StockFlow account (<strong>{{user_email}}</strong>) has been inactive for 25 days and will be automatically deleted in <strong>5 days</strong>.</p>
-<p>To keep your account, simply log in at <a href="https://app.stockflowsystems.com">app.stockflowsystems.com</a>.</p>
+<p>To keep your account, simply log in at <a href="https://app.stockflowsystems.com/dashboard">app.stockflowsystems.com</a>.</p>
 <p>If you'd like to export your data before deletion, log in and go to <strong>Settings → Export Data</strong>.</p>
 <p>If you no longer need your account, no action is required — it will be removed automatically.</p>`,
   },
@@ -67,7 +81,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
     defaultSubject: 'Final notice: Your account will be deleted tomorrow',
     defaultHtml: `<p>Hi {{first_name}},</p>
 <p><strong>Final notice:</strong> Your StockFlow account will be <strong>permanently deleted tomorrow</strong> due to 29 days of inactivity.</p>
-<p>To prevent deletion, log in now: <a href="https://app.stockflowsystems.com">app.stockflowsystems.com</a></p>
+<p>To prevent deletion, log in now: <a href="https://app.stockflowsystems.com/dashboard">app.stockflowsystems.com</a></p>
 <p>After deletion, your account and all associated data cannot be recovered. This is the last email we will send before permanent deletion.</p>`,
   },
 }
@@ -87,12 +101,16 @@ function matchesStage(profile: any, stage: LifecycleStage): boolean {
   const refDate = lastLogin || createdAt
   const daysSinceRef = (now.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24)
   const hoursSinceCreated = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60)
+  const accountAgeDays = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)
 
   switch (stage) {
+    case 'welcome':
+      // Send to all users created in the last 30 days who haven't received it yet.
+      // Dedup via user_lifecycle_emails ensures it's sent only once.
+      return accountAgeDays <= 30
     case '24h_nudge': {
       if (hoursSinceCreated < 24) return false
       if (!lastLogin) return true
-      // Only auto-login at signup counts (within 2h of account creation)
       const hoursAfterSignup = (lastLogin.getTime() - createdAt.getTime()) / (1000 * 60 * 60)
       return hoursAfterSignup < 2
     }
@@ -124,12 +142,17 @@ serve(async (req) => {
     const isServiceRole = token === supabaseServiceKey
 
     const body = await req.json().catch(() => ({}))
+    const stageFilter = body.stage as LifecycleStage | undefined
+    // selfTrigger: true allows a newly signed-up user to send their own welcome email
+    // without requiring admin role. The calling user must match their own session.
+    const isSelfWelcome = stageFilter === 'welcome' && body.selfTrigger === true
 
     const adminClient = createClient(supabaseUrl, supabaseServiceKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     })
 
     let adminUserId: string | null = body.adminUserId || null
+    let selfUserProfile: any = null
 
     if (!isServiceRole) {
       const userClient = createClient(supabaseUrl, supabaseAnonKey, {
@@ -140,35 +163,57 @@ serve(async (req) => {
         JSON.stringify({ success: false, error: 'Invalid token' }),
         { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
-      const { data: profile } = await adminClient
-        .from('profiles').select('role, is_owner').eq('id', user.id).single()
-      if (profile?.role !== 'admin' && !profile?.is_owner) return new Response(
-        JSON.stringify({ success: false, error: 'Admin access required' }),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-      adminUserId = user.id
+
+      if (isSelfWelcome) {
+        // Fetch their own profile to send the welcome email to themselves
+        const { data: profile } = await adminClient
+          .from('profiles')
+          .select('id, email, first_name, last_name, created_at, last_login, role, is_owner')
+          .eq('id', user.id)
+          .single()
+        if (!profile?.email) return new Response(
+          JSON.stringify({ success: false, error: 'Profile not found' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+        selfUserProfile = profile
+        // SMTP will be looked up via first admin owner below
+      } else {
+        const { data: profile } = await adminClient
+          .from('profiles').select('role, is_owner').eq('id', user.id).single()
+        if (profile?.role !== 'admin' && !profile?.is_owner) return new Response(
+          JSON.stringify({ success: false, error: 'Admin access required' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+        adminUserId = user.id
+      }
     }
 
-    // Cron fallback: use first owner
-    if (!adminUserId) {
-      const { data: owner } = await adminClient
-        .from('profiles').select('id').eq('is_owner', true).limit(1).maybeSingle()
-      adminUserId = owner?.id || null
+    // Fallback chain: find any SMTP-configured user when adminUserId is unknown
+    // (cron runs, self-welcome triggers, etc.)
+    let smtpRow: any = null
+    if (adminUserId) {
+      const { data } = await adminClient
+        .from('smtp_settings')
+        .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
+        .eq('user_id', adminUserId)
+        .maybeSingle()
+      smtpRow = data
     }
 
-    if (!adminUserId) return new Response(
-      JSON.stringify({ success: false, error: 'No admin user found' }),
-      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    if (!smtpRow) {
+      // Try any row in smtp_settings that has the required fields configured
+      const { data } = await adminClient
+        .from('smtp_settings')
+        .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
+        .not('smtp_host', 'is', null)
+        .not('smtp_password', 'is', null)
+        .not('from_email', 'is', null)
+        .limit(1)
+        .maybeSingle()
+      smtpRow = data
+    }
 
-    // SMTP settings
-    const { data: smtpRow, error: smtpErr } = await adminClient
-      .from('smtp_settings')
-      .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
-      .eq('user_id', adminUserId)
-      .single()
-
-    if (smtpErr || !smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email || !smtpRow?.smtp_password) {
+    if (!smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email || !smtpRow?.smtp_password) {
       return new Response(
         JSON.stringify({ success: false, error: 'SMTP not configured. Configure it in the Settings tab first.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -184,18 +229,6 @@ serve(async (req) => {
     const settingsMap = new Map<LifecycleStage, any>()
     ;(lifecycleSettings || []).forEach((s: any) => settingsMap.set(s.stage as LifecycleStage, s))
 
-    // All non-admin profiles
-    const { data: profiles, error: profilesErr } = await adminClient
-      .from('profiles')
-      .select('id, email, first_name, last_name, created_at, last_login, role, is_owner')
-      .neq('role', 'admin')
-      .not('email', 'is', null)
-
-    if (profilesErr || !profiles) return new Response(
-      JSON.stringify({ success: false, error: 'Failed to fetch profiles' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
-
     // SMTP transporter
     const port = Number(smtpRow.smtp_port) || 587
     const secure = smtpRow.use_tls && port === 465
@@ -207,10 +240,106 @@ serve(async (req) => {
       tls: { rejectUnauthorized: Deno.env.get('DENO_ENV') === 'production' },
     })
 
-    const stageFilter = body.stage as LifecycleStage | undefined
+    // --- Self-welcome: send to the calling user only ---
+    if (isSelfWelcome && selfUserProfile) {
+      const stage: LifecycleStage = 'welcome'
+      const setting = settingsMap.get(stage)
+      if (setting && setting.enabled === false) {
+        return new Response(
+          JSON.stringify({ success: true, results: [{ stage, enabled: false, sent: 0 }] }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      // Dedup check
+      const { data: alreadySent } = await adminClient
+        .from('user_lifecycle_emails')
+        .select('id')
+        .eq('user_id', selfUserProfile.id)
+        .eq('lifecycle_stage', stage)
+        .maybeSingle()
+
+      if (alreadySent) {
+        return new Response(
+          JSON.stringify({ success: true, results: [{ stage, skipped: 1, reason: 'already_sent' }] }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+
+      const config = LIFECYCLE_CONFIG[stage]
+      const template = setting?.email_templates?.is_active ? setting.email_templates : null
+      const email = String(selfUserProfile.email).trim().toLowerCase()
+      const vars = {
+        user_email: email,
+        user_name: `${selfUserProfile.first_name || ''} ${selfUserProfile.last_name || ''}`.trim() || email.split('@')[0],
+        first_name: selfUserProfile.first_name || '',
+        last_name: selfUserProfile.last_name || '',
+      }
+
+      const subject = replaceVariables(template?.subject || config.defaultSubject, vars)
+      const html = replaceVariables(template?.html_body || config.defaultHtml, vars)
+
+      let status: 'sent' | 'failed' = 'sent'
+      let errorMsg: string | null = null
+      let msgId: string | null = null
+
+      try {
+        const info = await transporter.sendMail({
+          from: { name: smtpRow.from_name || 'StockFlow', address: smtpRow.from_email },
+          to: email,
+          subject,
+          html,
+          text: html.replace(/<[^>]*>/g, ''),
+        })
+        msgId = info.messageId || null
+      } catch (e) {
+        status = 'failed'
+        errorMsg = e instanceof Error ? e.message : 'Unknown error'
+      }
+
+      await adminClient.from('user_lifecycle_emails').upsert({
+        user_id: selfUserProfile.id,
+        email,
+        lifecycle_stage: stage,
+        template_id: template?.id || null,
+        status,
+        error_message: errorMsg,
+        metadata: { message_id: msgId },
+      }, { onConflict: 'user_id,lifecycle_stage', ignoreDuplicates: true })
+
+      await adminClient.from('email_logs').insert({
+        recipient_email: email,
+        recipient_user_id: selfUserProfile.id,
+        subject,
+        email_type: config.emailType,
+        status: status === 'sent' ? 'delivered' : 'failed',
+        error_message: errorMsg,
+        sent_at: new Date().toISOString(),
+        delivered_at: status === 'sent' ? new Date().toISOString() : null,
+        metadata: { lifecycle_stage: stage, message_id: msgId },
+      })
+
+      return new Response(
+        JSON.stringify({ success: true, results: [{ stage, sent: status === 'sent' ? 1 : 0, failed: status === 'failed' ? 1 : 0 }] }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // --- Admin batch run: process all users for selected stage(s) ---
+    const { data: profiles, error: profilesErr } = await adminClient
+      .from('profiles')
+      .select('id, email, first_name, last_name, created_at, last_login, role, is_owner')
+      .neq('role', 'admin')
+      .not('email', 'is', null)
+
+    if (profilesErr || !profiles) return new Response(
+      JSON.stringify({ success: false, error: 'Failed to fetch profiles' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+
     const stages: LifecycleStage[] = stageFilter
       ? [stageFilter]
-      : ['24h_nudge', '7d_inactive', '14d_inactive', '25d_warning', '29d_final_warning']
+      : ['welcome', '24h_nudge', '7d_inactive', '14d_inactive', '25d_warning', '29d_final_warning']
 
     const results = []
 
@@ -224,7 +353,6 @@ serve(async (req) => {
       const config = LIFECYCLE_CONFIG[stage]
       const template = setting?.email_templates?.is_active ? setting.email_templates : null
 
-      // Already sent for this stage
       const { data: alreadySent } = await adminClient
         .from('user_lifecycle_emails')
         .select('user_id')
@@ -270,7 +398,6 @@ serve(async (req) => {
 
         if (status === 'sent') sent++
 
-        // Track in lifecycle table (ignore duplicate via upsert)
         await adminClient.from('user_lifecycle_emails').upsert({
           user_id: profile.id,
           email,
@@ -281,7 +408,6 @@ serve(async (req) => {
           metadata: { message_id: msgId },
         }, { onConflict: 'user_id,lifecycle_stage', ignoreDuplicates: true })
 
-        // Log to email_logs for the history view
         await adminClient.from('email_logs').insert({
           recipient_email: email,
           recipient_user_id: profile.id,

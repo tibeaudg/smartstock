@@ -113,6 +113,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(currentSession?.user ?? null);
         setSession(currentSession);
         if (newUserId) fetchProfile(newUserId, currentSession?.user.user_metadata);
+
+        // Trigger welcome lifecycle email for new users (account < 24h), dedup enforced server-side
+        if (event === 'SIGNED_IN' && currentSession?.user) {
+          const createdAt = new Date(currentSession.user.created_at);
+          const isNewUser = (Date.now() - createdAt.getTime()) < 24 * 60 * 60 * 1000;
+          if (isNewUser) {
+            supabase.functions.invoke('trigger-lifecycle-emails', {
+              body: { stage: 'welcome', selfTrigger: true },
+            }).catch(err => console.warn('[auth] welcome email trigger failed:', err));
+          }
+        }
       }
 
       userIdRef.current = newUserId;

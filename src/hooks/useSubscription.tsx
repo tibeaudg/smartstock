@@ -53,10 +53,13 @@ export interface UseSubscriptionReturn {
   nextTier: PricingTier | null;
   productCount: number;
   branchCount: number;
+  userCount: number;
   maxProducts: number;
   maxBranches: number;
   maxUsers: number;
   isOverProductLimit: boolean;
+  isOverBranchLimit: boolean;
+  isOverUserLimit: boolean;
   isLoading: boolean;
   error: unknown;
   canUseFeature: (featureName: string) => boolean;
@@ -172,6 +175,41 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     staleTime: 1000 * 60,
   });
 
+  const { data: userCountFallback = 0 } = useQuery<number>({
+    queryKey: ['subscription-user-count', user?.id],
+    queryFn: async () => {
+      if (!user) return 0;
+      const { data: branches } = await supabase
+        .from('branches')
+        .select('id')
+        .eq('user_id', user.id);
+      if (!branches?.length) return 0;
+      const { data: branchUsers } = await supabase
+        .from('branch_users')
+        .select('user_id')
+        .in('branch_id', branches.map((b) => b.id));
+      const unique = new Set((branchUsers ?? []).map((u) => u.user_id));
+      return unique.size;
+    },
+    enabled: !!user,
+    staleTime: 1000 * 60,
+  });
+
+  // Fetch all non-enterprise tiers sorted by price so we can find the next tier up.
+  const { data: allTiers = [] } = useQuery<PricingTier[]>({
+    queryKey: ['all-pricing-tiers'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('pricing_tiers')
+        .select('*')
+        .eq('is_enterprise', false)
+        .order('price_monthly', { ascending: true });
+      if (error) return [];
+      return (data ?? []).map((r) => normalizeTier(r as Record<string, unknown>) as PricingTier);
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+
   const { currentTier, isPaidPlan, isOnTrial, isPastDue, subscriptionStatus, trialEndDate } = useMemo(() => {
     const sub = subscriptionData as { status?: string; tier_id?: string | null; trial_end_date?: string | null; pricing_tiers?: Record<string, unknown> | Record<string, unknown>[] } | null;
     const status = (sub?.status ?? null) as 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
@@ -192,10 +230,21 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
   }, [subscriptionData]);
 
   const branchCount = branchCountFallback ?? 0;
+  const userCount = userCountFallback ?? 0;
   const maxProducts = currentTier?.max_products ?? 100;
   const maxBranches = currentTier?.max_branches ?? 1;
   const maxUsers = currentTier?.max_users ?? 1;
   const isOverProductLimit = !isPaidPlan && (productCountFallback ?? 0) > maxProducts;
+  const isOverBranchLimit = branchCount >= maxBranches;
+  const isOverUserLimit = userCount >= maxUsers;
+
+  const nextTier = useMemo(() => {
+    if (!currentTier || !allTiers.length) return null;
+    const idx = allTiers.findIndex((t) => t.name === currentTier.name);
+    // If current tier not found in list (e.g. free/starter), find first paid tier
+    if (idx === -1) return allTiers.find((t) => t.price_monthly > 0) ?? null;
+    return allTiers[idx + 1] ?? null;
+  }, [currentTier, allTiers]);
 
   const canUseFeature = useMemo(() => {
     return (featureName: string): boolean => {
@@ -220,13 +269,16 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
 
   return {
     currentTier,
-    nextTier: null,
+    nextTier,
     productCount: productCountFallback ?? 0,
     branchCount,
+    userCount,
     maxProducts,
     maxBranches,
     maxUsers,
     isOverProductLimit,
+    isOverBranchLimit,
+    isOverUserLimit,
     isLoading: authLoading || subLoading,
     error: subError,
     canUseFeature,

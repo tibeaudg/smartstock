@@ -24,7 +24,6 @@ interface Plan {
   monthlyPrice: number | null;
   features: PlanFeature[];
   isPopular: boolean;
-  isEnterprise: boolean;
   primaryCta: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
 }
@@ -38,25 +37,25 @@ const PLANS: Plan[] = [
     features: [
       { text: '100 Unique Items' },
       { text: '1 User License' },
+      { text: 'Core inventory features' },
     ],
     isPopular: false,
-    isEnterprise: false,
     primaryCta: { label: 'Sign Up Free', href: '/auth' },
   },
   {
     name: 'professional',
     displayName: 'Professional',
     description: 'Best for simplifying day-to-day inventory tasks.',
-    monthlyPrice: 29,
+    monthlyPrice: 9,
     features: [
       { text: '2,000 Unique Items' },
       { text: '5 User Licenses' },
       { text: '2 Branches' },
       { text: '+ Unlimited QR Code & Barcode Label Creation', isHighlight: true },
       { text: '+ Purchase Orders', isHighlight: true },
+      { text: '+ Orders Management', isHighlight: true },
     ],
     isPopular: true,
-    isEnterprise: false,
     primaryCta: { label: 'Start Free Trial', href: '/auth' },
     secondaryCta: { label: 'Buy Now', href: '/auth?plan=professional' },
   },
@@ -64,24 +63,24 @@ const PLANS: Plan[] = [
     name: 'business',
     displayName: 'Business',
     description: 'Best for streamlining inventory processes and oversight.',
-    monthlyPrice: 59,
+    monthlyPrice: 29,
     features: [
       { text: '5,000 Unique Items' },
       { text: '8 User Licenses' },
       { text: '5 Branches' },
       { text: '+ Customizable Role Permissions', isHighlight: true },
       { text: '+ QuickBooks Online Integration', isHighlight: true },
+      { text: '+ Purchase Orders', isHighlight: true },
     ],
     isPopular: false,
-    isEnterprise: false,
     primaryCta: { label: 'Start Free Trial', href: '/auth' },
     secondaryCta: { label: 'Talk to Sales', href: 'mailto:sales@stockflowsystems.com' },
   },
   {
-    name: 'custom',
-    displayName: 'Custom',
+    name: 'enterprise',
+    displayName: 'Enterprise',
     description: 'Best for customized inventory processes and control.',
-    monthlyPrice: null,
+    monthlyPrice: 59,
     features: [
       { text: '10,000+ Unique Items' },
       { text: '12+ User Licenses' },
@@ -89,8 +88,7 @@ const PLANS: Plan[] = [
       { text: '+ Dedicated Customer Success Manager', isHighlight: true },
     ],
     isPopular: false,
-    isEnterprise: true,
-    primaryCta: { label: 'Talk to Sales', href: 'mailto:sales@stockflowsystems.com' },
+    primaryCta: { label: 'Start Free Trial', href: '/auth' },
   },
 ];
 
@@ -122,21 +120,21 @@ export default function PricingPage() {
     {
       question: 'Wat kost StockFlow? Is StockFlow gratis?',
       answer:
-        'StockFlow biedt een gratis Starter-plan met 100 unieke items en 1 gebruiker. Betaalde abonnementen starten bij $29/maand voor het Professional-plan. Geen verborgen kosten.',
+        'StockFlow biedt een gratis Starter-plan met 100 unieke items en 1 gebruiker. Betaalde abonnementen starten bij $9/maand voor het Professional-plan. Geen verborgen kosten.',
     },
   ];
 
   const keyTakeaways = [
     'Free Starter plan: 100 unique items, 1 user, no credit card.',
-    'Professional at $29/mo: 2,000 items, 5 users, purchase orders.',
-    'Business at $59/mo: 5,000 items, 8 users, QuickBooks integration.',
+    'Professional at $9/mo: 2,000 items, 5 users, purchase orders.',
+    'Business at $29/mo: 5,000 items, 8 users, QuickBooks integration.',
     '14-day free trial on the Professional plan.',
   ];
 
   const structuredData = generateSeoPageStructuredData({
     title: 'StockFlow Pricing – Plans from $0 | Prix Abonnement',
     description:
-      'StockFlow pricing: Starter (free), Professional $29/mo, Business $59/mo. Prix abonnement StockFlow inventory management.',
+      'StockFlow pricing: Starter (free), Professional $9/mo, Business $29/mo, Enterprise $59/mo. Prix abonnement StockFlow inventory management.',
     url: location.pathname,
     breadcrumbs,
     faqData,
@@ -158,8 +156,9 @@ export default function PricingPage() {
       url: location.pathname,
       offers: [
         { price: '0',  priceCurrency: 'USD', description: 'Starter – free forever' },
-        { price: '29', priceCurrency: 'USD', description: 'Professional – monthly' },
-        { price: '59', priceCurrency: 'USD', description: 'Business – monthly' },
+        { price: '9',  priceCurrency: 'USD', description: 'Professional – monthly' },
+        { price: '29', priceCurrency: 'USD', description: 'Business – monthly' },
+        { price: '59', priceCurrency: 'USD', description: 'Enterprise – monthly' },
       ],
     },
     pageType: 'software',
@@ -179,7 +178,7 @@ export default function PricingPage() {
     >
       <SEO
         title="StockFlow Pricing | Plans from $0 – Prix Abonnement Inventory Management"
-        description="StockFlow pricing: Starter free, Professional $29/mo, Business $59/mo. Prix abonnement stockflow inventory management."
+        description="StockFlow pricing: Starter free, Professional $9/mo, Business $29/mo, Enterprise $59/mo. Prix abonnement stockflow inventory management."
         keywords="stockflow pricing, prix abonnement stockflow, stockflow plans, inventory management price, stockflow kosten, stockflow abonnement"
         url="https://www.stockflowsystems.com/pricing"
         structuredData={structuredData}
@@ -223,7 +222,7 @@ export default function PricingPage() {
                 <p className="font-bold text-xl text-gray-900 mb-1">{plan.displayName}</p>
                 <p className="text-xs text-gray-500 mb-4 min-h-[2.5rem]">{plan.description}</p>
 
-                {plan.isEnterprise ? (
+                {plan.monthlyPrice === null ? (
                   <p className="text-2xl font-bold text-gray-900 mb-1">Get a Quote</p>
                 ) : plan.monthlyPrice === 0 ? (
                   <p className="text-3xl font-bold text-gray-900">Free</p>
@@ -239,7 +238,7 @@ export default function PricingPage() {
                   <Link
                     to={plan.primaryCta.href}
                     className={`block text-center py-2.5 px-4 rounded-lg font-semibold text-sm transition-colors ${
-                      plan.isEnterprise || plan.name === 'starter'
+                      plan.name === 'starter'
                         ? 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50'
                         : 'bg-blue-600 text-white hover:bg-blue-700'
                     }`}
@@ -282,8 +281,8 @@ export default function PricingPage() {
           </div>
 
           <p className="text-center text-xs text-gray-400 mt-6">
-            All prices in USD, billed monthly. 14-day free trial available on the Professional
-            plan. Cancel anytime. Extra branches +$5/mo · Extra users +$2/mo.
+            * 14-day free trial on Professional. No credit card required to start your trial.
+            Extra branches +$5/mo · Extra users +$2/mo, beyond what's included in your plan.
           </p>
 
           {/* FAQ */}

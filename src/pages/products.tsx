@@ -7,6 +7,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Plus, Package, Search, Filter, ChevronDown, ChevronUp, X, Download, Upload, List, Grid, ChevronLeft, ChevronRight, Maximize2, Minimize2, Trash2, Edit, Loader2, ArrowUpDown, ScanLine, MoreVertical, Import, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useNavigate, useLocation, useSearchParams, Link } from 'react-router-dom';
 import { useCategoryTree } from '@/hooks/useCategories';
@@ -98,6 +99,7 @@ export default function CategorysPageSecured() {
 
   const { user, loading: authLoading } = useAuth();
   const { activeBranch } = useBranches();
+  const { formatPrice } = useCurrency();
 
   const branchId = activeBranch?.branch_id ?? null;
 
@@ -135,7 +137,7 @@ export default function CategorysPageSecured() {
   /* ============================================================================
      FIXED: Use a custom query to fetch products with branch filtering
      ============================================================================ */
-  const { isLoading: categoriesLoading } = useCategoryTree();
+  const { isLoading: categoriesLoading, categories: allCategories } = useCategoryTree();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   
   // Custom query for products with branch filtering
@@ -207,8 +209,7 @@ const categoryProductsData = useMemo(() => {
     id: p.id,
     name: p.name,
     sku: p.sku,
-    // FIX: Access the category name properly
-    category_name: p.categories?.[0]?.name || p.category_name || '—',
+    category_name: p.categories?.name || p.category_name || '—',
     category_id: p.category_id,
     quantity_in_stock: p.quantity_in_stock || 0,
     price: p.unit_price || p.sale_price || p.price || 0,
@@ -251,15 +252,36 @@ const categoryProductsData = useMemo(() => {
      ============================================================================ */
   const [searchParams] = useSearchParams();
   const stockStatusParam = searchParams.get('stockStatus');
+  const categoryParam = searchParams.get('category');
+  const locationParam = searchParams.get('location');
   const initialStockStatusFromUrl = (stockStatusParam === 'low-stock' || stockStatusParam === 'out-of-stock')
     ? stockStatusParam
     : 'all';
+
+  // When navigating from the Categories page "View" button, apply the category filter
+  useEffect(() => {
+    if (!categoryParam) {
+      setSelectedCategoryIds([]);
+      return;
+    }
+    if (allCategories.length === 0) return;
+    // Collect the clicked category plus all its descendants
+    const getDescendants = (id: string): string[] => {
+      const result = [id];
+      allCategories
+        .filter((c: any) => c.parent_category_id === id)
+        .forEach((child: any) => result.push(...getDescendants(child.id)));
+      return result;
+    };
+    setSelectedCategoryIds(getDescendants(categoryParam));
+  }, [categoryParam, allCategories]);
 
   const [viewMode, setViewMode] = useState<'compact' | 'expanded'>('compact');
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(new Set());
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(initialStockStatusFromUrl !== 'all');
   const [filterWarehouse, setFilterWarehouse] = useState<string>('all');
+  const [filterLocation, setFilterLocation] = useState<string>(locationParam ?? 'all');
   const [filterStockStatus, setFilterStockStatus] = useState<string>(initialStockStatusFromUrl);
   const [minStock, setMinStock] = useState<string>('');
   const [maxStock, setMaxStock] = useState<string>('');
@@ -278,7 +300,7 @@ const categoryProductsData = useMemo(() => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50; // Fixed to 50 rows per page
+  const [itemsPerPage, setItemsPerPage] = useState(50);
   
   // Collapse/expand state for parent products with variants
   // collapsedParents contains parent IDs that are collapsed (variants hidden)
@@ -288,15 +310,22 @@ const categoryProductsData = useMemo(() => {
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (filterWarehouse !== 'all') count++;
+    if (filterLocation !== 'all') count++;
     if (filterStockStatus !== 'all') count++;
     if (minStock || maxStock) count++;
     if (minPrice || maxPrice) count++;
     return count;
-  }, [filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+  }, [filterWarehouse, filterLocation, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+
+  // Keep filterLocation in sync when the URL param changes (e.g. back-navigation)
+  useEffect(() => {
+    setFilterLocation(locationParam ?? 'all');
+  }, [locationParam]);
 
   const clearFilters = () => {
     setFilterWarehouse('all');
     setFilterStockStatus('all');
+    setFilterLocation('all');
     setMinStock('');
     setMaxStock('');
     setMinPrice('');
@@ -372,6 +401,10 @@ const categoryProductsData = useMemo(() => {
           p.variant_sku?.toLowerCase().includes(term);
         return matchesParent || matchesVariant;
       });
+    }
+
+    if (filterLocation !== 'all') {
+      filtered = filtered.filter((p: any) => p.location === filterLocation);
     }
 
     if (filterStockStatus !== 'all') {
@@ -450,7 +483,7 @@ const categoryProductsData = useMemo(() => {
     });
     
     return result;
-  }, [hierarchicalProducts, searchTerm, filterWarehouse, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+  }, [hierarchicalProducts, searchTerm, filterWarehouse, filterLocation, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
 
   // Apply collapse/expand filter to hide variants of collapsed parents
   // collapsedParents contains parent IDs that are collapsed (variants hidden)
@@ -1346,10 +1379,10 @@ const categoryProductsData = useMemo(() => {
                       {viewMode === 'expanded' && (
                         <>
                           <td className="px-4 py-4 text-sm">
-                            {p.price ? `$${parseFloat(p.price).toFixed(2)}` : '—'}
+                            {p.price ? formatPrice(parseFloat(p.price)) : '—'}
                           </td>
                           <td className="px-4 py-4 text-sm">
-                            {p.cost_price ? `$${parseFloat(p.cost_price).toFixed(2)}` : '—'}
+                            {p.cost_price ? formatPrice(parseFloat(p.cost_price)) : '—'}
                           </td>
                         
                           <td className="px-4 py-4 text-sm min-w-0 overflow-hidden">
@@ -1421,8 +1454,8 @@ const categoryProductsData = useMemo(() => {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">Showing per page</span>
                 <Select value={itemsPerPage.toString()} onValueChange={(v) => {
+                  setItemsPerPage(parseInt(v));
                   setCurrentPage(1);
-                  // Note: itemsPerPage is fixed to 50 in this component, but we'll add the UI for consistency
                 }}>
                   <SelectTrigger className="w-[100px]">
                     <SelectValue />

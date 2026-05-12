@@ -21,6 +21,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { Plus, Trash2, ChevronDown, Check } from 'lucide-react';
@@ -33,6 +34,7 @@ export default function CreatePurchaseOrderPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'draft' | 'pending' | 'ordered' | 'received' | 'cancelled'>('draft');
@@ -431,7 +433,7 @@ export default function CreatePurchaseOrderPage() {
         <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold">Total Amount:</span>
-            <span className="text-xl font-bold">${totalAmount.toFixed(2)}</span>
+            <span className="text-xl font-bold">{formatPrice(totalAmount)}</span>
           </div>
         </div>
       </div>

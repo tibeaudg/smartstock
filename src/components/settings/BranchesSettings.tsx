@@ -18,11 +18,12 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Loader2, GitBranch, Plus, Pencil, Trash2, Info } from 'lucide-react';
 import { toast } from 'sonner';
+import { UpgradeOrPayModal } from '@/components/UpgradeOrPayModal';
 
 export const BranchesSettings = () => {
   const { user } = useAuth();
   const { branches, refreshBranches, loading } = useBranches();
-  const { maxBranches } = useSubscription();
+  const { maxBranches, branchCount, isOverBranchLimit } = useSubscription();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
@@ -31,6 +32,15 @@ export const BranchesSettings = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newBranchName, setNewBranchName] = useState('');
   const [creating, setCreating] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+  const handleAddBranchClick = () => {
+    if (isOverBranchLimit) {
+      setShowUpgradeModal(true);
+    } else {
+      setShowAddForm(true);
+    }
+  };
 
   const startEdit = (branch: { branch_id: string; branch_name: string }) => {
     setEditingId(branch.branch_id);
@@ -151,7 +161,7 @@ export const BranchesSettings = () => {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => setShowAddForm(true)}
+                onClick={handleAddBranchClick}
               >
                 <Plus className="w-4 h-4 mr-1" />
                 Add branch
@@ -178,7 +188,7 @@ export const BranchesSettings = () => {
               <Button
                 className="mt-4"
                 size="sm"
-                onClick={() => setShowAddForm(true)}
+                onClick={handleAddBranchClick}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add branch
@@ -304,6 +314,13 @@ export const BranchesSettings = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <UpgradeOrPayModal
+        type="branch"
+        open={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onPaymentStarted={() => setShowAddForm(false)}
+      />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { CurrencyBranchSync } from './CurrencyBranchSync';
 import { AuthContext } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
+import { SubscriptionMigrationModal } from './SubscriptionMigrationModal';
 
 function isLocalStorageAvailable() {
   try {
@@ -79,6 +80,7 @@ export const StockManagementApp: React.FC = () => {
   return (
     <UnreadMessagesProvider>
         <CurrencyBranchSync />
+        <SubscriptionMigrationModal />
         <div className="w-screen h-screen overflow-hidden overflow-x-hidden m-0 p-0 bg-background text-foreground transition-colors">
         <Layout
           currentTab={getCurrentTab()}

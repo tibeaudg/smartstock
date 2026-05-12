@@ -20,7 +20,12 @@
       "Bash(node scripts/sync-sitemap.js)",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" -Force)",
       "Bash(Select-Object Name, FullName)",
-      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\supabase\\\\functions\\\\trigger-lifecycle-emails\")"
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\supabase\\\\functions\\\\trigger-lifecycle-emails\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "Bash(powershell -Command \"Select-String -Path 'c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\integrations\\\\supabase\\\\types.ts' -Pattern 'pricing_tiers|user_subscriptions' | Select-Object -First 20\")",
+      "Bash(findstr /r /s \"currency\\\\|currencySymbol\\\\|location.*warehouse\" src\\\\**\\\\*.tsx src\\\\**\\\\*.ts)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\supabase\\\\functions\\\\create-addon-checkout-session\")"
     ]
   }
 }

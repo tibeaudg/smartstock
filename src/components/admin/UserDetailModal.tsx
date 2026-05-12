@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database } from 'lucide-react';
+import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import * as XLSX from 'xlsx';
@@ -32,6 +33,57 @@ interface UserDetailModalProps {
   user: UserProfile | null;
   isOpen: boolean;
   onClose: () => void;
+  onBlock?: (userId: string, blocked: boolean) => void;
+  onDelete?: (userId: string) => void;
+  currentUserId?: string;
+  isBlockingPending?: boolean;
+  deletingUserId?: string | null;
+}
+
+interface LinkedUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  blocked: boolean;
+  lastLogin: string | null;
+}
+
+async function fetchLinkedUsers(headUserId: string): Promise<LinkedUser[]> {
+  const { data: branches } = await supabase
+    .from('branches')
+    .select('id')
+    .eq('user_id', headUserId);
+
+  if (!branches || branches.length === 0) return [];
+
+  const branchIds = (branches as { id: string }[]).map(b => b.id);
+
+  const { data: branchUsers } = await supabase
+    .from('branch_users')
+    .select('user_id, role, profiles:profiles!branch_users_user_id_fkey(email, first_name, last_name, blocked, last_login)')
+    .in('branch_id', branchIds)
+    .neq('user_id', headUserId);
+
+  if (!branchUsers) return [];
+
+  const seen = new Set<string>();
+  return (branchUsers as any[])
+    .filter(bu => {
+      if (seen.has(bu.user_id)) return false;
+      seen.add(bu.user_id);
+      return true;
+    })
+    .map(bu => ({
+      id: bu.user_id,
+      email: bu.profiles?.email || 'Unknown',
+      firstName: bu.profiles?.first_name || '',
+      lastName: bu.profiles?.last_name || '',
+      role: bu.role,
+      blocked: bu.profiles?.blocked || false,
+      lastLogin: bu.profiles?.last_login || null,
+    }));
 }
 
 interface SubscriptionInfo {
@@ -159,6 +211,68 @@ async function fetchUserAppEvents(userId: string): Promise<AppEvent[]> {
   return (data || []) as AppEvent[];
 }
 
+interface EmailLogEntry {
+  id: string;
+  subject: string;
+  email_type: string;
+  status: string;
+  sent_at: string;
+  error_message: string | null;
+  metadata: Record<string, any> | null;
+}
+
+interface LifecycleEmailEntry {
+  id: string;
+  lifecycle_stage: string;
+  status: string;
+  sent_at: string;
+  error_message: string | null;
+}
+
+const LIFECYCLE_STAGES: { key: string; label: string; description: string; days: number; isWarning?: boolean }[] = [
+  { key: '24h_nudge',        label: '24h Nudge',     description: 'Get started nudge after 24h of inactivity', days: 0 },
+  { key: '7d_inactive',      label: '7-Day',          description: 'Re-engagement after 7 days inactive',       days: 7 },
+  { key: '14d_inactive',     label: '14-Day',         description: 'Soft follow-up after 14 days inactive',     days: 14 },
+  { key: '25d_warning',      label: '5-Day Warning',  description: 'Account deletion warning (25 days)',        days: 25, isWarning: true },
+  { key: '29d_final_warning',label: 'Final Warning',  description: 'Last notice before deletion (29 days)',     days: 29, isWarning: true },
+];
+
+function getLifecycleEligibleDate(stage: string, createdAt: string, lastLogin: string | null | undefined): Date | null {
+  const created = new Date(createdAt);
+  const lastLoginDate = lastLogin ? new Date(lastLogin) : null;
+  const refDate = lastLoginDate || created;
+
+  switch (stage) {
+    case '24h_nudge':       return new Date(created.getTime() + 24 * 60 * 60 * 1000);
+    case '7d_inactive':     return new Date(refDate.getTime() + 7  * 24 * 60 * 60 * 1000);
+    case '14d_inactive':    return new Date(refDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+    case '25d_warning':     return new Date(refDate.getTime() + 25 * 24 * 60 * 60 * 1000);
+    case '29d_final_warning': return new Date(refDate.getTime() + 29 * 24 * 60 * 60 * 1000);
+    default: return null;
+  }
+}
+
+async function fetchUserEmailLogs(userId: string): Promise<EmailLogEntry[]> {
+  const { data, error } = await supabase
+    .from('email_logs')
+    .select('id, subject, email_type, status, sent_at, error_message, metadata')
+    .eq('recipient_user_id', userId)
+    .order('sent_at', { ascending: false })
+    .limit(100);
+  if (error) throw error;
+  return (data || []) as EmailLogEntry[];
+}
+
+async function fetchUserLifecycleEmails(userId: string): Promise<LifecycleEmailEntry[]> {
+  const { data, error } = await (supabase as any)
+    .from('user_lifecycle_emails')
+    .select('id, lifecycle_stage, status, sent_at, error_message')
+    .eq('user_id', userId)
+    .order('sent_at', { ascending: false });
+  if (error) throw error;
+  return (data || []) as LifecycleEmailEntry[];
+}
+
 function SubStatusBadge({ status }: { status: SubscriptionInfo['status'] }) {
   if (!status) return null;
   const map: Record<string, { label: string; className: string }> = {
@@ -191,6 +305,11 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   user,
   isOpen,
   onClose,
+  onBlock,
+  onDelete,
+  currentUserId,
+  isBlockingPending,
+  deletingUserId,
 }) => {
   const queryClient = useQueryClient();
   const { user: adminUser } = useAuth();
@@ -432,6 +551,24 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen && activeTab === 'activity',
   });
 
+  const { data: linkedUsers = [], isLoading: loadingLinkedUsers } = useQuery({
+    queryKey: ['linkedUsers', user?.id],
+    queryFn: () => fetchLinkedUsers(user!.id),
+    enabled: !!user && isOpen,
+  });
+
+  const { data: userEmailLogs = [], isLoading: loadingEmailLogs } = useQuery({
+    queryKey: ['userEmailLogs', user?.id],
+    queryFn: () => fetchUserEmailLogs(user!.id),
+    enabled: !!user && isOpen && activeTab === 'emails',
+  });
+
+  const { data: lifecycleEmails = [], isLoading: loadingLifecycleEmails } = useQuery({
+    queryKey: ['userLifecycleEmails', user?.id],
+    queryFn: () => fetchUserLifecycleEmails(user!.id),
+    enabled: !!user && isOpen && activeTab === 'emails',
+  });
+
   const exportData = (data: any[], filename: string) => {
     try {
       const ws = XLSX.utils.json_to_sheet(data);
@@ -462,7 +599,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-          <TabsList className="grid w-full grid-cols-3 gap-1 mb-4">
+          <TabsList className="grid w-full grid-cols-4 gap-1 mb-4">
             <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
             <TabsTrigger value="billing" className="text-xs">
               Billing
@@ -471,6 +608,12 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
               )}
             </TabsTrigger>
             <TabsTrigger value="activity" className="text-xs">Activity</TabsTrigger>
+            <TabsTrigger value="emails" className="text-xs">
+              Emails
+              {userEmailLogs.length > 0 && (
+                <Badge variant="secondary" className="ml-1 text-xs">{userEmailLogs.length}</Badge>
+              )}
+            </TabsTrigger>
           </TabsList>
 
           <div className="flex-1 overflow-y-auto">
@@ -491,7 +634,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex gap-4">
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg">Profile Information</CardTitle>
@@ -550,6 +693,63 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         {user.blocked ? 'Blocked' : 'Active'}
                       </Badge>
                     </div>
+
+                    {/* Block / Delete actions */}
+                    {(onBlock || onDelete) && (
+                      <div className="pt-3 border-t mt-3">
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Actions</p>
+                        <div className="flex gap-2 flex-wrap">
+                          {onBlock && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => onBlock(user.id, !!user.blocked)}
+                              disabled={isBlockingPending}
+                              className={user.blocked ? 'border-green-200 text-green-700 hover:bg-green-50' : 'border-amber-200 text-amber-700 hover:bg-amber-50'}
+                            >
+                              {isBlockingPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
+                              {user.blocked ? 'Unblock User' : 'Block User'}
+                            </Button>
+                          )}
+                          {onDelete && user.id !== currentUserId && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  disabled={deletingUserId === user.id}
+                                  className="border-red-200 text-red-700 hover:bg-red-50"
+                                >
+                                  {deletingUserId === user.id ? (
+                                    <><Loader2 className="w-3 h-3 animate-spin mr-1" />Deleting...</>
+                                  ) : (
+                                    <><Trash2 className="w-3 h-3 mr-1" />Delete User</>
+                                  )}
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Delete User</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Are you sure you want to delete {user.email}? This action cannot be undone and will permanently delete the user profile and all associated data from the database.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    className="bg-red-600 hover:bg-red-700"
+                                    onClick={() => onDelete(user.id)}
+                                  >
+                                    Delete
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="pt-3 border-t mt-3">
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Set Plan (Admin Override)</p>
                       <div className="flex items-center gap-2">
@@ -607,27 +807,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Account Activity</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <div>
-                      <span className="text-sm font-medium text-gray-600">Created:</span>
-                      <p className="text-sm">{format(new Date(user.created_at), 'PPpp')}</p>
-                    </div>
-                    <div>
-                      <span className="text-sm font-medium text-gray-600">Last Login:</span>
-                      <p className="text-sm">
-                        {user.last_login ? format(new Date(user.last_login), 'PPpp') : 'Never'}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-sm font-medium text-gray-600">Last Updated:</span>
-                      <p className="text-sm">{format(new Date(user.updated_at), 'PPpp')}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+              
               </div>
 
               <Card>
@@ -653,9 +833,58 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       <div className="text-2xl font-bold text-green-600">{salesOrders.length}</div>
                       <div className="text-sm text-gray-600">Sales Orders</div>
                     </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-violet-600">{linkedUsers.length}</div>
+                      <div className="text-sm text-gray-600">Linked Users</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Linked Users */}
+              {(loadingLinkedUsers || linkedUsers.length > 0) && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Users className="w-4 h-4" />
+                      Linked Users ({linkedUsers.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {loadingLinkedUsers ? (
+                      <div className="flex justify-center py-4">
+                        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {linkedUsers.map(lu => (
+                          <div key={lu.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50">
+                            <div>
+                              <p className="text-sm font-medium text-gray-800">{lu.email}</p>
+                              {(lu.firstName || lu.lastName) && (
+                                <p className="text-xs text-gray-500">{lu.firstName} {lu.lastName}</p>
+                              )}
+                              <p className="text-xs text-gray-400 mt-0.5">
+                                Role: <span className="capitalize">{lu.role}</span>
+                                {lu.lastLogin && (
+                                  <span className="ml-2">· Last login: {formatDistanceToNow(new Date(lu.lastLogin), { addSuffix: true })}</span>
+                                )}
+                                {!lu.lastLogin && <span className="ml-2">· Never logged in</span>}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {lu.blocked && (
+                                <Badge className="text-xs bg-red-100 text-red-700">Blocked</Badge>
+                              )}
+                              <Badge className="text-xs bg-slate-200 text-slate-600 capitalize">{lu.role}</Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             {/* Billing Tab */}
@@ -956,6 +1185,176 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   </>
                 );
               })()}
+            </TabsContent>
+            {/* Emails Tab */}
+            <TabsContent value="emails" className="mt-0 space-y-4">
+              {(loadingEmailLogs || loadingLifecycleEmails) ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                </div>
+              ) : (
+                <>
+                  {/* Lifecycle Pipeline */}
+                  <Card>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-blue-600" />
+                        Lifecycle Pipeline
+                      </CardTitle>
+                      <p className="text-xs text-gray-500">Retention emails based on user inactivity</p>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {LIFECYCLE_STAGES.map(stage => {
+                        const sent = lifecycleEmails.find(e => e.lifecycle_stage === stage.key);
+                        const eligibleDate = getLifecycleEligibleDate(stage.key, user.created_at, user.last_login);
+                        const now = new Date();
+                        const isEligible = !sent && eligibleDate && eligibleDate <= now;
+                        const isFuture = !sent && eligibleDate && eligibleDate > now;
+                        const daysUntil = eligibleDate ? Math.ceil((eligibleDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)) : null;
+
+                        return (
+                          <div
+                            key={stage.key}
+                            className={`flex items-center justify-between px-3 py-2.5 rounded-lg border ${
+                              sent
+                                ? 'bg-green-50 border-green-200'
+                                : isEligible
+                                  ? stage.isWarning
+                                    ? 'bg-red-50 border-red-200'
+                                    : 'bg-orange-50 border-orange-200'
+                                  : 'bg-gray-50 border-gray-200'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              {sent ? (
+                                <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
+                              ) : isEligible ? (
+                                <AlertCircle className={`w-4 h-4 shrink-0 ${stage.isWarning ? 'text-red-500' : 'text-orange-500'}`} />
+                              ) : (
+                                <Clock className="w-4 h-4 text-gray-400 shrink-0" />
+                              )}
+                              <div>
+                                <p className="text-sm font-medium text-gray-800">{stage.label}</p>
+                                <p className="text-xs text-gray-500">{stage.description}</p>
+                              </div>
+                            </div>
+
+                            <div className="text-right shrink-0 ml-3">
+                              {sent ? (
+                                <>
+                                  <Badge className="bg-green-100 text-green-700 text-xs">Sent</Badge>
+                                  <p className="text-xs text-gray-400 mt-1">
+                                    {format(new Date(sent.sent_at), 'dd MMM yyyy')}
+                                  </p>
+                                  {sent.status === 'failed' && (
+                                    <p className="text-xs text-red-500 mt-0.5">Failed</p>
+                                  )}
+                                </>
+                              ) : isEligible ? (
+                                <>
+                                  <Badge className={`text-xs ${stage.isWarning ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
+                                    Eligible
+                                  </Badge>
+                                  <p className="text-xs text-gray-400 mt-1">Pending trigger</p>
+                                </>
+                              ) : eligibleDate ? (
+                                <>
+                                  <Badge className="bg-gray-100 text-gray-600 text-xs">Scheduled</Badge>
+                                  <p className="text-xs text-gray-400 mt-1">
+                                    {daysUntil === 1 ? 'Tomorrow' : daysUntil === 0 ? 'Today' : `In ${daysUntil}d`}
+                                    {' · '}{format(eligibleDate, 'dd MMM')}
+                                  </p>
+                                </>
+                              ) : null}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </CardContent>
+                  </Card>
+
+                  {/* Email History */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+                        <Mail className="w-4 h-4" />
+                        Email History ({userEmailLogs.length})
+                      </h3>
+                      {userEmailLogs.length > 0 && (
+                        <Button variant="outline" size="sm" onClick={() =>
+                          exportData(userEmailLogs.map(e => ({
+                            subject: e.subject,
+                            type: e.email_type,
+                            status: e.status,
+                            sent_at: e.sent_at,
+                            error: e.error_message || '',
+                          })), `user_${user.id}_emails`)
+                        }>
+                          <Download className="w-4 h-4 mr-2" />
+                          Export
+                        </Button>
+                      )}
+                    </div>
+
+                    {userEmailLogs.length === 0 ? (
+                      <div className="text-center py-8 text-gray-400">
+                        <Mail className="w-8 h-8 mx-auto mb-2 opacity-30" />
+                        <p className="text-sm">No emails sent to this user yet</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-1.5">
+                        {userEmailLogs.map(log => {
+                          const statusColors: Record<string, string> = {
+                            delivered: 'bg-green-100 text-green-700',
+                            sent:      'bg-blue-100 text-blue-700',
+                            failed:    'bg-red-100 text-red-700',
+                            bounced:   'bg-orange-100 text-orange-700',
+                          };
+                          const typeColors: Record<string, string> = {
+                            welcome:          'bg-purple-100 text-purple-700',
+                            lifecycle:        'bg-indigo-100 text-indigo-700',
+                            deletion_warning: 'bg-red-100 text-red-700',
+                            newsletter:       'bg-blue-100 text-blue-700',
+                            followup:         'bg-yellow-100 text-yellow-700',
+                            support:          'bg-green-100 text-green-700',
+                            custom:           'bg-gray-100 text-gray-700',
+                          };
+                          const lifecycleStage = log.metadata?.lifecycle_stage as string | undefined;
+
+                          return (
+                            <div key={log.id} className="flex items-start justify-between p-3 rounded-lg border border-gray-100 bg-white hover:bg-gray-50 transition-colors">
+                              <div className="flex-1 min-w-0 pr-3">
+                                <p className="text-sm font-medium text-gray-800 truncate">{log.subject}</p>
+                                <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                                  <Badge className={`text-xs px-1.5 py-0 ${typeColors[log.email_type] || 'bg-gray-100 text-gray-700'}`}>
+                                    {log.email_type.replace('_', ' ')}
+                                  </Badge>
+                                  {lifecycleStage && (
+                                    <span className="text-xs text-gray-400">
+                                      {LIFECYCLE_STAGES.find(s => s.key === lifecycleStage)?.label || lifecycleStage}
+                                    </span>
+                                  )}
+                                  {log.status === 'failed' && log.error_message && (
+                                    <span className="text-xs text-red-500 truncate max-w-[200px]">{log.error_message}</span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="text-right shrink-0">
+                                <Badge className={`text-xs ${statusColors[log.status] || 'bg-gray-100 text-gray-700'}`}>
+                                  {log.status}
+                                </Badge>
+                                <p className="text-xs text-gray-400 mt-1 whitespace-nowrap">
+                                  {formatDistanceToNow(new Date(log.sent_at), { addSuffix: true })}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </TabsContent>
           </div>
         </Tabs>

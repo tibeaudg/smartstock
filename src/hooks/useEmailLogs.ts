@@ -16,14 +16,6 @@ export interface EmailLog {
   opened_at: string | null;
   clicked_at: string | null;
   metadata: Record<string, any>;
-  email_templates?: {
-    id: string;
-    name: string;
-  } | null;
-  email_campaigns?: {
-    id: string;
-    name: string;
-  } | null;
 }
 
 export interface EmailLogFilters {
@@ -39,17 +31,7 @@ export interface EmailLogFilters {
 const fetchEmailLogs = async (filters?: EmailLogFilters): Promise<EmailLog[]> => {
   let query = supabase
     .from('email_logs')
-    .select(`
-      *,
-      email_templates (
-        id,
-        name
-      ),
-      email_campaigns (
-        id,
-        name
-      )
-    `)
+    .select('id, campaign_id, template_id, recipient_email, recipient_user_id, subject, email_type, status, error_message, sent_at, delivered_at, opened_at, clicked_at, metadata')
     .order('sent_at', { ascending: false })
     .limit(1000);
 

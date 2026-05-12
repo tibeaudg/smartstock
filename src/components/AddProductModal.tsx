@@ -494,7 +494,7 @@ export const AddProductModal = ({
     let id = form.getValues(idKey) || null;
 
     if (!name && !id) return null;
-    if (id && !name) return id; // Already selected by ID
+    if (id) return id; // Already selected by ID — trust the selector
 
     // Attempt to find existing
     console.log(`[AddProductModal] Checking/Creating ${tableName} with name: ${name}`);

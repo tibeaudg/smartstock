@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
 import {
   Mail, Send, BarChart3, CheckCircle2, XCircle, Activity, RefreshCcw,
-  Clock, AlertTriangle, Settings2
+  AlertTriangle, Settings2,
 } from 'lucide-react';
 import { useEmailLogs, useEmailLogStats } from '@/hooks/useEmailLogs';
-import { useEmailSegments } from '@/hooks/useEmailSegments';
 import { useSmtpSettings } from '@/hooks/useSmtpSettings';
 import { useLifecycleEmails, ALL_LIFECYCLE_STAGES } from '@/hooks/useLifecycleEmails';
 import SEO from '@/components/SEO';
 import AdminSmtpPage from '@/pages/AdminSmtpPage';
 import { EmailLogsView } from '@/components/admin/email/EmailLogsView';
-import { EmailSegmentsManager } from '@/components/admin/email/EmailSegmentsManager';
 import { EmailLifecycleView } from '@/components/admin/email/EmailLifecycleView';
 import { format } from 'date-fns';
 
@@ -35,6 +32,7 @@ const TYPE_BADGE: Record<string, string> = {
 };
 
 const LIFECYCLE_STAGE_LABEL: Record<string, string> = {
+  welcome: 'Welcome',
   '24h_nudge': '24h Nudge',
   '7d_inactive': '7-Day',
   '14d_inactive': '14-Day',
@@ -45,13 +43,11 @@ const LIFECYCLE_STAGE_LABEL: Record<string, string> = {
 export default function EmailManagementPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const { data: stats } = useEmailLogStats();
-  const { segments, isLoading: segmentsLoading } = useEmailSegments();
   const { data: recentLogs } = useEmailLogs({});
   const { isConfigured, smtpSettings } = useSmtpSettings();
   const { statsMap, getEffectiveSetting } = useLifecycleEmails();
 
   const recentLogsData = recentLogs?.slice(0, 8) || [];
-  const activeSegmentAutomations = segments.filter((s) => (s as any).automation_enabled === true);
   const enabledLifecycleStages = ALL_LIFECYCLE_STAGES.filter((s) => getEffectiveSetting(s).enabled).length;
   const totalLifecycleSent = ALL_LIFECYCLE_STAGES.reduce((acc, s) => acc + (statsMap.get(s)?.total || 0), 0);
 
@@ -75,7 +71,7 @@ export default function EmailManagementPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="settings">
               <Settings2 className="w-3.5 h-3.5 mr-1.5" />
               Settings
@@ -87,10 +83,6 @@ export default function EmailManagementPage() {
             <TabsTrigger value="lifecycle">
               <RefreshCcw className="w-3.5 h-3.5 mr-1.5" />
               Lifecycle
-            </TabsTrigger>
-            <TabsTrigger value="segments">
-              <Mail className="w-3.5 h-3.5 mr-1.5" />
-              Segments
             </TabsTrigger>
             <TabsTrigger value="history">
               <Activity className="w-3.5 h-3.5 mr-1.5" />
@@ -106,7 +98,6 @@ export default function EmailManagementPage() {
           {/* ── Dashboard ── */}
           <TabsContent value="dashboard" className="space-y-6">
 
-            {/* Status row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
               {/* SMTP status */}
@@ -118,26 +109,16 @@ export default function EmailManagementPage() {
                 <CardContent>
                   <div className="flex items-center gap-1.5">
                     {isConfigured ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-semibold text-green-700">Configured</span>
-                      </>
+                      <><CheckCircle2 className="w-4 h-4 text-green-600" /><span className="text-sm font-semibold text-green-700">Configured</span></>
                     ) : (
-                      <>
-                        <XCircle className="w-4 h-4 text-amber-500" />
-                        <span className="text-sm font-semibold text-amber-600">Not configured</span>
-                      </>
+                      <><XCircle className="w-4 h-4 text-amber-500" /><span className="text-sm font-semibold text-amber-600">Not configured</span></>
                     )}
                   </div>
                   {isConfigured && smtpSettings?.from_email && (
-                    <p className="text-xs text-muted-foreground mt-1 truncate">
-                      From: {smtpSettings.from_email}
-                    </p>
+                    <p className="text-xs text-muted-foreground mt-1 truncate">From: {smtpSettings.from_email}</p>
                   )}
                   {!isConfigured && (
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Configure in the Settings tab
-                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">Configure in the Settings tab</p>
                   )}
                 </CardContent>
               </Card>
@@ -170,18 +151,16 @@ export default function EmailManagementPage() {
                 </CardContent>
               </Card>
 
-              {/* Automations */}
+              {/* Active automations */}
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                   <CardTitle className="text-sm font-medium">Active Automations</CardTitle>
                   <RefreshCcw className="h-4 w-4 text-blue-600" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-blue-600">
-                    {activeSegmentAutomations.length + enabledLifecycleStages}
-                  </div>
+                  <div className="text-2xl font-bold text-blue-600">{enabledLifecycleStages}</div>
                   <p className="text-xs text-muted-foreground">
-                    {enabledLifecycleStages} lifecycle · {activeSegmentAutomations.length} segments
+                    {enabledLifecycleStages} of {ALL_LIFECYCLE_STAGES.length} lifecycle stages enabled
                   </p>
                 </CardContent>
               </Card>
@@ -207,7 +186,7 @@ export default function EmailManagementPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                   {ALL_LIFECYCLE_STAGES.map((stage) => {
                     const stageStats = statsMap.get(stage);
                     const setting = getEffectiveSetting(stage);
@@ -234,10 +213,9 @@ export default function EmailManagementPage() {
               </CardContent>
             </Card>
 
-            {/* Two-column: recent emails + email types */}
+            {/* Two-column: recent emails + by type */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-              {/* Recent emails */}
               <Card>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
@@ -277,90 +255,42 @@ export default function EmailManagementPage() {
                 </CardContent>
               </Card>
 
-              {/* Breakdown */}
-              <div className="space-y-4">
-                {/* By type */}
-                {stats && Object.keys(stats.by_type).length > 0 && (
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Emails by Type</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        {Object.entries(stats.by_type)
-                          .sort(([, a], [, b]) => (b as number) - (a as number))
-                          .map(([type, count]) => (
-                            <div key={type} className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <span className={`text-xs px-1.5 py-0.5 rounded ${TYPE_BADGE[type] || 'bg-gray-100 text-gray-700'}`}>
-                                  {type}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <div className="w-24 bg-gray-100 rounded-full h-1.5">
-                                  <div
-                                    className="bg-blue-500 rounded-full h-1.5"
-                                    style={{ width: `${stats.total > 0 ? Math.round(((count as number) / stats.total) * 100) : 0}%` }}
-                                  />
-                                </div>
-                                <span className="text-sm text-muted-foreground w-8 text-right">{count as number}</span>
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Segment automations */}
+              {/* By type */}
+              {stats && Object.keys(stats.by_type).length > 0 && (
                 <Card>
                   <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-base">Segment Automations</CardTitle>
-                      <button
-                        onClick={() => setActiveTab('segments')}
-                        className="text-xs text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        Manage →
-                      </button>
-                    </div>
+                    <CardTitle className="text-base">Emails by Type</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {segmentsLoading ? (
-                      <p className="text-sm text-muted-foreground">Loading...</p>
-                    ) : activeSegmentAutomations.length === 0 ? (
-                      <p className="text-sm text-muted-foreground py-2 text-center">No active segment automations</p>
-                    ) : (
-                      <div className="space-y-2">
-                        {activeSegmentAutomations.slice(0, 5).map((seg: any) => (
-                          <div key={seg.id} className="flex items-center justify-between py-1.5 border-b last:border-0">
-                            <div>
-                              <p className="text-sm font-medium">{seg.name}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {seg.automation_trigger === 'user_signup' ? 'On signup' : 'Inactivity'} · {seg.user_count || 0} users
-                              </p>
+                    <div className="space-y-2">
+                      {Object.entries(stats.by_type)
+                        .sort(([, a], [, b]) => (b as number) - (a as number))
+                        .map(([type, count]) => (
+                          <div key={type} className="flex items-center justify-between">
+                            <span className={`text-xs px-1.5 py-0.5 rounded ${TYPE_BADGE[type] || 'bg-gray-100 text-gray-700'}`}>
+                              {type}
+                            </span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-24 bg-gray-100 rounded-full h-1.5">
+                                <div
+                                  className="bg-blue-500 rounded-full h-1.5"
+                                  style={{ width: `${stats.total > 0 ? Math.round(((count as number) / stats.total) * 100) : 0}%` }}
+                                />
+                              </div>
+                              <span className="text-sm text-muted-foreground w-8 text-right">{count as number}</span>
                             </div>
-                            <Badge variant="outline" className="text-xs border-green-200 text-green-700 bg-green-50">
-                              Active
-                            </Badge>
                           </div>
                         ))}
-                      </div>
-                    )}
+                    </div>
                   </CardContent>
                 </Card>
-              </div>
+              )}
             </div>
           </TabsContent>
 
           {/* ── Lifecycle ── */}
           <TabsContent value="lifecycle">
             <EmailLifecycleView />
-          </TabsContent>
-
-          {/* ── Segments ── */}
-          <TabsContent value="segments">
-            <EmailSegmentsManager />
           </TabsContent>
 
           {/* ── History ── */}

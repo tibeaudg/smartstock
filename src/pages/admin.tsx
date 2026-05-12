@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, Download, Trash2, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard, Clock, TrendingDown, Gauge } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard, Clock, TrendingDown, Gauge } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -11,22 +11,20 @@ import { useMobile } from '@/hooks/use-mobile';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { SEO } from '@/components/SEO';
 import { toast } from 'sonner';
 import * as XLSX from 'xlsx';
 import { formatDistanceToNow } from 'date-fns';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
-import { AdminChatList } from '@/components/AdminChatList';
 import { AdminNotificationManager } from '@/components/AdminNotificationManager';
 import EmailManagementPage from '@/pages/admin/EmailManagementPage';
 import { UserDetailModal } from '@/components/admin/UserDetailModal';
 
 // User management types
-type SortColumn = 'email' | 'name' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' | 'organization' | 'branches' | 'role' | 'openChats';
+type SortColumn = 'email' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' |'branches' ;
 type SortDirection = 'asc' | 'desc';
-type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'trialing' | 'has-open-chat' | 'has-recent-errors' | 'payment-issues';
+type QuickFilter = 'all' | 'active' | 'blocked' | 'inactive' | 'never-logged-in' | 'at-risk' | 'trialing' | 'has-recent-errors' | 'payment-issues';
 type PlanFilter = 'all' | string;
 type RoleFilter = 'all' | 'user' | 'admin' | 'staff';
 
@@ -43,6 +41,7 @@ interface UserProfile {
   last_login?: string | null;
   referral_source?: string | null;
   organization_name?: string | null;
+  is_owner?: boolean | null;
 }
 
 interface UserStats {
@@ -64,22 +63,25 @@ interface AdminBranch {
 }
 
 
-// Plan information for usage-based pricing (includes Stripe-based tiers)
+// Plan information for display and cost calculations (Stripe is source of truth for live billing)
 const plans = {
-  'free':              { price: 0,   limit: 100,  displayName: 'Starter',                  pricePerProduct: 0,     includedProducts: 100 },
-  'basic':             { price: 0,   limit: 100,  displayName: 'Starter',                  pricePerProduct: 0,     includedProducts: 100 },
-  'essential':         { price: 39,  limit: 500,  displayName: 'Essential',                pricePerProduct: 0,     includedProducts: 500 },
-  'essential_trial':   { price: 39,  limit: 500,  displayName: 'Essential (Trial)',        pricePerProduct: 0,     includedProducts: 500 },
-  'professional':      { price: 119, limit: 2000, displayName: 'Professional',             pricePerProduct: 0,     includedProducts: 2000 },
-  'professional_trial':{ price: 119, limit: 2000, displayName: 'Professional (Trial)',     pricePerProduct: 0,     includedProducts: 2000 },
-  'business':          { price: 239, limit: 5000, displayName: 'Business',                 pricePerProduct: 0,     includedProducts: 5000 },
-  'business_trial':    { price: 239, limit: 5000, displayName: 'Business (Trial)',         pricePerProduct: 0,     includedProducts: 5000 },
-  'custom':            { price: 0,   limit: null, displayName: 'Custom',                   pricePerProduct: 0,     includedProducts: 10000 },
+  'free':               { price: 0,  limit: 100,  displayName: 'Starter',                   pricePerProduct: 0,     includedProducts: 100 },
+  'basic':              { price: 0,  limit: 100,  displayName: 'Starter',                   pricePerProduct: 0,     includedProducts: 100 },
+  'starter':            { price: 0,  limit: 100,  displayName: 'Starter',                   pricePerProduct: 0,     includedProducts: 100 },
+  'professional':       { price: 9,  limit: 2000, displayName: 'Professional',              pricePerProduct: 0,     includedProducts: 2000 },
+  'professional_trial': { price: 9,  limit: 2000, displayName: 'Professional (Trial)',      pricePerProduct: 0,     includedProducts: 2000 },
+  'business':           { price: 29, limit: 5000, displayName: 'Business',                  pricePerProduct: 0,     includedProducts: 5000 },
+  'business_trial':     { price: 29, limit: 5000, displayName: 'Business (Trial)',          pricePerProduct: 0,     includedProducts: 5000 },
+  'enterprise':         { price: 59, limit: null, displayName: 'Enterprise',                pricePerProduct: 0,     includedProducts: 10000 },
+  'enterprise_trial':   { price: 59, limit: null, displayName: 'Enterprise (Trial)',        pricePerProduct: 0,     includedProducts: 10000 },
   // Legacy names kept for backward compatibility
-  'advance':           { price: 39,  limit: 500,  displayName: 'Essential (legacy)',       pricePerProduct: 0,     includedProducts: 500 },
-  'advance_trial':     { price: 39,  limit: 500,  displayName: 'Essential Trial (legacy)', pricePerProduct: 0,     includedProducts: 500 },
-  'growth':            { price: 0,   limit: 10000,displayName: 'Business (legacy)',        pricePerProduct: 0.008, includedProducts: 100 },
-  'premium':           { price: 0,   limit: null, displayName: 'Custom (legacy)',          pricePerProduct: 0,     includedProducts: 10000 },
+  'essential':          { price: 9,  limit: 500,  displayName: 'Essential (legacy)',        pricePerProduct: 0,     includedProducts: 500 },
+  'essential_trial':    { price: 9,  limit: 500,  displayName: 'Essential Trial (legacy)',  pricePerProduct: 0,     includedProducts: 500 },
+  'custom':             { price: 59, limit: null, displayName: 'Enterprise',                pricePerProduct: 0,     includedProducts: 10000 },
+  'advance':            { price: 9,  limit: 500,  displayName: 'Essential (legacy)',        pricePerProduct: 0,     includedProducts: 500 },
+  'advance_trial':      { price: 9,  limit: 500,  displayName: 'Essential Trial (legacy)',  pricePerProduct: 0,     includedProducts: 500 },
+  'growth':             { price: 0,  limit: 10000,displayName: 'Business (legacy)',         pricePerProduct: 0.008, includedProducts: 100 },
+  'premium':            { price: 59, limit: null, displayName: 'Enterprise (legacy)',       pricePerProduct: 0,     includedProducts: 10000 },
 };
 
 function getPlanDisplayName(planId: string | null): string {
@@ -166,7 +168,7 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
 
 function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: string): UserPlanInfo {
   return planMap[userId] ?? {
-    displayName: 'Free',
+    displayName: 'Starter',
     filterKey: 'free',
     subStatus: null,
     endDate: null,
@@ -248,25 +250,7 @@ async function fetchUserProfiles(): Promise<UserProfile[]> {
   return all;
 }
 
-/** Fetch open chat counts per user (chats where is_closed = false) */
-async function fetchOpenChatCounts(userIds: string[]): Promise<Record<string, number>> {
-  if (userIds.length === 0) return {};
-  const { data, error } = await supabase
-    .from('chats')
-    .select('user_id')
-    .in('user_id', userIds)
-    .eq('is_closed', false);
-  if (error) {
-    console.error('Error fetching open chats:', error);
-    return {};
-  }
-  const counts: Record<string, number> = {};
-  userIds.forEach(id => { counts[id] = 0; });
-  (data || []).forEach((row: { user_id: string }) => {
-    counts[row.user_id] = (counts[row.user_id] || 0) + 1;
-  });
-  return counts;
-}
+
 
 /** Fetch user IDs that have application_errors in the last 7 days */
 async function fetchUserIdsWithRecentErrors(): Promise<Set<string>> {
@@ -332,27 +316,28 @@ function calculateActivityStatus(
   exactTime: string;
 } {
   const now = new Date();
-  const accountCreated = new Date(createdAt);
-  
-  const referenceDate: Date = lastLogin ? new Date(lastLogin) : accountCreated;
-  
+
+  // Users who never logged in: track days since creation for sorting/highlighting
+  // but show 'Never' to avoid implying they were recently active
+  if (!lastLogin) {
+    const diffTime = now.getTime() - new Date(createdAt).getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return { isActive: false, days: diffDays, display: 'Never', color: 'gray', exactTime: 'Never' };
+  }
+
+  const referenceDate = new Date(lastLogin);
   const diffTime = now.getTime() - referenceDate.getTime();
   const diffMinutes = Math.floor(diffTime / (1000 * 60));
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  
-  // Check if user is active (logged in within last 5 minutes)
-  const isActive = lastLogin !== null && diffMinutes < 5;
-  
-  // Format exact timestamp
-  const exactTime = lastLogin 
-    ? new Date(lastLogin).toLocaleString('en-US', { 
-        dateStyle: 'medium', 
-        timeStyle: 'short' 
-      })
-    : 'Never';
-  
-  // Determine color based on recency
+
+  const isActive = diffMinutes < 5;
+
+  const exactTime = new Date(lastLogin).toLocaleString('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  });
+
   let color: 'green' | 'yellow' | 'gray';
   if (isActive) {
     color = 'green';
@@ -361,8 +346,7 @@ function calculateActivityStatus(
   } else {
     color = 'gray';
   }
-  
-  // Generate display text
+
   let display: string;
   if (isActive) {
     display = `Active ${diffMinutes}m ago`;
@@ -382,14 +366,8 @@ function calculateActivityStatus(
     const years = Math.floor(diffDays / 365);
     display = `${years}y ago`;
   }
-  
-  return {
-    isActive,
-    days: diffDays,
-    display,
-    color,
-    exactTime
-  };
+
+  return { isActive, days: diffDays, display, color, exactTime };
 }
 
 /**
@@ -400,164 +378,149 @@ function shouldHighlightInactivity(inactivityDays: number, productCount: number)
   return inactivityDays >= 7 && productCount === 0;
 }
 
+function formatCreatedAgo(createdAt: string): string {
+  const now = new Date();
+  const diffMs = now.getTime() - new Date(createdAt).getTime();
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffMinutes < 60) return `${diffMinutes}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+  return `${Math.floor(diffDays / 365)}y ago`;
+}
+
+function isCreatedToday(createdAt: string): boolean {
+  const now = new Date();
+  const d = new Date(createdAt);
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+}
+
 // Chart component for user registrations
-interface ChartData {
-  date: string;
+interface ChartBar {
+  label: string;   // x-axis label (may be empty for sparse ticks)
+  tooltip: string; // full label shown on hover
   count: number;
 }
 
-function RegistrationChart({ users, timeRange, onTimeRangeChange }: { 
-  users: UserProfile[]; 
+function RegistrationChart({ users, timeRange, onTimeRangeChange }: {
+  users: UserProfile[];
   timeRange: 'day' | 'week' | 'month' | 'year';
   onTimeRangeChange: (range: 'day' | 'week' | 'month' | 'year') => void;
 }) {
-  const [chartData, setChartData] = useState<ChartData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const bars = useMemo<ChartBar[]>(() => {
+    const now = new Date();
 
-  useEffect(() => {
-    const generateChartData = () => {
-      setIsLoading(true);
-      const now = new Date();
-      const data: ChartData[] = [];
-      
-      if (timeRange === 'day') {
-        // Show last 30 days
-        for (let i = 29; i >= 0; i--) {
-          const date = new Date(now);
-          date.setDate(date.getDate() - i);
-          date.setHours(0, 0, 0, 0);
-          const dateStr = date.toISOString().split('T')[0];
-          
-          const count = users.filter(user => {
-            const userDate = new Date(user.created_at);
-            userDate.setHours(0, 0, 0, 0);
-            return userDate.toISOString().split('T')[0] === dateStr;
-          }).length;
-          
-          data.push({ date: dateStr, count });
-        }
-      } else if (timeRange === 'week') {
-        // Show last 12 weeks
-        for (let i = 11; i >= 0; i--) {
-          const weekStart = new Date(now);
-          weekStart.setDate(weekStart.getDate() - (weekStart.getDay() + (i * 7)));
-          weekStart.setHours(0, 0, 0, 0);
-          const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekEnd.getDate() + 6);
-          weekEnd.setHours(23, 59, 59, 999);
-          
-          const count = users.filter(user => {
-            const userDate = new Date(user.created_at);
-            return userDate >= weekStart && userDate <= weekEnd;
-          }).length;
-          
-          data.push({ 
-            date: `W${i + 1}`, 
-            count 
-          });
-        }
-      } else if (timeRange === 'month') {
-        // Show last 12 months
-        for (let i = 11; i >= 0; i--) {
-          const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
-          const monthStr = month.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-          
-          const count = users.filter(user => {
-            const userDate = new Date(user.created_at);
-            return userDate.getFullYear() === month.getFullYear() && 
-                   userDate.getMonth() === month.getMonth();
-          }).length;
-          
-          data.push({ date: monthStr, count });
-        }
-      } else if (timeRange === 'year') {
-        // Show last 5 years
-        for (let i = 4; i >= 0; i--) {
-          const year = now.getFullYear() - i;
-          const count = users.filter(user => {
-            const userDate = new Date(user.created_at);
-            return userDate.getFullYear() === year;
-          }).length;
-          
-          data.push({ date: year.toString(), count });
-        }
-      }
-      
-      setChartData(data);
-      setIsLoading(false);
-    };
+    if (timeRange === 'day') {
+      // Last 30 days, oldest → newest
+      return Array.from({ length: 30 }, (_, i) => {
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (29 - i));
+        const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const count = users.filter(u => u.created_at.startsWith(iso)).length;
+        // Show label every 5 days and the last day
+        const showLabel = i % 5 === 0 || i === 29;
+        return {
+          label: showLabel ? String(d.getDate()) : '',
+          tooltip: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          count,
+        };
+      });
+    }
 
-    generateChartData();
+    if (timeRange === 'week') {
+      // Last 12 weeks, oldest → newest
+      // Anchor to start of current week (Sunday)
+      const dayOfWeek = now.getDay();
+      return Array.from({ length: 12 }, (_, i) => {
+        const weeksAgo = 11 - i;
+        const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek - weeksAgo * 7);
+        const weekEnd = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + 6, 23, 59, 59, 999);
+        const count = users.filter(u => { const d = new Date(u.created_at); return d >= weekStart && d <= weekEnd; }).length;
+        const label = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        // Show label every 3 bars and the last
+        const showLabel = i % 3 === 0 || i === 11;
+        return { label: showLabel ? label : '', tooltip: `${label} – ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`, count };
+      });
+    }
+
+    if (timeRange === 'month') {
+      // Last 12 months, oldest → newest
+      return Array.from({ length: 12 }, (_, i) => {
+        const month = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1);
+        const count = users.filter(u => {
+          const d = new Date(u.created_at);
+          return d.getFullYear() === month.getFullYear() && d.getMonth() === month.getMonth();
+        }).length;
+        const label = month.toLocaleDateString('en-US', { month: 'short' });
+        const fullLabel = month.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        return { label, tooltip: fullLabel, count };
+      });
+    }
+
+    // year — last 5 years
+    return Array.from({ length: 5 }, (_, i) => {
+      const year = now.getFullYear() - (4 - i);
+      const count = users.filter(u => new Date(u.created_at).getFullYear() === year).length;
+      return { label: String(year), tooltip: String(year), count };
+    });
   }, [users, timeRange]);
 
-  const maxCount = Math.max(...chartData.map(d => d.count), 1);
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-96 bg-white p-6 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400 mb-3" />
-        <p className="text-sm text-slate-600">Loading chart data...</p>
-      </div>
-    );
-  }
-
-  if (chartData.length === 0 || maxCount === 0) {
-    return (
-      <div className="w-full h-96 bg-white p-6 rounded-lg border border-slate-200 flex flex-col items-center justify-center">
-        <Activity className="w-12 h-12 text-slate-400 mb-3" />
-        <p className="text-sm font-medium text-slate-900 mb-1">No data available</p>
-        <p className="text-xs text-slate-600">User registration data will appear here once available</p>
-      </div>
-    );
-  }
+  const maxCount = Math.max(...bars.map(b => b.count), 1);
+  const total = bars.reduce((s, b) => s + b.count, 0);
+  const BAR_H = 120; // px for the bar drawing area
 
   return (
-    <div className="w-full h-96 bg-white p-6 rounded-lg border border-slate-200">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-slate-900">User Registrations</h3>
-        <div className="flex gap-2">
-          <Select value={timeRange} onValueChange={onTimeRangeChange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="day">Daily</SelectItem>
-              <SelectItem value="week">Weekly</SelectItem>
-              <SelectItem value="month">Monthly</SelectItem>
-              <SelectItem value="year">Yearly</SelectItem>
-            </SelectContent>
-          </Select>
+    <div className="bg-white rounded-xl border border-slate-200 p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-sm font-semibold text-slate-800">New Registrations</h3>
+          <p className="text-xs text-slate-400 mt-0.5">{total} in selected period · {users.length} total</p>
         </div>
+        <Select value={timeRange} onValueChange={onTimeRangeChange}>
+          <SelectTrigger className="w-32 h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="day">Daily (30d)</SelectItem>
+            <SelectItem value="week">Weekly (12wk)</SelectItem>
+            <SelectItem value="month">Monthly (12mo)</SelectItem>
+            <SelectItem value="year">Yearly (5yr)</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-      
-      <div className="flex items-end justify-between h-64 gap-1 pb-8">
-        {chartData.map((item, index) => (
-          <div key={index} className="flex flex-col items-center flex-1 group relative">
-            <div 
-              className="w-full bg-blue-500 rounded-t transition-all duration-300 hover:bg-blue-600 cursor-pointer"
-              style={{ 
-                height: `${(item.count / maxCount) * 100}%`,
-                minHeight: item.count > 0 ? '4px' : '0px'
-              }}
-              title={`${item.date}: ${item.count} user${item.count !== 1 ? 's' : ''}`}
+
+      {/* Y-axis max */}
+      <div className="text-[10px] text-slate-400 mb-0.5 tabular-nums">{maxCount}</div>
+
+      {/* Bars */}
+      <div className="flex items-end gap-px" style={{ height: BAR_H }}>
+        {bars.map((bar, i) => (
+          <div key={i} className="flex-1 relative group flex flex-col justify-end" style={{ height: BAR_H }}>
+            <div
+              className="w-full rounded-sm bg-blue-500 hover:bg-blue-400 transition-colors"
+              style={{ height: bar.count > 0 ? `${Math.max(2, Math.round((bar.count / maxCount) * BAR_H))}px` : 0 }}
             />
-            <div className="text-xs text-slate-600 mt-2 transform -rotate-45 origin-left whitespace-nowrap absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full">
-              {timeRange === 'day' ? new Date(item.date).getDate() : 
-               timeRange === 'week' ? item.date :
-               timeRange === 'month' ? item.date.split(' ')[0] :
-               item.date}
-            </div>
-            {/* Tooltip on hover */}
-            <div className="absolute bottom-full mb-2 hidden group-hover:block bg-slate-900 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
-              {item.date}: {item.count} user{item.count !== 1 ? 's' : ''}
+            {/* Tooltip — renders above bar, never overflows chart bottom */}
+            <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center bg-slate-900 text-white text-xs rounded px-2 py-1 z-20 whitespace-nowrap pointer-events-none">
+              <span className="font-medium">{bar.count} user{bar.count !== 1 ? 's' : ''}</span>
+              <span className="text-slate-300">{bar.tooltip}</span>
             </div>
           </div>
         ))}
       </div>
-      
-      <div className="flex justify-between text-xs text-slate-500 mt-2">
-        <span>0</span>
-        <span className="tabular-nums">{maxCount}</span>
+
+      {/* Y-axis min */}
+      <div className="text-[10px] text-slate-400 tabular-nums">0</div>
+
+      {/* X-axis labels — in normal flow, no overflow */}
+      <div className="flex mt-1.5 border-t border-slate-100 pt-1">
+        {bars.map((bar, i) => (
+          <div key={i} className="flex-1 text-center">
+            <span className="text-[10px] text-slate-400 leading-none">{bar.label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -707,7 +670,7 @@ export default function AdminPage() {
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const tabParam = searchParams.get('tab') as 'users' | 'chats' | 'notifications' | 'emails' | null;
+  const tabParam = searchParams.get('tab') as 'users' | 'notifications' | 'emails' | null;
   const [activeTab, setActiveTabState] = useState<'users' | 'chats' | 'notifications' | 'emails'>(
     tabParam && ['users', 'chats', 'notifications', 'emails'].includes(tabParam) ? tabParam : 'users'
   );
@@ -758,7 +721,11 @@ export default function AdminPage() {
 
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['userProfiles'] }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
+      // Optimistically reflect blocked state in the open modal
+      setSelectedUser(prev => prev && prev.id === variables.id ? { ...prev, blocked: !variables.blocked } : prev);
+    },
   });
 
   const deleteMutation = useMutation({
@@ -768,6 +735,7 @@ export default function AdminPage() {
       queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
       toast.success('User deleted successfully');
       setDeletingUserId(null);
+      setSelectedUser(null);
     },
     onError: (error: Error) => {
       toast.error('Failed to delete user: ' + error.message);
@@ -876,11 +844,7 @@ export default function AdminPage() {
         case 'email':
           comparison = (a.email || '').localeCompare(b.email || '');
           break;
-        case 'name':
-          const nameA = `${a.first_name || ''} ${a.last_name || ''}`.trim();
-          const nameB = `${b.first_name || ''} ${b.last_name || ''}`.trim();
-          comparison = nameA.localeCompare(nameB);
-          break;
+        
         case 'inactivity':
           comparison = inactivityA.days - inactivityB.days;
           break;
@@ -896,18 +860,12 @@ export default function AdminPage() {
         case 'plan':
           comparison = getPlanForUser(subscriptionPlanMap, a.id).displayName.localeCompare(getPlanForUser(subscriptionPlanMap, b.id).displayName);
           break;
-        case 'organization':
-          comparison = (a.organization_name || '').localeCompare(b.organization_name || '');
-          break;
+      
         case 'branches':
           comparison = (statsA?.branchCount || 0) - (statsB?.branchCount || 0);
           break;
-        case 'role':
-          comparison = (a.role || '').localeCompare(b.role || '');
-          break;
-        case 'openChats':
-          comparison = openChatsA - openChatsB;
-          break;
+   
+      
       }
 
       return sortDirection === 'asc' ? comparison : -comparison;
@@ -952,21 +910,15 @@ export default function AdminPage() {
 
         return {
           'Email': user.email,
-          'First Name': user.first_name || '',
-          'Last Name': user.last_name || '',
-          'Full Name': `${user.first_name || ''} ${user.last_name || ''}`.trim() || '',
-          'Organization': user.organization_name || '',
           'Role': user.role,
           'Plan': getPlanForUser(subscriptionPlanMap, user.id).displayName,
           'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
           'Products': stats?.productCount || 0,
           'Branches': stats?.branchCount || 0,
           'Linked Users': stats?.linkedUserCount || 0,
-          'Open Chats': openChatCounts[user.id] || 0,
           'License Cost': (stats?.licenseCost || 0).toFixed(2),
           'Blocked': user.blocked ? 'Yes' : 'No',
           'Created At': new Date(user.created_at).toLocaleString('en-US'),
-          'Referral Source': user.referral_source || ''
         };
       });
 
@@ -1033,14 +985,7 @@ export default function AdminPage() {
     return () => { cancelled = true; };
   }, [paginatedUserIds, users]);
 
-  // Fetch open chat counts
-  useEffect(() => {
-    if (users.length === 0) {
-      setOpenChatCounts({});
-      return;
-    }
-    fetchOpenChatCounts(users.map(u => u.id)).then(setOpenChatCounts);
-  }, [users]);
+
 
   // Fetch user IDs with recent errors
   useEffect(() => {
@@ -1189,40 +1134,17 @@ export default function AdminPage() {
           <div className="w-full flex-grow space-y-8 mb-24 mt-16">
 
             {activeTab === 'users' && (
-              <div className="space-y-8">
-        
+              <div className="space-y-4">
+
+                {/* Registration Chart — top of page */}
+                <RegistrationChart
+                  users={users}
+                  timeRange={chartTimeRange}
+                  onTimeRangeChange={setChartTimeRange}
+                />
 
                 <div>
-                  <PageHeader
-                    title="User Management"
-                    description="Find and view any user's data to investigate support tickets without writing SQL."
-                    actions={
-                      <>
-                        <Button
-                          onClick={handleExportEmails}
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-2"
-                          disabled={sortedUsers.length === 0 || loadingStats}
-                        >
-                          <Download className="w-4 h-4" />
-                          Export Emails
-                        </Button>
-                        <Button
-                          onClick={handleExportToExcel}
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-2"
-                          disabled={sortedUsers.length === 0 || loadingStats}
-                        >
-                          <Download className="w-4 h-4" />
-                          Export All Data
-                        </Button>
-                      </>
-                    }
-                  />
-
-                  <Card className="mt-8">
+                  <Card className="">
                     <CardContent className="p-6">
                     {/* Search and Filter Controls */}
                     <div className="mb-6 space-y-4">
@@ -1238,138 +1160,8 @@ export default function AdminPage() {
                         />
                       </div>
                       
-                      {/* Plan and Role filters */}
-                      <div className="flex flex-wrap gap-2 items-center">
-                        <Select value={planFilter} onValueChange={(v) => setPlanFilter(v)}>
-                          <SelectTrigger className="w-[140px]">
-                            <SelectValue placeholder="Plan" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All plans</SelectItem>
-                            {uniquePlans.map(p => (
-                              <SelectItem key={p} value={p}>{getPlanDisplayName(p)}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <Select value={roleFilter} onValueChange={(v) => setRoleFilter(v)}>
-                          <SelectTrigger className="w-[120px]">
-                            <SelectValue placeholder="Role" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All roles</SelectItem>
-                            <SelectItem value="user">User</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="staff">Staff</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      {/* Quick Filters */}
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          onClick={() => setQuickFilter('all')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'all'
-                              ? 'bg-blue-50 border-blue-200 text-blue-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          All Users
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('active')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'active'
-                              ? 'bg-green-50 border-green-200 text-green-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          Active
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('blocked')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'blocked'
-                              ? 'bg-red-50 border-red-200 text-red-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          Blocked
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('inactive')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'inactive'
-                              ? 'bg-yellow-50 border-yellow-200 text-yellow-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          Inactive (≥7d, no products)
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('at-risk')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'at-risk'
-                              ? 'bg-amber-50 border-amber-200 text-amber-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          At Risk (≥3d)
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('trialing')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors flex items-center gap-1 ${
-                            quickFilter === 'trialing'
-                              ? 'bg-purple-50 border-purple-200 text-purple-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          <Clock className="w-3.5 h-3.5" />
-                          Trialing
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('never-logged-in')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'never-logged-in'
-                              ? 'bg-orange-50 border-orange-200 text-orange-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          Never Logged In
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('has-open-chat')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors flex items-center gap-1 ${
-                            quickFilter === 'has-open-chat'
-                              ? 'bg-indigo-50 border-indigo-200 text-indigo-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          <MessageSquare className="w-3.5 h-3.5" />
-                          Open Chats
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('has-recent-errors')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                            quickFilter === 'has-recent-errors'
-                              ? 'bg-rose-50 border-rose-200 text-rose-700'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          Recent Errors
-                        </button>
-                        <button
-                          onClick={() => setQuickFilter('payment-issues')}
-                          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors flex items-center gap-1 ${
-                            quickFilter === 'payment-issues'
-                              ? 'bg-red-50 border-red-300 text-red-700 font-semibold'
-                              : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                          }`}
-                        >
-                          <CreditCard className="w-3.5 h-3.5" />
-                          Payment Issues
-                        </button>
-                      </div>
+            
+
                       
                       {/* Results count */}
                       <div className="text-sm text-slate-600">
@@ -1400,7 +1192,7 @@ export default function AdminPage() {
                     </div>
                     
                     {/* Pulse Row — urgent alerts at a glance */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                    <div className="grid grid-cols-5 md:grid-cols-5 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
                       <Card className={`border-purple-200 cursor-pointer hover:bg-purple-50 transition-colors ${metricValues.activeTrials > 0 ? 'bg-purple-50' : 'bg-white'}`} onClick={() => setQuickFilter('trialing')}>
                         <CardContent className="p-2 sm:p-3">
                           <div className="text-lg sm:text-2xl font-bold text-purple-700">{metricValues.activeTrials}</div>
@@ -1416,34 +1208,11 @@ export default function AdminPage() {
                           <div className={`text-xs font-medium ${metricValues.trialsExpiringSoon > 0 ? 'text-orange-600' : 'text-slate-500'}`}>Expiring &lt;48h</div>
                         </CardContent>
                       </Card>
-                      <Card className={`cursor-pointer hover:bg-red-50 transition-colors ${metricValues.mrrAtRisk > 0 ? 'bg-red-50 border-red-300' : 'bg-white border-slate-200'}`} onClick={() => setQuickFilter('payment-issues')}>
-                        <CardContent className="p-2 sm:p-3">
-                          <div className="flex items-center gap-1">
-                            <div className={`text-lg sm:text-2xl font-bold ${metricValues.mrrAtRisk > 0 ? 'text-red-700' : 'text-slate-500'}`}>
-                              ${metricValues.mrrAtRisk.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                            </div>
-                            {metricValues.mrrAtRisk > 0 && <TrendingDown className="w-4 h-4 text-red-500" />}
-                          </div>
-                          <div className={`text-xs font-medium ${metricValues.mrrAtRisk > 0 ? 'text-red-600' : 'text-slate-500'}`}>MRR at Risk</div>
-                        </CardContent>
-                      </Card>
-                      <Card className="bg-white border-slate-200">
-                        <CardContent className="p-2 sm:p-3">
-                          <div className="flex items-center gap-1">
-                            <div className="text-lg sm:text-2xl font-bold text-teal-700">
-                              {loadingStats ? '…' : `${metricValues.totalAssigned?.toLocaleString() ?? 0}`}
-                            </div>
-                            <Gauge className="w-4 h-4 text-teal-400" />
-                          </div>
-                          <div className="text-xs text-teal-600 font-medium">
-                            Products / {metricValues.totalCapacity.toLocaleString()} cap
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
+                      
+                      
+
 
                     {/* Stats Cards - responsive grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-6">
                       <Card className="bg-blue-50 border-blue-200">
                         <CardContent className="p-2 sm:p-4">
                           <div className="text-lg sm:text-2xl font-bold text-blue-700">{users.length}</div>
@@ -1462,49 +1231,9 @@ export default function AdminPage() {
                           <div className="text-xs sm:text-sm text-yellow-600">New this week</div>
                         </CardContent>
                       </Card>
-                      <Card className="bg-slate-50 border-slate-200">
-                        <CardContent className="p-2 sm:p-4">
-                          <div className="text-lg sm:text-2xl font-bold text-slate-700">{calculateUserStats(users).newUsersThisMonth}</div>
-                          <div className="text-xs sm:text-sm text-slate-600">New this month</div>
-                        </CardContent>
-                      </Card>
-                      <Card className="bg-red-50 border-red-200">
-                        <CardContent className="p-2 sm:p-4">
-                          <div className="text-lg sm:text-2xl font-bold text-red-700">{users.filter(u => u.blocked).length}</div>
-                          <div className="text-xs sm:text-sm text-red-600">Blocked</div>
-                        </CardContent>
-                      </Card>
-                      <Card className="bg-amber-50 border-amber-200 cursor-pointer hover:bg-amber-100 transition-colors" onClick={() => setQuickFilter('at-risk')}>
-                        <CardContent className="p-2 sm:p-4">
-                          <div className="text-lg sm:text-2xl font-bold text-amber-700">{users.filter(u => {
-                            const activity = calculateActivityStatus(u.last_login || null, u.created_at);
-                            const plan = getPlanForUser(subscriptionPlanMap, u.id);
-                            return activity.days >= 3 && plan.subStatus === 'active';
-                          }).length}</div>
-                          <div className="text-xs sm:text-sm text-amber-600">At Risk (≥3d)</div>
-                        </CardContent>
-                      </Card>
-                      <Card className="bg-red-50 border-red-300 cursor-pointer hover:bg-red-100 transition-colors" onClick={() => setQuickFilter('payment-issues')}>
-                        <CardContent className="p-2 sm:p-4">
-                          <div className="flex items-center gap-1">
-                            <div className="text-lg sm:text-2xl font-bold text-red-700">
-                              {users.filter(u => {
-                                const plan = getPlanForUser(subscriptionPlanMap, u.id);
-                                return plan.subStatus === 'past_due' || plan.hasFailedInvoice;
-                              }).length}
-                            </div>
-                            <CreditCard className="w-4 h-4 text-red-500 mt-0.5" />
-                          </div>
-                          <div className="text-xs sm:text-sm text-red-600 font-medium">Payment Issues</div>
-                        </CardContent>
-                      </Card>
-                      <Card className="bg-indigo-50 border-indigo-200">
-                        <CardContent className="p-2 sm:p-4">
-                          <div className="text-lg sm:text-2xl font-bold text-indigo-700">{Object.keys(openChatCounts).filter(uid => (openChatCounts[uid] || 0) > 0).length}</div>
-                          <div className="text-xs sm:text-sm text-indigo-600">Open Chats</div>
-                        </CardContent>
-                      </Card>
-                    </div>
+                      
+                    </div>                      
+
 
                   {/* Mobile: Card-based user list */}
                   {isMobile ? (
@@ -1543,11 +1272,14 @@ export default function AdminPage() {
                               <div className="space-y-2">
                                 <div className="flex justify-between items-start">
                                   <div className="flex-1">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 flex-wrap">
                                       {activity.isActive && (
                                         <Circle className="w-2 h-2 fill-green-500 text-green-500" />
                                       )}
                                       <h3 className="font-semibold text-sm">{user.email}</h3>
+                                      {isCreatedToday(user.created_at) && (
+                                        <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 leading-none">New</span>
+                                      )}
                                     </div>
                                     <p className="text-xs text-gray-600">{user.first_name} {user.last_name}</p>
                                   </div>
@@ -1614,73 +1346,9 @@ export default function AdminPage() {
                                       {openChatCounts[user.id]} open chat(s)
                                     </div>
                                   )}
-                                  <div className="text-gray-600">
+                                  <div className="text-gray-600" title={new Date(user.created_at).toLocaleString('en-US')}>
                                     <span className="font-medium">Created:</span>{' '}
-                                    {new Date(user.created_at).toLocaleDateString('en-US')}
-                                  </div>
-                                </div>
-                                <div className="flex justify-between items-center pt-2 gap-2">
-                                  <div className="flex gap-1 flex-wrap">
-                                    {(openChatCounts[user.id] || 0) > 0 && (
-                                      <button
-                                        className="px-2 py-1 rounded text-xs bg-indigo-100 text-indigo-800 flex items-center gap-1"
-                                        onClick={e => { e.stopPropagation(); handleOpenUserChat(user.id); }}
-                                      >
-                                        <MessageSquare className="w-3 h-3" />
-                                        Chat
-                                      </button>
-                                    )}
-                                    <button
-                                      className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
-                                      onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
-                                      disabled={blockMutation.isPending}
-                                    >
-                                      {user.blocked ? 'Unblock' : 'Block'}
-                                    </button>
-                                    {user.id !== currentUser?.id && (
-                                      <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                          <button
-                                            className="px-2 py-1 rounded text-xs bg-red-100 text-red-800 hover:bg-red-200 flex items-center gap-1"
-                                            onClick={e => e.stopPropagation()}
-                                            disabled={deletingUserId === user.id}
-                                          >
-                                            {deletingUserId === user.id ? (
-                                              <>
-                                                <Loader2 className="w-3 h-3 animate-spin" />
-                                                Deleting...
-                                              </>
-                                            ) : (
-                                              <>
-                                                <Trash2 className="w-3 h-3" />
-                                                Delete
-                                              </>
-                                            )}
-                                          </button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent onClick={e => e.stopPropagation()}>
-                                          <AlertDialogHeader>
-                                            <AlertDialogTitle>Delete User</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                              Are you sure you want to delete {user.email}? This action cannot be undone and will permanently delete the user profile and all associated data from the database.
-                                            </AlertDialogDescription>
-                                          </AlertDialogHeader>
-                                          <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction
-                                              className="bg-red-600 hover:bg-red-700"
-                                              onClick={e => {
-                                                e.stopPropagation();
-                                                setDeletingUserId(user.id);
-                                                deleteMutation.mutate(user.id);
-                                              }}
-                                            >
-                                              Delete
-                                            </AlertDialogAction>
-                                          </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                      </AlertDialog>
-                                    )}
+                                    {formatCreatedAgo(user.created_at)}
                                   </div>
                                 </div>
                               </div>
@@ -1707,17 +1375,7 @@ export default function AdminPage() {
                                 )}
                               </div>
                             </th>
-                            <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
-                              onClick={() => handleSort('name')}
-                            >
-                              <div className="flex items-center gap-1">
-                                Name
-                                {sortColumn === 'name' && (
-                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                                )}
-                              </div>
-                            </th>
+                           
                             <th 
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('inactivity')}
@@ -1743,17 +1401,7 @@ export default function AdminPage() {
                             <th className="px-4 py-2 text-left select-none">
                               Sub Status
                             </th>
-                            <th
-                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
-                              onClick={() => handleSort('organization')}
-                            >
-                              <div className="flex items-center gap-1">
-                                Organization
-                                {sortColumn === 'organization' && (
-                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                                )}
-                              </div>
-                            </th>
+                            
                             <th 
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('products')}
@@ -1776,40 +1424,20 @@ export default function AdminPage() {
                                 )}
                               </div>
                             </th>
-                            <th 
+                            <th
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('linkedUsers')}
                             >
                               <div className="flex items-center justify-end gap-1">
-                                Linked
+                                Users
                                 {sortColumn === 'linkedUsers' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
                                 )}
                               </div>
                             </th>
-                            <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
-                              onClick={() => handleSort('role')}
-                            >
-                              <div className="flex items-center gap-1">
-                                Role
-                                {sortColumn === 'role' && (
-                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                                )}
-                              </div>
-                            </th>
-                            <th 
-                              className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
-                              onClick={() => handleSort('openChats')}
-                            >
-                              <div className="flex items-center justify-end gap-1">
-                                Chats
-                                {sortColumn === 'openChats' && (
-                                  sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                                )}
-                              </div>
-                            </th>
-                            <th 
+
+
+                            <th
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-left"
                               onClick={() => handleSort('created')}
                             >
@@ -1820,7 +1448,6 @@ export default function AdminPage() {
                                 )}
                               </div>
                             </th>
-                            <th className="px-4 py-2">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1864,14 +1491,16 @@ export default function AdminPage() {
                                 onClick={() => setSelectedUser(user)}
                               >
                                 <td className="px-4 py-2 text-left">
-                                  <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-2 flex-wrap">
                                     {activity.isActive && (
                                       <Circle className="w-2 h-2 fill-green-500 text-green-500 flex-shrink-0" />
                                     )}
                                     <span>{user.email}</span>
+                                    {isCreatedToday(user.created_at) && (
+                                      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 leading-none">New</span>
+                                    )}
                                   </div>
                                 </td>
-                                <td className="px-4 py-2 text-left">{user.first_name} {user.last_name}</td>
                                 <td className={`px-4 py-2 text-left ${
                                   activity.color === 'green' ? 'text-green-600 font-semibold' :
                                   activity.color === 'yellow' ? 'text-yellow-600' :
@@ -1899,9 +1528,7 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-left">
                                   <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
                                 </td>
-                                <td className="px-4 py-2 text-left max-w-[140px] truncate" title={user.organization_name || ''}>
-                                  {user.organization_name || '—'}
-                                </td>
+                                
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : (
                                     planInfo.maxProducts != null
@@ -1917,85 +1544,8 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.linkedUserCount || 0}
                                 </td>
-                                <td className="px-4 py-2 text-left">{user.role || 'user'}</td>
-                                <td className="px-4 py-2 text-right" onClick={e => e.stopPropagation()}>
-                                  {(openChatCounts[user.id] || 0) > 0 ? (
-                                    <button
-                                      className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-medium ml-auto"
-                                      onClick={e => { e.stopPropagation(); handleOpenUserChat(user.id); }}
-                                    >
-                                      <MessageSquare className="w-3.5 h-3.5" />
-                                      {openChatCounts[user.id]}
-                                    </button>
-                                  ) : (
-                                    <span className="text-slate-400">—</span>
-                                  )}
-                                </td>
-                                <td className="px-4 py-2 text-left">{new Date(user.created_at).toLocaleDateString('en-US')}</td>
-                                <td className="px-4 py-2" onClick={e => e.stopPropagation()}>
-                                  <div className="flex gap-1">
-                                    {(openChatCounts[user.id] || 0) > 0 && (
-                                      <button
-                                        className="px-2 py-1 rounded text-xs bg-indigo-100 text-indigo-800 hover:bg-indigo-200 flex items-center gap-1"
-                                        onClick={() => handleOpenUserChat(user.id)}
-                                      >
-                                        <MessageSquare className="w-3 h-3" />
-                                        Chat
-                                      </button>
-                                    )}
-                                    <button
-                                      className={`px-2 py-1 rounded text-xs ${user.blocked ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}
-                                      onClick={e => { e.stopPropagation(); blockMutation.mutate({ id: user.id, blocked: !!user.blocked }); }}
-                                      disabled={blockMutation.isPending}
-                                    >
-                                      {user.blocked ? 'Unblock' : 'Block'}
-                                    </button>
-                                    {user.id !== currentUser?.id && (
-                                      <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                          <button
-                                            className="px-2 py-1 rounded text-xs bg-red-100 text-red-800 hover:bg-red-200 flex items-center gap-1"
-                                            onClick={e => e.stopPropagation()}
-                                            disabled={deletingUserId === user.id}
-                                          >
-                                            {deletingUserId === user.id ? (
-                                              <>
-                                                <Loader2 className="w-3 h-3 animate-spin" />
-                                                Deleting...
-                                              </>
-                                            ) : (
-                                              <>
-                                                <Trash2 className="w-3 h-3" />
-                                                Delete
-                                              </>
-                                            )}
-                                          </button>
-                                        </AlertDialogTrigger>
-                                        <AlertDialogContent onClick={e => e.stopPropagation()}>
-                                          <AlertDialogHeader>
-                                            <AlertDialogTitle>Delete User</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                              Are you sure you want to delete {user.email}? This action cannot be undone and will permanently delete the user profile and all associated data from the database.
-                                            </AlertDialogDescription>
-                                          </AlertDialogHeader>
-                                          <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction
-                                              className="bg-red-600 hover:bg-red-700"
-                                              onClick={e => {
-                                                e.stopPropagation();
-                                                setDeletingUserId(user.id);
-                                                deleteMutation.mutate(user.id);
-                                              }}
-                                            >
-                                              Delete
-                                            </AlertDialogAction>
-                                          </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                      </AlertDialog>
-                                    )}
-                                  </div>
-                                </td>
+                                
+                                <td className="px-4 py-2 text-left text-slate-600" title={new Date(user.created_at).toLocaleString('en-US')}>{formatCreatedAgo(user.created_at)}</td>
                               </tr>
                             );
                           })}
@@ -2060,24 +1610,13 @@ export default function AdminPage() {
                     </>
                   )}
 
-                  {/* Registration Chart — below the user table */}
-                  <div className="mt-6">
-                    <RegistrationChart
-                      users={users}
-                      timeRange={chartTimeRange}
-                      onTimeRangeChange={setChartTimeRange}
-                    />
-                  </div>
-
                 </CardContent>
               </Card>
             </div>
               </div>
             )}
 
-            {activeTab === 'chats' && (
-              <AdminChatList initialUserId={chatForUserId} onUserIdHandled={() => setChatForUserId(null)} />
-            )}
+          
 
             {activeTab === 'notifications' && (
               <AdminNotificationManager />
@@ -2095,6 +1634,11 @@ export default function AdminPage() {
           user={selectedUser}
           isOpen={!!selectedUser}
           onClose={() => setSelectedUser(null)}
+          onBlock={(id, blocked) => blockMutation.mutate({ id, blocked })}
+          onDelete={(id) => { setDeletingUserId(id); deleteMutation.mutate(id); }}
+          currentUserId={currentUser?.id}
+          isBlockingPending={blockMutation.isPending}
+          deletingUserId={deletingUserId}
         />
 
         </>

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -74,6 +75,7 @@ const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number)
 export default function SalesOrdersPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
@@ -586,7 +588,7 @@ export default function SalesOrdersPage() {
                         <TableCell className="min-w-[80px] text-muted-foreground">
                           {formatOrderQuantitiesDisplay(so.items)}
                         </TableCell>
-                        <TableCell className="font-medium min-w-[90px]">${so.total_amount.toFixed(2)}</TableCell>
+                        <TableCell className="font-medium min-w-[90px]">{formatPrice(so.total_amount)}</TableCell>
                         <TableCell>
                           {format(new Date(so.order_date), 'd MMM yyyy')}
                         </TableCell>

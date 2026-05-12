@@ -30,6 +30,7 @@ import {
   Hash,
   ArrowLeftRight,
   Tag,
+  MapPin,
   MessageSquare,
   Mail,
 }
@@ -183,7 +184,6 @@ export const Sidebar = ({
 
   const adminSubItems: SubItem[] = [
     { id: 'users', label: 'User Management', path: '/admin?tab=users', icon: Users },
-    { id: 'chats', label: 'Chats', path: '/admin?tab=chats', icon: MessageSquare },
     { id: 'notifications', label: 'Notifications', path: '/admin?tab=notifications', icon: Bell },
     { id: 'emails', label: 'Email Management', path: '/admin?tab=emails', icon: Mail },
     // sentinel entry so bare /admin also opens the sidebar
@@ -212,6 +212,7 @@ export const Sidebar = ({
             { id: 'products', label: 'Products', path: '/dashboard/categories', icon: Package },
             { id: 'transactions', label: 'Transactions', path: '/dashboard/transactions', icon: ArrowLeftRight },
             { id: 'categories', label: 'Categories', path: '/dashboard/categoriesManagement', icon: Tag },
+            { id: 'locations', label: 'Locations', path: '/dashboard/locations', icon: MapPin },
           ]
         },
 

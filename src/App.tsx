@@ -31,7 +31,6 @@ import { ContentWrapper } from "./ContentWrapper";
 import SEO from './components/SEO';
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
-import { AdminChatList } from './components/AdminChatList';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
 import { useCookieConsent } from './hooks/useCookieConsent';
@@ -88,6 +87,7 @@ const EditPurchaseOrderPage = React.lazy(() => import('./pages/EditPurchaseOrder
 const EditSalesOrderPage = React.lazy(() => import('./pages/EditSalesOrderPage'));
 const BarcodeScannerPage = React.lazy(() => import('./pages/BarcodeScannerPage'));
 const ScanPage = React.lazy(() => import('./pages/scan'));
+const LocationsPage = React.lazy(() => import('./pages/LocationsPage'));
 
 // Skeletal Loading Components
 const SkeletonCard = () => (
@@ -374,7 +374,6 @@ const AppRouter = () => {
           <Route element={<Admin />}>
             <Route path="notifications" element={<AdminNotificationsPage />} />
             <Route path="smtp" element={<AdminSmtpPage />} />
-            <Route path="chat" element={<AdminChatList />} />
             <Route path="user/:id" element={<AdminUserDetailPage />} />
           </Route>
         </Route>
@@ -403,6 +402,7 @@ const AppRouter = () => {
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="categoriesManagement" element={<CategoriesPage />} />
           <Route path="warehouses" element={<><SEO title="Warehouse Management" /><WarehousePage /></>} />
+          <Route path="locations" element={<><SEO title="Locations" /><LocationsPage /></>} />
           <Route path="bom/new" element={<CreateBOMPage />} />
           <Route path="bom" element={<BillOfMaterialsPage />}>
             <Route path="edit/:productId" element={<BOMEditPage />} />

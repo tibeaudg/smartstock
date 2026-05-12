@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipboardList, ShoppingCart, TrendingUp, BarChart3, Plus, Users, Truck, Lock } from 'lucide-react';
+import { ClipboardList, ShoppingCart, TrendingUp, BarChart3, Plus, Users, Truck, Lock, Check, Zap } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -159,29 +159,152 @@ export default function WorkflowsPage() {
         })}
       </div>
 
-      <Dialog open={lockedFeature !== null} onOpenChange={(open) => { if (!open) setLockedFeature(null); }}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 mx-auto mb-3">
-              <Lock className="w-6 h-6 text-amber-600 dark:text-amber-500" />
-            </div>
-            <DialogTitle className="text-center">
-              Upgrade to unlock
-            </DialogTitle>
-            <DialogDescription className="text-center">
-              Start your 14-day free trial. No credit card required.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-2 mt-2">
-            <Button onClick={handleUpgrade} className="w-full">
-              Start free trial
-            </Button>
-            <Button variant="ghost" onClick={() => setLockedFeature(null)} className="w-full">
-              Maybe later
-            </Button>
+      <Dialog
+  open={lockedFeature !== null}
+  onOpenChange={(open) => {
+    if (!open) setLockedFeature(null);
+  }}
+>
+  <DialogContent className="max-w-3xl p-0 overflow-hidden border-0 bg-transparent shadow-none">
+
+    <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-2xl p-8 space-y-6">
+
+      {/* Header */}
+      <DialogHeader className="space-y-0">
+
+        <div className="flex items-start gap-4">
+
+          <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+            <Lock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
           </div>
-        </DialogContent>
-      </Dialog>
+
+          <div>
+            <DialogTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              Unlock premium features
+            </DialogTitle>
+
+            <DialogDescription className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Start your 14-day free trial and unlock{" "}
+              <span className="font-medium">
+                {lockedFeature ?? 'premium functionality'}
+              </span>.
+            </DialogDescription>
+          </div>
+
+        </div>
+      </DialogHeader>
+
+      {/* Summary */}
+      <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/20 p-5 space-y-2">
+
+        <p className="text-sm text-amber-900 dark:text-amber-300">
+          Your current plan does not include access to this feature.
+        </p>
+
+        <p className="text-sm text-amber-800 dark:text-amber-400">
+          Upgrade to unlock advanced tools, higher limits, and premium functionality.
+        </p>
+
+      </div>
+
+      {/* Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        {/* Upgrade Card */}
+        <div className="relative rounded-2xl border-2 border-blue-500 p-6 space-y-5">
+
+          <div className="absolute -top-3 left-4 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+            Recommended
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+              Start free trial
+            </h3>
+
+            <div className="mt-2">
+              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                14 Days
+              </span>
+
+              <span className="text-sm text-gray-500 ml-1">
+                free
+              </span>
+            </div>
+
+            <p className="text-xs text-gray-500 mt-1">
+              No credit card required
+            </p>
+          </div>
+
+          <ul className="space-y-2 text-sm">
+
+            <li className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-500" />
+              Unlimited premium features
+            </li>
+
+            <li className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-500" />
+              Higher usage limits
+            </li>
+
+            <li className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-500" />
+              Advanced analytics
+            </li>
+
+            <li className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-green-500" />
+              Priority support
+            </li>
+
+          </ul>
+
+          <Button
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={handleUpgrade}
+          >
+            <Zap className="w-4 h-4 mr-2" />
+            Start Free Trial
+          </Button>
+        </div>
+
+        {/* Maybe Later */}
+        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 p-6 space-y-5">
+
+          <div>
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+              Continue with free plan
+            </h3>
+
+            <div className="mt-2">
+              <span className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                Free
+              </span>
+            </div>
+
+            <p className="text-xs text-gray-500 mt-1">
+              Limited access
+            </p>
+          </div>
+
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            You can continue using the free plan, but this feature will remain locked until you upgrade.
+          </p>
+
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setLockedFeature(null)}
+          >
+            Maybe Later
+          </Button>
+        </div>
+      </div>
+    </div>
+  </DialogContent>
+</Dialog>
     </div>
   );
 }

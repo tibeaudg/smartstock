@@ -8,15 +8,12 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
-// Active plans available for new subscriptions (monthly only)
-const VALID_PLANS = ['professional', 'business', 'enterprise'] as const
-type PlanName = (typeof VALID_PLANS)[number]
+type AddonType = 'extra_branch' | 'extra_user'
 
-function getPriceIdForPlan(planName: PlanName): string | undefined {
-  switch (planName) {
-    case 'professional': return Deno.env.get('STRIPE_PRICE_PROFESSIONAL')
-    case 'business':     return Deno.env.get('STRIPE_PRICE_BUSINESS')
-    case 'enterprise':   return Deno.env.get('STRIPE_PRICE_ENTERPRISE')
+function getPriceIdForAddon(addonType: AddonType): string | undefined {
+  switch (addonType) {
+    case 'extra_branch': return Deno.env.get('STRIPE_PRICE_EXTRA_BRANCH')
+    case 'extra_user':   return Deno.env.get('STRIPE_PRICE_EXTRA_USER')
   }
 }
 
@@ -47,38 +44,32 @@ serve(async (req) => {
     const siteUrl         = Deno.env.get('SITE_URL') || 'https://www.stockflowsystems.com'
 
     if (!stripeSecretKey) {
-      console.error('Missing STRIPE_SECRET_KEY')
       return new Response(
         JSON.stringify({ error: 'Stripe not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    // Parse plan from request body; default to professional
-    let planName: PlanName = 'professional'
+    let addonType: AddonType = 'extra_branch'
+    let quantity = 1
     try {
       const body = await req.json()
-      if (body?.planName && VALID_PLANS.includes(body.planName)) {
-        planName = body.planName as PlanName
-      }
-    } catch {
-      // empty or invalid body — use default
-    }
+      if (body?.addonType === 'extra_user') addonType = 'extra_user'
+      if (typeof body?.quantity === 'number' && body.quantity > 0) quantity = body.quantity
+    } catch { /* use defaults */ }
 
-    const priceId = getPriceIdForPlan(planName)
+    const priceId = getPriceIdForAddon(addonType)
     if (!priceId) {
-      console.error('No Stripe price ID configured for plan:', planName)
+      const envKey = addonType === 'extra_branch' ? 'STRIPE_PRICE_EXTRA_BRANCH' : 'STRIPE_PRICE_EXTRA_USER'
       return new Response(
-        JSON.stringify({ error: `Stripe price not configured for plan: ${planName}. Set STRIPE_PRICE_${planName.toUpperCase()} in function secrets.` }),
+        JSON.stringify({ error: `Stripe add-on price not configured. Set ${envKey} in function secrets.` }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    // Validate that priceId looks like a valid Stripe price ID (starts with 'price_')
     if (!priceId.startsWith('price_')) {
-      console.error('Invalid Stripe price ID format:', priceId)
       return new Response(
-        JSON.stringify({ error: `Invalid price ID format for plan: ${planName}. Price ID must start with 'price_'. Check STRIPE_PRICE_${planName.toUpperCase()} secret.` }),
+        JSON.stringify({ error: `Invalid price ID format for addon ${addonType}. Must start with 'price_'.` }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -120,17 +111,25 @@ serve(async (req) => {
         .eq('id', user.id)
     }
 
-    // 14-day trial; payment method is collected upfront so auto-charge fires after trial
+    const addonLabel = addonType === 'extra_branch' ? 'extra branch' : 'extra user'
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{ price: priceId, quantity }],
       success_url: `${siteUrl}/dashboard/settings/billing?success=true`,
       cancel_url:  `${siteUrl}/dashboard/settings/billing?canceled=true`,
-      metadata: { supabase_user_id: user.id },
+      metadata: {
+        supabase_user_id: user.id,
+        addon_type: addonType,
+        quantity: String(quantity),
+      },
       subscription_data: {
-        trial_period_days: 14,
-        metadata: { supabase_user_id: user.id, plan_name: planName },
+        metadata: {
+          supabase_user_id: user.id,
+          addon_type: addonType,
+          plan_name: addonLabel,
+        },
       },
     })
 
@@ -139,7 +138,7 @@ serve(async (req) => {
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (err) {
-    console.error('[create-checkout-session]', err)
+    console.error('[create-addon-checkout-session]', err)
     const message = err instanceof Error ? err.message : 'Failed to create checkout session'
     return new Response(
       JSON.stringify({ error: message }),

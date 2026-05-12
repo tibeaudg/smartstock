@@ -90,19 +90,17 @@ const STARTER_FEATURES = ['100 unique items', '1 user license', 'Core inventory 
 const PLAN_ITEM_LIMITS: Record<string, number> = {
   free: 100,
   starter: 100,
-  essential: 500,
   professional: 2000,
   business: 5000,
-  custom: 10000,
+  enterprise: 10000,
 };
 
 const PLAN_CUSTOM_FIELD_LIMITS: Record<string, number> = {
   free: 1,
   starter: 1,
-  essential: 5,
   professional: 20,
   business: 50,
-  custom: 999,
+  enterprise: 999,
 };
 
 export const BillingPage = () => {
@@ -143,10 +141,6 @@ export const BillingPage = () => {
   });
 
   const handleUpgrade = async (planName: string) => {
-    if (planName === 'custom') {
-      window.location.href = 'mailto:sales@stockflowsystems.com?subject=Custom%20Plan%20Inquiry';
-      return;
-    }
     setLoadingPlan(planName);
     try {
       const { data: { session } } = await supabase.auth.getSession();

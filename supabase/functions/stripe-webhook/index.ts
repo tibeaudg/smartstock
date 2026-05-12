@@ -87,21 +87,21 @@ serve(async (req) => {
         )
         const priceId = sub.items.data[0]?.price?.id
 
-        // Resolve tier from plan_name in subscription metadata; fall back to 'essential'
-        const planName = sub.metadata?.plan_name || 'essential'
+        // Resolve tier from plan_name in subscription metadata; fall back to 'professional'
+        const planName = sub.metadata?.plan_name || 'professional'
         const { data: resolvedTier } = await supabase
           .from('pricing_tiers')
           .select('id')
           .eq('name', planName)
           .single()
 
-        // Final fallback: try 'essential' explicitly if planName lookup failed
+        // Final fallback: try 'professional' explicitly if planName lookup failed
         let tierId = resolvedTier?.id
         if (!tierId) {
           const { data: fallback } = await supabase
             .from('pricing_tiers')
             .select('id')
-            .eq('name', 'essential')
+            .eq('name', 'professional')
             .single()
           tierId = fallback?.id
         }
@@ -206,7 +206,7 @@ serve(async (req) => {
           break
         }
 
-        const subPlanName = sub.metadata?.plan_name || 'essential'
+        const subPlanName = sub.metadata?.plan_name || 'professional'
         const { data: resolvedSubTier } = await supabase
           .from('pricing_tiers')
           .select('id')
@@ -218,7 +218,7 @@ serve(async (req) => {
           const { data: fallback } = await supabase
             .from('pricing_tiers')
             .select('id')
-            .eq('name', 'essential')
+            .eq('name', 'professional')
             .single()
           subTierId = fallback?.id
         }

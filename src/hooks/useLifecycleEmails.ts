@@ -3,9 +3,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { toast } from 'sonner';
 
-export type LifecycleStage = '24h_nudge' | '7d_inactive' | '14d_inactive' | '25d_warning' | '29d_final_warning';
+export type LifecycleStage = 'welcome' | '24h_nudge' | '7d_inactive' | '14d_inactive' | '25d_warning' | '29d_final_warning';
 
 export const ALL_LIFECYCLE_STAGES: LifecycleStage[] = [
+  'welcome',
   '24h_nudge',
   '7d_inactive',
   '14d_inactive',
@@ -18,7 +19,6 @@ export interface LifecycleSetting {
   stage: LifecycleStage;
   enabled: boolean;
   template_id: string | null;
-  email_templates?: { id: string; name: string; type: string } | null;
 }
 
 export interface LifecycleStats {
@@ -32,7 +32,7 @@ export interface LifecycleStats {
 const fetchLifecycleSettings = async (userId: string): Promise<LifecycleSetting[]> => {
   const { data, error } = await supabase
     .from('lifecycle_email_settings')
-    .select('id, stage, enabled, template_id, email_templates:template_id(id, name, type)')
+    .select('id, stage, enabled, template_id')
     .eq('user_id', userId);
   if (error) throw error;
   return (data || []) as LifecycleSetting[];
