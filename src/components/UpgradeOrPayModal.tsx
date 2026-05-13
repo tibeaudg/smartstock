@@ -112,8 +112,6 @@ export const UpgradeOrPayModal: React.FC<Props> = ({ type, open, onClose, onPaym
   };
 
   const tierFeatures = nextTier?.features ?? [];
-  const tierBranches = nextTier?.max_branches ?? '—';
-  const tierUsers = nextTier?.max_users ?? '—';
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
@@ -151,15 +149,7 @@ export const UpgradeOrPayModal: React.FC<Props> = ({ type, open, onClose, onPaym
                   </p>
                 </div>
                 <ul className="space-y-1.5 text-sm text-gray-700 dark:text-gray-300">
-                  <li className="flex items-center gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
-                    {tierBranches} branches included
-                  </li>
-                  <li className="flex items-center gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
-                    {tierUsers} user licenses
-                  </li>
-                  {tierFeatures.slice(0, 3).map((f) => (
+                  {tierFeatures.map((f) => (
                     <li key={f} className="flex items-center gap-1.5">
                       <Check className="w-3.5 h-3.5 text-green-500 shrink-0" />
                       {f}
@@ -219,12 +209,17 @@ export const UpgradeOrPayModal: React.FC<Props> = ({ type, open, onClose, onPaym
             </div>
           </div>
 
-          <p className="text-center text-xs text-gray-400 dark:text-gray-600">
-            Questions?{' '}
-            <a href="mailto:support@stockflowsystems.com" className="underline hover:text-gray-600">
-              Contact support
-            </a>
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-gray-400 dark:text-gray-600">
+              Questions?{' '}
+              <a href="mailto:support@stockflowsystems.com" className="underline hover:text-gray-600">
+                Contact support
+              </a>
+            </p>
+            <Button variant="ghost" size="sm" onClick={onClose} className="text-xs text-gray-500 hover:text-gray-700">
+              No thanks
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

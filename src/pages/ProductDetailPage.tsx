@@ -6,11 +6,12 @@ import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp, ArrowUpRight, Minus } from 'lucide-react';
+import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp, ArrowUpRight, Minus, DollarSign, ShoppingCart, BarChart2, FileText } from 'lucide-react';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
+import { useLocations } from '@/hooks/useLocations';
 import { useQueryClient } from '@tanstack/react-query';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { useWarehouses } from '@/hooks/useWarehouses';
@@ -27,6 +28,7 @@ import { AddVariantModal } from '@/components/AddVariantModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BillOfMaterials from '@/components/products/BillOfMaterials';
+import { StockHistoryChart } from '@/components/products/StockHistoryChart';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -123,6 +125,11 @@ export default function ProductDetailPage() {
   // Categories state
   const { categories, refetch: refetchCategories } = useCategoriesFetch();
   const [newCategoryName, setNewCategoryName] = useState('');
+
+  // Locations state (for combobox - known locations from the locations table)
+  const { data: knownLocations = [] } = useLocations();
+  const [openLocationIndex, setOpenLocationIndex] = useState<number | null>(null);
+
   // Modal states
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
   const [stockModalActionType, setStockModalActionType] = useState<'in' | 'out'>('in');
@@ -137,16 +144,17 @@ export default function ProductDetailPage() {
       try {
         const { data, error } = await supabase
           .from('products')
-          .select('*')
+          .select('*, categories(name)')
           .eq('id', id)
           .eq('branch_id', activeBranch.branch_id)
           .single();
 
         if (error) throw error;
-        
+
         if (data) {
-          const product = data as Product;
-          setCurrentProduct(product);
+          const product = data as any;
+          const resolvedCategoryName = (product.categories as any)?.name || product.category_name || '';
+          setCurrentProduct({ ...product, category_name: resolvedCategoryName });
           setForm({
             name: product.name || '',
             description: product.description || '',
@@ -157,7 +165,7 @@ export default function ProductDetailPage() {
             sku: product.sku || '',
             location: product.location || '',
             category_id: product.category_id || '',
-            category_name: product.category_name || '',
+            category_name: resolvedCategoryName,
           });
           // Initialize locations array from comma-separated string
           if (product.location) {
@@ -500,16 +508,34 @@ export default function ProductDetailPage() {
         return;
       }
 
+      // When location is saved, ensure any new location names are created in the locations table
+      if (field === 'location') {
+        const knownLocationNames = new Set(knownLocations.map(l => l.name));
+        for (const loc of locations.filter(l => l.trim())) {
+          const locName = loc.trim();
+          if (!knownLocationNames.has(locName)) {
+            const { error: locErr } = await supabase
+              .from('locations')
+              .insert({ name: locName, user_id: user.id });
+            if (locErr && locErr.code !== '23505' && !locErr.message?.includes('unique')) {
+              console.warn('Could not create location entry:', locErr);
+            }
+          }
+        }
+        queryClient.invalidateQueries({ queryKey: ['locations'] });
+      }
+
       // Refresh product data
       const { data: updatedData } = await supabase
         .from('products')
-        .select('*')
+        .select('*, categories(name)')
         .eq('id', currentProduct.id)
         .single();
 
       if (updatedData) {
-        const updatedProduct = updatedData as Product;
-        setCurrentProduct(updatedProduct);
+        const updatedProduct = updatedData as any;
+        const resolvedCategoryName = (updatedProduct.categories as any)?.name || updatedProduct.category_name || '';
+        setCurrentProduct({ ...updatedProduct, category_name: resolvedCategoryName });
         setForm(prev => ({
           ...prev,
           name: updatedProduct.name || '',
@@ -521,7 +547,7 @@ export default function ProductDetailPage() {
           sku: updatedProduct.sku || '',
           location: updatedProduct.location || '',
           category_id: updatedProduct.category_id || '',
-          category_name: updatedProduct.category_name || '',
+          category_name: resolvedCategoryName,
         }));
         // Update locations array from updated product
         if (updatedProduct.location) {
@@ -584,8 +610,10 @@ export default function ProductDetailPage() {
     if (field === 'location' && currentProduct?.location) {
       const locationArray = currentProduct.location.split(',').map(l => l.trim()).filter(l => l);
       setLocations(locationArray.length > 0 ? locationArray : ['']);
+      setOpenLocationIndex(null);
     } else if (field === 'location') {
       setLocations(['']);
+      setOpenLocationIndex(null);
     }
     
     // Clear image uploads
@@ -1167,17 +1195,88 @@ export default function ProductDetailPage() {
                   <div className="space-y-2">
                     {locations.map((location, index) => (
                       <div key={index} className="flex gap-2">
-                        <Input
-                          value={location}
-                          onChange={(e) => {
-                            const newLocations = [...locations];
-                            newLocations[index] = e.target.value;
-                            setLocations(newLocations);
-                          }}
-                          placeholder="Enter location (e.g. row6 box 4)"
-                          disabled={loading}
-                          className="text-sm flex-1"
-                        />
+                        <Popover
+                          open={openLocationIndex === index}
+                          onOpenChange={(open) => setOpenLocationIndex(open ? index : null)}
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              disabled={loading}
+                              className="flex-1 justify-between text-sm font-normal h-9 px-3"
+                            >
+                              <span className={cn(location ? 'text-gray-900' : 'text-gray-400')}>
+                                {location || 'Select or type location...'}
+                              </span>
+                              <ChevronsUpDown className="ml-2 h-3 w-3 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="p-0 w-[220px]" align="start">
+                            <Command shouldFilter={false}>
+                              <CommandInput
+                                placeholder="Search or type new..."
+                                value={location}
+                                onValueChange={(val) => {
+                                  const newLocations = [...locations];
+                                  newLocations[index] = val;
+                                  setLocations(newLocations);
+                                }}
+                              />
+                              <CommandList>
+                                <CommandEmpty>
+                                  {location.trim() ? (
+                                    <div
+                                      className="px-2 py-1.5 text-sm text-blue-600 cursor-pointer hover:bg-gray-50 flex items-center gap-1.5"
+                                      onClick={() => setOpenLocationIndex(null)}
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                      Add "{location.trim()}"
+                                    </div>
+                                  ) : (
+                                    <span className="px-2 py-1.5 text-sm text-gray-400 block">
+                                      Type to add a new location
+                                    </span>
+                                  )}
+                                </CommandEmpty>
+                                {knownLocations.filter(
+                                  (loc) =>
+                                    !location ||
+                                    loc.name.toLowerCase().includes(location.toLowerCase())
+                                ).length > 0 && (
+                                  <CommandGroup heading="Locations">
+                                    {knownLocations
+                                      .filter(
+                                        (loc) =>
+                                          !location ||
+                                          loc.name.toLowerCase().includes(location.toLowerCase())
+                                      )
+                                      .map((loc) => (
+                                        <CommandItem
+                                          key={loc.name}
+                                          value={loc.name}
+                                          onSelect={() => {
+                                            const newLocations = [...locations];
+                                            newLocations[index] = loc.name;
+                                            setLocations(newLocations);
+                                            setOpenLocationIndex(null);
+                                          }}
+                                        >
+                                          <Check
+                                            className={cn(
+                                              'mr-2 h-3 w-3',
+                                              location === loc.name ? 'opacity-100' : 'opacity-0'
+                                            )}
+                                          />
+                                          {loc.name}
+                                        </CommandItem>
+                                      ))}
+                                  </CommandGroup>
+                                )}
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
                         {locations.length > 1 && (
                           <Button
                             size="sm"
@@ -1187,7 +1286,7 @@ export default function ProductDetailPage() {
                               setLocations(newLocations.length > 0 ? newLocations : ['']);
                             }}
                             disabled={loading}
-                            className="h-7 w-7 p-0"
+                            className="h-9 w-9 p-0"
                           >
                             <X className="w-3 h-3" />
                           </Button>
@@ -1290,10 +1389,10 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Right Pane - Scrollable */}
-        <div className="flex-1 flex flex-col overflow-hidden shadow-xl">
-          {/* Sticky Header Actions */}
-          <div className="sticky top-0 z-10 bg-white border-b px-6 py-3 ">
-            <div className="flex items-center justify-between">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Sticky Header */}
+          <div className="sticky top-0 z-10 bg-white border-b px-6 py-4">
+            <div className="flex items-start justify-between">
               {editingField === 'name' ? (
                 <div className="flex-1 flex items-center gap-2">
                   <Input
@@ -1302,62 +1401,64 @@ export default function ProductDetailPage() {
                     className="text-xl font-bold"
                     disabled={loading}
                   />
-                  <Button
-                    size="sm"
-                    onClick={() => handleSave('name')}
-                    disabled={loading || !form.name.trim()}
-                  >
+                  <Button size="sm" onClick={() => handleSave('name')} disabled={loading || !form.name.trim()}>
                     <Save className="w-4 h-4" />
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleCancel('name')}
-                    disabled={loading}
-                  >
+                  <Button size="sm" variant="ghost" onClick={() => handleCancel('name')} disabled={loading}>
                     <X className="w-4 h-4" />
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {currentProduct.is_variant && parentProduct && (
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2">
                       <Badge variant="secondary" className="text-xs font-normal">
                         <Package className="w-3 h-3 mr-1" />
-                        Parent Product
+                        Parent: {parentProduct.name}
                       </Badge>
-                      <span className="text-sm text-gray-600">{parentProduct.name}</span>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => navigate(`/dashboard/products/${parentProduct.id}`)}
-                        className="h-6 px-2 text-xs gap-1"
-                        title="Go to parent product"
+                        className="h-5 px-2 text-xs gap-1"
                       >
                         <ArrowUpRight className="w-3 h-3" />
-                        View Parent
+                        View
                       </Button>
                     </div>
                   )}
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl font-bold">
+                    <h1 className="text-xl font-bold text-gray-900">
                       {currentProduct.is_variant ? (currentProduct.variant_name || currentProduct.name) : currentProduct.name}
                     </h1>
                     {currentProduct.is_variant && (
-                      <Badge variant="secondary" className="text-xs">
-                        Variant
-                      </Badge>
+                      <Badge variant="secondary" className="text-xs">Variant</Badge>
                     )}
+                    <Badge
+                      className={cn(
+                        'text-xs',
+                        productStatus.variant === 'destructive'
+                          ? 'bg-red-100 text-red-700 border-red-200'
+                          : productStatus.variant === 'secondary'
+                          ? 'bg-gray-100 text-gray-600 border-gray-200'
+                          : 'bg-green-100 text-green-700 border-green-200'
+                      )}
+                      variant="outline"
+                    >
+                      {productStatus.label}
+                    </Badge>
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => setEditingField('name')}
-                      className="h-6 w-6 p-0"
-                      title="Edit product name"
+                      className="h-6 w-6 p-0 hover:bg-gray-100 rounded-lg"
                     >
-                      <Edit className="w-4 h-4" />
+                      <Edit className="w-3.5 h-3.5 text-gray-400" />
                     </Button>
                   </div>
+                  {currentProduct.sku && (
+                    <p className="text-xs text-gray-400 font-mono">SKU: {currentProduct.sku}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -1387,21 +1488,26 @@ export default function ProductDetailPage() {
                 {/* Overview Tab */}
                 <TabsContent value="overview" className="mt-0 space-y-6">
                   {/* Description Section */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">Description</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                          <FileText className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-gray-900">Description</h3>
+                      </div>
                       {editingField !== 'description' && (
                         <Button
                           size="sm"
                           variant="ghost"
                           onClick={() => setEditingField('description')}
-                          className="h-6 w-6 p-0"
+                          className="h-7 w-7 p-0 rounded-lg hover:bg-gray-100"
                         >
-                          <Edit className="w-3 h-3" />
+                          <Edit className="w-3.5 h-3.5 text-gray-400" />
                         </Button>
                       )}
                     </div>
-                    
+
                     {editingField === 'description' ? (
                       <div className="space-y-2">
                         <Textarea
@@ -1432,7 +1538,7 @@ export default function ProductDetailPage() {
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-500 leading-relaxed">
                         {currentProduct.description || 'No description provided'}
                       </p>
                     )}
@@ -1440,24 +1546,28 @@ export default function ProductDetailPage() {
 
 
                   {/* Stock Information */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">Stock Information</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                          <BarChart2 className="w-4 h-4 text-blue-600" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-gray-900">Stock Information</h3>
+                      </div>
                       {editingField !== 'stock' && (
                         <Button
                           size="sm"
                           variant="ghost"
                           onClick={() => setEditingField('stock')}
-                          className="h-6 w-6 p-0"
+                          className="h-7 w-7 p-0 rounded-lg hover:bg-gray-100"
                         >
-                          <Edit className="w-3 h-3" />
+                          <Edit className="w-3.5 h-3.5 text-gray-400" />
                         </Button>
                       )}
                     </div>
-                    
+
                     {editingField === 'stock' ? (
                       <div className="space-y-3">
-           
                         <div>
                           <Label>Minimum Stock Level</Label>
                           <Input
@@ -1488,20 +1598,49 @@ export default function ProductDetailPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="text-xs text-gray-500 mb-1">Current Stock</div>
-                          <div className="flex items-center gap-2">
-                            <div className={cn('w-2 h-2 rounded-full', stockDotColor)} />
-                            <span className="text-lg font-semibold">{formatQty(totalStock)}</span>
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-gray-50 rounded-lg p-3">
+                            <div className="text-xs text-gray-500 mb-1 font-medium">Current Stock</div>
+                            <div className="flex items-center gap-2">
+                              <div className={cn('w-2.5 h-2.5 rounded-full', stockDotColor)} />
+                              <span className="text-2xl font-bold text-gray-900">{formatQty(totalStock)}</span>
+                            </div>
+                          </div>
+                          <div className="bg-gray-50 rounded-lg p-3">
+                            <div className="text-xs text-gray-500 mb-1 font-medium">Minimum Level</div>
+                            <span className="text-2xl font-bold text-gray-900">{formatQty(currentProduct.minimum_stock_level)}</span>
                           </div>
                         </div>
+                        {/* Stock level bar */}
+                        {currentProduct.minimum_stock_level > 0 && (
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-xs text-gray-400">
+                              <span>0</span>
+                              <span>Min: {formatQty(currentProduct.minimum_stock_level)}</span>
+                            </div>
+                            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div
+                                className={cn('h-full rounded-full transition-all', stockDotColor)}
+                                style={{
+                                  width: `${Math.min(100, (totalStock / (currentProduct.minimum_stock_level * 2)) * 100)}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
                         <div>
-                          <div className="text-xs text-gray-500 mb-1">Minimum Level</div>
-                          <span className="text-lg font-semibold">{formatQty(currentProduct.minimum_stock_level)}</span>
-                        </div>
-                        <div className="col-span-2">
-                          <Badge variant={stockStatus === 'Out of Stock' ? 'destructive' : stockStatus === 'Low Stock' ? 'secondary' : 'default'}>
+                          <Badge
+                            className={cn(
+                              'text-xs font-medium px-2.5 py-0.5',
+                              stockStatus === 'Out of Stock'
+                                ? 'bg-red-100 text-red-700 border-red-200'
+                                : stockStatus === 'Low Stock'
+                                ? 'bg-orange-100 text-orange-700 border-orange-200'
+                                : 'bg-green-100 text-green-700 border-green-200'
+                            )}
+                            variant="outline"
+                          >
                             {stockStatus}
                           </Badge>
                         </div>
@@ -1510,21 +1649,26 @@ export default function ProductDetailPage() {
                   </div>
 
                   {/* Pricing Information */}
-                  <div className="bg-gray-50 border border-gray-200 rounded-md p-2">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">Pricing</h3>
+                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+                          <DollarSign className="w-4 h-4 text-emerald-600" />
+                        </div>
+                        <h3 className="text-sm font-semibold text-gray-900">Pricing</h3>
+                      </div>
                       {editingField !== 'pricing' && (
                         <Button
                           size="sm"
                           variant="ghost"
                           onClick={() => setEditingField('pricing')}
-                          className="h-6 w-6 p-0"
+                          className="h-7 w-7 p-0 rounded-lg hover:bg-gray-100"
                         >
-                          <Edit className="w-3 h-3" />
+                          <Edit className="w-3.5 h-3.5 text-gray-400" />
                         </Button>
                       )}
                     </div>
-                    
+
                     {editingField === 'pricing' ? (
                       <div className="space-y-3">
                         <div>
@@ -1568,18 +1712,38 @@ export default function ProductDetailPage() {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <div className="text-xs text-gray-500 mb-1">Purchase Price</div>
-                          <span className="text-lg font-semibold">{formatPrice(currentProduct.purchase_price || 0)}</span>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-xs text-gray-500 mb-1 font-medium">Purchase Price</div>
+                          <span className="text-xl font-bold text-gray-900">{formatPrice(currentProduct.purchase_price || 0)}</span>
                         </div>
-                        <div>
-                          <div className="text-xs text-gray-500 mb-1">Sale Price</div>
-                          <span className="text-lg font-semibold">{formatPrice(currentProduct.sale_price || 0)}</span>
+                        <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-xs text-gray-500 mb-1 font-medium">Sale Price</div>
+                          <span className="text-xl font-bold text-gray-900">{formatPrice(currentProduct.sale_price || 0)}</span>
                         </div>
+                        {(currentProduct.purchase_price || 0) > 0 && (currentProduct.sale_price || 0) > 0 && (
+                          <div className="col-span-2 flex items-center gap-1.5 text-xs text-gray-500">
+                            <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
+                            <span>
+                              Margin:{' '}
+                              <span className="font-semibold text-emerald-600">
+                                {(((currentProduct.sale_price || 0) - (currentProduct.purchase_price || 0)) / (currentProduct.sale_price || 1) * 100).toFixed(1)}%
+                              </span>
+                            </span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
+
+                  {/* Stock History Chart */}
+                  {activeBranch && (
+                    <StockHistoryChart
+                      productId={currentProduct.id}
+                      branchId={activeBranch.branch_id}
+                      currentStock={totalStock}
+                    />
+                  )}
                 </TabsContent>
 
                 {/* Variants Tab */}

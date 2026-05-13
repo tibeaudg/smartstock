@@ -91,6 +91,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(initSession);
         setUser(initSession.user);
         fetchProfile(initSession.user.id, initSession.user.user_metadata);
+        // Stamp last_login on every session restore so the admin panel stays current
+        supabase.from('profiles')
+          .update({ last_login: new Date().toISOString() })
+          .eq('id', initSession.user.id)
+          .then(({ error }) => {
+            if (error) console.warn('[auth] failed to update last_login:', error);
+          });
       }
       isInitialized.current = true;
       setLoading(false);
@@ -114,8 +121,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(currentSession);
         if (newUserId) fetchProfile(newUserId, currentSession?.user.user_metadata);
 
-        // Trigger welcome lifecycle email for new users (account < 24h), dedup enforced server-side
         if (event === 'SIGNED_IN' && currentSession?.user) {
+          // Stamp last_login so the admin panel shows accurate login time
+          supabase.from('profiles')
+            .update({ last_login: new Date().toISOString() })
+            .eq('id', currentSession.user.id)
+            .then(({ error }) => {
+              if (error) console.warn('[auth] failed to update last_login:', error);
+            });
+
+          // Trigger welcome lifecycle email for new users (account < 24h), dedup enforced server-side
           const createdAt = new Date(currentSession.user.created_at);
           const isNewUser = (Date.now() - createdAt.getTime()) < 24 * 60 * 60 * 1000;
           if (isNewUser) {

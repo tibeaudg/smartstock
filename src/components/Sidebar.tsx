@@ -41,6 +41,7 @@ import { BranchPickerDropdown } from './BranchPickerDropdown';
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth, UserProfile } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { useBranchSettings } from '@/hooks/useBranchSettings';
 import { useBranches } from '@/hooks/useBranches';
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
@@ -91,6 +92,7 @@ interface SubItem {
   path: string;
   icon?: React.ComponentType<{ className?: string }>;
   divider?: boolean;
+  requiredFeature?: string;
 }
 
 interface MenuItem {
@@ -121,6 +123,7 @@ export const Sidebar = ({
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { user } = useAuth();
+  const { canUseFeature } = useSubscription();
   const { organisationName } = useBranchSettings();
   const navigate = useNavigate();
   const location = useLocation();
@@ -225,12 +228,12 @@ export const Sidebar = ({
           path: '/dashboard/workflows',
           navigateOnClick: true,
           subItems: [
-            { id: 'pick-lists', label: 'Pick Lists', path: '/dashboard/pick-lists', icon: ClipboardList },
-            { id: 'sales-orders', label: 'Sales Orders', path: '/dashboard/sales-orders', icon: ShoppingCart },
-            { id: 'purchase-orders', label: 'Purchase Orders', path: '/dashboard/purchase-orders', icon: ShoppingBag },
-            { id: 'stock-counts', label: 'Stock Counts', path: '/dashboard/stock-counts', icon: Hash },
-            { id: 'customers', label: 'Customers', path: '/dashboard/customer-management', icon: Contact, divider: true },
-            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers', icon: Truck },
+            { id: 'pick-lists', label: 'Pick Lists', path: '/dashboard/pick-lists', icon: ClipboardList, requiredFeature: 'orders' },
+            { id: 'sales-orders', label: 'Sales Orders', path: '/dashboard/sales-orders', icon: ShoppingCart, requiredFeature: 'orders' },
+            { id: 'purchase-orders', label: 'Purchase Orders', path: '/dashboard/purchase-orders', icon: ShoppingBag, requiredFeature: 'orders' },
+            { id: 'stock-counts', label: 'Stock Counts', path: '/dashboard/stock-counts', icon: Hash, requiredFeature: 'orders' },
+            { id: 'customers', label: 'Customers', path: '/dashboard/customer-management', icon: Contact, divider: true, requiredFeature: 'contacts' },
+            { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers', icon: Truck, requiredFeature: 'contacts' },
           ],
         },
 
@@ -604,14 +607,16 @@ export const Sidebar = ({
                             <ul className="ml-3 mt-0.5 space-y-0.5 border-l border-white/20 pl-3">
                               {item.subItems.map(sub => {
                                 const MobileSubIcon = sub.icon;
+                                const subIsLocked = sub.requiredFeature ? !canUseFeature(sub.requiredFeature) : false;
+                                const subNavTarget = subIsLocked ? '/dashboard/workflows' : sub.path;
                                 return (
                                   <li key={sub.id}>
                                     <NavLink
-                                      to={sub.path}
+                                      to={subNavTarget}
                                       onClick={() => { setActiveSubmenu(null); onToggle(); }}
                                       className={({ isActive }) => `
                                         flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                                        ${isActive
+                                        ${isActive && !subIsLocked
                                           ? 'bg-white/20 text-white dark:bg-blue-500/20 dark:text-blue-300'
                                           : 'text-white/75 hover:bg-white/10 hover:text-white dark:text-white/60 dark:hover:bg-gray-950 dark:hover:text-blue-300'
                                         }
@@ -839,12 +844,14 @@ export const Sidebar = ({
             <nav className="flex-1 px-3 pb-4 overflow-y-auto">
               <ul className="space-y-0.5">
                 {activeItem.subItems.filter(sub => !sub.id.startsWith('_')).map((subItem) => {
-                  const isItemActive = subItem.path.includes('?')
+                  const isLocked = subItem.requiredFeature ? !canUseFeature(subItem.requiredFeature) : false;
+                  const navTarget = isLocked ? '/dashboard/workflows' : subItem.path;
+                  const isItemActive = !isLocked && (subItem.path.includes('?')
                     ? (() => {
                         const [subPath, subSearch] = subItem.path.split('?');
                         return location.pathname === subPath && location.search === `?${subSearch}`;
                       })()
-                    : location.pathname === subItem.path || location.pathname.startsWith(subItem.path + '/');
+                    : location.pathname === subItem.path || location.pathname.startsWith(subItem.path + '/'));
                   const SubIcon = subItem.icon;
                   return (
                     <React.Fragment key={subItem.id}>
@@ -855,7 +862,7 @@ export const Sidebar = ({
                       )}
                       <li>
                         <NavLink
-                          to={subItem.path}
+                          to={navTarget}
                           className={`
                             flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
                             ${isItemActive

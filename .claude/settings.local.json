@@ -25,7 +25,12 @@
       "Bash(Select-Object -First 20)",
       "Bash(powershell -Command \"Select-String -Path 'c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\integrations\\\\supabase\\\\types.ts' -Pattern 'pricing_tiers|user_subscriptions' | Select-Object -First 20\")",
       "Bash(findstr /r /s \"currency\\\\|currencySymbol\\\\|location.*warehouse\" src\\\\**\\\\*.tsx src\\\\**\\\\*.ts)",
-      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\supabase\\\\functions\\\\create-addon-checkout-session\")"
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\supabase\\\\functions\\\\create-addon-checkout-session\")",
+      "PowerShell(cd \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\"; [System.IO.File]::ReadAllBytes\\(\".env\"\\) | Select-Object -First 4 | ForEach-Object { \"{0:X2}\" -f $_ })",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\" -MaxDepth 1 -File | Where-Object { $_.Extension -eq '.tsx' -or $_.Extension -eq '.ts' } | Select-Object -ExpandProperty Name)",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\" -Depth 0 -File | Where-Object { $_.Extension -eq '.tsx' -or $_.Extension -eq '.ts' } | Select-Object -ExpandProperty Name)",
+      "Bash(npx supabase *)",
+      "PowerShell(Get-ChildItem \"$env:APPDATA\\\\supabase\" -ErrorAction SilentlyContinue; Get-ChildItem \"$env:LOCALAPPDATA\\\\supabase\" -ErrorAction SilentlyContinue)"
     ]
   }
 }

@@ -88,7 +88,7 @@ export const StockManagementApp: React.FC = () => {
           }}
           userRole={userProfile.role as 'admin' | 'staff'}
           userProfile={userProfile}
-          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') || location.pathname.includes('/transactions') || location.pathname.includes('/bom') || location.pathname.includes('/sales-orders') || location.pathname.includes('/purchase-orders') || location.pathname.includes('/customer-management') || location.pathname.includes('/suppliers') ? 'admin' : 'default'}
+          variant={location.pathname.startsWith('/admin') || location.pathname.includes('/categories') || location.pathname.includes('/locations') || location.pathname.includes('/transactions') || location.pathname.includes('/bom') || location.pathname.includes('/sales-orders') || location.pathname.includes('/purchase-orders') || location.pathname.includes('/customer-management') || location.pathname.includes('/suppliers') ? 'admin' : 'default'}
         >
           <Outlet key={location.pathname} />
         </Layout>

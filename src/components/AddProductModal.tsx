@@ -11,7 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useCategoriesFetch } from '@/hooks/useCategoriesFetch';
 import { toast } from 'sonner';
-import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { AlertCircle, Check, ChevronsUpDown, Plus, Scan, Info, Upload, X, Image as ImageIcon, ChevronDown, ChevronUp, Trash2, Package, Layers, Hash, Tag, MapPin, DollarSign, FileText, Loader2, FolderOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';

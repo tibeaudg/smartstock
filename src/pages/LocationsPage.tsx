@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,7 +19,6 @@ import type { LocationItem } from '@/hooks/useLocations';
 export default function LocationsPage() {
   const navigate = useNavigate();
 
-  // Search
   const [searchQuery, setSearchQuery] = useState('');
 
   // Add modal
@@ -97,7 +96,6 @@ export default function LocationsPage() {
   if (isLoading) {
     return (
       <div className="space-y-6 p-4 sm:p-6">
-        {/* Header skeleton */}
         <div className="flex items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="h-8 w-48 bg-gray-200 rounded animate-pulse" />
@@ -105,16 +103,11 @@ export default function LocationsPage() {
           </div>
           <div className="h-10 w-32 bg-gray-200 rounded animate-pulse" />
         </div>
-
-        {/* Search skeleton */}
         <div className="h-10 w-full max-w-md bg-gray-200 rounded animate-pulse" />
-
-        {/* List skeleton */}
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gray-200 rounded-md animate-pulse" />
                 <div className="space-y-1">
                   <div className="h-4 w-32 bg-gray-200 rounded animate-pulse" />
                   <div className="h-3 w-24 bg-gray-200 rounded animate-pulse" />
@@ -186,9 +179,6 @@ export default function LocationsPage() {
           {filtered.map((loc) => (
             <div key={loc.id ?? loc.name} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-md bg-blue-50 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-blue-600" />
-                </div>
                 <div>
                   <span className="font-medium text-gray-900">{loc.name}</span>
                   <div className="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
@@ -215,15 +205,18 @@ export default function LocationsPage() {
         </div>
       )}
 
-      {/* ── Add Location Modal ── */}
+      {/* Add Location Modal */}
       <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Add Location</DialogTitle>
+            <p className="text-sm text-gray-500 mt-1">
+              Create a new location to track where your products are stored.
+            </p>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="add-name">Location Name *</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="add-name">Name <span className="text-gray-400 font-normal">*</span></Label>
               <Input
                 id="add-name"
                 value={addName}
@@ -233,7 +226,7 @@ export default function LocationsPage() {
                 autoFocus
               />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="add-desc">Description <span className="text-gray-400 font-normal">(optional)</span></Label>
               <Textarea
                 id="add-desc"
@@ -256,17 +249,17 @@ export default function LocationsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ── Rename Modal ── */}
+      {/* Rename Modal */}
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Rename Location</DialogTitle>
+            <p className="text-sm text-gray-500 mt-1">
+              All {selectedLocation?.productCount ?? 0} product(s) assigned to "{selectedLocation?.name}" will be updated.
+            </p>
           </DialogHeader>
-          <p className="text-sm text-gray-500">
-            All {selectedLocation?.productCount ?? 0} product(s) assigned to "{selectedLocation?.name}" will be updated.
-          </p>
-          <div className="space-y-2">
-            <Label htmlFor="edit-name">New Name</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="edit-name">New Name <span className="text-gray-400 font-normal">*</span></Label>
             <Input
               id="edit-name"
               value={newName}
@@ -287,7 +280,7 @@ export default function LocationsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ── Delete Dialog ── */}
+      {/* Delete Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>

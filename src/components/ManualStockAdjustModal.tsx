@@ -58,6 +58,7 @@ export const ManualStockAdjustModal = ({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedProductOriginal, setSelectedProductOriginal] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState<string>('');
+  const [adjustmentDate, setAdjustmentDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [actionType, setActionType] = useState<'in' | 'out'>(defaultAction);
@@ -105,6 +106,7 @@ export const ManualStockAdjustModal = ({
       setSelectedProduct(null);
       setSelectedProductOriginal(null);
       setQuantity('');
+      setAdjustmentDate(new Date().toISOString().split('T')[0]);
       setActionType(defaultAction);
       setProducts([]);
     }
@@ -325,7 +327,7 @@ export const ManualStockAdjustModal = ({
         variant_id: isVariant ? productId : null,
         variant_name: isVariant ? variantName : null,
         adjustment_method: 'manual',
-        created_at: new Date().toISOString()
+        created_at: new Date(adjustmentDate + 'T12:00:00').toISOString()
       };
 
       console.log('DEBUG - Transaction data to insert:', transactionData);
@@ -533,6 +535,18 @@ export const ManualStockAdjustModal = ({
                     min="1"
                     max="999999"
                     className={`${actionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}`}
+                  />
+                </div>
+
+                {/* Date Input */}
+                <div className="space-y-2">
+                  <Label htmlFor="adjustmentDate">Date</Label>
+                  <Input
+                    id="adjustmentDate"
+                    type="date"
+                    value={adjustmentDate}
+                    max={new Date().toISOString().split('T')[0]}
+                    onChange={(e) => setAdjustmentDate(e.target.value)}
                   />
                 </div>
 

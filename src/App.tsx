@@ -423,12 +423,12 @@ const AppRouter = () => {
             <Route path="branches" element={<BranchesSettings />} />
           </Route>
           <Route path="workflows" element={<WorkflowsPage />} />
-          <Route path="stock-counts" element={<StockCountsPage />} />
-          <Route path="stock-counts/new" element={<CreateStockCountPage />} />
-          <Route path="stock-counts/:id/edit" element={<EditStockCountPage />} />
-          <Route path="pick-lists" element={<PickListsPage />} />
-          <Route path="pick-lists/new" element={<CreatePickListPage />} />
-          <Route path="pick-lists/:id/edit" element={<EditPickListPage />} />
+          <Route path="stock-counts" element={<PaywallGate feature="orders"><StockCountsPage /></PaywallGate>} />
+          <Route path="stock-counts/new" element={<PaywallGate feature="orders"><CreateStockCountPage /></PaywallGate>} />
+          <Route path="stock-counts/:id/edit" element={<PaywallGate feature="orders"><EditStockCountPage /></PaywallGate>} />
+          <Route path="pick-lists" element={<PaywallGate feature="orders"><PickListsPage /></PaywallGate>} />
+          <Route path="pick-lists/new" element={<PaywallGate feature="orders"><CreatePickListPage /></PaywallGate>} />
+          <Route path="pick-lists/:id/edit" element={<PaywallGate feature="orders"><EditPickListPage /></PaywallGate>} />
           <Route path="sales-orders" element={<PaywallGate feature="orders"><SalesOrdersPage /></PaywallGate>} />
           <Route path="sales-orders/new" element={<PaywallGate feature="orders"><CreateSalesOrderPage /></PaywallGate>} />
           <Route path="purchase-orders" element={<PaywallGate feature="orders"><PurchaseOrdersPage /></PaywallGate>} />

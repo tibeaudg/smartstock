@@ -39,22 +39,28 @@ export const Dashboard = () => {
   const lowStockItems = (fullMetrics as any)?.lowStockProducts || [];
 
   return (
-    <div className="p-4 sm:p-6 max-w-[1600px] mx-auto space-y-8 min-h-screen">
+    <div className="space-y-6 p-4 sm:p-6">
       <OverLimitBanner />
 
       {/* 1. Header & Quick Actions */}
-      <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
+      <div className="flex items-center justify-between border-b pb-4">
+        <div>
+        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-sm text-gray-600 mt-1">
+            Get an overview of the current state of your warehouse
+          </p>
+        </div>
+        
+
         <div className="flex flex-wrap gap-2">
+
           <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-500 hover:bg-blue-600">
             <Plus className="mr-2 h-4 w-4" /> Add Product
           </Button>
           <Button variant="outline" onClick={() => navigate('/dashboard/scan')}>
             <ScanLine className="mr-2 h-4 w-4" /> Scan Barcode
           </Button>
-          <Button variant="outline" onClick={() => navigate('/dashboard/purchase-orders')}>
-            <FilePlus2 className="mr-2 h-4 w-4" /> Purchase Order
-          </Button>
+         
           <Button variant="outline" onClick={() => navigate('/dashboard/bom')}>
             <Layers className="mr-2 h-4 w-4" /> BOM
           </Button>

@@ -729,6 +729,7 @@ export default function AdminPage() {
   const [chatForUserId, setChatForUserId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(0);
+  const [, setTick] = useState(0);
   
   // Gebruik de page refresh hook
   usePageRefresh();
@@ -1124,19 +1125,12 @@ export default function AdminPage() {
     };
   }, [currentUser?.id, queryClient, activeTab]);
 
-  // Auto-refresh activity status every 30 seconds
+  // Tick every 30 seconds to re-render "X ago" labels without re-fetching
   useEffect(() => {
     if (activeTab !== 'users') return;
-    
-    const interval = setInterval(() => {
-      // Force re-render by updating a state that triggers recalculation
-      queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
-    }, 30000); // 30 seconds
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [activeTab, queryClient]);
+    const interval = setInterval(() => setTick(n => n + 1), 30000);
+    return () => clearInterval(interval);
+  }, [activeTab]);
 
   // Access control - only owners can view the admin page
   useEffect(() => {

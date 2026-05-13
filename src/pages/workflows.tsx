@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipboardList, ShoppingCart, TrendingUp, BarChart3, Plus, Users, Truck, Lock, Check, Zap } from 'lucide-react';
+import { ClipboardList, ShoppingCart, TrendingUp, BarChart3, Plus, Users, Truck, Lock, Check, Zap, Loader2 } from 'lucide-react';
 import { useSubscription } from '@/hooks/useSubscription';
+import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
@@ -72,34 +73,51 @@ const cards: WorkflowCard[] = [
   },
 ];
 
-const featureLabels: Record<string, string> = {
-  orders: 'Orders',
-  contacts: 'Contacts',
-};
-
 export default function WorkflowsPage() {
   const navigate = useNavigate();
-  const { canUseFeature } = useSubscription();
+  const { canUseFeature, allTiers } = useSubscription();
   const [lockedFeature, setLockedFeature] = useState<'orders' | 'contacts' | null>(null);
+  const [selectedPlanName, setSelectedPlanName] = useState('professional');
+  const [loading, setLoading] = useState(false);
+
+  const paidTiers = useMemo(
+    () => allTiers.filter((t) => t.price_monthly > 0),
+    [allTiers],
+  );
+
+  const selectedTier = useMemo(
+    () => paidTiers.find((t) => t.name === selectedPlanName) ?? paidTiers[0] ?? null,
+    [paidTiers, selectedPlanName],
+  );
 
   const handleUpgrade = async () => {
-    const paymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK;
-    if (!paymentLink) {
+    if (!selectedTier) {
       window.location.href = '/dashboard/settings/billing';
       return;
     }
-    const { data: { session } } = await import('@/integrations/supabase/client').then(
-      (m) => m.supabase.auth.getSession()
-    );
-    if (!session?.user) {
-      window.location.href = '/auth';
-      return;
+    setLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) { window.location.href = '/auth'; return; }
+      const baseUrl = import.meta.env.VITE_SUPABASE_URL ?? '';
+      const fnUrl = `${baseUrl.replace(/\/$/, '')}/functions/v1/create-checkout-session`;
+      const res = await fetch(fnUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ planName: selectedTier.name }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        window.location.href = '/dashboard/settings/billing';
+      }
+    } catch {
+      window.location.href = '/dashboard/settings/billing';
+    } finally {
+      setLoading(false);
     }
-    const params = new URLSearchParams();
-    if (session.user.email) params.set('prefilled_email', session.user.email);
-    params.set('client_reference_id', session.user.id);
-    const url = `${paymentLink}${paymentLink.includes('?') ? '&' : '?'}${params.toString()}`;
-    window.location.href = url;
   };
 
   return (
@@ -126,11 +144,7 @@ export default function WorkflowsPage() {
                   navigate(card.path);
                 }
               }}
-              className={`relative bg-white dark:bg-gray-900 border rounded-xl p-6 flex flex-col gap-4 cursor-pointer transition-all duration-200 ${
-                isLocked
-                  ? 'border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md'
-                  : 'border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md'
-              }`}
+              className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col gap-4 cursor-pointer transition-all duration-200 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md"
             >
               {!isLocked && (
                 <button
@@ -143,11 +157,14 @@ export default function WorkflowsPage() {
                 </button>
               )}
 
+              {isLocked && (
+                <div className="absolute top-3 right-3 w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
+                  <Lock className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
+                </div>
+              )}
+
               <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
-                {isLocked
-                  ? <Icon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                  : <Icon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                }
+                <Icon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </div>
 
               <div>
@@ -160,151 +177,125 @@ export default function WorkflowsPage() {
       </div>
 
       <Dialog
-  open={lockedFeature !== null}
-  onOpenChange={(open) => {
-    if (!open) setLockedFeature(null);
-  }}
->
-  <DialogContent className="max-w-3xl p-0 overflow-hidden border-0 bg-transparent shadow-none">
+        open={lockedFeature !== null}
+        onOpenChange={(open) => { if (!open) setLockedFeature(null); }}
+      >
+        <DialogContent className="max-w-3xl p-0 overflow-hidden border-0 bg-transparent shadow-none">
+          <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-2xl p-8 space-y-6">
 
-    <div className="rounded-2xl bg-white dark:bg-slate-900 shadow-2xl p-8 space-y-6">
+            {/* Header */}
+            <DialogHeader className="space-y-0">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+                  <Lock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div>
+                  <DialogTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                    Unlock premium features
+                  </DialogTitle>
+                  <DialogDescription className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Choose a plan and start your 14-day free trial — no credit card required.
+                  </DialogDescription>
+                </div>
+              </div>
+            </DialogHeader>
 
-      {/* Header */}
-      <DialogHeader className="space-y-0">
+            {/* Plan selector + details / Maybe later */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-        <div className="flex items-start gap-4">
+              {/* Upgrade card */}
+              <div className="relative rounded-2xl border-2 border-blue-500 p-6 space-y-4">
+                <div className="absolute -top-3 left-4 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                  Recommended
+                </div>
 
-          <div className="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
-            <Lock className="w-6 h-6 text-amber-600 dark:text-amber-400" />
-          </div>
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">Start free trial</h3>
 
-          <div>
-            <DialogTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              Unlock premium features
-            </DialogTitle>
+                {/* Plan tabs */}
+                {paidTiers.length > 0 && (
+                  <div className="flex rounded-lg border border-gray-200 dark:border-gray-700 p-0.5 gap-0.5 bg-gray-50 dark:bg-gray-800">
+                    {paidTiers.map((plan) => (
+                      <button
+                        key={plan.name}
+                        type="button"
+                        onClick={() => setSelectedPlanName(plan.name)}
+                        className={`flex-1 text-xs font-medium py-1.5 rounded-md transition-colors ${
+                          selectedPlanName === plan.name
+                            ? 'bg-white dark:bg-gray-900 text-blue-600 dark:text-blue-400 shadow-sm'
+                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                        }`}
+                      >
+                        {plan.display_name}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-            <DialogDescription className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Start your 14-day free trial and unlock{" "}
-              <span className="font-medium">
-                {lockedFeature ?? 'premium functionality'}
-              </span>.
-            </DialogDescription>
-          </div>
+                {/* Price */}
+                {selectedTier && (
+                  <>
+                    <div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                          ${selectedTier.price_monthly}
+                        </span>
+                        <span className="text-sm text-gray-500">/mo</span>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-0.5">14-day free trial · No credit card required</p>
+                    </div>
 
-        </div>
-      </DialogHeader>
+                    {/* Features */}
+                    <ul className="space-y-2 text-sm">
+                      {selectedTier.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2">
+                          <Check className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
 
-      {/* Summary */}
-      <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/20 p-5 space-y-2">
+                <Button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={handleUpgrade}
+                  disabled={loading || !selectedTier}
+                >
+                  {loading
+                    ? <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    : <Zap className="w-4 h-4 mr-2" />}
+                  Start Free Trial
+                </Button>
+              </div>
 
-        <p className="text-sm text-amber-900 dark:text-amber-300">
-          Your current plan does not include access to this feature.
-        </p>
+              {/* Maybe later card */}
+              <div className="rounded-2xl border border-gray-200 dark:border-gray-700 p-6 space-y-5 flex flex-col">
+                <div>
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                    Continue with free plan
+                  </h3>
+                  <div className="mt-2">
+                    <span className="text-3xl font-bold text-gray-900 dark:text-gray-100">Free</span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Limited access</p>
+                </div>
 
-        <p className="text-sm text-amber-800 dark:text-amber-400">
-          Upgrade to unlock advanced tools, higher limits, and premium functionality.
-        </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 flex-1">
+                  You can continue using the free plan, but this feature will remain locked until you upgrade.
+                </p>
 
-      </div>
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-        {/* Upgrade Card */}
-        <div className="relative rounded-2xl border-2 border-blue-500 p-6 space-y-5">
-
-          <div className="absolute -top-3 left-4 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-            Recommended
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
-              Start free trial
-            </h3>
-
-            <div className="mt-2">
-              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                14 Days
-              </span>
-
-              <span className="text-sm text-gray-500 ml-1">
-                free
-              </span>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setLockedFeature(null)}
+                >
+                  Maybe Later
+                </Button>
+              </div>
             </div>
-
-            <p className="text-xs text-gray-500 mt-1">
-              No credit card required
-            </p>
           </div>
-
-          <ul className="space-y-2 text-sm">
-
-            <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-500" />
-              Unlimited premium features
-            </li>
-
-            <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-500" />
-              Higher usage limits
-            </li>
-
-            <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-500" />
-              Advanced analytics
-            </li>
-
-            <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-green-500" />
-              Priority support
-            </li>
-
-          </ul>
-
-          <Button
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-            onClick={handleUpgrade}
-          >
-            <Zap className="w-4 h-4 mr-2" />
-            Start Free Trial
-          </Button>
-        </div>
-
-        {/* Maybe Later */}
-        <div className="rounded-2xl border border-gray-200 dark:border-gray-700 p-6 space-y-5">
-
-          <div>
-            <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
-              Continue with free plan
-            </h3>
-
-            <div className="mt-2">
-              <span className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                Free
-              </span>
-            </div>
-
-            <p className="text-xs text-gray-500 mt-1">
-              Limited access
-            </p>
-          </div>
-
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            You can continue using the free plan, but this feature will remain locked until you upgrade.
-          </p>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => setLockedFeature(null)}
-          >
-            Maybe Later
-          </Button>
-        </div>
-      </div>
-    </div>
-  </DialogContent>
-</Dialog>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

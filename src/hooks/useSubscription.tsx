@@ -51,6 +51,7 @@ export interface UsageTracking {
 export interface UseSubscriptionReturn {
   currentTier: PricingTier | null;
   nextTier: PricingTier | null;
+  allTiers: PricingTier[];
   productCount: number;
   branchCount: number;
   userCount: number;
@@ -223,7 +224,10 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     // If tier data is unavailable but the user has an active subscription with a tier_id,
     // infer they're on a paid plan rather than locking them out silently.
     const tierDataMissing = !tierRow && !!sub.tier_id;
-    const paid = tier.name !== 'free' || (tierDataMissing && status === 'active');
+    // Use price_monthly > 0 rather than name !== 'free': the DB starter tier has name='starter'
+    // (renamed from 'free' in the 20260512 migration), so a name check would incorrectly treat
+    // Starter subscribers as paid users.
+    const paid = tier.price_monthly > 0 || (tierDataMissing && status === 'active');
     const onTrial = status === 'trial';
     const pastDue = status === 'past_due';
     return { currentTier: tier, isPaidPlan: paid, isOnTrial: onTrial, isPastDue: pastDue, subscriptionStatus: status, trialEndDate: sub.trial_end_date ?? null };
@@ -270,6 +274,7 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
   return {
     currentTier,
     nextTier,
+    allTiers,
     productCount: productCountFallback ?? 0,
     branchCount,
     userCount,
