@@ -50,7 +50,7 @@ const PLANS: Plan[] = [
     features: [
       { text: '2,000 Unique Items' },
       { text: '5 User Licenses' },
-      { text: '2 Branches' },
+      { text: '2 Warehouses' },
       { text: '+ Unlimited QR Code & Barcode Label Creation', isHighlight: true },
       { text: '+ Purchase Orders', isHighlight: true },
       { text: '+ Orders Management', isHighlight: true },
@@ -67,7 +67,7 @@ const PLANS: Plan[] = [
     features: [
       { text: '5,000 Unique Items' },
       { text: '8 User Licenses' },
-      { text: '5 Branches' },
+      { text: '5 Warehouses' },
       { text: '+ Customizable Role Permissions', isHighlight: true },
       { text: '+ QuickBooks Online Integration', isHighlight: true },
       { text: '+ Purchase Orders', isHighlight: true },
@@ -282,7 +282,7 @@ export default function PricingPage() {
 
           <p className="text-center text-xs text-gray-400 mt-6">
             * 14-day free trial on Professional. No credit card required to start your trial.
-            Extra branches +$5/mo · Extra users +$2/mo, beyond what's included in your plan.
+            Extra warehouses +$5/mo · Extra users +$2/mo, beyond what's included in your plan.
           </p>
 
           {/* FAQ */}

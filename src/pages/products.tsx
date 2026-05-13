@@ -258,22 +258,24 @@ const categoryProductsData = useMemo(() => {
     ? stockStatusParam
     : 'all';
 
+  const getDescendantIds = (id: string, cats: any[]): string[] => {
+    const result = [id];
+    cats
+      .filter((c: any) => c.parent_category_id === id)
+      .forEach((child: any) => result.push(...getDescendantIds(child.id, cats)));
+    return result;
+  };
+
   // When navigating from the Categories page "View" button, apply the category filter
   useEffect(() => {
     if (!categoryParam) {
       setSelectedCategoryIds([]);
+      setFilterCategoryId('all');
       return;
     }
     if (allCategories.length === 0) return;
-    // Collect the clicked category plus all its descendants
-    const getDescendants = (id: string): string[] => {
-      const result = [id];
-      allCategories
-        .filter((c: any) => c.parent_category_id === id)
-        .forEach((child: any) => result.push(...getDescendants(child.id)));
-      return result;
-    };
-    setSelectedCategoryIds(getDescendants(categoryParam));
+    setFilterCategoryId(categoryParam);
+    setSelectedCategoryIds(getDescendantIds(categoryParam, allCategories));
   }, [categoryParam, allCategories]);
 
   const [viewMode, setViewMode] = useState<'compact' | 'expanded'>('compact');
@@ -283,10 +285,7 @@ const categoryProductsData = useMemo(() => {
   const [filterWarehouse, setFilterWarehouse] = useState<string>('all');
   const [filterLocation, setFilterLocation] = useState<string>(locationParam ?? 'all');
   const [filterStockStatus, setFilterStockStatus] = useState<string>(initialStockStatusFromUrl);
-  const [minStock, setMinStock] = useState<string>('');
-  const [maxStock, setMaxStock] = useState<string>('');
-  const [minPrice, setMinPrice] = useState<string>('');
-  const [maxPrice, setMaxPrice] = useState<string>('');
+  const [filterCategoryId, setFilterCategoryId] = useState<string>('all');
 
   // Bulk Delete State
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
@@ -312,10 +311,19 @@ const categoryProductsData = useMemo(() => {
     if (filterWarehouse !== 'all') count++;
     if (filterLocation !== 'all') count++;
     if (filterStockStatus !== 'all') count++;
-    if (minStock || maxStock) count++;
-    if (minPrice || maxPrice) count++;
+    if (filterCategoryId !== 'all') count++;
     return count;
-  }, [filterWarehouse, filterLocation, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+  }, [filterWarehouse, filterLocation, filterStockStatus, filterCategoryId]);
+
+  const uniqueLocations = useMemo(() => {
+    return Array.from(
+      new Set(
+        safeProducts
+          .map((p: any) => p.location)
+          .filter((loc: string) => loc && loc !== '—')
+      )
+    ).sort() as string[];
+  }, [safeProducts]);
 
   // Keep filterLocation in sync when the URL param changes (e.g. back-navigation)
   useEffect(() => {
@@ -326,10 +334,8 @@ const categoryProductsData = useMemo(() => {
     setFilterWarehouse('all');
     setFilterStockStatus('all');
     setFilterLocation('all');
-    setMinStock('');
-    setMaxStock('');
-    setMinPrice('');
-    setMaxPrice('');
+    setFilterCategoryId('all');
+    setSelectedCategoryIds([]);
     setSearchTerm('');
   };
 
@@ -428,26 +434,6 @@ const categoryProductsData = useMemo(() => {
       }
     }
     
-    if (minStock) {
-      const min = parseInt(minStock);
-      if (!isNaN(min)) filtered = filtered.filter((p: any) => (p.quantity_in_stock || 0) >= min);
-    }
-    
-    if (maxStock) {
-      const max = parseInt(maxStock);
-      if (!isNaN(max)) filtered = filtered.filter((p: any) => (p.quantity_in_stock || 0) <= max);
-    }
-    
-    if (minPrice) {
-      const min = parseFloat(minPrice);
-      if (!isNaN(min)) filtered = filtered.filter((p: any) => (p.price || 0) >= min);
-    }
-    
-    if (maxPrice) {
-      const max = parseFloat(maxPrice);
-      if (!isNaN(max)) filtered = filtered.filter((p: any) => (p.price || 0) <= max);
-    }
-    
     // Rebuild hierarchy from filtered results
     const parents = filtered.filter((p: any) => p.isParent);
     const variants = filtered.filter((p: any) => p.isVariant);
@@ -483,7 +469,7 @@ const categoryProductsData = useMemo(() => {
     });
     
     return result;
-  }, [hierarchicalProducts, searchTerm, filterWarehouse, filterLocation, filterStockStatus, minStock, maxStock, minPrice, maxPrice]);
+  }, [hierarchicalProducts, searchTerm, filterWarehouse, filterLocation, filterStockStatus]);
 
   // Apply collapse/expand filter to hide variants of collapsed parents
   // collapsedParents contains parent IDs that are collapsed (variants hidden)
@@ -602,7 +588,7 @@ const categoryProductsData = useMemo(() => {
      ============================================================================ */
   const handleBulkDelete = async () => {
     if (selectedProductIds.size === 0 || !user || !branchId) {
-      toast.error('No products selected or missing branch information');
+      toast.error('No products selected or missing warehouse information');
       return;
     }
   
@@ -1066,84 +1052,92 @@ const categoryProductsData = useMemo(() => {
 
         {/* Advanced Filters Panel */}
         {showAdvancedFilters && (
-          <Card className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Stock Status Filter */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Stock Status</Label>
-                <Select value={filterStockStatus} onValueChange={setFilterStockStatus}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="All statuses" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="in-stock">In Stock</SelectItem>
-                    <SelectItem value="low-stock">Low Stock</SelectItem>
-                    <SelectItem value="out-of-stock">Out of Stock</SelectItem>
-                  </SelectContent>
-                </Select>
+          <Card className="border border-gray-200 shadow-sm overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/70 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Filter className="w-3.5 h-3.5 text-gray-500" />
+                <span className="text-sm font-semibold text-gray-700">Filters</span>
+                {activeFiltersCount > 0 && (
+                  <Badge variant="secondary" className="text-xs h-5 px-1.5">
+                    {activeFiltersCount} active
+                  </Badge>
+                )}
               </div>
-
-              {/* Stock Range */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Stock Range</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="number"
-                    placeholder="Min"
-                    value={minStock}
-                    onChange={e => setMinStock(e.target.value)}
-                    className="w-full"
-                    min="0"
-                  />
-                  <span className="text-gray-500">-</span>
-                  <Input
-                    type="number"
-                    placeholder="Max"
-                    value={maxStock}
-                    onChange={e => setMaxStock(e.target.value)}
-                    className="w-full"
-                    min="0"
-                  />
-                </div>
-              </div>
-
-              {/* Price Range */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Price Range</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="number"
-                    placeholder="Min"
-                    value={minPrice}
-                    onChange={e => setMinPrice(e.target.value)}
-                    step="0.01"
-                    className="w-full"
-                    min="0"
-                  />
-                  <span className="text-gray-500">-</span>
-                  <Input
-                    type="number"
-                    placeholder="Max"
-                    value={maxPrice}
-                    onChange={e => setMaxPrice(e.target.value)}
-                    step="0.01"
-                    className="w-full"
-                    min="0"
-                  />
-                </div>
-              </div>
-
-              {/* Clear Filters Button */}
-              <div className="flex items-end">
+              {activeFiltersCount > 0 && (
                 <Button
-                  variant="outline"
+                  variant="ghost"
+                  size="sm"
                   onClick={clearFilters}
-                  className="w-full"
+                  className="h-7 text-xs text-gray-500 hover:text-gray-800 gap-1"
                 >
-                  <X className="w-4 h-4 mr-2" />
-                  Clear Filters
+                  <X className="w-3 h-3" />
+                  Clear all
                 </Button>
+              )}
+            </div>
+            <div className="p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Category Filter */}
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Category</Label>
+                  <Select
+                    value={filterCategoryId}
+                    onValueChange={(value) => {
+                      setFilterCategoryId(value);
+                      if (value === 'all') {
+                        setSelectedCategoryIds([]);
+                      } else {
+                        setSelectedCategoryIds(getDescendantIds(value, allCategories));
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      {allCategories.map((cat: any) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Stock Status Filter */}
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Stock Status</Label>
+                  <Select value={filterStockStatus} onValueChange={setFilterStockStatus}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="All Statuses" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="in-stock">In Stock</SelectItem>
+                      <SelectItem value="low-stock">Low Stock</SelectItem>
+                      <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Location Filter */}
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Location</Label>
+                  <Select value={filterLocation} onValueChange={setFilterLocation}>
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder="All Locations" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Locations</SelectItem>
+                      {uniqueLocations.map((loc) => (
+                        <SelectItem key={loc} value={loc}>
+                          {loc}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
           </Card>

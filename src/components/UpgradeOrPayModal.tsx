@@ -19,7 +19,7 @@ interface Props {
 }
 
 const EXTRA_PRICES = { branch: 5, user: 2 } as const;
-const LABELS = { branch: 'branch', user: 'user license' };
+const LABELS = { branch: 'warehouse', user: 'user license' };
 
 export const UpgradeOrPayModal: React.FC<Props> = ({ type, open, onClose, onPaymentStarted }) => {
   const { currentTier, nextTier, branchCount, userCount, maxBranches, maxUsers } = useSubscription();
@@ -119,7 +119,7 @@ export const UpgradeOrPayModal: React.FC<Props> = ({ type, open, onClose, onPaym
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
             <Zap className="w-5 h-5 text-amber-500" />
-            {type === 'branch' ? 'Branch limit reached' : 'User limit reached'}
+            {type === 'branch' ? 'Warehouse limit reached' : 'User limit reached'}
           </DialogTitle>
         </DialogHeader>
 

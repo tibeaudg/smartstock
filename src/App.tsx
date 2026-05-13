@@ -21,7 +21,7 @@ import { BillingSuccessRedirect } from './components/BillingSuccessRedirect';
 import { BranchesSettings } from './components/settings/BranchesSettings';
 import { GeneralSettings } from './components/settings/GeneralSettings';
 import { PaywallGate } from './components/PaywallGate';
-import { useAuth, AuthProvider } from "./hooks/useAuth";
+import { useAuth } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
@@ -36,6 +36,7 @@ import CookieConsent from './components/CookieConsent';
 import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
+import { CompleteProfileModal } from './components/CompleteProfileModal';
 
 const ReportingPage = React.lazy(() => import('./pages/reporting'));
 const AdminUserDetailPage = React.lazy(() => import('./pages/AdminUserDetailPage'));
@@ -202,6 +203,22 @@ const AppRouter = () => {
     const { user, loading, userProfile } = useAuth();
     const location = useLocation();
     const [forceRender, setForceRender] = useState(false);
+    const [profileModalDismissed, setProfileModalDismissed] = useState(
+      () => sessionStorage.getItem('profileNameDismissed') === '1'
+    );
+
+    const dismissProfileModal = () => {
+      sessionStorage.setItem('profileNameDismissed', '1');
+      setProfileModalDismissed(true);
+    };
+
+    const needsNamePrompt =
+      !loading &&
+      !profileModalDismissed &&
+      !!userProfile &&
+      !userProfile.first_name &&
+      !userProfile.last_name &&
+      location.pathname !== '/auth';
 
     useEffect(() => {
       if (loading) {
@@ -256,9 +273,17 @@ const AppRouter = () => {
 
     return (
       <ThemeProvider>
+        {needsNamePrompt && userProfile && (
+          <CompleteProfileModal
+            userId={userProfile.id}
+            email={userProfile.email}
+            onComplete={dismissProfileModal}
+            onSkip={dismissProfileModal}
+          />
+        )}
         <Suspense fallback={
-          location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin') 
-            ? <DashboardLoadingScreen /> 
+          location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/admin')
+            ? <DashboardLoadingScreen />
             : <ContentLoadingScreen />
         }>
           {children}
@@ -458,18 +483,16 @@ export default function App() {
   return (
     <ErrorBoundary>
       <PreloadResources criticalFonts={[]} />
-      <AuthProvider>
-        <CurrencyProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-              <AppRouter />
-            </BrowserRouter>
-            <CookieConsent />
-          </TooltipProvider>
-        </CurrencyProvider>
-      </AuthProvider>
+      <CurrencyProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <AppRouter />
+          </BrowserRouter>
+          <CookieConsent />
+        </TooltipProvider>
+      </CurrencyProvider>
     </ErrorBoundary>
   );
 }

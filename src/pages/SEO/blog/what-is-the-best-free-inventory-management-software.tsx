@@ -201,7 +201,7 @@ Ever sold an item on Shopify only to realize your physical store sold the last u
 
 <div style={{ backgroundColor: '#f0fdf4', borderLeft: '6px solid #22c55e', padding: '2rem', borderRadius: '0 12px 12px 0', marginBottom: '3rem' }}>
 <h3 style={{ marginTop: 0, color: '#15803d', fontSize: '1.4rem', marginBottom: '1rem' }}>Free Inventory Management Software: Complete Guide</h3>
-<p style={{ marginBottom: '1rem' }}><strong>Is inventory management software free?</strong> Yes—StockFlow is completely free forever. No credit card required, no product limits, no time restrictions. All features included: unlimited products, users, branches, BOM management, barcode scanning, and reporting.</p>
+<p style={{ marginBottom: '1rem' }}><strong>Is inventory management software free?</strong> Yes—StockFlow is completely free forever. No credit card required, no product limits, no time restrictions. All features included: unlimited products, users, warehouses, BOM management, barcode scanning, and reporting.</p>
 <p style={{ margin: 0 }}>What&apos;s included? Everything. Read our dedicated guide to <Link to="/inventory-management-software-free" style={{ color: '#0ea5e9', fontWeight: 600 }}>free inventory management software</Link> for the full breakdown.</p>
 </div>
 

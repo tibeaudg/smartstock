@@ -94,7 +94,7 @@ export const ManualStockAdjustModal = ({
     if (isOpen && activeBranch?.branch_id) {
       fetchProducts();
     } else if (isOpen) {
-      toast.error('Please select a branch first');
+      toast.error('Please select a warehouse first');
       onClose();
     }
   }, [isOpen, activeBranch]);
@@ -114,10 +114,10 @@ export const ManualStockAdjustModal = ({
 
   const fetchProducts = useCallback(async () => {
     if (!activeBranch?.branch_id) {
-      toast.error('No active branch selected');
+      toast.error('No active warehouse selected');
       return;
     }
-    
+
     setSearchLoading(true);
     
     try {
@@ -272,7 +272,7 @@ export const ManualStockAdjustModal = ({
 
     const branchIdSanitized = sanitizeUUID(branchId) || sanitizeUUID(activeBranch?.branch_id);
     if (!branchIdSanitized) {
-      toast.error('Product is not associated with a valid branch');
+      toast.error('Product is not associated with a valid warehouse');
       return;
     }
 

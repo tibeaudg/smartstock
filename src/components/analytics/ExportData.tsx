@@ -92,7 +92,7 @@ export const ExportData = () => {
     ],
     transactions: [
       'ID', 'Date', 'Type', 'Product', 'Quantity', 'Price', 'Total', 
-      'User', 'Branch', 'Reference', 'Notes'
+      'User', 'Warehouse', 'Reference', 'Notes'
     ],
     inventory: [
       'Product ID', 'Product Name', 'Category', 'Current Inventory', 

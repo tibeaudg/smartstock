@@ -52,7 +52,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
 
   const handleSetCategory = async () => {
     if (!user || !activeBranch) {
-      toast.error('User or branch not found');
+      toast.error('User or warehouse not found');
       return;
     }
 
@@ -100,7 +100,7 @@ export const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
 
   const handleRemoveCategory = async () => {
     if (!user || !activeBranch) {
-      toast.error('User or branch not found');
+      toast.error('User or warehouse not found');
       return;
     }
 

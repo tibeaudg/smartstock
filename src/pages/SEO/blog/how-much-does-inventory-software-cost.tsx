@@ -10,7 +10,7 @@ const canonicalPath = "/how-much-does-inventory-software-cost";
 const metaDescription = "Complete guide to inventory software pricing. Learn typical costs and pricing models. StockFlow is completely free forever with all features included - no credit card required, no subscriptions, no hidden fees.";
 const keywords = "free inventory software, completely free inventory management, stockflow free, inventory software cost, inventory software pricing, how much does inventory software cost, free inventory management software";
 const heroBadge = "Topic Guide • Updated October 2025";
-const summaryCopy = "Inventory software costs vary: most software charges $20-500+/month, but StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, branches, and orders. All premium features included at no cost. Pricing models for other software: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing. Factors affecting cost: number of users, features needed, number of items, integrations, and support level. StockFlow eliminates all these costs by being completely free.";
+const summaryCopy = "Inventory software costs vary: most software charges $20-500+/month, but StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, warehouses, and orders. All premium features included at no cost. Pricing models for other software: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing. Factors affecting cost: number of users, features needed, number of items, integrations, and support level. StockFlow eliminates all these costs by being completely free.";
 const takeaways = [
   "StockFlow is completely free forever with all features included - no credit card required, no subscriptions, no hidden fees. Unlimited everything.",
   "Other inventory software typically costs $20-500+/month with pricing models: per-user pricing ($10-50/user/month), flat-rate pricing ($50-500/month), or usage-based pricing.",
@@ -47,11 +47,11 @@ const metrics = [
 const faqData = [
   {
     "question": "How much does inventory software cost?",
-    "answer": "Most inventory software costs $20-500+/month, but StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, branches, and orders. All premium features included at no cost."
+    "answer": "Most inventory software costs $20-500+/month, but StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, warehouses, and orders. All premium features included at no cost."
   },
   {
     "question": "Is there free inventory software?",
-    "answer": "Yes! StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited everything - products, users, branches, orders. All premium features included at no cost. Perfect for businesses of all sizes."
+    "answer": "Yes! StockFlow is completely free forever with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited everything - products, users, warehouses, orders. All premium features included at no cost. Perfect for businesses of all sizes."
   },
   {
     "question": "What pricing models do inventory software use?",
@@ -124,7 +124,7 @@ export default function SeoHowMuchDoesInventorySoftwareCostPage() {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">{topicTitle} in Context</h1>
             <p className="mt-6 text-lg leading-relaxed text-gray-700">
-              Most inventory software costs €20-500/month but <strong>StockFlow is completely free forever</strong> with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, branches, and orders. Other software charges per-user (€10-50/user/month), flat-rate (€50-500/month), or usage-based pricing. StockFlow eliminates all costs.
+              Most inventory software costs €20-500/month but <strong>StockFlow is completely free forever</strong> with all features included. No credit card required, no subscriptions, no hidden fees. Unlimited products, users, warehouses, and orders. Other software charges per-user (€10-50/user/month), flat-rate (€50-500/month), or usage-based pricing. StockFlow eliminates all costs.
             </p>
           </div>
           <div className="space-y-4">

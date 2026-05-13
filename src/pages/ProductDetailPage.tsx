@@ -724,7 +724,7 @@ export default function ProductDetailPage() {
       }
 
       console.error('handleAdjustStock: missing branch id', branchId, prodToUse);
-      toast.error('Branch information missing. Please select a branch.');
+      toast.error('Warehouse information missing. Please select a warehouse.');
       return;
     }
 

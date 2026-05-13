@@ -4,7 +4,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle, Send, RefreshCw } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -230,6 +230,7 @@ interface LifecycleEmailEntry {
 }
 
 const LIFECYCLE_STAGES: { key: string; label: string; description: string; days: number; isWarning?: boolean }[] = [
+  { key: 'welcome',           label: 'Welcome',        description: 'Welcome email sent on signup',              days: 0 },
   { key: '24h_nudge',        label: '24h Nudge',     description: 'Get started nudge after 24h of inactivity', days: 0 },
   { key: '7d_inactive',      label: '7-Day',          description: 'Re-engagement after 7 days inactive',       days: 7 },
   { key: '14d_inactive',     label: '14-Day',         description: 'Soft follow-up after 14 days inactive',     days: 14 },
@@ -243,6 +244,7 @@ function getLifecycleEligibleDate(stage: string, createdAt: string, lastLogin: s
   const refDate = lastLoginDate || created;
 
   switch (stage) {
+    case 'welcome':           return new Date(created.getTime());
     case '24h_nudge':       return new Date(created.getTime() + 24 * 60 * 60 * 1000);
     case '7d_inactive':     return new Date(refDate.getTime() + 7  * 24 * 60 * 60 * 1000);
     case '14d_inactive':    return new Date(refDate.getTime() + 14 * 24 * 60 * 60 * 1000);
@@ -325,6 +327,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const [creditNote, setCreditNote] = useState('');
   const [loadingCredit, setLoadingCredit] = useState(false);
   const [showAdminOnly, setShowAdminOnly] = useState(false);
+  const [triggeringStage, setTriggeringStage] = useState<string | null>(null);
 
   const handleRetriggerChecklist = async () => {
     if (!user) return;
@@ -495,12 +498,55 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     }
   };
 
+  const handleTriggerEmail = async (stage: string) => {
+    if (!user) return;
+    setTriggeringStage(stage);
+    try {
+      const { error } = await supabase.functions.invoke('trigger-lifecycle-emails', {
+        body: { stage, forceUserId: user.id },
+      });
+      if (error) throw error;
+      const stageLabel = LIFECYCLE_STAGES.find(s => s.key === stage)?.label ?? stage;
+      toast.success(`${stageLabel} email sent to ${user.email}`);
+      queryClient.invalidateQueries({ queryKey: ['userLifecycleEmails', user.id] });
+      queryClient.invalidateQueries({ queryKey: ['userEmailLogs', user.id] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to send email');
+    } finally {
+      setTriggeringStage(null);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       setActiveTab('overview');
       setShowAdminOnly(false);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!user || !isOpen) return;
+    const channel = supabase
+      .channel(`user-emails-rt-${user.id}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'user_lifecycle_emails',
+        filter: `user_id=eq.${user.id}`,
+      }, () => {
+        queryClient.invalidateQueries({ queryKey: ['userLifecycleEmails', user.id] });
+      })
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'email_logs',
+        filter: `recipient_user_id=eq.${user.id}`,
+      }, () => {
+        queryClient.invalidateQueries({ queryKey: ['userEmailLogs', user.id] });
+      })
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [user?.id, isOpen, queryClient]);
 
   const { data: subscription, isLoading: loadingSubscription } = useQuery({
     queryKey: ['adminUserSubscription', user?.id],
@@ -841,14 +887,15 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                 </CardContent>
               </Card>
 
-              {/* Linked Users */}
+              {/* Linked / Sub-users */}
               {(loadingLinkedUsers || linkedUsers.length > 0) && (
                 <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Users className="w-4 h-4" />
-                      Linked Users ({linkedUsers.length})
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Users className="w-4 h-4 text-blue-600" />
+                      Sub-users ({linkedUsers.length})
                     </CardTitle>
+                    <p className="text-xs text-gray-500">Users invited to this account's branches</p>
                   </CardHeader>
                   <CardContent>
                     {loadingLinkedUsers ? (
@@ -857,29 +904,38 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       </div>
                     ) : (
                       <div className="space-y-2">
-                        {linkedUsers.map(lu => (
-                          <div key={lu.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50">
-                            <div>
-                              <p className="text-sm font-medium text-gray-800">{lu.email}</p>
-                              {(lu.firstName || lu.lastName) && (
-                                <p className="text-xs text-gray-500">{lu.firstName} {lu.lastName}</p>
-                              )}
-                              <p className="text-xs text-gray-400 mt-0.5">
-                                Role: <span className="capitalize">{lu.role}</span>
-                                {lu.lastLogin && (
-                                  <span className="ml-2">· Last login: {formatDistanceToNow(new Date(lu.lastLogin), { addSuffix: true })}</span>
+                        {linkedUsers.map(lu => {
+                          const hasName = lu.firstName || lu.lastName;
+                          return (
+                            <div key={lu.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors">
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <p className="text-sm font-medium text-gray-800 truncate">{lu.email}</p>
+                                  {!hasName && (
+                                    <Badge className="text-[10px] bg-amber-100 text-amber-700 shrink-0">No name</Badge>
+                                  )}
+                                </div>
+                                {hasName && (
+                                  <p className="text-xs text-gray-600">{lu.firstName} {lu.lastName}</p>
                                 )}
-                                {!lu.lastLogin && <span className="ml-2">· Never logged in</span>}
-                              </p>
+                                <p className="text-xs text-gray-400 mt-0.5">
+                                  Role: <span className="capitalize">{lu.role}</span>
+                                  {lu.lastLogin ? (
+                                    <span className="ml-2">· {formatDistanceToNow(new Date(lu.lastLogin), { addSuffix: true })}</span>
+                                  ) : (
+                                    <span className="ml-2 text-amber-500">· Never logged in</span>
+                                  )}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0 ml-3">
+                                {lu.blocked && (
+                                  <Badge className="text-xs bg-red-100 text-red-700">Blocked</Badge>
+                                )}
+                                <Badge className="text-xs bg-blue-100 text-blue-700 capitalize">{lu.role}</Badge>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-2">
-                              {lu.blocked && (
-                                <Badge className="text-xs bg-red-100 text-red-700">Blocked</Badge>
-                              )}
-                              <Badge className="text-xs bg-slate-200 text-slate-600 capitalize">{lu.role}</Badge>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </CardContent>
@@ -1209,15 +1265,17 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         const eligibleDate = getLifecycleEligibleDate(stage.key, user.created_at, user.last_login);
                         const now = new Date();
                         const isEligible = !sent && eligibleDate && eligibleDate <= now;
-                        const isFuture = !sent && eligibleDate && eligibleDate > now;
                         const daysUntil = eligibleDate ? Math.ceil((eligibleDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)) : null;
+                        const isTriggering = triggeringStage === stage.key;
 
                         return (
                           <div
                             key={stage.key}
                             className={`flex items-center justify-between px-3 py-2.5 rounded-lg border ${
                               sent
-                                ? 'bg-green-50 border-green-200'
+                                ? sent.status === 'failed'
+                                  ? 'bg-red-50 border-red-200'
+                                  : 'bg-green-50 border-green-200'
                                 : isEligible
                                   ? stage.isWarning
                                     ? 'bg-red-50 border-red-200'
@@ -1225,47 +1283,67 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                                   : 'bg-gray-50 border-gray-200'
                             }`}
                           >
-                            <div className="flex items-center gap-2.5">
+                            <div className="flex items-center gap-2.5 flex-1 min-w-0">
                               {sent ? (
-                                <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
+                                sent.status === 'failed'
+                                  ? <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                                  : <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
                               ) : isEligible ? (
                                 <AlertCircle className={`w-4 h-4 shrink-0 ${stage.isWarning ? 'text-red-500' : 'text-orange-500'}`} />
                               ) : (
                                 <Clock className="w-4 h-4 text-gray-400 shrink-0" />
                               )}
-                              <div>
+                              <div className="min-w-0">
                                 <p className="text-sm font-medium text-gray-800">{stage.label}</p>
                                 <p className="text-xs text-gray-500">{stage.description}</p>
                               </div>
                             </div>
 
-                            <div className="text-right shrink-0 ml-3">
-                              {sent ? (
-                                <>
-                                  <Badge className="bg-green-100 text-green-700 text-xs">Sent</Badge>
-                                  <p className="text-xs text-gray-400 mt-1">
-                                    {format(new Date(sent.sent_at), 'dd MMM yyyy')}
-                                  </p>
-                                  {sent.status === 'failed' && (
-                                    <p className="text-xs text-red-500 mt-0.5">Failed</p>
-                                  )}
-                                </>
-                              ) : isEligible ? (
-                                <>
-                                  <Badge className={`text-xs ${stage.isWarning ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
-                                    Eligible
-                                  </Badge>
-                                  <p className="text-xs text-gray-400 mt-1">Pending trigger</p>
-                                </>
-                              ) : eligibleDate ? (
-                                <>
-                                  <Badge className="bg-gray-100 text-gray-600 text-xs">Scheduled</Badge>
-                                  <p className="text-xs text-gray-400 mt-1">
-                                    {daysUntil === 1 ? 'Tomorrow' : daysUntil === 0 ? 'Today' : `In ${daysUntil}d`}
-                                    {' · '}{format(eligibleDate, 'dd MMM')}
-                                  </p>
-                                </>
-                              ) : null}
+                            <div className="flex items-center gap-2 shrink-0 ml-3">
+                              <div className="text-right">
+                                {sent ? (
+                                  <>
+                                    <Badge className={`text-xs ${sent.status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                                      {sent.status === 'failed' ? 'Failed' : 'Sent'}
+                                    </Badge>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                      {format(new Date(sent.sent_at), 'dd MMM yyyy')}
+                                    </p>
+                                  </>
+                                ) : isEligible ? (
+                                  <>
+                                    <Badge className={`text-xs ${stage.isWarning ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
+                                      Eligible
+                                    </Badge>
+                                    <p className="text-xs text-gray-400 mt-1">Pending trigger</p>
+                                  </>
+                                ) : eligibleDate ? (
+                                  <>
+                                    <Badge className="bg-gray-100 text-gray-600 text-xs">Scheduled</Badge>
+                                    <p className="text-xs text-gray-400 mt-1">
+                                      {daysUntil === 1 ? 'Tomorrow' : daysUntil === 0 ? 'Today' : `In ${daysUntil}d`}
+                                      {' · '}{format(eligibleDate, 'dd MMM')}
+                                    </p>
+                                  </>
+                                ) : null}
+                              </div>
+
+                              <Button
+                                variant={sent ? 'outline' : 'default'}
+                                size="sm"
+                                disabled={isTriggering || !!triggeringStage}
+                                onClick={() => handleTriggerEmail(stage.key)}
+                                className="h-7 px-2 text-xs shrink-0"
+                                title={sent ? `Resend ${stage.label}` : `Send ${stage.label}`}
+                              >
+                                {isTriggering ? (
+                                  <Loader2 className="w-3 h-3 animate-spin" />
+                                ) : sent ? (
+                                  <RefreshCw className="w-3 h-3" />
+                                ) : (
+                                  <Send className="w-3 h-3" />
+                                )}
+                              </Button>
                             </div>
                           </div>
                         );

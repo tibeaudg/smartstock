@@ -542,14 +542,14 @@ export const AddProductModal = ({
     
     // Only check for duplicate name in create mode
     if (!editMode && duplicateName && !hasVariants) {
-      toast.error('Product name already exists for a main product in this branch.');
+      toast.error('Product name already exists for a main product in this warehouse.');
       console.error('[AddProductModal] Submission aborted: Duplicate name detected.');
       return;
     }
 
     if (!user || branchLoading || !activeBranch) {
       console.error('[AddProductModal] Submission aborted: Auth/Branch check failed.', { user: !!user, branchLoading, activeBranch: !!activeBranch });
-      toast.error('Authentication or branch loading failed. Cannot proceed.');
+      toast.error('Authentication or warehouse loading failed. Cannot proceed.');
       return;
     }
 
@@ -1069,11 +1069,11 @@ export const AddProductModal = ({
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>No branch selected</DialogTitle>
+            <DialogTitle>No warehouse selected</DialogTitle>
           </DialogHeader>
           <div className="p-4 text-center">
             <p className="text-gray-600 mb-4">
-              Select a branch to add a product.
+              Select a warehouse to add a product.
             </p>
             <Button onClick={onClose}>Close</Button>
           </div>
@@ -1120,7 +1120,7 @@ export const AddProductModal = ({
                           {duplicateName && !hasVariants && (
                             <div className="flex items-center text-sm text-red-600 mt-1">
                               <AlertCircle className="w-4 h-4 mr-1" />
-                              This product name already exists for a main product in this branch.
+                              This product name already exists for a main product in this warehouse.
                             </div>
                           )}
                           <FormMessage />

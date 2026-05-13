@@ -231,7 +231,7 @@ export default function AlertsPage() {
       '@type': 'UseAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://app.stockflowsystems.com/alerts'
+        urlTemplate: 'https://stockflowsystems.com/alerts'
       }
     }
   };

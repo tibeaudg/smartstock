@@ -8,6 +8,23 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
+function getSmtpConfig() {
+  const smtp_host = Deno.env.get('SMTP_host') ?? ''
+  const smtp_port = Number(Deno.env.get('SMTP_port')) || 587
+  const smtp_username = Deno.env.get('username') ?? ''
+  const smtp_password = Deno.env.get('SMTP_password') ?? ''
+  const from_name = Deno.env.get('From_name') || 'StockFlow'
+  return {
+    smtp_host,
+    smtp_port,
+    smtp_username,
+    smtp_password,
+    from_email: smtp_username,
+    from_name,
+    use_tls: smtp_port === 465,
+  }
+}
+
 function validateEmail(email: string): boolean {
   if (typeof email !== 'string') return false
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -116,23 +133,12 @@ serve(async (req) => {
       )
     }
 
-    // Get SMTP settings
-    const { data: smtpRow, error: smtpError } = await adminClient
-      .from('smtp_settings')
-      .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
-      .eq('user_id', user.id)
-      .single()
+    // Get SMTP settings from secrets
+    const smtpRow = getSmtpConfig()
 
-    if (smtpError || !smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email) {
+    if (!smtpRow.smtp_host || !smtpRow.smtp_username || !smtpRow.smtp_password) {
       return new Response(
-        JSON.stringify({ success: false, error: 'SMTP not configured. Configure E-mail / SMTP in Admin first.' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
-
-    if (!smtpRow.smtp_password || String(smtpRow.smtp_password).trim() === '') {
-      return new Response(
-        JSON.stringify({ success: false, error: 'SMTP password not set. Enter and save your password in Admin SMTP settings.' }),
+        JSON.stringify({ success: false, error: 'SMTP not configured. Set SMTP_host, username, SMTP_port, SMTP_password, and From_name in Supabase secrets.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }

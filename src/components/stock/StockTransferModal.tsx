@@ -86,12 +86,12 @@ export const StockTransferModal = ({
 
   const handleSubmit = async () => {
     if (!user || !activeBranch) {
-      toast.error('User or branch information missing');
+      toast.error('User or warehouse information missing');
       return;
     }
 
     if (!toBranchId) {
-      toast.error('Please select a destination branch');
+      toast.error('Please select a destination warehouse');
       return;
     }
 
@@ -184,10 +184,10 @@ export const StockTransferModal = ({
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="toBranch">To Branch *</Label>
+              <Label htmlFor="toBranch">To Warehouse *</Label>
               <Select value={toBranchId} onValueChange={setToBranchId}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select destination branch" />
+                  <SelectValue placeholder="Select destination warehouse" />
                 </SelectTrigger>
                 <SelectContent>
                   {availableBranches.map((branch) => (

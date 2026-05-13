@@ -3,19 +3,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Plus, Minus, CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
+import { ArrowLeft, Plus, Minus } from 'lucide-react';
 import { useMobile } from '@/hooks/use-mobile';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
-import { cn } from '@/lib/utils';
 
 interface Product {
   id: string;
@@ -51,8 +47,7 @@ export const EditProductStockModal = ({
   const [quantity, setQuantity] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [currentActionType, setCurrentActionType] = useState<'in' | 'out'>(initialActionType);
-  const [transactionDate, setTransactionDate] = useState<Date>(new Date());
-  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [transactionDate, setTransactionDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const queryClient = useQueryClient();
   const { isMobile } = useMobile();
   
@@ -65,7 +60,7 @@ export const EditProductStockModal = ({
     if (isOpen) {
       setQuantity('');
       setCurrentActionType(initialActionType);
-      setTransactionDate(new Date());
+      setTransactionDate(new Date().toISOString().split('T')[0]);
     }
   }, [isOpen, initialActionType]);
 
@@ -115,7 +110,7 @@ export const EditProductStockModal = ({
 
         if (!branchId) {
           console.error('EditProductStockModal: invalid branch id', branchId);
-          toast.error('Product branch is missing. Please select a branch.');
+          toast.error('Product warehouse is missing. Please select a warehouse.');
           setLoading(false);
           return;
         }
@@ -165,7 +160,7 @@ export const EditProductStockModal = ({
           notes: `Stock ${currentActionType === 'in' ? 'added' : 'removed'} via stock management`,
           user_id: user.id,
           created_by: user.id,
-          created_at: transactionDate.toISOString(),
+          created_at: new Date(transactionDate + 'T12:00:00').toISOString(),
           branch_id: branchId,
           variant_id: product.is_variant ? prodId : null,
           variant_name: product.is_variant ? product.variant_name : null,
@@ -257,36 +252,15 @@ export const EditProductStockModal = ({
 
             {/* Transaction Date */}
             <div className="grid gap-2">
-              <Label>Transaction Date</Label>
-              <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
-                <PopoverTrigger asChild>
-                  <button
-                    type="button"
-                    className={cn(
-                      'flex items-center gap-2 w-full rounded-md border px-3 py-2 text-sm text-left',
-                      'hover:bg-gray-50 transition-colors',
-                      currentActionType === 'in' ? 'border-green-200' : 'border-red-200'
-                    )}
-                  >
-                    <CalendarIcon className="w-4 h-4 text-gray-400 shrink-0" />
-                    <span>{format(transactionDate, 'MMM d, yyyy')}</span>
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={transactionDate}
-                    onSelect={(date) => {
-                      if (date) {
-                        setTransactionDate(date);
-                        setCalendarOpen(false);
-                      }
-                    }}
-                    disabled={(date) => date > new Date()}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
+              <Label htmlFor="transactionDate">Transaction Date</Label>
+              <Input
+                id="transactionDate"
+                type="date"
+                value={transactionDate}
+                max={new Date().toISOString().split('T')[0]}
+                onChange={(e) => setTransactionDate(e.target.value)}
+                className={currentActionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}
+              />
             </div>
             
             {isMobile && (

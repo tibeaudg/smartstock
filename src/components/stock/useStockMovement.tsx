@@ -42,7 +42,7 @@ export const useStockMovement = (
     e.preventDefault();
     
     if (!user || !activeBranch) {
-      toast.error('User or branch information missing');
+      toast.error('User or warehouse information missing');
       return;
     }
 

@@ -55,7 +55,7 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
 
   const handleTransfer = async () => {
     if (!user || !activeBranch) {
-      toast.error('User or branch not found');
+      toast.error('User or warehouse not found');
       return;
     }
 
@@ -103,7 +103,7 @@ export const WarehouseTransferModal: React.FC<WarehouseTransferModalProps> = ({
 
   const handleRemoveLocation = async () => {
     if (!user || !activeBranch) {
-      toast.error('User or branch not found');
+      toast.error('User or warehouse not found');
       return;
     }
 

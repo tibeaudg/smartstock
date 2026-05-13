@@ -375,7 +375,7 @@ export default function SalesOrdersPage() {
       <div className="p-6">
         <Card>
           <CardContent className="p-6 text-center">
-            <p className="text-gray-600">Please select a branch to view sales orders.</p>
+            <p className="text-gray-600">Please select a warehouse to view sales orders.</p>
           </CardContent>
         </Card>
       </div>

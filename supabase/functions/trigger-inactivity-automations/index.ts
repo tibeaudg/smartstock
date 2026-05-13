@@ -227,13 +227,17 @@ serve(async (req) => {
       let skipped = 0
       let failed = 0
 
-      const { data: smtpRow, error: smtpError } = await adminClient
-        .from('smtp_settings')
-        .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
-        .eq('user_id', segment.created_by)
-        .single()
+      const smtpRow = {
+        smtp_host: Deno.env.get('SMTP_host') ?? '',
+        smtp_port: Number(Deno.env.get('SMTP_port')) || 587,
+        smtp_username: Deno.env.get('username') ?? '',
+        smtp_password: Deno.env.get('SMTP_password') ?? '',
+        from_email: Deno.env.get('username') ?? '',
+        from_name: Deno.env.get('From_name') || 'StockFlow',
+        use_tls: (Number(Deno.env.get('SMTP_port')) || 587) === 465,
+      }
 
-      if (smtpError || !smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email || !smtpRow?.smtp_password) {
+      if (!smtpRow.smtp_host || !smtpRow.smtp_username || !smtpRow.smtp_password) {
         results.push({ segment_id: segment.id, segment_name: segment.name, sent: 0, skipped: 0, failed: 0, total_matching: matchingProfiles.length })
         continue
       }

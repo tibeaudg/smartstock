@@ -271,7 +271,7 @@ const onPasswordSubmit: SubmitHandler<PasswordFormData> = async (data) => {
                     <p>Are you sure you want to delete your account? This action cannot be undone and will permanently delete:</p>
                     <ul className="list-disc list-inside mt-2 space-y-1">
                       <li>Your profile information</li>
-                      <li>All your branch associations</li>
+                      <li>All your warehouse associations</li>
                       <li>All your account data</li>
                     </ul>
                     <strong className="block mt-3 text-red-600 dark:text-red-400">

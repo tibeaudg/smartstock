@@ -222,7 +222,7 @@ export default function ConsumablesInventoryPage() {
               </div>
               <div className="flex gap-4 items-start">
                 <Truck className="w-12 h-12 text-blue-400 shrink-0" />
-                <p><strong>Inter-Branch Transfers:</strong> See excess stock at one location and transfer it to another rather than purchasing new supplies.</p>
+                <p><strong>Inter-Warehouse Transfers:</strong> See excess stock at one location and transfer it to another rather than purchasing new supplies.</p>
               </div>
             </div>
             <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm border border-white/20">

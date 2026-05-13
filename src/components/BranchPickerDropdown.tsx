@@ -61,7 +61,7 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
         .single();
 
       if (branchError) {
-        toast.error(branchError.message || 'Failed to create branch');
+        toast.error(branchError.message || 'Failed to create warehouse');
         return;
       }
 
@@ -73,7 +73,7 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
       });
 
       if (assignError) {
-        toast.error(assignError.message || 'Failed to assign user to branch');
+        toast.error(assignError.message || 'Failed to assign user to warehouse');
         return;
       }
 
@@ -87,10 +87,10 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
       setNewBranchName('');
       setShowAddForm(false);
       setOpen(false);
-      toast.success(`Branch "${branchData.name}" created`);
+      toast.success(`Warehouse "${branchData.name}" created`);
     } catch (err) {
-      console.error('Error creating branch:', err);
-      toast.error('Failed to create branch');
+      console.error('Error creating warehouse:', err);
+      toast.error('Failed to create warehouse');
     } finally {
       setCreating(false);
     }
@@ -147,7 +147,7 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
                 >
                   <div>
                     <Label htmlFor="branch-name-dropdown" className="text-xs">
-                      Branch name
+                      Warehouse name
                     </Label>
                     <Input
                       id="branch-name-dropdown"
@@ -192,7 +192,7 @@ export const BranchPickerDropdown: React.FC<BranchPickerDropdownProps> = ({
                   className="w-full flex items-center gap-2 px-3 py-2 mt-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors border-t border-gray-200 dark:border-gray-800 pt-2"
                 >
                   <Plus className="w-4 h-4" />
-                  Add branch
+                  Add warehouse
                 </button>
               )}
             </>

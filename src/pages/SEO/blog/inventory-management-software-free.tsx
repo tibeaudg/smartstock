@@ -24,7 +24,7 @@ export default function InventoryManagementSoftwareFreePage() {
     {
       question: 'Is inventory management software free?',
       answer:
-        'Yes. StockFlow offers completely free inventory management software with no credit card required. All core features—unlimited products, users, branches, barcode scanning, low-stock alerts, and reporting—are included at no cost. No time limits, no forced upgrades.',
+        'Yes. StockFlow offers completely free inventory management software with no credit card required. All core features—unlimited products, users, warehouses, barcode scanning, low-stock alerts, and reporting—are included at no cost. No time limits, no forced upgrades.',
     },
     {
       question: 'What is included in free inventory management software?',
@@ -108,7 +108,7 @@ export default function InventoryManagementSoftwareFreePage() {
             Yes. <strong>Inventory software free</strong> and <strong>free inventory management</strong> options do exist—and StockFlow is one of them. 
             Unlike "free trials" that expire or "freemium" plans that cap your products or users, StockFlow offers 
             fully free inventory management software with no time limits and no artificial restrictions. All core 
-            features are included: unlimited products, users, branches, barcode scanning, BOM management, and reporting.
+            features are included: unlimited products, users, warehouses, barcode scanning, BOM management, and reporting.
           </p>
 
           <h2 id="whats-included" className="text-2xl font-bold text-gray-900 mb-6 mt-12">
@@ -117,7 +117,7 @@ export default function InventoryManagementSoftwareFreePage() {
           <ul className="space-y-3 mb-8">
             {[
               'Unlimited products and SKUs',
-              'Unlimited users and branches',
+              'Unlimited users and warehouses',
               'Barcode and QR code scanning',
               'Bill of Materials (BOM) management',
               'Multi-location inventory tracking',

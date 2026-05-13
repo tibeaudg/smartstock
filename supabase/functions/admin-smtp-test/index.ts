@@ -8,6 +8,23 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 }
 
+function getSmtpConfig() {
+  const smtp_host = Deno.env.get('SMTP_host') ?? ''
+  const smtp_port = Number(Deno.env.get('SMTP_port')) || 587
+  const smtp_username = Deno.env.get('username') ?? ''
+  const smtp_password = Deno.env.get('SMTP_password') ?? ''
+  const from_name = Deno.env.get('From_name') || 'StockFlow'
+  return {
+    smtp_host,
+    smtp_port,
+    smtp_username,
+    smtp_password,
+    from_email: smtp_username,
+    from_name,
+    use_tls: smtp_port === 465,
+  }
+}
+
 function validateEmail(email: string): boolean {
   if (typeof email !== 'string') return false
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -73,9 +90,9 @@ serve(async (req) => {
     const body = await req.json().catch(() => ({}))
     const { action, toEmail } = body
 
-    if (!action || (action !== 'test' && action !== 'send-test')) {
+    if (!action || !['test', 'send-test', 'check'].includes(action)) {
       return new Response(
-        JSON.stringify({ success: false, error: 'action must be "test" or "send-test"' }),
+        JSON.stringify({ success: false, error: 'action must be "test", "send-test", or "check"' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -89,26 +106,22 @@ serve(async (req) => {
       }
     }
 
-    const adminClient = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    })
+    const smtpRow = getSmtpConfig()
 
-    const { data: smtpRow, error: smtpError } = await adminClient
-      .from('smtp_settings')
-      .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
-      .eq('user_id', user.id)
-      .single()
-
-    if (smtpError || !smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email) {
+    if (action === 'check') {
       return new Response(
-        JSON.stringify({ success: false, error: 'SMTP not configured. Save your SMTP settings first.' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          success: true,
+          configured: !!(smtpRow.smtp_host && smtpRow.smtp_username && smtpRow.smtp_password),
+          username: smtpRow.smtp_username || null,
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
-    if (!smtpRow.smtp_password || String(smtpRow.smtp_password).trim() === '') {
+    if (!smtpRow.smtp_host || !smtpRow.smtp_username || !smtpRow.smtp_password) {
       return new Response(
-        JSON.stringify({ success: false, error: 'SMTP password not set. Enter and save your password in Admin SMTP settings.' }),
+        JSON.stringify({ success: false, error: 'SMTP not configured. Set SMTP_host, username, SMTP_port, SMTP_password, and From_name in Supabase secrets.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }

@@ -101,7 +101,7 @@ const faqData = [
   {
     question: 'Do you support multi-location purchasing teams?',
     answer:
-      'Absolutely. Assign suppliers to specific branches, restrict access with roles, and roll up purchasing insights across every location in real time.',
+      'Absolutely. Assign suppliers to specific warehouses, restrict access with roles, and roll up purchasing insights across every location in real time.',
   },
   {
     question: 'What is supplier management software?',
@@ -332,7 +332,7 @@ export default function SuppliersSolutionPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-                <a href="https://app.stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
+                <a href="https://stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
                   Start managing suppliers
                 </a>
               </Button>
@@ -436,7 +436,7 @@ export default function SuppliersSolutionPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-              <a href="https://app.stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
+              <a href="https://stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
                 Get started free
               </a>
             </Button>

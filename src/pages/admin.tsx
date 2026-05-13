@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Loader2, ArrowUp, ArrowDown, Download, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard, Clock, TrendingDown, Gauge } from 'lucide-react';
+import { Loader2, ArrowUp, ArrowDown, Download, Search, Activity, Sparkles, Circle, MessageSquare, AlertTriangle, CreditCard, Clock, TrendingDown, Gauge, Users, ChevronDown, ChevronUp } from 'lucide-react';
 import { BranchProvider } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -690,7 +690,34 @@ async function deleteUser(id: string) {
   if (authError) throw new Error(authError.message);
 }
 
+interface BranchOwnership {
+  ownerIds: Set<string>;
+  subUserParentMap: Record<string, string>;
+}
 
+async function fetchBranchOwnership(): Promise<BranchOwnership> {
+  const [branchesRes, branchUsersRes] = await Promise.all([
+    supabase.from('branches').select('id, user_id'),
+    supabase.from('branch_users').select('user_id, branch_id'),
+  ]);
+  const branches = (branchesRes.data || []) as { id: string; user_id: string }[];
+  const branchUsers = (branchUsersRes.data || []) as { user_id: string; branch_id: string }[];
+
+  const branchOwnerMap: Record<string, string> = {};
+  const ownerIds = new Set<string>();
+  for (const b of branches) {
+    if (b.user_id) { branchOwnerMap[b.id] = b.user_id; ownerIds.add(b.user_id); }
+  }
+
+  const subUserParentMap: Record<string, string> = {};
+  for (const bu of branchUsers) {
+    if (!ownerIds.has(bu.user_id)) {
+      const ownerId = branchOwnerMap[bu.branch_id];
+      if (ownerId && !subUserParentMap[bu.user_id]) subUserParentMap[bu.user_id] = ownerId;
+    }
+  }
+  return { ownerIds, subUserParentMap };
+}
 
 export default function AdminPage() {
   const { user: currentUser, userProfile } = useAuth();
@@ -730,12 +757,13 @@ export default function AdminPage() {
   const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(0);
   const [, setTick] = useState(0);
-  
+  const [expandedUserIds, setExpandedUserIds] = useState<Set<string>>(new Set());
+
   // Gebruik de page refresh hook
   usePageRefresh();
-  
+
   const queryClient = useQueryClient();
-  
+
   // Gebruikersbeheer
   const { data: users = [], isLoading: loadingUsers } = useQuery({
     queryKey: ['userProfiles'],
@@ -746,6 +774,13 @@ export default function AdminPage() {
     queryKey: ['userSubscriptionPlans'],
     queryFn: fetchUserSubscriptionPlans,
   });
+
+  const { data: branchOwnership = { ownerIds: new Set<string>(), subUserParentMap: {} as Record<string, string> } } = useQuery({
+    queryKey: ['branchOwnership'],
+    queryFn: fetchBranchOwnership,
+  });
+
+  const { subUserParentMap } = branchOwnership;
 
   const blockMutation = useMutation({
     mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
@@ -761,6 +796,7 @@ export default function AdminPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
       queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
+      queryClient.invalidateQueries({ queryKey: ['branchOwnership'] });
       toast.success('User deleted successfully');
       setDeletingUserId(null);
       setSelectedUser(null);
@@ -773,6 +809,28 @@ export default function AdminPage() {
 
 
 
+
+  // Sub-users grouped under their parent user
+  const subUsersByParent = useMemo(() => {
+    const map: Record<string, UserProfile[]> = {};
+    for (const u of users) {
+      const parentId = subUserParentMap[u.id];
+      if (parentId) {
+        if (!map[parentId]) map[parentId] = [];
+        map[parentId].push(u);
+      }
+    }
+    return map;
+  }, [users, subUserParentMap]);
+
+  const toggleSubUserExpand = useCallback((userId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedUserIds(prev => {
+      const next = new Set(prev);
+      if (next.has(userId)) next.delete(userId); else next.add(userId);
+      return next;
+    });
+  }, []);
 
   /**
    * Handle table sorting
@@ -789,9 +847,11 @@ export default function AdminPage() {
   /**
    * Sort users based on current sort settings
    */
-  // Filter users based on search and quick filter
+  // Filter users based on search and quick filter — sub-users always excluded from main list
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
+      // Always exclude sub-users (users who belong to another user's branch and own no branch)
+      if (subUserParentMap[user.id]) return false;
       // Search filter - extend to org, referral, id
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
@@ -845,7 +905,7 @@ export default function AdminPage() {
       
       return true;
     });
-  }, [users, searchTerm, quickFilter, planFilter, roleFilter, userStats, openChatCounts, userIdsWithRecentErrors, subscriptionPlanMap]);
+  }, [users, searchTerm, quickFilter, planFilter, roleFilter, userStats, openChatCounts, userIdsWithRecentErrors, subscriptionPlanMap, subUserParentMap]);
 
   const sortedUsers = useMemo(() => {
     const sorted = [...filteredUsers];
@@ -945,7 +1005,7 @@ export default function AdminPage() {
           'Plan': getPlanForUser(subscriptionPlanMap, user.id).displayName,
           'Last Login': user.last_login ? new Date(user.last_login).toLocaleString('en-US') : 'Never',
           'Products': stats?.productCount || 0,
-          'Branches': stats?.branchCount || 0,
+          'Warehouses': stats?.branchCount || 0,
           'Linked Users': stats?.linkedUserCount || 0,
           'License Cost': (stats?.licenseCost || 0).toFixed(2),
           'Blocked': user.blocked ? 'Yes' : 'No',
@@ -1193,8 +1253,12 @@ export default function AdminPage() {
                       
                       {/* Results count */}
                       <div className="text-sm text-slate-600">
-                        Showing {paginatedUsers.length} of {sortedUsers.length} users
-                        {sortedUsers.length !== users.length && ` (${users.length} total)`}
+                        Showing {paginatedUsers.length} of {sortedUsers.length} accounts
+                        {Object.keys(subUserParentMap).length > 0 && (
+                          <span className="text-slate-400 ml-1">
+                            · {Object.keys(subUserParentMap).length} sub-user{Object.keys(subUserParentMap).length !== 1 ? 's' : ''} grouped
+                          </span>
+                        )}
                         {(searchTerm || quickFilter !== 'all' || planFilter !== 'all' || roleFilter !== 'all') && (
                           <button
                             onClick={() => {
@@ -1305,10 +1369,11 @@ export default function AdminPage() {
                         const stats = userStats.find(s => s.userId === user.id);
                         const activity = calculateActivityStatus(user.last_login || null, user.created_at);
                         const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
-                        
                         const mPlanInfo = getPlanForUser(subscriptionPlanMap, user.id);
                         const mIsPaymentIssue = mPlanInfo.subStatus === 'past_due' || mPlanInfo.hasFailedInvoice;
                         const mMissingPaymentInfo = mPlanInfo.missingPaymentInfo;
+                        const mSubUsers = subUsersByParent[user.id] || [];
+                        const mIsExpanded = expandedUserIds.has(user.id);
                         return (
                           <Card key={user.id} className={`cursor-pointer hover:bg-gray-50 ${mMissingPaymentInfo ? 'border-amber-300 bg-amber-50/30' : mIsPaymentIssue ? 'border-red-300 bg-red-50/30' : activity.isActive ? 'border-green-200 bg-green-50/30' : ''}`} onClick={() => setSelectedUser(user)}>
                             <CardContent className="p-4">
@@ -1361,7 +1426,7 @@ export default function AdminPage() {
                                     )}
                                   </div>
                                   <div className="text-gray-600">
-                                    <span className="font-medium">Branches:</span>{' '}
+                                    <span className="font-medium">Warehouses:</span>{' '}
                                     {loadingStats ? <Loader2 className="w-3 h-3 animate-spin inline" /> : stats?.branchCount || 0}
                                   </div>
                                   <div className="text-gray-600">
@@ -1400,6 +1465,40 @@ export default function AdminPage() {
                                     {formatCreatedAgo(user.created_at)}
                                   </div>
                                 </div>
+                                {/* Sub-users section */}
+                                {mSubUsers.length > 0 && (
+                                  <div className="mt-2 pt-2 border-t border-slate-100" onClick={(e) => e.stopPropagation()}>
+                                    <button
+                                      onClick={(e) => toggleSubUserExpand(user.id, e)}
+                                      className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-600 w-full py-1"
+                                    >
+                                      <Users className="w-3 h-3" />
+                                      <span>{mSubUsers.length} sub-user{mSubUsers.length !== 1 ? 's' : ''}</span>
+                                      {mIsExpanded ? <ChevronUp className="w-3 h-3 ml-auto" /> : <ChevronDown className="w-3 h-3 ml-auto" />}
+                                    </button>
+                                    {mIsExpanded && (
+                                      <div className="mt-1.5 space-y-1.5 pl-4">
+                                        {mSubUsers.map(subUser => (
+                                          <div
+                                            key={subUser.id}
+                                            className="flex items-center justify-between p-2 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-blue-50"
+                                            onClick={() => setSelectedUser(subUser)}
+                                          >
+                                            <div>
+                                              <p className="text-xs font-medium text-slate-700">{subUser.email}</p>
+                                              {(subUser.first_name || subUser.last_name) ? (
+                                                <p className="text-xs text-slate-500">{subUser.first_name} {subUser.last_name}</p>
+                                              ) : (
+                                                <p className="text-xs text-amber-600 font-medium">No name set</p>
+                                              )}
+                                            </div>
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 shrink-0 ml-2">Sub-user</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             </CardContent>
                           </Card>
@@ -1467,7 +1566,7 @@ export default function AdminPage() {
                               onClick={() => handleSort('branches')}
                             >
                               <div className="flex items-center justify-end gap-1">
-                                Branches
+                                Warehouses
                                 {sortColumn === 'branches' && (
                                   sortDirection === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
                                 )}
@@ -1527,13 +1626,14 @@ export default function AdminPage() {
                             const stats = userStats.find(s => s.userId === user.id);
                             const activity = calculateActivityStatus(user.last_login || null, user.created_at);
                             const shouldHighlight = shouldHighlightInactivity(activity.days, stats?.productCount || 0);
-                            
                             const planInfo = getPlanForUser(subscriptionPlanMap, user.id);
                             const isPaymentIssue = planInfo.subStatus === 'past_due' || planInfo.hasFailedInvoice;
                             const isMissingPaymentInfo = planInfo.missingPaymentInfo;
+                            const rowSubUsers = subUsersByParent[user.id] || [];
+                            const isExpanded = expandedUserIds.has(user.id);
                             return (
+                              <React.Fragment key={user.id}>
                               <tr
-                                key={user.id}
                                 className={`border-b hover:bg-slate-50 cursor-pointer ${
                                   isMissingPaymentInfo ? 'bg-amber-50/30 border-amber-100' :
                                   isPaymentIssue ? 'bg-red-50/50 border-red-100' :
@@ -1589,7 +1689,6 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-left">
                                   <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
                                 </td>
-                                
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : (
                                     planInfo.maxProducts != null
@@ -1603,11 +1702,75 @@ export default function AdminPage() {
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.branchCount || 0}
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
-                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : stats?.linkedUserCount || 0}
+                                  {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : (
+                                    <div className="flex items-center justify-end gap-1.5">
+                                      <span>{stats?.linkedUserCount || 0}</span>
+                                      {rowSubUsers.length > 0 && (
+                                        <button
+                                          onClick={(e) => toggleSubUserExpand(user.id, e)}
+                                          className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-medium transition-colors ${
+                                            isExpanded
+                                              ? 'bg-blue-100 text-blue-700'
+                                              : 'bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600'
+                                          }`}
+                                          title={`${isExpanded ? 'Hide' : 'Show'} ${rowSubUsers.length} sub-user${rowSubUsers.length !== 1 ? 's' : ''}`}
+                                        >
+                                          <Users className="w-3 h-3" />
+                                          <span>{rowSubUsers.length}</span>
+                                          {isExpanded ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
+                                        </button>
+                                      )}
+                                    </div>
+                                  )}
                                 </td>
-                                
                                 <td className="px-4 py-2 text-left text-slate-600" title={new Date(user.created_at).toLocaleString('en-US')}>{formatCreatedAgo(user.created_at)}</td>
                               </tr>
+                              {/* Expandable sub-user rows */}
+                              {isExpanded && rowSubUsers.map(subUser => {
+                                const subActivity = calculateActivityStatus(subUser.last_login || null, subUser.created_at);
+                                const hasName = subUser.first_name || subUser.last_name;
+                                return (
+                                  <tr
+                                    key={`sub-${subUser.id}`}
+                                    className="border-b border-blue-100 bg-blue-50/40 hover:bg-blue-50/70 cursor-pointer"
+                                    onClick={() => setSelectedUser(subUser)}
+                                  >
+                                    <td className="px-4 py-2 pl-8 text-left">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-slate-300 text-sm select-none">└</span>
+                                        <div>
+                                          <div className="flex items-center gap-2">
+                                            <span className="text-sm text-slate-700">{subUser.email}</span>
+                                            {!hasName && (
+                                              <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-100 text-amber-700 font-medium">No name</span>
+                                            )}
+                                          </div>
+                                          {hasName && (
+                                            <p className="text-xs text-slate-500">{subUser.first_name} {subUser.last_name}</p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td className={`px-4 py-2 text-left text-sm ${
+                                      subActivity.color === 'green' ? 'text-green-600 font-semibold' :
+                                      subActivity.color === 'yellow' ? 'text-yellow-600' : 'text-slate-500'
+                                    }`} title={subActivity.exactTime}>
+                                      {subActivity.display}
+                                    </td>
+                                    <td className="px-4 py-2 text-left text-xs text-slate-400 italic">Shared</td>
+                                    <td className="px-4 py-2 text-left">
+                                      <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-600">Sub-user</span>
+                                    </td>
+                                    <td className="px-4 py-2 text-right text-slate-300">—</td>
+                                    <td className="px-4 py-2 text-right text-slate-300">—</td>
+                                    <td className="px-4 py-2 text-right text-slate-300">—</td>
+                                    <td className="px-4 py-2 text-left text-slate-500 text-xs" title={new Date(subUser.created_at).toLocaleString('en-US')}>
+                                      {formatCreatedAgo(subUser.created_at)}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                              </React.Fragment>
                             );
                           })}
                         </tbody>

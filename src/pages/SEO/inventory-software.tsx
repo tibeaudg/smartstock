@@ -34,7 +34,7 @@ export default function InventorySoftware() {
     },
     {
       question: "How much does inventory software cost?",
-      answer: `StockFlow is completely free forever with all features included - unlimited products, unlimited users, unlimited branches, and unlimited orders. No credit card required, no subscriptions, no hidden fees. All premium features are included at no cost.`
+      answer: `StockFlow is completely free forever with all features included - unlimited products, unlimited users, unlimited warehouses, and unlimited orders. No credit card required, no subscriptions, no hidden fees. All premium features are included at no cost.`
     },
     {
       question: "Can inventory software integrate with other systems?",
@@ -620,7 +620,7 @@ export default function InventorySoftware() {
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                  <span>Unlimited branches</span>
+                  <span>Unlimited warehouses</span>
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-3" />

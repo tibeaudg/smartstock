@@ -205,7 +205,7 @@ export const SubscriptionMigrationModal: React.FC = () => {
         navigate('/dashboard/settings/billing');
 
         toast.info(
-          'Please add a payment method to continue using extra branches.'
+          'Please add a payment method to continue using extra warehouses.'
         );
 
         return;
@@ -281,7 +281,7 @@ export const SubscriptionMigrationModal: React.FC = () => {
         .filter(Boolean);
 
       if (branchIdsToDelete.length === 0) {
-        toast.error('No branches found to delete.');
+        toast.error('No warehouses found to delete.');
         return;
       }
 
@@ -299,8 +299,8 @@ export const SubscriptionMigrationModal: React.FC = () => {
       toast.success(
         `${branchIdsToDelete.length} ${
           branchIdsToDelete.length === 1
-            ? 'branch was'
-            : 'branches were'
+            ? 'warehouse was'
+            : 'warehouses were'
         } removed.`
       );
 
@@ -310,7 +310,7 @@ export const SubscriptionMigrationModal: React.FC = () => {
       console.error(error);
 
       toast.error(
-        'Failed to remove extra branches. Please try again.'
+        'Failed to remove extra warehouses. Please try again.'
       );
     } finally {
       setLoadingSkip(false);
@@ -335,8 +335,8 @@ export const SubscriptionMigrationModal: React.FC = () => {
 
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Your free plan now includes a maximum of{' '}
-              {maxBranches} branch
-              {maxBranches !== 1 ? 'es' : ''}.
+              {maxBranches} warehouse
+              {maxBranches !== 1 ? 's' : ''}.
             </p>
           </div>
         </div>
@@ -345,14 +345,14 @@ export const SubscriptionMigrationModal: React.FC = () => {
         <div className="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/20 p-5 space-y-2">
           <p className="text-sm text-amber-900 dark:text-amber-300">
             You currently have{' '}
-            <strong>{branchCount} branches</strong>.
+            <strong>{branchCount} warehouses</strong>.
           </p>
 
           <p className="text-sm text-amber-800 dark:text-amber-400">
             This means you have{' '}
             <strong>
               {extraBranches} extra{' '}
-              {extraBranches === 1 ? 'branch' : 'branches'}
+              {extraBranches === 1 ? 'warehouse' : 'warehouses'}
             </strong>{' '}
             above the limit.
           </p>
@@ -392,7 +392,7 @@ export const SubscriptionMigrationModal: React.FC = () => {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-green-500" />
-                  {nextTier.max_branches} branches included
+                  {nextTier.max_branches} warehouses included
                 </li>
 
                 <li className="flex items-center gap-2">
@@ -443,7 +443,7 @@ export const SubscriptionMigrationModal: React.FC = () => {
 
             <div>
               <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
-                Keep existing branches
+                Keep existing warehouses
               </h3>
 
               <div className="mt-2">
@@ -458,13 +458,13 @@ export const SubscriptionMigrationModal: React.FC = () => {
 
               <p className="text-xs text-gray-500 mt-1">
                 ${5} × {extraBranches} extra{' '}
-                {extraBranches === 1 ? 'branch' : 'branches'}
+                {extraBranches === 1 ? 'warehouse' : 'warehouses'}
               </p>
             </div>
 
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Stay on your current plan and keep all existing
-              branches active.
+              warehouses active.
             </p>
 
             <Button
@@ -495,12 +495,12 @@ export const SubscriptionMigrationModal: React.FC = () => {
 
             <div>
               <h4 className="font-medium text-gray-900 dark:text-gray-100">
-                Skip and remove extra branches
+                Skip and remove extra warehouses
               </h4>
 
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 The newest {extraBranches}{' '}
-                {extraBranches === 1 ? 'branch will' : 'branches will'}{' '}
+                {extraBranches === 1 ? 'warehouse will' : 'warehouses will'}{' '}
                 automatically be deleted to bring your account back
                 within the free plan limits.
               </p>
@@ -521,7 +521,7 @@ export const SubscriptionMigrationModal: React.FC = () => {
                 <Trash2 className="w-4 h-4 mr-2" />
               )}
 
-              Skip & Remove Extra Branches
+              Skip & Remove Extra Warehouses
             </Button>
           </div>
         </div>

@@ -547,7 +547,7 @@ function BOMListPage() {
     }
 
     if (!activeBranch) {
-      toast.error('No active branch selected');
+      toast.error('No active warehouse selected');
       return;
     }
 
@@ -582,7 +582,7 @@ function BOMListPage() {
     }
     
     if (!activeBranch) {
-      toast.error('No active branch selected');
+      toast.error('No active warehouse selected');
       return;
     }
 

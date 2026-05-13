@@ -249,7 +249,7 @@ const UserManagement = () => {
       console.error("Error removing user:", error);
       toast({ title: "Error", description: "Could not delete the user.", variant: "destructive" });
     } else {
-      toast({ title: "User deleted", description: "The user has been deleted from this branch." });
+      toast({ title: "User deleted", description: "The user has been deleted from this warehouse." });
       refetch();
       queryClient.invalidateQueries({ queryKey: ['pricingInfo', user.id] });
     }
@@ -372,7 +372,7 @@ const UserManagement = () => {
       {/* Check if branches are available */}
       {(!branches || !Array.isArray(branches)) ? (
         <div style={{ color: '#b91c1c', background: '#fef2f2', padding: 24, borderRadius: 8, marginBottom: 24 }}>
-          <b>Error:</b> Branches could not be loaded. Please refresh the page or contact the administrator.
+          <b>Error:</b> Warehouses could not be loaded. Please refresh the page or contact the administrator.
         </div>
       ) : (
         <>
@@ -391,7 +391,7 @@ const UserManagement = () => {
                 <div className="text-center">
                   <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
-                  <p className="text-gray-600">No users found in this branch.</p>
+                  <p className="text-gray-600">No users found in this warehouse.</p>
                 </div>
               </div>
             ) : (
@@ -414,7 +414,7 @@ const UserManagement = () => {
                         {/* Hide 'Manage Branches' button for admin himself */}
                         {!(u.userId === user?.id && u.role === 'admin') && (
                           <Button variant="outline" size="sm" onClick={() => handleOpenManageBranches(u)}>
-                            Manage Branches
+                            Manage Warehouses
                           </Button>
                         )}
                         {u.userId !== user?.id && (
@@ -440,7 +440,7 @@ const UserManagement = () => {
           <Dialog open={!!manageBranchesUser} onOpenChange={open => !open && setManageBranchesUser(null)}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Manage Branches for {manageBranchesUser?.email}</DialogTitle>
+                <DialogTitle>Manage Warehouses for {manageBranchesUser?.email}</DialogTitle>
               </DialogHeader>
           
               <DialogFooter>

@@ -219,7 +219,7 @@ export const SystemOverview: React.FC = () => {
             <MetricCard
               icon={Building2}
               value={metrics?.totalBranches || 0}
-              label="Total Branches"
+              label="Total Warehouses"
               isLoading={loadingMetrics}
               iconColor="text-orange-600"
             />

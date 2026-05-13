@@ -91,7 +91,7 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
 
     const branchId = product.branch_id || activeBranch?.branch_id;
     if (!branchId) {
-      toast.error('Product is not associated with a branch');
+      toast.error('Product is not associated with a warehouse');
       return;
     }
 

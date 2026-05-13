@@ -255,7 +255,7 @@ export default function ScanPage() {
     e.preventDefault();
     
     if (!user || !activeBranch) {
-      toast.error('User or branch not found');
+      toast.error('User or warehouse not found');
       return;
     }
 
@@ -319,7 +319,7 @@ export default function ScanPage() {
           .single();
 
         if (duplicateName) {
-          toast.error('This product name already exists in this branch');
+          toast.error('This product name already exists in this warehouse');
           setLoading(false);
           return;
         }
@@ -552,9 +552,9 @@ export default function ScanPage() {
       <div className="container mx-auto px-4 py-8">
         <Card>
           <CardHeader>
-            <CardTitle className="text-red-600">No Branch Selected</CardTitle>
+            <CardTitle className="text-red-600">No Warehouse Selected</CardTitle>
             <CardDescription>
-              Please select a branch first to be able to scan and add products.
+              Please select a warehouse first to be able to scan and add products.
             </CardDescription>
           </CardHeader>
           <CardContent>

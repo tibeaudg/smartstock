@@ -88,7 +88,7 @@ export const CustomReports = () => {
   });
 
   const availableColumns = {
-    sales: ['Date', 'Product', 'Quantity', 'Revenue', 'Customer', 'Branch'],
+    sales: ['Date', 'Product', 'Quantity', 'Revenue', 'Customer', 'Warehouse'],
     inventory: ['Product', 'Category', 'Inventory', 'Min. Inventory', 'Locations', 'Last Movement'],
     financial: ['Period', 'Revenue', 'Costs', 'Profit', 'Margins', 'Taxes'],
     custom: ['All available fields']

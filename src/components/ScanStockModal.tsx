@@ -71,7 +71,7 @@ export const ScanStockModal = ({
     
     try {
       if (!activeBranch) {
-        toast.error('No active branch selected');
+        toast.error('No active warehouse selected');
         return;
       }
 

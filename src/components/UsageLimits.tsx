@@ -41,7 +41,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({ compact = false }) => 
             <div>
               <h4 className="font-medium text-green-900">Unlimited Everything</h4>
               <p className="text-sm text-green-700 mt-1">
-                StockFlow is completely free with no usage limits. Use as many products, users, branches, and orders as you need.
+                StockFlow is completely free with no usage limits. Use as many products, users, warehouses, and orders as you need.
               </p>
             </div>
           </div>
@@ -65,7 +65,7 @@ export const UsageLimits: React.FC<UsageLimitsProps> = ({ compact = false }) => 
           <div className="flex items-center space-x-3">
             <Building className="h-5 w-5 text-purple-600" />
             <div>
-              <p className="text-sm font-medium text-gray-900">Branches</p>
+              <p className="text-sm font-medium text-gray-900">Warehouses</p>
               <p className="text-xs text-gray-500">Unlimited</p>
             </div>
           </div>

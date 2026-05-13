@@ -46,7 +46,7 @@ export const SetReorderRulePanel: React.FC<SetReorderRulePanelProps> = ({
 
   const handleSave = async () => {
     if (!activeBranch) {
-      toast.error('No active branch selected');
+      toast.error('No active warehouse selected');
       return;
     }
 

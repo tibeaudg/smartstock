@@ -55,10 +55,10 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
   };
 
   const messages: Record<string, string> = {
-    add_branch: 'Start your 14-day free trial to add more branches.',
+    add_branch: 'Start your 14-day free trial to add more warehouses.',
     add_user: 'Start your 14-day free trial to invite more users.',
     billing: 'Start your 14-day free trial to manage your subscription.',
-    branches_management: 'Start your 14-day free trial to manage multiple branches.',
+    branches_management: 'Start your 14-day free trial to manage multiple warehouses.',
     contacts: 'Start your 14-day free trial to use Contacts.',
     orders: 'Start your 14-day free trial to use Orders.',
   };

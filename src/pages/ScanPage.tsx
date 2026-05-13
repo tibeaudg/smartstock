@@ -40,7 +40,7 @@ export default function ScanPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">No branch selected</p>
+          <p className="text-gray-600 mb-4">No warehouse selected</p>
           <button
             onClick={() => navigate('/dashboard')}
             className="px-4 py-2 bg-blue-600 text-white rounded"

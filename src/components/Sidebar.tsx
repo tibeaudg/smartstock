@@ -181,7 +181,7 @@ export const Sidebar = ({
     { id: 'general', label: 'General', path: '/dashboard/settings/general', icon: SlidersHorizontal },
     { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: User },
     { id: 'users', label: 'Users', path: '/dashboard/settings/users', icon: UserCog, divider: true },
-    { id: 'branches', label: 'Branches', path: '/dashboard/settings/branches', icon: Building2 },
+    { id: 'branches', label: 'Warehouses', path: '/dashboard/settings/branches', icon: Building2 },
     { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard },
   ];
 
@@ -521,7 +521,7 @@ export const Sidebar = ({
                     >
                       <GitBranch className="w-4 h-4 mr-2 text-white-400 group-hover:text-blue-600 dark:text-white-500 dark:group-hover:text-blue-300" />
                       <span className="flex-1 text-left truncate">
-                        {activeBranch?.branch_name ?? 'Switch branch'}
+                        {activeBranch?.branch_name ?? 'Switch warehouse'}
                       </span>
                       <ChevronDown className="w-3 h-3 text-white-400" />
                     </button>

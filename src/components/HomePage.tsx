@@ -24,7 +24,7 @@ const homeFaqData = [
   },
   {
     question: "Is inventory management software free?",
-    answer: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, users, branches, orders, real-time tracking, barcode scanning, low stock alerts, and advanced reporting at no cost."
+    answer: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, users, warehouses, orders, real-time tracking, barcode scanning, low stock alerts, and advanced reporting at no cost."
   },
   {
     question: "How does inventory management software work?",
@@ -36,11 +36,11 @@ const homeFaqData = [
   },
   {
     question: "How much does StockFlow cost? Is StockFlow free?",
-    answer: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, branches, BOM management and reporting. Read our pricing page for more information."
+    answer: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, warehouses, BOM management and reporting. Read our pricing page for more information."
   },
   {
     question: "How much does StockFlow cost? What is the subscription price?",
-    answer: "StockFlow is free forever. There is no subscription fee — our core inventory management platform is completely free with unlimited products, users, branches, and orders. No credit card required to get started."
+    answer: "StockFlow is free forever. There is no subscription fee — our core inventory management platform is completely free with unlimited products, users, warehouses, and orders. No credit card required to get started."
   }
 ];
 
@@ -181,7 +181,7 @@ const FAQ = () => {
     },
     {
       q: "Is inventory management software free?",
-      a: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, users, branches, orders, real-time tracking, barcode scanning, low stock alerts, and advanced reporting at no cost."
+      a: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, users, warehouses, orders, real-time tracking, barcode scanning, low stock alerts, and advanced reporting at no cost."
     },
     {
       q: "How does inventory management software work?",
@@ -193,11 +193,11 @@ const FAQ = () => {
     },
     {
       q: "How much does StockFlow cost? Is StockFlow free?",
-      a: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, branches, BOM management and reporting. Read our pricing page for more information."
+      a: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, warehouses, BOM management and reporting. Read our pricing page for more information."
     },
     {
       q: "How much does StockFlow cost? What is the subscription price?",
-      a: "StockFlow is free forever. There is no subscription fee our core inventory management platform is completely free with unlimited products, users, branches, and orders. No credit card required to get started."
+      a: "StockFlow is free forever. There is no subscription fee our core inventory management platform is completely free with unlimited products, users, warehouses, and orders. No credit card required to get started."
     }
   ];
 

@@ -92,7 +92,7 @@ export default function CreatePurchaseOrderPage() {
 
   const handleSubmit = async () => {
     if (!user || !activeBranch) {
-      toast.error('User or branch information missing');
+      toast.error('User or warehouse information missing');
       return;
     }
     if (!vendorName.trim()) {

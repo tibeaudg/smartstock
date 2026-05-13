@@ -110,7 +110,7 @@ const FREE_TIER: PricingTier = {
   max_orders_per_month: null,
   max_users: 1,
   max_branches: 1,
-  features: ['Core inventory', '1 branch', '1 user'],
+  features: ['Core inventory', '1 warehouse', '1 user'],
   is_popular: false,
   is_enterprise: false,
 };

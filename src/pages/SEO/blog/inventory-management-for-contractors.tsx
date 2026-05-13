@@ -45,7 +45,7 @@ const faqData = [
   },
   {
     question: "How much does inventory software cost for contractors?",
-    answer: "StockFlow is completely free forever with all features included - unlimited products, unlimited users, unlimited branches. No credit card required, no subscriptions, no hidden fees. Accurate inventory tracking improves job costing and bidding, and since StockFlow is free, you see ROI immediately. Most contractors see benefits within the first week."
+    answer: "StockFlow is completely free forever with all features included - unlimited products, unlimited users, unlimited warehouses. No credit card required, no subscriptions, no hidden fees. Accurate inventory tracking improves job costing and bidding, and since StockFlow is free, you see ROI immediately. Most contractors see benefits within the first week."
   }
 ];
 

@@ -30,7 +30,10 @@
       "PowerShell(Get-ChildItem \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\" -MaxDepth 1 -File | Where-Object { $_.Extension -eq '.tsx' -or $_.Extension -eq '.ts' } | Select-Object -ExpandProperty Name)",
       "PowerShell(Get-ChildItem \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\" -Depth 0 -File | Where-Object { $_.Extension -eq '.tsx' -or $_.Extension -eq '.ts' } | Select-Object -ExpandProperty Name)",
       "Bash(npx supabase *)",
-      "PowerShell(Get-ChildItem \"$env:APPDATA\\\\supabase\" -ErrorAction SilentlyContinue; Get-ChildItem \"$env:LOCALAPPDATA\\\\supabase\" -ErrorAction SilentlyContinue)"
+      "PowerShell(Get-ChildItem \"$env:APPDATA\\\\supabase\" -ErrorAction SilentlyContinue; Get-ChildItem \"$env:LOCALAPPDATA\\\\supabase\" -ErrorAction SilentlyContinue)",
+      "Bash(xargs grep -l \"from\\('smtp_settings'\\)\")",
+      "Bash(powershell -Command \"\\(Get-Content 'src\\\\pages\\\\admin.tsx'\\)[5]\")",
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\admin.tsx\"\\)[5])"
     ]
   }
 }

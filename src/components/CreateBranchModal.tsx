@@ -28,7 +28,7 @@ export const CreateBranchModal = ({
 }: CreateBranchModalProps) => {
   const { user } = useAuth();
   const { refreshBranches, setActiveBranch } = useBranches();
-  const [branchName, setBranchName] = useState(isAdditionalBranch ? '' : 'Main Branch');
+  const [branchName, setBranchName] = useState(isAdditionalBranch ? '' : 'Main Warehouse');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,7 +73,7 @@ export const CreateBranchModal = ({
       onBranchCreated();
       if (isAdditionalBranch && onOpenChange) onOpenChange(false);
     } catch (err: any) {
-      setError(err.message || 'Failed to create branch. Please try again.');
+      setError(err.message || 'Failed to create warehouse. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -96,20 +96,20 @@ export const CreateBranchModal = ({
               <GitBranch className="h-5 w-5 text-blue-600" />
             </div>
             <DialogTitle className="text-xl">
-              {isAdditionalBranch ? 'Create Branch' : 'Welcome to StockFlow!'}
+              {isAdditionalBranch ? 'Create Warehouse' : 'Welcome to StockFlow!'}
             </DialogTitle>
           </div>
           <DialogDescription>
             {isAdditionalBranch
-              ? 'Add a new branch to manage inventory across multiple locations.'
-              : "Let's get started by naming your first branch. A branch represents a store or location where you manage inventory."}
+              ? 'Add a new warehouse to manage inventory across multiple locations.'
+              : "Let's get started by naming your first warehouse. A warehouse represents a store or location where you manage inventory."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 pt-1">
           <div>
             <label className="text-sm font-medium text-gray-700 mb-1.5 block">
-              Branch name
+              Warehouse name
             </label>
             <Input
               value={branchName}
@@ -130,7 +130,7 @@ export const CreateBranchModal = ({
             {loading
               ? 'Creating...'
               : isAdditionalBranch
-                ? 'Create Branch'
+                ? 'Create Warehouse'
                 : 'Get Started'}
           </Button>
         </div>

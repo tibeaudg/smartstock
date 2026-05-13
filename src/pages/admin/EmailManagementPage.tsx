@@ -44,7 +44,7 @@ export default function EmailManagementPage() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const { data: stats } = useEmailLogStats();
   const { data: recentLogs } = useEmailLogs({});
-  const { isConfigured, smtpSettings } = useSmtpSettings();
+  const { isConfigured, smtpUsername } = useSmtpSettings();
   const { statsMap, getEffectiveSetting } = useLifecycleEmails();
 
   const recentLogsData = recentLogs?.slice(0, 8) || [];
@@ -114,8 +114,8 @@ export default function EmailManagementPage() {
                       <><XCircle className="w-4 h-4 text-amber-500" /><span className="text-sm font-semibold text-amber-600">Not configured</span></>
                     )}
                   </div>
-                  {isConfigured && smtpSettings?.from_email && (
-                    <p className="text-xs text-muted-foreground mt-1 truncate">From: {smtpSettings.from_email}</p>
+                  {isConfigured && smtpUsername && (
+                    <p className="text-xs text-muted-foreground mt-1 truncate">From: {smtpUsername}</p>
                   )}
                   {!isConfigured && (
                     <p className="text-xs text-muted-foreground mt-1">Configure in the Settings tab</p>

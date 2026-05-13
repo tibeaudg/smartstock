@@ -28,7 +28,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li><strong>Set up a location</strong> — Create warehouses or storage locations</li>
   <li><strong>Invite your team</strong> — Add staff members under Settings → Users</li>
 </ol>
-<p><a href="https://app.stockflowsystems.com/dashboard">Log in and get started →</a></p>
+<p><a href="https://stockflowsystems.com/dashboard">Log in and get started →</a></p>
 <p>Questions? Just reply to this email — we're happy to help.</p>`,
   },
   '24h_nudge': {
@@ -42,7 +42,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li>Set up a warehouse or storage location</li>
   <li>Invite a team member</li>
 </ul>
-<p><a href="https://app.stockflowsystems.com/dashboard">Log in and get started →</a></p>
+<p><a href="https://stockflowsystems.com/dashboard">Log in and get started →</a></p>
 <p>Have questions? Just reply to this email.</p>`,
   },
   '7d_inactive': {
@@ -56,7 +56,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li>Generate purchase orders automatically when stock runs low</li>
   <li>Reduce stockouts and overstocking by up to 30%</li>
 </ul>
-<p><a href="https://app.stockflowsystems.com/dashboard">Come back and pick up where you left off →</a></p>`,
+<p><a href="https://stockflowsystems.com/dashboard">Come back and pick up where you left off →</a></p>`,
   },
   '14d_inactive': {
     emailType: 'lifecycle',
@@ -65,14 +65,14 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
 <p>It's been two weeks. Life gets busy — we completely understand.</p>
 <p>When you're ready, StockFlow will be here to help you take control of your inventory.</p>
 <p>Not finding what you need? Reply to this email and tell us what's missing — we read every response.</p>
-<p><a href="https://app.stockflowsystems.com/dashboard">Log back in →</a></p>`,
+<p><a href="https://stockflowsystems.com/dashboard">Log back in →</a></p>`,
   },
   '25d_warning': {
     emailType: 'deletion_warning',
     defaultSubject: 'Action required: Your account will be deleted in 5 days',
     defaultHtml: `<p>Hi {{first_name}},</p>
 <p><strong>Important notice:</strong> Your StockFlow account (<strong>{{user_email}}</strong>) has been inactive for 25 days and will be automatically deleted in <strong>5 days</strong>.</p>
-<p>To keep your account, simply log in at <a href="https://app.stockflowsystems.com/dashboard">app.stockflowsystems.com</a>.</p>
+<p>To keep your account, simply log in at <a href="https://stockflowsystems.com/dashboard">stockflowsystems.com</a>.</p>
 <p>If you'd like to export your data before deletion, log in and go to <strong>Settings → Export Data</strong>.</p>
 <p>If you no longer need your account, no action is required — it will be removed automatically.</p>`,
   },
@@ -81,7 +81,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
     defaultSubject: 'Final notice: Your account will be deleted tomorrow',
     defaultHtml: `<p>Hi {{first_name}},</p>
 <p><strong>Final notice:</strong> Your StockFlow account will be <strong>permanently deleted tomorrow</strong> due to 29 days of inactivity.</p>
-<p>To prevent deletion, log in now: <a href="https://app.stockflowsystems.com/dashboard">app.stockflowsystems.com</a></p>
+<p>To prevent deletion, log in now: <a href="https://stockflowsystems.com/dashboard">stockflowsystems.com</a></p>
 <p>After deletion, your account and all associated data cannot be recovered. This is the last email we will send before permanent deletion.</p>`,
   },
 }
@@ -143,6 +143,7 @@ serve(async (req) => {
 
     const body = await req.json().catch(() => ({}))
     const stageFilter = body.stage as LifecycleStage | undefined
+    const forceUserId = body.forceUserId as string | undefined
     // selfTrigger: true allows a newly signed-up user to send their own welcome email
     // without requiring admin role. The calling user must match their own session.
     const isSelfWelcome = stageFilter === 'welcome' && body.selfTrigger === true
@@ -188,34 +189,19 @@ serve(async (req) => {
       }
     }
 
-    // Fallback chain: find any SMTP-configured user when adminUserId is unknown
-    // (cron runs, self-welcome triggers, etc.)
-    let smtpRow: any = null
-    if (adminUserId) {
-      const { data } = await adminClient
-        .from('smtp_settings')
-        .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
-        .eq('user_id', adminUserId)
-        .maybeSingle()
-      smtpRow = data
+    const smtpRow = {
+      smtp_host: Deno.env.get('SMTP_host') ?? '',
+      smtp_port: Number(Deno.env.get('SMTP_port')) || 587,
+      smtp_username: Deno.env.get('username') ?? '',
+      smtp_password: Deno.env.get('SMTP_password') ?? '',
+      from_email: Deno.env.get('username') ?? '',
+      from_name: Deno.env.get('From_name') || 'StockFlow',
+      use_tls: (Number(Deno.env.get('SMTP_port')) || 587) === 465,
     }
 
-    if (!smtpRow) {
-      // Try any row in smtp_settings that has the required fields configured
-      const { data } = await adminClient
-        .from('smtp_settings')
-        .select('smtp_host, smtp_port, smtp_username, smtp_password, from_email, from_name, use_tls')
-        .not('smtp_host', 'is', null)
-        .not('smtp_password', 'is', null)
-        .not('from_email', 'is', null)
-        .limit(1)
-        .maybeSingle()
-      smtpRow = data
-    }
-
-    if (!smtpRow?.smtp_host || !smtpRow?.smtp_username || !smtpRow?.from_email || !smtpRow?.smtp_password) {
+    if (!smtpRow.smtp_host || !smtpRow.smtp_username || !smtpRow.smtp_password) {
       return new Response(
-        JSON.stringify({ success: false, error: 'SMTP not configured. Configure it in the Settings tab first.' }),
+        JSON.stringify({ success: false, error: 'SMTP not configured. Set SMTP_host, username, SMTP_port, SMTP_password, and From_name in Supabase secrets.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -317,6 +303,81 @@ serve(async (req) => {
         sent_at: new Date().toISOString(),
         delivered_at: status === 'sent' ? new Date().toISOString() : null,
         metadata: { lifecycle_stage: stage, message_id: msgId },
+      })
+
+      return new Response(
+        JSON.stringify({ success: true, results: [{ stage, sent: status === 'sent' ? 1 : 0, failed: status === 'failed' ? 1 : 0 }] }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // --- Admin forced send: specific user + specific stage, skips eligibility check ---
+    if (forceUserId && stageFilter && (isServiceRole || adminUserId)) {
+      const stage = stageFilter
+      const { data: profile } = await adminClient
+        .from('profiles')
+        .select('id, email, first_name, last_name, created_at, last_login')
+        .eq('id', forceUserId)
+        .single()
+
+      if (!profile?.email) return new Response(
+        JSON.stringify({ success: false, error: 'Target user not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+
+      const setting = settingsMap.get(stage)
+      const config = LIFECYCLE_CONFIG[stage]
+      const template = setting?.email_templates?.is_active ? setting.email_templates : null
+      const email = String(profile.email).trim().toLowerCase()
+      const vars = {
+        user_email: email,
+        user_name: `${profile.first_name || ''} ${profile.last_name || ''}`.trim() || email.split('@')[0],
+        first_name: profile.first_name || '',
+        last_name: profile.last_name || '',
+      }
+
+      const subject = replaceVariables(template?.subject || config.defaultSubject, vars)
+      const html = replaceVariables(template?.html_body || config.defaultHtml, vars)
+
+      let status: 'sent' | 'failed' = 'sent'
+      let errorMsg: string | null = null
+      let msgId: string | null = null
+
+      try {
+        const info = await transporter.sendMail({
+          from: { name: smtpRow.from_name || 'StockFlow', address: smtpRow.from_email },
+          to: email,
+          subject,
+          html,
+          text: html.replace(/<[^>]*>/g, ''),
+        })
+        msgId = info.messageId || null
+      } catch (e) {
+        status = 'failed'
+        errorMsg = e instanceof Error ? e.message : 'Unknown error'
+      }
+
+      await adminClient.from('user_lifecycle_emails').upsert({
+        user_id: profile.id,
+        email,
+        lifecycle_stage: stage,
+        template_id: template?.id || null,
+        status,
+        error_message: errorMsg,
+        metadata: { message_id: msgId, forced: true },
+        sent_at: new Date().toISOString(),
+      }, { onConflict: 'user_id,lifecycle_stage', ignoreDuplicates: false })
+
+      await adminClient.from('email_logs').insert({
+        recipient_email: email,
+        recipient_user_id: profile.id,
+        subject,
+        email_type: config.emailType,
+        status: status === 'sent' ? 'delivered' : 'failed',
+        error_message: errorMsg,
+        sent_at: new Date().toISOString(),
+        delivered_at: status === 'sent' ? new Date().toISOString() : null,
+        metadata: { lifecycle_stage: stage, message_id: msgId, forced: true },
       })
 
       return new Response(

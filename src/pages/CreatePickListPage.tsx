@@ -70,7 +70,7 @@ export default function CreatePickListPage() {
   };
 
   const handleSubmit = async () => {
-    if (!user || !activeBranch) { toast.error('User or branch information missing'); return; }
+    if (!user || !activeBranch) { toast.error('User or warehouse information missing'); return; }
     const validItems = items.filter(it => it.product_id !== null && it.quantity_requested > 0);
     if (validItems.length === 0) { toast.error('Add at least one item with quantity'); return; }
 

@@ -66,7 +66,7 @@ const LocationSelector: React.FC<{
     if (!trimmedName) return;
 
     if (!activeBranch) {
-      toast.error('Cannot create location: No active branch selected');
+      toast.error('Cannot create location: No active warehouse selected');
       return;
     }
 
@@ -98,7 +98,7 @@ const LocationSelector: React.FC<{
     if (!canCreate) return;
 
     if (!activeBranch) {
-      toast.error('Cannot create location: No active branch selected');
+      toast.error('Cannot create location: No active warehouse selected');
       return;
     }
 
@@ -196,7 +196,7 @@ const LocationSelector: React.FC<{
                   </Button>
                 </div>
               ) : !activeBranch ? (
-                <p className="text-sm text-gray-500">Select a branch to create locations</p>
+                <p className="text-sm text-gray-500">Select a warehouse to create locations</p>
               ) : (
                 <p className="text-sm text-gray-500">No locations found</p>
               )}
@@ -655,14 +655,14 @@ export default function AddProductPage() {
 
     // Check for duplicate name in create mode
     if (duplicateName && !hasVariants) {
-      toast.error('Product name already exists for a main product in this branch.');
+      toast.error('Product name already exists for a main product in this warehouse.');
       console.error('[AddProductModal] Submission aborted: Duplicate name detected.');
       return;
     }
 
     if (!user || branchLoading || !activeBranch) {
       console.error('[AddProductModal] Submission aborted: Auth/Branch check failed.', { user: !!user, branchLoading, activeBranch: !!activeBranch });
-      toast.error('Authentication or branch loading failed. Cannot proceed.');
+      toast.error('Authentication or warehouse loading failed. Cannot proceed.');
       return;
     }
 
@@ -1047,7 +1047,7 @@ export default function AddProductPage() {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Select a branch to add a product.</p>
+          <p className="text-gray-600 mb-4">Select a warehouse to add a product.</p>
           <Button onClick={() => navigate('/dashboard/categories')}>Back to Products</Button>
         </div>
       </div>
@@ -1139,7 +1139,7 @@ export default function AddProductPage() {
                         {duplicateName && !hasVariants && (
                           <div className="flex items-center text-sm text-red-600 mt-1">
                             <AlertCircle className="w-4 h-4 mr-1" />
-                            This product name already exists for a main product in this branch.
+                            This product name already exists for a main product in this warehouse.
                           </div>
                         )}
                         <FormMessage />

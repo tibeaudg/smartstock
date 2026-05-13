@@ -42,7 +42,7 @@ const PAID_PLANS: Plan[] = [
     features: [
       '2,000 unique items',
       '5 user licenses',
-      '2 branches',
+      '2 warehouses',
       'Pick lists',
       'Sales orders',
       'Purchase orders',
@@ -63,7 +63,7 @@ const PAID_PLANS: Plan[] = [
     features: [
       '5,000 unique items',
       '8 user licenses',
-      '5 branches',
+      '5 warehouses',
       'Pick lists',
       'Sales orders',
       'Purchase orders',
@@ -337,7 +337,7 @@ export const BillingPage = () => {
 
               <div className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">Branches</span>
+                  <span className="text-gray-600 dark:text-gray-400">Warehouses</span>
                   <span className="font-medium text-gray-900 dark:text-gray-100">
                     {currentBranchCount} / {branchLimit}
                     {extraBranches > 0 && (
@@ -510,7 +510,7 @@ export const BillingPage = () => {
               * 14-day free trial on Professional. No credit card required to start your trial.
             </p>
             <p className="text-center text-xs text-gray-400 mt-1">
-              Extra branches +$5/mo · Extra users +$2/mo, beyond what's included in your plan.
+              Extra warehouses +$5/mo · Extra users +$2/mo, beyond what's included in your plan.
             </p>
           </CardContent>
         </Card>
@@ -568,7 +568,7 @@ export const BillingPage = () => {
           ) : (
             <div className="space-y-3">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                A payment method is required to be billed for extra branches (+$5/mo) or extra users (+$2/mo) beyond your plan limits.
+                A payment method is required to be billed for extra warehouses (+$5/mo) or extra users (+$2/mo) beyond your plan limits.
               </p>
               <Button onClick={() => setShowUpgradePlans((v) => !v)} variant="outline" className="gap-2">
                 Add Payment Method

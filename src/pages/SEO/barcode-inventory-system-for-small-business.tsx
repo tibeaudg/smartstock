@@ -400,7 +400,7 @@ export default function BarcodeInventorySystemSmallBusiness() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://app.stockflowsystems.com/auth"
+              href="https://stockflowsystems.com/auth"
               className="bg-white text-blue-600 font-bold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
             >
               Get Started Free

@@ -72,7 +72,7 @@ export default function CreateStockCountPage() {
   };
 
   const handleSubmit = async () => {
-    if (!user || !activeBranch) { toast.error('User or branch information missing'); return; }
+    if (!user || !activeBranch) { toast.error('User or warehouse information missing'); return; }
     const validItems = items.filter(it => it.product_id !== null);
     if (validItems.length === 0) { toast.error('Add at least one product to count'); return; }
 

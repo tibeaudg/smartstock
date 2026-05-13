@@ -173,7 +173,7 @@ export const GeneralSettings = () => {
 
   const handleDeleteAllProducts = async () => {
     if (!user || !branchId) {
-      toast.error('Missing user or branch. Please try again.');
+      toast.error('Missing user or warehouse. Please try again.');
       return;
     }
 
@@ -323,7 +323,7 @@ export const GeneralSettings = () => {
   if (!activeBranch) {
     return (
       <div className="space-y-6 p-4">
-        <p className="text-muted-foreground">Select a branch to manage settings.</p>
+        <p className="text-muted-foreground">Select a warehouse to manage settings.</p>
       </div>
     );
   }
@@ -600,7 +600,7 @@ export const GeneralSettings = () => {
             Danger Zone
           </CardTitle>
           <CardDescription>
-            Permanently remove all products in the current branch. This action cannot be undone. Stock
+            Permanently remove all products in the current warehouse. This action cannot be undone. Stock
             transactions and other data linked to products may be affected.
           </CardDescription>
         </CardHeader>
@@ -622,7 +622,7 @@ export const GeneralSettings = () => {
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete all products?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will permanently delete all products in the current branch. This action cannot
+                  This will permanently delete all products in the current warehouse. This action cannot
                   be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>

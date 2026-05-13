@@ -21,7 +21,7 @@ const PAGE_LABELS: Record<string, string> = {
   '/dashboard/settings/profile': 'Profile Settings',
   '/dashboard/settings/users': 'User Management',
   '/dashboard/settings/billing': 'Billing',
-  '/dashboard/settings/branches': 'Branches',
+  '/dashboard/settings/branches': 'Warehouses',
   '/dashboard/settings/general': 'General Settings',
   '/dashboard/settings/license': 'License',
   '/dashboard/settings/invoicing': 'Invoicing',
