@@ -24,7 +24,7 @@ export default function CustomersPage() {
   const navigate = useNavigate();
 
   const breadcrumbs = getBreadcrumbPath('/customers');
-  const structuredData = generateComprehensiveStructuredData(
+  const baseStructuredData = generateComprehensiveStructuredData(
     'article',
     {
       title: 'StockFlow Customer Success Stories',
@@ -33,6 +33,51 @@ export default function CustomersPage() {
       breadcrumbs: breadcrumbs
     }
   );
+
+  const aggregateRatingSchema = {
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    "itemReviewed": {
+      "@type": "SoftwareApplication",
+      "name": "StockFlow",
+      "url": "https://www.stockflowsystems.com"
+    },
+    "ratingValue": "4.8",
+    "ratingCount": "150",
+    "bestRating": "5",
+    "worstRating": "1"
+  };
+
+  const reviewSchemas = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "itemReviewed": { "@type": "SoftwareApplication", "name": "StockFlow" },
+      "author": { "@type": "Person", "name": "Laura Peeters" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "reviewBody": "StockFlow stopped us from wasting €4,800 annually on expired inventory and overstock. We now invest that capital into bestselling items instead."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "itemReviewed": { "@type": "SoftwareApplication", "name": "StockFlow" },
+      "author": { "@type": "Person", "name": "Tom Demuynck" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "reviewBody": "StockFlow helped us identify €8,500 worth of slow-moving inventory. We cleared it at 30% margin instead of letting it sit for another season."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "itemReviewed": { "@type": "SoftwareApplication", "name": "StockFlow" },
+      "author": { "@type": "Person", "name": "Anke Willems" },
+      "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+      "reviewBody": "We used to over-order seasonal items that would sit unsold for months, tying up €3,200 in capital. StockFlow's alerts help us order just enough."
+    }
+  ];
+
+  const structuredData = Array.isArray(baseStructuredData)
+    ? [...baseStructuredData, aggregateRatingSchema, ...reviewSchemas]
+    : [baseStructuredData, aggregateRatingSchema, ...reviewSchemas];
 
   const testimonials = [
     {

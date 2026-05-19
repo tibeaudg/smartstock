@@ -1,4 +1,5 @@
 import React from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Button } from '@/components/ui/button';
 import { Lock } from 'lucide-react';
@@ -40,9 +41,7 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
       window.location.href = '/dashboard/settings/billing';
       return;
     }
-    const { data: { session } } = await import('@/integrations/supabase/client').then(
-      (m) => m.supabase.auth.getSession()
-    );
+    const { data: { session } } = await supabase.auth.getSession();
     if (!session?.user) {
       window.location.href = '/auth';
       return;

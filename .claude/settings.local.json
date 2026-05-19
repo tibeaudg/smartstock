@@ -33,7 +33,12 @@
       "PowerShell(Get-ChildItem \"$env:APPDATA\\\\supabase\" -ErrorAction SilentlyContinue; Get-ChildItem \"$env:LOCALAPPDATA\\\\supabase\" -ErrorAction SilentlyContinue)",
       "Bash(xargs grep -l \"from\\('smtp_settings'\\)\")",
       "Bash(powershell -Command \"\\(Get-Content 'src\\\\pages\\\\admin.tsx'\\)[5]\")",
-      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\admin.tsx\"\\)[5])"
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\admin.tsx\"\\)[5])",
+      "PowerShell(head -30)",
+      "Bash(grep \"\\\\.tsx$\")",
+      "Bash(not exist *)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\SEO\\\\comparisons\")",
+      "PowerShell($content = Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\public\\\\sitemap.xml\" -Raw; $idx = $content.LastIndexOf\\('</urlset>'\\); $content.Substring\\($idx - 200, 210\\))"
     ]
   }
 }

@@ -92,9 +92,9 @@ export default function ContactPage() {
   const structuredData = generateComprehensiveStructuredData(
     'contact',
     {
-      title: 'Contact StockFlow - Support & Vragen',
+      title: 'Contact StockFlow - Get Support or Request a Demo',
       url: 'https://www.stockflowsystems.com/contact',
-      description: 'Neem contact op met ons team. We beantwoorden meestal binnen 1 uur. Vragen over voorraadbeheer, demo\'s of support.',
+      description: 'Get in touch with the StockFlow team. We typically reply within 1 hour. Questions about inventory management, demos, or support? We\'re here to help.',
       breadcrumbs: [
         { name: 'Home', url: 'https://www.stockflowsystems.com', position: 1 },
         { name: 'Contact', url: 'https://www.stockflowsystems.com/contact', position: 2 }
@@ -105,9 +105,9 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-blue-50">
       <SEO
-        title="Contact StockFlow - Support & Vragen"
-        description="Neem contact op met ons team. We beantwoorden meestal binnen 1 uur. Vragen over voorraadbeheer, demo's of support? Contact StockFlow voor hulp."
-        keywords="stockflow contact, voorraadbeheer support, inventory management help, contact, klantenservice, hulp, demo aanvragen"
+        title="Contact StockFlow - Get Support or Request a Demo"
+        description="Get in touch with the StockFlow team. We typically reply within 1 hour. Questions about inventory management, demos, or support? We're here to help."
+        keywords="stockflow contact, inventory management support, demo request, contact us, customer service, help"
         url="https://www.stockflowsystems.com/contact"
         structuredData={structuredData}
       />

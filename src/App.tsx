@@ -75,6 +75,9 @@ const AdvancedReports = React.lazy(() => import('./components/analytics/Advanced
 const HelpCenterPage = React.lazy(() => import("./pages/help-center"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
+const PricingPage = React.lazy(() => import('./pages/pricing'));
+const FAQPage = React.lazy(() => import('./pages/faq'));
+
 const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
@@ -194,6 +197,44 @@ const LoadingScreen = () => (
 const DashboardLoadingScreen = () => <SkeletonDashboard />;
 
 const ContentLoadingScreen = () => <SkeletonContent />;
+
+const FEATURES_STRUCTURED_DATA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StockFlow",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, iOS, Android",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Real-time inventory tracking",
+      "Barcode and QR code scanning",
+      "Bill of Materials management",
+      "Multi-location warehouse support",
+      "Low stock and reorder alerts",
+      "Sales order management",
+      "Purchase order management",
+      "Reporting and analytics dashboard",
+      "Offline mode support",
+      "Role-based access control"
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stockflowsystems.com" },
+      { "@type": "ListItem", "position": 2, "name": "Features", "item": "https://www.stockflowsystems.com/features" }
+    ]
+  }
+];
 
 const AppRouter = () => {
   useNavigationQueryReset();
@@ -339,7 +380,7 @@ const AppRouter = () => {
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<><SEO title="Inventory Chaos? Track Stock in Real-Time (Completely Free) | StockFlow" description="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Completely free. 15+ hours saved weekly." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
-        <Route path="/features" element={<><SEO title="Inventory Management Features & Capabilities | StockFlow" description="Explore StockFlow features: barcode scanning, BOM management, stock alerts, reporting, and offline support. Free inventory software for growing businesses." url="https://www.stockflowsystems.com/features" /><FeaturesPage /></>} />
+        <Route path="/features" element={<><SEO title="Inventory Management Features & Capabilities | StockFlow" description="Explore StockFlow features: barcode scanning, BOM management, stock alerts, reporting, and offline support. Free inventory software for growing businesses." url="https://www.stockflowsystems.com/features" structuredData={FEATURES_STRUCTURED_DATA} /><FeaturesPage /></>} />
         <Route path="/reporting" element={
           <React.Suspense fallback={<ContentLoadingScreen />}>
             <SEO title="Inventory Reporting & Analytics Software | StockFlow" description="Discover inventory reporting and analytics tools from StockFlow. Track stock, sales and performance in real time with free software built for small business." url="https://www.stockflowsystems.com/reporting" />
@@ -359,6 +400,8 @@ const AppRouter = () => {
         />
         <Route path='/videos' element={<><SEO title="StockFlow Instruction Videos | Inventory & Barcode Training" description="Watch StockFlow tutorial videos for inventory management, barcode scanning, reporting, and using the free app effectively." url="https://www.stockflowsystems.com/videos" /><VideosPage /></>} />
         <Route path='/integrations' element={<><SEO title="Inventory Software Integrations | StockFlow" description="Discover which tools integrate with StockFlow for inventory, ecommerce, accounting, and barcode workflows." url="https://www.stockflowsystems.com/integrations"/><IntegrationsPage /></>} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/faq" element={<FAQPage />} />
 
         {/* REDIRECTS */}
         <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />

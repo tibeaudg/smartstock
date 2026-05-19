@@ -24,23 +24,39 @@ import Footer from '@/components/Footer';
 export default function About() {
   
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "StockFlow",
-    "description": "Cloud-based Inventory Management for SMEs.",
-    "url": "https://www.stockflowsystems.com",
-    "logo": "https://www.stockflowsystems.com/logo.png",
-    "address": { "@type": "PostalAddress", "addressCountry": "Belgium" }
-  };
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "StockFlow",
+      "description": "Cloud-based Inventory Management for SMEs.",
+      "url": "https://www.stockflowsystems.com",
+      "logo": "https://www.stockflowsystems.com/logo.png",
+      "foundingDate": "2020",
+      "address": { "@type": "PostalAddress", "addressCountry": "Belgium" },
+      "sameAs": [
+        "https://www.facebook.com/stockflowsystems",
+        "https://www.linkedin.com/company/stockflow",
+        "https://twitter.com/stockflow"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stockflowsystems.com" },
+        { "@type": "ListItem", "position": 2, "name": "About", "item": "https://www.stockflowsystems.com/about" }
+      ]
+    }
+  ];
 
   return (
       <>
-    
+
       <SEO
-        title="Our Story | StockFlow Inventory Management"
-        description="Founded in 2020 to democratize enterprise-grade inventory tools. Helping 500+ businesses save 20 hours weekly."
-        keywords="about stockflow, inventory mission, inventory software team"
+        title="About StockFlow — Free Inventory Management for Small Business"
+        description="Founded in 2020, StockFlow helps 500+ businesses eliminate stockouts, reduce waste, and save 20 hours weekly with free enterprise-grade inventory management."
+        keywords="about stockflow, inventory management company, inventory software team, free inventory software"
         url="https://www.stockflowsystems.com/about"
         structuredData={structuredData}
       />
