@@ -87,7 +87,8 @@ async function syncSitemap() {
   const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
 
   if (fs.existsSync(SITEMAP_PATH)) {
-    const xmlContent = fs.readFileSync(SITEMAP_PATH, 'utf-8');
+    const rawContent = fs.readFileSync(SITEMAP_PATH, 'utf-8');
+    const xmlContent = rawContent.replace(/^(\s*<\?xml[^?]*\?>\s*)+/, '');
     const parsed = parser.parse(xmlContent);
     if (parsed?.urlset) {
       sitemapData = parsed;
