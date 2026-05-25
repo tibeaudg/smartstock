@@ -1,17 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import Header from './HeaderPublic';
 import Footer from './Footer';
-
-import { 
-  Package, BarChart3, Zap, ChevronLeft, ChevronRight, 
-  Scan, CheckCircle, Star, Shield, Users, TrendingUp,
-  Clock, Smartphone, Building, Award, ArrowRight, WifiOff,
-  Camera, RefreshCw, BarChart, Globe
+import {
+  BarChart, Zap, ChevronDown,
+  Scan, CheckCircle, Star, Shield, TrendingUp,
+  Clock, Smartphone, Building, ArrowRight, WifiOff,
+  Camera, Globe, Package, X, Check,
+  type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { StructuredData } from '@/components/StructuredData';
+
+/* ─── Data ─────────────────────────────────────────────────────────── */
 
 const homeFaqData = [
   {
@@ -60,10 +61,7 @@ const homeStructuredData = [
     "publisher": {
       "@type": "Organization",
       "name": "StockFlow",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://www.stockflowsystems.com/logo.png"
-      }
+      "logo": { "@type": "ImageObject", "url": "https://www.stockflowsystems.com/logo.png" }
     }
   },
   {
@@ -72,116 +70,93 @@ const homeStructuredData = [
     "mainEntity": homeFaqData.map((faq) => ({
       "@type": "Question",
       "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
     }))
   }
 ];
 
-// Trust Badges Component
-const TrustBadges = () => {
-  const badges = [
-    { icon: Star, text: "4.8/5 Rating", subtext: "150+ Reviews" },
-    { icon: Shield, text: "Bank-Level Security", subtext: "SSL Encrypted" },
-    { icon: Users, text: "500+ Businesses", subtext: "Trust StockFlow" },
-    { icon: Clock, text: "Free Forever", subtext: "No Credit Card" }
-  ];
+/* ─── Animation primitive ────────────────────────────────────────────
+   Wraps any subtree in an IntersectionObserver-driven reveal.
+   Triggers once when the element scrolls into view.                  */
+
+type AnimVariant = 'fadeUp' | 'fadeIn' | 'fadeLeft' | 'fadeRight' | 'scaleIn';
+
+const Reveal = ({
+  children,
+  delay = 0,
+  className = '',
+  variant = 'fadeUp',
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  variant?: AnimVariant;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); io.disconnect(); } },
+      { threshold: 0.1, rootMargin: '0px 0px -48px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const variants: Record<AnimVariant, string> = {
+    fadeUp:    visible ? 'opacity-100 translate-y-0'  : 'opacity-0 translate-y-8',
+    fadeIn:    visible ? 'opacity-100'                : 'opacity-0',
+    fadeLeft:  visible ? 'opacity-100 translate-x-0'  : 'opacity-0 -translate-x-8',
+    fadeRight: visible ? 'opacity-100 translate-x-0'  : 'opacity-0 translate-x-8',
+    scaleIn:   visible ? 'opacity-100 scale-100'      : 'opacity-0 scale-95',
+  };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-      {badges.map((badge, idx) => (
-        <div key={idx} className="flex flex-col items-center text-center p-4 bg-white shadow-lg rounded-lg backdrop-blur-sm">
-          <badge.icon className="w-8 h-8 text-blue-600 mb-2" />
-          <p className="font-semibold text-sm text-gray-900">{badge.text}</p>
-          <p className="text-xs text-gray-600">{badge.subtext}</p>
-        </div>
-      ))}
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${variants[variant]} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
     </div>
   );
 };
 
-// Social Proof Component
-const SocialProof = () => {
-  const testimonials = [
-    {
-      name: "Laura Peeters",
-      role: "Retail Store Owner",
-      savings: "$4,800/year",
-      quote: "Stopped wasting money on expired inventory and overstock. Now we invest that capital into bestsellers.",
-      rating: 5,
-      photo: "/Laura.png"
-    },
-    {
-      name: "Tom Demuynck", 
-      role: "Boutique Manager",
-      savings: "$8,500 recovered",
-      quote: "Identified slow-moving inventory worth $8,500. Cleared it at 30% margin instead of letting it sit.",
-      rating: 5,
-      photo: "/jan.png"
-    },
-    {
-      name: "Marie Dubois",
-      role: "E-commerce Business",
-      savings: "75% time saved",
-      quote: "What took 4 hours now takes 1 hour. StockFlow pays for itself in time savings alone.",
-      rating: 5,
-      photo: "/anke.png"
-    }
-  ];
+/* ─── Sub-components ─────────────────────────────────────────────── */
 
-  return (
-    <div className="grid md:grid-cols-3 gap-6">
-      {testimonials.map((t, idx) => (
-        <div key={idx} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-          <div className="flex mb-2">
-            {[...Array(t.rating)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            ))}
-          </div>
-          <p className="text-gray-700 mb-4 italic">"{t.quote}"</p>
-          <div className="border-t pt-4 flex items-center gap-4">
-            <img 
-              src={t.photo} 
-              alt={t.name}
-              className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 flex-shrink-0"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-            <div className="flex-1">
-              <p className="font-semibold text-gray-900">{t.name}</p>
-              <p className="text-sm text-gray-600">{t.role}</p>
-              <p className="text-sm font-bold text-green-600 mt-1">{t.savings}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
+const SectionLabel = ({ icon: Icon, text }: { icon: LucideIcon; text: string }) => (
+  <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-3.5 py-1.5 mb-5">
+    <Icon className="w-3.5 h-3.5 text-blue-600" />
+    <span className="text-blue-700 text-xs font-semibold uppercase tracking-widest">{text}</span>
+  </div>
+);
 
-// FAQ Component
+const SectionHeading = ({ children, sub }: { children: ReactNode; sub?: string }) => (
+  <div className="text-center mb-14">
+    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3 leading-tight">{children}</h2>
+    {sub && <p className="text-slate-500 text-lg max-w-xl mx-auto">{sub}</p>}
+  </div>
+);
+
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
-
-  const faqs = homeFaqData;
-
   return (
-    <div className="max-w-3xl mx-auto">
-      {faqs.map((faq, idx) => (
-        <div key={idx} className="mb-4">
+    <div className="space-y-2">
+      {homeFaqData.map((faq, idx) => (
+        <div key={idx} className="border border-slate-200 rounded-xl overflow-hidden bg-white">
           <button
             onClick={() => setOpenIndex(openIndex === idx ? -1 : idx)}
-            className="w-full text-left p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow flex justify-between items-center"
+            className="w-full text-left px-6 py-5 hover:bg-slate-50 transition-colors flex justify-between items-center"
           >
-            <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
-            <ChevronRight className={`w-5 h-5 text-blue-600 transition-transform ${openIndex === idx ? 'rotate-90' : ''}`} />
+            <span className="font-semibold text-slate-900 pr-4">{faq.question}</span>
+            <ChevronDown className={`w-5 h-5 text-blue-500 transition-transform flex-shrink-0 ${openIndex === idx ? 'rotate-180' : ''}`} />
           </button>
           {openIndex === idx && (
-            <div className="mt-2 p-6 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+            <div className="px-6 pb-5 border-t border-slate-100">
+              <p className="text-slate-600 leading-relaxed pt-4">{faq.answer}</p>
             </div>
           )}
         </div>
@@ -190,508 +165,548 @@ const FAQ = () => {
   );
 };
 
+/* ─── Page ───────────────────────────────────────────────────────── */
+
 export const HomePage = () => {
-
   const navigate = useNavigate();
+  const handleGetStarted = () => navigate('/auth');
 
-
-  const handleGetStarted = () => {
-    navigate("/auth");    // Track conversion event
-  };
+  // Hero entrance: runs immediately on mount (above the fold)
+  const [heroIn, setHeroIn] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setHeroIn(true), 60); return () => clearTimeout(t); }, []);
+  const heroBase = 'transition-all duration-700 ease-out';
+  const heroVis  = (delay: number) => ({
+    className: `${heroBase} ${heroIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`,
+    style: { transitionDelay: `${delay}ms` },
+  });
 
   return (
     <>
-    <StructuredData data={homeStructuredData} />
-    <Header />
+      <StructuredData data={homeStructuredData} />
+      <Header />
 
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-16">
-      {/* Hero Section - Above the Fold */}
-      <section className="pt-20 pb-12 md:pb-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Sub-header: Rating & Users */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-6">
-            <div className="flex items-center gap-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span className="text-sm font-medium text-gray-700">4.9/5 rating</span>
-            </div>
-            <span className="hidden sm:inline text-gray-300">•</span>
-            <span className="text-sm font-medium text-gray-700">3200+ happy users</span>
-          </div>
+      <div className="min-h-screen bg-white">
 
-          {/* H1 with Primary Keyword */}
-          <div className="text-center mb-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 leading-tight">
-              Free Inventory Management<br />
-              <span className="text-blue-600">That Actually Works</span>
-            </h1>
-            <p className="text-lg md:text-xl text-blue-600/90 font-medium mb-4">
-              For Growing Businesses
-            </p>
-            <p className="text-base md:text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
-              Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform.
-            </p>
-          </div>
+        {/* ══════════════════════════════════════════════════
+            HERO  —  split layout, fully light
+        ══════════════════════════════════════════════════ */}
+        <section className="pt-24 pb-16 md:pb-20 px-4 bg-gradient-to-br from-white via-blue-50/40 to-white overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
 
-          {/* Feature Batches */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
-            {[
-              { icon: CheckCircle, text: "GDPR Compliant", color: "text-green-600" },
-              { icon: Zap, text: "Fast & Reliable", color: "text-blue-600" },
-              { icon: Globe, text: "Global Infrastructure", color: "text-purple-600" },
-              { icon: Shield, text: "Secure Data", color: "text-green-600" }
-            ].map((batch, idx) => (
-              <div key={idx} className="flex items-center gap-2 justify-center md:justify-start">
-                <batch.icon className={`w-5 h-5 flex-shrink-0 ${batch.color}`} />
-                <span className="text-sm font-medium text-gray-700">{batch.text}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Primary CTA */}
-          <div className="max-w-md mx-auto mb-12 md:mb-16">
-            <Button 
-              onClick={handleGetStarted}
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-            >
-              Get My Free Account
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <p className="text-center text-sm text-gray-500 mt-3">
-              ✓ Free forever  ✓ 2 minute setup  ✓ Cancel anytime
-            </p>
-          </div>
-
-          {/* Platform Screenshot */}
-          <div className="relative max-w-5xl mx-auto">
-            <div className="rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
-              <img 
-                src="/adam.png" 
-                alt="StockFlow platform dashboard showing inventory management" 
-                className="w-full h-auto object-contain"
-                style={{ maxHeight: 'min(70vh, 600px)' }}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (fallback) fallback.style.display = 'flex';
-                }}
-              />
-              <div 
-                className="hidden w-full min-h-[300px] md:min-h-[400px] bg-gradient-to-br from-gray-50 to-gray-100 items-center justify-center"
-                style={{ display: 'none' }}
-              >
-                <BarChart className="w-24 h-24 text-blue-600 opacity-50" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-        <section className="py-20 px-4 bg-gradient-to-b from-white to-blue-50">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-                About Stockflow
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Image Left */}
-              <div className="order-2 md:order-1">
-
-
-                <div className=" overflow-hidden">
-                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
-                    <img 
-                      src="/dashboard.png" 
-                      alt="StockFlow dashboard showing inventory management" 
-                      className="w-full h-full object-contain border-2 border-blue-200 rounded-lg"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
-                      <BarChart className="w-16 h-16 text-blue-600 opacity-50" />
+              {/* Left: copy */}
+              <div>
+                {/* Rating pill */}
+                <div {...heroVis(0)}>
+                  <div className="inline-flex items-center gap-2.5 bg-white border border-slate-200 rounded-full px-4 py-2 shadow-sm mb-8">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />)}
                     </div>
+                    <span className="text-slate-600 text-sm">4.9/5 rating</span>
+                    <span className="text-slate-300">·</span>
+                    <span className="text-slate-600 text-sm">3,200+ happy users</span>
+                  </div>
+                </div>
+
+                <div {...heroVis(100)}>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-5 leading-[1.08] tracking-tight">
+                    Free Inventory<br />
+                    Management<br />
+                    <span className="text-blue-600">That Actually Works</span>
+                  </h1>
+                </div>
+
+                <div {...heroVis(180)}>
+                  <p className="text-slate-500 text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+                    Track stock levels, manage suppliers, and grow your business with our powerful yet simple inventory management platform. For Growing Businesses.
+                  </p>
+                </div>
+
+                {/* Trust chips */}
+                <div {...heroVis(240)}>
+                  <div className="grid grid-cols-2 gap-3 mb-8 max-w-sm">
+                    {[
+                      { icon: CheckCircle, label: 'GDPR Compliant',       color: 'text-emerald-600' },
+                      { icon: Zap,         label: 'Fast & Reliable',       color: 'text-blue-600'   },
+                      { icon: Globe,       label: 'Global Infrastructure', color: 'text-violet-600' },
+                      { icon: Shield,      label: 'Secure Data',           color: 'text-emerald-600' },
+                    ].map((chip, idx) => (
+                      <div key={idx} className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
+                        <chip.icon className={`w-4 h-4 flex-shrink-0 ${chip.color}`} />
+                        <span className="text-slate-700 text-xs font-medium">{chip.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div {...heroVis(300)}>
+                  <Button
+                    onClick={handleGetStarted}
+                    className="bg-blue-600 hover:bg-blue-500 text-white h-13 px-8 text-base font-semibold rounded-xl shadow-md shadow-blue-200 hover:shadow-lg hover:shadow-blue-300 hover:scale-[1.02] transition-all mb-3"
+                  >
+                    Get My Free Account
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                  <p className="text-slate-400 text-sm">✓ Free forever · ✓ 2 minute setup · ✓ Cancel anytime</p>
+                </div>
+              </div>
+
+              {/* Right: screenshot */}
+              <div {...heroVis(200)}>
+                <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-200/80 ring-1 ring-slate-900/5">
+                  {/* Browser chrome */}
+                  <div className="bg-slate-100 px-4 py-3 flex items-center gap-3 border-b border-slate-200">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-400/70" />
+                      <div className="w-3 h-3 rounded-full bg-amber-400/70" />
+                      <div className="w-3 h-3 rounded-full bg-emerald-400/70" />
+                    </div>
+                    <div className="flex-1 mx-4">
+                      <div className="bg-white border border-slate-200 rounded-md h-6 max-w-xs flex items-center px-3">
+                        <span className="text-slate-400 text-xs">app.stockflowsystems.com</span>
+                      </div>
+                    </div>
+                  </div>
+                  <img
+                    src="/adam.png"
+                    alt="StockFlow platform dashboard showing inventory management"
+                    className="w-full h-auto object-contain bg-white"
+                    style={{ maxHeight: 'min(70vh, 560px)' }}
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const fb = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (fb) fb.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden w-full min-h-[280px] bg-slate-50 items-center justify-center" style={{ display: 'none' }}>
+                    <BarChart className="w-20 h-20 text-blue-300" />
                   </div>
                 </div>
               </div>
-              {/* Text Right */}
-              <div className="order-1 md:order-2">
-                <div className="">
-                  <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-                    Whether you're managing complex manufacturing with <Link to="/bill-of-materials-software-free" className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors">Bill of Materials (BOM) software</Link>, comparing the <Link to="/best-inventory-management-software" className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors">best inventory management software</Link> solutions, or optimizing operations with a comprehensive <Link to="/warehouse-management-system" className="text-blue-600 hover:text-blue-700 font-semibold underline transition-colors">warehouse management system</Link>, StockFlow provides enterprise-grade inventory control that scales with your business completely free forever.
-                  </p>
-                </div>
-              </div>
+
             </div>
           </div>
         </section>
 
-      {/* Problem-Solution Section */}
-      <section className="py-16 px-4 bg-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="mb-4 bg-red-100 text-red-700">The Problem</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+        {/* ══════════════════════════════════════════════════
+            STATS BAR
+        ══════════════════════════════════════════════════ */}
+        <section className="border-y border-slate-200 bg-white px-4 py-10">
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
+            {[
+              { value: '4.8/5',  label: 'Average Rating',      sub: '150+ reviews'         },
+              { value: '500+',   label: 'Businesses',          sub: 'Trust StockFlow'       },
+              { value: 'SSL',    label: 'Bank-Level Security', sub: 'End-to-end encrypted'  },
+              { value: 'Free',   label: 'Forever',             sub: 'No credit card needed' },
+            ].map((s, idx) => (
+              <Reveal key={idx} delay={idx * 80} className="text-center px-6 py-2">
+                <div className="text-2xl font-bold text-blue-600 tabular-nums">{s.value}</div>
+                <div className="text-slate-700 font-medium text-sm mt-1">{s.label}</div>
+                <div className="text-slate-400 text-xs mt-0.5">{s.sub}</div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════
+            HOW IT WORKS  —  moved up for quick understanding
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-slate-50">
+          <div className="max-w-5xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-5">
+                <SectionLabel icon={Zap} text="Quick Start" />
+              </div>
+              <SectionHeading sub="Takes less than 2 minutes">
+                Get Started in 3 Simple Steps
+              </SectionHeading>
+            </Reveal>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { step: '01', icon: Package,    title: 'Import Products',   desc: 'Upload your Excel file or add products manually. No setup needed.' },
+                { step: '02', icon: Scan,       title: 'Scan & Count',      desc: 'Use your phone camera to scan barcodes. Update stock from anywhere.' },
+                { step: '03', icon: TrendingUp, title: 'Track & Optimize',  desc: 'Get alerts, identify bestsellers, and flag dead stock automatically.' },
+              ].map((s, idx) => (
+                <Reveal key={idx} delay={idx * 120} variant="scaleIn">
+                  <div className="bg-white rounded-2xl border border-slate-200 p-8 hover:border-blue-200 hover:shadow-md hover:-translate-y-1 transition-all h-full">
+                    <div className="flex items-center gap-4 mb-5">
+                      <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <s.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <span className="text-4xl font-bold text-slate-100 font-mono leading-none select-none">{s.step}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 mb-2">{s.title}</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════
+            PROBLEM / SOLUTION
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-5">
+                <SectionLabel icon={Shield} text="Why StockFlow" />
+              </div>
+              <SectionHeading sub="See how StockFlow transforms your inventory operations">
                 Inventory Chaos Is Costing You Money
-              </h2>
-              <ul className="space-y-4">
+              </SectionHeading>
+            </Reveal>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <Reveal variant="fadeLeft">
+                <div className="rounded-2xl border border-slate-200 overflow-hidden h-full">
+                  <div className="flex items-center gap-3 px-6 py-4 bg-red-50 border-b border-red-100">
+                    <div className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
+                      <X className="w-4 h-4 text-red-500" />
+                    </div>
+                    <span className="font-semibold text-red-900 text-sm">Without StockFlow</span>
+                  </div>
+                  <div className="p-6 space-y-4 bg-white">
+                    {[
+                      'Stockouts losing you $1,000+ in sales every month',
+                      'Dead stock tying up $5,000+ in capital',
+                      '4+ hours wasted on manual counting each week',
+                      'Excel spreadsheets full of errors',
+                      "No idea what's actually in your backroom",
+                    ].map((p, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="w-5 h-5 rounded-full bg-red-50 border border-red-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <X className="w-3 h-3 text-red-500" />
+                        </div>
+                        <span className="text-slate-600 text-sm leading-relaxed">{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal variant="fadeRight">
+                <div className="rounded-2xl border border-emerald-200 overflow-hidden h-full">
+                  <div className="flex items-center gap-3 px-6 py-4 bg-emerald-50 border-b border-emerald-100">
+                    <div className="w-7 h-7 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                      <Check className="w-4 h-4 text-emerald-600" />
+                    </div>
+                    <span className="font-semibold text-emerald-900 text-sm">With StockFlow</span>
+                  </div>
+                  <div className="p-6 space-y-4 bg-white">
+                    {[
+                      'Auto low-stock alerts prevent stockouts',
+                      'Flag dead stock draining your capital',
+                      'Scan & count in minutes with your phone',
+                      'Real-time accuracy, zero spreadsheets',
+                      'See exact quantities at every location',
+                    ].map((s, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="w-3 h-3 text-emerald-600" />
+                        </div>
+                        <span className="text-slate-600 text-sm leading-relaxed">{s}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════
+            FEATURES
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-slate-50">
+          <div className="max-w-6xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-5">
+                <SectionLabel icon={CheckCircle} text="Features" />
+              </div>
+              <SectionHeading sub="All features included — free forever">
+                Everything You Need to Master Inventory
+              </SectionHeading>
+            </Reveal>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Smartphone, title: 'Scan with Your Phone',
+                  benefit: 'Count inventory in minutes, not hours',
+                  items: ['Works offline', 'No special hardware', 'iOS & Android'],
+                  badge: { label: 'Works Offline', icon: WifiOff },
+                },
+                {
+                  icon: TrendingUp, title: 'Dead Stock Alerts',
+                  benefit: 'Recover thousands in tied-up capital',
+                  items: ['Auto-flag slow movers', 'Custom thresholds', 'Liquidation optimizer'],
+                  badge: null,
+                },
+                {
+                  icon: Building, title: 'Multi-Location Tracking',
+                  benefit: 'See stock at every location instantly',
+                  items: ['Real-time sync', 'Transfer tracking', 'Per-location alerts'],
+                  badge: null,
+                },
+              ].map((f, idx) => (
+                <Reveal key={idx} delay={idx * 120} variant="fadeUp">
+                  <div className="bg-white rounded-2xl border border-slate-200 p-8 hover:border-blue-200 hover:shadow-lg hover:-translate-y-1.5 transition-all h-full relative group">
+                    {f.badge && (
+                      <div className="absolute top-5 right-5 flex items-center gap-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium px-2.5 py-1 rounded-full border border-emerald-200">
+                        <f.badge.icon className="w-3 h-3" />
+                        {f.badge.label}
+                      </div>
+                    )}
+                    <div className="w-12 h-12 bg-blue-600 group-hover:bg-blue-500 transition-colors rounded-xl flex items-center justify-center mb-6">
+                      <f.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{f.title}</h3>
+                    <p className="text-blue-600 text-sm font-medium mb-6">{f.benefit}</p>
+                    <ul className="space-y-3">
+                      {f.items.map((item, i) => (
+                        <li key={i} className="flex items-center gap-2.5">
+                          <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                          <span className="text-sm text-slate-600">
+                            {item === 'Works offline'
+                              ? 'Perfect for basements, remote locations, poor Wi-Fi'
+                              : item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════
+            BARCODE SCANNING  —  light blue instead of dark
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-gradient-to-b from-blue-50 to-white">
+          <div className="max-w-7xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-5">
+                <SectionLabel icon={Camera} text="Mobile Barcode Scanning" />
+              </div>
+              <SectionHeading sub="No special hardware needed — just your phone's camera.">
+                See It In Action
+              </SectionHeading>
+            </Reveal>
+
+            <div className="grid lg:grid-cols-2 gap-10 mb-14">
+              {/* Scanner image */}
+              <Reveal variant="fadeLeft">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-8 flex items-center justify-center h-full">
+                  <img
+                    src="/scanner.png"
+                    alt="Barcode scanning demonstration"
+                    className="w-full h-auto object-contain max-h-80"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                </div>
+              </Reveal>
+
+              {/* Features */}
+              <div className="space-y-4">
                 {[
-                  "Stockouts losing you $1,000+ in sales every month",
-                  "Dead stock tying up $5,000+ in capital",
-                  "4+ hours wasted on manual counting each week",
-                  "Excel spreadsheets full of errors",
-                  "No idea what's actually in your backroom"
-                ].map((problem, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <span className="text-red-500 mr-3 text-xl">✗</span>
-                    <span className="text-gray-700 text-lg">{problem}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <Badge className="mb-4 bg-green-100 text-green-700">The Solution</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                StockFlow Fixes All of This
-              </h2>
-              <ul className="space-y-4">
-                {[
-                  "Auto low-stock alerts prevent stockouts",
-                  "Flag dead stock draining your capital",
-                  "Scan & count in minutes with your phone",
-                  "Real-time accuracy, zero spreadsheets",
-                  "See exact quantities at every location"
-                ].map((solution, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <CheckCircle className="text-green-500 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 text-lg">{solution}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Real Results from Real Businesses
-            </h2>
-            <p className="text-xl text-gray-600">
-              See how much money StockFlow has saved our customers
-            </p>
-          </div>
-          <SocialProof />
-        </div>
-      </section>
-
-
-
-            {/* Barcode Scanning Demo Section */}
-            <section className="py-20 px-4 bg-blue-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-100">
-              <Camera className="w-3 h-3 mr-1 inline" />
-              Mobile Barcode Scanning
-            </Badge>
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              See It In Action
-            </h2>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Scan a barcode and watch stock update instantly. No special hardware needed just your phone's camera.
-            </p>
-          </div>
-
-          {/* Main Demo Area */}
-          <div className="grid lg:grid-cols-2 gap-8 mb-12">
-            {/* Left: Demo Video/Image */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 overflow-hidden">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden mb-4">
-                {/* Primary demo image */}
-                <img 
-                  src="/scanner.png" 
-                  alt="Barcode scanning demonstration" 
-                  className="w-150 h-150 object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-  
-              </div>
-
-            </div>
-
-            {/* Right: Key Features */}
-            <div className="space-y-4">
-              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-600">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Zap className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">Instant Updates</h3>
-                    <p className="text-gray-600 text-sm">Stock levels update in real-time across all devices and locations. No delays, no manual entry errors.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-600">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">99.9% Accuracy</h3>
-                    <p className="text-gray-600 text-sm">Barcode scanning eliminates human error. No more typos, wrong quantities, or misplaced items.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-purple-600">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <WifiOff className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">Works Offline</h3>
-                    <p className="text-gray-600 text-sm">Scan in basements, warehouses, or remote locations. Changes sync automatically when you reconnect.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-orange-600">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-900 mb-2">5x Faster</h3>
-                    <p className="text-gray-600 text-sm">What used to take hours of manual counting now takes minutes. Save 40-60% of your inventory time.</p>
-                  </div>
-                </div>
+                  { icon: Zap,          title: 'Instant Updates', accent: 'blue',
+                    desc: 'Stock levels update in real-time across all devices and locations. No delays, no manual entry errors.' },
+                  { icon: CheckCircle,  title: '99.9% Accuracy',  accent: 'emerald',
+                    desc: 'Barcode scanning eliminates human error. No more typos, wrong quantities, or misplaced items.' },
+                  { icon: WifiOff,      title: 'Works Offline',   accent: 'violet',
+                    desc: 'Scan in basements, warehouses, or remote locations. Changes sync when you reconnect.' },
+                  { icon: Clock,        title: '5× Faster',       accent: 'amber',
+                    desc: 'What used to take hours now takes minutes. Save 40–60% of your inventory time.' },
+                ].map((item, idx) => {
+                  const accents: Record<string, string> = {
+                    blue:   'bg-blue-50   border-blue-200   text-blue-600',
+                    emerald:'bg-emerald-50 border-emerald-200 text-emerald-600',
+                    violet: 'bg-violet-50  border-violet-200  text-violet-600',
+                    amber:  'bg-amber-50   border-amber-200   text-amber-600',
+                  };
+                  const [bg, border, text] = accents[item.accent].split(' ');
+                  return (
+                    <Reveal key={idx} delay={idx * 100} variant="fadeRight">
+                      <div className="bg-white rounded-xl border border-slate-200 p-5 flex items-start gap-4 hover:shadow-md hover:border-slate-300 transition-all">
+                        <div className={`w-10 h-10 ${bg} border ${border} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                          <item.icon className={`w-5 h-5 ${text}`} />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-slate-900 mb-1">{item.title}</h3>
+                          <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    </Reveal>
+                  );
+                })}
               </div>
             </div>
-          </div>
 
-          {/* Mobile App Showcase */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 mb-4 aspect-square flex items-center justify-center relative overflow-hidden">
-                <img 
-                  src="/mobile-app.png" 
-                  alt="Mobile app interface" 
-                  className="max-w-full max-h-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
-                  <Smartphone className="w-16 h-16 text-blue-600" />
-                </div>
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2">Mobile App</h3>
-              <p className="text-sm text-gray-600">Scan and manage inventory from your phone, anywhere, anytime.</p>
+            {/* 3-col showcase */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { img: '/mobile-app.png', icon: Smartphone, accent: 'blue-600',   bg: 'bg-blue-50',   title: 'Mobile App',          desc: 'Scan and manage inventory from your phone, anywhere, anytime.' },
+                { img: '/scanner2.png',   icon: Scan,       accent: 'emerald-600', bg: 'bg-emerald-50', title: 'Barcode Scanner',      desc: "Use your phone's camera to scan any standard barcode instantly." },
+                { img: '/dashboard.png',  icon: BarChart,   accent: 'violet-600',  bg: 'bg-violet-50',  title: 'Real-Time Dashboard',  desc: 'See all your inventory data update live as you scan.' },
+              ].map((item, idx) => (
+                <Reveal key={idx} delay={idx * 100} variant="fadeUp">
+                  <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <div className={`${item.bg} p-6 aspect-square flex items-center justify-center relative`}>
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="max-w-full max-h-full object-contain"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          const fb = e.currentTarget.nextElementSibling as HTMLElement;
+                          if (fb) fb.style.display = 'flex';
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
+                        <item.icon className={`w-12 h-12 text-${item.accent} opacity-40`} />
+                      </div>
+                    </div>
+                    <div className="p-5 border-t border-slate-100">
+                      <h3 className="font-semibold text-slate-900 mb-1">{item.title}</h3>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
             </div>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 mb-4 aspect-square flex items-center justify-center relative overflow-hidden">
-                <img 
-                  src="/scanner2.png" 
-                  alt="Barcode scanner interface" 
-                  className="max-w-full max-h-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
-                  <Scan className="w-16 h-16 text-green-600" />
-                </div>
+            <Reveal>
+              <div className="mt-12 text-center">
+                <p className="text-slate-500 mb-4 text-sm">Ready to see it in action?</p>
+                <Button
+                  onClick={handleGetStarted}
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-10 h-13 text-base font-semibold rounded-xl shadow-md shadow-blue-200 hover:shadow-lg hover:scale-[1.02] transition-all"
+                >
+                  Try Free Scanning Now
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Barcode Scanner</h3>
-              <p className="text-sm text-gray-600">Use your phone's camera to scan any standard barcode instantly.</p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════
+            ABOUT  —  moved after scanning for context
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+              <Reveal variant="fadeLeft">
+                <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-xl shadow-slate-100">
+                  <img
+                    src="/dashboard.png"
+                    alt="StockFlow dashboard showing inventory management"
+                    className="w-full h-full object-contain"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                </div>
+              </Reveal>
+
+              <Reveal variant="fadeRight">
+                <SectionLabel icon={Package} text="About StockFlow" />
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                  About StockFlow
+                </h2>
+                <p className="text-slate-600 text-lg leading-relaxed">
+                  Whether you're managing complex manufacturing with{' '}
+                  <Link to="/bill-of-materials-software-free" className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2 transition-colors">
+                    Bill of Materials (BOM) software
+                  </Link>, comparing the{' '}
+                  <Link to="/best-inventory-management-software" className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2 transition-colors">
+                    best inventory management software
+                  </Link>{' '}
+                  solutions, or optimizing operations with a comprehensive{' '}
+                  <Link to="/warehouse-management-system" className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2 transition-colors">
+                    warehouse management system
+                  </Link>,
+                  StockFlow provides enterprise-grade inventory control that scales with your business completely free forever.
+                </p>
+              </Reveal>
             </div>
+          </div>
+        </section>
 
-            <div className="bg-white rounded-xl p-6 shadow-lg text-center">
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 mb-4 aspect-square flex items-center justify-center relative overflow-hidden">
-                <img 
-                  src="/dashboard.png" 
-                  alt="Dashboard view" 
-                  className="max-w-full max-h-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                    if (fallback) fallback.style.display = 'flex';
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center" style={{ display: 'none' }}>
-                  <BarChart className="w-16 h-16 text-purple-600" />
-                </div>
+        {/* ══════════════════════════════════════════════════
+            TESTIMONIALS
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-slate-50">
+          <div className="max-w-6xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-5">
+                <SectionLabel icon={Star} text="Customer Stories" />
               </div>
-              <h3 className="font-bold text-gray-900 mb-2">Real-Time Dashboard</h3>
-              <p className="text-sm text-gray-600">See all your inventory data update live as you scan.</p>
+              <SectionHeading sub="See how much money StockFlow has saved our customers">
+                Real Results from Real Businesses
+              </SectionHeading>
+            </Reveal>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { name: 'Laura Peeters', role: 'Retail Store Owner', savings: '$4,800/year',    photo: '/Laura.png', rating: 5, quote: 'Stopped wasting money on expired inventory and overstock. Now we invest that capital into bestsellers.' },
+                { name: 'Tom Demuynck', role: 'Boutique Manager',    savings: '$8,500 recovered', photo: '/jan.png',   rating: 5, quote: 'Identified slow-moving inventory worth $8,500. Cleared it at 30% margin instead of letting it sit.' },
+                { name: 'Marie Dubois', role: 'E-commerce Business', savings: '75% time saved',  photo: '/anke.png',  rating: 5, quote: 'What took 4 hours now takes 1 hour. StockFlow pays for itself in time savings alone.' },
+              ].map((t, idx) => (
+                <Reveal key={idx} delay={idx * 120} variant="fadeUp">
+                  <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <div className="flex gap-0.5 mb-4">
+                      {[...Array(t.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
+                    </div>
+                    <p className="text-slate-700 leading-relaxed flex-1 text-sm">"{t.quote}"</p>
+                    <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3">
+                      <img
+                        src={t.photo}
+                        alt={t.name}
+                        className="w-11 h-11 rounded-full object-cover border border-slate-200 flex-shrink-0"
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-slate-900 text-sm">{t.name}</p>
+                        <p className="text-slate-500 text-xs truncate">{t.role}</p>
+                      </div>
+                      <span className="flex-shrink-0 bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-emerald-200">
+                        {t.savings}
+                      </span>
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
+        </section>
 
-          {/* Bottom CTA */}
-          <div className="mt-12 text-center">
-            <p className="text-gray-600 mb-4">Ready to see it in action?</p>
-            <Button 
-              onClick={handleGetStarted}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-6 text-lg font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all"
-            >
-              Try Free Scanning Now
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-
-      
-
-      {/* Feature Benefits Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Everything You Need to Master Inventory
-            </h2>
-            <p className="text-xl text-gray-600">
-              All features included - free forever
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Smartphone,
-                title: "Scan with Your Phone",
-                benefit: "Count inventory in minutes, not hours",
-                features: ["Works offline", "No special hardware", "iOS & Android"],
-                offlineHighlight: true
-              },
-              {
-                icon: TrendingUp,
-                title: "Dead Stock Alerts",
-                benefit: "Recover thousands in tied-up capital",
-                features: ["Auto-flag slow movers", "Custom thresholds", "Liquidation optimizer"]
-              },
-              {
-                icon: Building,
-                title: "Multi-Location Tracking",
-                benefit: "See stock at every location instantly",
-                features: ["Real-time sync", "Transfer tracking", "Per-location alerts"]
-              }
-            ].map((feature, idx) => (
-              <div key={idx} className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:shadow-lg relative">
-                {feature.offlineHighlight && (
-                  <Badge className="absolute top-4 right-4 bg-green-100 text-green-700 border-green-300 flex items-center gap-1">
-                    <WifiOff className="w-3 h-3" />
-                    Works Offline
-                  </Badge>
-                )}
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-lg text-blue-600 font-semibold mb-4">{feature.benefit}</p>
-                <ul className="space-y-2">
-                  {feature.features.map((f, i) => (
-                    <li key={i} className="flex items-center text-gray-700">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      {f === "Works offline" ? (
-                        <span className="font-semibold text-green-700">Perfect for basements, remote locations, and poor Wi-Fi areas</span>
-                      ) : (
-                        f
-                      )}
-                    </li>
-                  ))}
-                </ul>
+        {/* ══════════════════════════════════════════════════
+            FAQ
+        ══════════════════════════════════════════════════ */}
+        <section className="py-24 px-4 bg-white">
+          <div className="max-w-3xl mx-auto">
+            <Reveal>
+              <div className="text-center mb-5">
+                <SectionLabel icon={Shield} text="FAQ" />
               </div>
-            ))}
+              <SectionHeading sub="Everything you need to know about StockFlow">
+                Frequently Asked Questions
+              </SectionHeading>
+            </Reveal>
+            <Reveal delay={80}>
+              <FAQ />
+            </Reveal>
           </div>
-        </div>
-      </section>
+        </section>
 
+      </div>
 
-
-
-
-      {/* How It Works Section */}
-      <section className="py-16 px-4 bg-blue-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Get Started in 3 Simple Steps
-            </h2>
-            <p className="text-xl text-gray-600">Takes less than 2 minutes</p>
-          </div>
-          <div className="space-y-8">
-            {[
-              {
-                step: "1",
-                title: "Import Products",
-                description: "Upload your Excel file or add products manually. No setup needed."
-              },
-              {
-                step: "2",
-                title: "Scan & Count",
-                description: "Use your phone camera to scan barcodes. Update stock from anywhere."
-              },
-              {
-                step: "3",
-                title: "Track & Optimize",
-                description: "Get alerts, identify bestsellers, and flag dead stock automatically."
-              }
-            ].map((step, idx) => (
-              <div key={idx} className="flex items-start gap-6 bg-white p-6 rounded-xl border border-gray-200 shadow-md">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-2xl font-bold">{step.step}</span>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-lg text-gray-600">{step.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xl text-gray-600">
-              Everything you need to know about StockFlow
-            </p>
-          </div>
-          <FAQ />
-        </div>
-      </section>
-
-
-    </div>
-
-    <Footer />
+      <Footer />
     </>
   );
-}
+};
