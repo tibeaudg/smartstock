@@ -75,6 +75,5 @@ export const NAV_ITEMS: NavItem[] = [
       ]
     }
   },
-  { id: 'about', label: 'About', to: '/about' },
-  { id: 'support', label: 'Support', to: '/help-center' }
+  { id: 'pricing', label: 'Pricing', to: '/pricing' },
 ];

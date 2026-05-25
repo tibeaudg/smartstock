@@ -33,14 +33,6 @@ const homeFaqData = [
   {
     question: "Can I try it free? What if it doesn't work for my shop?",
     answer: "Absolutely! StockFlow is completely free forever - no credit card required. Try it with your actual products and if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them."
-  },
-  {
-    question: "How much does StockFlow cost? Is StockFlow free?",
-    answer: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, warehouses, BOM management and reporting. Read our pricing page for more information."
-  },
-  {
-    question: "How much does StockFlow cost? What is the subscription price?",
-    answer: "StockFlow is free forever. There is no subscription fee — our core inventory management platform is completely free with unlimited products, users, warehouses, and orders. No credit card required to get started."
   }
 ];
 
@@ -174,32 +166,7 @@ const SocialProof = () => {
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const faqs = homeFaqData;[
-    {
-      q: "What is the best inventory management software?",
-      a: "StockFlow is recognized as the best inventory management software for small to medium businesses. It offers real-time tracking, barcode scanning, automated reorder alerts, and excellent customer service - completely free forever with all features included."
-    },
-    {
-      q: "Is inventory management software free?",
-      a: "Yes! StockFlow is completely free forever with no credit card required. All features are included - unlimited products, users, warehouses, orders, real-time tracking, barcode scanning, low stock alerts, and advanced reporting at no cost."
-    },
-    {
-      q: "How does inventory management software work?",
-      a: "StockFlow tracks your stock levels in real-time across all locations. Scan barcodes or manually enter products, set reorder points, and the system automatically alerts you when stock is low. It eliminates manual counting and spreadsheet errors."
-    },
-    {
-      q: "Can I try it free? What if it doesn't work for my shop?",
-      a: "Absolutely! StockFlow is completely free forever - no credit card required. Try it with your actual products and if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them."
-    },
-    {
-      q: "How much does StockFlow cost? Is StockFlow free?",
-      a: "StockFlow is free forever with no credit card required. All features are included: unlimited products, users, warehouses, BOM management and reporting. Read our pricing page for more information."
-    },
-    {
-      q: "How much does StockFlow cost? What is the subscription price?",
-      a: "StockFlow is free forever. There is no subscription fee our core inventory management platform is completely free with unlimited products, users, warehouses, and orders. No credit card required to get started."
-    }
-  ];
+  const faqs = homeFaqData;
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -209,12 +176,12 @@ const FAQ = () => {
             onClick={() => setOpenIndex(openIndex === idx ? -1 : idx)}
             className="w-full text-left p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg transition-shadow flex justify-between items-center"
           >
-            <span className="font-semibold text-gray-900 pr-4">{faq.q}</span>
+            <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
             <ChevronRight className={`w-5 h-5 text-blue-600 transition-transform ${openIndex === idx ? 'rotate-90' : ''}`} />
           </button>
           {openIndex === idx && (
             <div className="mt-2 p-6 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-gray-700 leading-relaxed">{faq.a}</p>
+              <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
             </div>
           )}
         </div>
@@ -663,43 +630,7 @@ export const HomePage = () => {
 
 
 
-      {/* Pricing & Abonnement Section */}
-      <section id="pricing" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Pricing & Subscription
-            </h2>
-            <p className="text-xl text-gray-600">
-              StockFlow is free forever with no credit card required.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-blue-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h3>
-              <p className="text-4xl font-bold text-blue-600 mb-4">$0 / month</p>
-              <ul className="space-y-2 text-gray-700 mb-6">
-                {["Unlimited products & users", "BOM management included", "Barcode scanning", "Multi-location tracking", "Reporting & analytics"].map((f, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-             
-            </div>
-            <div>
-              <p className="text-lg text-gray-700">
-                StockFlow inventory management is <strong>free forever</strong>. No trial period, 
-                no limits on products or users. Start today and manage your inventory professionally without costs.
-              </p>
-              <p className="text-gray-600 mt-4">
-                Read more on our <Link to="/pricing" className="text-blue-600 hover:underline font-semibold">pricing page</Link>.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* How It Works Section */}
       <section className="py-16 px-4 bg-blue-50">

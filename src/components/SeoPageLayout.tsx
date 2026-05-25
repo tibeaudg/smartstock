@@ -5,6 +5,7 @@ import { BookOpen, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import HeaderPublic from '@/components/HeaderPublic';
 import { SEOEnhancer } from '@/components/seo/SEOEnhancer';
+import { SEO } from '@/components/SEO';
 import { StructuredData } from '@/components/StructuredData';
 import { generateFAQSchema } from '@/lib/structuredData';
 import { SEOPageHero } from './SeoPageHero';
@@ -20,6 +21,7 @@ interface TOCItem {
 interface SEOPageLayoutProps {
   breadcrumbItems?: any[];
   title?: string;
+  seoDescription?: string;
   heroTitle: string;
   dateUpdated?: string;
   heroDescription?: string;
@@ -154,6 +156,7 @@ RelatedArticlesSection.displayName = 'RelatedArticlesSection';
 const SEOPageLayout = memo(({
   breadcrumbItems = [],
   title,
+  seoDescription,
   heroTitle,
   dateUpdated,
   heroDescription = '',
@@ -166,6 +169,25 @@ const SEOPageLayout = memo(({
   structuredData
 }: SEOPageLayoutProps) => {
   const location = useLocation();
+
+  const pageTitle = title || heroTitle;
+  // Shorten title to ≤ 60 chars: strip the middle descriptor, keep topic + "| StockFlow"
+  const seoTitle = (() => {
+    if (pageTitle.length <= 60) return pageTitle;
+    const brandSuffix = ' | StockFlow';
+    const withoutSuffix = pageTitle.endsWith(brandSuffix)
+      ? pageTitle.slice(0, -brandSuffix.length)
+      : pageTitle;
+    // Remove common descriptor phrases to shorten
+    const shortened = withoutSuffix
+      .replace(/ Strategy & Automation Guide$/, '')
+      .replace(/ Guide$/, '')
+      .replace(/ - A Technical Framework$/, '');
+    const candidate = shortened + brandSuffix;
+    return candidate.length <= 60 ? candidate : candidate.substring(0, 57) + '...';
+  })();
+  const canonicalUrl = `${PRODUCTION_URL}${location.pathname.replace(/\/+$/, '') || '/'}`;
+  const resolvedDescription = seoDescription || heroDescription || undefined;
 
   const pageSchemas = useMemo(() => {
     if (structuredData) return null;
@@ -250,6 +272,13 @@ const SEOPageLayout = memo(({
         <style>{`@font-face { font-display: swap; }`}</style>
       </Helmet>
 
+      <SEO
+        title={seoTitle}
+        description={resolvedDescription}
+        canonical={canonicalUrl}
+        url={canonicalUrl}
+      />
+
       <HeaderPublic />
       <SEOEnhancer includeWebSite includeOrganization baseUrl={PRODUCTION_URL} />
 
@@ -318,6 +347,34 @@ const SEOPageLayout = memo(({
         </section>
 
         <RelatedArticlesSection currentPath={location.pathname} />
+
+        {/* Further Reading — external authoritative links */}
+        <section className="bg-slate-50 border-t border-slate-100 py-16">
+          <div className="container mx-auto max-w-6xl px-4">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">Further reading</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+              {[
+                { label: 'Inventory Management — Investopedia', href: 'https://www.investopedia.com/terms/i/inventory-management.asp' },
+                { label: 'Supply Chain Insights — APICS / ASCM', href: 'https://www.ascm.org/learning-development/certifications-credentials/cscp/' },
+                { label: 'Warehouse Best Practices — GS1', href: 'https://www.gs1.org/services/verified-by-gs1/results' },
+                { label: 'Small Business Inventory Tips — SBA', href: 'https://www.sba.gov/business-guide/manage-your-business/manage-your-finances' },
+                { label: 'Barcode Standards — ISO', href: 'https://www.iso.org/standard/62112.html' },
+                { label: 'EU Business Resources — Europa.eu', href: 'https://europa.eu/youreurope/business/index_en.htm' },
+              ].map(link => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
         {/* Testimonials */}
         <section className="bg-white py-20">

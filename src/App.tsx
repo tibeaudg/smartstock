@@ -47,7 +47,6 @@ const ResourcesPage = React.lazy(() => import('./pages/resources'));
 const CustomersPage = React.lazy(() => import('./pages/customers'));
 const CustomerDetailPage = React.lazy(() => import('./pages/customers/[id]'));
 const WarehousePage = React.lazy(() => import("./pages/WarehousePage"));
-const AboutPage = React.lazy(() => import("./pages/about"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
 const VideosPage = React.lazy(() => import("./pages/videos"));
 const IntegrationsPage = React.lazy(() => import("./pages/integrations"));
@@ -393,7 +392,6 @@ const AppRouter = () => {
         <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." /><AuthRoute /></>} />
         <Route path="/billing-success" element={<BillingSuccessRedirect />} />
         <Route path="/contact" element={<><SEO title="Contact StockFlow | Free Inventory Software Support" description="Contact StockFlow to get help with inventory software, barcode scanning setup, or getting started with the free plan." url="https://www.stockflowsystems.com/contact" /><ContactPage /></>} />
-        <Route path="/about" element={<><SEO title="About StockFlow: Free Inventory Management for SMEs" description="Learn about StockFlow, the free inventory management platform that helps small businesses manage stock, orders and barcode scanning." url="https://www.stockflowsystems.com/about" /><AboutPage /></>} />
         <Route
           path="/help-center"
           element={<Navigate to="/dashboard/settings/help-center" replace />}

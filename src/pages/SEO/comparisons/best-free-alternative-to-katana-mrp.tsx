@@ -155,11 +155,7 @@ export default function BestFreeAlternativeToKatanaMRP() {
   ];
 
   const benefits = [
-    {
-      icon: Gift,
-      title: "Completely Free Forever",
-      description: "No subscription fees, no per-user costs, no usage-based pricing. StockFlow is free forever with all features included."
-    },
+
     {
       icon: Cloud,
       title: "Cloud-Based Access",
@@ -233,7 +229,7 @@ export default function BestFreeAlternativeToKatanaMRP() {
       ]}
       heroTitle="Katana MRP Alternative | Best Free 2026 - StockFlow"
       dateUpdated="06/01/2026"
-      heroDescription="Katana MRP alternative: StockFlow is free forever. Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
+      heroDescription="Katana MRP alternative: Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
       previousArticle={{
         title: "Best Free Alternative to Fishbowl Inventory",
         href: "/best-free-alternative-to-fishbowl-inventory"
@@ -245,7 +241,7 @@ export default function BestFreeAlternativeToKatanaMRP() {
     >
       <SEO
         title="Katana MRP Alternative | Best Free 2026 | StockFlow"
-        description="Katana MRP alternative: StockFlow is free forever. Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
+        description="Katana MRP alternative: Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
         keywords="katana mrp alternative, best free alternative to katana mrp, katana mrp free alternative, free katana mrp alternative, katana mrp alternative free, stockflow vs katana mrp, free mrp software, cloud inventory software, free inventory management, katana mrp replacement, free manufacturing software"
         url="https://www.stockflowsystems.com/best-free-alternative-to-katana-mrp"
         locale="en"

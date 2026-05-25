@@ -41,7 +41,17 @@ async function syncSitemap() {
     cwd: seoDir,
     ignore: ['**/nl/**'] // Exclude Dutch pages from this scan
   });
-  const excludedFilenames = new Set(['createGlossaryPage', 'resources']);
+  // Redirect routes — these URLs redirect to other pages and must never appear in the sitemap
+  const redirectRoutes = new Set([
+    'asset-tracking',
+    'bill-of-materials',
+    'what-is-bill-of-materials',
+    'inventory-software-management',
+    'non-profit-inventory-management',
+    'prix',
+    'prix-abonnement',
+  ]);
+  const excludedFilenames = new Set(['createGlossaryPage', 'resources', ...redirectRoutes]);
   const localRoutes = new Set(
     files
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
@@ -102,6 +112,12 @@ async function syncSitemap() {
 
   // 4. REMOVE & NORMALIZE: Cleanup logic — also refresh lastmod for all kept entries
   sitemapData.urlset.url = sitemapData.urlset.url.filter(entry => {
+    // Always remove redirect routes regardless of other rules
+    const entrySlug = entry.loc.trim().replace(`${BASE_URL}/`, '');
+    if (redirectRoutes.has(entrySlug)) {
+      console.log(`- Removed (redirect): ${entry.loc}`);
+      return false;
+    }
     // Force HTTPS and remove trailing slash for comparison
     let url = entry.loc.trim().replace(/^http:/, 'https:');
     if (url.endsWith('/') && url !== `${BASE_URL}/`) {

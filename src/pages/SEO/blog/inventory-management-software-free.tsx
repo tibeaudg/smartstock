@@ -32,11 +32,6 @@ export default function InventoryManagementSoftwareFreePage() {
         'StockFlow free inventory management software includes unlimited products and SKUs, unlimited users and locations, barcode and QR scanning, automated reorder alerts, purchase and sales orders, multi-location tracking, advanced reporting, and a mobile app. BOM (bill of materials) support is also included.',
     },
     {
-      question: 'What is the catch with free inventory software?',
-      answer:
-        'There is no catch. StockFlow is free forever for core inventory management. We do not require a credit card, and we do not cap products or users. Optional paid tiers exist only for very large enterprises or custom integrations. Your data is always yours and exportable anytime.',
-    },
-    {
       question: 'How does free inventory management software compare to paid options?',
       answer:
         'StockFlow free inventory management software matches or exceeds many paid tools in features: real-time tracking, barcode scanning, BOM support, multi-location, and reporting. Businesses typically save $500–$5,000 per year compared to solutions like Sortly, Fishbowl, or Zoho Inventory.',

@@ -46,7 +46,17 @@ const Footer = () => {
       { name: 'Privacy Policy', path: '/privacy' },
       { name: 'Terms of Service', path: '/terms' },
       { name: 'Cookie Policy', path: '/cookies' },
-    ]
+    ],
+    popularGuides: [
+      { name: 'FIFO vs LIFO', path: '/fifo-vs-lifo' },
+      { name: 'Barcode Label Printers', path: '/barcode-label-printer' },
+      { name: 'Inventory Turnover', path: '/inventory-turnover' },
+      { name: 'Excel Inventory Template', path: '/excel-inventory-template' },
+      { name: 'Cost of Goods Formula', path: '/cost-of-goods-formula' },
+      { name: 'Best Barcode Scanner', path: '/best-barcode-scanner' },
+      { name: 'Forecasting', path: '/forecasting' },
+      { name: 'Drop Shipping', path: '/drop-shipping-inventory-management' },
+    ],
   };
 
   return (
@@ -183,6 +193,25 @@ const Footer = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Popular Guides */}
+          <div className="border-t border-gray-700 pt-12 mb-12">
+            <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Popular Guides</h4>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {footerLinks.popularGuides.map(link => (
+                <li key={link.name}>
+                  <Link to={link.path} className="text-gray-500 hover:text-blue-400 text-sm transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link to="/resources" className="text-blue-500 hover:text-blue-300 text-sm font-medium transition-colors">
+                  View all resources →
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Bottom Bar */}

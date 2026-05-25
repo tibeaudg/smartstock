@@ -146,11 +146,6 @@ export default function BestFreeAlternativeToFishbowl() {
 
   const benefits = [
     {
-      icon: Gift,
-      title: "Completely Free Forever",
-      description: "No license fees, no maintenance costs, no hidden charges. StockFlow is free forever with all features included."
-    },
-    {
       icon: Cloud,
       title: "Cloud-Based Access",
       description: "Access from anywhere, any device. No server setup, no IT maintenance, automatic updates included."
