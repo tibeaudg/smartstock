@@ -4,7 +4,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle, Send, RefreshCw } from 'lucide-react';
+import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle, Send, RefreshCw, StickyNote, Save } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -328,6 +328,8 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const [loadingCredit, setLoadingCredit] = useState(false);
   const [showAdminOnly, setShowAdminOnly] = useState(false);
   const [triggeringStage, setTriggeringStage] = useState<string | null>(null);
+  const [noteText, setNoteText] = useState('');
+  const [savingNote, setSavingNote] = useState(false);
 
   const handleRetriggerChecklist = async () => {
     if (!user) return;
@@ -517,6 +519,26 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     }
   };
 
+  const handleSaveNote = async () => {
+    if (!user || !noteText.trim()) return;
+    setSavingNote(true);
+    try {
+      await supabase.from('audit_logs').insert({
+        user_id: user.id,
+        action: `ADMIN_NOTE: ${noteText.trim()}`,
+        table_name: 'profiles',
+        record_id: user.id,
+      });
+      toast.success('Note saved');
+      setNoteText('');
+      queryClient.invalidateQueries({ queryKey: ['userAuditLogs', user.id] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to save note');
+    } finally {
+      setSavingNote(false);
+    }
+  };
+
   useEffect(() => {
     if (isOpen) {
       setActiveTab('overview');
@@ -588,8 +610,16 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const { data: auditLogs = [], isLoading: loadingAuditLogs } = useQuery({
     queryKey: ['userAuditLogs', user?.id],
     queryFn: () => fetchUserAuditLogs(user!.id),
-    enabled: !!user && isOpen && activeTab === 'activity',
+    enabled: !!user && isOpen && (activeTab === 'activity' || activeTab === 'overview'),
   });
+
+  const adminNotes = auditLogs.filter(
+    (log: any) => typeof log.action === 'string' && log.action.startsWith('ADMIN_NOTE:')
+  ).map((log: any) => ({
+    id: log.id,
+    text: log.action.replace('ADMIN_NOTE: ', ''),
+    created_at: log.created_at,
+  }));
 
   const { data: appEvents = [], isLoading: loadingAppEvents } = useQuery({
     queryKey: ['userAppEvents', user?.id],
@@ -740,11 +770,21 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       </Badge>
                     </div>
 
-                    {/* Block / Delete actions */}
+                    {/* Block / Delete / Login As actions */}
                     {(onBlock || onDelete) && (
                       <div className="pt-3 border-t mt-3">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Actions</p>
                         <div className="flex gap-2 flex-wrap">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleLoginAs}
+                            disabled={loadingLoginAs}
+                            className="border-slate-200 text-slate-700 hover:bg-slate-50"
+                          >
+                            {loadingLoginAs ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <LogIn className="w-3 h-3 mr-1" />}
+                            Login As
+                          </Button>
                           {onBlock && (
                             <Button
                               variant="outline"
@@ -883,6 +923,51 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       <div className="text-2xl font-bold text-violet-600">{linkedUsers.length}</div>
                       <div className="text-sm text-gray-600">Linked Users</div>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Admin Notes */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <StickyNote className="w-4 h-4 text-amber-500" />
+                    Internal Notes
+                  </CardTitle>
+                  <p className="text-xs text-gray-500">Private notes — never visible to the user</p>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {/* Existing notes */}
+                  {adminNotes.length > 0 && (
+                    <div className="space-y-2">
+                      {adminNotes.map(note => (
+                        <div key={note.id} className="rounded-md bg-amber-50 border border-amber-100 px-3 py-2">
+                          <p className="text-sm text-gray-800 whitespace-pre-wrap">{note.text}</p>
+                          <p className="text-xs text-gray-400 mt-1">{format(new Date(note.created_at), 'PPp')}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {adminNotes.length === 0 && (
+                    <p className="text-xs text-gray-400 italic">No notes yet</p>
+                  )}
+                  {/* Add new note */}
+                  <div className="flex gap-2 items-end">
+                    <textarea
+                      rows={2}
+                      value={noteText}
+                      onChange={e => setNoteText(e.target.value)}
+                      placeholder="Add a note..."
+                      className="flex-1 text-sm border border-gray-200 rounded px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+                    />
+                    <Button
+                      size="sm"
+                      onClick={handleSaveNote}
+                      disabled={savingNote || !noteText.trim()}
+                      className="h-9 text-xs shrink-0"
+                    >
+                      {savingNote ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -1118,6 +1203,17 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
               {(() => {
                 const loadingActivity = loadingAuditLogs || loadingAppEvents;
 
+                // Engagement score: based on page view volume and recency
+                const now2 = new Date();
+                const recentEvents = appEvents.filter(e => (now2.getTime() - new Date(e.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000);
+                const engagementScore: { label: string; color: string; bg: string } = (() => {
+                  if (appEvents.length === 0) return { label: 'No activity', color: 'text-gray-400', bg: 'bg-gray-100' };
+                  if (appEvents.length >= 50 && recentEvents.length >= 5) return { label: 'High engagement', color: 'text-green-700', bg: 'bg-green-100' };
+                  if (appEvents.length >= 10 && recentEvents.length >= 1) return { label: 'Medium engagement', color: 'text-amber-700', bg: 'bg-amber-100' };
+                  if (recentEvents.length === 0) return { label: 'Dormant', color: 'text-red-700', bg: 'bg-red-100' };
+                  return { label: 'Low engagement', color: 'text-orange-700', bg: 'bg-orange-100' };
+                })();
+
                 // Merge and sort all events newest-first
                 type TimelineEntry =
                   | { kind: 'page_view'; id: string; label: string; page: string; created_at: string }
@@ -1132,12 +1228,14 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   created_at: e.created_at,
                 }));
 
-                const auditEntries: TimelineEntry[] = auditLogs.map((log: any) => {
-                  const isAdmin = typeof log.action === 'string' && log.action.startsWith('ADMIN:');
-                  return isAdmin
-                    ? { kind: 'admin', id: log.id, action: log.action.replace('ADMIN: ', ''), created_at: log.created_at }
-                    : { kind: 'mutation', id: log.id, action: log.action, table_name: log.table_name, record_id: log.record_id ?? null, created_at: log.created_at };
-                });
+                const auditEntries: TimelineEntry[] = auditLogs
+                  .filter((log: any) => !(typeof log.action === 'string' && log.action.startsWith('ADMIN_NOTE:')))
+                  .map((log: any) => {
+                    const isAdmin = typeof log.action === 'string' && log.action.startsWith('ADMIN:');
+                    return isAdmin
+                      ? { kind: 'admin', id: log.id, action: log.action.replace('ADMIN: ', ''), created_at: log.created_at }
+                      : { kind: 'mutation', id: log.id, action: log.action, table_name: log.table_name, record_id: log.record_id ?? null, created_at: log.created_at };
+                  });
 
                 const allEntries = [...pageEntries, ...auditEntries].sort(
                   (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -1160,9 +1258,14 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   <>
                     <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
                       <div>
-                        <h3 className="text-lg font-semibold">Activity Log</h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-semibold">Activity Log</h3>
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${engagementScore.bg} ${engagementScore.color}`}>
+                            {engagementScore.label}
+                          </span>
+                        </div>
                         <p className="text-xs text-gray-400 mt-0.5">
-                          {pageEntries.length} page view{pageEntries.length !== 1 ? 's' : ''} · {auditEntries.length} data event{auditEntries.length !== 1 ? 's' : ''}
+                          {pageEntries.length} page view{pageEntries.length !== 1 ? 's' : ''} · {auditEntries.filter(e => e.kind !== 'admin').length} data event{auditEntries.filter(e => e.kind !== 'admin').length !== 1 ? 's' : ''} · {auditEntries.filter(e => e.kind === 'admin').length} admin action{auditEntries.filter(e => e.kind === 'admin').length !== 1 ? 's' : ''}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">

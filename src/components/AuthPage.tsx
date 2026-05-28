@@ -47,12 +47,18 @@ export const AuthPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Check URL parameters for initial mode
+  // Check URL parameters for initial mode + capture referral code
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const modeParam = urlParams.get('mode');
     if (modeParam === 'login' || modeParam === 'register' || modeParam === 'reset') {
       setMode(modeParam);
+    }
+    // Persist referral code in localStorage so it survives navigation before signup
+    const refCode = urlParams.get('ref');
+    if (refCode) {
+      try { localStorage.setItem('referral_code', refCode); } catch { /* ignore */ }
+      setMode('register');
     }
   }, [location.search]);
 
@@ -234,12 +240,18 @@ export const AuthPage = () => {
           return;
         }
 
+        const storedRef = (() => { try { return localStorage.getItem('referral_code') ?? undefined; } catch { return undefined; } })();
         const { error } = await signUp(
-          email.trim(), 
-          password, 
-          name.trim(), 
-          ''
+          email.trim(),
+          password,
+          name.trim(),
+          '',
+          'admin',
+          storedRef
         );
+        if (!error) {
+          try { localStorage.removeItem('referral_code'); } catch { /* ignore */ }
+        }
 
         if (error) {
           toast.error(

@@ -810,6 +810,9 @@ export type Database = {
           onboarding: string | null
           organization_name: string | null
           force_show_checklist: boolean | null
+          referral_code: string | null
+          referred_by: string | null
+          free_months_credit: number
         }
         Insert: {
           created_at?: string | null
@@ -826,6 +829,9 @@ export type Database = {
           onboarding?: string | null
           organization_name?: string | null
           force_show_checklist?: boolean | null
+          referral_code?: string | null
+          referred_by?: string | null
+          free_months_credit?: number
         }
         Update: {
           created_at?: string | null
@@ -842,8 +848,55 @@ export type Database = {
           onboarding?: string | null
           organization_name?: string | null
           force_show_checklist?: boolean | null
+          referral_code?: string | null
+          referred_by?: string | null
+          free_months_credit?: number
         }
         Relationships: [        ]
+      }
+      referrals: {
+        Row: {
+          id: string
+          referrer_user_id: string
+          referred_user_id: string | null
+          referred_email: string
+          referral_code: string
+          status: 'pending' | 'rewarded'
+          signed_up_at: string
+          rewarded_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          referrer_user_id: string
+          referred_user_id?: string | null
+          referred_email: string
+          referral_code: string
+          status?: 'pending' | 'rewarded'
+          signed_up_at?: string
+          rewarded_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          referrer_user_id?: string
+          referred_user_id?: string | null
+          referred_email?: string
+          referral_code?: string
+          status?: 'pending' | 'rewarded'
+          signed_up_at?: string
+          rewarded_at?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referrals_referrer_user_id_fkey"
+            columns: ["referrer_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       guest_sessions: {
         Row: {

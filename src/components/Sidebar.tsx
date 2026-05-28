@@ -8,6 +8,7 @@ import {
   TrendingUp,
   Moon,
   Sun,
+  Smartphone,
   Layers,
   FileText,
   ShoppingCart,
@@ -33,6 +34,7 @@ import {
   MapPin,
   MessageSquare,
   Mail,
+  Gift,
 }
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
@@ -136,7 +138,6 @@ export const Sidebar = ({
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { signOut } = useAuth();
   const [uncontrolledCollapsed, setUncontrolledCollapsed] = useState(false);
-  const [helpCenterOpen, setHelpCenterOpen] = useState(false);
   const { activeBranch } = useBranches();
 
   const isCollapsed =
@@ -156,13 +157,6 @@ export const Sidebar = ({
       onCollapseChange?.(value);
     }
   };
-
-  // Navigate to help center when requested from sidebar
-  useEffect(() => {
-    if (!helpCenterOpen) return;
-    navigate('/help-center');
-    setHelpCenterOpen(false);
-  }, [helpCenterOpen, navigate]);
 
   const handleSignOut = async () => {
     try {
@@ -238,6 +232,7 @@ export const Sidebar = ({
         },
 
         { id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings', subItems: settingsSubItems },
+
 
         ...(isOwner
           ? [
@@ -471,14 +466,42 @@ export const Sidebar = ({
                   <Settings className="w-5 h-5" />
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => setHelpCenterOpen(true)}
+                <NavLink
+                  to="/dashboard/settings/help-center"
+                  onClick={() => setActiveSecondarySidebar(null)}
                   aria-label="Help Center"
-                  className="flex items-center justify-center w-10 h-10 rounded-xl text-white-500 hover:bg-gray-100"
+                  className={({ isActive }) => `
+                    flex items-center justify-center w-10 h-10 rounded-xl transition-colors
+                    ${isActive ? 'bg-blue-50/50 text-white' : 'text-white hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900'}
+                  `}
+                  title="Help Center"
                 >
-                  <HelpCircle className="w-5 h-5 text-white hover:text-blue-600" />
-                </button>
+                  <HelpCircle className="w-5 h-5" />
+                </NavLink>
+
+                <NavLink
+                  to="/dashboard/settings/mobile-app"
+                  aria-label="Mobile App"
+                  className={({ isActive }) => `
+                    flex items-center justify-center w-10 h-10 rounded-xl transition-colors
+                    ${isActive ? 'bg-blue-50/50 text-white' : 'text-white hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900'}
+                  `}
+                  title="Mobile App"
+                >
+                  <Smartphone className="w-5 h-5" />
+                </NavLink>
+
+                <NavLink
+                  to="/dashboard/settings/refer-a-friend"
+                  aria-label="Refer a Friend"
+                  className={({ isActive }) => `
+                    flex items-center justify-center w-10 h-10 rounded-xl transition-colors
+                    ${isActive ? 'bg-blue-50/50 text-white' : 'text-white hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900'}
+                  `}
+                  title="Refer a Friend"
+                >
+                  <Gift className="w-5 h-5" />
+                </NavLink>
 
                 {isOwner && (
                   <button
@@ -639,7 +662,8 @@ export const Sidebar = ({
                 {/* Bottom utilities: Preferences, Help */}
                 <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-800 space-y-1.5">
                   {(() => {
-                    const isSettingsActive = location.pathname.startsWith('/dashboard/settings');
+                    const standaloneSettingsPaths = ['/dashboard/settings/mobile-app', '/dashboard/settings/help-center', '/dashboard/settings/refer-a-friend'];
+                    const isSettingsActive = location.pathname.startsWith('/dashboard/settings') && !standaloneSettingsPaths.some(p => location.pathname.startsWith(p));
                     const isSettingsOpen = activeSecondarySidebar === 'settings';
 
                     return (
@@ -659,11 +683,11 @@ export const Sidebar = ({
                           }}
                           className={`
                             w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium
-                            transition-colors border
+                            transition-colors
                             ${
                               isSettingsActive || isSettingsOpen
-                                ? 'bg-white text-blue-700 border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
-                                : 'text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border-transparent'
+                                ? 'bg-blue-100/25 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                                : 'text-white hover:bg-blue-100/25 hover:text-white dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
                             }
                           `}
                         >
@@ -703,14 +727,50 @@ export const Sidebar = ({
                     );
                   })()}
 
-                  <button
-                    type="button"
-                    onClick={() => setHelpCenterOpen(true)}
-                    className="w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border border-transparent transition-colors"
+                  <NavLink
+                    to="/dashboard/settings/help-center"
+                    onClick={() => setActiveSecondarySidebar(null)}
+                    className={({ isActive }) => `
+                      w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors
+                      ${isActive
+                        ? 'bg-blue-100/25 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                        : 'text-white hover:bg-blue-100/25 hover:text-white dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
+                      }
+                    `}
                   >
                     <HelpCircle className="w-4 h-4 mr-2 text-white-400" />
                     <span className="flex-1 truncate text-left">Help Center</span>
-                  </button>
+                  </NavLink>
+
+                  <NavLink
+                    to="/dashboard/settings/mobile-app"
+                    onClick={() => setActiveSecondarySidebar(null)}
+                    className={({ isActive }) => `
+                      w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors
+                      ${isActive
+                        ? 'bg-blue-100/25 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                        : 'text-white hover:bg-blue-100/25 hover:text-white dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
+                      }
+                    `}
+                  >
+                    <Smartphone className="w-4 h-4 mr-2 text-white-400" />
+                    <span className="flex-1 truncate text-left">Mobile App</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/dashboard/settings/refer-a-friend"
+                    onClick={() => setActiveSecondarySidebar(null)}
+                    className={({ isActive }) => `
+                      w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors
+                      ${isActive
+                        ? 'bg-blue-100/25 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                        : 'text-white hover:bg-blue-100/25 hover:text-white dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
+                      }
+                    `}
+                  >
+                    <Gift className="w-4 h-4 mr-2 text-white-400" />
+                    <span className="flex-1 truncate text-left">Refer a Friend</span>
+                  </NavLink>
 
                   {isOwner && (() => {
                     const adminItem = menuItems.find(item => item.id === 'admin');
@@ -734,11 +794,11 @@ export const Sidebar = ({
                           }}
                           className={`
                             w-full flex items-center px-3 py-2 rounded-xl text-xs sm:text-sm font-medium
-                            transition-colors border
+                            transition-colors
                             ${
                               isAdminActive || isAdminOpen
-                                ? 'bg-white text-blue-700 border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
-                                : 'text-white-600 hover:bg-white hover:text-blue-700 dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300 border-transparent'
+                                ? 'bg-blue-100/25 text-white dark:bg-blue-500/20 dark:text-blue-300'
+                                : 'text-white hover:bg-blue-100/25 hover:text-white dark:text-white-300 dark:hover:bg-gray-950 dark:hover:text-blue-300'
                             }
                           `}
                         >

@@ -23,11 +23,12 @@ interface AuthContextType {
   emailVerified: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (
-    email: string, 
-    password: string, 
-    firstName: string, 
-    lastName: string, 
-    role?: 'admin' | 'staff'
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    role?: 'admin' | 'staff',
+    referredBy?: string
   ) => Promise<{ error: AuthError | null }>;
   signInWithGoogle: () => Promise<{ error: AuthError | null }>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
@@ -171,19 +172,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return supabase.auth.resend({ type: 'signup', email: user.email });
     },
 
-    signUp: async (email: string, pass: string, fn: string, ln: string, role: 'admin' | 'staff' = 'admin') => {
-      const res = await supabase.auth.signUp({ 
-        email, 
-        password: pass, 
-        options: { data: { first_name: fn, last_name: ln } } 
+    signUp: async (email: string, pass: string, fn: string, ln: string, role: 'admin' | 'staff' = 'admin', referredBy?: string) => {
+      const res = await supabase.auth.signUp({
+        email,
+        password: pass,
+        options: { data: { first_name: fn, last_name: ln } }
       });
       if (res.data.user) {
-        await supabase.from('profiles').upsert({ 
-          id: res.data.user.id, 
-          email, 
-          first_name: fn, 
-          last_name: ln, 
-          role: role 
+        await supabase.from('profiles').upsert({
+          id: res.data.user.id,
+          email,
+          first_name: fn,
+          last_name: ln,
+          role: role,
+          ...(referredBy ? { referred_by: referredBy } : {}),
         });
       }
       return { error: res.error };

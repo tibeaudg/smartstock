@@ -7,6 +7,7 @@ import {
   Scan, CheckCircle, Star, Shield, TrendingUp,
   Clock, Smartphone, Building, ArrowRight, WifiOff,
   Camera, Globe, Package, X, Check,
+  Bell, ChevronLeft, Layers, Settings, HelpCircle, Users, MapPin,
   type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -192,7 +193,7 @@ export const HomePage = () => {
         ══════════════════════════════════════════════════ */}
         <section className="pt-24 pb-16 md:pb-20 px-4 bg-gradient-to-br from-white via-blue-50/40 to-white overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
+            <div className="grid lg:grid-cols-[1fr_1.35fr] gap-8 lg:gap-12 items-center">
 
               {/* Left: copy */}
               <div>
@@ -252,11 +253,11 @@ export const HomePage = () => {
                 </div>
               </div>
 
-              {/* Right: screenshot */}
+              {/* Right: CSS dashboard mockup */}
               <div {...heroVis(200)}>
-                <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-200/80 ring-1 ring-slate-900/5">
+                <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-200/80 ring-1 ring-slate-900/5 bg-white">
                   {/* Browser chrome */}
-                  <div className="bg-slate-100 px-4 py-3 flex items-center gap-3 border-b border-slate-200">
+                  <div className="bg-slate-100 px-4 py-2.5 flex items-center gap-3 border-b border-slate-200">
                     <div className="flex gap-1.5">
                       <div className="w-3 h-3 rounded-full bg-red-400/70" />
                       <div className="w-3 h-3 rounded-full bg-amber-400/70" />
@@ -268,19 +269,166 @@ export const HomePage = () => {
                       </div>
                     </div>
                   </div>
-                  <img
-                    src="/adam.png"
-                    alt="StockFlow platform dashboard showing inventory management"
-                    className="w-full h-auto object-contain bg-white"
-                    style={{ maxHeight: 'min(70vh, 560px)' }}
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      const fb = e.currentTarget.nextElementSibling as HTMLElement;
-                      if (fb) fb.style.display = 'flex';
-                    }}
-                  />
-                  <div className="hidden w-full min-h-[280px] bg-slate-50 items-center justify-center" style={{ display: 'none' }}>
-                    <BarChart className="w-20 h-20 text-blue-300" />
+
+                  {/* App shell */}
+                  <div className="flex" style={{ height: 'min(60vh, 440px)' }}>
+
+                    {/* Blue gradient main sidebar */}
+                    <div
+                      className="w-36 flex-shrink-0 flex flex-col rounded-r-xl"
+                      style={{ background: 'linear-gradient(to bottom right, #1d4ed8, #2563eb, #3b82f6)' }}
+                    >
+                      {/* Logo row */}
+                      <div className="flex items-center justify-between px-3 py-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(to bottom right, #1e40af, #2563eb, #60a5fa)' }}>
+                            <Package className="w-3.5 h-3.5 text-white" />
+                          </div>
+                          <span className="text-sm font-semibold text-white">StockFlow</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Bell className="w-3.5 h-3.5 text-white/70" />
+                          <ChevronLeft className="w-3.5 h-3.5 text-white/70" />
+                        </div>
+                      </div>
+
+                      {/* Branch selector */}
+                      <div className="mx-2 mb-2">
+                        <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-white text-[11px] font-medium" style={{ background: 'rgba(255,255,255,0.15)' }}>
+                          <span>Main Warehouse</span>
+                          <ChevronDown className="w-3 h-3 text-white/70" />
+                        </div>
+                      </div>
+
+                      {/* Nav items */}
+                      <nav className="flex-1 px-2 space-y-0.5">
+                        {[
+                          { icon: BarChart,  label: 'Dashboard',       active: false },
+                          { icon: Package,   label: 'Inventory',        active: true  },
+                          { icon: Layers,    label: 'Bill of Materials', active: false },
+                          { icon: Zap,       label: 'Workflows',        active: false },
+                        ].map((item, i) => (
+                          <div key={i} className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[11px] font-medium ${item.active ? 'text-white' : 'text-white/75'}`} style={item.active ? { background: 'rgba(255,255,255,0.2)' } : {}}>
+                            <item.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span className="truncate">{item.label}</span>
+                          </div>
+                        ))}
+                      </nav>
+
+                      {/* Bottom utilities */}
+                      <div className="px-2 pb-2 pt-2 border-t space-y-0.5" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
+                        {[
+                          { icon: Settings,   label: 'Settings'    },
+                          { icon: HelpCircle, label: 'Help Center' },
+                        ].map((item, i) => (
+                          <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-[11px] font-medium text-white/75">
+                            <item.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                            <span>{item.label}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* User row */}
+                      <div className="flex items-center gap-2 px-3 py-2.5">
+                        <div className="w-6 h-6 rounded-full bg-blue-400/60 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">J</div>
+                        <div className="min-w-0">
+                          <div className="text-[10px] font-medium text-white truncate">Jane Smith</div>
+                          <div className="text-[9px] text-white/60 truncate">jane@acme.com</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* White secondary sidebar — Inventory sub-nav */}
+                    <div className="w-28 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col shadow-md">
+                      <div className="px-4 pt-5 pb-3 border-b border-gray-100/80">
+                        <span className="text-base font-semibold text-gray-800 tracking-tight">Inventory</span>
+                      </div>
+                      <nav className="flex-1 px-2 py-2 space-y-0.5">
+                        {[
+                          { icon: Package,    label: 'Products',     active: true  },
+                          { icon: ArrowRight, label: 'Transactions',  active: false },
+                          { icon: CheckCircle,label: 'Categories',    active: false },
+                          { icon: MapPin,     label: 'Locations',     active: false },
+                        ].map((item, i) => (
+                          <div key={i} className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-medium ${item.active ? 'bg-blue-50 text-blue-700' : 'text-gray-600'}`}>
+                            <item.icon className={`w-3.5 h-3.5 flex-shrink-0 ${item.active ? 'text-blue-600' : 'text-gray-400'}`} />
+                            <span>{item.label}</span>
+                          </div>
+                        ))}
+                      </nav>
+                    </div>
+
+                    {/* Main content */}
+                    <div className="flex-1 flex flex-col overflow-hidden bg-gray-50">
+                      {/* Top bar */}
+                      <div className="flex items-start justify-between px-4 py-3 border-b border-gray-100 bg-white">
+                        <div>
+                          <div className="text-sm font-bold text-gray-900">Products</div>
+                          <div className="text-[10px] text-gray-400 mt-0.5">Manage and track your inventory catalog</div>
+                        </div>
+                        <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+                          <div className="flex items-center gap-1 border border-gray-200 rounded-md px-2 py-1 text-[10px] text-gray-600 bg-white whitespace-nowrap">
+                            <Scan className="w-3 h-3 flex-shrink-0" /><span>Scan Item</span>
+                          </div>
+                          <div className="bg-blue-600 text-white text-[10px] font-semibold rounded-md px-2 py-1 whitespace-nowrap">+ Add Manually</div>
+                          <div className="border border-gray-200 rounded-md px-2 py-1 text-[10px] text-gray-600 bg-white">Import</div>
+                        </div>
+                      </div>
+
+                      {/* Search bar */}
+                      <div className="px-4 py-2 bg-white border-b border-gray-100">
+                        <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5">
+                          <div className="w-3 h-3 rounded-full border border-gray-300 flex-shrink-0" />
+                          <span className="text-[10px] text-gray-400 flex-1">Search products...</span>
+                        </div>
+                      </div>
+
+                      {/* Table header */}
+                      <div className="grid px-4 py-2 border-b border-gray-100 bg-white items-center" style={{ gridTemplateColumns: 'auto 2fr 0.9fr 0.9fr 0.5fr 0.8fr 0.6fr' }}>
+                        <div className="w-3 h-3 rounded border border-gray-300 mr-3" />
+                        {['PRODUCT','SKU','CATEGORY','STOCK','STATUS','QUICK'].map(h => (
+                          <span key={h} className="text-[9px] font-semibold text-gray-400 uppercase tracking-wide">{h}</span>
+                        ))}
+                      </div>
+
+                      {/* Table rows */}
+                      <div className="flex-1 overflow-hidden bg-white">
+                        {[
+                          { name: 'Running Shoes Pro',  sku: 'NK-001', cat: 'Footwear', qty: 142, status: 'In Stock', qc: 'text-emerald-600', sc: 'text-emerald-600', bl: '' },
+                          { name: 'Slim Denim Jacket',  sku: 'LV-032', cat: 'Apparel',  qty:   8, status: 'Low',      qc: 'text-amber-600',  sc: 'text-amber-600',  bl: 'border-l-2 border-amber-400' },
+                          { name: 'Leather Crossbody',  sku: 'GU-107', cat: 'Bags',     qty:  63, status: 'In Stock', qc: 'text-emerald-600', sc: 'text-emerald-600', bl: '' },
+                          { name: 'Wool Blend Sweater', sku: 'ZA-229', cat: 'Apparel',  qty:   0, status: 'Out',      qc: 'text-red-600',    sc: 'text-red-600',    bl: 'border-l-2 border-red-400' },
+                          { name: 'Canvas Tote Bag',    sku: 'UQ-415', cat: 'Bags',     qty:  29, status: 'In Stock', qc: 'text-emerald-600', sc: 'text-emerald-600', bl: '' },
+                        ].map((row, i) => (
+                          <div key={i} className={`grid px-4 py-2 border-b border-gray-50 items-center ${row.bl}`} style={{ gridTemplateColumns: 'auto 2fr 0.9fr 0.9fr 0.5fr 0.8fr 0.6fr' }}>
+                            <div className="w-3 h-3 rounded border border-gray-300 mr-3 flex-shrink-0" />
+                            <span className="text-[10px] font-medium text-gray-700 truncate pr-2">{row.name}</span>
+                            <span className="text-[10px] text-gray-400">{row.sku}</span>
+                            <span className="text-[10px] text-gray-500">{row.cat}</span>
+                            <span className={`text-[10px] font-semibold ${row.qc}`}>{row.qty}</span>
+                            <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded border w-fit ${row.status === 'In Stock' ? 'border-emerald-300 text-emerald-700 bg-emerald-50' : row.status === 'Low' ? 'border-amber-300 text-amber-700 bg-amber-50' : 'border-red-300 text-red-600 bg-red-50'}`}>{row.status}</span>
+                            <div className="flex gap-1">
+                              <div className="w-4 h-4 rounded border border-gray-200 flex items-center justify-center text-[10px] text-emerald-600 font-bold leading-none">+</div>
+                              <div className="w-4 h-4 rounded border border-gray-200 flex items-center justify-center text-[10px] text-red-500 font-bold leading-none">−</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Footer pagination */}
+                      <div className="px-4 py-2 border-t border-gray-100 bg-white flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-[9px] text-gray-400">
+                          <span>Showing per page</span>
+                          <div className="border border-gray-200 rounded px-1.5 py-0.5 text-gray-600 flex items-center gap-0.5">Show 50 <ChevronDown className="w-2.5 h-2.5" /></div>
+                        </div>
+                        <span className="text-[9px] text-gray-400">Showing 1–5 of 248</span>
+                        <div className="flex items-center gap-1">
+                          <div className="h-5 px-2 rounded border border-gray-200 flex items-center text-[9px] text-gray-400">‹ Prev</div>
+                          <div className="w-5 h-5 rounded bg-blue-600 flex items-center justify-center text-[9px] text-white font-bold">1</div>
+                          <div className="h-5 px-2 rounded border border-gray-200 flex items-center text-[9px] text-gray-400">Next ›</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

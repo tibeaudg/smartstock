@@ -1118,6 +1118,16 @@ export default function AdminPage() {
       return sum;
     }, 0);
 
+    const totalMRR = users.reduce((sum, u) => {
+      const plan = getPlanForUser(subscriptionPlanMap, u.id);
+      if (plan.isPayingCustomer) return sum + plan.planPrice;
+      return sum;
+    }, 0);
+
+    const conversionRate = (activePayingCustomers + activeTrials) > 0
+      ? Math.round((activePayingCustomers / (activePayingCustomers + activeTrials)) * 100)
+      : 0;
+
     const totalCapacity = users.reduce((sum, u) => {
       const plan = getPlanForUser(subscriptionPlanMap, u.id);
       if ((plan.subStatus === 'active' || plan.subStatus === 'trial') && plan.maxProducts != null) {
@@ -1136,6 +1146,8 @@ export default function AdminPage() {
       activePayingCustomersMissingInfo,
       trialsExpiringSoon,
       mrrAtRisk,
+      totalMRR,
+      conversionRate,
       totalCapacity,
       totalAssigned,
     };
@@ -1251,6 +1263,56 @@ export default function AdminPage() {
             
 
                       
+                      {/* Filter preset chips */}
+                      <div className="flex flex-wrap gap-2 items-center">
+                        <span className="text-xs text-slate-500 font-medium shrink-0">Segments:</span>
+                        {[
+                          { label: '⏰ Trials expiring <7d', filter: 'trialing' as QuickFilter, extra: () => {
+                            const in7d = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+                            return users.filter(u => {
+                              const p = getPlanForUser(subscriptionPlanMap, u.id);
+                              return p.subStatus === 'trial' && p.trialEndDate && new Date(p.trialEndDate) <= in7d && new Date(p.trialEndDate) > new Date();
+                            }).length;
+                          }},
+                          { label: '📈 Upgrade candidates', filter: 'active' as QuickFilter, extra: () => {
+                            return users.filter(u => {
+                              const p = getPlanForUser(subscriptionPlanMap, u.id);
+                              const stats = userStats.find(s => s.userId === u.id);
+                              const act = calculateActivityStatus(u.last_login || null, u.created_at);
+                              return p.subStatus === 'active' && p.planPrice === 0 && act.days <= 3 && (stats?.productCount || 0) >= 50;
+                            }).length;
+                          }},
+                          { label: '🔴 Churn risk', filter: 'at-risk' as QuickFilter, extra: () => {
+                            return users.filter(u => {
+                              const p = getPlanForUser(subscriptionPlanMap, u.id);
+                              const act = calculateActivityStatus(u.last_login || null, u.created_at);
+                              return act.days >= 3 && p.subStatus === 'active';
+                            }).length;
+                          }},
+                          { label: '💳 No payment info', filter: 'payment-issues' as QuickFilter, extra: () => metricValues.activePayingCustomersMissingInfo },
+                        ].map(({ label, filter, extra }) => {
+                          const count = extra();
+                          if (count === 0) return null;
+                          const isActive = quickFilter === filter;
+                          return (
+                            <button
+                              key={label}
+                              onClick={() => setQuickFilter(isActive ? 'all' : filter)}
+                              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+                                isActive
+                                  ? 'bg-blue-600 text-white border-blue-600'
+                                  : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
+                              }`}
+                            >
+                              {label}
+                              <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${isActive ? 'bg-blue-500 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                                {count}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
                       {/* Results count */}
                       <div className="text-sm text-slate-600">
                         Showing {paginatedUsers.length} of {sortedUsers.length} accounts
@@ -1284,7 +1346,7 @@ export default function AdminPage() {
                     </div>
                     
                     {/* Pulse Row — urgent alerts at a glance */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
+                    <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-2 sm:gap-3 mb-4 p-3 rounded-lg bg-slate-50 border border-slate-200">
                       <Card className={`border-purple-200 cursor-pointer hover:bg-purple-50 transition-colors ${metricValues.activeTrials > 0 ? 'bg-purple-50' : 'bg-white'}`} onClick={() => setQuickFilter('trialing')}>
                         <CardContent className="p-2 sm:p-3">
                           <div className="text-lg sm:text-2xl font-bold text-purple-700">{metricValues.activeTrials}</div>
@@ -1307,16 +1369,32 @@ export default function AdminPage() {
                             <CreditCard className="w-4 h-4 text-blue-500" />
                           </div>
                           <div className="text-xs text-blue-600 font-medium">Paying Customers</div>
-                          {metricValues.activePayingCustomersMissingInfo > 0 && (
-                            <div className="text-[11px] text-orange-700 mt-1">
-                              {metricValues.activePayingCustomersMissingInfo} missing payment info
-                            </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* MRR card */}
+                      <Card className="bg-emerald-50 border-emerald-200">
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="text-lg sm:text-2xl font-bold text-emerald-700">
+                            ${metricValues.totalMRR.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-emerald-600 font-medium">MRR</div>
+                          {metricValues.mrrAtRisk > 0 && (
+                            <div className="text-[11px] text-red-600 mt-0.5">${metricValues.mrrAtRisk} at risk</div>
                           )}
                         </CardContent>
                       </Card>
-                      
-                      
 
+                      {/* Trial-to-paid conversion rate */}
+                      <Card className="bg-teal-50 border-teal-200">
+                        <CardContent className="p-2 sm:p-3">
+                          <div className="text-lg sm:text-2xl font-bold text-teal-700">{metricValues.conversionRate}%</div>
+                          <div className="text-xs text-teal-600 font-medium">Trial→Paid</div>
+                          <div className="text-[11px] text-teal-500 mt-0.5">
+                            {metricValues.activeTrials}t / {metricValues.activePayingCustomers}p
+                          </div>
+                        </CardContent>
+                      </Card>
 
                     {/* Stats Cards - responsive grid */}
                       <Card className="bg-blue-50 border-blue-200">
@@ -1338,8 +1416,21 @@ export default function AdminPage() {
                         </CardContent>
                       </Card>
                       
-                    </div>                      
+                    </div>
 
+                    {/* Missing payment info alert — prominent revenue risk */}
+                    {metricValues.activePayingCustomersMissingInfo > 0 && (
+                      <div
+                        className="flex items-start gap-3 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-800 cursor-pointer hover:bg-red-100 transition-colors mb-4"
+                        onClick={() => setQuickFilter('payment-issues')}
+                      >
+                        <AlertTriangle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+                        <span>
+                          <strong>{metricValues.activePayingCustomersMissingInfo} paying customer{metricValues.activePayingCustomersMissingInfo !== 1 ? 's' : ''}</strong> {metricValues.activePayingCustomersMissingInfo !== 1 ? 'have' : 'has'} no payment method on file — {metricValues.activePayingCustomersMissingInfo !== 1 ? 'they' : 'they'} won't renew at the next billing cycle.{' '}
+                          <span className="underline font-medium">Click to view affected users.</span>
+                        </span>
+                      </div>
+                    )}
 
                   {/* Mobile: Card-based user list */}
                   {isMobile ? (
@@ -1549,8 +1640,11 @@ export default function AdminPage() {
                             <th className="px-4 py-2 text-left select-none">
                               Sub Status
                             </th>
-                            
-                            <th 
+                            <th className="px-4 py-2 text-right select-none">
+                              MRR
+                            </th>
+
+                            <th
                               className="px-4 py-2 cursor-pointer hover:bg-slate-100 select-none text-right"
                               onClick={() => handleSort('products')}
                             >
@@ -1601,7 +1695,7 @@ export default function AdminPage() {
                         <tbody>
                           {paginatedUsers.length === 0 ? (
                             <tr>
-                              <td colSpan={13} className="text-center py-12">
+                              <td colSpan={14} className="text-center py-12">
                                 {filteredUsers.length === 0 && users.length > 0 ? (
                                   <>
                                     <p className="font-medium text-slate-700">No users match your filters.</p>
@@ -1689,6 +1783,13 @@ export default function AdminPage() {
                                 <td className="px-4 py-2 text-left">
                                   <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
                                 </td>
+                                <td className="px-4 py-2 text-right tabular-nums text-sm">
+                                  {planInfo.isPayingCustomer ? (
+                                    <span className="font-semibold text-emerald-700">${planInfo.planPrice}/mo</span>
+                                  ) : (
+                                    <span className="text-slate-300">—</span>
+                                  )}
+                                </td>
                                 <td className="px-4 py-2 text-right tabular-nums">
                                   {loadingStats ? <Loader2 className="w-4 h-4 animate-spin ml-auto" /> : (
                                     planInfo.maxProducts != null
@@ -1761,6 +1862,7 @@ export default function AdminPage() {
                                     <td className="px-4 py-2 text-left">
                                       <span className="inline-flex px-1.5 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-600">Sub-user</span>
                                     </td>
+                                    <td className="px-4 py-2 text-right text-slate-300">—</td>
                                     <td className="px-4 py-2 text-right text-slate-300">—</td>
                                     <td className="px-4 py-2 text-right text-slate-300">—</td>
                                     <td className="px-4 py-2 text-right text-slate-300">—</td>
