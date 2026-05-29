@@ -17,9 +17,6 @@ import {
   Send,
   CheckSquare,
 } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
-
-
 export default function PurchaseRequisitionSoftware() {
   
   const { formatPrice } = useCurrency();
@@ -257,12 +254,7 @@ export default function PurchaseRequisitionSoftware() {
         url="https://www.stockflowsystems.com/purchase-requisition-software"
         structuredData={[structuredData, faqStructuredData]}
       />
-
-      <StructuredData data={[structuredData, faqStructuredData]} />
-
-
-
-      <section className="py-12">
+<section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
             <strong>Purchase requisition software</strong> (also known as <strong>purchasing requisition software</strong>) automates the process of requesting, approving, and tracking purchase orders within an organization. Instead of manual processes (email requests, paper forms, spreadsheets), purchase requisition software provides a streamlined workflow: employees create requisitions for needed items, managers approve or reject requests based on spending limits and policies, and approved requisitions automatically convert to purchase orders sent to suppliers.

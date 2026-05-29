@@ -23,7 +23,7 @@ import { UpgradeOrPayModal } from '@/components/UpgradeOrPayModal';
 export const BranchesSettings = () => {
   const { user } = useAuth();
   const { branches, refreshBranches, loading } = useBranches();
-  const { maxBranches, branchCount, isOverBranchLimit } = useSubscription();
+  const { maxBranches, branchCount, isOverBranchLimit, canAddBranch } = useSubscription();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
@@ -35,6 +35,10 @@ export const BranchesSettings = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const handleAddBranchClick = () => {
+    if (!canAddBranch) {
+      toast.error('Resolve your billing issue before adding warehouses.');
+      return;
+    }
     if (isOverBranchLimit) {
       setShowUpgradeModal(true);
     } else {
@@ -100,6 +104,10 @@ export const BranchesSettings = () => {
   const handleAddBranch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !newBranchName.trim()) return;
+    if (!canAddBranch) {
+      toast.error('Resolve your billing issue before adding warehouses.');
+      return;
+    }
     setCreating(true);
     try {
       const { data: branchData, error: branchError } = await supabase

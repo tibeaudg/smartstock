@@ -21,9 +21,6 @@ import {
 } from 'lucide-react';
 
 
-
-import { KeyTakeaways } from '@/components/KeyTakeaways';
-
 export default function WarehouseSoftwarePage() {
   
   const location = useLocation();
@@ -136,7 +133,7 @@ export default function WarehouseSoftwarePage() {
       heroTitle="Warehouse Software Built for Modern Fulfillment"
       dateUpdated="05/01/2026"
       faqData={faqData}
-      keyTakeaways={<KeyTakeaways items={keyTakeaways} />}
+      keyTakeaways={keyTakeaways}
     >
       <SEO
         title="Warehouse Software (WMS) 2026 | Inventory & Fulfillment | StockFlow"

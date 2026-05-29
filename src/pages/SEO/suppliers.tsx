@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
 import {
   Truck,
   Users,
@@ -453,9 +452,7 @@ export default function SuppliersSolutionPage() {
           </div>
         </div>
       </section>
-
-      <StructuredData data={structuredData} />
-    </SeoPageLayout>
+</SeoPageLayout>
   );
 }
 

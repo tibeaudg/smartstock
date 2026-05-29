@@ -6,7 +6,7 @@ const keyTakeaways = [
   'Enterprise-grade The Inventory Nightmares Before Christmas systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
   'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
   'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
+  'Enhanced visibility into the inventory nightmares before christmas cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {

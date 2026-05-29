@@ -9,28 +9,8 @@ import {
   ShieldCheck,
   Globe2
 } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
-
 const Footer = () => {
   const navigate = useNavigate();
-
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "StockFlow",
-    "url": "https://www.stockflowsystems.com",
-    "logo": "https://www.stockflowsystems.com/logo.png",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "BE"
-    },
-    "sameAs": [
-      "https://www.facebook.com/profile.php?id=61578067034898",
-      "https://twitter.com/stockflow",
-      "https://www.linkedin.com/company/stockflow",
-      "https://www.instagram.com/stockflowbe"
-    ]
-  };
 
   const footerLinks = {
     product: [
@@ -61,10 +41,6 @@ const Footer = () => {
 
   return (
     <>
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(organizationSchema)}</script>
-      </Helmet>
-
       {/* High-Impact CTA Section */}
       <section className="relative py-24 bg-white overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full" />

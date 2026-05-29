@@ -3,8 +3,6 @@ import { useLocation, Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
-import { StructuredData } from '@/components/StructuredData';
-
 /**
  * Inventory Management Software With Bill of Materials
  * Keyword: inventory management software with bill of materials (1,931 impressions)
@@ -95,10 +93,7 @@ export default function InventoryManagementSoftwareWithBillOfMaterialsPage() {
         url="https://www.stockflowsystems.com/inventory-management-software-with-bill-of-materials"
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      <section className="px-4 py-12">
+<section className="px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h2 id="what-is-it" className="text-2xl font-bold text-gray-900 mb-6">
             What Is Inventory Management Software With Bill of Materials?

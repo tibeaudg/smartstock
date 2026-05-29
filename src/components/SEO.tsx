@@ -201,16 +201,20 @@ export const SEO: React.FC<SEOProps> = ({
       {/* LinkedIn specific */}
       <meta property="linkedin:owner" content="stockflow" />
       
-      {/* Facebook specific */}
-      <meta property="fb:app_id" content="123456789" />
-      <meta property="fb:admins" content="stockflow" />
-      
       {/* Additional social media meta tags */}
       <meta name="pinterest-rich-pin" content="true" />
-      <meta property="article:author" content="StockFlow" />
-      <meta property="article:publisher" content="https://www.facebook.com/stockflowapp" />
-      <meta property="article:section" content="Business Software" />
-      <meta property="article:tag" content="stockflow, stock flow, inventory management, stock control, warehouse management" />
+      {publishedTime && (
+        <>
+          <meta property="article:author" content="StockFlow" />
+          <meta property="article:publisher" content="https://www.facebook.com/stockflowapp" />
+        </>
+      )}
+      {category && (
+        <>
+          <meta property="article:section" content={category} />
+          <meta property="article:tag" content={category} />
+        </>
+      )}
       
       {/* Canonical - normalized to remove trailing slashes and query parameters */}
       <link rel="canonical" href={normalizedUrl} />
@@ -235,7 +239,6 @@ export const SEO: React.FC<SEOProps> = ({
       
       {/* Additional SEO meta tags */}
       <meta name="author" content="StockFlow" />
-      <meta name="revisit-after" content="7 days" />
       
       {/* Robots - Enhanced with proper handling */}
       <meta name="robots" content={robotsContent} />

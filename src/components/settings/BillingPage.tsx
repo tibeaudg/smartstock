@@ -6,10 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Package, AlertCircle, Check, Star, XCircle, CreditCard } from 'lucide-react';
+import { Loader2, Package, AlertCircle, Check, Star, CreditCard } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { PastDueNotice } from '@/components/PastDueNotice';
 
 interface Invoice {
   id: string;
@@ -120,17 +121,23 @@ const PLAN_CUSTOM_FIELD_LIMITS: Record<string, number> = {
 
 export const BillingPage = () => {
   const { user } = useAuth();
-  const { currentTier, isPaidPlan, isOnTrial, isPastDue, trialEndDate, refetch, productCount, branchCount, maxBranches, maxUsers } = useSubscription();
+  const { currentTier, isPaidPlan, isOnTrial, isTrialExpired, isPastDue, trialEndDate, refetch, productCount, branchCount, maxBranches, maxUsers } = useSubscription();
   const [searchParams, setSearchParams] = useSearchParams();
   const [loadingPortal, setLoadingPortal] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [showUpgradePlans, setShowUpgradePlans] = useState(false);
 
   useEffect(() => {
+    if (isTrialExpired) {
+      setShowUpgradePlans(true);
+    }
+  }, [isTrialExpired]);
+
+  useEffect(() => {
     const success = searchParams.get('success');
     const canceled = searchParams.get('canceled');
     if (success === 'true') {
-      toast.success('Your free trial has started. Enjoy full access!');
+      toast.success(isTrialExpired ? 'Subscription updated. Welcome back!' : 'Your free trial has started. Enjoy full access!');
       refetch();
       setSearchParams({}, { replace: true });
     } else if (canceled === 'true') {
@@ -166,7 +173,7 @@ export const BillingPage = () => {
       const res = await fetch(fnUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ planName }),
+        body: JSON.stringify({ planName, skipTrial: isTrialExpired }),
       });
       const data = await res.json();
       if (data.url) {
@@ -258,6 +265,8 @@ export const BillingPage = () => {
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Plan & Billing</h1>
       </div>
 
+      <PastDueNotice />
+
       {/* Current Plan + Usage */}
       <Card className="overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 dark:divide-gray-700">
@@ -291,6 +300,11 @@ export const BillingPage = () => {
                 {isOnTrial && trialEndDate && (
                   <Badge variant="secondary" className="mt-2 text-xs">
                     Trial ends {new Date(trialEndDate).toLocaleDateString('en-US')}
+                  </Badge>
+                )}
+                {isTrialExpired && trialEndDate && (
+                  <Badge variant="secondary" className="mt-2 text-xs bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                    Trial ended {new Date(trialEndDate).toLocaleDateString('en-US')}
                   </Badge>
                 )}
               </div>
@@ -396,31 +410,24 @@ export const BillingPage = () => {
         </div>
       </Card>
 
-      {/* Past-due payment failure banner */}
-      {isPastDue && (
-        <Card className="border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950/30">
+      {/* Trial expired banner */}
+      {isTrialExpired && (
+        <Card className="border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30">
           <CardContent className="pt-5 pb-5">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center">
-                <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center">
+                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-red-800 dark:text-red-200">
-                  Payment overdue — access suspended
+                <p className="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                  Your free trial has ended
                 </p>
-                <p className="text-xs text-red-700 dark:text-red-300 mt-1">
-                  We could not process your last payment. Please update your payment method or pay the outstanding invoice below to restore full access. Your data is safe.
+                <p className="text-xs text-amber-800 dark:text-amber-300 mt-1">
+                  {trialEndDate
+                    ? `Your trial ended on ${new Date(trialEndDate).toLocaleDateString('en-US')}. You're on the Starter plan now — upgrade below to restore Orders, Contacts, and other Advance features. Your inventory data is unchanged.`
+                    : `You're on the Starter plan now — upgrade below to restore Orders, Contacts, and other Advance features. Your inventory data is unchanged.`}
                 </p>
               </div>
-              <Button
-                onClick={handleManagePayment}
-                disabled={loadingPortal}
-                size="sm"
-                className="flex-shrink-0 bg-red-600 hover:bg-red-700 text-white"
-              >
-                {loadingPortal ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4 mr-1" />}
-                Pay Now
-              </Button>
             </div>
           </CardContent>
         </Card>
@@ -499,7 +506,7 @@ export const BillingPage = () => {
                         className={`w-full text-sm ${plan.isPopular ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''}`}
                         variant={plan.isPopular ? 'default' : 'outline'}
                       >
-                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : plan.ctaLabel}
+                        {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : isTrialExpired ? 'Subscribe' : plan.ctaLabel}
                       </Button>
                     </CardContent>
                   </Card>
@@ -507,7 +514,9 @@ export const BillingPage = () => {
               })}
             </div>
             <p className="text-center text-xs text-gray-400 mt-4">
-              * 14-day free trial on Professional. No credit card required to start your trial.
+              {isTrialExpired
+                ? '* Subscribe to a paid plan to restore full access.'
+                : '* 14-day free trial on Professional. No credit card required to start your trial.'}
             </p>
             <p className="text-center text-xs text-gray-400 mt-1">
               Extra warehouses +$5/mo · Extra users +$2/mo, beyond what's included in your plan.

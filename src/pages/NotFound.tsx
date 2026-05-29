@@ -137,7 +137,7 @@ const NotFound = () => {
         "@type": "ContactPoint",
         "telephone": "+32-123-456-789",
         "contactType": "customer service",
-        "email": "info@stockflowsystems.com"
+        "email": "info@stockflowsystems.be"
       }
     }
   ];
@@ -227,10 +227,10 @@ const NotFound = () => {
                 </h3>
         
                 <a 
-                  href="mailto:info@stockflowsystems.com" 
+                  href="mailto:info@stockflowsystems.be" 
                   className="text-blue-600 hover:underline justify-center items-center"
                 >
-                  info@stockflowsystems.com
+                  info@stockflowsystems.be
                 </a>
               </div>
 

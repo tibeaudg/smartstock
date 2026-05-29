@@ -34,12 +34,13 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
     relatedLinks = [],
   } = config;
 
+  const topic = title.toLowerCase();
   const baseKeywords = [
     title,
-    `${title} definition`,
-    `${title} meaning`,
-    `${title} inventory`,
-    `${title} stockflow`,
+    `${topic} definition`,
+    `${topic} meaning`,
+    `${topic} inventory`,
+    `${topic} stockflow`,
     'inventory glossary',
     'inventory definitions',
     'stockflow glossary',
@@ -60,19 +61,19 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
     
 
     const takeaways = keyTakeaways ?? [
-      `Understand how ${title.toLowerCase()} fits into your inventory workflows.`,
-      `Use StockFlow to measure and track ${title.toLowerCase()} in real time.`,
-      `Automate updates and share ${title.toLowerCase()} insights with your team.`,
+      `Understand how ${topic} fits into your inventory workflows.`,
+      `Use StockFlow to measure and track ${topic} in real time.`,
+      `Automate updates and share ${topic} insights with your team.`,
     ];
 
     const faqData: FAQ[] = faqs ?? [
       {
-        question: `What does ${title} mean?`,
+        question: `What does ${topic} mean?`,
         answer: definition,
       },
       {
-        question: `How does StockFlow support ${title.toLowerCase()}?`,
-        answer: `StockFlow gives you real-time visibility into your inventory data so you can monitor ${title.toLowerCase()} trends, set alerts, and share updates across your team.`,
+        question: `How does StockFlow support ${topic}?`,
+        answer: `StockFlow gives you real-time visibility into your inventory data so you can monitor ${topic} trends, set alerts, and share updates across your team.`,
       },
     ];
 
@@ -86,7 +87,7 @@ export function createGlossaryPage(config: GlossaryPageConfig) {
         
       >
         <SEO
-          title={`${title} 2025 - Inventory Management Glossary | StockFlow`}
+          title={`${topic} 2025 - Inventory Management Glossary | StockFlow`}
           description={metaDescription}
           keywords={pageKeywords}
           url={`https://www.stockflowsystems.com${path}`}

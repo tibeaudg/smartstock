@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useSubscription } from '@/hooks/useSubscription';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,7 @@ export const CreateBranchModal = ({
   isAdditionalBranch = false,
 }: CreateBranchModalProps) => {
   const { user } = useAuth();
+  const { canAddBranch } = useSubscription();
   const { refreshBranches, setActiveBranch } = useBranches();
   const [branchName, setBranchName] = useState(isAdditionalBranch ? '' : 'Main Warehouse');
   const [loading, setLoading] = useState(false);
@@ -34,6 +36,10 @@ export const CreateBranchModal = ({
 
   const handleCreate = async () => {
     if (!user || !branchName.trim()) return;
+    if (isAdditionalBranch && !canAddBranch) {
+      setError('Resolve your billing issue before adding warehouses.');
+      return;
+    }
     setLoading(true);
     setError(null);
 

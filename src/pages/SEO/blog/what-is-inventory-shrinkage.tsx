@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
 import {
   CheckCircle,
@@ -132,12 +131,7 @@ export default function SeoWhatIsInventoryShrinkagePage() {
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
-
-      <StructuredData data={pageStructuredData} />
-
-
-
-      <section id="overview" className="bg-white px-4 py-16">
+<section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Understanding Inventory Shrinkage</h1>

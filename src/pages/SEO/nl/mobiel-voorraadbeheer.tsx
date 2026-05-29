@@ -1,7 +1,6 @@
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { StructuredData } from '@/components/StructuredData';
 import { 
   Package, 
   BarChart3, 
@@ -121,10 +120,7 @@ export default function MobielVoorraadbeheer() {
         ]}
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Introduction */}
+{/* Introduction */}
       <div className="mb-12">
         <p className="text-lg black leading-relaxed mb-6">
           Beheer voorraad vanaf overal met mobiel voorraadbeheer. Real-time updates, barcode scanning en offline modus.

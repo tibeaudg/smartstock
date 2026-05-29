@@ -6,7 +6,7 @@ const keyTakeaways = [
   'Enterprise-grade The Complete Guide To Medical Device Inventory Management systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
   'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
   'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
+  'Enhanced visibility into the complete guide to medical device inventory management cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {

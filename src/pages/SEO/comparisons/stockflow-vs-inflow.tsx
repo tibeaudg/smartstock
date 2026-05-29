@@ -3,7 +3,6 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock, Database, Download, Settings, Users } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -163,9 +162,7 @@ export default function StockFlowVsInFlow() {
         url="https://www.stockflowsystems.com/stockflow-vs-inflow"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-      {/* Introduction */}
+{/* Introduction */}
       <div className="mb-12">
         <p className="text-lg text-slate-900 leading-relaxed mb-6">
           InFlow costs $71+/month and takes 30-60 days to implement. StockFlow is free forever, goes live in 5-7 days, and stores data in Europe (GDPR compliant). For manufacturing businesses, that's €850+ saved in year one, plus faster time-to-value.

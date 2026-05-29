@@ -2,7 +2,6 @@
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { StructuredData } from '@/components/StructuredData';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
@@ -163,13 +162,7 @@ export default function CompareInventorySoftware() {
         modifiedTime={new Date().toISOString()}
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-
-
-
-
-      {/* Competitor snapshot */}
+{/* Competitor snapshot */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">

@@ -29,14 +29,18 @@ import { usePageViewLogger } from "./hooks/usePageViewLogger";
 import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import SEO from './components/SEO';
+
+/** Meta for authenticated / utility routes — robots.txt also disallows these paths */
+const privateSeo = { noindex: true, nofollow: true };
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
 import { useCookieConsent } from './hooks/useCookieConsent';
-import { getSeoRoutes } from './routes/seoRoutes';
+import { getSeoRoutes, getSeoLegacyRedirects, SolutionsPrefixRedirect } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
-import { CompleteProfileModal } from './components/CompleteProfileModal';
+import HeaderPublic from './components/HeaderPublic';
+import Footer from './components/Footer';
 
 const ReportingPage = React.lazy(() => import('./pages/reporting'));
 const AdminUserDetailPage = React.lazy(() => import('./pages/AdminUserDetailPage'));
@@ -306,7 +310,11 @@ const AppRouter = () => {
     if (!user || !userProfile) return <Navigate to="/auth" state={{ from: location }} replace />;
 
     if (userProfile.blocked) {
-      const allowed = ['/dashboard/settings/invoicing', '/dashboard/settings/facturatie'].some(p => location.pathname.startsWith(p));
+      const allowed = [
+        '/dashboard/settings/invoicing',
+        '/dashboard/settings/facturatie',
+        ...(userProfile.is_owner === true ? ['/admin'] : []),
+      ].some(p => location.pathname.startsWith(p));
       if (!allowed) {
         window.location.replace('/dashboard/settings/invoicing');
         return null;
@@ -391,12 +399,27 @@ const AppRouter = () => {
         <Route path="/resources" element={<><SEO title="Inventory Management Resources & Guides | StockFlow" description="Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management." url="https://www.stockflowsystems.com/resources" /><ResourcesPage /></>} />
         <Route path="/customers" element={<><SEO title="StockFlow Customers & Success Stories | Inventory Software" description="Read customer success stories from businesses using StockFlow for inventory management, barcode scanning, and BOM tracking." url="https://www.stockflowsystems.com/customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Success Story | StockFlow" description="Learn how a StockFlow customer solved inventory issues with barcode scanning and real-time stock visibility." /><CustomerDetailPage /></>} />
-        <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." /><AuthRoute /></>} />
-        <Route path="/billing-success" element={<BillingSuccessRedirect />} />
+        <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." {...privateSeo} /><AuthRoute /></>} />
+        <Route path="/billing-success" element={<><SEO title="Billing" {...privateSeo} /><BillingSuccessRedirect /></>} />
         <Route path="/contact" element={<><SEO title="Contact StockFlow | Free Inventory Software Support" description="Contact StockFlow to get help with inventory software, barcode scanning setup, or getting started with the free plan." url="https://www.stockflowsystems.com/contact" /><ContactPage /></>} />
         <Route
           path="/help-center"
-          element={<Navigate to="/dashboard/settings/help-center" replace />}
+          element={
+            <>
+              <SEO
+                title="StockFlow Help Center | Support & FAQs"
+                description="Get help with StockFlow inventory software. Browse FAQs, troubleshooting guides, billing support, integrations, and contact our support team."
+                url="https://www.stockflowsystems.com/help-center"
+              />
+              <HeaderPublic />
+              <main className="container mx-auto px-4 py-8">
+                <Suspense fallback={<SkeletonCard />}>
+                  <HelpCenterPage />
+                </Suspense>
+              </main>
+              <Footer />
+            </>
+          }
         />
         <Route path='/videos' element={<><SEO title="StockFlow Instruction Videos | Inventory & Barcode Training" description="Watch StockFlow tutorial videos for inventory management, barcode scanning, reporting, and using the free app effectively." url="https://www.stockflowsystems.com/videos" /><VideosPage /></>} />
         <Route path='/integrations' element={<><SEO title="Inventory Software Integrations | StockFlow" description="Discover which tools integrate with StockFlow for inventory, ecommerce, accounting, and barcode workflows." url="https://www.stockflowsystems.com/integrations"/><IntegrationsPage /></>} />
@@ -404,13 +427,19 @@ const AppRouter = () => {
         <Route path="/faq" element={<FAQPage />} />
 
         {/* REDIRECTS */}
-        <Route path="/inventory-software-management" element={<Navigate to="/solutions/inventory-software-management" replace />} />
-        <Route path="/asset-tracking" element={<Navigate to="/solutions/asset-tracking" replace />} />
         <Route path="/what-is-bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/prix" element={<Navigate to="/pricing" replace />} />
         <Route path="/prix-abonnement" element={<Navigate to="/pricing" replace />} />
         <Route path="/non-profit-inventory-management" element={<Navigate to="/non-profit-inventory-management-software" replace />} />
+        {getSeoLegacyRedirects().map((redirect) => (
+          <Route
+            key={redirect.from}
+            path={redirect.from}
+            element={<Navigate to={redirect.to} replace />}
+          />
+        ))}
+        <Route path="/solutions/*" element={<SolutionsPrefixRedirect />} />
 
         {/* DYNAMIC SEO ROUTES */}
         {getSeoRoutes().map(r => (
@@ -422,6 +451,7 @@ const AppRouter = () => {
           path="/admin"
           element={
             <ProtectedRoute>
+              <SEO title="Admin" {...privateSeo} />
               <AdminPage />
             </ProtectedRoute>
           }
@@ -459,8 +489,8 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         >
-          <Route index element={<><SEO title="StockFlow Dashboard" /><Dashboard userRole="staff" /></>} />
-          <Route path="categories" element={<><SEO title="Product Inventory" /><CategorysPage /></>} />
+          <Route index element={<><SEO title="StockFlow Dashboard" {...privateSeo} /><Dashboard userRole="staff" /></>} />
+          <Route path="categories" element={<><SEO title="Product Inventory" {...privateSeo} /><CategorysPage /></>} />
           <Route path="products/import" element={<BulkImportPage />} />
           <Route path="scan" element={<BarcodeScannerPage />} />
           <Route path="scan-flow" element={<ScanPage />} />
@@ -469,8 +499,8 @@ const AppRouter = () => {
           <Route path="products/new" element={<AddProductPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="categoriesManagement" element={<CategoriesPage />} />
-          <Route path="warehouses" element={<><SEO title="Warehouse Management" /><WarehousePage /></>} />
-          <Route path="locations" element={<><SEO title="Locations" /><LocationsPage /></>} />
+          <Route path="warehouses" element={<><SEO title="Warehouse Management" {...privateSeo} /><WarehousePage /></>} />
+          <Route path="locations" element={<><SEO title="Locations" {...privateSeo} /><LocationsPage /></>} />
           <Route path="bom/new" element={<CreateBOMPage />} />
           <Route path="bom" element={<BillOfMaterialsPage />}>
             <Route path="edit/:productId" element={<BOMEditPage />} />
@@ -515,7 +545,7 @@ const AppRouter = () => {
 
         {/* ERROR & FALLBACK */}
         <Route path="/500" element={<ServerError />} />
-        <Route path="*" element={<><SEO title="Page Not Found" /><NotFound /></>} />
+        <Route path="*" element={<><SEO title="Page Not Found" noindex /><NotFound /></>} />
       </Routes>
       </Suspense>
     </ContentWrapper>

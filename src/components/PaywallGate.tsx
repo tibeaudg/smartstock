@@ -17,7 +17,7 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
   fallback,
   onUpgrade,
 }) => {
-  const { canUseFeature, isLoading } = useSubscription();
+  const { canUseFeature, isLoading, isTrialExpired } = useSubscription();
 
   if (isLoading) {
     return null;
@@ -32,6 +32,10 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
   }
 
   const handleUpgrade = async () => {
+    if (isTrialExpired) {
+      window.location.href = '/dashboard/settings/billing';
+      return;
+    }
     if (onUpgrade) {
       onUpgrade();
       return;
@@ -53,7 +57,7 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
     window.location.href = url;
   };
 
-  const messages: Record<string, string> = {
+  const trialMessages: Record<string, string> = {
     add_branch: 'Start your 14-day free trial to add more warehouses.',
     add_user: 'Start your 14-day free trial to invite more users.',
     billing: 'Start your 14-day free trial to manage your subscription.',
@@ -62,17 +66,30 @@ export const PaywallGate: React.FC<PaywallGateProps> = ({
     orders: 'Start your 14-day free trial to use Orders.',
   };
 
+  const expiredMessages: Record<string, string> = {
+    add_branch: 'Your free trial has ended. Upgrade to add more warehouses.',
+    add_user: 'Your free trial has ended. Upgrade to invite more users.',
+    billing: 'Your free trial has ended. Upgrade to manage your subscription.',
+    branches_management: 'Your free trial has ended. Upgrade to manage multiple warehouses.',
+    contacts: 'Your free trial has ended. Upgrade to use Contacts.',
+    orders: 'Your free trial has ended. Upgrade to use Orders.',
+  };
+
+  const messages = isTrialExpired ? expiredMessages : trialMessages;
+
   return (
     <div className="rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-6 text-center">
       <Lock className="w-10 h-10 mx-auto mb-3 text-amber-600 dark:text-amber-500" />
       <p className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-2">
         {messages[feature]}
       </p>
-      <p className="text-xs text-amber-700 dark:text-amber-300 mb-4">
-        No credit card required.
-      </p>
+      {!isTrialExpired && (
+        <p className="text-xs text-amber-700 dark:text-amber-300 mb-4">
+          No credit card required.
+        </p>
+      )}
       <Button onClick={handleUpgrade} size="sm">
-        Start free trial
+        {isTrialExpired ? 'Upgrade plan' : 'Start free trial'}
       </Button>
     </div>
   );

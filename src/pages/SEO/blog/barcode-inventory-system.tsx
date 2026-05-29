@@ -1,6 +1,5 @@
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { Link } from "react-router-dom";
 import { Target, Zap, Eye, Coins, TrendingUp, ClipboardCheck, Layout, Smartphone } from "lucide-react";
 
@@ -111,9 +110,6 @@ export default function BarcodeInventoryPage() {
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
-
-      <StructuredData data={structuredData} />
-
 {/* Overview Section */}
 <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto max-w-6xl">

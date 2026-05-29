@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import {
   CheckCircle,
   Globe,
@@ -70,11 +69,7 @@ export default function SeoInventoryPlanningSoftwarePage() {
 
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
-      <StructuredData data={structuredData} />
-
-
-
-      {/* INDUSTRY CRISIS STATS */}
+{/* INDUSTRY CRISIS STATS */}
       <section className="bg-red-50 border-b border-red-100 py-12">
         <div className="mx-auto max-w-5xl px-4">
           <div className="grid gap-8 md:grid-cols-3">

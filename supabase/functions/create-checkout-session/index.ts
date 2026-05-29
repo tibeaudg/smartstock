@@ -20,6 +20,22 @@ function getPriceIdForPlan(planName: PlanName): string | undefined {
   }
 }
 
+type ExistingSubscription = {
+  trial_end_date?: string | null
+  status?: string | null
+  stripe_subscription_id?: string | null
+  trial_stage_override?: string | null
+}
+
+/** User already used their free trial — charge immediately (override Stripe price default trial too). */
+function shouldSkipTrial(sub: ExistingSubscription | null): boolean {
+  if (!sub) return false
+  if (sub.trial_stage_override === 'trial_expired') return true
+  if (sub.trial_end_date && new Date(sub.trial_end_date).getTime() <= Date.now()) return true
+  if (['expired', 'cancelled'].includes(sub.status ?? '')) return true
+  return false
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders })
@@ -43,6 +59,7 @@ serve(async (req) => {
 
     const supabaseUrl     = Deno.env.get('SUPABASE_URL') ?? ''
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY')
     const siteUrl         = Deno.env.get('SITE_URL') || 'https://www.stockflowsystems.com'
 
@@ -106,6 +123,27 @@ serve(async (req) => {
       .eq('id', user.id)
       .single()
 
+    const adminSupabase = supabaseServiceKey
+      ? createClient(supabaseUrl, supabaseServiceKey, {
+          auth: { autoRefreshToken: false, persistSession: false },
+        })
+      : supabase
+
+    const { data: existingSub } = await adminSupabase
+      .from('user_subscriptions')
+      .select('trial_end_date, status, stripe_subscription_id, trial_stage_override')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    const skipTrial = shouldSkipTrial(existingSub)
+    console.log('[create-checkout-session] trial decision', {
+      userId: user.id,
+      skipTrial,
+      status: existingSub?.status ?? null,
+      trialEndDate: existingSub?.trial_end_date ?? null,
+      trialStageOverride: existingSub?.trial_stage_override ?? null,
+    })
+
     let customerId = profile?.stripe_customer_id as string | undefined
 
     if (!customerId) {
@@ -120,18 +158,47 @@ serve(async (req) => {
         .eq('id', user.id)
     }
 
-    // 14-day trial; payment method is collected upfront so auto-charge fires after trial
+    const subscriptionMetadata = {
+      supabase_user_id: user.id,
+      plan_name: planName,
+    }
+
+    // Stripe rejects trial_period_days: 0 (min is 1). For returning users, build the
+    // line item from price_data so we don't inherit the catalog Price's default trial.
+    let lineItems: Stripe.Checkout.SessionCreateParams.LineItem[]
+    let subscriptionData: Stripe.Checkout.SessionCreateParams.SubscriptionData
+
+    if (skipTrial) {
+      const price = await stripe.prices.retrieve(priceId)
+      if (!price.unit_amount || !price.recurring?.interval) {
+        throw new Error('Configured Stripe price is missing amount or recurring interval')
+      }
+      lineItems = [{
+        price_data: {
+          currency: price.currency,
+          unit_amount: price.unit_amount,
+          product: typeof price.product === 'string' ? price.product : price.product.id,
+          recurring: { interval: price.recurring.interval },
+        },
+        quantity: 1,
+      }]
+      subscriptionData = { metadata: subscriptionMetadata }
+    } else {
+      lineItems = [{ price: priceId, quantity: 1 }]
+      subscriptionData = {
+        trial_period_days: 14,
+        metadata: subscriptionMetadata,
+      }
+    }
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: lineItems,
       success_url: `${siteUrl}/dashboard/settings/billing?success=true`,
       cancel_url:  `${siteUrl}/dashboard/settings/billing?canceled=true`,
       metadata: { supabase_user_id: user.id },
-      subscription_data: {
-        trial_period_days: 14,
-        metadata: { supabase_user_id: user.id, plan_name: planName },
-      },
+      subscription_data: subscriptionData,
     })
 
     return new Response(

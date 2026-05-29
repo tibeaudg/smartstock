@@ -2,7 +2,6 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { StructuredData } from '@/components/StructuredData';
 import { 
   CheckCircle,
 
@@ -186,8 +185,7 @@ export default function AvoidInventoryMistakes() {
 
 
       {/* Structured Data */}
-      <StructuredData data={structuredData} />
-    </SeoPageLayout>
+</SeoPageLayout>
   );
 }
 

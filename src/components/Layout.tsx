@@ -6,7 +6,7 @@ import { UserProfile } from '@/hooks/useAuth';
 import { useNotifications } from '../hooks/useNotifications';
 import { EmailVerificationBanner } from './EmailVerificationBanner';
 import { TrialBanner } from './TrialBanner';
-import { PaymentGate } from './PaymentGate';
+import { TrialExpiredBanner } from './TrialExpiredBanner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -93,12 +93,11 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
                 : secondarySidebarOpen ? 'ml-[496px]' : 'ml-72'
           } transition-[margin-left,color,background-color] duration-300`}
         >
-          <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-7xl px-4 md:px-6'} transition-colors`}>
+          <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-screen px-4 md:px-6'} transition-colors`}>
             <EmailVerificationBanner />
             <TrialBanner />
-            <PaymentGate>
-              {children}
-            </PaymentGate>
+            <TrialExpiredBanner />
+            {children}
           </div>
         </main>
       </div>

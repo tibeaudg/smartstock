@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { applyTrialStageOverride, isTrialStageOverride } from '@/utils/trialStageOverride';
+import { isPastTrialEndDate, isTrialExpiredState } from '@/utils/trialExpiration';
 
 export interface PricingTier {
   id: string;
@@ -66,9 +68,11 @@ export interface UseSubscriptionReturn {
   canUseFeature: (featureName: string) => boolean;
   isPaidPlan: boolean;
   isOnTrial: boolean;
+  isTrialExpired: boolean;
   isPastDue: boolean;
   subscriptionStatus: 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
   trialEndDate: string | null;
+  canAddBranch: boolean;
   refetch: () => void;
 }
 
@@ -129,7 +133,7 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
       if (!user?.id) return null;
       const { data: sub, error } = await supabase
         .from('user_subscriptions')
-        .select('id, tier_id, status, stripe_subscription_id, trial_end_date, pricing_tiers(*)')
+        .select('id, tier_id, status, stripe_subscription_id, trial_end_date, trial_stage_override, pricing_tiers(*)')
         .eq('user_id', user.id)
         .maybeSingle();
 
@@ -211,26 +215,75 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     staleTime: 1000 * 60 * 10,
   });
 
-  const { currentTier, isPaidPlan, isOnTrial, isPastDue, subscriptionStatus, trialEndDate } = useMemo(() => {
-    const sub = subscriptionData as { status?: string; tier_id?: string | null; trial_end_date?: string | null; pricing_tiers?: Record<string, unknown> | Record<string, unknown>[] } | null;
-    const status = (sub?.status ?? null) as 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | null;
-    // active, trial, and past_due all retain the paid tier (past_due is blocked in UI via PaymentGate)
-    const hasAccess = sub && (status === 'active' || status === 'trial' || status === 'past_due');
-    if (!sub || !hasAccess) {
-      return { currentTier: FREE_TIER, isPaidPlan: false, isOnTrial: false, isPastDue: false, subscriptionStatus: status, trialEndDate: null };
-    }
-    const tierRow = Array.isArray(sub.pricing_tiers) ? sub.pricing_tiers[0] : sub.pricing_tiers;
+  const { currentTier, isPaidPlan, isOnTrial, isTrialExpired, isPastDue, subscriptionStatus, trialEndDate } = useMemo(() => {
+    const sub = subscriptionData as {
+      status?: string;
+      tier_id?: string | null;
+      trial_end_date?: string | null;
+      trial_stage_override?: string | null;
+      pricing_tiers?: Record<string, unknown> | Record<string, unknown>[] | null;
+    } | null;
+    const realStatus = (sub?.status ?? null) as 'active' | 'trial' | 'past_due' | 'cancelled' | 'expired' | 'paused' | null;
+    const tierRow = Array.isArray(sub?.pricing_tiers) ? sub.pricing_tiers[0] : sub?.pricing_tiers;
     const tier = normalizeTier(tierRow as Record<string, unknown> | null) ?? FREE_TIER;
-    // If tier data is unavailable but the user has an active subscription with a tier_id,
-    // infer they're on a paid plan rather than locking them out silently.
-    const tierDataMissing = !tierRow && !!sub.tier_id;
-    // Use price_monthly > 0 rather than name !== 'free': the DB starter tier has name='starter'
-    // (renamed from 'free' in the 20260512 migration), so a name check would incorrectly treat
-    // Starter subscribers as paid users.
-    const paid = tier.price_monthly > 0 || (tierDataMissing && status === 'active');
-    const onTrial = status === 'trial';
-    const pastDue = status === 'past_due';
-    return { currentTier: tier, isPaidPlan: paid, isOnTrial: onTrial, isPastDue: pastDue, subscriptionStatus: status, trialEndDate: sub.trial_end_date ?? null };
+    const tierDataMissing = !tierRow && !!sub?.tier_id;
+    const realTrialEndDate = sub?.trial_end_date ?? null;
+    const realTrialEnded = realStatus === 'trial' && isPastTrialEndDate(realTrialEndDate);
+    const realHasAccess = sub && !realTrialEnded && (realStatus === 'active' || realStatus === 'trial' || realStatus === 'past_due');
+    const realPaid = realHasAccess
+      ? tier.price_monthly > 0 || (tierDataMissing && realStatus === 'active')
+      : false;
+
+    const overrideKey = isTrialStageOverride(sub?.trial_stage_override) ? sub.trial_stage_override : null;
+    const override = applyTrialStageOverride(
+      overrideKey,
+      realStatus,
+      realPaid,
+      realTrialEndDate,
+    );
+
+    const status = (override?.subscriptionStatus ?? (realTrialEnded ? 'expired' : realStatus)) as typeof realStatus;
+    const resolvedTrialEndDate = override?.trialEndDate ?? realTrialEndDate;
+    const hasAccess = override
+      ? !override.forceFreeTier && (status === 'active' || status === 'trial' || status === 'past_due')
+      : realHasAccess;
+
+    if (!sub || !hasAccess) {
+      const paid = override?.isPaidPlan ?? false;
+      const onTrial = override?.isOnTrial ?? false;
+      const expired = isTrialExpiredState({
+        isOnTrial: onTrial,
+        isPaidPlan: paid,
+        trialEndDate: resolvedTrialEndDate,
+      });
+      return {
+        currentTier: FREE_TIER,
+        isPaidPlan: paid,
+        isOnTrial: onTrial,
+        isTrialExpired: expired,
+        isPastDue: override?.isPastDue ?? false,
+        subscriptionStatus: expired ? 'expired' : status,
+        trialEndDate: resolvedTrialEndDate,
+      };
+    }
+
+    const paid = override ? override.isPaidPlan : tier.price_monthly > 0 || (tierDataMissing && realStatus === 'active');
+    const onTrial = override ? override.isOnTrial : realStatus === 'trial';
+    const pastDue = override ? override.isPastDue : realStatus === 'past_due';
+    const expired = isTrialExpiredState({
+      isOnTrial: onTrial,
+      isPaidPlan: paid,
+      trialEndDate: resolvedTrialEndDate,
+    });
+    return {
+      currentTier: tier,
+      isPaidPlan: paid,
+      isOnTrial: onTrial,
+      isTrialExpired: expired,
+      isPastDue: pastDue,
+      subscriptionStatus: status,
+      trialEndDate: resolvedTrialEndDate,
+    };
   }, [subscriptionData]);
 
   const branchCount = branchCountFallback ?? 0;
@@ -252,11 +305,12 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
 
   const canUseFeature = useMemo(() => {
     return (featureName: string): boolean => {
+      if (isPastDue) return false;
       switch (featureName) {
         case 'add_branch':
-          return true; // Extra branches are charged separately, no upgrade required
+          return true; // Over plan limit handled separately via UpgradeOrPayModal
         case 'add_user':
-          return true; // Extra users are charged separately, no upgrade required
+          return true; // Over plan limit handled separately via UpgradeOrPayModal
         case 'billing':
           return true;
         case 'branches_management':
@@ -269,7 +323,9 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
           return true;
       }
     };
-  }, [isPaidPlan]);
+  }, [isPaidPlan, isPastDue]);
+
+  const canAddBranch = !isPastDue;
 
   return {
     currentTier,
@@ -289,9 +345,11 @@ export const useSubscription: () => UseSubscriptionReturn = () => {
     canUseFeature,
     isPaidPlan,
     isOnTrial,
+    isTrialExpired,
     isPastDue,
     subscriptionStatus,
     trialEndDate,
+    canAddBranch,
     refetch,
   };
 };

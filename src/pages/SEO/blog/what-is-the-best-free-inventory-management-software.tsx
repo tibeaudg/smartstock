@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import {
   CheckCircle,
   Target,
@@ -177,9 +176,6 @@ export default function SeoBestInventoryManagementSoftwarePage() {
         url={`https://www.stockflowsystems.com${canonicalPath}`}
         modifiedTime="2026-05-11"
       />
-
-      <StructuredData data={structuredData} />
-
 <section style={{ fontFamily: 'Inter, system-ui, sans-serif', color: '#1a1a1a', lineHeight: '1.7', maxWidth: '1000px', margin: '0 auto', padding: '2rem' }}>
 
 

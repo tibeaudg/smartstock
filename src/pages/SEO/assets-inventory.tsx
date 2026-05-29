@@ -20,9 +20,6 @@ import {
   Zap,
   Target
 } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
-
-
 export default function AssetsInventory() {
   
   const { formatPrice } = useCurrency();
@@ -202,13 +199,7 @@ export default function AssetsInventory() {
         url="https://www.stockflowsystems.com/assets-inventory"
         structuredData={[structuredData, faqStructuredData]}
       />
-
-      <StructuredData data={[structuredData, faqStructuredData]} />
-
-
-
-
-      <section className="py-12">
+<section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
             <strong>Assets inventory management</strong> is essential for businesses that need to track, monitor, and maintain physical assets like equipment, machinery, vehicles, and IT assets. Unlike product inventory (items you sell), assets inventory focuses on fixed assets used in operations. Effective assets inventory management prevents asset loss, optimizes maintenance schedules, ensures compliance, and provides complete visibility across all locations.

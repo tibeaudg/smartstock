@@ -1,8 +1,6 @@
 ﻿import { useLocation, Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
-
 const topicTitle = "Free Bill of Material Management Software";
 const canonicalPath = "/bill-of-materials-software-free";
 const metaDescription = "Free BOM software for 2026. Replace spreadsheets, manage parts/kits, and reduce build errors up to 40%. No credit card.";
@@ -130,11 +128,7 @@ export default function BillOfMaterialsManagementPage() {
         image="https://www.stockflowsystems.com/images/bom-management-hero.jpg"
         modifiedTime="2026-05-11"
       />
-
-      <StructuredData data={pageStructuredData} />
-
-
-      <section className="px-4 py-16">
+<section className="px-4 py-16">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">Free Bill of Material Management Software</h1>
         </div>

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
 import { useMemo } from "react";
@@ -64,9 +63,7 @@ export default function SEOResourcesBlogPage() {
         url="https://www.stockflowsystems.com/resources"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-      <section className="bg-white px-4 py-16">
+<section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">

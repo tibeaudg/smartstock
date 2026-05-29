@@ -1,8 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
-
 const topicTitle = "Gratis Stuklijst Beheer Software";
 const canonicalPath = "/nl/gratis-stuklijst-software";
 const metaDescription = "Stop met spreadsheets. Beheer uw voorraad en BOM gratis. Geen creditcard vereist. Gebouwd voor fabrikanten en kleine bedrijven.";
@@ -132,10 +130,7 @@ export default function GratisStuklijstSoftwarePage() {
           { lang: 'nl-BE', url: `https://www.stockflowsystems.com${canonicalPath}` }
         ]}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Main Content */}
+{/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">

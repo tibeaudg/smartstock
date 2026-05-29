@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { StructuredData } from '@/components/StructuredData';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateFAQSchema } from '@/lib/structuredData';
 import { generateHowToSchema } from '@/utils/enhancedStructuredData';
@@ -119,10 +118,7 @@ const HowToChooseInventoryManagementSoftware = () => {
         publishedTime={publishedTime}
         modifiedTime={modifiedTime}
       />
-
-      <StructuredData data={structuredData} />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="prose prose-lg max-w-none">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             How to Choose Inventory Management Software: Complete Buyer Guide

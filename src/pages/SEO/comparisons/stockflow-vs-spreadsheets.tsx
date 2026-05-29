@@ -3,7 +3,6 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock, AlertCircle, Database, FileText, Users, TrendingUp, MapPin } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -158,9 +157,7 @@ export default function StockFlowVsSpreadsheets() {
         url="https://www.stockflowsystems.com/stockflow-vs-spreadsheets"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-      {/* Introduction */}
+{/* Introduction */}
       <div className="mb-12">
         <p className="text-lg text-slate-900 leading-relaxed mb-6">
           Spreadsheets feel free until you calculate the real cost. Manual data entry wastes 10-20 hours weekly. Error rates hover around 10-15%. Multi-user access causes version conflicts. StockFlow eliminates these problems with real-time tracking, barcode scanning, and automation that spreadsheets can't match.

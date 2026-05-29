@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import {
   BarChart3, Package, RefreshCw, Calculator, Database, LineChart, PlusCircle, Utensils, Factory, CheckCircle2, Smartphone, Layers, Search, LayoutDashboard
 } from "lucide-react";
@@ -46,9 +45,7 @@ export default function SeoBestStockManagementComprehensivePage() {
         keywords={keywords}
         canonical={canonicalPath}
       />
-      <StructuredData data={structuredData} />
-
-      {/* SECTION: INTRODUCTION */}
+{/* SECTION: INTRODUCTION */}
       <section className="bg-white py-12">
         <div className="mx-auto max-w-4xl px-4">
           <h1 className="text-4xl font-bold text-slate-900">Best Stock Management Software in 2026: Complete Guide</h1>

@@ -1,6 +1,5 @@
 import CaseStudiesPage from '@/pages/case-studies';
 import SEO from '@/components/SEO';
-import { StructuredData } from '@/components/StructuredData';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { Link } from 'react-router-dom';
@@ -106,7 +105,7 @@ const structuredData = [
     "@type": "WebPage",
     "name": "Inventory Management Case Studies - StockFlow",
     "description": "See how businesses use StockFlow to improve inventory management. Real success stories from electronics, retail, food, and logistics companies. Learn about ROI, time savings, and results.",
-    "url": "https://www.stockflowsystems.com/resources/case-studies",
+    "url": "https://www.stockflowsystems.com/case-studies",
     "mainEntity": {
       "@type": "ItemList",
       "name": "StockFlow Case Studies",
@@ -145,7 +144,7 @@ const structuredData = [
         "@type": "ListItem",
         "position": 3,
         "name": "Case Studies",
-        "item": "https://www.stockflowsystems.com/resources/case-studies"
+        "item": "https://www.stockflowsystems.com/case-studies"
       }
     ]
   }
@@ -165,12 +164,10 @@ export default function SEOCaseStudiesPage() {
         title="Inventory Management Case Studies 2026 - Success Stories | StockFlow"
         description="See how businesses use StockFlow to improve inventory management. Real success stories from electronics, retail, food, and logistics companies. Learn about ROI, time savings, and results."
         keywords="case studies, success stories, inventory management, business results, ROI, testimonials, inventory software case studies, inventory management success stories, stockflow case studies"
-        url="https://www.stockflowsystems.com/resources/case-studies"
+        url="https://www.stockflowsystems.com/case-studies"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-      {/* Introduction Section */}
+{/* Introduction Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">

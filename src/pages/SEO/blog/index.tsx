@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
-import { StructuredData } from "@/components/StructuredData";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
 import { useMemo, useState } from "react";
@@ -73,16 +72,13 @@ export default function SEOResourcesBlogPage() {
     <>
       <Header />
       <SEO
-        title="Inventory Management Resources 2026 | Industry Guides | StockFlow"
+        title="Inventory Management Resources 2026 | StockFlow"
         description="Access professional articles, software comparisons, and best practices for inventory operations."
         keywords="inventory management blog, inventory strategy, warehouse optimization guides"
         url="https://www.stockflowsystems.com/blog"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-
-      <section className="bg-white px-4 py-20">
+<section className="bg-white px-4 py-20">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-2xl">

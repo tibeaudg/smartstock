@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import {
   Globe,
   ArrowRight,
@@ -91,11 +90,7 @@ export default function SeoOnlineInventoryManagementPage() {
       keyTakeaways={takeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
-      <StructuredData data={structuredData} />
-
-
-
-      {/* ONLINE MARKET ANALYSIS */}
+{/* ONLINE MARKET ANALYSIS */}
       <section className="py-16 bg-white">
         <div className="mx-auto max-w-5xl px-4">
           <h2 className="mb-10 text-center text-3xl font-bold text-slate-900">Cloud Provider Capability Matrix</h2>

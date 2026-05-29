@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import {
   CheckCircle, Target, BarChart3, Database, QrCode, Users, Settings2,
   ArrowRight, ShieldCheck, Zap, Cpu, PieChart, FileSpreadsheet,
@@ -166,10 +165,7 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
         url={`https://www.stockflowsystems.com${canonicalPath}`}
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Hero / Overview Section */}
+{/* Hero / Overview Section */}
       <section className="bg-white px-4 py-20 border-b">
         <div className="mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">

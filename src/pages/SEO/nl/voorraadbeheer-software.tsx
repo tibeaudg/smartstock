@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useState } from 'react';
-import { StructuredData } from '@/components/StructuredData';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { useLocation } from 'react-router-dom';
 import { getBreadcrumbPath } from '@/config/topicClusters';
@@ -83,10 +82,7 @@ export default function VoorraadbeheerSoftware() {
         ]}
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Main Hero/Introduction Section */}
+{/* Main Hero/Introduction Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">

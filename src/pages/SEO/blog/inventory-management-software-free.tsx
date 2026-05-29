@@ -3,7 +3,6 @@ import { useLocation, Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
-import { StructuredData } from '@/components/StructuredData';
 import { CheckCircle } from 'lucide-react';
 
 /**
@@ -91,10 +90,7 @@ export default function InventoryManagementSoftwareFreePage() {
         url="https://www.stockflowsystems.com/inventory-management-software-free"
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      <section className="px-4 py-12">
+<section className="px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h2 id="is-it-free" className="text-2xl font-bold text-gray-900 mb-6">
             Is Inventory Management Software Free?

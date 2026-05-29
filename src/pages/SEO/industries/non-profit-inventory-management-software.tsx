@@ -20,8 +20,6 @@ import {
   HeartHandshake
 } from 'lucide-react';
 
-import { KeyTakeaways } from '@/components/KeyTakeaways';
-
 export default function NonProfitInventorySoftwarePage() {
   
   const location = useLocation();
@@ -133,7 +131,7 @@ export default function NonProfitInventorySoftwarePage() {
       heroTitle="Inventory Software Built for Mission-Driven Teams"
       updatedDate="01/08/2026"
       faqData={faqData}
-      keyTakeaways={<KeyTakeaways items={keyTakeaways} />}
+      keyTakeaways={keyTakeaways}
     >
       <SEO
         title="Free Non-Profit Inventory Software: Donations & Assets | 2026"

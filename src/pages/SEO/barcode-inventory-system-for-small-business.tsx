@@ -1,6 +1,5 @@
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -131,10 +130,7 @@ export default function BarcodeInventorySystemSmallBusiness() {
         publishedTime="2026-05-11"
         modifiedTime="2026-05-11"
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Intro */}
+{/* Intro */}
       <section className="prose max-w-none mb-12">
         <p className="text-lg leading-relaxed">
           Running a small business means every hour and every pound counts. A{" "}

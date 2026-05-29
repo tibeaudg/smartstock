@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { StructuredData } from '@/components/StructuredData';
 import {
   Cloud,
   Globe,
@@ -255,10 +254,7 @@ export default function BestOnlineInventorySoftwarePage() {
         url="https://www.stockflowsystems.com/best-online-inventory-software"
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Hero Section */}
+{/* Hero Section */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-50">
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">

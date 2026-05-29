@@ -1,9 +1,7 @@
-import SEO from '@/components/SEO';
 import { useLocation, Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
-import { StructuredData } from '@/components/StructuredData';
 import { Check, Star } from 'lucide-react';
 
 /**
@@ -172,24 +170,17 @@ export default function PricingPage() {
       breadcrumbItems={breadcrumbItems}
       heroTitle="StockFlow Pricing"
       dateUpdated="2026-05-08"
+      seoDescription="StockFlow pricing: Starter free, Professional $9/mo, Business $29/mo, Enterprise $59/mo. Prix abonnement stockflow inventory management."
       heroDescription="Simple, transparent pricing. Start free and scale as you grow. Professional plan includes a 14-day free trial."
       keyTakeaways={keyTakeaways}
       pageLanguage="en"
+      structuredData={structuredData}
+      alternateLanguages={[
+        { lang: 'en-US', url: 'https://www.stockflowsystems.com/pricing' },
+        { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/voorraad-software' },
+        { lang: 'fr-BE', url: 'https://www.stockflowsystems.com/pricing' },
+      ]}
     >
-      <SEO
-        title="StockFlow Pricing | Plans from $0 – Prix Abonnement Inventory Management"
-        description="StockFlow pricing: Starter free, Professional $9/mo, Business $29/mo, Enterprise $59/mo. Prix abonnement stockflow inventory management."
-        keywords="stockflow pricing, prix abonnement stockflow, stockflow plans, inventory management price, stockflow kosten, stockflow abonnement"
-        url="https://www.stockflowsystems.com/pricing"
-        structuredData={structuredData}
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/pricing' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/voorraad-software' },
-          { lang: 'fr-BE', url: 'https://www.stockflowsystems.com/pricing' },
-        ]}
-      />
-
-      <StructuredData data={structuredData} />
 
       <section className="px-4 py-12">
         <div className="max-w-5xl mx-auto">

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { 
   ShieldCheck, 
   AlertTriangle, 
@@ -57,9 +56,7 @@ export default function SeoFreeItInventoryPage() {
       keyTakeaways={keyTakeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
-      <StructuredData data={structuredData} />
-
-      {/* SECTION 1: IS THERE ANY FREE SOFTWARE */}
+{/* SECTION 1: IS THERE ANY FREE SOFTWARE */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-4xl px-4">
           <h2 className="text-3xl font-bold text-slate-900">Is there any free inventory management software?</h2>

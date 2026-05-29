@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb, Truck, Wrench, Building2, MapPin } from "lucide-react";
 
 const topicTitle = "Inventory Management for Contractors";
@@ -97,10 +96,7 @@ export default function InventoryManagementForContractorsPage() {
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
       />
-
-      <StructuredData data={pageStructuredData} />
-
-      {/* Introduction */}
+{/* Introduction */}
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <p className="text-lg leading-relaxed text-gray-700 mb-6">

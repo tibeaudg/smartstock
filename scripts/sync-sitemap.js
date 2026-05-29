@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import { globby } from 'globby';
+import { getSlugFromSeoFile, getSlugFromPath, extractRoutePathFromContent } from './utils/seo-slug.mjs';
 
 const BASE_URL = 'https://www.stockflowsystems.com';
 const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
@@ -57,15 +58,12 @@ async function syncSitemap() {
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
       .filter(file => !excludedFilenames.has(path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '')))
       .map(file => {
-        const filename = path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '');
-        // Handle nested paths (glossary, solutions, industries, etc.)
-        const dir = path.dirname(file);
-        if (dir !== '.' && !dir.includes('nl')) {
-          // For nested structures, use the filename only (matching seoRoutes.tsx logic)
-          return filename;
-        }
-        return filename;
+        const normalized = file.replace(/\\/g, '/');
+        const fullPath = path.join(seoDir, normalized);
+        const content = fs.readFileSync(fullPath, 'utf-8');
+        return extractRoutePathFromContent(content, `pages/SEO/${normalized}`);
       })
+      .filter(Boolean)
   );
 
   // 3. Map Dutch /nl/ files
@@ -76,14 +74,8 @@ async function syncSitemap() {
     nlFiles
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
       .forEach(file => {
-        const dir = path.dirname(file);
-        const filename = path.basename(file).replace(/\.(js|jsx|ts|tsx)$/, '');
-        if (dir === '.' || dir === 'nl') {
-          nlRoutes.add(`nl/${filename}`);
-        } else {
-          // For nested structures like nl/industries/...
-          nlRoutes.add(`nl/${dir}/${filename}`);
-        }
+        const slug = getSlugFromPath(`pages/SEO/nl/${file.replace(/\\/g, '/')}`);
+        if (slug) nlRoutes.add(slug);
       });
   }
 

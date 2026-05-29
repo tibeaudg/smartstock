@@ -4,10 +4,15 @@ import { Helmet } from 'react-helmet-async';
 import { BookOpen, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import HeaderPublic from '@/components/HeaderPublic';
-import { SEOEnhancer } from '@/components/seo/SEOEnhancer';
 import { SEO } from '@/components/SEO';
-import { StructuredData } from '@/components/StructuredData';
 import { generateFAQSchema } from '@/lib/structuredData';
+import { generateOrganizationSchema, generateWebSiteSchema } from '@/utils/enhancedStructuredData';
+import { getHreflangAlternates } from '@/config/enNlHreflang';
+import {
+  generatePageMetaDescription,
+  isThinTemplatePage,
+  normalizeKeyTakeaways,
+} from '@/utils/seoPageDescription';
 import { SEOPageHero } from './SeoPageHero';
 import FooterLanding from './Footer';
 import TableOfContents from './TableOfContents';
@@ -27,11 +32,13 @@ interface SEOPageLayoutProps {
   heroDescription?: string;
   children: React.ReactNode;
   pageLanguage?: 'nl' | 'en';
+  alternateLanguages?: Array<{ lang: string; url: string }>;
   previousArticle?: any | null;
   nextArticle?: any | null;
   keyTakeaways?: string[];
   faqData?: Array<{ question: string; answer: string }>;
   structuredData?: object | object[];
+  noindex?: boolean;
 }
 
 const PRODUCTION_URL = 'https://www.stockflowsystems.com';
@@ -161,14 +168,20 @@ const SEOPageLayout = memo(({
   dateUpdated,
   heroDescription = '',
   children,
-  pageLanguage = 'nl',
+  pageLanguage,
+  alternateLanguages,
   previousArticle = null,
   nextArticle = null,
   keyTakeaways = [],
   faqData = [],
-  structuredData
+  structuredData,
+  noindex: noindexProp,
 }: SEOPageLayoutProps) => {
   const location = useLocation();
+
+  const resolvedPageLanguage: 'en' | 'nl' =
+    pageLanguage ??
+    (location.pathname.startsWith('/nl') ? 'nl' : 'en');
 
   const pageTitle = title || heroTitle;
   // Shorten title to ≤ 60 chars: strip the middle descriptor, keep topic + "| StockFlow"
@@ -187,14 +200,37 @@ const SEOPageLayout = memo(({
     return candidate.length <= 60 ? candidate : candidate.substring(0, 57) + '...';
   })();
   const canonicalUrl = `${PRODUCTION_URL}${location.pathname.replace(/\/+$/, '') || '/'}`;
-  const resolvedDescription = seoDescription || heroDescription || undefined;
+  const resolvedDescription =
+    seoDescription ||
+    heroDescription ||
+    generatePageMetaDescription(heroTitle, resolvedPageLanguage);
 
-  const pageSchemas = useMemo(() => {
-    if (structuredData) return null;
-    if (!faqData?.length) return null;
+  const thinTemplate = isThinTemplatePage(heroTitle, keyTakeaways);
+  const shouldNoindex = noindexProp ?? thinTemplate;
 
-    return [generateFAQSchema(faqData)];
-  }, [faqData, structuredData]);
+  const normalizedTakeaways = useMemo(
+    () => normalizeKeyTakeaways(keyTakeaways, heroTitle),
+    [keyTakeaways, heroTitle]
+  );
+
+  const resolvedAlternateLanguages =
+    alternateLanguages ?? getHreflangAlternates(location.pathname);
+
+  const combinedStructuredData = useMemo(() => {
+    const schemas: object[] = [
+      generateOrganizationSchema(PRODUCTION_URL),
+      generateWebSiteSchema(PRODUCTION_URL, resolvedPageLanguage),
+    ];
+
+    if (structuredData) {
+      const extra = Array.isArray(structuredData) ? structuredData : [structuredData];
+      schemas.push(...extra);
+    } else if (faqData?.length) {
+      schemas.push(generateFAQSchema(faqData));
+    }
+
+    return schemas;
+  }, [structuredData, faqData, resolvedPageLanguage]);
   const contentRef = useRef<HTMLDivElement>(null);
   const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState('');
@@ -266,10 +302,7 @@ const SEOPageLayout = memo(({
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
-        <html lang={pageLanguage} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <style>{`@font-face { font-display: swap; }`}</style>
+        <html lang={resolvedPageLanguage} />
       </Helmet>
 
       <SEO
@@ -277,10 +310,13 @@ const SEOPageLayout = memo(({
         description={resolvedDescription}
         canonical={canonicalUrl}
         url={canonicalUrl}
+        locale={resolvedPageLanguage}
+        alternateLanguages={resolvedAlternateLanguages}
+        structuredData={combinedStructuredData}
+        noindex={shouldNoindex}
       />
 
       <HeaderPublic />
-      <SEOEnhancer includeWebSite includeOrganization baseUrl={PRODUCTION_URL} />
 
       <main>
         <SEOPageHero
@@ -293,7 +329,7 @@ const SEOPageLayout = memo(({
         <section className="container mx-auto max-w-7xl px-4 py-14">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
             <article ref={contentRef} className="min-w-0">
-              <KeyTakeaways takeaways={keyTakeaways} />
+              <KeyTakeaways takeaways={normalizedTakeaways} />
 
               <div className="prose prose-slate max-w-none">
                 {children}
@@ -407,7 +443,6 @@ const SEOPageLayout = memo(({
       </main>
 
       <FooterLanding />
-      {pageSchemas && <StructuredData data={pageSchemas} />}
     </div>
   );
 });

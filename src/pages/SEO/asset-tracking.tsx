@@ -23,8 +23,6 @@ import {
   Shield,
   History,
 } from 'lucide-react';
-import { KeyTakeaways } from '@/components/KeyTakeaways';
-
 
 const keyTakeaways = [
 "Asset tracking is essential for managing tools, equipment, and spare parts across multiple locations.",
@@ -301,7 +299,7 @@ export default function AssetTracking() {
       heroTitle="Asset Tracking: Keep Tabs on Critical Tools, Equipment & Spare Parts"
       dateUpdated="06/01/2026"
       faqData={faqData}
-      keyTakeaways={KeyTakeaways}
+      keyTakeaways={keyTakeaways}
     >
       <SEO
         title="Asset Tracking Software | Digital Audit Trails & Location History | StockFlow"

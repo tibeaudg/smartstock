@@ -19,7 +19,6 @@ import {
   Link as LinkIcon
 } from 'lucide-react';
 import SEO from '@/components/SEO';
-import { StructuredData } from '@/components/StructuredData';
 import { Link } from 'react-router-dom';
 
 const features = [
@@ -258,11 +257,7 @@ export default function InventoryPhotosPage() {
         url="https://www.stockflowsystems.com/inventory-photos"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-
-
-      {/* Feature Highlights */}
+{/* Feature Highlights */}
       <div className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

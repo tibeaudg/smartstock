@@ -31,7 +31,7 @@ export const NAV_ITEMS: NavItem[] = [
           title: 'Use Cases',
           items: [
             { label: 'Inventory Management', description: 'Manage, organize, and track all inventory in real time.', to: '/inventory-management', icon: Boxes },
-            { label: 'Supplies Tracking', description: 'Track materials, consumables, and parts with ease.', to: '/suppliers', icon: Truck },
+            { label: 'Supplies Tracking', description: 'Track materials, consumables, and parts with ease.', to: '/supplies-and-consumables-software', icon: Truck },
             { label: 'Asset Tracking', description: 'Keep tabs on critical tools, equipment, and spare parts.', to: '/asset-tracking', icon: Wrench }
           ]
         },

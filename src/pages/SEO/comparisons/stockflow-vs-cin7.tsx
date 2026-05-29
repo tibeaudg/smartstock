@@ -3,7 +3,6 @@ import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
-import { StructuredData } from '@/components/StructuredData';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
 import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Clock } from 'lucide-react';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
@@ -108,9 +107,7 @@ export default function StockFlowVsCin7() {
         url="https://www.stockflowsystems.com/comparisons/stockflow-vs-cin7"
         structuredData={structuredData}
       />
-      <StructuredData data={structuredData} />
-
-      {/* Introduction */}
+{/* Introduction */}
       <div className="mb-12">
         <p className="text-lg black leading-relaxed mb-6">
           Cin7 costs $300+/month plus $2,000-5,000 setup fees and takes 45-90 days to implement. StockFlow is free forever, goes live in 5-7 days, and stores data in Europe (GDPR compliant). For most businesses, that's €5,600-8,600 saved in year one.

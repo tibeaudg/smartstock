@@ -6,7 +6,7 @@ const keyTakeaways = [
   'Enterprise-grade What Is 4pl And Does Your Business Need It systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
   'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
   'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
+  'Enhanced visibility into what is 4pl and does your business need it cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {

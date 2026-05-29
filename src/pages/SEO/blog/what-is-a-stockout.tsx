@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb, AlertTriangle, TrendingDown, Clock, Users, DollarSign, Package, Zap, Shield } from "lucide-react";
 
@@ -153,12 +152,7 @@ export default function SeoWhatIsAStockoutPage() {
         url={`https://www.stockflowsystems.com${canonicalPath}`}
         structuredData={structuredData}
       />
-
-      <StructuredData data={pageStructuredData} />
-
-
-
-      {/* Hero / Introduction */}
+{/* Hero / Introduction */}
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>

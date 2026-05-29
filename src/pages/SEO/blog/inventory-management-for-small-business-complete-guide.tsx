@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import { CheckCircle, Target, BarChart3, Lightbulb, TrendingUp, Shield, Users, Zap, PieChart, GitBranch, Smartphone, Package, AlertTriangle, DollarSign, Calendar } from "lucide-react";
 
 const topicTitle = "Inventory Management for Small Business: Complete 2026 Guide";
@@ -146,10 +145,7 @@ export default function InventoryManagementForSmallBusinessCompleteGuidePage() {
         url={`https://www.stockflowsystems.com${canonicalPath}`}
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Hero / Introduction */}
+{/* Hero / Introduction */}
       <section className="bg-white px-4 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">

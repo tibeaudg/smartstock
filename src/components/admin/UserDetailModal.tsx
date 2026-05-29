@@ -13,6 +13,13 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
+import {
+  TRIAL_STAGE_OPTIONS,
+  applyTrialStageOverride,
+  getTrialStageLabel,
+  isTrialStageOverride,
+  type TrialStageOverride,
+} from '@/utils/trialStageOverride';
 
 interface UserProfile {
   id: string;
@@ -95,6 +102,8 @@ interface SubscriptionInfo {
   endDate: string | null;
   maxProducts: number | null;
   stripeSubscriptionId: string | null;
+  trialStageOverride: TrialStageOverride | null;
+  effectiveStatus: SubscriptionInfo['status'];
 }
 
 interface InvoiceRow {
@@ -111,7 +120,7 @@ interface InvoiceRow {
 async function fetchUserSubscription(userId: string): Promise<SubscriptionInfo | null> {
   const { data: sub, error } = await supabase
     .from('user_subscriptions')
-    .select('status, tier_id, trial_end_date, end_date, stripe_subscription_id, start_date')
+    .select('status, tier_id, trial_end_date, end_date, stripe_subscription_id, start_date, trial_stage_override')
     .eq('user_id', userId)
     .maybeSingle();
 
@@ -124,7 +133,7 @@ async function fetchUserSubscription(userId: string): Promise<SubscriptionInfo |
   if (sub.tier_id) {
     const { data: tier } = await supabase
       .from('pricing_tiers')
-      .select('name, display_name, max_products')
+      .select('name, display_name, max_products, price_monthly')
       .eq('id', sub.tier_id)
       .single();
     if (tier) {
@@ -136,16 +145,29 @@ async function fetchUserSubscription(userId: string): Promise<SubscriptionInfo |
 
   const status = (sub.status ?? null) as SubscriptionInfo['status'];
   const isOnTrial = status === 'trial';
+  const trialStageOverride = isTrialStageOverride(sub.trial_stage_override) ? sub.trial_stage_override : null;
+  const isPaidTier = planName !== 'free' && planName !== 'starter';
+  const override = applyTrialStageOverride(
+    trialStageOverride,
+    status,
+    isPaidTier || isOnTrial || status === 'active' || status === 'past_due',
+    sub.trial_end_date ?? null,
+  );
+  const effectiveStatus = (override?.subscriptionStatus ?? status) as SubscriptionInfo['status'];
+  const effectiveOnTrial = override?.isOnTrial ?? isOnTrial;
+  const effectiveTrialEndDate = override?.trialEndDate ?? sub.trial_end_date ?? null;
 
   return {
-    planDisplayName: isOnTrial ? `${planDisplayName} (Trial)` : planDisplayName,
+    planDisplayName: effectiveOnTrial ? `${planDisplayName} (Trial)` : planDisplayName,
     planName,
     status,
-    trialEndDate: sub.trial_end_date ?? null,
+    trialEndDate: effectiveTrialEndDate,
     startDate: sub.start_date ?? null,
     endDate: sub.end_date ?? null,
     maxProducts,
     stripeSubscriptionId: sub.stripe_subscription_id ?? null,
+    trialStageOverride,
+    effectiveStatus,
   };
 }
 
@@ -330,6 +352,8 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const [triggeringStage, setTriggeringStage] = useState<string | null>(null);
   const [noteText, setNoteText] = useState('');
   const [savingNote, setSavingNote] = useState(false);
+  const [selectedTrialStage, setSelectedTrialStage] = useState<string>('auto');
+  const [loadingTrialStage, setLoadingTrialStage] = useState(false);
 
   const handleRetriggerChecklist = async () => {
     if (!user) return;
@@ -519,6 +543,67 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     }
   };
 
+  const handleSetTrialStage = async () => {
+    if (!user) return;
+    setLoadingTrialStage(true);
+    try {
+      const overrideValue = selectedTrialStage === 'auto' ? null : selectedTrialStage;
+      const { data: existing } = await supabase
+        .from('user_subscriptions')
+        .select('user_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (existing) {
+        const { error } = await supabase
+          .from('user_subscriptions')
+          .update({ trial_stage_override: overrideValue, updated_at: new Date().toISOString() })
+          .eq('user_id', user.id);
+        if (error) throw error;
+      } else {
+        const { data: starterTier } = await supabase
+          .from('pricing_tiers')
+          .select('id')
+          .eq('name', 'starter')
+          .maybeSingle();
+        const { data: freeTier } = starterTier
+          ? { data: starterTier }
+          : await supabase.from('pricing_tiers').select('id').eq('name', 'free').maybeSingle();
+        const tierId = freeTier?.id;
+        if (!tierId) throw new Error('No starter tier found');
+
+        const endDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+        const { error } = await supabase.from('user_subscriptions').insert({
+          user_id: user.id,
+          tier_id: tierId,
+          status: 'active',
+          billing_cycle: 'monthly',
+          start_date: new Date().toISOString(),
+          end_date: endDate,
+          trial_stage_override: overrideValue,
+        });
+        if (error) throw error;
+      }
+
+      const stageLabel = overrideValue ? getTrialStageLabel(overrideValue as TrialStageOverride) : 'Auto (real subscription)';
+      await supabase.from('audit_logs').insert({
+        user_id: user.id,
+        action: overrideValue
+          ? `ADMIN: Trial stage override set to "${stageLabel}" by ${adminUser?.email ?? 'admin'}`
+          : `ADMIN: Trial stage override cleared by ${adminUser?.email ?? 'admin'}`,
+        table_name: 'user_subscriptions',
+        record_id: user.id,
+      });
+      toast.success(overrideValue ? `Trial stage override: ${stageLabel}` : 'Trial stage override cleared');
+      queryClient.invalidateQueries({ queryKey: ['adminUserSubscription', user.id] });
+      queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to set trial stage override');
+    } finally {
+      setLoadingTrialStage(false);
+    }
+  };
+
   const handleSaveNote = async () => {
     if (!user || !noteText.trim()) return;
     setSavingNote(true);
@@ -575,6 +660,14 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     queryFn: () => fetchUserSubscription(user!.id),
     enabled: !!user && isOpen,
   });
+
+  useEffect(() => {
+    if (subscription) {
+      setSelectedTrialStage(subscription.trialStageOverride ?? 'auto');
+    } else if (user && isOpen) {
+      setSelectedTrialStage('auto');
+    }
+  }, [subscription, user?.id, isOpen]);
 
   const { data: pricingTiers = [] } = useQuery({
     queryKey: ['pricingTiers'],
@@ -1032,12 +1125,17 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
             <TabsContent value="billing" className="mt-0 space-y-4">
 
               {/* Subscription summary card */}
-              {subscription && (
+              {subscription ? (
                 <div className="rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800/40 p-4 space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-wrap gap-1">
                       <span className="font-semibold text-base">{subscription.planDisplayName}</span>
-                      <SubStatusBadge status={subscription.status} />
+                      <SubStatusBadge status={subscription.effectiveStatus ?? subscription.status} />
+                      {subscription.trialStageOverride && (
+                        <Badge className="text-[10px] bg-amber-100 text-amber-800 border border-amber-200">
+                          Override: {getTrialStageLabel(subscription.trialStageOverride)}
+                        </Badge>
+                      )}
                     </div>
                     {subscription.stripeSubscriptionId && (
                       <span className="text-xs text-gray-400 font-mono truncate max-w-[160px]" title={subscription.stripeSubscriptionId}>
@@ -1047,7 +1145,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                   </div>
 
                   {/* Trial progress bar */}
-                  {subscription.status === 'trial' && subscription.trialEndDate && (() => {
+                  {(subscription.effectiveStatus ?? subscription.status) === 'trial' && subscription.trialEndDate && (() => {
                     const now = new Date();
                     const trialEnd = new Date(subscription.trialEndDate);
                     const trialStart = subscription.startDate
@@ -1085,20 +1183,67 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                     </div>
                   )}
 
-                  {subscription.status === 'past_due' && (
+                  {(subscription.effectiveStatus ?? subscription.status) === 'past_due' && (
                     <div className="flex items-center gap-1.5 text-sm text-red-600 font-medium">
                       <CreditCard className="w-4 h-4" />
                       Payment failed — Stripe retry in progress
                     </div>
                   )}
 
-                  {subscription.status === 'paused' && (
+                  {(subscription.effectiveStatus ?? subscription.status) === 'paused' && (
                     <p className="text-sm text-slate-600">Subscription is paused. User cannot access paid features.</p>
                   )}
 
+                  {subscription.trialStageOverride && subscription.status !== subscription.effectiveStatus && (
+                    <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded px-2 py-1.5">
+                      Real subscription status: <strong>{subscription.status ?? 'none'}</strong> — user sees{' '}
+                      <strong>{subscription.effectiveStatus ?? 'starter'}</strong> via admin override.
+                    </p>
+                  )}
+
+                  {/* Trial stage override */}
+                  <div className="rounded-md border border-dashed border-amber-300 bg-amber-50/50 p-3 space-y-2">
+                    <div>
+                      <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide flex items-center gap-1">
+                        <Shield className="w-3 h-3" />
+                        Trial Stage Override
+                      </p>
+                      <p className="text-xs text-amber-700 mt-0.5">
+                        Simulate trial/subscription state for this user. Does not change real subscription data or Stripe.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Select value={selectedTrialStage} onValueChange={setSelectedTrialStage}>
+                        <SelectTrigger className="h-8 text-xs w-[220px]">
+                          <SelectValue placeholder="Select stage" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TRIAL_STAGE_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-xs">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        size="sm"
+                        onClick={handleSetTrialStage}
+                        disabled={loadingTrialStage}
+                        className="h-8 text-xs"
+                      >
+                        {loadingTrialStage ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Apply Override'}
+                      </Button>
+                    </div>
+                    {selectedTrialStage !== 'auto' && (
+                      <p className="text-xs text-gray-600">
+                        {TRIAL_STAGE_OPTIONS.find((o) => o.value === selectedTrialStage)?.description}
+                      </p>
+                    )}
+                  </div>
+
                   {/* Action buttons */}
                   <div className="flex flex-wrap gap-2 pt-1 border-t border-gray-200">
-                    {subscription.status === 'trial' && (
+                    {subscription.status === 'trial' && !subscription.trialStageOverride && (
                       <Button size="sm" variant="outline" onClick={handleExtendTrial} disabled={loadingExtendTrial}
                         className="border-purple-200 text-purple-700 hover:bg-purple-50 text-xs">
                         {loadingExtendTrial ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Calendar className="w-3 h-3 mr-1" />}
@@ -1117,6 +1262,43 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       {loadingLoginAs ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <LogIn className="w-3 h-3 mr-1" />}
                       Login As
                     </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+                  <p className="text-sm text-gray-500">No subscription record — showing Starter defaults.</p>
+                  <div className="rounded-md border border-dashed border-amber-300 bg-amber-50/50 p-3 space-y-2">
+                    <div>
+                      <p className="text-xs font-semibold text-amber-800 uppercase tracking-wide flex items-center gap-1">
+                        <Shield className="w-3 h-3" />
+                        Trial Stage Override
+                      </p>
+                      <p className="text-xs text-amber-700 mt-0.5">
+                        Simulate trial/subscription state. Creates a subscription row for override storage only.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Select value={selectedTrialStage} onValueChange={setSelectedTrialStage}>
+                        <SelectTrigger className="h-8 text-xs w-[220px]">
+                          <SelectValue placeholder="Select stage" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TRIAL_STAGE_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value} className="text-xs">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        size="sm"
+                        onClick={handleSetTrialStage}
+                        disabled={loadingTrialStage}
+                        className="h-8 text-xs"
+                      >
+                        {loadingTrialStage ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Apply Override'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}

@@ -23,7 +23,6 @@ import {
   RefreshCw,
   Smartphone
 } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
 import HeaderPublic from '@/components/HeaderPublic';
 import Footer from '@/components/Footer';
 
@@ -271,10 +270,7 @@ export default function WarehouseManagementSystemPage() {
         url="https://www.stockflowsystems.com/warehouse-management-system"
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Hero Section */}
+{/* Hero Section */}
       <section className="mt-8 relative py-20 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50">
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">

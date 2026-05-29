@@ -3,7 +3,6 @@ import { useLocation, Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
-import { StructuredData } from '@/components/StructuredData';
 import { CheckCircle, Layers, Calculator, GitBranch, Shield } from 'lucide-react';
 
 /**
@@ -119,10 +118,7 @@ export default function BomManagementToolsPage() {
         url="https://www.stockflowsystems.com/bom-management-tools"
         structuredData={structuredData}
       />
-
-      <StructuredData data={structuredData} />
-
-      <section className="px-4 py-12">
+<section className="px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h2 id="what-are-bom-tools" className="text-2xl font-bold text-gray-900 mb-6">
             What Are BOM Management Tools?

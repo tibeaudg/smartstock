@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
 import {
   CheckCircle,
   Globe,
@@ -57,9 +56,7 @@ export default function SeoInventorySoftwareSmallBusinessPage() {
       keyTakeaways={takeaways}
     >
       <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
-      <StructuredData data={structuredData} />
-
-      {/* HERO SECTION */}
+{/* HERO SECTION */}
       <section className="relative overflow-hidden border-b bg-slate-900 py-24 text-white">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -left-10 top-10 h-64 w-64 rounded-full bg-blue-500 blur-3xl"></div>

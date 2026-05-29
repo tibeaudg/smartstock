@@ -6,7 +6,7 @@ const keyTakeaways = [
   'Enterprise-grade A Guide To Selecting The Right Accounting Solution For Smbs systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
   'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
   'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
+  'Enhanced visibility into a guide to selecting the right accounting solution for smbs cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {

@@ -20,9 +20,6 @@ import {
   Truck,
   Building2
 } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
-
-
 export default function ConstructionInventoryManagementSystem() {
   
   const { formatPrice } = useCurrency();
@@ -229,10 +226,7 @@ export default function ConstructionInventoryManagementSystem() {
         url="https://www.stockflowsystems.com/construction-inventory-management-system"
         structuredData={[structuredData, faqStructuredData]}
       />
-
-      <StructuredData data={[structuredData, faqStructuredData]} />
-
-      <section className="py-12">
+<section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
             A <strong>construction inventory management system</strong> is specialized software designed to track, manage, and optimize construction materials, tools, equipment, and supplies across multiple job sites. Construction projects face unique challenges: materials stored at remote locations, high-value equipment that moves between sites, weather-sensitive materials requiring proper storage, and the constant risk of theft or loss. Generic inventory systems can't handle these complexities.

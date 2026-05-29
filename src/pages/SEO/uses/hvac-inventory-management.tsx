@@ -19,9 +19,6 @@ import {
   Thermometer,
   Truck
 } from 'lucide-react';
-import { StructuredData } from '@/components/StructuredData';
-
-
 export default function HvacInventoryManagement() {
   
   const { formatPrice } = useCurrency();
@@ -252,14 +249,7 @@ export default function HvacInventoryManagement() {
         url="https://www.stockflowsystems.com/hvac-inventory-management"
         structuredData={[structuredData, faqStructuredData]}
       />
-
-      <StructuredData data={[structuredData, faqStructuredData]} />
-
-
-
-
-
-      <section className="py-12">
+<section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">
             <strong>HVAC inventory management</strong> is specialized software for tracking, managing, and controlling HVAC (Heating, Ventilation, and Air Conditioning) parts, equipment, and supplies. HVAC contractors and service companies face unique challenges: parts stored in service vehicles, emergency parts needs for urgent repairs, seasonal demand fluctuations (AC parts in summer, heating parts in winter), and multiple job sites with parts needs.

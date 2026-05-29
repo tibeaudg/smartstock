@@ -6,7 +6,7 @@ const keyTakeaways = [
   'Enterprise-grade Biggest F And B Market Trends In 2025 systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
   'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
   'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into ${title.toLowerCase()} cycles reduces carrying costs and frees up working capital for strategic investment.',
+  'Enhanced visibility into biggest f and b market trends in 2025 cycles reduces carrying costs and frees up working capital for strategic investment.',
 ];
 
 const Page = () => {

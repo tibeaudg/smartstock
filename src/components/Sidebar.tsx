@@ -125,7 +125,7 @@ export const Sidebar = ({
   const { productCount, isLoading } = useProductCount();
   const { isMobile } = useMobile();
   const { user } = useAuth();
-  const { canUseFeature } = useSubscription();
+  const { canUseFeature, isPastDue } = useSubscription();
   const { organisationName } = useBranchSettings();
   const navigate = useNavigate();
   const location = useLocation();
@@ -167,17 +167,10 @@ export const Sidebar = ({
     }
   };
 
-  // If blocked, only show settings/invoicing
+  // If blocked, only show settings/invoicing. If past due, only billing.
   const isBlocked = userProfile?.blocked;
-  const isOwner = userProfile && userProfile.is_owner === true && !userProfile.blocked;
-
-  const settingsSubItems: SubItem[] = [
-    { id: 'general', label: 'General', path: '/dashboard/settings/general', icon: SlidersHorizontal },
-    { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: User },
-    { id: 'users', label: 'Users', path: '/dashboard/settings/users', icon: UserCog, divider: true },
-    { id: 'branches', label: 'Warehouses', path: '/dashboard/settings/branches', icon: Building2 },
-    { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard },
-  ];
+  const isPaymentLocked = isPastDue && !isBlocked;
+  const isOwner = userProfile?.is_owner === true;
 
   const adminSubItems: SubItem[] = [
     { id: 'users', label: 'User Management', path: '/admin?tab=users', icon: Users },
@@ -186,6 +179,24 @@ export const Sidebar = ({
     // sentinel entry so bare /admin also opens the sidebar
     { id: '_admin_root', label: '', path: '/admin' },
   ];
+
+  const ownerAdminMenuItem: MenuItem = {
+    id: 'admin',
+    label: 'Admin',
+    icon: Users,
+    path: '/admin',
+    subItems: adminSubItems,
+  };
+
+  const settingsSubItems: SubItem[] = isPaymentLocked
+    ? [{ id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard }]
+    : [
+        { id: 'general', label: 'General', path: '/dashboard/settings/general', icon: SlidersHorizontal },
+        { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: User },
+        { id: 'users', label: 'Users', path: '/dashboard/settings/users', icon: UserCog, divider: true },
+        { id: 'branches', label: 'Warehouses', path: '/dashboard/settings/branches', icon: Building2 },
+        { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard },
+      ];
 
   const analyticsSubItems = [
     { id: 'reports', label: 'Reports', path: '/dashboard/analytics/reports' },
@@ -199,8 +210,20 @@ export const Sidebar = ({
           id: 'settings', label: 'Settings', icon: Settings, path: '/dashboard/settings',
           subItems: [{ id: 'invoicing', label: 'Billing', path: '/dashboard/settings/invoicing', icon: CreditCard }]
         },
+        ...(isOwner ? [ownerAdminMenuItem] : []),
       ]
-    : [
+    : isPaymentLocked
+      ? [
+          {
+            id: 'settings',
+            label: 'Settings',
+            icon: Settings,
+            path: '/dashboard/settings/billing',
+            subItems: settingsSubItems,
+          },
+          ...(isOwner ? [ownerAdminMenuItem] : []),
+        ]
+      : [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard', end: true },
 
         {
@@ -235,15 +258,7 @@ export const Sidebar = ({
 
 
         ...(isOwner
-          ? [
-              {
-                id: 'admin',
-                label: 'Admin',
-                icon: Users,
-                path: '/admin',
-                subItems: adminSubItems
-              },
-            ]
+          ? [ownerAdminMenuItem]
           : []),
       ];
 
@@ -466,6 +481,8 @@ export const Sidebar = ({
                   <Settings className="w-5 h-5" />
                 </button>
 
+                {!isPaymentLocked && (
+                <>
                 <NavLink
                   to="/dashboard/settings/help-center"
                   onClick={() => setActiveSecondarySidebar(null)}
@@ -502,6 +519,8 @@ export const Sidebar = ({
                 >
                   <Gift className="w-5 h-5" />
                 </NavLink>
+                </>
+                )}
 
                 {isOwner && (
                   <button
@@ -727,6 +746,8 @@ export const Sidebar = ({
                     );
                   })()}
 
+                  {!isPaymentLocked && (
+                  <>
                   <NavLink
                     to="/dashboard/settings/help-center"
                     onClick={() => setActiveSecondarySidebar(null)}
@@ -771,6 +792,8 @@ export const Sidebar = ({
                     <Gift className="w-4 h-4 mr-2 text-white-400" />
                     <span className="flex-1 truncate text-left">Refer a Friend</span>
                   </NavLink>
+                  </>
+                  )}
 
                   {isOwner && (() => {
                     const adminItem = menuItems.find(item => item.id === 'admin');

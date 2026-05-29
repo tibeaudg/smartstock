@@ -2,8 +2,6 @@ import { useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { StructuredData } from "@/components/StructuredData";
-
 const topicTitle = "Voorraadbeheer in de Horeca: Stocken zonder verspilling";
 const canonicalPath = "/nl/industries/voorraadbeheer-horeca";
 
@@ -117,10 +115,7 @@ export default function VoorraadbeheerHorecaPage() {
           { lang: 'nl-BE', url: `https://www.stockflowsystems.com${canonicalPath}` }
         ]}
       />
-
-      <StructuredData data={structuredData} />
-
-      {/* Intro sectie */}
+{/* Intro sectie */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-lg leading-relaxed text-gray-700">
