@@ -36,6 +36,7 @@ import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
+import { FirstTimeFeedbackWidget } from './components/FirstTimeFeedbackWidget';
 import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes, getSeoLegacyRedirects, SolutionsPrefixRedirect } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
@@ -266,6 +267,12 @@ const AppRouter = () => {
       !userProfile.last_name &&
       location.pathname !== '/auth';
 
+    const showFeedbackWidget =
+      !loading &&
+      !!userProfile &&
+      userProfile.feedback_prompted === false &&
+      location.pathname !== '/auth';
+
     useEffect(() => {
       if (loading) {
         const timeout = setTimeout(() => setForceRender(true), 10000);
@@ -329,6 +336,13 @@ const AppRouter = () => {
             email={userProfile.email}
             onComplete={dismissProfileModal}
             onSkip={dismissProfileModal}
+          />
+        )}
+        {showFeedbackWidget && userProfile && (
+          <FirstTimeFeedbackWidget
+            userId={userProfile.id}
+            userEmail={userProfile.email}
+            userName={userProfile.first_name ?? ''}
           />
         )}
         <Suspense fallback={

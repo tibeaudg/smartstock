@@ -84,7 +84,7 @@ export default function ContactPage() {
       alert('Thank you! We will contact you soon. We typically respond within 1 hour during business hours.');
     } catch (e) {
       console.error('Contact form error:', e);
-      alert('Sending failed. Please try again or email us directly at info@stockflowsystems.be');
+      alert('Sending failed. Please try again or email us directly at info@stockflow.be');
     }
   };
 

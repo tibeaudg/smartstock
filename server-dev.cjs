@@ -23,6 +23,7 @@ const RATE_LIMITS = {
   '/api/visitor-chat': { max: 20, window: 60 * 1000 }, // 20 requests per minute
   '/api/capture-lead': { max: 30, window: 60 * 1000 }, // 30 requests per minute
   '/api/send-purchase-order-email': { max: 5, window: 60 * 1000 }, // 5 requests per minute (very strict)
+  '/api/send-feedback-email': { max: 5, window: 60 * 1000 }, // 5 per minute — one-time submission
 };
 
 // Cleanup old rate limit entries periodically (prevent memory leak)
@@ -154,6 +155,7 @@ const loadHandler = (relativePath) => {
 
 const visitorChatHandler = loadHandler('./api/visitor-chat.js');
 const contactHandler = loadHandler('./api/contact.js');
+const sendFeedbackEmailHandler = loadHandler('./api/send-feedback-email.js');
 const adsHandler = loadHandler('./api/ads.js');
 const sitemapHandler = loadHandler('./api/sitemap.js');
 
@@ -165,6 +167,10 @@ app.post('/api/visitor-chat', (req, res) => {
 
 app.post('/api/contact', (req, res) => {
   contactHandler(req, res);
+});
+
+app.post('/api/send-feedback-email', (req, res) => {
+  sendFeedbackEmailHandler(req, res);
 });
 
 // Webhook endpoints (signature verified, no CSRF)

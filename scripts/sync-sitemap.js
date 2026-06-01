@@ -53,6 +53,15 @@ async function syncSitemap() {
     'prix-abonnement',
   ]);
   const excludedFilenames = new Set(['createGlossaryPage', 'resources', ...redirectRoutes]);
+  // Mirrors isThinTemplatePage() in src/utils/seoPageDescription.ts —
+  // pages flagged as thin get noindex and must not appear in the sitemap.
+  function isThinTemplateContent(content) {
+    const heroTitleMatch = content.match(/heroTitle\s*=\s*["'`]([^"'`]+)["'`]/);
+    if (heroTitleMatch && heroTitleMatch[1].includes('A Technical Framework')) return true;
+    if (/\$\{title/.test(content) || /\$\{topic\}/.test(content)) return true;
+    return false;
+  }
+
   const localRoutes = new Set(
     files
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
@@ -61,6 +70,10 @@ async function syncSitemap() {
         const normalized = file.replace(/\\/g, '/');
         const fullPath = path.join(seoDir, normalized);
         const content = fs.readFileSync(fullPath, 'utf-8');
+        if (isThinTemplateContent(content)) {
+          console.log(`- Skipped (thin template): ${file}`);
+          return null;
+        }
         return extractRoutePathFromContent(content, `pages/SEO/${normalized}`);
       })
       .filter(Boolean)
@@ -152,6 +165,18 @@ async function syncSitemap() {
 
     // Refresh lastmod for all kept entries
     entry.lastmod = CURRENT_DATE;
+    return true;
+  });
+
+  // 4b. DEDUPLICATE: Remove duplicate <loc> entries, keeping the first occurrence
+  const seenLocs = new Set();
+  sitemapData.urlset.url = sitemapData.urlset.url.filter(entry => {
+    const loc = entry.loc;
+    if (seenLocs.has(loc)) {
+      console.log(`- Removed (duplicate): ${loc}`);
+      return false;
+    }
+    seenLocs.add(loc);
     return true;
   });
 

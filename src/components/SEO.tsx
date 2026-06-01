@@ -69,7 +69,7 @@ export const SEO: React.FC<SEOProps> = ({
   appUrl,
 }) => {
   const resolvedLocale = locale || 'en';
-  const currentModifiedTime = modifiedTime || new Date().toISOString();
+  const currentModifiedTime = modifiedTime;
   const imageUrl = image?.startsWith('http')
     ? image
     : `${defaultUrl}${image?.startsWith('/') ? '' : '/'}${image}`;
@@ -108,7 +108,7 @@ export const SEO: React.FC<SEOProps> = ({
   const robotsContent = noindex && nofollow
     ? 'noindex, nofollow'
     : noindex
-      ? 'noindex'
+      ? 'noindex, follow'
       : nofollow
         ? 'nofollow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
@@ -161,7 +161,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:type" content={publishedTime ? 'article' : 'website'} />
       <meta property="og:locale" content={defaultOgLocale} />
       <meta property="og:site_name" content="StockFlow" />
-      <meta property="og:updated_time" content={currentModifiedTime} />
+      {currentModifiedTime && <meta property="og:updated_time" content={currentModifiedTime} />}
       {publishedTime && <meta property="article:published_time" content={publishedTime} />}
       {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
       {category && <meta property="article:section" content={category} />}
@@ -209,13 +209,6 @@ export const SEO: React.FC<SEOProps> = ({
           <meta property="article:publisher" content="https://www.facebook.com/stockflowapp" />
         </>
       )}
-      {category && (
-        <>
-          <meta property="article:section" content={category} />
-          <meta property="article:tag" content={category} />
-        </>
-      )}
-      
       {/* Canonical - normalized to remove trailing slashes and query parameters */}
       <link rel="canonical" href={normalizedUrl} />
       
@@ -232,8 +225,9 @@ export const SEO: React.FC<SEOProps> = ({
         <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={normalizeCanonicalUrl(altLang.url)} />
       ))}
       
-      {/* X-default for international targeting */}
-      {alternateLanguages.length > 0 && (
+      {/* X-default for international targeting — only if not already in alternateLanguages */}
+      {alternateLanguages.length > 0 &&
+        !alternateLanguages.some(a => a.lang === 'x-default') && (
         <link rel="alternate" hrefLang="x-default" href={normalizedUrl} />
       )}
       

@@ -1,19 +1,27 @@
 /**
- * Marketing URLs to prerender for crawlers (see middleware.ts + PRERENDER_TOKEN).
+ * Known high-traffic marketing URLs (kept for reference / legacy imports).
+ * The middleware now prerendering ALL public paths — this list is no longer
+ * used for path gating.
  */
 export const PRERENDER_PATHS = [
   '/',
   '/pricing',
   '/features',
   '/contact',
+  '/best-free-inventory-software-with-barcode-scanning',
+  '/bill-of-materials-software-free',
+  '/what-is-the-best-free-inventory-management-software',
+  '/barcode-inventory-system',
+  '/barcode-inventory-system-for-small-business',
   '/inventory-management-software',
   '/inventory-software',
   '/mobile-inventory-management',
   '/simple-stock-management',
   '/stock-management-software',
   '/best-inventory-management-software',
-  '/barcode-inventory-system-for-small-business',
-  '/bill-of-materials-software-free',
+  '/business-inventory-app',
+  '/best-online-inventory-software',
+  '/warehouse-management-system',
   '/nl/voorraadbeheer-software',
   '/nl/voorraad-software',
   '/nl/mobiel-voorraadbeheer',

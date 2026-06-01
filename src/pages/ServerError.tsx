@@ -92,10 +92,10 @@ const ServerError = () => {
                 </h3>
         
                 <a 
-                  href="mailto:info@stockflowsystems.be" 
+                  href="mailto:info@stockflow.be" 
                   className="text-blue-600 hover:underline"
                 >
-                  info@stockflowsystems.be
+                  info@stockflow.be
                 </a>
               </div>
             </div>

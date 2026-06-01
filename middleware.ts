@@ -1,24 +1,23 @@
-import { BOT_USER_AGENT, PRERENDER_PATHS } from './src/config/prerenderPaths';
+import { BOT_USER_AGENT } from './src/config/prerenderPaths';
 
 const PRODUCTION_HOST = 'www.stockflowsystems.com';
 
+// Private routes that should never be prerendered (robots.txt also disallows these)
+const PRIVATE_PREFIXES = [
+  '/dashboard',
+  '/auth',
+  '/admin',
+  '/checkout',
+  '/billing-success',
+  '/500',
+];
+
 export const config = {
-  matcher: [
-    '/',
-    '/pricing',
-    '/features',
-    '/contact',
-    '/inventory-management-software',
-    '/inventory-software',
-    '/mobile-inventory-management',
-    '/simple-stock-management',
-    '/stock-management-software',
-    '/best-inventory-management-software',
-    '/barcode-inventory-system-for-small-business',
-    '/bill-of-materials-software-free',
-    '/nl/:path*',
-  ],
+  // Catch all paths; filtering happens inside the function
+  matcher: ['/:path*'],
 };
+
+const STATIC_ASSET_RE = /\.(?:js|css|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|otf|json|xml|txt|map)$/i;
 
 export default async function middleware(request: Request): Promise<Response | undefined> {
   const token = process.env.PRERENDER_TOKEN;
@@ -34,11 +33,14 @@ export default async function middleware(request: Request): Promise<Response | u
   const url = new URL(request.url);
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
 
-  const shouldPrerender =
-    (PRERENDER_PATHS as readonly string[]).includes(pathname) ||
-    pathname.startsWith('/nl/');
+  // Skip static file requests (JS bundles, images, fonts, etc.)
+  if (STATIC_ASSET_RE.test(pathname)) {
+    return undefined;
+  }
 
-  if (!shouldPrerender) {
+  // Skip private/authenticated routes
+  const isPrivate = PRIVATE_PREFIXES.some(prefix => pathname.startsWith(prefix));
+  if (isPrivate) {
     return undefined;
   }
 

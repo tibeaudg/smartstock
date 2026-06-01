@@ -41,7 +41,9 @@
       "PowerShell($content = Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\public\\\\sitemap.xml\" -Raw; $idx = $content.LastIndexOf\\('</urlset>'\\); $content.Substring\\($idx - 200, 210\\))",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Tibea\\\\OneDrive\\\\Bureaublad\\\\Coding\\\\StockFlow\" -Directory)",
       "Bash(Select-Object -ExpandProperty Name)",
-      "Bash(grep -E \"inventory-software-management|asset-tracking|what-is-bill-of-materials|bill-of-materials|non-profit-inventory-management$|prix\" \"c:/Users/Tibea/OneDrive/Bureaublad/Coding/StockFlow/public/sitemap.xml\")"
+      "Bash(grep -E \"inventory-software-management|asset-tracking|what-is-bill-of-materials|bill-of-materials|non-profit-inventory-management$|prix\" \"c:/Users/Tibea/OneDrive/Bureaublad/Coding/StockFlow/public/sitemap.xml\")",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)"
     ]
   }
 }

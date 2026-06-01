@@ -153,9 +153,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signIn: async (email: string, pass: string) => 
       supabase.auth.signInWithPassword({ email, password: pass }),
     
-    signOut: async () => { 
-      purge(); 
-      await supabase.auth.signOut(); 
+    signOut: async () => {
+      purge();
+      await supabase.auth.signOut({ scope: 'local' });
     },
     
     signInWithGoogle: async () => 

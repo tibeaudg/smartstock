@@ -813,6 +813,7 @@ export type Database = {
           referral_code: string | null
           referred_by: string | null
           free_months_credit: number
+          feedback_prompted: boolean
         }
         Insert: {
           created_at?: string | null
@@ -832,6 +833,7 @@ export type Database = {
           referral_code?: string | null
           referred_by?: string | null
           free_months_credit?: number
+          feedback_prompted?: boolean
         }
         Update: {
           created_at?: string | null
@@ -851,6 +853,7 @@ export type Database = {
           referral_code?: string | null
           referred_by?: string | null
           free_months_credit?: number
+          feedback_prompted?: boolean
         }
         Relationships: [        ]
       }
