@@ -5,6 +5,32 @@ import { globby } from 'globby';
 import { getSlugFromSeoFile, getSlugFromPath, extractRoutePathFromContent } from './utils/seo-slug.mjs';
 
 const BASE_URL = 'https://www.stockflowsystems.com';
+
+const CORE_PAGES = new Set([
+  '/pricing', '/features', '/about', '/contact', '/integrations',
+  '/inventory-management-software', '/best-inventory-management-software',
+  '/best-free-inventory-software-with-barcode-scanning',
+  '/bill-of-materials-software-free', '/barcode-inventory-system-for-small-business',
+  '/inventory-software', '/mobile-inventory-management',
+  '/simple-stock-management', '/stock-management-software',
+]);
+
+function getPriority(url) {
+  const p = url.replace(BASE_URL, '') || '/';
+  if (p === '/') return '1.0';
+  if (CORE_PAGES.has(p)) return '0.9';
+  if (p.startsWith('/nl/')) return '0.8';
+  if (p.startsWith('/blog/') || p.startsWith('/glossary/')) return '0.7';
+  if (p.startsWith('/comparisons/') || p.startsWith('/industries/')) return '0.7';
+  return '0.8';
+}
+
+function getChangefreq(url) {
+  const p = url.replace(BASE_URL, '') || '/';
+  if (p === '/') return 'weekly';
+  return 'monthly';
+}
+
 const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
 const SEO_DIR_LOWER = path.join(process.cwd(), 'src/pages/seo');
 const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
@@ -133,6 +159,8 @@ async function syncSitemap() {
     // NEVER REMOVE Permanent URLs
     if (permanentUrls.includes(url) || url === `${BASE_URL}/`) {
       entry.lastmod = CURRENT_DATE;
+      entry.priority = getPriority(url);
+      entry.changefreq = getChangefreq(url);
       return true;
     }
 
@@ -150,6 +178,8 @@ async function syncSitemap() {
 
     if (isProtected) {
       entry.lastmod = CURRENT_DATE;
+      entry.priority = getPriority(url);
+      entry.changefreq = getChangefreq(url);
       return true;
     }
 
@@ -163,8 +193,10 @@ async function syncSitemap() {
       return false;
     }
 
-    // Refresh lastmod for all kept entries
+    // Refresh lastmod and update priority/changefreq for all kept entries
     entry.lastmod = CURRENT_DATE;
+    entry.priority = getPriority(url);
+    entry.changefreq = getChangefreq(url);
     return true;
   });
 
@@ -188,12 +220,11 @@ async function syncSitemap() {
 
   allTargetUrls.forEach(url => {
     if (!existingLocs.has(url)) {
-      // Set priority: 1.0 for homepage, 0.8 for Dutch pages, 0.8 for others
-      const priority = url === BASE_URL ? '1.0' : (url.includes('/nl/') ? '0.8' : '0.8');
       sitemapData.urlset.url.push({
         loc: url,
         lastmod: CURRENT_DATE,
-        priority: priority
+        changefreq: getChangefreq(url),
+        priority: getPriority(url),
       });
       addedCount++;
       console.log(`+ Added: ${url}`);

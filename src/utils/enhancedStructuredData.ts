@@ -461,3 +461,65 @@ export function generateComprehensivePageSchema(options: {
   return schemas;
 }
 
+const SEGMENT_LABELS: Record<string, string> = {
+  blog: 'Blog',
+  industries: 'Industries',
+  glossary: 'Glossary',
+  comparisons: 'Comparisons',
+  guides: 'Guides',
+  uses: 'Uses',
+  resources: 'Resources',
+  solutions: 'Solutions',
+  features: 'Features',
+};
+
+/**
+ * Auto-generate a BreadcrumbList schema from a URL pathname.
+ * Produces Home → [Category] → Page Title (2–3 levels).
+ */
+export function generateBreadcrumbSchema(
+  pathname: string,
+  pageTitle: string,
+  baseUrl: string = 'https://www.stockflowsystems.com'
+): object {
+  const clean = pathname.replace(/^\/+|\/+$/g, '');
+  const parts = clean ? clean.split('/') : [];
+
+  const items: { name: string; url: string }[] = [
+    { name: 'Home', url: baseUrl },
+  ];
+
+  // NL pages: skip category crumb (nl/ prefix is not meaningful as a label)
+  const isNl = parts[0] === 'nl';
+
+  if (!isNl && parts.length >= 2 && SEGMENT_LABELS[parts[0]]) {
+    items.push({
+      name: SEGMENT_LABELS[parts[0]],
+      url: `${baseUrl}/${parts[0]}`,
+    });
+  }
+
+  const leafName = pageTitle
+    .replace(/\s*\|\s*StockFlow\s*$/i, '')
+    .replace(/\s*Strategy\s*&\s*Automation\s*Guide\s*$/i, '')
+    .replace(/\s*Guide\s*$/i, '')
+    .trim();
+
+  const leafUrl = `${baseUrl}${pathname.replace(/\/+$/, '') || '/'}`;
+
+  // Only add leaf if it differs from Home
+  if (leafUrl !== baseUrl) {
+    items.push({ name: leafName, url: leafUrl });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}

@@ -6,7 +6,7 @@ import { BookOpen, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import HeaderPublic from '@/components/HeaderPublic';
 import { SEO } from '@/components/SEO';
 import { generateFAQSchema } from '@/lib/structuredData';
-import { generateOrganizationSchema, generateWebSiteSchema } from '@/utils/enhancedStructuredData';
+import { generateOrganizationSchema, generateWebSiteSchema, generateBreadcrumbSchema } from '@/utils/enhancedStructuredData';
 import { getHreflangAlternates } from '@/config/enNlHreflang';
 import {
   generatePageMetaDescription,
@@ -220,6 +220,7 @@ const SEOPageLayout = memo(({
     const schemas: object[] = [
       generateOrganizationSchema(PRODUCTION_URL),
       generateWebSiteSchema(PRODUCTION_URL, resolvedPageLanguage),
+      generateBreadcrumbSchema(location.pathname, heroTitle, PRODUCTION_URL),
     ];
 
     if (structuredData) {
@@ -230,7 +231,7 @@ const SEOPageLayout = memo(({
     }
 
     return schemas;
-  }, [structuredData, faqData, resolvedPageLanguage]);
+  }, [structuredData, faqData, resolvedPageLanguage, location.pathname, heroTitle]);
   const contentRef = useRef<HTMLDivElement>(null);
   const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState('');
