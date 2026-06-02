@@ -1,64 +1,8 @@
 {
-  "generatedAt": "2026-06-02T13:17:58.113Z",
+  "generatedAt": "2026-06-02T13:30:44.174Z",
   "removed": [
     {
-      "route": "10-best-b2b-e-commerce-platforms",
-      "reason": "thin-template"
-    },
-    {
-      "route": "10-business-success-apps",
-      "reason": "thin-template"
-    },
-    {
-      "route": "10-easy-ways-to-make-your-medical-practice-more-efficient-today",
-      "reason": "thin-template"
-    },
-    {
-      "route": "10-practical-ways-you-can-reduce-the-cost-of-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "12-money-making-garage-sale-tips",
-      "reason": "thin-template"
-    },
-    {
-      "route": "1d-vs-2d-barcodes",
-      "reason": "thin-template"
-    },
-    {
-      "route": "3-examples-of-creative-brick-and-mortar",
-      "reason": "thin-template"
-    },
-    {
-      "route": "4-inventory-accounting-methods-for-inventory-valuation",
-      "reason": "thin-template"
-    },
-    {
-      "route": "4-small-resources-to-simplify-small-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "4-ways-order-management-can-improve-your-customer-experience",
-      "reason": "thin-template"
-    },
-    {
-      "route": "5-best-ways-to-attract-customers-to-your-retail-shop",
-      "reason": "thin-template"
-    },
-    {
       "route": "5-elements-of-an-optimized-inventory-management-system",
-      "reason": "thin-template"
-    },
-    {
-      "route": "5-metrics-for-managing-your-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "5-trends-to-look-out-for-in-education-inventory-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "6-best-moving-tips-period",
       "reason": "thin-template"
     },
     {
@@ -66,123 +10,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "6-inventory-management-tips-when-times-are-tight",
-      "reason": "thin-template"
-    },
-    {
-      "route": "6-inventory-tracking-methods-for-construction-professionals",
-      "reason": "thin-template"
-    },
-    {
-      "route": "6-ways-to-give-your-business-the-home-edit-treatment",
-      "reason": "thin-template"
-    },
-    {
-      "route": "7-core-benefits-of-ai-powered-supply-chains",
-      "reason": "thin-template"
-    },
-    {
-      "route": "7-questions-to-ask-when-choosing-an-inventory-management-system",
-      "reason": "thin-template"
-    },
-    {
-      "route": "a-guide-to-rfis-request-for-information-in-construction",
-      "reason": "thin-template"
-    },
-    {
-      "route": "a-guide-to-rfps-request-for-proposal-in-construction",
-      "reason": "thin-template"
-    },
-    {
-      "route": "a-guide-to-selecting-the-right-accounting-solution-for-smbs",
-      "reason": "thin-template"
-    },
-    {
-      "route": "a-guide-to-tracking-expiration-dates-with-template",
-      "reason": "thin-template"
-    },
-    {
-      "route": "accelerate-b2b-wholesale-selling-with-built-in-edi",
-      "reason": "thin-template"
-    },
-    {
-      "route": "ai-and-automation",
-      "reason": "thin-template"
-    },
-    {
-      "route": "amazon-fba-small-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "amazon-fnsku-barcode",
-      "reason": "thin-template"
-    },
-    {
       "route": "anticipation-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "asset-barcode-tracking",
-      "reason": "thin-template"
-    },
-    {
-      "route": "asset-tracking-importance",
-      "reason": "thin-template"
-    },
-    {
-      "route": "assets-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "auto-parts-inventory-management-system-drives-down-costs",
-      "reason": "thin-template"
-    },
-    {
-      "route": "automated-inventory-management-software",
-      "reason": "thin-template"
-    },
-    {
-      "route": "automated-order-management-systems-vs-manual-order-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "avoiding-errors-in-inventory-debit-and-credit-entries",
-      "reason": "thin-template"
-    },
-    {
-      "route": "b2b-online-stores",
-      "reason": "thin-template"
-    },
-    {
-      "route": "b2b2c-model-for-your-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "bar-inventory-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "bar-inventory-template",
-      "reason": "thin-template"
-    },
-    {
-      "route": "barcode-glossary-the-top-8-most-used-acronyms-explained",
-      "reason": "thin-template"
-    },
-    {
-      "route": "barcode-inventory-system-for-small-business",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "barcode-label-printer",
-      "reason": "thin-template"
-    },
-    {
-      "route": "barcode-label-protection",
-      "reason": "thin-template"
-    },
-    {
-      "route": "barcode-printer",
       "reason": "thin-template"
     },
     {
@@ -190,131 +18,11 @@
       "reason": "thin-template"
     },
     {
-      "route": "best-barcode-scanner",
-      "reason": "thin-template"
-    },
-    {
-      "route": "best-cloud-based-warehouse-automation-software",
-      "reason": "thin-template"
-    },
-    {
-      "route": "best-event-planning-apps",
-      "reason": "thin-template"
-    },
-    {
-      "route": "biggest-f-and-b-market-trends-in-2025",
-      "reason": "thin-template"
-    },
-    {
-      "route": "blog-inventory-tracking",
-      "reason": "thin-template"
-    },
-    {
-      "route": "blurry-barcodes",
-      "reason": "thin-template"
-    },
-    {
-      "route": "business-assets",
-      "reason": "thin-template"
-    },
-    {
-      "route": "business-growth-stages-overview",
-      "reason": "thin-template"
-    },
-    {
-      "route": "calculating-raw-materials-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "can-i-create-a-barcode-system-in-excel",
-      "reason": "thin-template"
-    },
-    {
-      "route": "can-reducing-inventory-really-improve-working-capital",
-      "reason": "thin-template"
-    },
-    {
-      "route": "case-study-hooked-on-solar",
-      "reason": "thin-template"
-    },
-    {
-      "route": "choosing-a-price-scanner-for-your-small-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "construction-inventory-management-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "construction-material-cost",
-      "reason": "thin-template"
-    },
-    {
-      "route": "construction-procurement",
-      "reason": "thin-template"
-    },
-    {
-      "route": "construction-risk-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "cost-of-goods-formula",
-      "reason": "thin-template"
-    },
-    {
-      "route": "cost-of-goods-manufactured-formula",
-      "reason": "thin-template"
-    },
-    {
-      "route": "could-a-landscaping-inventory-management-system-keep-your-biz-pristine",
-      "reason": "thin-template"
-    },
-    {
-      "route": "creative-inventory-hacks-for-small-businesses",
-      "reason": "thin-template"
-    },
-    {
-      "route": "cycle-counting-in-the-construction-industry",
-      "reason": "thin-template"
-    },
-    {
-      "route": "daily-double-holiday-aftermath-what-is-returns-profiting-and-pricing-strategy",
-      "reason": "thin-template"
-    },
-    {
-      "route": "detailed-guide-to-warehouse-labelling",
-      "reason": "thin-template"
-    },
-    {
-      "route": "difference-between-oem-vs-odm",
-      "reason": "thin-template"
-    },
-    {
-      "route": "digital-supply-chain-tools-uk-smes",
-      "reason": "thin-template"
-    },
-    {
-      "route": "drop-shipping-inventory-management",
-      "reason": "thin-template"
-    },
-    {
       "route": "e-invoice-eu-regulations",
       "reason": "thin-template"
     },
     {
-      "route": "ean-vs-upc-barcodes",
-      "reason": "thin-template"
-    },
-    {
-      "route": "ecommerce-returns-management",
-      "reason": "thin-template"
-    },
-    {
       "route": "end-to-end-manufacturing",
-      "reason": "thin-template"
-    },
-    {
-      "route": "environmental-inventory-management-software",
       "reason": "thin-template"
     },
     {
@@ -334,83 +42,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "expert-tips-for-organizing-holiday-decorations",
-      "reason": "thin-template"
-    },
-    {
       "route": "fifo-vs-lifo",
-      "reason": "thin-template"
-    },
-    {
-      "route": "fill-rate-definition",
-      "reason": "thin-template"
-    },
-    {
-      "route": "finance",
-      "reason": "thin-template"
-    },
-    {
-      "route": "forecasting",
-      "reason": "thin-template"
-    },
-    {
-      "route": "free-asset-tracking-spreadsheet",
-      "reason": "thin-template"
-    },
-    {
-      "route": "free-barcode-font-code-39-3-of-9",
-      "reason": "thin-template"
-    },
-    {
-      "route": "fuel-your-growth-term-loans-invoicing-financing-made-simple",
-      "reason": "thin-template"
-    },
-    {
-      "route": "generate-barcodes-in-excel",
-      "reason": "thin-template"
-    },
-    {
-      "route": "get-rid-of-obsolete-parts",
-      "reason": "thin-template"
-    },
-    {
-      "route": "getting-organized-is-it-worth-it",
-      "reason": "thin-template"
-    },
-    {
-      "route": "gtin-vs-upc",
-      "reason": "thin-template"
-    },
-    {
-      "route": "guaranteed-maximum-price-in-construction",
-      "reason": "thin-template"
-    },
-    {
-      "route": "guide-to-growth-payments",
-      "reason": "thin-template"
-    },
-    {
-      "route": "guide-to-units",
-      "reason": "thin-template"
-    },
-    {
-      "route": "healthcare-clinics-stopped-over-ordering-wrong-supplies",
-      "reason": "thin-template"
-    },
-    {
-      "route": "hidden-costs-of-q4-success",
-      "reason": "thin-template"
-    },
-    {
-      "route": "home-staging-inventory-management-software",
-      "reason": "thin-template"
-    },
-    {
-      "route": "hospital-supply-chain-management-best-practices",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-ai-can-help-inventory-inefficiency",
       "reason": "thin-template"
     },
     {
@@ -418,43 +50,11 @@
       "reason": "thin-template"
     },
     {
-      "route": "how-inventory-automation-can-help-businesses-become-leaner",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-inventory-lists-help-businesses-stay-organized-and-profitable",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-partnering-with-a-3pl-company-can-help-cut-your-logistics-costs",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-tariffs-and-costs-influence-consumer-choices",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-tariffs-work",
-      "reason": "thin-template"
-    },
-    {
       "route": "how-to-buy-in-bulk-for-business",
       "reason": "thin-template"
     },
     {
-      "route": "how-to-calculate-handling-fees-on-orders",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-calculate-retail-price",
-      "reason": "thin-template"
-    },
-    {
       "route": "how-to-calculate-wholesale-price-sortly",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-create-a-purchase-order",
       "reason": "thin-template"
     },
     {
@@ -466,18 +66,6 @@
       "reason": "thin-template"
     },
     {
-      "route": "how-to-eliminate-blurry-barcodes",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-get-a-barcode-for-a-product",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-improve-inventory-accuracy-top-techniques",
-      "reason": "thin-template"
-    },
-    {
       "route": "how-to-improve-inventory-control",
       "reason": "thin-template"
     },
@@ -486,27 +74,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "how-to-invoice-your-electrical-customers-free-template",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-manage-your-q4-cash-flow",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-optimize-multi-channel-inventory-management-for-e-commerce-growth",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-order-inventory",
-      "reason": "thin-template"
-    },
-    {
       "route": "how-to-organize-a-stockroom",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-prepare-for-a-busy-season-with-efficient-inventory-management",
       "reason": "thin-template"
     },
     {
@@ -518,111 +86,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "how-to-sell-wholesale",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-start-a-home-staging-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-store-medical-supplies",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-track-raw-materials",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-use-qr-codes-for-healthcare-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "industries",
-      "reason": "thin-template"
-    },
-    {
-      "route": "intro-wireless-barcode-scanner",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-accounting-101",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-accounting",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-accuracy-formula",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-barcode-system",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-classification",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-control-101",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-control",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-cycle-count",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-financing-6-things-to-know-before-you-apply",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-forecasting-software",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-forecasting",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-holding-cost",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-in-balance-sheet",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-list-template-free-download",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-list-template",
-      "reason": "thin-template"
-    },
-    {
       "route": "inventory-management-creating-products-product-types",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-management-guide-for-small-businesses",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-management-purpose",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-management-rules",
-      "reason": "thin-template"
-    },
-    {
-      "route": "inventory-software-guide",
       "reason": "thin-template"
     },
     {
@@ -630,23 +94,7 @@
       "reason": "pruning-noindex"
     },
     {
-      "route": "inventory-visibility",
-      "reason": "thin-template"
-    },
-    {
-      "route": "is-just-in-time-inventory-management-a-thing-of-the-past",
-      "reason": "thin-template"
-    },
-    {
       "route": "keeping-track-of-business-expenses",
-      "reason": "thin-template"
-    },
-    {
-      "route": "key-differences-between-vendors-and-suppliers",
-      "reason": "thin-template"
-    },
-    {
-      "route": "lpn-barcodes",
       "reason": "thin-template"
     },
     {
@@ -654,59 +102,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "manufacturing",
-      "reason": "thin-template"
-    },
-    {
       "route": "markup-vs-margin",
-      "reason": "thin-template"
-    },
-    {
-      "route": "material-requirements-planning-mrp-software",
-      "reason": "thin-template"
-    },
-    {
-      "route": "materials-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "medical-supply-inventory-list-template",
-      "reason": "thin-template"
-    },
-    {
-      "route": "mes-vs-erp",
-      "reason": "thin-template"
-    },
-    {
-      "route": "mobile-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "moving-average-formula-for-calculating-cost",
-      "reason": "thin-template"
-    },
-    {
-      "route": "new-feature-alert-purchase-orders",
-      "reason": "thin-template"
-    },
-    {
-      "route": "operational-efficiency-in-manufacturing",
-      "reason": "thin-template"
-    },
-    {
-      "route": "order-processing-in-supply-chain-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "organize-grow-direct-sales-business-tips",
-      "reason": "thin-template"
-    },
-    {
-      "route": "periodic-inventory-system",
-      "reason": "thin-template"
-    },
-    {
-      "route": "pharmacy-inventory-management-best-practices",
       "reason": "thin-template"
     },
     {
@@ -714,59 +110,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "production-planning-key-concepts-and-best-practices",
-      "reason": "thin-template"
-    },
-    {
-      "route": "pros-and-cons-of-holding-excess-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "purchase-order-template",
-      "reason": "thin-template"
-    },
-    {
       "route": "qr-code-security-risks-and-solutions",
-      "reason": "thin-template"
-    },
-    {
-      "route": "qr-codes-vs-barcodes-for-inventory-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "reduce-human-error-in-the-workplace",
-      "reason": "thin-template"
-    },
-    {
-      "route": "registering-a-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "regulatory-compliance-in-healthcare",
-      "reason": "thin-template"
-    },
-    {
-      "route": "reorder-point-formula-safety-stock",
-      "reason": "thin-template"
-    },
-    {
-      "route": "restaurant-supply-list",
-      "reason": "thin-template"
-    },
-    {
-      "route": "rfi-vs-rfp-vs-rfq",
-      "reason": "thin-template"
-    },
-    {
-      "route": "safety-stock-calculation",
-      "reason": "thin-template"
-    },
-    {
-      "route": "saved-payment-method-terms",
-      "reason": "thin-template"
-    },
-    {
-      "route": "seasonal-inventory-planning",
       "reason": "thin-template"
     },
     {
@@ -774,23 +118,11 @@
       "reason": "thin-template"
     },
     {
-      "route": "selling-your-collectibles-for-profit",
-      "reason": "thin-template"
-    },
-    {
       "route": "shamrock-moving-storage",
       "reason": "thin-template"
     },
     {
-      "route": "simple-stock-management",
-      "reason": "pruning-noindex"
-    },
-    {
       "route": "sku-vs-upc",
-      "reason": "thin-template"
-    },
-    {
-      "route": "small-business-hiring-tips",
       "reason": "thin-template"
     },
     {
@@ -798,155 +130,15 @@
       "reason": "thin-template"
     },
     {
-      "route": "state-of-interior-design-and-home-staging-report",
-      "reason": "thin-template"
-    },
-    {
-      "route": "step-up-industries",
-      "reason": "thin-template"
-    },
-    {
-      "route": "stock-management-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "strategies-to-strengthen-your-supply-chain",
-      "reason": "thin-template"
-    },
-    {
       "route": "suppliers",
       "reason": "pruning-noindex"
-    },
-    {
-      "route": "supply-chain-automation",
-      "reason": "thin-template"
-    },
-    {
-      "route": "supply-chain-resilience-strategies",
-      "reason": "thin-template"
-    },
-    {
-      "route": "supply-chain-resilience-strategy-build-and-measure",
-      "reason": "thin-template"
-    },
-    {
-      "route": "surplus-inventory-liquidation",
-      "reason": "thin-template"
-    },
-    {
-      "route": "tax-season-tips-for-smbs",
-      "reason": "thin-template"
-    },
-    {
-      "route": "the-art-to-organization-tips-from-painter-nadine-robbins",
-      "reason": "thin-template"
-    },
-    {
-      "route": "the-complete-guide-to-medical-device-inventory-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "the-definitive-guide-to-stocktaking",
-      "reason": "thin-template"
-    },
-    {
-      "route": "the-inventory-nightmares-before-christmas",
-      "reason": "thin-template"
-    },
-    {
-      "route": "the-ultimate-barcoding-guide",
-      "reason": "thin-template"
-    },
-    {
-      "route": "third-party-logistics-ultimate-guide",
-      "reason": "thin-template"
-    },
-    {
-      "route": "top-5-challenges-in-interior-design-today",
-      "reason": "thin-template"
-    },
-    {
-      "route": "total-manufacturing-cost-formula",
-      "reason": "thin-template"
-    },
-    {
-      "route": "track-units-of-measurement-uom",
-      "reason": "thin-template"
-    },
-    {
-      "route": "types-of-equipment-maintenance",
-      "reason": "thin-template"
-    },
-    {
-      "route": "types-of-inventory-you-should-know",
-      "reason": "thin-template"
-    },
-    {
-      "route": "ultimate-guide-to-multi-echelon-inventory-optimization",
-      "reason": "thin-template"
-    },
-    {
-      "route": "upc-barcode-generator",
-      "reason": "thin-template"
     },
     {
       "route": "variants-lot-numbers-beta-zapier-improvements",
       "reason": "thin-template"
     },
     {
-      "route": "vendor-managed-inventory-vmi",
-      "reason": "thin-template"
-    },
-    {
-      "route": "warehouse-automation",
-      "reason": "thin-template"
-    },
-    {
-      "route": "warehouse-layout-design-best-practices",
-      "reason": "thin-template"
-    },
-    {
-      "route": "warehouse-material-handling",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-4pl-and-does-your-business-need-it",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-a-cost-plus-contract-in-construction",
-      "reason": "thin-template"
-    },
-    {
       "route": "what-is-an-erp-system",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-aov",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-cross-docking-benefits-and-types",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-dead-stock",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-dynamic-pricing-strategy",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-job-order-costing",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-landed-cost",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-lean-manufacturing",
       "reason": "thin-template"
     },
     {
@@ -958,50 +150,6 @@
       "reason": "thin-template"
     },
     {
-      "route": "what-is-mrp",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-procurement",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-sell-through-rate-heres-why-it-matters-for-your-business",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-the-best-software-for-inventory-management",
-      "reason": "thin-template"
-    },
-    {
-      "route": "what-is-the-csddd",
-      "reason": "thin-template"
-    },
-    {
-      "route": "why-an-official-gs1-barcode-matters",
-      "reason": "thin-template"
-    },
-    {
-      "route": "why-inventory-tracking-needs-to-speak-your-language",
-      "reason": "thin-template"
-    },
-    {
-      "route": "why-your-accountant-appreciates-using-an-ims",
-      "reason": "thin-template"
-    },
-    {
-      "route": "why-your-business-should-use-supply-chain-visibility",
-      "reason": "thin-template"
-    },
-    {
-      "route": "why-your-offline-business-needs-an-online-store",
-      "reason": "thin-template"
-    },
-    {
-      "route": "winning-the-holiday-dollar",
-      "reason": "thin-template"
-    },
-    {
       "route": "wms-implementation",
       "reason": "thin-template"
     },
@@ -1010,19 +158,7 @@
       "reason": "thin-template"
     },
     {
-      "route": "work-in-process-inventory-guide",
-      "reason": "thin-template"
-    },
-    {
-      "route": "work-in-process-inventory",
-      "reason": "thin-template"
-    },
-    {
-      "route": "bom-management-tools",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "purchase-requisition-software",
+      "route": "enterprise-inventory-management",
       "reason": "pruning-noindex"
     },
     {
@@ -1030,561 +166,19 @@
       "reason": "pruning-noindex"
     },
     {
-      "route": "compare-inventory-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "comparisons/stockflow-vs-cin7",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "stockflow-vs-fishbowl-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "stockflow-vs-quickbooks-commerce",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "comparisons/stockflow-vs-quickbooks",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "comparisons/stockflow-vs-shopify-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "stockflow-vs-spreadsheets",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "stockflow-vs-tradegecko",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "stockflow-vs-vend",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "10-most-common-inventory-management-mistakes-small-businesses",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "10-reasons-to-consider-cloud-based-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "10-reasons-to-upgrade-your-it-asset-management-strategy",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "3-ways-barcodes-and-qr-codes-reduce-human-error",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "5-signs-your-inventory-management-needs-an-overhaul",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "tips-to-improve-inventory-control",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "9-must-have-inventory-control-software-features",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "a-guide-to-visual-inventory-control",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "restaurant-inventory-apps",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "asset-tracking-101",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "barcode-inventory-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "benefits-of-construction-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "best-manufacturing-apps",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "bill-of-materials-software-free",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "buffer-stock",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "common-inventory-mistakes-and-how-to-avoid-them",
-      "reason": "pruning-noindex"
-    },
-    {
       "route": "enterprise-inventory-management",
       "reason": "pruning-noindex"
     },
     {
-      "route": "equipment-inventory-management-best-practices",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "handheld-inventory-scanners-pros-cons",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-do-small-businesses-organize-their-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-do-upcs-barcodes-help-with-inventory-control",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-do-you-categorize-inventory-items",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-do-you-organize-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-much-does-inventory-software-cost",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-implement-a-barcode-system-in-a-warehouse",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-manage-inventory-in-restaurants",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-operate-an-a-school-inventory-management-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-optimize-inventory-levels-in-construction",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "mro-inventory-optimization",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-store-construction-materials",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "storing-raw-materials-guide",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-track-equipment-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "importance-of-inventory-management-manufacturing",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-analysis",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-control-systems",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "construction-inventory-forecasting",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-management-101",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-management-software-for-small-businesses",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-management-software-free",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-management-software-with-bill-of-materials",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "multiple-location-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "online-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "hobby-business-organization",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "qr-codes-equipment-maintenance",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "rfid-vs-nfc-difference",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "supply-chain-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "supply-chain-materials-tracking",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "supply-chain-management-trends",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "the-best-inventory-tracking-methods-for-businesses",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "the-future-of-qr-codes-what-lies-ahead-for-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "free-inventory-tracking",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "what-are-the-3-major-inventory-management-techniques",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "what-is-a-good-inventory-turnover-ratio",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "what-is-a-gs1-barcode",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "what-is-a-stockout",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "what-is-demand-forecasting",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "what-is-inventory-shrinkage",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "ai-inventory-management-future",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "why-track-assets",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "small-business-end-of-year-checklist",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "year-end-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "glossary/consignment-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "glossary/inventory-automation",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "glossary/inventory-turnover",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "glossary/just-in-time-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "glossary/minimum-order-quantity",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "glossary/vendor-managed-inventory",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "warehouse-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "avoid-inventory-mistakes",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "how-to-choose-inventory-management-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-turnover-ratio",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "3pl-warehouse-management-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "contractor-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "ecommerce-warehouse-management-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "food-beverage-warehouse-management-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "jewelry-inventory-management-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "logistics-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "manufacturing-inventory-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "pharmaceutical-warehouse-management-system",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "warehouse-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "wholesaler-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "case-studies",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-photos",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "ecommerce-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "enterprise-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "parts-tracking",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/eenvoudig-stockbeheer",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/gratis-stuklijstbeheer-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/magazijnbeheersysteem",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/mobiel-voorraadbeheer",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraad-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-assets",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-distributie",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-gereedschap",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-kleine-ondernemingen",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-leveranciers",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-middelgrote-bedrijven",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-non-profit",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-online-winkels",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadbeheer-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/voorraadomzetsnelheid",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-groothandel",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-hvac",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-juwelier",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-koude-opslag",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-logistiek",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-overheid",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-retail",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "nl/industries/voorraadbeheer-zorg",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "inventory-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "mobile-inventory-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "simple-stock-management",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "stock-management-software",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "about",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "videos",
-      "reason": "pruning-noindex"
-    },
-    {
-      "route": "blog/barcodes-vs-qr-codes-for-inventory-management",
-      "reason": "redirect"
-    },
-    {
-      "route": "blog/how-to-choose-inventory-software-for-small-business",
-      "reason": "redirect"
-    },
-    {
-      "route": "blog/how-to-set-up-barcode-scanning-with-stockflow",
-      "reason": "redirect"
-    },
-    {
-      "route": "blog/inventory-management-for-small-business-complete-guide",
-      "reason": "redirect"
-    },
-    {
-      "route": "blog/migrating-from-excel-to-inventory-software",
-      "reason": "redirect"
+      "route": "blog/inventory-management-for-contractors",
+      "reason": "blog-duplicate"
     }
   ],
-  "added": [
-    {
-      "route": "inventory-software"
-    },
-    {
-      "route": "mobile-inventory-management"
-    },
-    {
-      "route": "simple-stock-management"
-    },
-    {
-      "route": "stock-management-software"
-    },
-    {
-      "route": "about"
-    },
-    {
-      "route": "videos"
-    },
-    {
-      "route": "blog/barcodes-vs-qr-codes-for-inventory-management"
-    },
-    {
-      "route": "blog/how-to-choose-inventory-software-for-small-business"
-    },
-    {
-      "route": "blog/how-to-set-up-barcode-scanning-with-stockflow"
-    },
-    {
-      "route": "blog/inventory-management-for-small-business-complete-guide"
-    },
-    {
-      "route": "blog/migrating-from-excel-to-inventory-software"
-    }
-  ],
+  "added": [],
   "stats": {
-    "initialCount": 92,
-    "finalCount": 92,
-    "addedCount": 11,
-    "removedCount": 11
+    "initialCount": 81,
+    "finalCount": 80,
+    "addedCount": 0,
+    "removedCount": 1
   }
 }

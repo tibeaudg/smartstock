@@ -264,6 +264,11 @@ async function syncSitemap() {
   sitemapData.urlset.url = sitemapData.urlset.url.filter(entry => {
     // Always remove redirect routes regardless of other rules
     const entrySlug = entry.loc.trim().replace(`${BASE_URL}/`, '');
+    if (entrySlug.toLowerCase().startsWith('blog/')) {
+      console.log(`- Removed (blog duplicate): ${entry.loc}`);
+      audit.removed.push({ route: entrySlug, reason: 'blog-duplicate' });
+      return false;
+    }
     if (redirectRoutes.has(entrySlug)) {
       console.log(`- Removed (redirect): ${entry.loc}`);
       audit.removed.push({ route: entrySlug, reason: 'redirect' });
@@ -294,7 +299,7 @@ async function syncSitemap() {
     // PROTECTED: Non-SEO core folders (Case Insensitive)
     const protectedFolders = [
       'case-studies', 'customers', 'integrations',
-      'blog', 'glossary', 'categoriespage', 'nl'
+      'glossary', 'categoriespage', 'nl'
     ];
 
     const isProtected = protectedFolders.some(p =>
@@ -343,7 +348,15 @@ async function syncSitemap() {
   const existingLocs = new Set(sitemapData.urlset.url.map(u => u.loc));
   let addedCount = 0;
 
-  const allTargetUrls = new Set([...permanentUrls, ...localUrls]);
+  const allTargetUrls = new Set(
+    [...permanentUrls, ...localUrls].filter((url) => {
+      const route = url.replace(`${BASE_URL}/`, '').toLowerCase();
+      if (redirectRoutes.has(route)) return false;
+      if (pruningActions.noindexPaths.has(route)) return false;
+      if (route.startsWith('blog/')) return false;
+      return true;
+    })
+  );
 
   allTargetUrls.forEach(url => {
     if (!existingLocs.has(url)) {

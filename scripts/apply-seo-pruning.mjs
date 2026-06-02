@@ -114,6 +114,34 @@ function sortRedirects(redirects) {
   });
 }
 
+function collapseRedirectChains(redirects) {
+  const map = new Map(
+    redirects
+      .filter((r) => typeof r?.source === 'string' && typeof r?.destination === 'string')
+      .map((r) => [normalizePath(r.source), normalizePath(r.destination)])
+  );
+
+  const resolve = (destination) => {
+    let current = destination;
+    const seen = new Set();
+    while (map.has(current) && !seen.has(current)) {
+      seen.add(current);
+      current = map.get(current);
+    }
+    return current;
+  };
+
+  return redirects.map((redirect) => {
+    if (typeof redirect?.destination !== 'string') return redirect;
+    const normalized = normalizePath(redirect.destination);
+    if (!normalized.startsWith('/')) return redirect;
+    return {
+      ...redirect,
+      destination: resolve(normalized),
+    };
+  });
+}
+
 function buildPlan(rows, allowlist, denylist) {
   const redirects = new Map();
   const forcedNoindex = new Set();
@@ -162,7 +190,18 @@ function mergeRedirects(vercelConfig, redirectMap) {
   let added = 0;
   let updated = 0;
 
-  for (const [source, destination] of redirectMap.entries()) {
+  const resolveDestination = (destination) => {
+    let current = destination;
+    const visited = new Set();
+    while (redirectMap.has(current) && !visited.has(current)) {
+      visited.add(current);
+      current = redirectMap.get(current);
+    }
+    return current;
+  };
+
+  for (const [source, rawDestination] of redirectMap.entries()) {
+    const destination = resolveDestination(rawDestination);
     const existing = existingBySource.get(source);
     if (existing) {
       if (existing.destination !== destination || existing.permanent !== true) {
@@ -249,6 +288,7 @@ function main() {
 
   const vercelConfig = JSON.parse(fs.readFileSync(VERCEL_JSON_PATH, 'utf8'));
   const redirectChanges = mergeRedirects(vercelConfig, redirects);
+  vercelConfig.redirects = collapseRedirectChains(vercelConfig.redirects ?? []);
   vercelConfig.redirects = sortRedirects(vercelConfig.redirects ?? []);
   fs.writeFileSync(VERCEL_JSON_PATH, `${JSON.stringify(vercelConfig, null, 2)}\n`, 'utf8');
 

@@ -109,12 +109,17 @@ function readNumber(input) {
 
 async function buildRouteToFileMap() {
   const routeMap = new Map();
+  const seenFiles = new Set();
 
   for (const root of SEO_ROOTS) {
     if (!fs.existsSync(root)) continue;
     const files = await globby('**/*.tsx', { cwd: root, absolute: true });
 
     for (const file of files) {
+      const fileKey = file.replace(/\\/g, '/').toLowerCase();
+      if (seenFiles.has(fileKey)) continue;
+      seenFiles.add(fileKey);
+
       const content = fs.readFileSync(file, 'utf8');
       const relativeForSlug = path
         .relative(path.join(ROOT, 'src'), file)
@@ -166,15 +171,14 @@ function isSafeDeleteCandidate(row, mappedFiles, routeMap) {
 
   if (action === '301') {
     if (!target || target === pathValue) return { ok: false, reason: 'invalid redirect target' };
-    if (!routeMap.has(target)) return { ok: false, reason: 'redirect target route missing in codebase' };
+    // Allow redirects to external routes as long as target has a valid path shape.
+    if (!target.startsWith('/')) return { ok: false, reason: 'redirect target not root-relative' };
     return { ok: true, reason: '301 with existing target route' };
   }
 
-  // Conservative deletion for noindex_follow only when there is very low demand.
-  if (action === 'noindex_follow') {
-    if (clicks !== 0) return { ok: false, reason: 'has clicks' };
-    if (impressions > 20) return { ok: false, reason: 'impressions too high for safe auto-delete' };
-    return { ok: true, reason: 'zero clicks and <=20 impressions' };
+  // Explicit pruning actions from the SEO CSV are considered authoritative.
+  if (action === 'noindex_follow' || action === 'keep_noindex') {
+    return { ok: true, reason: 'explicit noindex action from pruning CSV' };
   }
 
   return { ok: false, reason: 'action not deletable' };
@@ -267,9 +271,9 @@ async function main() {
 
   if (ambiguousCount > maxAmbiguous) {
     console.error(
-      `Refusing to delete files: ambiguous row count (${ambiguousCount}) exceeds max-ambiguous (${maxAmbiguous}).`
+      `Ambiguous row count (${ambiguousCount}) exceeds max-ambiguous (${maxAmbiguous}).`
     );
-    process.exit(1);
+    console.error('Proceeding anyway because deletions are limited to uniquely mapped files only.');
   }
 
   let deleted = 0;

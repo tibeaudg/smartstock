@@ -1,13 +1,4154 @@
 {
-  "generatedAt": "2026-06-02T13:07:46.784Z",
+  "generatedAt": "2026-06-02T13:29:02.766Z",
   "sourceCsv": "C:\\Users\\tibea\\Desktop\\Coding\\StockFlow\\seo-pruning-actions-2026-06-02.csv",
   "totals": {
     "rows": 1053,
     "routesMapped": 461,
-    "deletableRows": 0,
-    "uniqueFilesToDelete": 0,
-    "reviewRows": 1053,
-    "ambiguousRows": 1037
+    "deletableRows": 354,
+    "uniqueFilesToDelete": 345,
+    "reviewRows": 699,
+    "ambiguousRows": 674
   },
-  "deletable": []
+  "deletable": [
+    {
+      "path": "/purchase-requisition-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 865,
+      "position": 3919,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/features/purchase-requisition-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-much-does-inventory-software-cost",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 865,
+      "position": 423,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-much-does-inventory-software-cost.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/consignment-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 723,
+      "position": 5841,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/consignment-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-101",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 579,
+      "position": 299,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-management-101.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-manage-inventory-in-restaurants",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 545,
+      "position": 701,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-manage-inventory-in-restaurants.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-retail",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 440,
+      "position": 1017,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-retail.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-software-for-small-businesses",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 431,
+      "position": 1487,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-management-software-for-small-businesses.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-a-good-inventory-turnover-ratio",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 414,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-is-a-good-inventory-turnover-ratio.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-choose-inventory-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 322,
+      "position": 2704,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/guides/how-to-choose-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/mobiel-voorraadbeheer",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 266,
+      "position": 1356,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/mobiel-voorraadbeheer.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-a-gs1-barcode",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 209,
+      "position": 981,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-is-a-gs1-barcode.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/contractor-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 206,
+      "position": 4766,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/contractor-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/pharmaceutical-warehouse-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 97,
+      "position": 895,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/pharmaceutical-warehouse-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-analysis",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 83,
+      "position": 488,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-analysis.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/food-beverage-warehouse-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 82,
+      "position": 187,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/food-beverage-warehouse-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-best-b2b-e-commerce-platforms",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 72,
+      "position": 1017,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/10-best-b2b-e-commerce-platforms.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-are-the-3-major-inventory-management-techniques",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 64,
+      "position": 794,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-are-the-3-major-inventory-management-techniques.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-future-of-qr-codes-what-lies-ahead-for-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 54,
+      "position": 637,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/the-future-of-qr-codes-what-lies-ahead-for-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/stockflow-vs-quickbooks-commerce",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 53,
+      "position": 915,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-quickbooks-commerce.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-reasons-to-consider-cloud-based-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 51,
+      "position": 2186,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/10-reasons-to-consider-cloud-based-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-zorg",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 46,
+      "position": 1624,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-zorg.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ecommerce-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 42,
+      "position": 236,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/uses/ecommerce-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/3pl-warehouse-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 41,
+      "position": 1078,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/3pl-warehouse-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/stockflow-vs-fishbowl-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 40,
+      "position": 767,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-fishbowl-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-control-systems",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 35,
+      "position": 5391,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-control-systems.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/blog",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 30,
+      "position": 537,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/index.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/pharmacy-inventory-management-best-practices",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 29,
+      "position": 1997,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/pharmacy-inventory-management-best-practices.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/stock-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 29,
+      "position": 731,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/stock-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-do-upcs-barcodes-help-with-inventory-control",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 29,
+      "position": 624,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-do-upcs-barcodes-help-with-inventory-control.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/equipment-inventory-management-best-practices",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 25,
+      "position": 172,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/equipment-inventory-management-best-practices.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/buffer-stock",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 25,
+      "position": 892,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/buffer-stock.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-implement-a-barcode-system-in-a-warehouse",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 24,
+      "position": 3017,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-implement-a-barcode-system-in-a-warehouse.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/barcode-inventory-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 23,
+      "position": 6748,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/barcode-inventory-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/minimum-order-quantity",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 22,
+      "position": 15,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/minimum-order-quantity.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-do-you-organize-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 21,
+      "position": 848,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-do-you-organize-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-optimize-inventory-levels-in-construction",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 20,
+      "position": 67,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-optimize-inventory-levels-in-construction.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/multiple-location-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 19,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/multiple-location-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-middelgrote-bedrijven",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 18,
+      "position": 2017,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-middelgrote-bedrijven.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-store-construction-materials",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 18,
+      "position": 1167,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-store-construction-materials.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-turnover-ratio",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 15,
+      "position": 96,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/guides/inventory-turnover-ratio.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 15,
+      "position": 15,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/index.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/automated-order-management-systems-vs-manual-order-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 15,
+      "position": 873,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/automated-order-management-systems-vs-manual-order-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-use-qr-codes-for-healthcare-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 14,
+      "position": 686,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-use-qr-codes-for-healthcare-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-barcode-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 14,
+      "position": 5,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-barcode-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/stockflow-vs-vend",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 14,
+      "position": 621,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-vend.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/cost-of-goods-formula",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 12,
+      "position": 158,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/cost-of-goods-formula.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-most-common-inventory-management-mistakes-small-businesses",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 11,
+      "position": 982,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/10-most-common-inventory-management-mistakes-small-businesses.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ultimate-guide-to-multi-echelon-inventory-optimization",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 10,
+      "position": 247,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/ultimate-guide-to-multi-echelon-inventory-optimization.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-operate-an-a-school-inventory-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 10,
+      "position": 107,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-operate-an-a-school-inventory-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/4-inventory-accounting-methods-for-inventory-valuation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 10,
+      "position": 87,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/4-inventory-accounting-methods-for-inventory-valuation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/construction-material-cost",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 10,
+      "position": 433,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/construction-material-cost.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/stockflow-vs-spreadsheets",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 9,
+      "position": 833,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-spreadsheets.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/reduce-human-error-in-the-workplace",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 9,
+      "position": 4956,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/reduce-human-error-in-the-workplace.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-financing-6-things-to-know-before-you-apply",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 9,
+      "position": 2956,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-financing-6-things-to-know-before-you-apply.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/warehouse-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 8,
+      "position": 1125,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/warehouse-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/best-barcode-scanner",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 8,
+      "position": 825,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/best-barcode-scanner.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-the-best-software-for-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 8,
+      "position": 925,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-the-best-software-for-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ai-and-automation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 7,
+      "position": 571,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/ai-and-automation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-demand-forecasting",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 7,
+      "position": 657,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-is-demand-forecasting.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/best-cloud-based-warehouse-automation-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 7,
+      "position": 1686,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/best-cloud-based-warehouse-automation-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/assets-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 6,
+      "position": 4333,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/assets-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/intro-wireless-barcode-scanner",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 6,
+      "position": 45,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/intro-wireless-barcode-scanner.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ecommerce-warehouse-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 6,
+      "position": 2583,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/ecommerce-warehouse-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/benefits-of-construction-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 6,
+      "position": 8,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/benefits-of-construction-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/business-growth-stages-overview",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 6,
+      "position": 267,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/business-growth-stages-overview.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-store-medical-supplies",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 482,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-store-medical-supplies.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/difference-between-oem-vs-odm",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 112,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/difference-between-oem-vs-odm.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/supply-chain-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 244,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/supply-chain-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/manufacturing",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 82,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/manufacturing.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/bar-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 134,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/bar-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-order-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 38,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-order-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/strategies-to-strengthen-your-supply-chain",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 52,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/strategies-to-strengthen-your-supply-chain.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/vendor-managed-inventory-vmi",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 254,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/vendor-managed-inventory-vmi.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-complete-guide-to-medical-device-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 398,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/the-complete-guide-to-medical-device-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-kleine-ondernemingen",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 58,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-kleine-ondernemingen.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ecommerce-returns-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 94,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/ecommerce-returns-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/restaurant-supply-list",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 56,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/restaurant-supply-list.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/auto-parts-inventory-management-system-drives-down-costs",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 64,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/auto-parts-inventory-management-system-drives-down-costs.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/6-inventory-tracking-methods-for-construction-professionals",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 192,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/6-inventory-tracking-methods-for-construction-professionals.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/expert-tips-for-organizing-holiday-decorations",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 5,
+      "position": 44,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/expert-tips-for-organizing-holiday-decorations.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/upc-barcode-generator",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 35,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/upc-barcode-generator.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/warehouse-automation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 25,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/warehouse-automation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-track-raw-materials",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 175,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-track-raw-materials.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/warehouse-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/warehouse-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/material-requirements-planning-mrp-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 5,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/material-requirements-planning-mrp-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/just-in-time-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 8,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/just-in-time-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/healthcare-clinics-stopped-over-ordering-wrong-supplies",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 2375,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/healthcare-clinics-stopped-over-ordering-wrong-supplies.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-create-a-purchase-order",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 4,
+      "position": 225,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-create-a-purchase-order.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/supply-chain-resilience-strategies",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 8,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/supply-chain-resilience-strategies.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/cost-of-goods-manufactured-formula",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 767,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/cost-of-goods-manufactured-formula.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/digital-supply-chain-tools-uk-smes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 633,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/digital-supply-chain-tools-uk-smes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-do-small-businesses-organize-their-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 767,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-do-small-businesses-organize-their-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/why-your-offline-business-needs-an-online-store",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/why-your-offline-business-needs-an-online-store.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/b2b2c-model-for-your-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 467,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/b2b2c-model-for-your-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/free-asset-tracking-spreadsheet",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 767,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/free-asset-tracking-spreadsheet.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/reorder-point-formula-safety-stock",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 367,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/reorder-point-formula-safety-stock.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/7-core-benefits-of-ai-powered-supply-chains",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 867,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/7-core-benefits-of-ai-powered-supply-chains.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/12-money-making-garage-sale-tips",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 633,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/12-money-making-garage-sale-tips.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/inventory-automation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 4033,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/inventory-automation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-partnering-with-a-3pl-company-can-help-cut-your-logistics-costs",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-partnering-with-a-3pl-company-can-help-cut-your-logistics-costs.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/why-your-business-should-use-supply-chain-visibility",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 52,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/why-your-business-should-use-supply-chain-visibility.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/track-units-of-measurement-uom",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 13,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/track-units-of-measurement-uom.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/why-an-official-gs1-barcode-matters",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 267,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/why-an-official-gs1-barcode-matters.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/top-5-challenges-in-interior-design-today",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 3,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/top-5-challenges-in-interior-design-today.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/seasonal-inventory-planning",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 45,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/seasonal-inventory-planning.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/supply-chain-automation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 1,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/supply-chain-automation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/selling-your-collectibles-for-profit",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/selling-your-collectibles-for-profit.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/calculating-raw-materials-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 85,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/calculating-raw-materials-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadomzetsnelheid",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 95,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadomzetsnelheid.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-optimize-multi-channel-inventory-management-for-e-commerce-growth",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 4,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-optimize-multi-channel-inventory-management-for-e-commerce-growth.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/avoid-inventory-mistakes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 25,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/guides/avoid-inventory-mistakes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/5-metrics-for-managing-your-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 295,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/5-metrics-for-managing-your-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/work-in-process-inventory-guide",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 25,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/work-in-process-inventory-guide.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-business-success-apps",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 85,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/10-business-success-apps.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/key-differences-between-vendors-and-suppliers",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 65,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/key-differences-between-vendors-and-suppliers.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-purpose",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 65,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-management-purpose.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/amazon-fnsku-barcode",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 4,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/amazon-fnsku-barcode.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-forecasting-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 285,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-forecasting-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-cross-docking-benefits-and-types",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 225,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-cross-docking-benefits-and-types.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/periodic-inventory-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 41,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/periodic-inventory-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/materials-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 605,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/materials-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/6-inventory-management-tips-when-times-are-tight",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 55,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/6-inventory-management-tips-when-times-are-tight.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-calculate-retail-price",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 215,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-calculate-retail-price.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/3-ways-barcodes-and-qr-codes-reduce-human-error",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 2,
+      "position": 12,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/3-ways-barcodes-and-qr-codes-reduce-human-error.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/lpn-barcodes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/lpn-barcodes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/drop-shipping-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/drop-shipping-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/avoiding-errors-in-inventory-debit-and-credit-entries",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 3,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/avoiding-errors-in-inventory-debit-and-credit-entries.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/case-study-hooked-on-solar",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 5,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/case-study-hooked-on-solar.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/is-just-in-time-inventory-management-a-thing-of-the-past",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/is-just-in-time-inventory-management-a-thing-of-the-past.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/4-small-resources-to-simplify-small-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/4-small-resources-to-simplify-small-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-photos",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/resources/inventory-photos.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-ai-can-help-inventory-inefficiency",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 12,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-ai-can-help-inventory-inefficiency.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/hospital-supply-chain-management-best-practices",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/hospital-supply-chain-management-best-practices.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/environmental-inventory-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 18,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/environmental-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/surplus-inventory-liquidation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 1,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/surplus-inventory-liquidation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/blog-inventory-tracking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 13,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog-inventory-tracking.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/biggest-f-and-b-market-trends-in-2025",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/biggest-f-and-b-market-trends-in-2025.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-manage-your-q4-cash-flow",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 8,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-manage-your-q4-cash-flow.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-inventory-shrinkage",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 1,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-is-inventory-shrinkage.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/supply-chain-resilience-strategy-build-and-measure",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/supply-chain-resilience-strategy-build-and-measure.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/types-of-inventory-you-should-know",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 4,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/types-of-inventory-you-should-know.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-dead-stock",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 3,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-dead-stock.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-rules",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 19,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-management-rules.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/asset-tracking-101",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/asset-tracking-101.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-non-profit",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 15,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-non-profit.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-cycle-count",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 9,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-cycle-count.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-list-template-free-download",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 4,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-list-template-free-download.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/generate-barcodes-in-excel",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 2,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/generate-barcodes-in-excel.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/amazon-fba-small-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 2,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/amazon-fba-small-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/get-rid-of-obsolete-parts",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/get-rid-of-obsolete-parts.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/best-event-planning-apps",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 12,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/best-event-planning-apps.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/operational-efficiency-in-manufacturing",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 9,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/operational-efficiency-in-manufacturing.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/free-barcode-font-code-39-3-of-9",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 7,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/free-barcode-font-code-39-3-of-9.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/5-best-ways-to-attract-customers-to-your-retail-shop",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 5,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/5-best-ways-to-attract-customers-to-your-retail-shop.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-invoice-your-electrical-customers-free-template",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 9,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-invoice-your-electrical-customers-free-template.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/warehouse-material-handling",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 4,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/warehouse-material-handling.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/automated-inventory-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 4,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/automated-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-procurement",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-procurement.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-in-balance-sheet",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-in-balance-sheet.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/why-your-accountant-appreciates-using-an-ims",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 11,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/why-your-accountant-appreciates-using-an-ims.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-a-stockout",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-is-a-stockout.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-mrp",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 2,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-mrp.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/types-of-equipment-maintenance",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 6,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/types-of-equipment-maintenance.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/order-processing-in-supply-chain-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 8,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/order-processing-in-supply-chain-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-sell-through-rate-heres-why-it-matters-for-your-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 42,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-sell-through-rate-heres-why-it-matters-for-your-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-assets",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 1,
+      "position": 10,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-assets.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/stockflow-vs-tradegecko",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-tradegecko.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/a-guide-to-tracking-expiration-dates-with-template",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/a-guide-to-tracking-expiration-dates-with-template.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/can-i-create-a-barcode-system-in-excel",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/can-i-create-a-barcode-system-in-excel.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/cycle-counting-in-the-construction-industry",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/cycle-counting-in-the-construction-industry.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/parts-tracking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/solutions/supplies-and-consumables-software/parts-tracking.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-easy-ways-to-make-your-medical-practice-more-efficient-today",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/10-easy-ways-to-make-your-medical-practice-more-efficient-today.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/asset-tracking-importance",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/asset-tracking-importance.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/regulatory-compliance-in-healthcare",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/regulatory-compliance-in-healthcare.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/home-staging-inventory-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/home-staging-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/1d-vs-2d-barcodes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/1d-vs-2d-barcodes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/manufacturing-inventory-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/manufacturing-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/case-studies",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/resources/case-studies.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/why-inventory-tracking-needs-to-speak-your-language",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/why-inventory-tracking-needs-to-speak-your-language.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/warehouse-layout-design-best-practices",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/warehouse-layout-design-best-practices.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/year-end-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/year-end-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/simple-stock-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/simple-stock-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/construction-inventory-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/construction-inventory-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/importance-of-inventory-management-manufacturing",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/importance-of-inventory-management-manufacturing.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-do-you-categorize-inventory-items",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-do-you-categorize-inventory-items.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/asset-tracking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/asset-tracking.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/work-in-process-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/work-in-process-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/guide-to-units",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/guide-to-units.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/business-assets",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/business-assets.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/total-manufacturing-cost-formula",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/total-manufacturing-cost-formula.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-the-best-free-inventory-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/what-is-the-best-free-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/could-a-landscaping-inventory-management-system-keep-your-biz-pristine",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/could-a-landscaping-inventory-management-system-keep-your-biz-pristine.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/wholesaler-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/wholesaler-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/bill-of-materials-software-free",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/bill-of-materials-software-free.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ean-vs-upc-barcodes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/ean-vs-upc-barcodes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-job-order-costing",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-job-order-costing.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-aov",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-aov.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-dynamic-pricing-strategy",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-dynamic-pricing-strategy.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-distributie",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-distributie.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-leveranciers",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-leveranciers.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-visibility",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-visibility.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-forecasting",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-forecasting.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/step-up-industries",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/step-up-industries.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/fill-rate-definition",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/fill-rate-definition.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-landed-cost",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-landed-cost.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-practical-ways-you-can-reduce-the-cost-of-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/10-practical-ways-you-can-reduce-the-cost-of-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/3-examples-of-creative-brick-and-mortar",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/3-examples-of-creative-brick-and-mortar.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-ultimate-barcoding-guide",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/the-ultimate-barcoding-guide.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-juwelier",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-juwelier.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-koude-opslag",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-koude-opslag.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-groothandel",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-groothandel.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-hvac",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-hvac.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-logistiek",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-logistiek.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-online-winkels",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-online-winkels.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/online-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/online-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/industries/voorraadbeheer-overheid",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/industries/voorraadbeheer-overheid.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/magazijnbeheersysteem",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/magazijnbeheersysteem.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/eenvoudig-stockbeheer",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/eenvoudig-stockbeheer.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-software-free",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-management-software-free.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-software-with-bill-of-materials",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-management-software-with-bill-of-materials.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/industries",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-accounting-101",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-accounting-101.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/mobile-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/mobile-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/moving-average-formula-for-calculating-cost",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/moving-average-formula-for-calculating-cost.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/jewelry-inventory-management-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/jewelry-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/logistics-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/industries/logistics-inventory-management-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/tax-season-tips-for-smbs",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/tax-season-tips-for-smbs.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-inventory-nightmares-before-christmas",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/the-inventory-nightmares-before-christmas.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/supply-chain-materials-tracking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/supply-chain-inventory-optimization-with-materials-tracking.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/tips-to-improve-inventory-control",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/5-tips-to-improve-inventory-control.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/why-track-assets",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/why-your-business-should-track-assets-too.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-lean-manufacturing",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-lean-manufacturing.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/qr-codes-vs-barcodes-for-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/qr-codes-vs-barcodes-for-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/rfid-vs-nfc-difference",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/rfid-vs-nfc.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/pros-and-cons-of-holding-excess-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/pros-and-cons-of-holding-excess-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/qr-codes-equipment-maintenance",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/qr-codes-for-equipment-maintenance.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/safety-stock-calculation",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/safety-stock-calculation.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/storing-raw-materials-guide",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-store-raw-materials.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/small-business-end-of-year-checklist",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/year-end-checklist-for-small-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-track-equipment-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-track-equipment-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/a-guide-to-visual-inventory-control",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/a-guide-to-visual-inventory-control.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/vendor-managed-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/vendor-managed-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/construction-inventory-forecasting",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-forecasting-and-demand-planning-in-construction.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/free-inventory-tracking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/track-inventory-free.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/comparisons/stockflow-vs-quickbooks",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-quickbooks.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/comparisons/stockflow-vs-shopify-inventory",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-shopify-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/gtin-vs-upc",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/gtin-vs-upc.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-inventory-automation-can-help-businesses-become-leaner",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-inventory-automation-can-help-businesses-become-leaner.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/handheld-inventory-scanners-pros-cons",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/handheld-inventory-scanners.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/hobby-business-organization",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/organized-valuable-collection.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/comparisons/stockflow-vs-cin7",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/stockflow-vs-cin7.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/b2b-online-stores",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/b2b-online-stores.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/barcode-inventory-system-for-small-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/barcode-inventory-system-for-small-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/createglossarypage",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/createGlossaryPage.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/ai-inventory-management-future",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/why-ai-for-inventory-management-could-be-the-next-big-thing.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/barcode-label-protection",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/barcode-label-protection.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/compare-inventory-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/comparisons/compare-inventory-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/best-manufacturing-apps",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/best-manufacturing-apps.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/bom-management-tools",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/features/bom-management-tools.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/small-business-hiring-tips",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/small-business-hiring-tips.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-control-101",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-control-101.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/5-signs-your-inventory-management-needs-an-overhaul",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/5-signs-your-inventory-management-needs-an-overhaul.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-4pl-and-does-your-business-need-it",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-4pl-and-does-your-business-need-it.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-calculate-handling-fees-on-orders",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-calculate-handling-fees-on-orders.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-accounting",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-accounting.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-management-guide-for-small-businesses",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-management-guide-for-small-businesses.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-a-cost-plus-contract-in-construction",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-a-cost-plus-contract-in-construction.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/common-inventory-mistakes-and-how-to-avoid-them",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/common-inventory-mistakes-and-how-to-avoid-them.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/9-must-have-inventory-control-software-features",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/9-must-have-inventory-control-software-features.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-the-csddd",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-the-csddd.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-list-template",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-list-template.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/forecasting",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/forecasting.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/bar-inventory-template",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/bar-inventory-template.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/a-guide-to-selecting-the-right-accounting-solution-for-smbs",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/a-guide-to-selecting-the-right-accounting-solution-for-smbs.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/finance",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/finance.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-sell-wholesale",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-sell-wholesale.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/registering-a-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/registering-a-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/gratis-stuklijstbeheer-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/gratis-stuklijstbeheer-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/hidden-costs-of-q4-success",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/hidden-costs-of-q4-success.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/winning-the-holiday-dollar",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/winning-the-holiday-dollar.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/barcode-label-printer",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/barcode-label-printer.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/6-ways-to-give-your-business-the-home-edit-treatment",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/6-ways-to-give-your-business-the-home-edit-treatment.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-inventory-lists-help-businesses-stay-organized-and-profitable",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-inventory-lists-help-businesses-stay-organized-and-profitable.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraad-software",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraad-software.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/construction-procurement",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/construction-procurement.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/getting-organized-is-it-worth-it",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/getting-organized-is-it-worth-it.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/a-guide-to-rfps-request-for-proposal-in-construction",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/a-guide-to-rfps-request-for-proposal-in-construction.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-prepare-for-a-busy-season-with-efficient-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-prepare-for-a-busy-season-with-efficient-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/6-best-moving-tips-period",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/6-best-moving-tips-period.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/4-ways-order-management-can-improve-your-customer-experience",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/4-ways-order-management-can-improve-your-customer-experience.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/nl/voorraadbeheer-gereedschap",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/nl/voorraadbeheer-gereedschap.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/glossary/inventory-turnover",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/glossary/inventory-turnover.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/barcode-glossary-the-top-8-most-used-acronyms-explained",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/barcode-glossary-the-top-8-most-used-acronyms-explained.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/saved-payment-method-terms",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/saved-payment-method-terms.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-accuracy-formula",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-accuracy-formula.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/10-reasons-to-upgrade-your-it-asset-management-strategy",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/10-reasons-to-upgrade-your-it-asset-management-strategy.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/creative-inventory-hacks-for-small-businesses",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/creative-inventory-hacks-for-small-businesses.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/guaranteed-maximum-price-in-construction",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/guaranteed-maximum-price-in-construction.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/daily-double-holiday-aftermath-what-is-returns-profiting-and-pricing-strategy",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/daily-double-holiday-aftermath-what-is-returns-profiting-and-pricing-strategy.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-definitive-guide-to-stocktaking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/the-definitive-guide-to-stocktaking.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/bill-of-materials",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/bill-of-materials.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/barcode-printer",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/barcode-printer.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-best-inventory-tracking-methods-for-businesses",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/the-best-inventory-tracking-methods-for-businesses.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-eliminate-blurry-barcodes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-eliminate-blurry-barcodes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/can-reducing-inventory-really-improve-working-capital",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/can-reducing-inventory-really-improve-working-capital.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/new-feature-alert-purchase-orders",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/new-feature-alert-purchase-orders.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/fuel-your-growth-term-loans-invoicing-financing-made-simple",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/fuel-your-growth-term-loans-invoicing-financing-made-simple.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/a-guide-to-rfis-request-for-information-in-construction",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/a-guide-to-rfis-request-for-information-in-construction.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/rfi-vs-rfp-vs-rfq",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/rfi-vs-rfp-vs-rfq.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/5-trends-to-look-out-for-in-education-inventory-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/5-trends-to-look-out-for-in-education-inventory-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-improve-inventory-accuracy-top-techniques",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-improve-inventory-accuracy-top-techniques.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/mes-vs-erp",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/mes-vs-erp.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-get-a-barcode-for-a-product",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-get-a-barcode-for-a-product.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/third-party-logistics-ultimate-guide",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/third-party-logistics-ultimate-guide.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/asset-barcode-tracking",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/asset-barcode-tracking.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-tariffs-and-costs-influence-consumer-choices",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-tariffs-and-costs-influence-consumer-choices.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/medical-supply-inventory-list-template",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/medical-supply-inventory-list-template.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/detailed-guide-to-warehouse-labelling",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/detailed-guide-to-warehouse-labelling.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/7-questions-to-ask-when-choosing-an-inventory-management-system",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/7-questions-to-ask-when-choosing-an-inventory-management-system.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/construction-risk-management",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/construction-risk-management.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-control",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-control.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-tariffs-work",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-tariffs-work.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/blurry-barcodes",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blurry-barcodes.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/accelerate-b2b-wholesale-selling-with-built-in-edi",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/accelerate-b2b-wholesale-selling-with-built-in-edi.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/organize-grow-direct-sales-business-tips",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/organize-grow-direct-sales-business-tips.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/guide-to-growth-payments",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/guide-to-growth-payments.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-software-guide",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-software-guide.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/the-art-to-organization-tips-from-painter-nadine-robbins",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/the-art-to-organization-tips-from-painter-nadine-robbins.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/purchase-order-template",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/purchase-order-template.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/choosing-a-price-scanner-for-your-small-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/choosing-a-price-scanner-for-your-small-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/state-of-interior-design-and-home-staging-report",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/state-of-interior-design-and-home-staging-report.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/what-is-bill-of-materials",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/what-is-bill-of-materials.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/how-to-start-a-home-staging-business",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/how-to-start-a-home-staging-business.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-holding-cost",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-holding-cost.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/production-planning-key-concepts-and-best-practices",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/production-planning-key-concepts-and-best-practices.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/inventory-classification",
+      "action": "noindex_follow",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/inventory-classification.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/mro-inventory-optimization",
+      "action": "keep_noindex",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-optimize-mro-inventory.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/supply-chain-management-trends",
+      "action": "keep_noindex",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/supply-chain-trends.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/restaurant-inventory-apps",
+      "action": "keep_noindex",
+      "target": "",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/apps-for-restaurant-owners.tsx"
+      ],
+      "reason": "explicit noindex action from pruning CSV"
+    },
+    {
+      "path": "/blog/how-to-choose-inventory-software-for-small-business",
+      "action": "301",
+      "target": "/how-to-choose-inventory-software-for-small-business",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-choose-inventory-software-for-small-business.tsx"
+      ],
+      "reason": "301 with existing target route"
+    },
+    {
+      "path": "/blog/inventory-management-for-small-business-complete-guide",
+      "action": "301",
+      "target": "/inventory-management-for-small-business-complete-guide",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/inventory-management-for-small-business-complete-guide.tsx"
+      ],
+      "reason": "301 with existing target route"
+    },
+    {
+      "path": "/blog/barcodes-vs-qr-codes-for-inventory-management",
+      "action": "301",
+      "target": "/barcodes-vs-qr-codes-for-inventory-management",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/barcodes-vs-qr-codes-for-inventory-management.tsx"
+      ],
+      "reason": "301 with existing target route"
+    },
+    {
+      "path": "/blog/migrating-from-excel-to-inventory-software",
+      "action": "301",
+      "target": "/migrating-from-excel-to-inventory-software",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/migrating-from-excel-to-inventory-software.tsx"
+      ],
+      "reason": "301 with existing target route"
+    },
+    {
+      "path": "/blog/how-to-set-up-barcode-scanning-with-stockflow",
+      "action": "301",
+      "target": "/how-to-set-up-barcode-scanning-with-stockflow",
+      "clicks": 0,
+      "impressions": 0,
+      "position": 0,
+      "mappedFiles": [
+        "C:/Users/tibea/Desktop/Coding/StockFlow/src/pages/SEO/blog/how-to-set-up-barcode-scanning-with-stockflow.tsx"
+      ],
+      "reason": "301 with existing target route"
+    }
+  ]
 }
