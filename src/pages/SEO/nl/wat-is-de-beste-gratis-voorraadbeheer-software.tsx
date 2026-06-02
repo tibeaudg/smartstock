@@ -41,7 +41,7 @@ export default function WatIsDeBesteGratisVoorraadbeheerSoftwarePage() {
         url="https://www.stockflowsystems.com/nl/wat-is-de-beste-gratis-voorraadbeheer-software"
         locale="nl-BE"
         alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/what-is-the-best-free-inventory-management-software' },
+          { lang: 'en-US', url: 'https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning' },
           { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/wat-is-de-beste-gratis-voorraadbeheer-software' }
         ]}
       />

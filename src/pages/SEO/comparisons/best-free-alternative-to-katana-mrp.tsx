@@ -1,26 +1,9 @@
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import {
-  ArrowRight,
-  BarChart3,
-  CheckCircle,
-  Clock,
-  DollarSign,
-  Download,
-  MapPin,
-  Shield,
-  Star,
-  TrendingUp,
-  Users,
-  Zap,
-  Database,
-  Gift,
-  Cloud,
-  Factory
-} from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
+
+const canonicalPath = '/best-free-alternative-to-katana-mrp';
 
 export default function BestFreeAlternativeToKatanaMRP() {
   const faqData = [
@@ -58,167 +41,12 @@ export default function BestFreeAlternativeToKatanaMRP() {
     }
   ];
 
-  const costSavings = [
-    {
-      item: "Monthly Subscription",
-      katana: "$200-1,000+ (usage-based)",
-      stockflow: "Free",
-      savings: "Save $2,400-12,000+/year"
-    },
-    {
-      item: "Setup & Training",
-      katana: "$500-2,000+",
-      stockflow: "Free",
-      savings: "Save $500-2,000+"
-    },
-    {
-      item: "Per User Fees",
-      katana: "Additional costs",
-      stockflow: "Free (unlimited users)",
-      savings: "Save on user fees"
-    },
-    {
-      item: "Shop-Floor Operators",
-      katana: "Additional costs per operator",
-      stockflow: "Free (unlimited)",
-      savings: "Save on operator fees"
-    },
-    {
-      item: "Total First Year",
-      katana: "$2,900-14,000+",
-      stockflow: "Free",
-      savings: "Save $2,900-14,000+"
-    }
-  ];
-
-  const featureComparison = [
-    {
-      feature: "Pricing",
-      stockflow: "✓ Completely Free Forever",
-      katana: "✗ $200-1,000+/month (usage-based)"
-    },
-    {
-      feature: "Setup Time",
-      stockflow: "✓ 5-7 days",
-      katana: "Weeks to months"
-    },
-    {
-      feature: "Deployment",
-      stockflow: "✓ Cloud-based (access anywhere)",
-      katana: "Cloud-based"
-    },
-    {
-      feature: "Real-Time Tracking",
-      stockflow: "✓ Full real-time sync",
-      katana: "✓ Real-time"
-    },
-    {
-      feature: "Barcode Scanning",
-      stockflow: "✓ Advanced (mobile-first)",
-      katana: "✓ Supported"
-    },
-    {
-      feature: "Multi-Location",
-      stockflow: "✓ Unlimited locations",
-      katana: "✓ Supported"
-    },
-    {
-      feature: "Manufacturing",
-      stockflow: "Light manufacturing",
-      katana: "✓ Advanced (production scheduling)"
-    },
-    {
-      feature: "Shop-Floor Control",
-      stockflow: "Basic",
-      katana: "✓ Advanced terminals"
-    },
-    {
-      feature: "Inventory Management",
-      stockflow: "✓ Advanced",
-      katana: "✓ Advanced"
-    },
-    {
-      feature: "Purchase Orders",
-      stockflow: "✓ Full PO workflow",
-      katana: "✓ Supported"
-    },
-    {
-      feature: "E-commerce Integration",
-      stockflow: "✓ 50+ integrations",
-      katana: "Limited"
-    },
-    {
-      feature: "Customer Support",
-      stockflow: "24/7 support (free)",
-      katana: "Business hours"
-    }
-  ];
-
-  const benefits = [
-
-    {
-      icon: Cloud,
-      title: "Cloud-Based Access",
-      description: "Access from anywhere, any device. Automatic updates, no IT maintenance, modern cloud infrastructure."
-    },
-    {
-      icon: Clock,
-      title: "Fast Setup",
-      description: "Get up and running in 5-7 days vs Katana MRP's weeks to months. Free onboarding included."
-    },
-    {
-      icon: DollarSign,
-      title: "Save $2,900-14,000+ Annually",
-      description: "Eliminate monthly subscription fees, setup costs, and per-user charges. StockFlow is completely free."
-    },
-    {
-      icon: Shield,
-      title: "EU Data Hosting",
-      description: "GDPR compliant European hosting. Better for European businesses with data privacy requirements."
-    },
-    {
-      icon: Users,
-      title: "Unlimited Users",
-      description: "No per-user fees, unlimited team members. Katana MRP charges per shop-floor operator."
-    }
-  ];
-
-  const migrationSteps = [
-    {
-      step: 1,
-      title: "Export Data from Katana MRP",
-      description: "Export your inventory data from Katana MRP including items, quantities, locations, and categories.",
-      icon: Download,
-      timeframe: "1-2 days"
-    },
-    {
-      step: 2,
-      title: "Import to StockFlow (Free)",
-      description: "Our team provides free setup assistance to import your data into StockFlow's cloud platform.",
-      icon: Database,
-      timeframe: "1-2 days"
-    },
-    {
-      step: 3,
-      title: "Configure Your Setup",
-      description: "Map your locations, categories, and organizational structure in StockFlow.",
-      icon: MapPin,
-      timeframe: "1 day"
-    },
-    {
-      step: 4,
-      title: "Free Training",
-      description: "Free onboarding sessions help your team learn StockFlow with training materials and live support.",
-      icon: Users,
-      timeframe: "2-3 days"
-    },
-    {
-      step: 5,
-      title: "Go Live",
-      description: "Start using StockFlow! Total migration time: 5-7 days vs Katana MRP's longer setup.",
-      icon: Zap,
-      timeframe: "5-7 days total"
-    }
+  const comparisonRows = [
+    ['Entry pricing model', 'Free starting path and lower expansion cost for many SMBs', 'Paid model aimed at production-focused teams'],
+    ['Core strength', 'Inventory accuracy, purchasing, transfers, barcode routines', 'MRP depth, production planning, and shop-floor control'],
+    ['BOM support', 'BOM for light manufacturing and assemblies', 'Deeper manufacturing and production workflow tooling'],
+    ['Complex manufacturing fit', 'Good for light to medium complexity', 'Better for advanced production environments'],
+    ['Implementation pattern', 'Faster for spreadsheet-to-system moves', 'Often longer due to production configuration'],
   ];
 
   return (
@@ -227,9 +55,9 @@ export default function BestFreeAlternativeToKatanaMRP() {
         { label: 'Home', href: '/' },
         { label: 'Best Free Alternative to Katana MRP', href: '/best-free-alternative-to-katana-mrp' }
       ]}
-      heroTitle="Katana MRP Alternative | Best Free 2026 - StockFlow"
+      heroTitle="Best Free Alternative to Katana MRP (2026) | StockFlow"
       dateUpdated="06/01/2026"
-      heroDescription="Katana MRP alternative: Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
+      heroDescription="Honest comparison for teams evaluating a free alternative to Katana MRP."
       previousArticle={{
         title: "Best Free Alternative to Fishbowl Inventory",
         href: "/best-free-alternative-to-fishbowl-inventory"
@@ -240,275 +68,100 @@ export default function BestFreeAlternativeToKatanaMRP() {
       }}
     >
       <SEO
-        title="Katana MRP Alternative | Best Free 2026 | StockFlow"
-        description="Katana MRP alternative: Unlimited products, barcode scanning, PO workflow. Migrate in 5-7 days. No credit card."
+        title="Best Free Alternative to Katana MRP (2026) | StockFlow"
+        description="StockFlow vs Katana MRP for 2026: real feature-by-feature comparison, pricing direction, pros and cons, and who each platform is best for."
         keywords="katana mrp alternative, best free alternative to katana mrp, katana mrp free alternative, free katana mrp alternative, katana mrp alternative free, stockflow vs katana mrp, free mrp software, cloud inventory software, free inventory management, katana mrp replacement, free manufacturing software"
-        url="https://www.stockflowsystems.com/best-free-alternative-to-katana-mrp"
+        canonical={canonicalPath}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
         locale="en"
       />
+      <section className="py-10 space-y-4">
+        <p className="text-slate-700 leading-7">
+          Teams searching for the best free alternative to Katana MRP are usually balancing two realities: they need solid inventory
+          and BOM capabilities, but they cannot justify enterprise-style MRP spend during early or growth stages. Katana is a capable
+          production-focused product, especially for manufacturing-heavy businesses. The question is whether you truly need all of that
+          depth right now.
+        </p>
+        <p className="text-slate-700 leading-7">
+          StockFlow is often selected when the biggest pain points are stock visibility, receiving mistakes, reorder timing, warehouse
+          execution, and faster adoption by mixed technical teams. For these use cases, a practical free-first approach with clear BOM
+          workflows can outperform a more complex MRP stack.
+        </p>
+      </section>
 
-      {/* Hero Benefits */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            The Best Free Alternative to Katana MRP
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90">
-            StockFlow: Completely Free Forever vs Katana MRP's $200-1,000+/Month
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <Gift className="h-12 w-12 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Free Forever</h3>
-              <p className="opacity-90">No subscription fees, no per-user costs</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <Cloud className="h-12 w-12 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Fast Setup</h3>
-              <p className="opacity-90">5-7 days vs weeks to months</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-              <TrendingUp className="h-12 w-12 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Save $2,900-14,000+</h3>
-              <p className="opacity-90">Eliminate all Katana MRP costs</p>
-            </div>
-          </div>
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">Feature-by-Feature Comparison</h2>
+        <div className="overflow-x-auto rounded-xl border">
+          <table className="min-w-full text-sm">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="p-3 text-left">Category</th>
+                <th className="p-3 text-left">StockFlow</th>
+                <th className="p-3 text-left">Katana MRP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonRows.map((row) => (
+                <tr key={row[0]} className="border-t align-top">
+                  <td className="p-3 font-semibold">{row[0]}</td>
+                  <td className="p-3">{row[1]}</td>
+                  <td className="p-3">{row[2]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      {/* Cost Savings */}
-      <section id="savings" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              How Much You Save with StockFlow vs Katana MRP
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See the real cost difference between StockFlow (free) and Katana MRP
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Cost Item</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Katana MRP</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600 bg-blue-50">StockFlow</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-green-600">Your Savings</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {costSavings.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900">{item.item}</td>
-                      <td className="px-6 py-4 text-center text-sm text-gray-600">{item.katana}</td>
-                      <td className="px-6 py-4 text-center text-sm text-blue-600 font-semibold">{item.stockflow}</td>
-                      <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">{item.savings}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Total First Year Savings</h3>
-            <p className="text-lg text-gray-700">
-              By switching from Katana MRP to StockFlow, you save <strong className="text-green-600">$2,900-14,000+ in the first year</strong> and 
-              <strong className="text-green-600"> $2,400-12,000+ every year after</strong>. StockFlow is completely free forever with no subscription fees, 
-              no per-user costs, and no usage-based pricing, while Katana MRP charges monthly based on sales orders and shop-floor operators.
-            </p>
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link
-              to="/auth"
-              className="inline-flex items-center justify-center bg-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition text-lg"
-            >
-              Start Saving $2,900+ Today - Free Forever
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
+      <section className="py-8 grid md:grid-cols-2 gap-6">
+        <div className="rounded-xl border p-5 bg-green-50/40">
+          <h3 className="text-xl font-semibold mb-3">StockFlow Pros / Cons</h3>
+          <ul className="list-disc pl-6 text-slate-700 space-y-2">
+            <li>Pros: Lower-cost path and faster rollout for inventory-led teams.</li>
+            <li>Pros: Strong day-to-day stock execution with BOM support for light manufacturing.</li>
+            <li>Cons: Advanced production planning depth is lighter than full MRP-focused systems.</li>
+            <li>Cons: Complex plant operations should run an implementation pilot first.</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border p-5 bg-slate-50">
+          <h3 className="text-xl font-semibold mb-3">Katana MRP Pros / Cons</h3>
+          <ul className="list-disc pl-6 text-slate-700 space-y-2">
+            <li>Pros: Strong manufacturing and production-oriented capabilities.</li>
+            <li>Pros: Better fit for teams that need deeper MRP control from day one.</li>
+            <li>Cons: Higher cost profile and greater setup complexity for smaller organizations.</li>
+            <li>Cons: Can be more system than needed for inventory-centric businesses.</li>
+          </ul>
         </div>
       </section>
 
-      {/* Why StockFlow is the Best Free Alternative */}
-      <section id="why-best" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              Why StockFlow is the Best Free Alternative to Katana MRP
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              All the inventory management features you need, completely free forever
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg">
-                <benefit.icon className="h-12 w-12 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{benefit.title}</h3>
-                <p className="text-gray-700">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+      <section className="py-8 space-y-4">
+        <h2 className="text-2xl font-bold">Who Is Each Best For?</h2>
+        <p className="text-slate-700 leading-7">
+          Choose StockFlow when your company is cost-sensitive, inventory-driven, and needs practical BOM workflows without adding
+          production-system overhead. It is a strong fit for small manufacturers, wholesalers, and mixed operations teams.
+        </p>
+        <p className="text-slate-700 leading-7">
+          Choose Katana when your operation is manufacturing-intensive and you need deeper production planning and shop-floor structure.
+          In that environment, additional complexity and spend can be justified by operational control.
+        </p>
       </section>
 
-      {/* Feature Comparison */}
-      <section id="features" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              Feature Comparison: StockFlow vs Katana MRP
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how StockFlow compares as a free alternative to Katana MRP
-            </p>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-blue-600 bg-blue-50">StockFlow (Free)</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Katana MRP ($200-1,000+/month)</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {featureComparison.map((item, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900">{item.feature}</td>
-                      <td className="px-6 py-4 text-center text-sm text-green-600 font-semibold">{item.stockflow}</td>
-                      <td className="px-6 py-4 text-center text-sm text-gray-600">{item.katana}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-              <Factory className="h-6 w-6 text-blue-600" />
-              Manufacturing Note
-            </h3>
-            <p className="text-gray-700">
-              Katana MRP has stronger manufacturing features including advanced production scheduling, shop-floor terminals, and engineer-to-order workflows. 
-              StockFlow supports light manufacturing and assembly but focuses more on inventory management, procurement, and multi-channel fulfillment. 
-              Choose Katana MRP for complex manufacturing operations, StockFlow for inventory and distribution with light manufacturing needs.
-            </p>
-          </div>
-        </div>
+      <section className="py-8">
+        <p className="text-slate-700">
+          Continue in the BOM hub: <Link className="text-blue-600 underline" to="/bill-of-materials-software-free">free bill of materials software</Link>. For scanning-led workflows, use the barcode hub:{' '}
+          <Link className="text-blue-600 underline" to="/best-free-inventory-software-with-barcode-scanning">best free inventory software with barcode scanning</Link>.
+        </p>
       </section>
 
-      {/* Migration Steps */}
-      <section id="migration" className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              Free Migration from Katana MRP to StockFlow
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Switch to StockFlow in 5-7 days with free migration assistance. No costs, no hassle.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {migrationSteps.map((step, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 border border-gray-200 shadow-lg">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
-                      {step.step}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <step.icon className="h-6 w-6 text-blue-600" />
-                      <h3 className="text-xl font-semibold text-gray-900">{step.title}</h3>
-                      <span className="ml-auto text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                        {step.timeframe}
-                      </span>
-                    </div>
-                    <p className="text-gray-700">{step.description}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-              <CheckCircle className="h-6 w-6 text-blue-600" />
-              All Migration Support is Free
-            </h3>
-            <p className="text-gray-700">
-              Unlike Katana MRP which may charge for setup and migration, StockFlow provides all migration assistance 
-              at no cost. Our team helps with data export, import, mapping, and training - completely free.
-            </p>
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link
-              to="/auth"
-              className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
-            >
-              Get Free Migration Help
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section id="faq" className="py-16 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-gray-600">
-              Everything you need to know about free alternatives to Katana MRP
-            </p>
-          </div>
-
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqData.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="bg-gray-50 border border-gray-200 rounded-lg px-6">
-                <AccordionTrigger className="text-left font-semibold text-gray-900 hover:no-underline">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-700 pt-2">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Save $2,900+ with StockFlow?
-          </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Join thousands of businesses using StockFlow as their free alternative to Katana MRP
-          </p>
-          <Link
-            to="/auth"
-            className="inline-flex items-center justify-center bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
-          >
-            Get Started Free Forever
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">FAQ</h2>
+        <div className="space-y-3">
+          {faqData.map((faq) => (
+            <details key={faq.question} className="rounded-lg border p-4">
+              <summary className="font-semibold cursor-pointer">{faq.question}</summary>
+              <p className="mt-2 text-slate-700">{faq.answer}</p>
+            </details>
+          ))}
         </div>
       </section>
 
@@ -528,20 +181,12 @@ export default function BestFreeAlternativeToKatanaMRP() {
         },
         {
           "@context": "https://schema.org",
-          "@type": "WebPage",
-          "@id": "https://www.stockflowsystems.com/best-free-alternative-to-katana-mrp",
-          "name": "Best Free Alternative to Katana MRP - StockFlow",
-          "headline": "Best Free Alternative to Katana MRP: StockFlow - Free Forever vs $200-1,000+/Month",
-          "description": "StockFlow is the best free alternative to Katana MRP. Completely free forever vs $200-1,000+/month. Fast setup, save $2,900-14,000+ annually.",
-          "url": "https://www.stockflowsystems.com/best-free-alternative-to-katana-mrp",
-          "inLanguage": "en",
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "StockFlow",
-            "url": "https://www.stockflowsystems.com"
-          },
-          "datePublished": "2024-01-01",
-          "dateModified": new Date().toISOString().split('T')[0]
+          "@type": "SoftwareApplication",
+          "name": "StockFlow",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web, iOS, Android",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "url": `https://www.stockflowsystems.com${canonicalPath}`
         }
       ]} />
     </SeoPageLayout>

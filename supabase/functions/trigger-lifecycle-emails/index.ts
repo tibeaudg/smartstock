@@ -28,7 +28,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li><strong>Set up a location</strong> — Create warehouses or storage locations</li>
   <li><strong>Invite your team</strong> — Add staff members under Settings → Users</li>
 </ol>
-<p><a href="https://stockflowsystems.com/dashboard">Log in and get started →</a></p>
+<p><a href="https://www.stockflowsystems.com/dashboard">Log in and get started →</a></p>
 <p>Questions? Just reply to this email — we're happy to help.</p>`,
   },
   '24h_nudge': {
@@ -42,7 +42,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li>Set up a warehouse or storage location</li>
   <li>Invite a team member</li>
 </ul>
-<p><a href="https://stockflowsystems.com/dashboard">Log in and get started →</a></p>
+<p><a href="https://www.stockflowsystems.com/dashboard">Log in and get started →</a></p>
 <p>Have questions? Just reply to this email.</p>`,
   },
   '7d_inactive': {
@@ -56,7 +56,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
   <li>Generate purchase orders automatically when stock runs low</li>
   <li>Reduce stockouts and overstocking by up to 30%</li>
 </ul>
-<p><a href="https://stockflowsystems.com/dashboard">Come back and pick up where you left off →</a></p>`,
+<p><a href="https://www.stockflowsystems.com/dashboard">Come back and pick up where you left off →</a></p>`,
   },
   '14d_inactive': {
     emailType: 'lifecycle',
@@ -65,14 +65,14 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
 <p>It's been two weeks. Life gets busy — we completely understand.</p>
 <p>When you're ready, StockFlow will be here to help you take control of your inventory.</p>
 <p>Not finding what you need? Reply to this email and tell us what's missing — we read every response.</p>
-<p><a href="https://stockflowsystems.com/dashboard">Log back in →</a></p>`,
+<p><a href="https://www.stockflowsystems.com/dashboard">Log back in →</a></p>`,
   },
   '25d_warning': {
     emailType: 'deletion_warning',
     defaultSubject: 'Action required: Your account will be deleted in 5 days',
     defaultHtml: `<p>Hi {{first_name}},</p>
 <p><strong>Important notice:</strong> Your StockFlow account (<strong>{{user_email}}</strong>) has been inactive for 25 days and will be automatically deleted in <strong>5 days</strong>.</p>
-<p>To keep your account, simply log in at <a href="https://stockflowsystems.com/dashboard">stockflowsystems.com</a>.</p>
+<p>To keep your account, simply log in at <a href="https://www.stockflowsystems.com/dashboard">www.stockflowsystems.com</a>.</p>
 <p>If you'd like to export your data before deletion, log in and go to <strong>Settings → Export Data</strong>.</p>
 <p>If you no longer need your account, no action is required — it will be removed automatically.</p>`,
   },
@@ -81,7 +81,7 @@ const LIFECYCLE_CONFIG: Record<LifecycleStage, StageConfig> = {
     defaultSubject: 'Final notice: Your account will be deleted tomorrow',
     defaultHtml: `<p>Hi {{first_name}},</p>
 <p><strong>Final notice:</strong> Your StockFlow account will be <strong>permanently deleted tomorrow</strong> due to 29 days of inactivity.</p>
-<p>To prevent deletion, log in now: <a href="https://stockflowsystems.com/dashboard">stockflowsystems.com</a></p>
+<p>To prevent deletion, log in now: <a href="https://www.stockflowsystems.com/dashboard">www.stockflowsystems.com</a></p>
 <p>After deletion, your account and all associated data cannot be recovered. This is the last email we will send before permanent deletion.</p>`,
   },
 }

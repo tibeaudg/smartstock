@@ -526,7 +526,7 @@ export const englishMainCluster: TopicCluster = {
       image: '/dashboard.png'
     },
     {
-      path: '/best-online-inventory-software',
+      path: '/best-free-inventory-software-with-barcode-scanning',
       title: 'Inventory Management Software Online',
       language: 'en',
       category: 'Inventory Management',

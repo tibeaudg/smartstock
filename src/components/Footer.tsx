@@ -37,6 +37,12 @@ const Footer = () => {
       { name: 'Forecasting', path: '/forecasting' },
       { name: 'Drop Shipping', path: '/drop-shipping-inventory-management' },
     ],
+    seoHubsAndComparisons: [
+      { name: 'Best Free Inventory Software with Barcode Scanning', path: '/best-free-inventory-software-with-barcode-scanning' },
+      { name: 'Bill of Materials Software Free', path: '/bill-of-materials-software-free' },
+      { name: 'Best Free Alternative to Katana MRP', path: '/best-free-alternative-to-katana-mrp' },
+      { name: 'StockFlow vs Zoho Inventory', path: '/stockflow-vs-zoho-inventory' },
+    ],
   };
 
   return (
@@ -169,6 +175,20 @@ const Footer = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Popular Guides */}
+          <div className="border-t border-gray-700 pt-12 mb-12">
+            <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Main Hubs and Comparisons</h4>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {footerLinks.seoHubsAndComparisons.map(link => (
+                <li key={link.name}>
+                  <Link to={link.path} className="text-gray-500 hover:text-blue-400 text-sm transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Popular Guides */}

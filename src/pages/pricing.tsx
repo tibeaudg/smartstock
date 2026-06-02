@@ -6,100 +6,33 @@ import SEO from '@/components/SEO';
 import Header from '@/components/HeaderPublic';
 import Footer from '@/components/Footer';
 
-const structuredData = [
+const getStructuredData = (faqItems: Array<{ q: string; a: string }>) => [
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "StockFlow",
+    "description": "Free inventory management software with barcode scanning, bill of materials, and real-time multi-location sync.",
+    "url": "https://www.stockflowsystems.com",
     "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web, iOS, Android",
-    "offers": [
-      {
-        "@type": "Offer",
-        "name": "Starter",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Free inventory management for up to 100 items. No credit card required.",
-        "availability": "https://schema.org/InStock"
-      },
-      {
-        "@type": "Offer",
-        "name": "Professional",
-        "price": "9",
-        "priceCurrency": "USD",
-        "description": "Up to 2,000 items, 5 users, sales & purchase orders.",
-        "availability": "https://schema.org/InStock"
-      },
-      {
-        "@type": "Offer",
-        "name": "Business",
-        "price": "29",
-        "priceCurrency": "USD",
-        "description": "Up to 5,000 items, 8 users, QuickBooks integration, role permissions.",
-        "availability": "https://schema.org/InStock"
-      },
-      {
-        "@type": "Offer",
-        "name": "Enterprise",
-        "price": "59",
-        "priceCurrency": "USD",
-        "description": "10,000+ items, 12+ users, API access, dedicated success manager.",
-        "availability": "https://schema.org/InStock"
-      }
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "150",
-      "bestRating": "5",
-      "worstRating": "1"
+    "operatingSystem": "Web, Android, iOS",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free forever - no credit card required"
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Is the Starter plan really free forever?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. The Starter plan is completely free with no time limit and no credit card required. You get access to all core inventory features for up to 100 items."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do I need a credit card to start a free trial?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. You can start a 14-day free trial of any paid plan without entering payment details. You only need to add a card if you decide to continue after the trial."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I upgrade or downgrade my plan at any time?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Absolutely. You can upgrade instantly from within your StockFlow dashboard. Downgrades take effect at the end of your current billing period."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I add extra users or warehouses beyond my plan?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. You can add extra user licenses for $2/month each and extra warehouses for $5/month each, beyond what is included in your plan."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What happens to my data if I downgrade?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Your data is safe. If you exceed the item limit of a lower plan, you can still view existing items but cannot add new ones until you are back within the limit."
-        }
+    "mainEntity": faqItems.map((item) => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
       }
-    ]
+    }))
   },
   {
     "@context": "https://schema.org",
@@ -344,7 +277,7 @@ export default function PricingPage() {
         description="Start free with StockFlow's Starter plan or unlock more with Professional ($9/mo), Business ($29/mo), or Enterprise ($59/mo). No credit card required to start."
         keywords="stockflow pricing, inventory management software pricing, free inventory software, inventory software plans"
         url="https://www.stockflowsystems.com/pricing"
-        structuredData={structuredData}
+        structuredData={getStructuredData(faqs)}
       />
 
       <Header onLoginClick={() => navigate('/auth?mode=login')} onNavigate={() => {}} simplifiedNav={false} hideNotifications={true} />

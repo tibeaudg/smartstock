@@ -81,7 +81,7 @@ const steps = [
     number: "1",
     title: "Create your free account",
     time: "5 min",
-    body: "Sign up at stockflowsystems.com — no credit card, no trial period. You get unlimited products and users from day one on the free plan.",
+    body: "Sign up at www.stockflowsystems.com — no credit card, no trial period. You get unlimited products and users from day one on the free plan.",
   },
   {
     number: "2",
@@ -396,7 +396,7 @@ export default function BarcodeInventorySystemSmallBusiness() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://stockflowsystems.com/auth"
+              href="https://www.stockflowsystems.com/auth"
               className="bg-white text-blue-600 font-bold px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors"
             >
               Get Started Free

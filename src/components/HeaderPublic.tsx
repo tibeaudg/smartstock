@@ -35,6 +35,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Button } from './ui/button';
 import VideoModal from './VideoModal';
 import { NAV_ITEMS } from '../constants/navigation';
+import { getHubForPath } from '@/config/internalLinking';
 
 
 
@@ -49,6 +50,7 @@ export interface HeaderProps {
   hideNotifications?: boolean;
   onNavigate?: () => void;
   hideAuthButtons?: boolean;
+  showBreadcrumbTrail?: boolean;
 }
 
 type MegaMenuLink = {
@@ -95,7 +97,8 @@ const Header: React.FC<HeaderProps> = ({
   simplifiedNav,
   hideNotifications,
   onNavigate,
-  hideAuthButtons
+  hideAuthButtons,
+  showBreadcrumbTrail = true
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -113,10 +116,20 @@ const Header: React.FC<HeaderProps> = ({
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const isAuthPage = location.pathname.startsWith("/auth");
+  const currentHub = getHubForPath(location.pathname);
 
   if (isAuthPage) {
     return null;
   }
+
+  const isHomePage = location.pathname === '/';
+  const shouldShowBreadcrumbTrail = showBreadcrumbTrail && !isHomePage && !location.pathname.startsWith('/dashboard');
+  const currentSlug = location.pathname.replace(/^\/+/, '').split('/').filter(Boolean).pop() || '';
+  const currentLabel = currentSlug
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 
 
 
@@ -616,6 +629,26 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {shouldShowBreadcrumbTrail && (
+          <div className="border-t border-gray-100 bg-white/90">
+            <nav className="mx-auto max-w-7xl px-4 py-2 text-sm text-gray-600" aria-label="Breadcrumb">
+              <div className="flex flex-wrap items-center gap-2">
+                <Link to="/" className="hover:text-blue-600">Home</Link>
+                <span>/</span>
+                {currentHub && currentHub.path !== location.pathname && (
+                  <>
+                    <Link to={currentHub.path} className="hover:text-blue-600">{currentHub.title}</Link>
+                    <span>/</span>
+                  </>
+                )}
+                <span className="font-medium text-gray-900">
+                  {currentHub && currentHub.path === location.pathname ? currentHub.title : currentLabel}
+                </span>
+              </div>
+            </nav>
           </div>
         )}
       </div>

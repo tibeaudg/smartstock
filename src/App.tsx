@@ -2,7 +2,7 @@ import React, { Suspense, useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from "react-router-dom";
 import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StockManagementApp } from "./components/StockManagementApp";
@@ -397,6 +397,11 @@ const AppRouter = () => {
     return <AuthPage />;
   };
 
+  const BlogSlugRedirect = () => {
+    const { slug } = useParams();
+    return <Navigate to={`/${slug ?? ''}`} replace />;
+  };
+
   return (
     <ContentWrapper>
       <Suspense fallback={<ContentLoadingScreen />}>
@@ -443,6 +448,12 @@ const AppRouter = () => {
         {/* REDIRECTS */}
         <Route path="/what-is-bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
+        <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
+        <Route path="/what-is-the-best-free-inventory-management-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
+        <Route path="/blog/what-is-the-best-free-inventory-management-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
+        <Route path="/best-online-inventory-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
+        <Route path="/blog/best-online-inventory-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
+        <Route path="/inventory-management-bing" element={<Navigate to="/inventory-management" replace />} />
         <Route path="/prix" element={<Navigate to="/pricing" replace />} />
         <Route path="/prix-abonnement" element={<Navigate to="/pricing" replace />} />
         <Route path="/non-profit-inventory-management" element={<Navigate to="/non-profit-inventory-management-software" replace />} />

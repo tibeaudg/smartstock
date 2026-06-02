@@ -34,10 +34,79 @@ function getChangefreq(url) {
 const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
 const SEO_DIR_LOWER = path.join(process.cwd(), 'src/pages/seo');
 const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
-const CURRENT_DATE = new Date().toISOString().split('T')[0];
+const PRUNING_CSV_PATH = path.join(process.cwd(), 'seo-pruning-actions-2026-06-02.csv');
+const SITEMAP_AUDIT_PATH = path.join(process.cwd(), 'public/sitemap-audit.json');
+
+function toIsoDate(value) {
+  return new Date(value).toISOString().split('T')[0];
+}
+
+function getFileLastmod(filePath) {
+  try {
+    return toIsoDate(fs.statSync(filePath).mtime);
+  } catch {
+    return null;
+  }
+}
+
+function parseCsvLine(line) {
+  const cells = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i];
+    const next = line[i + 1];
+    if (ch === '"' && inQuotes && next === '"') {
+      current += '"';
+      i += 1;
+      continue;
+    }
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+      continue;
+    }
+    if (ch === ',' && !inQuotes) {
+      cells.push(current);
+      current = '';
+      continue;
+    }
+    current += ch;
+  }
+  cells.push(current);
+  return cells;
+}
+
+function readPruningActions() {
+  const redirectPaths = new Set();
+  const noindexPaths = new Set();
+  if (!fs.existsSync(PRUNING_CSV_PATH)) return { redirectPaths, noindexPaths };
+
+  const lines = fs.readFileSync(PRUNING_CSV_PATH, 'utf8').split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) return { redirectPaths, noindexPaths };
+  const headers = parseCsvLine(lines[0]);
+  const pathIdx = headers.indexOf('path');
+  const actionIdx = headers.indexOf('action');
+  if (pathIdx < 0 || actionIdx < 0) return { redirectPaths, noindexPaths };
+
+  for (const line of lines.slice(1)) {
+    const cols = parseCsvLine(line);
+    const route = (cols[pathIdx] || '').trim().replace(/^\/+/, '').toLowerCase();
+    const action = (cols[actionIdx] || '').trim();
+    if (!route) continue;
+    if (action === '301') redirectPaths.add(route);
+    if (action === 'noindex_follow' || action === 'keep_noindex') noindexPaths.add(route);
+  }
+  return { redirectPaths, noindexPaths };
+}
 
 async function syncSitemap() {
   console.log('--- Starting Sitemap Sync & Cleanup ---');
+  const audit = {
+    generatedAt: new Date().toISOString(),
+    removed: [],
+    added: [],
+    stats: {},
+  };
 
   const seoDir = fs.existsSync(SEO_DIR) ? SEO_DIR : SEO_DIR_LOWER;
   if (!fs.existsSync(seoDir)) {
@@ -73,11 +142,18 @@ async function syncSitemap() {
     'asset-tracking',
     'bill-of-materials',
     'what-is-bill-of-materials',
+    'what-is-the-best-free-inventory-management-software',
+    'blog/what-is-the-best-free-inventory-management-software',
+    'best-online-inventory-software',
+    'blog/best-online-inventory-software',
+    'inventory-management-bing',
     'inventory-software-management',
     'non-profit-inventory-management',
     'prix',
     'prix-abonnement',
   ]);
+  const pruningActions = readPruningActions();
+  pruningActions.redirectPaths.forEach((p) => redirectRoutes.add(p));
   const excludedFilenames = new Set(['createGlossaryPage', 'resources', ...redirectRoutes]);
   // Mirrors isThinTemplatePage() in src/utils/seoPageDescription.ts —
   // pages flagged as thin get noindex and must not appear in the sitemap.
@@ -88,6 +164,7 @@ async function syncSitemap() {
     return false;
   }
 
+  const routeLastmodMap = new Map();
   const localRoutes = new Set(
     files
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
@@ -98,9 +175,20 @@ async function syncSitemap() {
         const content = fs.readFileSync(fullPath, 'utf-8');
         if (isThinTemplateContent(content)) {
           console.log(`- Skipped (thin template): ${file}`);
+          audit.removed.push({ route: normalized.replace(/\.(js|jsx|ts|tsx)$/, ''), reason: 'thin-template' });
           return null;
         }
-        return extractRoutePathFromContent(content, `pages/SEO/${normalized}`);
+        const route = extractRoutePathFromContent(content, `pages/SEO/${normalized}`);
+        if (route && pruningActions.noindexPaths.has(route.toLowerCase())) {
+          console.log(`- Skipped (pruning noindex): ${route}`);
+          audit.removed.push({ route, reason: 'pruning-noindex' });
+          return null;
+        }
+        if (route) {
+          const lastmod = getFileLastmod(fullPath);
+          if (lastmod) routeLastmodMap.set(route, lastmod);
+        }
+        return route;
       })
       .filter(Boolean)
   );
@@ -113,15 +201,46 @@ async function syncSitemap() {
     nlFiles
       .filter(file => !path.basename(file).startsWith('index') && !file.endsWith('.ts'))
       .forEach(file => {
-        const slug = getSlugFromPath(`pages/SEO/nl/${file.replace(/\\/g, '/')}`);
-        if (slug) nlRoutes.add(slug);
+        const normalized = file.replace(/\\/g, '/');
+        const slug = getSlugFromPath(`pages/SEO/nl/${normalized}`);
+        if (slug) {
+          if (pruningActions.noindexPaths.has(slug.toLowerCase())) {
+            audit.removed.push({ route: slug, reason: 'pruning-noindex' });
+            return;
+          }
+          nlRoutes.add(slug);
+          const lastmod = getFileLastmod(path.join(nlDir, normalized));
+          if (lastmod) routeLastmodMap.set(slug, lastmod);
+        }
       });
+  }
+
+  const fixedRouteSources = new Map([
+    ['', path.join(process.cwd(), 'src/App.tsx')],
+    ['about', path.join(process.cwd(), 'src/pages/about.tsx')],
+    ['contact', path.join(process.cwd(), 'src/pages/contact.tsx')],
+    ['videos', path.join(process.cwd(), 'src/pages/videos.tsx')],
+    ['resources', path.join(process.cwd(), 'src/pages/resources.tsx')],
+    ['customers', path.join(process.cwd(), 'src/pages/customers.tsx')],
+    ['integrations', path.join(process.cwd(), 'src/pages/integrations.tsx')],
+    ['reporting', path.join(process.cwd(), 'src/pages/reporting.tsx')],
+    ['features', path.join(process.cwd(), 'src/pages/features.tsx')],
+    ['pricing', path.join(process.cwd(), 'src/pages/pricing.tsx')],
+  ]);
+  for (const [route, filePath] of fixedRouteSources.entries()) {
+    const lastmod = getFileLastmod(filePath);
+    if (lastmod) routeLastmodMap.set(route, lastmod);
   }
 
   const localUrls = new Set([
     ...Array.from(localRoutes).map(route => `${BASE_URL}/${route}`),
     ...Array.from(nlRoutes).map(route => `${BASE_URL}/${route}`)
   ]);
+
+  function getLastmodForUrl(url) {
+    const route = url.replace(`${BASE_URL}/`, '');
+    return routeLastmodMap.get(route) || routeLastmodMap.get('') || toIsoDate(new Date());
+  }
 
   // 3. Load and Parse Sitemap
   let sitemapData = { urlset: { url: [] } };
@@ -147,6 +266,12 @@ async function syncSitemap() {
     const entrySlug = entry.loc.trim().replace(`${BASE_URL}/`, '');
     if (redirectRoutes.has(entrySlug)) {
       console.log(`- Removed (redirect): ${entry.loc}`);
+      audit.removed.push({ route: entrySlug, reason: 'redirect' });
+      return false;
+    }
+    if (pruningActions.noindexPaths.has(entrySlug.toLowerCase())) {
+      console.log(`- Removed (pruning noindex): ${entry.loc}`);
+      audit.removed.push({ route: entrySlug, reason: 'pruning-noindex' });
       return false;
     }
     // Force HTTPS and remove trailing slash for comparison
@@ -158,7 +283,7 @@ async function syncSitemap() {
 
     // NEVER REMOVE Permanent URLs
     if (permanentUrls.includes(url) || url === `${BASE_URL}/`) {
-      entry.lastmod = CURRENT_DATE;
+      entry.lastmod = getLastmodForUrl(url);
       entry.priority = getPriority(url);
       entry.changefreq = getChangefreq(url);
       return true;
@@ -177,7 +302,7 @@ async function syncSitemap() {
     );
 
     if (isProtected) {
-      entry.lastmod = CURRENT_DATE;
+      entry.lastmod = getLastmodForUrl(url);
       entry.priority = getPriority(url);
       entry.changefreq = getChangefreq(url);
       return true;
@@ -190,11 +315,12 @@ async function syncSitemap() {
 
     if (!isEnglishRoute && !isDutchRoute) {
       console.log(`- Removed: ${url}`);
+      audit.removed.push({ route, reason: 'missing-source' });
       return false;
     }
 
     // Refresh lastmod and update priority/changefreq for all kept entries
-    entry.lastmod = CURRENT_DATE;
+    entry.lastmod = getLastmodForUrl(url);
     entry.priority = getPriority(url);
     entry.changefreq = getChangefreq(url);
     return true;
@@ -206,6 +332,7 @@ async function syncSitemap() {
     const loc = entry.loc;
     if (seenLocs.has(loc)) {
       console.log(`- Removed (duplicate): ${loc}`);
+      audit.removed.push({ route: loc.replace(`${BASE_URL}/`, ''), reason: 'duplicate' });
       return false;
     }
     seenLocs.add(loc);
@@ -222,12 +349,13 @@ async function syncSitemap() {
     if (!existingLocs.has(url)) {
       sitemapData.urlset.url.push({
         loc: url,
-        lastmod: CURRENT_DATE,
+        lastmod: getLastmodForUrl(url),
         changefreq: getChangefreq(url),
         priority: getPriority(url),
       });
       addedCount++;
       console.log(`+ Added: ${url}`);
+      audit.added.push({ route: url.replace(`${BASE_URL}/`, '') });
     }
   });
 
@@ -239,6 +367,13 @@ async function syncSitemap() {
 
     const finalXml = `<?xml version="1.0" encoding="UTF-8"?>\n${builder.build(sitemapData)}`;
     fs.writeFileSync(SITEMAP_PATH, finalXml);
+    audit.stats = {
+      initialCount,
+      finalCount,
+      addedCount,
+      removedCount: initialCount + addedCount - finalCount,
+    };
+    fs.writeFileSync(SITEMAP_AUDIT_PATH, `${JSON.stringify(audit, null, 2)}\n`);
     console.log(`--- Sync Complete: Added ${addedCount}, Final Total: ${finalCount} ---`);
   } else {
     console.log('--- Sitemap is already synchronized and secure. ---');

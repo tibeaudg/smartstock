@@ -27,15 +27,28 @@ const defaultTitle = 'StockFlow - Free Inventory Management Software';
 const defaultDescription = 'StockFlow is free inventory management software for small businesses. Track stock, barcode scanning, BOMs, and orders with no hidden costs.';
 const defaultImage = '/Inventory-Management.png';
 const defaultUrl = 'https://www.stockflowsystems.com';
+const CANONICAL_HOST = 'www.stockflowsystems.com';
+const LEGACY_BLOG_PREFIX = /^\/blog\/(.+)$/i;
+
+const isDev = typeof import.meta !== 'undefined' ? import.meta.env?.DEV : process.env.NODE_ENV === 'development';
+
+const sanitizeLegacyPath = (pathname: string): string => {
+  if (!pathname) return '/';
+  const match = pathname.match(LEGACY_BLOG_PREFIX);
+  return match ? `/${match[1]}` : pathname;
+};
 
 // Normalize canonical URL (remove trailing slashes, query parameters, fragments)
 const normalizeCanonicalUrl = (url: string): string => {
   try {
     const urlObj = new URL(url);
+    const protocol = urlObj.protocol === 'http:' ? 'https:' : urlObj.protocol;
     // Remove trailing slashes from pathname (except for root)
     let pathname = urlObj.pathname === '/' ? '/' : urlObj.pathname.replace(/\/+$/, '');
+    pathname = sanitizeLegacyPath(pathname);
+    const host = urlObj.host === 'stockflowsystems.com' ? CANONICAL_HOST : urlObj.host;
     // Construct normalized URL without query params or hash
-    return `${urlObj.protocol}//${urlObj.host}${pathname}`;
+    return `${protocol}//${host}${pathname}`;
   } catch {
     // If URL parsing fails, try simple string normalization
     // Remove trailing slashes (except for root)
@@ -124,20 +137,54 @@ export const SEO: React.FC<SEOProps> = ({
 
   // Normalize canonical URL to ensure consistency (no trailing slashes, no query params)
   const normalizedUrl = normalizeCanonicalUrl(runtimeUrl);
+  const normalizedCurrentPath =
+    typeof window !== 'undefined'
+      ? sanitizeLegacyPath(window.location.pathname === '/' ? '/' : window.location.pathname.replace(/\/+$/, ''))
+      : null;
 
   // SEO Validation: Warn if title or description exceed recommended lengths
-  if (process.env.NODE_ENV === 'development') {
+  if (isDev) {
     if (title.length > 60) {
       console.warn(`[SEO] Title exceeds 60 characters (${title.length}): "${title.substring(0, 70)}..."`);
     }
     if (description.length > 160) {
       console.warn(`[SEO] Description exceeds 160 characters (${description.length}): "${description.substring(0, 170)}..."`);
     }
+    if (normalizedCurrentPath) {
+      const canonicalPath = new URL(normalizedUrl).pathname;
+      if (canonicalPath !== normalizedCurrentPath) {
+        console.warn(`[SEO] Canonical mismatch: canonical "${canonicalPath}" vs current "${normalizedCurrentPath}"`);
+      }
+    }
+    if (noindex && normalizedUrl === defaultUrl) {
+      console.warn('[SEO] noindex used with default canonical; ensure URL is page-specific.');
+    }
   }
 
   // Let Google handle display truncation — pre-truncating with "..." harms CTR
   const optimizedTitle = title;
   const optimizedDescription = description.length > 160 ? description.substring(0, 157) + '...' : description;
+  const plainTitle = optimizedTitle.replace(/\s*\|\s*StockFlow\s*$/i, '').trim();
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.stockflowsystems.com"
+      },
+      ...(normalizedUrl !== "https://www.stockflowsystems.com"
+        ? [{
+            "@type": "ListItem",
+            "position": 2,
+            "name": plainTitle || "Page",
+            "item": normalizedUrl
+          }]
+        : [])
+    ]
+  };
 
   return (
     <Helmet>
@@ -216,14 +263,20 @@ export const SEO: React.FC<SEOProps> = ({
       <link rel="alternate" hrefLang={defaultHrefLang} href={normalizedUrl} />
       
       {/* Hreflang for international SEO */}
-      {hreflang.map((hreflangItem) => (
-        <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={normalizeCanonicalUrl(hreflangItem.url)} />
-      ))}
+      {hreflang.map((hreflangItem) => {
+        const normalizedAlt = normalizeCanonicalUrl(hreflangItem.url);
+        return (
+          <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={normalizedAlt} />
+        );
+      })}
       
       {/* Alternate languages */}
-      {alternateLanguages.map((altLang) => (
-        <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={normalizeCanonicalUrl(altLang.url)} />
-      ))}
+      {alternateLanguages.map((altLang) => {
+        const normalizedAlt = normalizeCanonicalUrl(altLang.url);
+        return (
+          <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={normalizedAlt} />
+        );
+      })}
       
       {/* X-default for international targeting — only if not already in alternateLanguages */}
       {alternateLanguages.length > 0 &&
@@ -267,7 +320,27 @@ export const SEO: React.FC<SEOProps> = ({
       {structuredData && (() => {
         try {
           const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
-          const jsonString = JSON.stringify(dataArray, null, 0);
+          const hasBreadcrumb = dataArray.some((item: any) => item?.["@type"] === "BreadcrumbList");
+          const finalData = hasBreadcrumb ? dataArray : [...dataArray, breadcrumbSchema];
+          const jsonString = JSON.stringify(finalData, null, 0);
+          return (
+            <script 
+              type="application/ld+json" 
+              dangerouslySetInnerHTML={{ 
+                __html: createTrustedHTML(jsonString) 
+              }} 
+            />
+          );
+        } catch (error) {
+          console.warn('[SEO] Failed to stringify structured data:', error);
+          return null;
+        }
+      })()}
+
+      {/* Default Breadcrumb Structured Data when no custom schema exists */}
+      {!structuredData && (() => {
+        try {
+          const jsonString = JSON.stringify([breadcrumbSchema], null, 0);
           return (
             <script 
               type="application/ld+json" 

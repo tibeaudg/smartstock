@@ -1,6 +1,9 @@
 # Robots.txt for StockFlow
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
 
 # Disallow authenticated and private routes
 # Prefix-match: /dashboard blocks /dashboard and all sub-paths
@@ -8,7 +11,6 @@ Disallow: /dashboard
 Disallow: /auth
 Disallow: /checkout
 Disallow: /billing-success
-Disallow: /admin
 Disallow: /500
 
 Sitemap: https://www.stockflowsystems.com/sitemap.xml

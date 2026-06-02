@@ -1,0 +1,6 @@
+# Optional allowlist for scripts/apply-seo-pruning.mjs
+# If this file contains entries, only listed paths are eligible.
+# Example:
+# /blog/example-page
+# /legacy-page
+

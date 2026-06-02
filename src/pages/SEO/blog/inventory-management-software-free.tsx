@@ -141,7 +141,7 @@ export default function InventoryManagementSoftwareFreePage() {
             powerful <strong>inventory management software free</strong> that growing businesses use—real-time 
             tracking, multi-location support, BOM management—without paying a subscription. Compare our approach 
             in our guide to{' '}
-            <Link to="/what-is-the-best-free-inventory-management-software" className="text-blue-600 hover:underline">
+            <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 hover:underline">
               the best free inventory management software
             </Link>.
           </p>

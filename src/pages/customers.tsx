@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/HeaderPublic';
 import SEO from '@/components/SEO';
+import Footer from '@/components/Footer';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 
@@ -463,6 +464,8 @@ export default function CustomersPage() {
           </p>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

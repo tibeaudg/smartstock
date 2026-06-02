@@ -41,29 +41,45 @@ const homeFaqData = [
 const homeStructuredData = [
   {
     "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "StockFlow",
+    "description": "Free inventory management software with barcode scanning, bill of materials, and real-time multi-location sync.",
+    "url": "https://www.stockflowsystems.com",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, Android, iOS",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "description": "Free forever - no credit card required"
+    },
+    "featureList": [
+      "Barcode scanning",
+      "Bill of materials (BOM) management",
+      "Multi-location inventory sync",
+      "Offline mode",
+      "Unlimited SKUs",
+      "Real-time stock tracking"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "Organization",
     "name": "StockFlow",
     "url": "https://www.stockflowsystems.com",
     "logo": "https://www.stockflowsystems.com/logo.png",
     "sameAs": [
-      "https://www.facebook.com/profile.php?id=61578067034898",
       "https://twitter.com/stockflow",
-      "https://www.linkedin.com/company/stockflow",
-      "https://www.instagram.com/stockflowbe"
+      "https://www.linkedin.com/company/stockflow"
     ],
-    "description": "StockFlow is free inventory management software for growing businesses. Manage stock, barcode scanning, BOMs, and orders with no hidden costs."
+    "description": "Free inventory management software with barcode scanning and bill of materials."
   },
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "https://www.stockflowsystems.com",
-    "name": "StockFlow",
-    "description": "Free inventory management software that tracks stock, orders, and barcode scans for small businesses.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "StockFlow",
-      "logo": { "@type": "ImageObject", "url": "https://www.stockflowsystems.com/logo.png" }
-    }
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stockflowsystems.com" }
+    ]
   },
   {
     "@context": "https://schema.org",
@@ -566,6 +582,57 @@ export const HomePage = () => {
           </div>
         </section>
 
+        <section className="py-16 px-4 bg-slate-50 border-y border-slate-200">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
+              Explore our inventory content hubs
+            </h2>
+            <p className="text-slate-600 mb-8">
+              If you are evaluating scanning workflows, start with our
+              {' '}
+              <Link
+                to="/best-free-inventory-software-with-barcode-scanning"
+                className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2"
+              >
+                best free inventory software with barcode scanning guide
+              </Link>
+              . For manufacturing teams, use our
+              {' '}
+              <Link
+                to="/bill-of-materials-software-free"
+                className="text-blue-600 hover:text-blue-700 font-semibold underline underline-offset-2"
+              >
+                free bill of materials software hub
+              </Link>
+              {' '}to compare BOM and MRP options.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Link
+                to="/best-free-inventory-software-with-barcode-scanning"
+                className="rounded-xl border border-slate-200 bg-white p-5 hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <p className="font-semibold text-slate-900 mb-1">
+                  Best Free Inventory Software with Barcode Scanning
+                </p>
+                <p className="text-sm text-slate-600">
+                  Hub page with barcode, UPC, SKU, and mobile scanning resources.
+                </p>
+              </Link>
+              <Link
+                to="/bill-of-materials-software-free"
+                className="rounded-xl border border-slate-200 bg-white p-5 hover:border-blue-300 hover:shadow-md transition-all"
+              >
+                <p className="font-semibold text-slate-900 mb-1">
+                  Bill of Materials Software Free
+                </p>
+                <p className="text-sm text-slate-600">
+                  Hub page for BOM, MRP, manufacturing workflows, and software comparisons.
+                </p>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ══════════════════════════════════════════════════
             FEATURES
         ══════════════════════════════════════════════════ */}
@@ -653,8 +720,12 @@ export const HomePage = () => {
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-8 flex items-center justify-center h-full">
                   <img
                     src="/scanner.png"
-                    alt="Barcode scanning demonstration"
+                    alt="StockFlow barcode scanning interface on a mobile device"
                     className="w-full h-auto object-contain max-h-80"
+                    width={1200}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
                 </div>
@@ -710,6 +781,10 @@ export const HomePage = () => {
                         src={item.img}
                         alt={item.title}
                         className="max-w-full max-h-full object-contain"
+                        width={720}
+                        height={720}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                           const fb = e.currentTarget.nextElementSibling as HTMLElement;
@@ -754,8 +829,12 @@ export const HomePage = () => {
                 <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-xl shadow-slate-100">
                   <img
                     src="/dashboard.png"
-                    alt="StockFlow dashboard showing inventory management"
+                    alt="StockFlow inventory management dashboard with stock analytics"
                     className="w-full h-full object-contain"
+                    width={1600}
+                    height={1000}
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   />
                 </div>
@@ -814,8 +893,12 @@ export const HomePage = () => {
                     <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3">
                       <img
                         src={t.photo}
-                        alt={t.name}
+                        alt={`Customer portrait of ${t.name}`}
                         className="w-11 h-11 rounded-full object-cover border border-slate-200 flex-shrink-0"
+                        width={44}
+                        height={44}
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => { e.currentTarget.style.display = 'none'; }}
                       />
                       <div className="flex-1 min-w-0">

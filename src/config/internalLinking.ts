@@ -1,3 +1,86 @@
+export interface InternalLinkItem {
+  path: string;
+  title: string;
+  anchorText?: string;
+}
+
+export interface InternalLinkHub {
+  key: 'barcode-inventory' | 'bom-mrp';
+  title: string;
+  path: string;
+  hubAnchorText: string;
+  spokes: InternalLinkItem[];
+}
+
+const barcodeHub: InternalLinkHub = {
+  key: 'barcode-inventory',
+  title: 'Barcode Inventory',
+  path: '/best-free-inventory-software-with-barcode-scanning',
+  hubAnchorText: 'best free inventory software with barcode scanning',
+  spokes: [
+    { path: '/barcode-inventory-system', title: 'Barcode inventory system guide' },
+    { path: '/apps-for-restaurant-owners', title: 'Apps for restaurant owners (barcode workflows)' },
+    { path: '/sku-vs-upc', title: 'SKU vs UPC glossary guide' },
+    { path: '/what-is-a-gs1-barcode', title: 'What is a GS1 barcode?' },
+    { path: '/stockflow-vs-sortly', title: 'StockFlow vs Sortly comparison' },
+  ],
+};
+
+const bomHub: InternalLinkHub = {
+  key: 'bom-mrp',
+  title: 'BOM / MRP',
+  path: '/bill-of-materials-software-free',
+  hubAnchorText: 'free bill of materials software',
+  spokes: [
+    { path: '/best-free-alternative-to-katana-mrp', title: 'Best free alternative to Katana MRP' },
+    { path: '/stockflow-vs-zoho-inventory', title: 'StockFlow vs Zoho Inventory (BOM angle)' },
+    { path: '/stockflow-vs-inflow', title: 'StockFlow vs inFlow comparison' },
+    { path: '/stockflow-vs-odoo-inventory', title: 'StockFlow vs Odoo Inventory comparison' },
+    { path: '/free-mrp-software', title: 'Free MRP software for small manufacturers' },
+    { path: '/what-is-bill-of-materials', title: 'What is a bill of materials?' },
+    { path: '/what-is-mrp', title: 'What is MRP?' },
+  ],
+};
+
+export const INTERNAL_LINK_HUBS: InternalLinkHub[] = [barcodeHub, bomHub];
+
+const hubIndex = new Map<string, InternalLinkHub>();
+const spokeIndex = new Map<string, InternalLinkHub>();
+
+for (const hub of INTERNAL_LINK_HUBS) {
+  hubIndex.set(hub.path, hub);
+  for (const spoke of hub.spokes) {
+    spokeIndex.set(spoke.path, hub);
+  }
+}
+
+export function getHubForPath(pathname: string): InternalLinkHub | null {
+  return hubIndex.get(pathname) ?? spokeIndex.get(pathname) ?? null;
+}
+
+export function isHubPath(pathname: string): boolean {
+  return hubIndex.has(pathname);
+}
+
+export function getTopicalRelatedLinks(pathname: string): InternalLinkItem[] {
+  const hub = getHubForPath(pathname);
+  if (!hub) return [];
+
+  if (hub.path === pathname) {
+    return hub.spokes.slice(0, 4);
+  }
+
+  const otherSpokes = hub.spokes.filter((spoke) => spoke.path !== pathname).slice(0, 2);
+
+  return [
+    {
+      path: hub.path,
+      title: hub.title,
+      anchorText: hub.hubAnchorText,
+    },
+    ...otherSpokes,
+  ].slice(0, 4);
+}
 /**
  * Internal Linking Configuration
  */

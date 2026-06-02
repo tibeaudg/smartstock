@@ -1,0 +1,6 @@
+# Optional denylist for scripts/apply-seo-pruning.mjs
+# Paths listed here are always skipped.
+# Example:
+# /pricing
+# /best-free-inventory-software-with-barcode-scanning
+

@@ -7,12 +7,14 @@ import HeaderPublic from '@/components/HeaderPublic';
 import { SEO } from '@/components/SEO';
 import { generateFAQSchema } from '@/lib/structuredData';
 import { generateOrganizationSchema, generateWebSiteSchema, generateBreadcrumbSchema } from '@/utils/enhancedStructuredData';
+import { getHubForPath, getTopicalRelatedLinks } from '@/config/internalLinking';
 import { getHreflangAlternates } from '@/config/enNlHreflang';
 import {
   generatePageMetaDescription,
   isThinTemplatePage,
   normalizeKeyTakeaways,
 } from '@/utils/seoPageDescription';
+import { FORCED_NOINDEX_PATHS } from '@/config/seoPruning.generated';
 import { SEOPageHero } from './SeoPageHero';
 import FooterLanding from './Footer';
 import TableOfContents from './TableOfContents';
@@ -88,6 +90,13 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
+const toReadableLabel = (slug: string) =>
+  slug
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
 /* ---------------------------------------------
    Key Takeaways
 --------------------------------------------- */
@@ -116,6 +125,15 @@ KeyTakeaways.displayName = 'KeyTakeaways';
 --------------------------------------------- */
 const RelatedArticlesSection = memo(({ currentPath }: { currentPath: string }) => {
   const displayArticles = useMemo(() => {
+    const topical = getTopicalRelatedLinks(currentPath);
+    if (topical.length >= 3) {
+      return topical.map((item) => ({
+        title: item.title,
+        href: item.path,
+        category: 'Topic Cluster',
+      }));
+    }
+
     const all = getAllArticles();
     const filtered = all.filter(a => a.href !== currentPath);
     return shuffleArray(filtered).slice(0, 3);
@@ -178,6 +196,7 @@ const SEOPageLayout = memo(({
   noindex: noindexProp,
 }: SEOPageLayoutProps) => {
   const location = useLocation();
+  const currentHub = getHubForPath(location.pathname);
 
   const resolvedPageLanguage: 'en' | 'nl' =
     pageLanguage ??
@@ -200,13 +219,32 @@ const SEOPageLayout = memo(({
     return candidate.length <= 60 ? candidate : candidate.substring(0, 57) + '...';
   })();
   const canonicalUrl = `${PRODUCTION_URL}${location.pathname.replace(/\/+$/, '') || '/'}`;
+  const resolvedBreadcrumbItems = useMemo(() => {
+    if (breadcrumbItems.length > 0) return breadcrumbItems;
+    if (!currentHub) return [{ name: 'Home', url: '/' }, { name: heroTitle, url: location.pathname }];
+
+    if (currentHub.path === location.pathname) {
+      return [
+        { name: 'Home', url: '/' },
+        { name: currentHub.title, url: currentHub.path },
+      ];
+    }
+
+    return [
+      { name: 'Home', url: '/' },
+      { name: currentHub.title, url: currentHub.path },
+      { name: toReadableLabel(location.pathname.replace(/^\//, '')), url: location.pathname },
+    ];
+  }, [breadcrumbItems, currentHub, heroTitle, location.pathname]);
   const resolvedDescription =
     seoDescription ||
     heroDescription ||
     generatePageMetaDescription(heroTitle, resolvedPageLanguage);
 
   const thinTemplate = isThinTemplatePage(heroTitle, keyTakeaways);
-  const shouldNoindex = noindexProp ?? thinTemplate;
+  const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
+  const forcedNoindex = FORCED_NOINDEX_PATHS.has(normalizedPath);
+  const shouldNoindex = noindexProp ?? (thinTemplate || forcedNoindex);
 
   const normalizedTakeaways = useMemo(
     () => normalizeKeyTakeaways(keyTakeaways, heroTitle),
@@ -220,7 +258,13 @@ const SEOPageLayout = memo(({
     const schemas: object[] = [
       generateOrganizationSchema(PRODUCTION_URL),
       generateWebSiteSchema(PRODUCTION_URL, resolvedPageLanguage),
-      generateBreadcrumbSchema(location.pathname, heroTitle, PRODUCTION_URL),
+      generateBreadcrumbSchema(
+        location.pathname,
+        heroTitle,
+        PRODUCTION_URL,
+        currentHub ? currentHub.title : undefined,
+        currentHub ? currentHub.path : undefined
+      ),
     ];
 
     if (structuredData) {
@@ -231,7 +275,7 @@ const SEOPageLayout = memo(({
     }
 
     return schemas;
-  }, [structuredData, faqData, resolvedPageLanguage, location.pathname, heroTitle]);
+  }, [structuredData, faqData, resolvedPageLanguage, location.pathname, heroTitle, currentHub]);
   const contentRef = useRef<HTMLDivElement>(null);
   const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState('');
@@ -317,12 +361,12 @@ const SEOPageLayout = memo(({
         noindex={shouldNoindex}
       />
 
-      <HeaderPublic />
+      <HeaderPublic showBreadcrumbTrail={false} />
 
       <main>
         <SEOPageHero
           title={heroTitle}
-          breadcrumbItems={breadcrumbItems}
+          breadcrumbItems={resolvedBreadcrumbItems}
           dateUpdated={dateUpdated}
           description={heroDescription}
         />
@@ -384,6 +428,35 @@ const SEOPageLayout = memo(({
         </section>
 
         <RelatedArticlesSection currentPath={location.pathname} />
+
+        {currentHub && (
+          <section className="border-t border-slate-100 bg-white py-14">
+            <div className="container mx-auto max-w-6xl px-4">
+              <h2 className="mb-4 text-xl font-bold text-slate-900">
+                {currentHub.title} hub and spoke links
+              </h2>
+              <p className="mb-5 text-slate-600">
+                Explore this topic cluster and start with{' '}
+                <Link to={currentHub.path} className="font-semibold text-blue-600 hover:underline">
+                  {currentHub.hubAnchorText}
+                </Link>.
+              </p>
+              <div className="grid gap-3 md:grid-cols-2">
+                {currentHub.spokes
+                  .filter((spoke) => spoke.path !== location.pathname)
+                  .map((spoke) => (
+                    <Link
+                      key={spoke.path}
+                      to={spoke.path}
+                      className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
+                    >
+                      {spoke.title}
+                    </Link>
+                  ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Further Reading — external authoritative links */}
         <section className="bg-slate-50 border-t border-slate-100 py-16">

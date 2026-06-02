@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-06-02T13:07:46.784Z",
+  "sourceCsv": "C:\\Users\\tibea\\Desktop\\Coding\\StockFlow\\seo-pruning-actions-2026-06-02.csv",
+  "totals": {
+    "rows": 1053,
+    "routesMapped": 461,
+    "deletableRows": 0,
+    "uniqueFilesToDelete": 0,
+    "reviewRows": 1053,
+    "ambiguousRows": 1037
+  },
+  "deletable": []
+}

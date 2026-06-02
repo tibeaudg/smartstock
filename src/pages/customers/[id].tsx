@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/HeaderPublic';
 import SEO from '@/components/SEO';
+import Footer from '@/components/Footer';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 import { testimonialQuotes } from '@/data/testimonialQuotes';
 import { getBreadcrumbPath } from '@/config/topicClusters';
@@ -287,6 +288,8 @@ export default function CustomerDetailPage() {
           </p>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

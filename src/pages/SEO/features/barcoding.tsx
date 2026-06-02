@@ -234,7 +234,7 @@ export default function BarcodingPage() {
       '@type': 'UseAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://stockflowsystems.com/barcoding'
+        urlTemplate: 'https://www.stockflowsystems.com/barcoding'
       }
     }
   };

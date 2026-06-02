@@ -209,7 +209,7 @@ Ever sold an item on Shopify only to realize your physical store sold the last u
 <div style={{ position: 'absolute', top: '-20px', left: '30px', backgroundColor: '#0ea5e9', color: '#fff', padding: '8px 20px', borderRadius: '50px', fontWeight: 800, fontSize: '0.9rem', textTransform: 'uppercase' }}>
 Best Overall & Editor's Choice
 </div>
-<h3 style={{ fontSize: '2.5rem', color: '#0369a1', marginTop: 0, marginBottom: '1rem' }}>1. StockFlow Systems (stockflowsystems.com)</h3>
+<h3 style={{ fontSize: '2.5rem', color: '#0369a1', marginTop: 0, marginBottom: '1rem' }}>1. StockFlow Systems (www.stockflowsystems.com)</h3>
 <p style={{ fontSize: '1.2rem', color: '#334155' }}>
 StockFlow Systems has emerged as the gold standard for high-growth small businesses and D2C brands. While other platforms charge for every individual feature, StockFlow provides a <strong>unified ecosystem</strong> that connects manufacturing, warehousing, and multi-channel retail into one dashboard.
 </p>
@@ -231,7 +231,7 @@ StockFlow Systems has emerged as the gold standard for high-growth small busines
   <li><strong>Cons:</strong> Feature-rich environment may require a 15-minute onboarding call for beginners.</li>
   <li><strong>Pricing:</strong> Best value-to-feature ratio in the industry; transparent monthly tiers.</li>
 </ul>
-<a href="[https://stockflowsystems.com](https://stockflowsystems.com)" style={{ display: 'inline-block', backgroundColor: '#0ea5e9', color: '#fff', padding: '1.2rem 2.5rem', borderRadius: '10px', fontWeight: 700, textDecoration: 'none', fontSize: '1.1rem' }}>Visit StockFlow Systems →</a>
+<a href="[https://www.stockflowsystems.com](https://www.stockflowsystems.com)" style={{ display: 'inline-block', backgroundColor: '#0ea5e9', color: '#fff', padding: '1.2rem 2.5rem', borderRadius: '10px', fontWeight: 700, textDecoration: 'none', fontSize: '1.1rem' }}>Visit StockFlow Systems →</a>
 
 ```
 

@@ -1,0 +1,322 @@
+{
+  "generatedAt": "2026-06-02T13:08:35.039Z",
+  "csv": "C:\\Users\\tibea\\Desktop\\Coding\\StockFlow\\seo-pruning-actions-2026-06-02.csv",
+  "rowsParsed": 1053,
+  "plan": {
+    "redirects": 96,
+    "forcedNoindex": 791,
+    "skipped": 0
+  },
+  "actionCounts": {
+    "301": 96,
+    "noindex_follow": 792,
+    "keep_upgrade": 12,
+    "keep_noindex": 137,
+    "keep": 16
+  },
+  "topRedirects": [
+    {
+      "source": "/blog/track-inventory-free",
+      "destination": "/track-inventory-free"
+    },
+    {
+      "source": "/blog/best-manufacturing-apps",
+      "destination": "/best-manufacturing-apps"
+    },
+    {
+      "source": "/blog/bill-of-materials-software-free",
+      "destination": "/bill-of-materials-software-free"
+    },
+    {
+      "source": "/blog/buffer-stock",
+      "destination": "/buffer-stock"
+    },
+    {
+      "source": "/blog/best-stock-management-software",
+      "destination": "/best-stock-management-software"
+    },
+    {
+      "source": "/blog/barcode-inventory-system",
+      "destination": "/barcode-inventory-system"
+    },
+    {
+      "source": "/blog/best-online-inventory-software",
+      "destination": "/best-online-inventory-software"
+    },
+    {
+      "source": "/blog/asset-tracking-101",
+      "destination": "/asset-tracking-101"
+    },
+    {
+      "source": "/blog/best-free-inventory-software-with-barcode-scanning",
+      "destination": "/best-free-inventory-software-with-barcode-scanning"
+    },
+    {
+      "source": "/blog/how-to-choose-inventory-software-for-small-business",
+      "destination": "/how-to-choose-inventory-software-for-small-business"
+    },
+    {
+      "source": "/blog/business-inventory-app",
+      "destination": "/business-inventory-app"
+    },
+    {
+      "source": "/blog/how-do-small-businesses-organize-their-inventory",
+      "destination": "/how-do-small-businesses-organize-their-inventory"
+    },
+    {
+      "source": "/blog/handheld-inventory-scanners",
+      "destination": "/handheld-inventory-scanners"
+    },
+    {
+      "source": "/blog/how-do-upcs-barcodes-help-with-inventory-control",
+      "destination": "/how-do-upcs-barcodes-help-with-inventory-control"
+    },
+    {
+      "source": "/blog/how-do-you-control-inventory",
+      "destination": "/how-do-you-control-inventory"
+    },
+    {
+      "source": "/blog/how-do-you-categorize-inventory-items",
+      "destination": "/how-do-you-categorize-inventory-items"
+    },
+    {
+      "source": "/blog/common-inventory-mistakes-and-how-to-avoid-them",
+      "destination": "/common-inventory-mistakes-and-how-to-avoid-them"
+    },
+    {
+      "source": "/blog/calculating-beginning-inventory",
+      "destination": "/calculating-beginning-inventory"
+    },
+    {
+      "source": "/blog/year-end-inventory",
+      "destination": "/year-end-inventory"
+    },
+    {
+      "source": "/blog/equipment-inventory-management-best-practices",
+      "destination": "/equipment-inventory-management-best-practices"
+    },
+    {
+      "source": "/blog/enterprise-inventory-management",
+      "destination": "/enterprise-inventory-management"
+    },
+    {
+      "source": "/blog/inventory-optimization-strategies",
+      "destination": "/inventory-optimization-strategies"
+    },
+    {
+      "source": "/blog/space-optimization-strategies",
+      "destination": "/space-optimization-strategies"
+    },
+    {
+      "source": "/blog/inventory-management-best-practices",
+      "destination": "/inventory-management-best-practices"
+    },
+    {
+      "source": "/blog/calculating-raw-materials-inventory",
+      "destination": "/calculating-raw-materials-inventory"
+    },
+    {
+      "source": "/blog/periodic-vs-perpetual-inventory",
+      "destination": "/periodic-vs-perpetual-inventory"
+    },
+    {
+      "source": "/blog/roi-calculator-for-inventory-software",
+      "destination": "/roi-calculator-for-inventory-software"
+    },
+    {
+      "source": "/blog/benefits-of-construction-inventory-management",
+      "destination": "/benefits-of-construction-inventory-management"
+    },
+    {
+      "source": "/blog/restaurant-inventory-management-best-practices",
+      "destination": "/restaurant-inventory-management-best-practices"
+    },
+    {
+      "source": "/blog/inventory-management-for-small-business-complete-guide",
+      "destination": "/inventory-management-for-small-business-complete-guide"
+    },
+    {
+      "source": "/blog/barcodes-vs-qr-codes-for-inventory-management",
+      "destination": "/barcodes-vs-qr-codes-for-inventory-management"
+    },
+    {
+      "source": "/blog/10-most-common-inventory-management-mistakes-small-businesses",
+      "destination": "/10-most-common-inventory-management-mistakes-small-businesses"
+    },
+    {
+      "source": "/blog/6-ways-qr-codes-will-boost-inventory-management",
+      "destination": "/6-ways-qr-codes-will-boost-inventory-management"
+    },
+    {
+      "source": "/blog/5-tips-to-improve-inventory-control",
+      "destination": "/5-tips-to-improve-inventory-control"
+    },
+    {
+      "source": "/blog/9-must-have-inventory-control-software-features",
+      "destination": "/9-must-have-inventory-control-software-features"
+    },
+    {
+      "source": "/blog/apps-for-restaurant-owners",
+      "destination": "/apps-for-restaurant-owners"
+    },
+    {
+      "source": "/blog/a-guide-to-visual-inventory-control",
+      "destination": "/a-guide-to-visual-inventory-control"
+    },
+    {
+      "source": "/blog/10-reasons-to-upgrade-your-it-asset-management-strategy",
+      "destination": "/10-reasons-to-upgrade-your-it-asset-management-strategy"
+    },
+    {
+      "source": "/blog/10-reasons-to-consider-cloud-based-inventory-management",
+      "destination": "/10-reasons-to-consider-cloud-based-inventory-management"
+    },
+    {
+      "source": "/blog/3-best-inventory-new-years-resolutions",
+      "destination": "/3-best-inventory-new-years-resolutions"
+    },
+    {
+      "source": "/blog/5-signs-your-inventory-management-needs-an-overhaul",
+      "destination": "/5-signs-your-inventory-management-needs-an-overhaul"
+    },
+    {
+      "source": "/blog/3-ways-barcodes-and-qr-codes-reduce-human-error",
+      "destination": "/3-ways-barcodes-and-qr-codes-reduce-human-error"
+    },
+    {
+      "source": "/blog/inventory-control-systems",
+      "destination": "/inventory-control-systems"
+    },
+    {
+      "source": "/blog/inventory-forecasting-and-demand-planning-in-construction",
+      "destination": "/inventory-forecasting-and-demand-planning-in-construction"
+    },
+    {
+      "source": "/blog/inventory-formulas-and-ratios",
+      "destination": "/inventory-formulas-and-ratios"
+    },
+    {
+      "source": "/blog/how-to-track-equipment-inventory",
+      "destination": "/how-to-track-equipment-inventory"
+    },
+    {
+      "source": "/blog/importance-of-inventory-management-manufacturing",
+      "destination": "/importance-of-inventory-management-manufacturing"
+    },
+    {
+      "source": "/blog/inventory-analysis",
+      "destination": "/inventory-analysis"
+    },
+    {
+      "source": "/blog/inventory-management-101",
+      "destination": "/inventory-management-101"
+    },
+    {
+      "source": "/blog/inventory-planning-software",
+      "destination": "/inventory-planning-software"
+    }
+  ],
+  "topNoindexPaths": [
+    "/purchase-requisition-software",
+    "/how-much-does-inventory-software-cost",
+    "/inventory-management-for-small-business-complete-guide",
+    "/glossary/consignment-inventory",
+    "/inventory-management-101",
+    "/how-to-manage-inventory-in-restaurants",
+    "/nl/industries/voorraadbeheer-retail",
+    "/inventory-management-software-for-small-businesses",
+    "/what-is-a-good-inventory-turnover-ratio",
+    "/how-to-choose-inventory-management-software",
+    "/nl/mobiel-voorraadbeheer",
+    "/migrating-from-excel-to-inventory-software",
+    "/what-is-a-gs1-barcode",
+    "/contractor-inventory-management",
+    "/logistics-inventory-management-software",
+    "/enterprise-inventory-management",
+    "/pharmaceutical-warehouse-management-system",
+    "/inventory-analysis",
+    "/food-beverage-warehouse-management-system",
+    "/10-best-b2b-e-commerce-platforms",
+    "/what-are-the-3-major-inventory-management-techniques",
+    "/inventory-management-bing",
+    "/the-future-of-qr-codes-what-lies-ahead-for-inventory-management",
+    "/stockflow-vs-quickbooks-commerce",
+    "/10-reasons-to-consider-cloud-based-inventory-management",
+    "/nl/industries/voorraadbeheer-zorg",
+    "/cross-dock-warehouse",
+    "/ecommerce-inventory-management",
+    "/3pl-warehouse-management-system",
+    "/stockflow-vs-fishbowl-inventory",
+    "/inventory-control-systems",
+    "/blog",
+    "/pharmacy-inventory-management-best-practices",
+    "/stock-management-software",
+    "/how-do-upcs-barcodes-help-with-inventory-control",
+    "/equipment-inventory-management-best-practices",
+    "/buffer-stock",
+    "/how-to-implement-a-barcode-system-in-a-warehouse",
+    "/barcode-inventory-system",
+    "/glossary/minimum-order-quantity",
+    "/help-center",
+    "/how-do-you-organize-inventory",
+    "/how-to-optimize-inventory-levels-in-construction",
+    "/multiple-location-inventory-management",
+    "/nl/voorraadbeheer-middelgrote-bedrijven",
+    "/how-to-store-construction-materials",
+    "/inventory-turnover-ratio",
+    "/glossary",
+    "/automated-order-management-systems-vs-manual-order-management",
+    "/how-to-use-qr-codes-for-healthcare-inventory",
+    "/inventory-barcode-system",
+    "/stockflow-vs-vend",
+    "/cost-of-goods-formula",
+    "/10-most-common-inventory-management-mistakes-small-businesses",
+    "/year-end-checklist-for-small-business",
+    "/ultimate-guide-to-multi-echelon-inventory-optimization",
+    "/how-to-operate-an-a-school-inventory-management-system",
+    "/4-inventory-accounting-methods-for-inventory-valuation",
+    "/construction-material-cost",
+    "/stockflow-vs-spreadsheets",
+    "/reduce-human-error-in-the-workplace",
+    "/inventory-financing-6-things-to-know-before-you-apply",
+    "/warehouse-management",
+    "/best-barcode-scanner",
+    "/what-is-the-best-software-for-inventory-management",
+    "/ai-and-automation",
+    "/what-is-demand-forecasting",
+    "/best-cloud-based-warehouse-automation-software",
+    "/assets-inventory",
+    "/intro-wireless-barcode-scanner",
+    "/customers/laura-peeters",
+    "/ecommerce-warehouse-management-system",
+    "/benefits-of-construction-inventory-management",
+    "/business-growth-stages-overview",
+    "/how-to-store-medical-supplies",
+    "/difference-between-oem-vs-odm",
+    "/supply-chain-inventory-management",
+    "/manufacturing",
+    "/bar-inventory-management",
+    "/how-to-order-inventory",
+    "/strategies-to-strengthen-your-supply-chain",
+    "/vendor-managed-inventory-vmi",
+    "/the-complete-guide-to-medical-device-inventory-management",
+    "/nl/voorraadbeheer-kleine-ondernemingen",
+    "/ecommerce-returns-management",
+    "/restaurant-supply-list",
+    "/auto-parts-inventory-management-system-drives-down-costs",
+    "/6-inventory-tracking-methods-for-construction-professionals",
+    "/expert-tips-for-organizing-holiday-decorations",
+    "/upc-barcode-generator",
+    "/warehouse-automation",
+    "/how-to-track-raw-materials",
+    "/customers/anke-willems",
+    "/warehouse-software",
+    "/material-requirements-planning-mrp-software",
+    "/glossary/just-in-time-inventory",
+    "/healthcare-clinics-stopped-over-ordering-wrong-supplies",
+    "/how-to-create-a-purchase-order",
+    "/supply-chain-resilience-strategies",
+    "/cost-of-goods-manufactured-formula"
+  ],
+  "skipped": []
+}

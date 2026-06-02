@@ -480,7 +480,9 @@ const SEGMENT_LABELS: Record<string, string> = {
 export function generateBreadcrumbSchema(
   pathname: string,
   pageTitle: string,
-  baseUrl: string = 'https://www.stockflowsystems.com'
+  baseUrl: string = 'https://www.stockflowsystems.com',
+  hubLabel?: string,
+  hubPath?: string
 ): object {
   const clean = pathname.replace(/^\/+|\/+$/g, '');
   const parts = clean ? clean.split('/') : [];
@@ -492,7 +494,12 @@ export function generateBreadcrumbSchema(
   // NL pages: skip category crumb (nl/ prefix is not meaningful as a label)
   const isNl = parts[0] === 'nl';
 
-  if (!isNl && parts.length >= 2 && SEGMENT_LABELS[parts[0]]) {
+  if (hubLabel) {
+    items.push({
+      name: hubLabel,
+      url: `${baseUrl}${hubPath || pathname.replace(/\/+$/, '') || '/'}`,
+    });
+  } else if (!isNl && parts.length >= 2 && SEGMENT_LABELS[parts[0]]) {
     items.push({
       name: SEGMENT_LABELS[parts[0]],
       url: `${baseUrl}/${parts[0]}`,

@@ -331,7 +331,7 @@ export default function SuppliersSolutionPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-                <a href="https://stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
                   Start managing suppliers
                 </a>
               </Button>
@@ -435,7 +435,7 @@ export default function SuppliersSolutionPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-              <a href="https://stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.stockflowsystems.com/auth?mode=register" target="_blank" rel="noopener noreferrer">
                 Get started free
               </a>
             </Button>

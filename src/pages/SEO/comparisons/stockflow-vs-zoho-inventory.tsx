@@ -1,361 +1,188 @@
-import { useState } from 'react';
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
-import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
-import { ArrowRight, CheckCircle, DollarSign, Smartphone, Zap, Shield, Star, Globe, Clock, Database, Layers, Plug, Lock, BarChart3, Truck } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
-import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
-import { KeyTakeaways as KeyTakeawaysComponent } from '@/components/KeyTakeaways';
+
+const canonicalPath = '/stockflow-vs-zoho-inventory';
+
+const featureRows = [
+  ['Free plan (published Jan 2026)', 'Free plan with core inventory workflows', 'Free plan capped at 50 orders/month, 1 user, 1 warehouse'],
+  ['Paid entry plan', 'Low-cost paid tiers when needed', 'Standard plan starts around $59/month'],
+  ['Barcode workflows', 'Native mobile-first barcode receiving, picking, and counts', 'Barcode support available, strongest inside broader Zoho setup'],
+  ['BOM and assemblies', 'BOM and light assembly for small manufacturers', 'Composite items and bundles; deeper capabilities via broader Zoho suite'],
+  ['Multi-warehouse', 'Multi-location support with stock transfers', 'Supported, but free tier is limited to one warehouse'],
+  ['Accounting ecosystem', 'Integrates through API/webhooks and standard connectors', 'Strong native fit with Zoho Books and other Zoho apps'],
+  ['Data residency posture', 'EU-focused hosting and GDPR-oriented operations', 'Regional hosting options, often configured in Zoho account region'],
+  ['Implementation effort', 'Usually faster for teams replacing spreadsheets', 'Can be excellent if your team already runs Zoho end-to-end'],
+  ['Best fit', 'Ops-first SMBs focused on warehouse and stock accuracy', 'Businesses standardized on Zoho CRM/Books ecosystem'],
+];
+
+const faqData = [
+  {
+    question: 'Is StockFlow better than Zoho Inventory for free usage?',
+    answer:
+      'For teams that need unrestricted daily inventory execution, StockFlow is usually easier because it keeps the core free workflow practical. Zoho Inventory free access is real, but the published limits can force upgrades sooner for fast-growing teams.',
+  },
+  {
+    question: 'When is Zoho Inventory the better choice?',
+    answer:
+      'Zoho Inventory is often better when your business is deeply invested in Zoho Books, Zoho CRM, and Zoho reporting. In that case, native suite integration can outweigh interface complexity or free-tier limits.',
+  },
+  {
+    question: 'Does StockFlow include BOM and assembly support?',
+    answer:
+      'Yes. StockFlow supports BOM and assembly-style workflows aimed at light manufacturing and kitting operations. Teams with highly specialized production scheduling requirements should validate fit in a pilot.',
+  },
+  {
+    question: 'How should I verify pricing claims in this comparison?',
+    answer:
+      'Use each vendor pricing page at purchase time. This page uses publicly posted pricing and limits available in January 2026, and vendors can change packaging or limits at any time.',
+  },
+];
 
 export default function StockFlowVsZohoInventory() {
-  
-
-  const comparisonFeatures: ComparisonFeature[] = [
-    { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: 'Trial only, paid required' },
-    { feature: 'Mobile App', stockflow: true, competitor: true },
-    { feature: 'Multi-channel Sales', stockflow: 'Via API & webhooks', competitor: true },
-    { feature: 'Barcode Scanning', stockflow: true, competitor: true },
-    { feature: 'Multi-warehouse', stockflow: true, competitor: true },
-    { feature: 'European Data Hosting', stockflow: true, competitor: 'US / India only' },
-    { feature: 'Ease of Use', stockflow: 'Very Easy', competitor: 'Moderate–Complex' },
-    { feature: 'Customer Support', stockflow: 'EU-based, responsive', competitor: 'Variable' },
-    { feature: 'Starting Price', stockflow: '€0', competitor: '$59/month' },
-    { feature: 'Implementation Time', stockflow: '5–7 days', competitor: '30–60 days' },
-    { feature: 'Data Migration Assistance', stockflow: 'Free, done-for-you', competitor: 'Paid / self-managed' },
-    { feature: 'API Access', stockflow: true, competitor: true },
-    { feature: 'Offline Mode', stockflow: true, competitor: false },
-    { feature: 'GDPR Tooling (DPA, exports)', stockflow: true, competitor: 'Partial' }
-  ];
-
-  const faqData = [
-    {
-      question: "StockFlow vs Zoho Inventory: Which is better for European businesses?",
-      answer: "StockFlow is designed specifically for European businesses with GDPR-first infrastructure and EU-only data hosting. Zoho Inventory stores data in US and Indian data centers, which introduces compliance complexity for EU-based SMEs. Additionally, StockFlow offers a free core plan and significantly lower long-term costs, making it a better operational and financial fit for most European companies."
-    },
-    {
-      question: "What is the main difference between StockFlow and Zoho Inventory?",
-      answer: "StockFlow focuses on operational inventory execution: stock accuracy, warehouses, barcode scanning, and real-time availability. Zoho Inventory focuses on ecosystem integration inside Zoho’s accounting and CRM stack. In short: StockFlow is inventory-first, Zoho is ecosystem-first."
-    },
-    {
-      question: "Is Zoho Inventory more feature-rich than StockFlow?",
-      answer: "Zoho Inventory includes more cross-product features such as Zoho Analytics and accounting modules. StockFlow intentionally avoids feature bloat and concentrates on inventory workflows. For most SMEs, StockFlow covers the vast majority of daily requirements with less training and lower risk of configuration errors."
-    },
-    {
-      question: "How much does Zoho Inventory cost compared to StockFlow?",
-      answer: "Zoho Inventory typically costs €54–€229/month depending on order volume, excluding setup, training, and integrations. StockFlow offers a free tier and paid plans starting around €29/month with migration included. Over three years, SMEs often save between €2,000 and €4,000 by choosing StockFlow."
-    },
-    {
-      question: "Which has better data privacy: StockFlow or Zoho Inventory?",
-      answer: "StockFlow hosts all customer data in the EU and provides built-in GDPR tooling such as data export, processing agreements, and access logs. Zoho Inventory relies on non-EU data centers, requiring additional legal safeguards."
-    },
-    {
-      question: "Can I migrate from Zoho Inventory to StockFlow?",
-      answer: "Yes. StockFlow provides free assisted migration including products, warehouses, suppliers, stock levels, historical movements, and SKUs. Most migrations complete within 2–3 business days without downtime."
-    },
-    {
-      question: "Which has better mobile app: StockFlow or Zoho Inventory?",
-      answer: "Both offer mobile apps, but StockFlow's mobile app is optimized for warehouse operations with offline mode, barcode scanning, and real-time sync. Zoho Inventory's mobile app focuses more on order management and has limited offline capabilities."
-    },
-    {
-      question: "Does StockFlow integrate with Zoho Books?",
-      answer: "StockFlow offers API access and webhook integrations that can connect to Zoho Books and other accounting systems. While Zoho Inventory has native integration with Zoho Books, StockFlow's flexible API allows integration with any accounting software including Zoho Books, QuickBooks, and Xero."
-    },
-    {
-      question: "What is the main advantage of StockFlow over Zoho Inventory for European businesses?",
-      answer: "The main advantages are: (1) GDPR-first architecture with EU-only data hosting, (2) Completely free core plan vs Zoho's paid-only model, (3) Faster implementation (5-7 days vs 30-60 days), (4) Lower total cost of ownership (often 3-5x less over 3 years), and (5) EU-based customer support with local language support."
-    },
-    {
-      question: "What are Zoho Inventory free plan limits in 2026?",
-      answer: "Zoho Inventory free plan limits in 2026 include: 50 orders per month, 1 warehouse, 1 user, and basic features only. Most growing businesses quickly exceed these limits and must upgrade to paid plans starting at $59/month. StockFlow offers unlimited orders, unlimited warehouses, unlimited users, and full features at no cost—no upgrade required."
-    }
-  ];
-
-  const keyTakeaways = [
-    'StockFlow is purpose-built for European SMEs with GDPR-first architecture.',
-    'Zoho Inventory is powerful but significantly more expensive at scale.',
-    'StockFlow enables faster onboarding and lower operational risk.',
-    'Zoho suits ecosystem-driven companies; StockFlow suits inventory-driven companies.',
-    'Total cost of ownership is often 3–5x lower with StockFlow over 3 years.'
-  ];
-
   return (
     <SeoPageLayout
-      title="StockFlow vs Zoho Inventory"
-      heroTitle="StockFlow vs Zoho Inventory (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
-      keyTakeaways={keyTakeaways}
+      heroTitle="StockFlow vs Zoho Inventory: Free Plan Comparison (2026)"
+      dateUpdated="2026-06-02"
       faqData={faqData}
     >
       <SEO
-        title="Zoho Inventory Free Plan Limits 2026 | 50 Orders – StockFlow Unlimited | StockFlow"
-        description="Zoho inventory free plan limits 2026: 50 orders/month, 1 warehouse, 1 user. StockFlow: unlimited—no limits. Compare and switch."
-        keywords="zoho inventory free plan limits 2026, stockflow vs zoho inventory, zoho inventory alternative europe, gdpr inventory software, inventory management comparison, stockflow vs zoho, zoho inventory vs stockflow"
-        url="https://www.stockflowsystems.com/stockflow-vs-zoho-inventory"
-        publishedTime="2024-01-01T00:00:00Z"
-        modifiedTime={new Date().toISOString()}
+        title="StockFlow vs Zoho Inventory: Free Plan Comparison (2026)"
+        description="Honest StockFlow vs Zoho Inventory comparison for 2026: free-plan limits, feature-by-feature table, pricing differences, pros/cons, and who each platform is best for."
+        canonical={canonicalPath}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
+        keywords="stockflow vs zoho inventory, zoho inventory free plan limits, free inventory software comparison, stockflow comparison"
       />
 
-      {/* Hero */}
-      <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Zoho Inventory</h1>
-          <p className="text-lg text-gray-600 max-w-4xl mx-auto">
-            Choosing an inventory system in 2026 is no longer just about features. It is about compliance, scalability, operational clarity, and long-term cost control.
-            Below is a full, unbiased breakdown of how StockFlow and Zoho Inventory compare across technical, financial, and operational dimensions.
-          </p>
-
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white border rounded-xl p-4"><Shield className="mx-auto mb-2" />GDPR-first</div>
-            <div className="bg-white border rounded-xl p-4"><DollarSign className="mx-auto mb-2" />Lower TCO</div>
-            <div className="bg-white border rounded-xl p-4"><Clock className="mx-auto mb-2" />Fast setup</div>
-            <div className="bg-white border rounded-xl p-4"><Database className="mx-auto mb-2" />EU hosting</div>
-          </div>
-        </div>
+      <section className="py-12">
+        <p className="text-slate-700 leading-7">
+          This page compares StockFlow and Zoho Inventory as honestly as possible for teams deciding between two credible options.
+          It is not a claim that one tool is perfect for every business. Both products are strong, but they optimize for different
+          workflows. StockFlow is usually chosen by operations teams that want fast setup, practical day-to-day inventory execution,
+          and predictable cost. Zoho Inventory is often preferred by teams already committed to the Zoho ecosystem, where cross-app
+          workflows between CRM, accounting, and inventory are a primary requirement.
+        </p>
+        <p className="text-slate-700 leading-7 mt-4">
+          For bottom-of-funnel buyers, the most important evaluation is not feature checkboxes alone. You need to test how each
+          platform handles receiving, putaway, stock counts, picking, purchase order updates, and reporting under real workload.
+          The sections below focus on feature depth, published free-plan economics, tradeoffs, and fit by business model.
+        </p>
       </section>
 
-      {/* Zoho Inventory Free Plan Limits 2026 */}
-      <section className="py-16 px-4 bg-white" id="zoho-free-limits">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center">Zoho Inventory Free Plan Limits 2026</h2>
-          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
-            Many businesses search for <strong>Zoho inventory free plan limits 2026</strong>. Zoho offers a limited free tier. Here's how it compares to StockFlow.
-          </p>
-          <div className="overflow-hidden border rounded-xl bg-white shadow-sm mb-8">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="p-4 text-left">Limit</th>
-                  <th className="p-4 text-left">Zoho Inventory Free 2026</th>
-                  <th className="p-4 text-left bg-blue-50">StockFlow</th>
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">Feature-by-Feature Comparison</h2>
+        <div className="overflow-x-auto rounded-xl border">
+          <table className="min-w-full text-sm">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="p-3 text-left">Category</th>
+                <th className="p-3 text-left">StockFlow</th>
+                <th className="p-3 text-left">Zoho Inventory</th>
+              </tr>
+            </thead>
+            <tbody>
+              {featureRows.map((row) => (
+                <tr key={row[0]} className="border-t align-top">
+                  <td className="p-3 font-semibold">{row[0]}</td>
+                  <td className="p-3">{row[1]}</td>
+                  <td className="p-3">{row[2]}</td>
                 </tr>
-              </thead>
-              <tbody>
-                <tr className="border-t"><td className="p-4 font-medium">Orders/month</td><td className="p-4">50</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
-                <tr className="border-t"><td className="p-4 font-medium">Warehouses</td><td className="p-4">1</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
-                <tr className="border-t"><td className="p-4 font-medium">Users</td><td className="p-4">1</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
-                <tr className="border-t"><td className="p-4 font-medium">Products</td><td className="p-4">Limited</td><td className="p-4 bg-blue-50/30 font-semibold">Unlimited</td></tr>
-                <tr className="border-t"><td className="p-4 font-medium">Upgrade required?</td><td className="p-4">Yes, for growth</td><td className="p-4 bg-blue-50/30 font-semibold">No—free forever</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p className="text-center text-gray-600">
-            Hit Zoho's free plan limits? StockFlow gives you unlimited everything at zero cost. <Link to="/auth?mode=register" className="text-blue-600 font-semibold hover:underline">Start free</Link>.
-          </p>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section className="py-16 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-10 text-center">Feature Comparison</h2>
-          <ComparisonTable competitorName="Zoho Inventory" features={comparisonFeatures} />
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">Pricing Comparison and Total Cost Direction</h2>
+        <p className="text-slate-700 leading-7">
+          As of published pricing in early 2026, Zoho Inventory starts with a free tier that many growing businesses outgrow quickly
+          due to order, user, and warehouse limits. Its Standard paid tier starts around $59 per month. StockFlow starts with a free
+          entry path aimed at practical daily use and generally scales at a lower cost profile for small teams.
+        </p>
+        <p className="text-slate-700 leading-7 mt-4">
+          For a team with multiple locations and frequent order flow, total yearly spend often depends less on the first sticker price
+          and more on when constraints trigger upgrades. Evaluate your actual monthly order volume, user count, and warehouse count
+          before deciding. If you are fully standardized on Zoho apps, the integration benefit can justify higher spend. If you are
+          primarily trying to improve inventory execution with minimal overhead, StockFlow usually wins on cost-to-value.
+        </p>
+      </section>
+
+      <section className="py-8 grid md:grid-cols-2 gap-6">
+        <div className="rounded-xl border p-5 bg-green-50/40">
+          <h3 className="text-xl font-semibold mb-3">StockFlow Pros and Cons</h3>
+          <ul className="list-disc pl-6 text-slate-700 space-y-2">
+            <li>Pros: Practical free workflow, fast onboarding, warehouse-friendly UI, strong barcode execution.</li>
+            <li>Pros: Good fit for SMBs that need operations clarity without suite complexity.</li>
+            <li>Cons: Less native depth than Zoho if you need broad ecosystem workflows in one vendor stack.</li>
+            <li>Cons: Manufacturing-heavy enterprises should test edge-case production planning requirements.</li>
+          </ul>
+        </div>
+        <div className="rounded-xl border p-5 bg-slate-50">
+          <h3 className="text-xl font-semibold mb-3">Zoho Inventory Pros and Cons</h3>
+          <ul className="list-disc pl-6 text-slate-700 space-y-2">
+            <li>Pros: Excellent synergy with Zoho Books/CRM and existing Zoho operations.</li>
+            <li>Pros: Broad ecosystem with extensibility for finance and commercial workflows.</li>
+            <li>Cons: Free plan constraints can become restrictive for scaling inventory teams.</li>
+            <li>Cons: Setup and process design can feel heavier for companies that only need inventory excellence.</li>
+          </ul>
         </div>
       </section>
 
-      {/* Philosophy Section */}
-      <section className="py-20 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Two Different Product Philosophies</h2>
-            <p className="text-gray-600 mb-4">
-              StockFlow and Zoho Inventory solve the same problem from opposite directions.
-            </p>
-            <p className="text-gray-600 mb-4">
-              Zoho Inventory evolved as a module inside a massive enterprise suite. It prioritizes ecosystem connectivity, accounting integration, and extensibility.
-            </p>
-            <p className="text-gray-600">
-              StockFlow was designed bottom-up for warehouse operators, shop owners, and supply chain teams who need accuracy, speed, and simplicity before anything else.
-            </p>
-          </div>
-          <div className="bg-white border rounded-xl p-6">
-            <ul className="space-y-4">
-              <li><strong>StockFlow:</strong> Inventory-first, compliance-first, low cognitive load.</li>
-              <li><strong>Zoho:</strong> Ecosystem-first, feature-dense, accounting-oriented.</li>
-              <li><strong>Result:</strong> StockFlow reduces training time and configuration errors.</li>
-            </ul>
-          </div>
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">Who Each Platform Is Best For</h2>
+        <p className="text-slate-700 leading-7">
+          Choose StockFlow when your priority is accurate stock control, mobile barcode routines, faster implementation, and a lean
+          toolchain. It is especially effective for distributors, ecommerce operators, and small manufacturers that need BOM plus
+          inventory in one place without enterprise overhead.
+        </p>
+        <p className="text-slate-700 leading-7 mt-4">
+          Choose Zoho Inventory when your company already runs heavily on Zoho and you want deep cross-product automation. In this
+          scenario, the broader suite can reduce integration friction and centralize reporting, even if total cost is higher.
+        </p>
+      </section>
+
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-3">Related Hub Pages</h2>
+        <p className="text-slate-700">
+          If your decision is BOM-led, continue with the main hub: <Link to="/bill-of-materials-software-free" className="text-blue-600 underline">free bill of materials software</Link>.
+          If barcode execution is your top concern, use the barcode hub: <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 underline">best free inventory software with barcode scanning</Link>.
+        </p>
+      </section>
+
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">FAQ</h2>
+        <div className="space-y-3">
+          {faqData.map((faq) => (
+            <details key={faq.question} className="rounded-lg border p-4">
+              <summary className="font-semibold cursor-pointer">{faq.question}</summary>
+              <p className="mt-2 text-slate-700">{faq.answer}</p>
+            </details>
+          ))}
         </div>
       </section>
 
-      {/* Cost breakdown */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-10 text-center">3-Year Total Cost of Ownership</h2>
-
-          <div className="grid md:grid-cols-2 gap-10">
-            <div className="border rounded-xl p-6">
-              <h3 className="text-xl font-bold mb-4">StockFlow</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Software licenses: FREE</li>
-                <li>• Setup & migration: €0</li>
-                <li>• Training: Included</li>
-                <li>• Integrations: Optional</li>
-              </ul>
-              <p className="mt-4 font-semibold">3-year estimate: €0</p>
-            </div>
-
-            <div className="border rounded-xl p-6">
-              <h3 className="text-xl font-bold mb-4">Zoho Inventory</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Licenses: €1,944 – €8,244</li>
-                <li>• Setup: €500 – €1,500</li>
-                <li>• Training: €300 – €1,000</li>
-                <li>• Integrations: Often paid</li>
-              </ul>
-              <p className="mt-4 font-semibold">3-year estimate: €3,000 – €11,000+</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Migration */}
-      <section className="py-20 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-10">Migrating from Zoho to StockFlow</h2>
-
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="bg-white p-5 rounded-xl border"><strong>1.</strong> Data export</div>
-            <div className="bg-white p-5 rounded-xl border"><strong>2.</strong> Validation</div>
-            <div className="bg-white p-5 rounded-xl border"><strong>3.</strong> Import</div>
-            <div className="bg-white p-5 rounded-xl border"><strong>4.</strong> Verification</div>
-          </div>
-
-          <p className="mt-6 text-gray-600 max-w-3xl">
-            Migration includes SKUs, barcodes, warehouses, stock history, suppliers, and locations. The process is non-disruptive and performed in parallel with your existing system.
-          </p>
-        </div>
-      </section>
-
-      {/* Security & Compliance */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-10">Security & Compliance Architecture</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="border p-6 rounded-xl"><Lock className="mb-2" />Encryption at rest & transit</div>
-            <div className="border p-6 rounded-xl"><Globe className="mb-2" />EU-only data residency</div>
-            <div className="border p-6 rounded-xl"><Shield className="mb-2" />GDPR tooling built-in</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Inventory vs Stock educational section */}
-      <section className="py-20 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center">Inventory vs Stock: Operational Impact</h2>
-          <p className="text-center text-gray-600 mb-10 max-w-3xl mx-auto">
-            Misunderstanding this distinction leads to distorted balance sheets, incorrect reorder points, and cash flow issues.
-          </p>
-
-          <div className="overflow-hidden border rounded-xl bg-white">
-            <table className="w-full">
-              <thead className="bg-gray-50"><tr><th className="p-4">Category</th><th className="p-4">Stock</th><th className="p-4">Inventory</th></tr></thead>
-              <tbody>
-                <tr className="border-t"><td className="p-4">Definition</td><td className="p-4">Sellable items</td><td className="p-4">All goods & materials</td></tr>
-                <tr className="border-t"><td className="p-4">Accounting role</td><td className="p-4">Revenue</td><td className="p-4">Asset</td></tr>
-                <tr className="border-t"><td className="p-4">Risk</td><td className="p-4">Stockouts</td><td className="p-4">Overcapitalization</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* Decision Matrix */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-10">Which One Should You Choose?</h2>
-          <div className="grid md:grid-cols-2 gap-10">
-            <div className="bg-green-50 p-6 rounded-xl">
-              <h3 className="font-bold mb-4">Choose StockFlow if:</h3>
-              <ul className="space-y-2">
-                <li>✓ You are EU-based and need GDPR compliance</li>
-                <li>✓ You want predictable costs (free core plan)</li>
-                <li>✓ You prioritize warehouse speed and accuracy</li>
-                <li>✓ You dislike complex UIs and long training</li>
-                <li>✓ You need fast implementation (5-7 days)</li>
-                <li>✓ You want EU-based support</li>
-              </ul>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-xl">
-              <h3 className="font-bold mb-4">Choose Zoho if:</h3>
-              <ul className="space-y-2">
-                <li>• You already use Zoho Books/CRM extensively</li>
-                <li>• You need heavy accounting automation</li>
-                <li>• You accept higher cost (€54-€229/month)</li>
-                <li>• You need advanced manufacturing features</li>
-                <li>• You're okay with US/India data hosting</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose StockFlow CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Switch from Zoho Inventory?</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-            Join hundreds of European businesses that have switched to StockFlow for better compliance, lower costs, and faster operations. Free migration assistance included.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/auth"
-              className="inline-block rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              Start Free Trial
-            </a>
-            <Link
-              to="/stockflow-vs-cin7"
-              className="inline-block rounded-lg bg-white border-2 border-gray-300 px-8 py-4 text-lg font-semibold text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
-            >
-              Compare More Options
-            </Link>
-          </div>
-        </div>
-      </section>
-
-
-
-      <section>
-        <div className="max-w-6xl mx-auto py-12">
-          <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqData.map((faq, index) => (
-              <details key={index} className="bg-gray-50 p-4 rounded-lg">
-                <summary className="cursor-pointer font-semibold">{faq.question}</summary>
-                <p className="mt-2 text-gray-700">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-        
-      </section>
-
-
-
-
-
-      {/* Structured data */}
       <StructuredData
         data={[
           {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: faqData.map((faq) => ({
-              "@type": "Question",
-              name: faq.question,
-              acceptedAnswer: { "@type": "Answer", text: faq.answer }
-            }))
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'StockFlow',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web, iOS, Android',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            url: `https://www.stockflowsystems.com${canonicalPath}`,
           },
           {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "StockFlow vs Zoho Inventory",
-            url: "https://www.stockflowsystems.com/stockflow-vs-zoho-inventory",
-            datePublished: "2024-01-01",
-            dateModified: new Date().toISOString().split('T')[0]
-          }
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqData.map((faq) => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+            })),
+          },
         ]}
       />
     </SeoPageLayout>
