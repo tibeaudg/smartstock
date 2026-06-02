@@ -43,7 +43,11 @@
       "Bash(Select-Object -ExpandProperty Name)",
       "Bash(grep -E \"inventory-software-management|asset-tracking|what-is-bill-of-materials|bill-of-materials|non-profit-inventory-management$|prix\" \"c:/Users/Tibea/OneDrive/Bureaublad/Coding/StockFlow/public/sitemap.xml\")",
       "Bash(npm run *)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node -e \"import\\('@babel/parser'\\).then\\(m=>console.log\\('babel ok', typeof m.parse\\)\\).catch\\(e=>console.log\\('ERR',e.message\\)\\); import\\('globby'\\).then\\(m=>console.log\\('globby ok', typeof m.globby\\)\\).catch\\(e=>console.log\\('ERR',e.message\\)\\)\")",
+      "PowerShell(node -e \"import\\('@babel/parser'\\).then\\(m=>console.log\\('babel ok', typeof m.parse\\)\\).catch\\(e=>console.log\\('ERR',e.message\\)\\); import\\('globby'\\).then\\(m=>console.log\\('globby ok', typeof m.globby\\)\\).catch\\(e=>console.log\\('ERR',e.message\\)\\)\")",
+      "PowerShell(node ./scripts/generate-seo-html.mjs)",
+      "PowerShell(node ./scripts/generate-seo-html.mjs 2>&1)"
     ]
   }
 }
