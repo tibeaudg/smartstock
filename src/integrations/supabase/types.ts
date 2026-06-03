@@ -240,6 +240,7 @@ export type Database = {
           duration_sec: number | null
           entry_event: string | null
           exit_event: string | null
+          device_type: string | null
         }
         Insert: {
           session_id: string
@@ -250,6 +251,7 @@ export type Database = {
           duration_sec?: number | null
           entry_event?: string | null
           exit_event?: string | null
+          device_type?: string | null
         }
         Update: {
           session_id?: string
@@ -260,6 +262,7 @@ export type Database = {
           duration_sec?: number | null
           entry_event?: string | null
           exit_event?: string | null
+          device_type?: string | null
         }
         Relationships: []
       }

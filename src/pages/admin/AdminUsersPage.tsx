@@ -19,6 +19,7 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { MetricCard } from '@/components/admin/MetricCard';
 import { UserDetailModal } from '@/components/admin/UserDetailModal';
 import { AdminShell } from './AdminLayout';
+import { isActiveTrial, isRevenuePayingCustomer } from '@/utils/subscriptionRevenueMetrics';
 
 // User management types
 type SortColumn = 'email' | 'inactivity' | 'products' | 'linkedUsers' | 'created' | 'plan' |'branches' ;
@@ -103,6 +104,8 @@ interface UserPlanInfo {
   planPrice: number;
   hasPaymentInfo: boolean;
   isPayingCustomer: boolean;
+  isRevenueCustomer: boolean;
+  isActiveTrial: boolean;
   missingPaymentInfo: boolean;
 }
 
@@ -151,6 +154,8 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
     const hasPaymentInfo = !!stripeCustomerMap.get(row.user_id);
     const isPaidTier = !!tier && ((tier.price_monthly ?? 0) > 0 || (tier.price_per_product_monthly ?? 0) > 0);
     const isPayingCustomer = status === 'active' && isPaidTier;
+    const isRevenueCustomer = isRevenuePayingCustomer(status, tier, hasPaymentInfo);
+    const isActiveTrialUser = isActiveTrial(status, row.trial_end_date);
     const missingPaymentInfo = isPayingCustomer && !hasPaymentInfo;
 
     if (tierName === 'free' || !tierName) {
@@ -166,6 +171,8 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
         planPrice: 0,
         hasPaymentInfo,
         isPayingCustomer,
+        isRevenueCustomer,
+        isActiveTrial: isActiveTrialUser,
         missingPaymentInfo,
       };
     } else {
@@ -182,6 +189,8 @@ async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo
         planPrice: tier?.price_monthly ?? 0,
         hasPaymentInfo,
         isPayingCustomer,
+        isRevenueCustomer,
+        isActiveTrial: isActiveTrialUser,
         missingPaymentInfo,
       };
     }
@@ -202,6 +211,8 @@ function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: string): 
     planPrice: 0,
     hasPaymentInfo: false,
     isPayingCustomer: false,
+    isRevenueCustomer: false,
+    isActiveTrial: false,
     missingPaymentInfo: false,
   };
 }
@@ -953,10 +964,10 @@ export default function AdminUsersPage() {
         if (activity.days < 3 || plan.subStatus !== 'active') return false;
       } else if (quickFilter === 'trialing') {
         const plan = getPlanForUser(subscriptionPlanMap, user.id);
-        if (plan.subStatus !== 'trial') return false;
+        if (!plan.isActiveTrial) return false;
       } else if (quickFilter === 'paying') {
         const plan = getPlanForUser(subscriptionPlanMap, user.id);
-        if (!plan.isPayingCustomer) return false;
+        if (!plan.isRevenueCustomer) return false;
       } else if (quickFilter === 'has-open-chat') {
         if ((openChatCounts[user.id] || 0) === 0) return false;
       } else if (quickFilter === 'has-recent-errors') {
@@ -1163,8 +1174,8 @@ export default function AdminUsersPage() {
       return (stats?.coreUsageScore || 0) > 0;
     });
 
-    const activeTrials = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).subStatus === 'trial').length;
-    const activePayingCustomers = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).isPayingCustomer).length;
+    const activeTrials = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).isActiveTrial).length;
+    const activePayingCustomers = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).isRevenueCustomer).length;
     const activePayingCustomersMissingInfo = users.filter(u => getPlanForUser(subscriptionPlanMap, u.id).missingPaymentInfo).length;
 
     const trialsExpiringSoon = users.filter(u => {
@@ -1183,7 +1194,7 @@ export default function AdminUsersPage() {
 
     const totalMRR = users.reduce((sum, u) => {
       const plan = getPlanForUser(subscriptionPlanMap, u.id);
-      if (plan.isPayingCustomer) return sum + plan.planPrice;
+      if (plan.isRevenueCustomer) return sum + plan.planPrice;
       return sum;
     }, 0);
 
@@ -1843,7 +1854,7 @@ export default function AdminUsersPage() {
                                   <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
                                 </td>
                                 <td className="px-4 py-2 text-right tabular-nums text-sm">
-                                  {planInfo.isPayingCustomer ? (
+                                  {planInfo.isRevenueCustomer ? (
                                     <span className="font-semibold text-emerald-700">${planInfo.planPrice}/mo</span>
                                   ) : (
                                     <span className="text-slate-300">—</span>

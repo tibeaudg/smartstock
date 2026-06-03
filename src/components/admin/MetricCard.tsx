@@ -6,6 +6,7 @@ interface MetricCardProps {
   icon: LucideIcon;
   value: number | string | React.ReactNode;
   label: string;
+  description?: string;
   isLoading?: boolean;
   iconColor?: string;
   valueColor?: string;
@@ -15,6 +16,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   icon: Icon,
   value,
   label,
+  description,
   isLoading = false,
   iconColor = 'text-slate-600',
   valueColor = 'text-slate-900',
@@ -34,6 +36,9 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             )}
           </div>
           <div className="text-sm text-slate-600 mt-1">{label}</div>
+          {description && (
+            <p className="text-xs text-slate-400 mt-0.5 leading-snug">{description}</p>
+          )}
         </div>
       </div>
     </div>

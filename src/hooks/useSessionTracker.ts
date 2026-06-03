@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useAuth } from './useAuth';
 import { useOptionalBranchId } from './useBranches';
 import { supabase } from '@/integrations/supabase/client';
+import { detectDeviceType } from '@/lib/events/device';
 import { trackEvent } from '@/lib/events/trackEvent';
 import {
   clearSessionId,
@@ -31,12 +32,15 @@ export function useSessionTracker() {
     const isReturnVisit =
       lastEnd !== null && Date.now() - lastEnd > RETURN_VISIT_GAP_MS;
 
+    const deviceType = detectDeviceType();
+
     supabase.from('sessions').insert({
       session_id: sessionId,
       user_id: user.id,
       branch_id: branchIdVal,
       start_time: new Date().toISOString(),
       entry_event: entryPath,
+      device_type: deviceType,
     }).then(() => {});
 
     trackEvent('session_started', {

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { computeRevenueMetrics } from '@/utils/subscriptionRevenueMetrics';
 
 export interface AnalyticsSummary {
   new_users_today: number;
@@ -31,6 +32,23 @@ export interface RevenueMetrics {
   payingCustomers: number;
   activeTrials: number;
   trialConversionPct: number;
+}
+
+export interface DeviceBreakdown {
+  device: string;
+  count: number;
+}
+
+export interface DailyDeviceLogin {
+  date: string;
+  mobile: number;
+  tablet: number;
+  desktop: number;
+}
+
+export interface DeviceStats {
+  breakdown: DeviceBreakdown[];
+  dailyTrend: DailyDeviceLogin[];
 }
 
 function parseSummary(data: Json | null): AnalyticsSummary {
@@ -104,34 +122,72 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
     queryFn: async () => {
       const { data: subs, error } = await supabase
         .from('user_subscriptions')
-        .select('status, tier_id');
+        .select('user_id, status, tier_id, trial_end_date');
       if (error) throw error;
+
+      const userIds = [...new Set((subs ?? []).map(s => s.user_id).filter(Boolean))];
+      const { data: profiles } = userIds.length
+        ? await supabase.from('profiles').select('id, stripe_customer_id').in('id', userIds)
+        : { data: [] };
+      const hasPaymentInfoByUserId = new Map(
+        (profiles ?? []).map(p => [p.id, !!p.stripe_customer_id]),
+      );
 
       const tierIds = [...new Set((subs ?? []).map(s => s.tier_id).filter(Boolean))];
       const { data: tiers } = tierIds.length
-        ? await supabase.from('pricing_tiers').select('id, price_monthly').in('id', tierIds)
+        ? await supabase
+            .from('pricing_tiers')
+            .select('id, price_monthly, price_per_product_monthly')
+            .in('id', tierIds)
         : { data: [] };
-      const tierPrice = new Map((tiers ?? []).map(t => [t.id, t.price_monthly ?? 0]));
+      const tierById = new Map((tiers ?? []).map(t => [t.id, t]));
 
-      let mrr = 0;
-      let payingCustomers = 0;
-      let activeTrials = 0;
-      for (const sub of subs ?? []) {
-        if (sub.status === 'trial') activeTrials++;
-        if (sub.status === 'active' && sub.tier_id) {
-          const price = tierPrice.get(sub.tier_id) ?? 0;
-          if (price > 0) {
-            payingCustomers++;
-            mrr += price;
-          }
+      return computeRevenueMetrics(subs ?? [], tierById, hasPaymentInfoByUserId) as RevenueMetrics;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const deviceQuery = useQuery({
+    queryKey: ['deviceStats', from, to],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('sessions')
+        .select('device_type, start_time')
+        .gte('start_time', `${from}T00:00:00`)
+        .lte('start_time', `${to}T23:59:59`);
+      if (error) throw error;
+
+      const deviceCounts: Record<string, number> = {
+        mobile: 0,
+        tablet: 0,
+        desktop: 0,
+        unknown: 0,
+      };
+      const dailyByDevice: Record<string, DailyDeviceLogin> = {};
+
+      for (const row of data ?? []) {
+        const device = row.device_type ?? 'unknown';
+        deviceCounts[device] = (deviceCounts[device] ?? 0) + 1;
+
+        const date = row.start_time.slice(0, 10);
+        if (!dailyByDevice[date]) {
+          dailyByDevice[date] = { date, mobile: 0, tablet: 0, desktop: 0 };
         }
+        if (device === 'mobile') dailyByDevice[date].mobile++;
+        else if (device === 'tablet') dailyByDevice[date].tablet++;
+        else if (device === 'desktop') dailyByDevice[date].desktop++;
       }
-      const trialConversionPct =
-        payingCustomers + activeTrials > 0
-          ? Math.round((100 * payingCustomers) / (payingCustomers + activeTrials))
-          : 0;
 
-      return { mrr, payingCustomers, activeTrials, trialConversionPct } as RevenueMetrics;
+      const breakdown: DeviceBreakdown[] = Object.entries(deviceCounts)
+        .filter(([, count]) => count > 0)
+        .map(([device, count]) => ({ device, count }))
+        .sort((a, b) => b.count - a.count);
+
+      const dailyTrend = Object.values(dailyByDevice).sort((a, b) =>
+        a.date.localeCompare(b.date),
+      );
+
+      return { breakdown, dailyTrend } as DeviceStats;
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -149,11 +205,13 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
     cohorts: cohortQuery.data ?? [],
     dailySignups: signupsQuery.data ?? [],
     revenue: revenueQuery.data,
+    deviceStats: deviceQuery.data,
     avgRetention,
     isLoading:
       summaryQuery.isLoading ||
       cohortQuery.isLoading ||
       signupsQuery.isLoading ||
-      revenueQuery.isLoading,
+      revenueQuery.isLoading ||
+      deviceQuery.isLoading,
   };
 }
