@@ -270,7 +270,6 @@ const AppRouter = () => {
     const showFeedbackWidget =
       !loading &&
       !!userProfile &&
-      userProfile.feedback_prompted === false &&
       location.pathname !== '/auth';
 
     useEffect(() => {

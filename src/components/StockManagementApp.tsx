@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 import { Layout } from './Layout';
-import { CreateBranchModal } from './CreateBranchModal';
 import { CurrencyBranchSync } from './CurrencyBranchSync';
-import { AuthContext } from '@/hooks/useAuth';
+import { AuthContext, useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
 import { SubscriptionMigrationModal } from './SubscriptionMigrationModal';
 import { PastDueRedirect } from './PastDueRedirect';
+import { supabase } from '@/integrations/supabase/client';
 
 function isLocalStorageAvailable() {
   try {
@@ -26,8 +26,46 @@ export const StockManagementApp: React.FC = () => {
   const auth = useContext(AuthContext);
   const userProfile = auth?.userProfile || null;
   const loading = auth?.loading ?? true;
-  const { hasNoBranches, hasError } = useBranches();
+  const { user } = useAuth();
+  const { hasNoBranches, hasError, refreshBranches, setActiveBranch } = useBranches();
   const location = useLocation();
+  const isCreatingBranch = useRef(false);
+
+  useEffect(() => {
+    if (!hasNoBranches || hasError || !user || isCreatingBranch.current) return;
+    isCreatingBranch.current = true;
+
+    (async () => {
+      try {
+        const { data: branchData, error: branchError } = await supabase
+          .from('branches')
+          .insert({ name: 'Main Warehouse', is_main: true, is_active: true, user_id: user.id })
+          .select()
+          .single();
+
+        if (branchError) throw branchError;
+
+        await supabase.from('branch_users').insert({
+          branch_id: branchData.id,
+          user_id: user.id,
+          role: 'admin',
+          granted_by: user.id,
+        });
+
+        setActiveBranch({
+          branch_id: branchData.id,
+          branch_name: branchData.name,
+          is_main: true,
+          user_role: 'admin',
+        });
+
+        await refreshBranches();
+      } catch (err) {
+        console.error('Failed to auto-create default warehouse:', err);
+        isCreatingBranch.current = false;
+      }
+    })();
+  }, [hasNoBranches, hasError, user?.id]);
 
   // Show loading state while auth is being determined
   if (loading) {
@@ -94,13 +132,6 @@ export const StockManagementApp: React.FC = () => {
         >
           <Outlet key={location.pathname} />
         </Layout>
-          <CreateBranchModal
-            open={hasNoBranches && !hasError}
-            onOpenChange={() => {
-            }}
-            onBranchCreated={() => {
-            }}
-          />
         </div>
     </UnreadMessagesProvider>
   );

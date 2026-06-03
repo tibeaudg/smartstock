@@ -42,15 +42,8 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
     return () => clearInterval(id);
   }, [phase]);
 
-  // Show after delay; immediately mark feedback_prompted in DB
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      setVisible(true);
-      await supabase
-        .from('profiles')
-        .update({ feedback_prompted: true })
-        .eq('id', userId);
-    }, SHOW_DELAY_MS);
+    const timer = setTimeout(() => setVisible(true), SHOW_DELAY_MS);
     return () => clearTimeout(timer);
   }, [userId]);
 
@@ -81,23 +74,7 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
       });
       if (dbError) console.warn('[feedback] db insert error', dbError);
 
-      // Secondary: fire-and-forget email
-      try {
-        const { data: sessionData } = await supabase.auth.getSession();
-        const token = sessionData?.session?.access_token;
-        if (token) {
-          await fetch('/api/send-feedback-email', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ rating: rating || undefined, message: message.trim() }),
-          });
-        }
-      } catch (emailErr) {
-        console.warn('[feedback] email send failed (non-fatal)', emailErr);
-      }
+ 
 
       setPhase('thanks');
     } finally {
@@ -108,7 +85,7 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
   if (!visible) return null;
 
   return (
-    <div className="hidden md:block fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-50">
       <AnimatePresence mode="wait">
         {phase === 'pill' && (
           <motion.button

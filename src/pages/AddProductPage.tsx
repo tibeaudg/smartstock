@@ -226,6 +226,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
 // --- Data Interfaces ---
 
@@ -286,6 +287,8 @@ export default function AddProductPage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { track } = useAppEventTracker();
+  const submittedRef = useRef(false);
   const [loading, setLoading] = useState(false);
   const [duplicateName, setDuplicateName] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
@@ -398,6 +401,17 @@ export default function AddProductPage() {
   }, [form, activeBranch?.branch_id]);
 
   // Note: fetchExistingVariants removed - this is an Add Product page, not an edit page
+
+  // Track form opened on mount and abandoned on unmount
+  useEffect(() => {
+    track('product_form_opened', 'Product Form Opened', { method: 'manual' });
+    return () => {
+      if (!submittedRef.current) {
+        track('product_form_abandoned', 'Product Form Abandoned', { method: 'manual' });
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // --- Effects ---
 
@@ -647,6 +661,7 @@ export default function AddProductPage() {
     console.log('[AddProductModal] Submission started. Mode: CREATE, Data:', data);
 
     if (isOverProductLimit) {
+      track('product_form_error', 'Form Error: Product limit reached', { error: 'product_limit_reached', limit: maxProducts });
       toast.error(`You've reached your ${maxProducts}-product limit. Upgrade your plan to add more products.`, {
         action: { label: 'Upgrade', onClick: () => navigate('/dashboard/settings/billing') },
       });
@@ -655,6 +670,7 @@ export default function AddProductPage() {
 
     // Check for duplicate name in create mode
     if (duplicateName && !hasVariants) {
+      track('product_form_error', 'Form Error: Duplicate name', { error: 'duplicate_name' });
       toast.error('Product name already exists for a main product in this warehouse.');
       console.error('[AddProductModal] Submission aborted: Duplicate name detected.');
       return;
@@ -671,12 +687,14 @@ export default function AddProductPage() {
     if (hasVariants) {
       const validVariants = variants.filter(v => v.variantName.trim());
       if (validVariants.length === 0) {
+        track('product_form_error', 'Form Error: No variants provided', { error: 'no_variants' });
         toast.error('Add at least one variant.');
         console.error('[AddProductModal] Submission aborted: No variants provided.');
         return;
       }
       for (const variant of validVariants) {
         if (!variant.variantName.trim()) {
+          track('product_form_error', 'Form Error: Variant missing name', { error: 'variant_missing_name' });
           toast.error('All variants must have a name.');
           console.error('[AddProductModal] Submission aborted: Variant missing name.');
           return;
@@ -1022,6 +1040,7 @@ export default function AddProductPage() {
       uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
       setUploadedImages([]);
       
+      submittedRef.current = true;
       if (wasFirstProduct) {
         setShowBulkImporterSuggestion(true);
       } else {
@@ -1117,7 +1136,11 @@ export default function AddProductPage() {
         <div className={`flex-1 min-h-0 overflow-y-auto ${isMobile ? 'p-4 pt-6' : 'p-6 pt-8 '}`}>
           <div className="mx-auto">
             <Form {...form}>
-              <form id="add-product-form" onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+              <form id="add-product-form" onSubmit={form.handleSubmit(handleSubmit, (errors) => {
+                const firstError = Object.keys(errors)[0];
+                const firstMessage = (errors as any)[firstError]?.message ?? firstError;
+                track('product_form_error', `Form Error: ${firstMessage}`, { error: 'validation_error', field: firstError, message: firstMessage });
+              })} className="space-y-6">
                 {/* General Info */}
                 <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
              
@@ -1148,143 +1171,37 @@ export default function AddProductPage() {
                   />
                 </div>
 
-                {/* Inventory */}
+                {/* Stock Quantity */}
                 {!hasVariants && (
                   <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="quantityInStock"
-                        rules={{ min: { value: 0, message: 'Stock must be 0 or more' } }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-900">Stock Quantity</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                inputMode="numeric"
-                                min="0"
-                                placeholder="0"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                value={field.value === 0 ? '' : field.value.toString()} 
-                                className="border-gray-300 focus:border-gray-500" 
-                              />
-                            </FormControl>
-                            <FormDescription>Current quantity on hand.</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="minimumStockLevel"
-                        rules={{ min: { value: 0, message: 'Minimum level must be 0 or more' } }}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-900">Minimum Stock</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                inputMode="numeric"
-                                min="0"
-                                placeholder="10"
-                                disabled={loading}
-                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                value={field.value === 0 ? '' : field.value.toString()}
-                                className="border-gray-300 focus:border-gray-500"
-                              />
-                            </FormControl>
-                            <FormDescription>We'll alert you when stock hits this level.</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="sku"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-900">SKU</FormLabel>
-                            <FormControl>
-                              <div className="flex gap-2">
-                                <Input 
-                                  {...field} 
-                                  placeholder="Enter SKU or scan barcode" 
-                                  disabled={loading || hasVariants}
-                                  className="border-gray-300 focus:border-gray-500 flex-1" 
-                                />
-                                <Link to="/dashboard/scan" state={{ returnTo: '/dashboard/products/new', barcodeField: 'sku' }}>
-                                  <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    disabled={loading || hasVariants}
-                                    className="px-4 shrink-0"
-                                    title="Scan barcode"
-                                  >
-                                    <Scan className="w-4 h-4 pr-2" />
-                                    Scan Code
-                                  </Button>
-                                </Link>
-                              </div>
-                            </FormControl>
-                            <FormDescription>Unique identifier. Scan barcode to auto-fill.</FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="quantityInStock"
+                      rules={{ min: { value: 0, message: 'Stock must be 0 or more' } }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-900">Stock Quantity</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              inputMode="numeric"
+                              min="0"
+                              placeholder="0"
+                              disabled={loading}
+                              onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                              value={field.value === 0 ? '' : field.value.toString()}
+                              className="border-gray-300 focus:border-gray-500 max-w-xs"
+                            />
+                          </FormControl>
+                          <FormDescription>Current quantity on hand.</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 )}
 
-                {/* Category - Promoted from Additional Info */}
-                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                 
-                  <FormField
-                    control={form.control}
-                    name="categoryId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <HierarchicalCategorySelector
-                            value={field.value || null}
-                            onValueChange={(categoryId, categoryName) => {
-                              field.onChange(categoryId || '');
-                              form.setValue('categoryName', categoryName || '');
-                            }}
-                            placeholder="Select category..."
-                            allowCreate={true}
-                            showPath={true}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                  <FormField
-                    control={form.control}
-                    name="location"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <LocationSelector
-                            value={field.value || ''}
-                            onValueChange={(location) => field.onChange(location || '')}
-                            placeholder="Select location..."
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Collapsible Additional Information - Image, Description, Location, Tax */}
+                {/* Collapsible More Details - SKU, Min Stock, Category, Location, Image, Description, Pricing, Tax */}
                 <Collapsible open={showAdditionalInfo} onOpenChange={setShowAdditionalInfo}>
                   <CollapsibleTrigger asChild>
                     <Button
@@ -1292,7 +1209,7 @@ export default function AddProductPage() {
                       variant="outline"
                       className="w-full justify-between"
                     >
-                      <span className="font-medium">Additional Information</span>
+                      <span className="font-medium">More details</span>
                       {showAdditionalInfo ? (
                         <ChevronUp className="w-4 h-4" />
                       ) : (
@@ -1301,6 +1218,108 @@ export default function AddProductPage() {
                     </Button>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="space-y-4 mt-4">
+                    {/* Min Stock, SKU, Category, Location */}
+                    {!hasVariants && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="minimumStockLevel"
+                          rules={{ min: { value: 0, message: 'Minimum level must be 0 or more' } }}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-900">Minimum Stock</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  inputMode="numeric"
+                                  min="0"
+                                  placeholder="10"
+                                  disabled={loading}
+                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                  value={field.value === 0 ? '' : field.value.toString()}
+                                  className="border-gray-300 focus:border-gray-500"
+                                />
+                              </FormControl>
+                              <FormDescription>We'll alert you when stock hits this level.</FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="sku"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-900">SKU</FormLabel>
+                              <FormControl>
+                                <div className="flex gap-2">
+                                  <Input
+                                    {...field}
+                                    placeholder="Enter SKU or scan barcode"
+                                    disabled={loading || hasVariants}
+                                    className="border-gray-300 focus:border-gray-500 flex-1"
+                                  />
+                                  <Link to="/dashboard/scan" state={{ returnTo: '/dashboard/products/new', barcodeField: 'sku' }}>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      disabled={loading || hasVariants}
+                                      className="px-4 shrink-0"
+                                      title="Scan barcode"
+                                    >
+                                      <Scan className="w-4 h-4 pr-2" />
+                                      Scan Code
+                                    </Button>
+                                  </Link>
+                                </div>
+                              </FormControl>
+                              <FormDescription>Unique identifier. Scan barcode to auto-fill.</FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="categoryId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <HierarchicalCategorySelector
+                                value={field.value || null}
+                                onValueChange={(categoryId, categoryName) => {
+                                  field.onChange(categoryId || '');
+                                  form.setValue('categoryName', categoryName || '');
+                                }}
+                                placeholder="Select category..."
+                                allowCreate={true}
+                                showPath={true}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <LocationSelector
+                                value={field.value || ''}
+                                onValueChange={(location) => field.onChange(location || '')}
+                                placeholder="Select location..."
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                     {/* Top Row: Image and Description side by side */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Left Column - Product Image */}

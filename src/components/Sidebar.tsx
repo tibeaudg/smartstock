@@ -176,6 +176,7 @@ export const Sidebar = ({
     { id: 'users', label: 'User Management', path: '/admin?tab=users', icon: Users },
     { id: 'notifications', label: 'Notifications', path: '/admin?tab=notifications', icon: Bell },
     { id: 'emails', label: 'Email Management', path: '/admin?tab=emails', icon: Mail },
+    { id: 'feedback', label: 'Feedback', path: '/admin?tab=feedback', icon: MessageSquare },
     // sentinel entry so bare /admin also opens the sidebar
     { id: '_admin_root', label: '', path: '/admin' },
   ];
@@ -857,29 +858,18 @@ export const Sidebar = ({
               </div>
 
               {/* Footer with profile */}
-              <div className="mt-auto border-t border-gray-200 dark:border-gray-800 px-3 py-3">
+              <div className="mt-auto">
                 {user && userProfile && (
                   <DropdownMenu open={profileDropdownOpen} onOpenChange={setProfileDropdownOpen}>
                     <DropdownMenuTrigger asChild>
                       <Button
-                        variant="ghost"
-                        className="w-full justify-start px-3 py-3 h-auto hover:bg-gray-100 dark:hover:bg-gray-800"
+                        className="w-full justify-center bg-transparent hover:bg-transparent h-auto p-2"
                       >
-                        <div className="flex items-center gap-3 w-full">
-                          <div className="rounded-full bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 w-10 h-10 flex items-center justify-center flex-shrink-0">
-                            <span className="text-white text-sm font-semibold">
-                              {userProfile?.first_name?.[0] ||
-                                userProfile?.email?.[0] ||
-                                'U'}
-                            </span>
-                          </div>
-                          <div className="flex-1 min-w-0 text-left">
-                            <div className="text-sm font-medium text-white-900 dark:text-white-100 truncate">
-                              {userProfile?.first_name && userProfile?.last_name
-                                ? `${userProfile.first_name} ${userProfile.last_name}`
-                                : userProfile?.email || 'User'}
-                            </div>
-                            <div className="text-xs text-white-500 dark:text-white-400 truncate">
+                        <div className="flex items-center justify-center gap-3 w-full bg-blue-500 p-2 rounded-xl hover:bg-blue-200 hover:text-black border border-border">
+                          
+                          <div className="flex-1 min-w-0 text-center">
+                            
+                            <div className="text-xs text-white-500  truncate">
                               {userProfile?.email}
                             </div>
                           </div>

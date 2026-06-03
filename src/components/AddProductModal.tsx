@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,6 +26,7 @@ import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
 // --- Data Interfaces ---
 
@@ -108,6 +109,8 @@ export const AddProductModal = ({
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const queryClient = useQueryClient();
+  const { track } = useAppEventTracker();
+  const submittedRef = useRef(false);
   const [loading, setLoading] = useState(false);
   const [duplicateName, setDuplicateName] = useState(false);
   const [productImage, setProductImage] = useState<File | null>(null);
@@ -169,6 +172,19 @@ export const AddProductModal = ({
   const hasVariants = variants.some(v => v.variantName.trim().length > 0);
   
   usePageRefresh();
+
+  // Track form opened/abandoned
+  useEffect(() => {
+    if (!isOpen) return;
+    submittedRef.current = false;
+    track('product_form_opened', editMode ? 'Product Form Opened (Edit)' : 'Product Form Opened', { method: 'modal', editMode });
+    return () => {
+      if (!submittedRef.current) {
+        track('product_form_abandoned', 'Product Form Abandoned', { method: 'modal', editMode });
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   // --- Form Initialization ---
   const form = useForm<FormData>({
@@ -542,6 +558,7 @@ export const AddProductModal = ({
     
     // Only check for duplicate name in create mode
     if (!editMode && duplicateName && !hasVariants) {
+      track('product_form_error', 'Form Error: Duplicate name', { error: 'duplicate_name', editMode });
       toast.error('Product name already exists for a main product in this warehouse.');
       console.error('[AddProductModal] Submission aborted: Duplicate name detected.');
       return;
@@ -562,12 +579,14 @@ export const AddProductModal = ({
     if (hasVariants) {
       const validVariants = variants.filter(v => v.variantName.trim());
       if (validVariants.length === 0) {
+        track('product_form_error', 'Form Error: No variants provided', { error: 'no_variants', editMode });
         toast.error('Add at least one variant.');
         console.error('[AddProductModal] Submission aborted: No variants provided.');
         return;
       }
       for (const variant of validVariants) {
         if (!variant.variantName.trim()) {
+          track('product_form_error', 'Form Error: Variant missing name', { error: 'variant_missing_name', editMode });
           toast.error('All variants must have a name.');
           console.error('[AddProductModal] Submission aborted: Variant missing name.');
           return;
@@ -1038,10 +1057,12 @@ export const AddProductModal = ({
           onFirstProductAdded();
         }
         
+        submittedRef.current = true;
         onProductAdded(insertedProduct ?? undefined);
         onClose();
       } else {
         // In edit mode, just close and trigger update callback
+        submittedRef.current = true;
         if (onProductUpdated) {
           onProductUpdated();
         }
@@ -1096,7 +1117,11 @@ export const AddProductModal = ({
 
           <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-6'} min-h-0`}>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(handleSubmit, (errors) => {
+                const firstError = Object.keys(errors)[0];
+                const firstMessage = (errors as any)[firstError]?.message ?? firstError;
+                track('product_form_error', `Form Error: ${firstMessage}`, { error: 'validation_error', field: firstError, message: firstMessage, editMode });
+              })} className="space-y-6">
                 {/* Product Information Card */}
                 <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
                   <div className="text-sm font-medium text-gray-600 mb-3">Product Information</div>

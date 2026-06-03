@@ -14,12 +14,14 @@ import { useBranches } from '@/hooks/useBranches';
 import { useProductCount, useBasicDashboardMetrics, useDashboardData } from '@/hooks/useDashboardData';
 import { AccountChecklist } from './AccountChecklist';
 import { OverLimitBanner } from './OverLimitBanner';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { formatPrice } = useCurrency();
   const { activeBranch } = useBranches();
+  const { track } = useAppEventTracker();
   const { productCount, isLoading: productCountLoading } = useProductCount();
   const { data: metrics } = useBasicDashboardMetrics();
   const { data: fullMetrics } = useDashboardData();
@@ -54,17 +56,17 @@ export const Dashboard = () => {
 
         <div className="flex flex-wrap gap-2">
 
-          <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-500 hover:bg-blue-600">
+          <Button onClick={() => { track('product_add_method_selected', 'Add Manually', { method: 'manual' }); navigate('/dashboard/products/new'); }} className="bg-blue-500 hover:bg-blue-600">
             <Plus className="mr-2 h-4 w-4" /> Add Product
           </Button>
-          <Button variant="outline" onClick={() => navigate('/dashboard/scan')}>
+          <Button variant="outline" onClick={() => { track('product_add_method_selected', 'Scan Barcode', { method: 'scan' }); navigate('/dashboard/scan'); }}>
             <ScanLine className="mr-2 h-4 w-4" /> Scan Barcode
           </Button>
-         
+
           <Button variant="outline" onClick={() => navigate('/dashboard/bom')}>
             <Layers className="mr-2 h-4 w-4" /> BOM
           </Button>
-          <Button variant="outline" onClick={() => navigate('/dashboard/categories', { state: { openImport: true } })}>
+          <Button variant="outline" onClick={() => { track('product_add_method_selected', 'Import CSV', { method: 'import' }); navigate('/dashboard/categories', { state: { openImport: true } }); }}>
             <Upload className="mr-2 h-4 w-4" /> Import
           </Button>
         </div>
