@@ -205,13 +205,13 @@ export function useAccountChecklist() {
     {
       id: 'products',
       step: 1,
-      title: 'Add first products',
+      title: 'Add your first product',
       description: 'Add products manually or import them from a CSV file.',
       completed: productsComplete,
       optional: false,
-      actionPath: '/dashboard/products/new',
+      actionPath: '/dashboard/products/new?quick=1',
       actionLabel: 'Add Product Manually',
-      actionPathSecondary: '/dashboard/categories',
+      actionPathSecondary: '/dashboard/products/import',
       actionLabelSecondary: 'Import',
     }
   ];

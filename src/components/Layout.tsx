@@ -7,6 +7,7 @@ import { useNotifications } from '../hooks/useNotifications';
 import { EmailVerificationBanner } from './EmailVerificationBanner';
 import { TrialBanner } from './TrialBanner';
 import { TrialExpiredBanner } from './TrialExpiredBanner';
+import { ActivationBanner } from '@/components/activation';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -97,6 +98,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
             <EmailVerificationBanner />
             <TrialBanner />
             <TrialExpiredBanner />
+            <ActivationBanner />
             {children}
           </div>
         </main>

@@ -29,6 +29,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { StockQuickActionModal } from '@/components/products/StockQuickActionModal';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ProductsActivationPanel } from '@/components/activation';
+import { useActivationState } from '@/hooks/useActivationState';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -100,6 +102,7 @@ export default function CategorysPageSecured() {
   const { user, loading: authLoading } = useAuth();
   const { activeBranch } = useBranches();
   const { formatPrice } = useCurrency();
+  const { isActivated } = useActivationState();
 
   const branchId = activeBranch?.branch_id ?? null;
 
@@ -314,6 +317,22 @@ const categoryProductsData = useMemo(() => {
     if (filterCategoryId !== 'all') count++;
     return count;
   }, [filterWarehouse, filterLocation, filterStockStatus, filterCategoryId]);
+
+  const isCatalogEmpty = safeProducts.length === 0;
+  const showActivationPanel =
+    !isActivated && isCatalogEmpty && !searchTerm.trim() && activeFiltersCount === 0;
+
+  const showAddHighlight =
+    !isActivated &&
+    isCatalogEmpty &&
+    typeof sessionStorage !== 'undefined' &&
+    sessionStorage.getItem('activation_highlight_seen') !== '1';
+
+  useEffect(() => {
+    if (!isActivated && isCatalogEmpty) {
+      setShowAdvancedFilters(false);
+    }
+  }, [isActivated, isCatalogEmpty]);
 
   const uniqueLocations = useMemo(() => {
     return Array.from(
@@ -942,7 +961,16 @@ const categoryProductsData = useMemo(() => {
             </Button>
           </Link>
 
-          <Button onClick={() => navigate('/dashboard/products/new')} className="bg-blue-600 text-white hover:bg-blue-700">
+          <Button
+            onClick={() => {
+              sessionStorage.setItem('activation_highlight_seen', '1');
+              navigate('/dashboard/products/new?quick=1');
+            }}
+            className={cn(
+              'bg-blue-600 text-white hover:bg-blue-700',
+              showAddHighlight && 'ring-2 ring-blue-400 ring-offset-1 animate-pulse'
+            )}
+          >
             <Plus className="w-4 h-4 mr-2" /> Add Manually
           </Button>
 
@@ -977,7 +1005,11 @@ const categoryProductsData = useMemo(() => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             type="text"
-            placeholder="Search products…"
+            placeholder={
+              showActivationPanel
+                ? 'Search products… (add your first product to get started)'
+                : 'Search products…'
+            }
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -999,19 +1031,21 @@ const categoryProductsData = useMemo(() => {
             </>
           )}
         </Button>
-        <Button 
-          variant="outline" 
-          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-          className="flex items-center gap-2 relative"
-        >
-          <Filter className="w-4 h-4" />
-          {showAdvancedFilters ? <X className="w-4 h-4" /> : null}
-          {activeFiltersCount > 0 && !showAdvancedFilters && (
-            <Badge variant="secondary" className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
-              {activeFiltersCount}
-            </Badge>
-          )}
-        </Button>
+        {!showActivationPanel && (
+          <Button 
+            variant="outline" 
+            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+            className="flex items-center gap-2 relative"
+          >
+            <Filter className="w-4 h-4" />
+            {showAdvancedFilters ? <X className="w-4 h-4" /> : null}
+            {activeFiltersCount > 0 && !showAdvancedFilters && (
+              <Badge variant="secondary" className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
+                {activeFiltersCount}
+              </Badge>
+            )}
+          </Button>
+        )}
       </div>
 
           {/* Bulk Actions Toolbar */}
@@ -1145,6 +1179,8 @@ const categoryProductsData = useMemo(() => {
 
       {categoriesLoading || productsLoading ? (
         <div className="py-12 text-center">Loading…</div>
+      ) : showActivationPanel ? (
+        <ProductsActivationPanel />
       ) : filteredProducts.length === 0 ? (
         <Card className="p-12">
           <div className="text-center">
@@ -1162,7 +1198,7 @@ const categoryProductsData = useMemo(() => {
                 Clear Filters
               </Button>
             ) : (
-              <Link to="/dashboard/products/new">
+              <Link to="/dashboard/products/new?quick=1">
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Product

@@ -15,10 +15,16 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { useAccountChecklist, type ChecklistTask } from '@/hooks/useAccountChecklist';
-import { useMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import {
+  ActivationHero,
+  ActivationSummaryCards,
+  ActivationPathCards,
+  ActivationDashboardWidgets,
+  useActivationViewTracking,
+} from '@/components/activation';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
 const TASK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   account: Building2,
@@ -48,34 +54,40 @@ export interface AccountChecklistProps {
 
 export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
   const navigate = useNavigate();
-  const { isMobile } = useMobile();
+  const { track } = useAppEventTracker();
   const {
     tasks,
-    completedCount,
-    totalCount,
     isChecklistComplete,
     isLoading,
     skipTask,
     markTaskDone,
   } = useAccountChecklist();
 
+  useActivationViewTracking('dashboard', !isLoading && !isChecklistComplete);
+
   const handleAction = (task: ChecklistTask) => {
+    if (task.id === 'products') {
+      track('activation_path_selected', 'manual', { source: 'dashboard', path: 'manual' });
+      navigate('/dashboard/products/new?quick=1');
+      return;
+    }
     navigate(task.actionPath);
   };
 
   const handleSecondaryAction = (task: ChecklistTask) => {
     if (task.actionPathSecondary) {
-      navigate(task.actionPathSecondary, { state: { openImport: true } });
+      track('activation_path_selected', 'import', { source: 'dashboard', path: 'import' });
+      navigate(task.actionPathSecondary);
     }
   };
 
   if (isLoading) {
     return (
-      <div className="space-y-6 max-w-4xl mx-auto pt-6">
+      <div className="space-y-6 max-w-[1600px] mx-auto pt-6">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-muted rounded w-2/5" />
           <div className="h-3 bg-muted rounded w-1/4" />
-          <div className="grid grid-cols-1  gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div className="h-32 bg-muted rounded-xl" />
             <div className="h-32 bg-muted rounded-xl" />
           </div>
@@ -88,27 +100,22 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
     return null;
   }
 
-  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
-
   return (
-    <div className="space-y-6 max-w-4xl mx-auto pt-4 sm:pt-6">
-      {/* Header */}
-      <div className="space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-          Complete your account setup
-        </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {completedCount} of {totalCount} steps completed
-        </p>
-        <Progress value={progressPercent} className="h-2.5" />
-      </div>
+    <div className="space-y-6 max-w-[1600px] mx-auto pt-4 sm:pt-6">
+      <ActivationHero />
 
-      {/* Task grid - show all tasks for full context */}
-      <div className="grid grid-cols-1  gap-4">
+      <ActivationPathCards source="dashboard" />
+
+      <ActivationSummaryCards variant="preview" />
+
+      <ActivationDashboardWidgets />
+
+      <div className="grid grid-cols-1 gap-4">
         <AnimatePresence initial={false} mode="popLayout">
           {tasks.map((task, index) => {
             const Icon = TASK_ICONS[task.id] ?? Settings;
             const isCompleted = task.completed;
+            const showMarkAsDone = task.id !== 'products';
 
             return (
               <motion.div
@@ -151,7 +158,7 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
                             isCompleted && 'text-gray-600 dark:text-gray-400'
                           )}
                         >
-                          {task.step}. {task.title}
+                          {task.id === 'products' ? task.title : `${task.step}. ${task.title}`}
                         </CardTitle>
                         <CardDescription
                           className={cn(
@@ -198,7 +205,13 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
                         )}
                         {task.id === 'products' && onOpenScanner && (
                           <Button
-                            onClick={onOpenScanner}
+                            onClick={() => {
+                              track('activation_path_selected', 'scan', {
+                                source: 'dashboard',
+                                path: 'scan',
+                              });
+                              onOpenScanner();
+                            }}
                             variant="outline"
                             size="sm"
                           >
@@ -207,24 +220,26 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
                           </Button>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <button
-                          type="button"
-                          onClick={() => markTaskDone(task.id)}
-                          className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 underline-offset-2 hover:underline"
-                        >
-                          Mark as done
-                        </button>
-                        {task.optional && (
+                      {showMarkAsDone && (
+                        <div className="flex items-center gap-3 flex-wrap">
                           <button
                             type="button"
-                            onClick={() => skipTask(task.id as 'customers' | 'suppliers')}
+                            onClick={() => markTaskDone(task.id)}
                             className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 underline-offset-2 hover:underline"
                           >
-                            Skip for now
+                            Mark as done
                           </button>
-                        )}
-                      </div>
+                          {task.optional && (
+                            <button
+                              type="button"
+                              onClick={() => skipTask(task.id as 'customers' | 'suppliers')}
+                              className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 underline-offset-2 hover:underline"
+                            >
+                              Skip for now
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </CardContent>
                   )}
 

@@ -314,6 +314,8 @@ export default function AddProductPage() {
   const preFilledSKU = searchParams.get('sku') || undefined;
   const preFilledName = searchParams.get('name') || undefined;
   const preFilledCategoryId = searchParams.get('categoryId') || undefined;
+  const isQuickMode = searchParams.get('quick') === '1';
+  const [showQuickAdvanced, setShowQuickAdvanced] = useState(false);
 
   // Safety: prevent indefinite loading if background/tab-switch caused a stuck request
   useEffect(() => {
@@ -385,7 +387,7 @@ export default function AddProductPage() {
       description: '',
       categoryId: '',
       categoryName: '',
-      quantityInStock: 0,
+      quantityInStock: isQuickMode ? 1 : 0,
       minimumStockLevel: 0,
       purchasePrice: 0,
       salePrice: 0,
@@ -398,7 +400,7 @@ export default function AddProductPage() {
     setShowVariantsSection(false);
     setImagePreview(null);
     setUploadedImages([]);
-  }, [form, activeBranch?.branch_id]);
+  }, [form, activeBranch?.branch_id, isQuickMode]);
 
   // Note: fetchExistingVariants removed - this is an Add Product page, not an edit page
 
@@ -1042,7 +1044,15 @@ export default function AddProductPage() {
       
       submittedRef.current = true;
       if (wasFirstProduct) {
-        setShowBulkImporterSuggestion(true);
+        track('activation_first_product', isQuickMode ? 'quick' : 'manual', {
+          method: isQuickMode ? 'quick' : 'manual',
+        });
+        if (isQuickMode) {
+          toast.success('Your inventory control center is live');
+          navigate('/dashboard');
+        } else {
+          setShowBulkImporterSuggestion(true);
+        }
       } else {
         navigate('/dashboard/categories');
       }
@@ -1094,7 +1104,7 @@ export default function AddProductPage() {
                 <ArrowLeft className="w-4 h-4" />
                 Back
               </Button>
-              <h1 className="text-2xl font-bold">Add Product</h1>
+              <h1 className="text-2xl font-bold">{isQuickMode ? 'Quick add product' : 'Add Product'}</h1>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <Button
@@ -1116,6 +1126,21 @@ export default function AddProductPage() {
             </div>
           </div>
         </div>
+
+        {isQuickMode && (
+          <div className="flex-shrink-0 flex flex-col sm:flex-row sm:items-center gap-2 border-b border-blue-100 bg-blue-50 px-6 py-3 text-sm text-blue-900">
+            <p className="flex-1">
+              <span className="font-medium">Quick add</span> — you can fill in details later.
+            </p>
+            <button
+              type="button"
+              className="text-blue-700 hover:underline font-medium shrink-0"
+              onClick={() => navigate('/dashboard/products/new')}
+            >
+              Use full form
+            </button>
+          </div>
+        )}
 
         {/* Over-limit warning */}
         {isOverProductLimit && (
@@ -1201,7 +1226,64 @@ export default function AddProductPage() {
                   </div>
                 )}
 
+                {isQuickMode && !showQuickAdvanced && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="sku"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-900">SKU (optional)</FormLabel>
+                            <FormControl>
+                              <Input
+                                {...field}
+                                placeholder="Enter SKU"
+                                disabled={loading}
+                                className="border-gray-300 focus:border-gray-500"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="categoryId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-900">Category (optional)</FormLabel>
+                            <FormControl>
+                              <HierarchicalCategorySelector
+                                value={field.value || null}
+                                onValueChange={(categoryId, categoryName) => {
+                                  field.onChange(categoryId || '');
+                                  form.setValue('categoryName', categoryName || '');
+                                }}
+                                placeholder="Select category..."
+                                allowCreate={true}
+                                showPath={true}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full justify-between"
+                      onClick={() => setShowQuickAdvanced(true)}
+                    >
+                      <span className="font-medium">Show advanced fields</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+
                 {/* Collapsible More Details - SKU, Min Stock, Category, Location, Image, Description, Pricing, Tax */}
+                {(!isQuickMode || showQuickAdvanced) && (
                 <Collapsible open={showAdditionalInfo} onOpenChange={setShowAdditionalInfo}>
                   <CollapsibleTrigger asChild>
                     <Button
@@ -1614,11 +1696,15 @@ export default function AddProductPage() {
                     </div>
                   </CollapsibleContent>
                 </Collapsible>
+                )}
 
                 {/* Subtle visual separator */}
+                {(!isQuickMode || showQuickAdvanced) && (
                 <div className="border-t border-gray-200 my-6"></div>
+                )}
 
                 {/* Variants Section */}
+                {(!isQuickMode || showQuickAdvanced) && (
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
                     Product Variants {hasVariants && <span className="normal-case font-normal text-gray-500">(Active)</span>}
@@ -1979,6 +2065,7 @@ export default function AddProductPage() {
                     </>
                   )}
                 </div>
+                )}
 
                 
               </form>

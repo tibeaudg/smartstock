@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 import { toast } from 'sonner';
 import { Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -81,6 +82,7 @@ export default function BulkImportPage() {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const queryClient = useQueryClient();
+  const { track } = useAppEventTracker();
 
   const [file, setFile] = useState<File | null>(null);
   const [fileHeaders, setFileHeaders] = useState<string[]>([]);
@@ -240,6 +242,12 @@ export default function BulkImportPage() {
     let failedCount = 0;
 
     try {
+      const { count: countBefore } = await supabase
+        .from('products')
+        .select('id', { count: 'exact', head: true })
+        .eq('branch_id', activeBranch.branch_id);
+      const wasAccountEmpty = (countBefore ?? 0) === 0;
+
       const jsonData: ProductRow[] = rawRows.map(row => normalizeRow(row as Record<string, unknown>, mapping));
       if (jsonData.length === 0) {
         toast.error('The file has no data rows');
@@ -343,7 +351,14 @@ export default function BulkImportPage() {
         queryClient.invalidateQueries({ queryKey: ['products'] });
         queryClient.invalidateQueries({ queryKey: ['categoryProducts'] });
         queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
-        navigate('/dashboard/categories');
+        await queryClient.invalidateQueries({ queryKey: ['productCount'] });
+        if (wasAccountEmpty) {
+          track('activation_first_product', 'import', { method: 'import' });
+          toast.success('Your inventory control center is live');
+          navigate('/dashboard');
+        } else {
+          navigate('/dashboard/categories');
+        }
       }
       if (failedCount > 0) {
         toast.error(`${failedCount} product${failedCount !== 1 ? 's' : ''} failed`);

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
-  FileText, Folder, Layers, Euro, Plus, ScanLine, 
+  FileText, Plus, ScanLine, Layers,
   FilePlus2, Upload, Filter, Settings2, Clock 
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
 import { useProductCount, useBasicDashboardMetrics, useDashboardData } from '@/hooks/useDashboardData';
 import { AccountChecklist } from './AccountChecklist';
+import { ActivationSummaryCards } from '@/components/activation';
 import { OverLimitBanner } from './OverLimitBanner';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
@@ -73,14 +74,16 @@ export const Dashboard = () => {
       </div>
 
       {/* 2. Inventory Summary Cards */}
-      <section className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <SummaryCard icon={<FileText className="text-blue-500" />} label="Items" value={safeMetrics.totalProducts} />
-          <SummaryCard icon={<Folder className="text-amber-500" />} label="Categories" value={(fullMetrics as any)?.categoryDistribution?.length || 0} />
-          <SummaryCard icon={<Layers className="text-purple-500" />} label="Total Quantity" value={(fullMetrics as any)?.totalQuantity || 0} />
-          <SummaryCard icon={<Euro className="text-blue-400" />} label="Total Value" value={formatPrice(safeMetrics.totalValue)} />
-        </div>
-      </section>
+      <ActivationSummaryCards
+        variant="live"
+        showUnlockLabel={false}
+        values={{
+          items: safeMetrics.totalProducts,
+          categories: (fullMetrics as any)?.categoryDistribution?.length || 0,
+          totalQuantity: (fullMetrics as any)?.totalQuantity || 0,
+          totalValue: formatPrice(safeMetrics.totalValue),
+        }}
+      />
 
       {/* 3. Items That Need Restocking */}
       <Card className="border-none shadow-sm">
@@ -164,17 +167,6 @@ export const Dashboard = () => {
     </div>
   );
 };
-
-// Helper Components for the Layout
-const SummaryCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) => (
-  <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
-    <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
-      <div className="p-2 bg-slate-50 rounded-full">{icon}</div>
-      <div className="text-2xl font-bold text-slate-800">{value}</div>
-      <div className="text-xs font-medium text-slate-400 uppercase tracking-wider">{label}</div>
-    </CardContent>
-  </Card>
-);
 
 const EmptyState = ({ message, subMessage }: { message: string; subMessage?: string }) => (
   <div className="flex flex-col items-center justify-center py-12 text-center">

@@ -19,6 +19,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
 interface ProductFormData {
   name: string;
@@ -41,6 +42,7 @@ export default function ScanPage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
+  const { track } = useAppEventTracker();
 
   // Pre-fill barcode from navigation state (e.g. from BarcodeScannerPage)
   const initialBarcodeRef = React.useRef((location.state as { barcode?: string })?.barcode);
@@ -501,9 +503,10 @@ export default function ScanPage() {
       });
       setShowProductForm(false);
       
-      // Show bulk importer suggestion for first product, else navigate
       if (transactionType === 'incoming' && wasFirstProduct) {
-        setShowBulkImporterSuggestion(true);
+        track('activation_first_product', 'scan', { method: 'scan' });
+        toast.success('Your inventory control center is live');
+        navigate('/dashboard');
       } else {
         navigate('/dashboard/categories');
       }
