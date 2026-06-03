@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMobile } from '@/hooks/use-mobile';
 import { ArrowLeft, Plus, Minus } from 'lucide-react';
 import { triggerStockAlertIfNeeded } from '@/hooks/useTriggerStockAlert';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 
 // Enhanced Product interface with all possible fields
 interface Product {
@@ -49,6 +50,7 @@ export const ManualStockAdjustModal = ({
 }: ManualStockAdjustModalProps) => {
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { track } = useAppEventTracker();
   const queryClient = useQueryClient();
   const { isMobile } = useMobile();
   
@@ -357,6 +359,11 @@ export const ManualStockAdjustModal = ({
       }
 
       toast.success(`Stock successfully ${actionType === 'in' ? 'added' : 'removed'}`);
+      track('stock_transaction_created', actionType, {
+        action_type: actionType,
+        product_id: productId,
+        quantity: Number(quantity),
+      });
 
       triggerStockAlertIfNeeded(productId, branchIdSanitized);
 

@@ -35,6 +35,8 @@ import {
   MessageSquare,
   Mail,
   Gift,
+  Plug,
+  Activity,
 }
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
@@ -173,11 +175,12 @@ export const Sidebar = ({
   const isOwner = userProfile?.is_owner === true;
 
   const adminSubItems: SubItem[] = [
-    { id: 'users', label: 'User Management', path: '/admin?tab=users', icon: Users },
-    { id: 'notifications', label: 'Notifications', path: '/admin?tab=notifications', icon: Bell },
-    { id: 'emails', label: 'Email Management', path: '/admin?tab=emails', icon: Mail },
-    { id: 'feedback', label: 'Feedback', path: '/admin?tab=feedback', icon: MessageSquare },
-    // sentinel entry so bare /admin also opens the sidebar
+    { id: 'analytics', label: 'Analytics', path: '/admin', icon: Activity },
+    { id: 'users', label: 'User Management', path: '/admin/users', icon: Users },
+    { id: 'notifications', label: 'Notifications', path: '/admin/notifications', icon: Bell },
+    { id: 'emails', label: 'Email Management', path: '/admin/emails', icon: Mail },
+    { id: 'feedback', label: 'Feedback', path: '/admin/feedback', icon: MessageSquare },
+    { id: 'integrations', label: 'Integrations', path: '/admin/integrations', icon: Plug },
     { id: '_admin_root', label: '', path: '/admin' },
   ];
 
@@ -194,6 +197,7 @@ export const Sidebar = ({
     : [
         { id: 'general', label: 'General', path: '/dashboard/settings/general', icon: SlidersHorizontal },
         { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: User },
+        { id: 'integrations', label: 'Integrations', path: '/dashboard/settings/integrations', icon: Plug },
         { id: 'users', label: 'Users', path: '/dashboard/settings/users', icon: UserCog, divider: true },
         { id: 'branches', label: 'Warehouses', path: '/dashboard/settings/branches', icon: Building2 },
         { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard },

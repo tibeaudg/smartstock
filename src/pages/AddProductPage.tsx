@@ -1043,10 +1043,15 @@ export default function AddProductPage() {
       setUploadedImages([]);
       
       submittedRef.current = true;
+      track('product_created', isQuickMode ? 'quick' : 'manual', {
+        method: isQuickMode ? 'quick' : 'manual',
+        is_first: wasFirstProduct,
+      });
       if (wasFirstProduct) {
-        track('activation_first_product', isQuickMode ? 'quick' : 'manual', {
+        track('first_core_action', isQuickMode ? 'quick' : 'manual', {
           method: isQuickMode ? 'quick' : 'manual',
         });
+        track('onboarding_completed', 'first_product', { method: isQuickMode ? 'quick' : 'manual' });
         if (isQuickMode) {
           toast.success('Your inventory control center is live');
           navigate('/dashboard');

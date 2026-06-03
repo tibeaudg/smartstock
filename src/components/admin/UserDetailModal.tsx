@@ -212,25 +212,57 @@ async function fetchUserAuditLogs(userId: string) {
   return data || [];
 }
 
-interface AppEvent {
+interface UserEvent {
   id: string;
   user_id: string;
+  event_name: string;
   event_type: string;
-  page: string;
-  label: string | null;
-  metadata: Record<string, unknown> | null;
-  created_at: string;
+  properties: Record<string, unknown> | null;
+  timestamp: string;
+  page?: string;
+  label?: string | null;
 }
 
-async function fetchUserAppEvents(userId: string): Promise<AppEvent[]> {
-  const { data, error } = await (supabase as any)
-    .from('app_events')
+async function fetchUserEvents(userId: string): Promise<UserEvent[]> {
+  const { data: events, error } = await supabase
+    .from('events')
+    .select('id, user_id, event_name, event_type, properties, timestamp')
+    .eq('user_id', userId)
+    .order('timestamp', { ascending: false })
+    .limit(200);
+  if (!error && events && events.length > 0) {
+    return events.map(e => ({
+      ...e,
+      page: (e.properties as Record<string, unknown>)?.page as string | undefined,
+      label: (e.properties as Record<string, unknown>)?.label as string | null | undefined,
+    }));
+  }
+
+  const { data: legacy, error: legacyError } = await supabase
+    .from('app_events' as any)
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(200);
-  if (error) throw error;
-  return (data || []) as AppEvent[];
+  if (legacyError) throw legacyError;
+  return ((legacy || []) as Array<{
+    id: string;
+    user_id: string;
+    event_type: string;
+    page: string;
+    label: string | null;
+    metadata: Record<string, unknown> | null;
+    created_at: string;
+  }>).map(e => ({
+    id: e.id,
+    user_id: e.user_id,
+    event_name: e.event_type,
+    event_type: 'feature',
+    properties: { page: e.page, label: e.label, ...e.metadata },
+    timestamp: e.created_at,
+    page: e.page,
+    label: e.label,
+  }));
 }
 
 interface EmailLogEntry {
@@ -715,8 +747,8 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   }));
 
   const { data: appEvents = [], isLoading: loadingAppEvents } = useQuery({
-    queryKey: ['userAppEvents', user?.id],
-    queryFn: () => fetchUserAppEvents(user!.id),
+    queryKey: ['userEvents', user?.id],
+    queryFn: () => fetchUserEvents(user!.id),
     enabled: !!user && isOpen && activeTab === 'activity',
   });
 
@@ -1387,7 +1419,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
                 // Engagement score: based on page view volume and recency
                 const now2 = new Date();
-                const recentEvents = appEvents.filter(e => (now2.getTime() - new Date(e.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000);
+                const recentEvents = appEvents.filter(e => (now2.getTime() - new Date(e.timestamp).getTime()) < 7 * 24 * 60 * 60 * 1000);
                 const engagementScore: { label: string; color: string; bg: string } = (() => {
                   if (appEvents.length === 0) return { label: 'No activity', color: 'text-gray-400', bg: 'bg-gray-100' };
                   if (appEvents.length >= 50 && recentEvents.length >= 5) return { label: 'High engagement', color: 'text-green-700', bg: 'bg-green-100' };
@@ -1405,9 +1437,9 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                 const pageEntries: TimelineEntry[] = appEvents.map((e) => ({
                   kind: 'page_view',
                   id: e.id,
-                  label: e.label ?? e.page,
-                  page: e.page,
-                  created_at: e.created_at,
+                  label: e.label ?? e.event_name ?? e.page ?? 'event',
+                  page: e.page ?? String(e.properties?.page ?? ''),
+                  created_at: e.timestamp,
                 }));
 
                 const auditEntries: TimelineEntry[] = auditLogs

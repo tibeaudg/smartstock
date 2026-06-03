@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from './useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { useOptionalBranchId } from './useBranches';
+import { trackEvent } from '@/lib/events/trackEvent';
 
 const PAGE_LABELS: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -23,6 +24,7 @@ const PAGE_LABELS: Record<string, string> = {
   '/dashboard/settings/billing': 'Billing',
   '/dashboard/settings/branches': 'Warehouses',
   '/dashboard/settings/general': 'General Settings',
+  '/dashboard/settings/integrations': 'Integrations',
   '/dashboard/settings/license': 'License',
   '/dashboard/settings/invoicing': 'Invoicing',
   '/dashboard/workflows': 'Workflows',
@@ -33,6 +35,9 @@ const PAGE_LABELS: Record<string, string> = {
   '/dashboard/scan': 'Barcode Scanner',
   '/dashboard/bom': 'Bill of Materials',
   '/dashboard/bulk-import': 'Bulk Import',
+  '/admin': 'Admin Analytics',
+  '/admin/users': 'Admin Users',
+  '/admin/integrations': 'Admin Integrations',
 };
 
 function getPageLabel(pathname: string): string {
@@ -45,6 +50,7 @@ function getPageLabel(pathname: string): string {
   if (pathname.match(/^\/dashboard\/pick-lists\/[^/]+$/)) return 'Pick List Detail';
   if (pathname.match(/^\/dashboard\/suppliers\/[^/]+$/)) return 'Supplier Detail';
   if (pathname.startsWith('/dashboard/settings/')) return 'Settings';
+  if (pathname.startsWith('/admin')) return 'Admin';
   if (pathname.startsWith('/dashboard/')) return 'Dashboard';
   return pathname;
 }
@@ -52,6 +58,7 @@ function getPageLabel(pathname: string): string {
 export function usePageViewLogger() {
   const location = useLocation();
   const { user } = useAuth();
+  const branchId = useOptionalBranchId();
   const lastPathRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -62,12 +69,10 @@ export function usePageViewLogger() {
     lastPathRef.current = path;
 
     const label = getPageLabel(path);
-    // Fire and forget — never block the UI
-    supabase.from('app_events' as any).insert({
-      user_id: user.id,
-      event_type: 'page_view',
-      page: path,
-      label,
-    }).then(() => {});
-  }, [location.pathname, user?.id]);
+    trackEvent('feature_viewed', {
+      userId: user.id,
+      branchId,
+      properties: { label, feature: label },
+    });
+  }, [location.pathname, user?.id, branchId]);
 }

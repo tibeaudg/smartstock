@@ -503,8 +503,10 @@ export default function ScanPage() {
       });
       setShowProductForm(false);
       
+      track('product_created', 'scan', { method: 'scan', is_first: wasFirstProduct && transactionType === 'incoming' });
       if (transactionType === 'incoming' && wasFirstProduct) {
-        track('activation_first_product', 'scan', { method: 'scan' });
+        track('first_core_action', 'scan', { method: 'scan' });
+        track('onboarding_completed', 'scan', { method: 'scan' });
         toast.success('Your inventory control center is live');
         navigate('/dashboard');
       } else {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,7 @@ export const BranchesSettings = () => {
   const { user } = useAuth();
   const { branches, refreshBranches, loading } = useBranches();
   const { maxBranches, branchCount, isOverBranchLimit, canAddBranch } = useSubscription();
+  const { track } = useAppEventTracker();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [saving, setSaving] = useState(false);
@@ -136,6 +138,7 @@ export const BranchesSettings = () => {
       setNewBranchName('');
       setShowAddForm(false);
       toast.success(`Warehouse "${branchData.name}" created`);
+      track('warehouse_created', branchData.name, { branch_id: branchData.id });
     } catch (err) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : 'Failed to create warehouse');

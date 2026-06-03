@@ -422,3 +422,9 @@ export const useBranches = () => {
   }
   return context;
 };
+
+/** Safe outside BranchProvider — returns null branch id */
+export const useOptionalBranchId = (): string | null => {
+  const context = useContext(BranchContext);
+  return context?.activeBranch?.branch_id ?? null;
+};

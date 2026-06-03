@@ -134,6 +134,162 @@ export type Database = {
           },
         ]
       }
+      cohort_retention: {
+        Row: {
+          signup_date: string
+          cohort_size: number
+          day_1_pct: number | null
+          day_7_pct: number | null
+          day_30_pct: number | null
+          computed_at: string | null
+        }
+        Insert: {
+          signup_date: string
+          cohort_size: number
+          day_1_pct?: number | null
+          day_7_pct?: number | null
+          day_30_pct?: number | null
+          computed_at?: string | null
+        }
+        Update: {
+          signup_date?: string
+          cohort_size?: number
+          day_1_pct?: number | null
+          day_7_pct?: number | null
+          day_30_pct?: number | null
+          computed_at?: string | null
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          id: string
+          user_id: string | null
+          branch_id: string | null
+          event_name: string
+          event_type: Database["public"]["Enums"]["event_category"]
+          properties: Json
+          timestamp: string
+          session_id: string | null
+          device_type: string | null
+          app_version: string | null
+          experiment_id: string | null
+          variant: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          branch_id?: string | null
+          event_name: string
+          event_type: Database["public"]["Enums"]["event_category"]
+          properties?: Json
+          timestamp?: string
+          session_id?: string | null
+          device_type?: string | null
+          app_version?: string | null
+          experiment_id?: string | null
+          variant?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          branch_id?: string | null
+          event_name?: string
+          event_type?: Database["public"]["Enums"]["event_category"]
+          properties?: Json
+          timestamp?: string
+          session_id?: string | null
+          device_type?: string | null
+          app_version?: string | null
+          experiment_id?: string | null
+          variant?: string | null
+        }
+        Relationships: []
+      }
+      feature_usage_stats: {
+        Row: {
+          feature_name: string
+          date: string
+          users_count: number
+          usage_count: number
+          success_rate: number | null
+        }
+        Insert: {
+          feature_name: string
+          date: string
+          users_count?: number
+          usage_count?: number
+          success_rate?: number | null
+        }
+        Update: {
+          feature_name?: string
+          date?: string
+          users_count?: number
+          usage_count?: number
+          success_rate?: number | null
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          session_id: string
+          user_id: string | null
+          branch_id: string | null
+          start_time: string
+          end_time: string | null
+          duration_sec: number | null
+          entry_event: string | null
+          exit_event: string | null
+        }
+        Insert: {
+          session_id: string
+          user_id?: string | null
+          branch_id?: string | null
+          start_time: string
+          end_time?: string | null
+          duration_sec?: number | null
+          entry_event?: string | null
+          exit_event?: string | null
+        }
+        Update: {
+          session_id?: string
+          user_id?: string | null
+          branch_id?: string | null
+          start_time?: string
+          end_time?: string | null
+          duration_sec?: number | null
+          entry_event?: string | null
+          exit_event?: string | null
+        }
+        Relationships: []
+      }
+      user_daily_stats: {
+        Row: {
+          user_id: string
+          date: string
+          sessions_count: number
+          actions_count: number
+          core_actions_count: number
+          last_active_at: string | null
+        }
+        Insert: {
+          user_id: string
+          date: string
+          sessions_count?: number
+          actions_count?: number
+          core_actions_count?: number
+          last_active_at?: string | null
+        }
+        Update: {
+          user_id?: string
+          date?: string
+          sessions_count?: number
+          actions_count?: number
+          core_actions_count?: number
+          last_active_at?: string | null
+        }
+        Relationships: []
+      }
       billing_periods: {
         Row: {
           branch_count: number
@@ -1394,12 +1550,17 @@ export type Database = {
           user_role: string
         }[]
       }
+      get_analytics_summary: {
+        Args: { p_date_from?: string; p_date_to?: string }
+        Returns: Json
+      }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
     }
     Enums: {
+      event_category: "auth" | "billing" | "feature" | "system"
       stock_status: "in_stock" | "low_stock" | "out_of_stock"
       transaction_type: "incoming" | "outgoing"
       user_role: "admin" | "staff"
@@ -1518,6 +1679,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      event_category: ["auth", "billing", "feature", "system"],
       stock_status: ["in_stock", "low_stock", "out_of_stock"],
       transaction_type: ["incoming", "outgoing"],
       user_role: ["admin", "staff"],

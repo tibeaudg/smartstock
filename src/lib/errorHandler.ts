@@ -3,6 +3,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { trackEvent } from '@/lib/events/trackEvent';
 
 export interface ErrorInfo {
   message: string;
@@ -105,6 +106,19 @@ export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
         // Silently fail if database logging fails (to prevent infinite loops)
         console.warn('Failed to log error to database:', dbError);
       });
+
+    if (userId) {
+      trackEvent('error_shown', {
+        userId,
+        branchId: context?.branchId ?? null,
+        properties: { error_type: errorType, message: sanitizedErrorMessage },
+      });
+      trackEvent('api_error', {
+        userId,
+        branchId: context?.branchId ?? null,
+        properties: { error_type: errorType, message: sanitizedErrorMessage },
+      });
+    }
   }
 
   return errorInfo;

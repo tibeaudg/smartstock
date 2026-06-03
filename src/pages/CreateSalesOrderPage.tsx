@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useBranches } from '@/hooks/useBranches';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 import { toast } from 'sonner';
 import { Plus, Trash2, User, Calendar, CreditCard, Truck, Package, FileText, DollarSign } from 'lucide-react';
 import { Product } from '@/types/stockTypes';
@@ -31,6 +32,7 @@ export default function CreateSalesOrderPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { track } = useAppEventTracker();
   const { formatPrice } = useCurrency();
   const [loading, setLoading] = useState(false);
 
@@ -282,6 +284,7 @@ export default function CreateSalesOrderPage() {
       queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
       queryClient.invalidateQueries({ queryKey: ['productTransactions'] });
       toast.success(`Sales order ${soNumber} created successfully`);
+      track('order_created', 'sales', { order_type: 'sales', so_number: soNumber, status });
       navigate('/dashboard/sales-orders');
     } catch (error) {
       console.error('Error creating sales order:', error);

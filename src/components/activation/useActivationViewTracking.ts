@@ -11,6 +11,7 @@ export function useActivationViewTracking(
   useEffect(() => {
     if (!enabled || tracked.current) return;
     tracked.current = true;
+    track('onboarding_step_viewed', source, { source, step: 'activation_panel' });
     track('activation_view', source, { source });
   }, [enabled, source, track]);
 }

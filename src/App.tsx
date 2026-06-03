@@ -20,12 +20,14 @@ import { BillingPage } from './components/settings/BillingPage';
 import { BillingSuccessRedirect } from './components/BillingSuccessRedirect';
 import { BranchesSettings } from './components/settings/BranchesSettings';
 import { GeneralSettings } from './components/settings/GeneralSettings';
+import { IntegrationsSettings } from './components/settings/IntegrationsSettings';
 import { PaywallGate } from './components/PaywallGate';
 import { useAuth } from "./hooks/useAuth";
 import { useBranches, BranchProvider } from "./hooks/useBranches";
 import { CurrencyProvider } from "./hooks/useCurrency";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
 import { usePageViewLogger } from "./hooks/usePageViewLogger";
+import { useSessionTracker } from "./hooks/useSessionTracker";
 import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import SEO from './components/SEO';
@@ -71,6 +73,10 @@ const SuppliersPage = React.lazy(() => import("./pages/suppliers"));
 const CreateSupplierPage = React.lazy(() => import("./pages/CreateSupplierPage"));
 const EditSupplierPage = React.lazy(() => import("./pages/EditSupplierPage"));
 const AdminPage = React.lazy(() => import('./pages/admin'));
+const AdminUsersPage = React.lazy(() => import('./pages/admin/AdminUsersPage'));
+const AdminEmailsPage = React.lazy(() => import('./pages/admin/AdminEmailsPage'));
+const AdminFeedbackPage = React.lazy(() => import('./pages/admin/AdminFeedbackPage'));
+const AdminIntegrationsPage = React.lazy(() => import('./pages/admin/AdminIntegrationsPage'));
 const BillOfMaterialsPage = React.lazy(() => import('./components/products/BillOfMaterials'));
 const BOMEditPage = React.lazy(() => import('./components/products/BillOfMaterials'));
 const CustomReports = React.lazy(() => import('./components/analytics/CustomReports').then(m => ({ default: m.CustomReports })));
@@ -245,6 +251,7 @@ const FEATURES_STRUCTURED_DATA = [
 const AppRouter = () => {
   useNavigationQueryReset();
   usePageViewLogger();
+  useSessionTracker();
 
   const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user, loading, userProfile } = useAuth();
@@ -480,6 +487,42 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <SEO title="Admin Users" {...privateSeo} />
+              <AdminUsersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/emails"
+          element={
+            <ProtectedRoute>
+              <SEO title="Admin Emails" {...privateSeo} />
+              <AdminEmailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/feedback"
+          element={
+            <ProtectedRoute>
+              <SEO title="Admin Feedback" {...privateSeo} />
+              <AdminFeedbackPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/integrations"
+          element={
+            <ProtectedRoute>
+              <SEO title="Admin Integrations" {...privateSeo} />
+              <AdminIntegrationsPage />
+            </ProtectedRoute>
+          }
+        />
         
         <Route
           path="/admin/*"
@@ -537,6 +580,7 @@ const AppRouter = () => {
             <Route index element={<ProfileSettings />} />
             <Route path="general" element={<GeneralSettings />} />
             <Route path="profile" element={<ProfileSettings />} />
+            <Route path="integrations" element={<IntegrationsSettings />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="help-center" element={<HelpCenterPage />} />
             <Route path="mobile-app" element={<MobileAppPage />} />

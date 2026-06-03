@@ -347,13 +347,20 @@ export default function BulkImportPage() {
         errors: errors.slice(0, 10),
       });
       if (successCount > 0) {
+        track('bulk_import_completed', 'import', {
+          success_count: successCount,
+          failed_count: failedCount,
+          total_rows: total,
+        });
         toast.success(`${successCount} product${successCount !== 1 ? 's' : ''} imported successfully`);
         queryClient.invalidateQueries({ queryKey: ['products'] });
         queryClient.invalidateQueries({ queryKey: ['categoryProducts'] });
         queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
         await queryClient.invalidateQueries({ queryKey: ['productCount'] });
         if (wasAccountEmpty) {
-          track('activation_first_product', 'import', { method: 'import' });
+          track('first_core_action', 'import', { method: 'import' });
+          track('product_created', 'import', { method: 'import', is_first: true, count: successCount });
+          track('onboarding_completed', 'bulk_import', { method: 'import' });
           toast.success('Your inventory control center is live');
           navigate('/dashboard');
         } else {

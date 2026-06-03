@@ -21,6 +21,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -34,6 +35,7 @@ export default function CreatePurchaseOrderPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { activeBranch } = useBranches();
+  const { track } = useAppEventTracker();
   const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
@@ -195,6 +197,7 @@ export default function CreatePurchaseOrderPage() {
 
       queryClient.invalidateQueries({ queryKey: ['purchaseOrders'] });
       toast.success('Purchase order created successfully');
+      track('order_created', 'purchase', { order_type: 'purchase', status });
       navigate('/dashboard/purchase-orders');
     } catch (error) {
       console.error('Error creating purchase order:', error);

@@ -15,6 +15,39 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 })
 
+type BillingEventName =
+  | 'subscription_started'
+  | 'plan_upgraded'
+  | 'plan_downgraded'
+  | 'payment_succeeded'
+  | 'payment_failed'
+  | 'cancelation_completed'
+
+async function insertBillingEvent(
+  userId: string,
+  eventName: BillingEventName,
+  properties: Record<string, unknown>,
+): Promise<void> {
+  const { error } = await supabase.from('events').insert({
+    user_id: userId,
+    event_name: eventName,
+    event_type: 'billing',
+    properties,
+    timestamp: new Date().toISOString(),
+  })
+  if (error) console.error('[stripe-webhook] Failed to insert billing event:', eventName, error)
+}
+
+async function getTierMrr(tierId: string | null): Promise<number> {
+  if (!tierId) return 0
+  const { data } = await supabase
+    .from('pricing_tiers')
+    .select('price_monthly')
+    .eq('id', tierId)
+    .maybeSingle()
+  return data?.price_monthly ?? 0
+}
+
 serve(async (req) => {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 })
@@ -145,6 +178,15 @@ serve(async (req) => {
             .update({ selected_plan: planName })
             .eq('id', userId)
         }
+
+        const mrr = await getTierMrr(tierId)
+        await insertBillingEvent(userId, 'subscription_started', {
+          plan_name: planName,
+          mrr,
+          trial_status: isTrialing ? 'active' : 'none',
+          trial_end_date: trialEnd,
+          stripe_subscription_id: sub.id,
+        })
         break
       }
 
@@ -262,6 +304,15 @@ serve(async (req) => {
         } else {
           await supabase.from('profiles').update({ selected_plan: subPlanName }).eq('id', userId)
         }
+
+        const subMrr = await getTierMrr(subTierId)
+        await insertBillingEvent(userId, 'subscription_started', {
+          plan_name: subPlanName,
+          mrr: subMrr,
+          trial_status: isTrialing ? 'active' : 'none',
+          trial_end_date: trialEnd,
+          stripe_subscription_id: subId,
+        })
         break
       }
 
@@ -314,6 +365,35 @@ serve(async (req) => {
         if (userId && !isPaidStatus) {
           await supabase.from('profiles').update({ selected_plan: 'free' }).eq('id', userId)
         }
+
+        if (userId) {
+          const planName = sub.metadata?.plan_name || 'unknown'
+          if (event.type === 'customer.subscription.deleted') {
+            await insertBillingEvent(userId, 'cancelation_completed', {
+              plan_name: planName,
+              stripe_status: sub.status,
+              cancellation_details: sub.cancellation_details ?? null,
+            })
+          } else {
+            const { data: prevSub } = await supabase
+              .from('user_subscriptions')
+              .select('tier_id')
+              .eq('stripe_subscription_id', sub.id)
+              .maybeSingle()
+            const newTierId = tierId ?? prevSub?.tier_id
+            const newMrr = await getTierMrr(newTierId ?? null)
+            const oldMrr = await getTierMrr(prevSub?.tier_id ?? null)
+            const billingEvent: BillingEventName =
+              newMrr > oldMrr ? 'plan_upgraded' : newMrr < oldMrr ? 'plan_downgraded' : 'plan_upgraded'
+            await insertBillingEvent(userId, billingEvent, {
+              plan_name: planName,
+              mrr: newMrr,
+              prior_mrr: oldMrr,
+              trial_status: sub.status === 'trialing' ? 'active' : 'none',
+              trial_end_date: trialEnd,
+            })
+          }
+        }
         break
       }
 
@@ -359,6 +439,21 @@ serve(async (req) => {
             due_date: invoice.due_date ? new Date(invoice.due_date * 1000).toISOString() : null,
           })
         }
+
+        const { data: subRow } = await supabase
+          .from('user_subscriptions')
+          .select('tier_id')
+          .eq('stripe_subscription_id', subId)
+          .maybeSingle()
+        const { data: tierRow } = subRow?.tier_id
+          ? await supabase.from('pricing_tiers').select('name').eq('id', subRow.tier_id).maybeSingle()
+          : { data: null }
+        await insertBillingEvent(us.user_id, 'payment_succeeded', {
+          amount,
+          currency,
+          plan_name: tierRow?.name ?? 'unknown',
+          stripe_invoice_id: invoice.id,
+        })
         break
       }
 
@@ -410,6 +505,13 @@ serve(async (req) => {
             due_date: invoice.due_date ? new Date(invoice.due_date * 1000).toISOString() : null,
           })
         }
+
+        await insertBillingEvent(us.user_id, 'payment_failed', {
+          amount,
+          currency,
+          attempt_count: invoice.attempt_count ?? 1,
+          stripe_invoice_id: invoice.id,
+        })
         break
       }
 
