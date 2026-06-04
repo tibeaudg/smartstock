@@ -546,7 +546,7 @@
           "value": "stockflowsystems.com"
         }
       ],
-      "destination": "/https://www.stockflowsystems.com/$1",
+      "destination": "https://www.stockflowsystems.com/$1",
       "permanent": true
     },
     {
