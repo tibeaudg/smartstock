@@ -111,6 +111,7 @@ export const BranchesSettings = () => {
       return;
     }
     setCreating(true);
+    track('warehouse_create_started', undefined, { name: newBranchName.trim() });
     try {
       const { data: branchData, error: branchError } = await supabase
         .from('branches')
@@ -138,8 +139,12 @@ export const BranchesSettings = () => {
       setNewBranchName('');
       setShowAddForm(false);
       toast.success(`Warehouse "${branchData.name}" created`);
-      track('warehouse_created', branchData.name, { branch_id: branchData.id });
+      track('warehouse_created', undefined, { branch_id: branchData.id, name: branchData.name });
     } catch (err) {
+      track('warehouse_create_failed', undefined, {
+        error_code: 'create_failed',
+        message: err instanceof Error ? err.message : 'unknown',
+      });
       console.error(err);
       toast.error(err instanceof Error ? err.message : 'Failed to create warehouse');
     } finally {

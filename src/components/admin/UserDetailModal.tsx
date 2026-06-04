@@ -4,7 +4,12 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Navigation, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle, Send, RefreshCw, StickyNote, Save } from 'lucide-react';
+import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle, Send, RefreshCw, StickyNote, Save, ChevronLeft, ChevronRight, KeyRound } from 'lucide-react';
+import type { UserPlanInfo } from '@/lib/admin/types';
+import type { UserAnalyticsSnapshot } from '@/hooks/useUserAnalyticsSnapshots';
+import { formatMeaningfulInactivity } from '@/lib/admin/userActivity';
+import { emailUser, extendTrial, impersonateUser, resetUserPassword } from '@/lib/admin/userAdminActions';
+import { UserActivityLogTab } from '@/components/admin/activity/UserActivityLogTab';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -45,6 +50,15 @@ interface UserDetailModalProps {
   currentUserId?: string;
   isBlockingPending?: boolean;
   deletingUserId?: string | null;
+  navigation?: {
+    users: UserProfile[];
+    currentIndex: number;
+    onNavigate: (user: UserProfile) => void;
+  };
+  subscriptionPlan?: UserPlanInfo;
+  analyticsSnapshot?: UserAnalyticsSnapshot;
+  isChurnRisk?: boolean;
+  hasRecentErrors?: boolean;
 }
 
 interface LinkedUser {
@@ -212,59 +226,6 @@ async function fetchUserAuditLogs(userId: string) {
   return data || [];
 }
 
-interface UserEvent {
-  id: string;
-  user_id: string;
-  event_name: string;
-  event_type: string;
-  properties: Record<string, unknown> | null;
-  timestamp: string;
-  page?: string;
-  label?: string | null;
-}
-
-async function fetchUserEvents(userId: string): Promise<UserEvent[]> {
-  const { data: events, error } = await supabase
-    .from('events')
-    .select('id, user_id, event_name, event_type, properties, timestamp')
-    .eq('user_id', userId)
-    .order('timestamp', { ascending: false })
-    .limit(200);
-  if (!error && events && events.length > 0) {
-    return events.map(e => ({
-      ...e,
-      page: (e.properties as Record<string, unknown>)?.page as string | undefined,
-      label: (e.properties as Record<string, unknown>)?.label as string | null | undefined,
-    }));
-  }
-
-  const { data: legacy, error: legacyError } = await supabase
-    .from('app_events' as any)
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false })
-    .limit(200);
-  if (legacyError) throw legacyError;
-  return ((legacy || []) as Array<{
-    id: string;
-    user_id: string;
-    event_type: string;
-    page: string;
-    label: string | null;
-    metadata: Record<string, unknown> | null;
-    created_at: string;
-  }>).map(e => ({
-    id: e.id,
-    user_id: e.user_id,
-    event_name: e.event_type,
-    event_type: 'feature',
-    properties: { page: e.page, label: e.label, ...e.metadata },
-    timestamp: e.created_at,
-    page: e.page,
-    label: e.label,
-  }));
-}
-
 interface EmailLogEntry {
   id: string;
   subject: string;
@@ -366,6 +327,11 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   currentUserId,
   isBlockingPending,
   deletingUserId,
+  navigation,
+  subscriptionPlan,
+  analyticsSnapshot,
+  isChurnRisk: churnRiskFlag,
+  hasRecentErrors: recentErrorsFlag,
 }) => {
   const queryClient = useQueryClient();
   const { user: adminUser } = useAuth();
@@ -380,7 +346,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   const [creditAmount, setCreditAmount] = useState('');
   const [creditNote, setCreditNote] = useState('');
   const [loadingCredit, setLoadingCredit] = useState(false);
-  const [showAdminOnly, setShowAdminOnly] = useState(false);
   const [triggeringStage, setTriggeringStage] = useState<string | null>(null);
   const [noteText, setNoteText] = useState('');
   const [savingNote, setSavingNote] = useState(false);
@@ -659,7 +624,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setActiveTab('overview');
-      setShowAdminOnly(false);
     }
   }, [isOpen]);
 
@@ -746,12 +710,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     created_at: log.created_at,
   }));
 
-  const { data: appEvents = [], isLoading: loadingAppEvents } = useQuery({
-    queryKey: ['userEvents', user?.id],
-    queryFn: () => fetchUserEvents(user!.id),
-    enabled: !!user && isOpen && activeTab === 'activity',
-  });
-
   const { data: linkedUsers = [], isLoading: loadingLinkedUsers } = useQuery({
     queryKey: ['linkedUsers', user?.id],
     queryFn: () => fetchLinkedUsers(user!.id),
@@ -792,11 +750,73 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Users className="w-5 h-5" />
-            {user.email}
-          </DialogTitle>
+        <DialogHeader className="space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <DialogTitle className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              {user.email}
+            </DialogTitle>
+            {navigation && navigation.users.length > 1 && (
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  disabled={navigation.currentIndex <= 0}
+                  onClick={() => navigation.onNavigate(navigation.users[navigation.currentIndex - 1])}
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <span className="text-xs text-slate-500 tabular-nums px-1">
+                  {navigation.currentIndex + 1} / {navigation.users.length}
+                </span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8"
+                  disabled={navigation.currentIndex >= navigation.users.length - 1}
+                  onClick={() => navigation.onNavigate(navigation.users[navigation.currentIndex + 1])}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button size="sm" variant="outline" onClick={() => impersonateUser(user.id)}>
+              <LogIn className="w-3 h-3 mr-1" />
+              Login as
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => resetUserPassword(user.email)}>
+              <KeyRound className="w-3 h-3 mr-1" />
+              Reset password
+            </Button>
+            {subscriptionPlan?.isActiveTrial && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => extendTrial(user.id, adminUser?.email)}
+              >
+                <Calendar className="w-3 h-3 mr-1" />
+                Extend trial
+              </Button>
+            )}
+            <Button size="sm" variant="outline" onClick={() => emailUser(user.email)}>
+              <Mail className="w-3 h-3 mr-1" />
+              Email
+            </Button>
+            {onBlock && user.id !== currentUserId && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onBlock(user.id, !!user.blocked)}
+                disabled={isBlockingPending}
+              >
+                <Shield className="w-3 h-3 mr-1" />
+                {user.blocked ? 'Unblock' : 'Block'}
+              </Button>
+            )}
+          </div>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
@@ -821,6 +841,70 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-4 mt-0">
+
+              <Card className="border-slate-200 bg-slate-50/80">
+                <CardContent className="p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
+                    Account health
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+                    <div>
+                      <span className="text-slate-500 text-xs">Lifecycle</span>
+                      <p className="font-medium">
+                        {analyticsSnapshot?.activated
+                          ? `Activated${analyticsSnapshot.activationMethod ? ` (${analyticsSnapshot.activationMethod})` : ''}`
+                          : analyticsSnapshot?.stuckOnboarding
+                            ? 'Stuck onboarding'
+                            : 'Not activated'}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-slate-500 text-xs">Last activity</span>
+                      <p className="font-medium">
+                        {formatMeaningfulInactivity(
+                          user.last_login ?? null,
+                          user.created_at,
+                          analyticsSnapshot?.lastMeaningfulAt,
+                        ).display}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-slate-500 text-xs">Plan / MRR</span>
+                      <p className="font-medium">
+                        {subscriptionPlan?.displayName ?? '—'}
+                        {subscriptionPlan?.isRevenueCustomer && (
+                          <span className="text-emerald-700 ml-1">
+                            ${subscriptionPlan.planPrice}/mo
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-slate-500 text-xs">Risk flags</span>
+                      <div className="flex flex-wrap gap-1 mt-0.5">
+                        {churnRiskFlag && (
+                          <Badge className="bg-amber-100 text-amber-800 text-[10px]">Churn risk</Badge>
+                        )}
+                        {subscriptionPlan?.missingPaymentInfo && (
+                          <Badge className="bg-red-100 text-red-800 text-[10px]">No payment</Badge>
+                        )}
+                        {analyticsSnapshot?.stuckOnboarding && (
+                          <Badge className="bg-purple-100 text-purple-800 text-[10px]">Stuck onboarding</Badge>
+                        )}
+                        {recentErrorsFlag && (
+                          <Badge className="bg-orange-100 text-orange-800 text-[10px]">Recent errors</Badge>
+                        )}
+                        {!churnRiskFlag &&
+                          !subscriptionPlan?.missingPaymentInfo &&
+                          !analyticsSnapshot?.stuckOnboarding &&
+                          !recentErrorsFlag && (
+                            <span className="text-xs text-slate-400">None</span>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Over-limit warning */}
               {isOverLimit && (
@@ -1414,150 +1498,16 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
             {/* Activity Log Tab */}
             <TabsContent value="activity" className="mt-0">
-              {(() => {
-                const loadingActivity = loadingAuditLogs || loadingAppEvents;
-
-                // Engagement score: based on page view volume and recency
-                const now2 = new Date();
-                const recentEvents = appEvents.filter(e => (now2.getTime() - new Date(e.timestamp).getTime()) < 7 * 24 * 60 * 60 * 1000);
-                const engagementScore: { label: string; color: string; bg: string } = (() => {
-                  if (appEvents.length === 0) return { label: 'No activity', color: 'text-gray-400', bg: 'bg-gray-100' };
-                  if (appEvents.length >= 50 && recentEvents.length >= 5) return { label: 'High engagement', color: 'text-green-700', bg: 'bg-green-100' };
-                  if (appEvents.length >= 10 && recentEvents.length >= 1) return { label: 'Medium engagement', color: 'text-amber-700', bg: 'bg-amber-100' };
-                  if (recentEvents.length === 0) return { label: 'Dormant', color: 'text-red-700', bg: 'bg-red-100' };
-                  return { label: 'Low engagement', color: 'text-orange-700', bg: 'bg-orange-100' };
-                })();
-
-                // Merge and sort all events newest-first
-                type TimelineEntry =
-                  | { kind: 'page_view'; id: string; label: string; page: string; created_at: string }
-                  | { kind: 'admin'; id: string; action: string; created_at: string }
-                  | { kind: 'mutation'; id: string; action: string; table_name: string; record_id: string | null; created_at: string };
-
-                const pageEntries: TimelineEntry[] = appEvents.map((e) => ({
-                  kind: 'page_view',
-                  id: e.id,
-                  label: e.label ?? e.event_name ?? e.page ?? 'event',
-                  page: e.page ?? String(e.properties?.page ?? ''),
-                  created_at: e.timestamp,
-                }));
-
-                const auditEntries: TimelineEntry[] = auditLogs
-                  .filter((log: any) => !(typeof log.action === 'string' && log.action.startsWith('ADMIN_NOTE:')))
-                  .map((log: any) => {
-                    const isAdmin = typeof log.action === 'string' && log.action.startsWith('ADMIN:');
-                    return isAdmin
-                      ? { kind: 'admin', id: log.id, action: log.action.replace('ADMIN: ', ''), created_at: log.created_at }
-                      : { kind: 'mutation', id: log.id, action: log.action, table_name: log.table_name, record_id: log.record_id ?? null, created_at: log.created_at };
-                  });
-
-                const allEntries = [...pageEntries, ...auditEntries].sort(
-                  (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-                );
-
-                const visible = showAdminOnly
-                  ? allEntries.filter((e) => e.kind === 'admin')
-                  : allEntries;
-
-                const exportAll = () => exportData(
-                  visible.map((e) => ({
-                    type: e.kind,
-                    label: e.kind === 'page_view' ? e.label : e.kind === 'admin' ? e.action : `${e.action} on ${e.table_name}`,
-                    date: e.created_at,
-                  })),
-                  `user_${user.id}_activity`
-                );
-
-                return (
-                  <>
-                    <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-semibold">Activity Log</h3>
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${engagementScore.bg} ${engagementScore.color}`}>
-                            {engagementScore.label}
-                          </span>
-                        </div>
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          {pageEntries.length} page view{pageEntries.length !== 1 ? 's' : ''} · {auditEntries.filter(e => e.kind !== 'admin').length} data event{auditEntries.filter(e => e.kind !== 'admin').length !== 1 ? 's' : ''} · {auditEntries.filter(e => e.kind === 'admin').length} admin action{auditEntries.filter(e => e.kind === 'admin').length !== 1 ? 's' : ''}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setShowAdminOnly(v => !v)}
-                          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs border transition-colors ${
-                            showAdminOnly
-                              ? 'bg-purple-50 border-purple-200 text-purple-700 font-semibold'
-                              : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                          }`}
-                        >
-                          <Shield className="w-3 h-3" />
-                          Admin Only
-                        </button>
-                        {visible.length > 0 && (
-                          <Button variant="outline" size="sm" onClick={exportAll}>
-                            <Download className="w-4 h-4 mr-2" />
-                            Export
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-
-                    {loadingActivity ? (
-                      <div className="flex justify-center py-8">
-                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                      </div>
-                    ) : visible.length === 0 ? (
-                      <div className="text-center py-8 text-gray-500">No activity logs found</div>
-                    ) : (
-                      <div className="relative">
-                        {/* Timeline line */}
-                        <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700" />
-                        <div className="space-y-1 pl-10">
-                          {visible.map((entry) => {
-                            if (entry.kind === 'page_view') {
-                              return (
-                                <div key={entry.id} className="relative py-2">
-                                  <div className="absolute -left-[26px] top-3 w-4 h-4 rounded-full bg-blue-100 border-2 border-blue-400 flex items-center justify-center">
-                                    <Navigation className="w-2 h-2 text-blue-600" />
-                                  </div>
-                                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{entry.label}</p>
-                                  <p className="text-xs text-gray-400 font-mono">{entry.page}</p>
-                                  <p className="text-xs text-gray-400">{format(new Date(entry.created_at), 'PPpp')}</p>
-                                </div>
-                              );
-                            }
-                            if (entry.kind === 'admin') {
-                              return (
-                                <div key={entry.id} className="relative py-2">
-                                  <div className="absolute -left-[26px] top-3 w-4 h-4 rounded-full bg-purple-100 border-2 border-purple-400 flex items-center justify-center">
-                                    <Shield className="w-2 h-2 text-purple-600" />
-                                  </div>
-                                  <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide mb-0.5">Admin Action</p>
-                                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{entry.action}</p>
-                                  <p className="text-xs text-gray-400">{format(new Date(entry.created_at), 'PPpp')}</p>
-                                </div>
-                              );
-                            }
-                            // mutation
-                            return (
-                              <div key={entry.id} className="relative py-2">
-                                <div className="absolute -left-[26px] top-3 w-4 h-4 rounded-full bg-green-100 border-2 border-green-400 flex items-center justify-center">
-                                  <Database className="w-2 h-2 text-green-600" />
-                                </div>
-                                <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                  {entry.action} on <span className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">{entry.table_name}</span>
-                                </p>
-                                <p className="text-xs text-gray-400">{format(new Date(entry.created_at), 'PPpp')}</p>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
+              {user && (
+                <UserActivityLogTab
+                  key={user.id}
+                  userId={user.id}
+                  userCreatedAt={user.created_at}
+                  auditLogs={auditLogs}
+                  loadingAuditLogs={loadingAuditLogs}
+                  onExport={(rows, filename) => exportData(rows, filename)}
+                />
+              )}
             </TabsContent>
             {/* Emails Tab */}
             <TabsContent value="emails" className="mt-0 space-y-4">

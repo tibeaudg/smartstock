@@ -29,6 +29,7 @@ import { initPerformanceMonitoring } from './utils/performanceMonitor';
 import { checkSupabaseConnection } from './integrations/supabase/client';
 
 import { logError } from './lib/errorHandler';
+import { analytics } from './lib/analytics';
 
 // OPTIONAL — keep disabled until stability confirmed
 // import { setupPersistedQueryClient } from './persistQueryClient';
@@ -218,6 +219,7 @@ function renderApp() {
 
 async function init() {
   try {
+    await analytics.init();
     initializePerformanceOptimizations();
 
     if (process.env.NODE_ENV === 'development') {

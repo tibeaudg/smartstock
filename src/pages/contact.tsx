@@ -13,6 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { getPostHogDistinctId } from '@/lib/analytics';
 
 // A reusable component for fade-in animations when scrolling
 const FadeInWhenVisible = ({ children }: { children: React.ReactNode }) => {
@@ -69,9 +70,12 @@ export default function ContactPage() {
         return;
       }
 
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      const phDistinctId = getPostHogDistinctId();
+      if (phDistinctId) headers['X-PostHog-Distinct-Id'] = phDistinctId;
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(values)
       });
       if (!res.ok) throw new Error('Failed to send');

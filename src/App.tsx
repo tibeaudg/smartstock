@@ -28,6 +28,7 @@ import { CurrencyProvider } from "./hooks/useCurrency";
 import { useNavigationQueryReset } from "./hooks/useNavigationQueryReset";
 import { usePageViewLogger } from "./hooks/usePageViewLogger";
 import { useSessionTracker } from "./hooks/useSessionTracker";
+import { useAnalyticsContextSync } from "./hooks/useAnalyticsContextSync";
 import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import SEO from './components/SEO';
@@ -250,6 +251,7 @@ const FEATURES_STRUCTURED_DATA = [
 
 const AppRouter = () => {
   useNavigationQueryReset();
+  useAnalyticsContextSync();
   usePageViewLogger();
   useSessionTracker();
 

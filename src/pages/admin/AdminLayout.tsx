@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { BarChart3, Users, Bell, Mail, MessageSquare, Plug } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -13,8 +13,28 @@ const ADMIN_NAV = [
 ];
 
 export function AdminNav() {
-  const location = useLocation();
-
+  return (
+    <nav className="flex flex-wrap gap-2 border-b border-slate-200 pb-3 mb-2">
+      {ADMIN_NAV.map(({ to, label, icon: Icon, end }) => (
+        <NavLink
+          key={to}
+          to={to}
+          end={end}
+          className={({ isActive }) =>
+            cn(
+              'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
+              isActive
+                ? 'bg-blue-600 text-white'
+                : 'text-slate-600 hover:bg-slate-100',
+            )
+          }
+        >
+          <Icon className="w-4 h-4" />
+          {label}
+        </NavLink>
+      ))}
+    </nav>
+  );
 }
 
 interface AdminShellProps {

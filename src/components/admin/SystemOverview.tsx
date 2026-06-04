@@ -32,7 +32,8 @@ export const SystemOverview: React.FC = () => {
       // Get total users
       const { count: totalUsers } = await supabase
         .from('profiles')
-        .select('*', { count: 'exact', head: true });
+        .select('*', { count: 'exact', head: true })
+        .or('is_owner.is.null,is_owner.eq.false');
 
       // Get active users (last 30 days)
       const thirtyDaysAgo = new Date();
@@ -40,7 +41,8 @@ export const SystemOverview: React.FC = () => {
       const { count: activeUsers } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true })
-        .gte('last_login', thirtyDaysAgo.toISOString());
+        .gte('last_login', thirtyDaysAgo.toISOString())
+        .or('is_owner.is.null,is_owner.eq.false');
 
       // Get total products
       const { count: totalProducts } = await supabase

@@ -227,6 +227,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
+import { emitActivationOnce } from '@/lib/analytics';
+import { startOperation, endOperation } from '@/lib/analytics/operations';
 
 // --- Data Interfaces ---
 
@@ -660,6 +662,14 @@ export default function AddProductPage() {
   // --- Main Submission Logic ---
 
   const handleSubmit = async (data: FormData) => {
+    const operationId =
+      user?.id && activeBranch?.branch_id
+        ? startOperation('product_create', {
+            userId: user.id,
+            branchId: activeBranch.branch_id,
+            properties: { method: isQuickMode ? 'quick' : 'manual', surface: 'product_create' },
+          })
+        : '';
     console.log('[AddProductModal] Submission started. Mode: CREATE, Data:', data);
 
     if (isOverProductLimit) {
@@ -1043,15 +1053,24 @@ export default function AddProductPage() {
       setUploadedImages([]);
       
       submittedRef.current = true;
-      track('product_created', isQuickMode ? 'quick' : 'manual', {
-        method: isQuickMode ? 'quick' : 'manual',
-        is_first: wasFirstProduct,
-      });
-      if (wasFirstProduct) {
-        track('first_core_action', isQuickMode ? 'quick' : 'manual', {
-          method: isQuickMode ? 'quick' : 'manual',
+      const method = isQuickMode ? 'quick' : 'manual';
+      if (operationId) {
+        endOperation(operationId, 'succeeded', {
+          userId: user.id,
+          branchId: activeBranch.branch_id,
+          properties: { method, is_first: wasFirstProduct },
         });
-        track('onboarding_completed', 'first_product', { method: isQuickMode ? 'quick' : 'manual' });
+      } else {
+        track('product_created', undefined, { method, is_first: wasFirstProduct });
+      }
+      if (wasFirstProduct && user?.id) {
+        emitActivationOnce(
+          user.id,
+          (events) => {
+            events.forEach((e) => track(e.name, undefined, { ...e.properties, method }));
+          },
+          { method },
+        );
         if (isQuickMode) {
           toast.success('Your inventory control center is live');
           navigate('/dashboard');
@@ -1062,6 +1081,14 @@ export default function AddProductPage() {
         navigate('/dashboard/categories');
       }
     } catch (error) {
+      if (operationId) {
+        endOperation(operationId, 'failed', {
+          userId: user?.id,
+          branchId: activeBranch?.branch_id,
+          error_code: 'submit_exception',
+          properties: { message: error instanceof Error ? error.message : 'unknown' },
+        });
+      }
       console.error('Unexpected error during product submission:', error);
       toast.error('Unexpected error during product addition.');
     } finally {

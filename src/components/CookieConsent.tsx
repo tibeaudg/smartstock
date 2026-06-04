@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface CookiePreferences {
   necessary: boolean; // Always true, can't be disabled
@@ -44,10 +45,25 @@ export const getCookieConsent = (): CookiePreferences | null => {
   }
 };
 
+async function syncAnalyticsConsentToProfile(allowed: boolean): Promise<void> {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.id) return;
+    await supabase
+      .from('profiles')
+      .update({ analytics_consent: allowed })
+      .eq('id', user.id);
+  } catch (e) {
+    console.warn('[CookieConsent] Failed to sync analytics_consent:', e);
+  }
+}
+
 export const setCookieConsent = (preferences: CookiePreferences): void => {
   localStorage.setItem(CONSENT_KEY, new Date().toISOString());
   localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
-  
+
+  void syncAnalyticsConsentToProfile(preferences.analytics);
+
   // Dispatch custom event so other components can react
   window.dispatchEvent(new CustomEvent('cookieConsentChanged', { detail: preferences }));
 };

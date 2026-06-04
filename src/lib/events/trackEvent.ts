@@ -1,40 +1,40 @@
-import { supabase } from '@/integrations/supabase/client';
+import { analytics } from '@/lib/analytics';
 import type { EventName } from './catalog';
-import { getEventCategory } from './catalog';
-import { APP_VERSION, detectDeviceType } from './device';
-import { getOrCreateSessionId } from './sessionStorage';
 
 export interface TrackEventOptions {
   userId: string;
   branchId?: string | null;
+  orgId?: string | null;
   properties?: Record<string, unknown>;
   sessionId?: string;
   experimentId?: string;
   variant?: string;
+  requestId?: string;
+  idempotencyKey?: string;
+  force?: boolean;
 }
 
+/** @deprecated Prefer analytics.track — kept for gradual migration */
 export function trackEvent(
   eventName: EventName,
   options: TrackEventOptions,
 ): void {
-  const { userId, branchId, properties, sessionId, experimentId, variant } = options;
+  const { userId, branchId, properties, sessionId, orgId, requestId, idempotencyKey, force } =
+    options;
   if (!userId) return;
 
-  const payload = {
-    user_id: userId,
-    branch_id: branchId ?? null,
-    event_name: eventName,
-    event_type: getEventCategory(eventName),
+  analytics.track(eventName, {
+    userId,
+    branchId: branchId ?? null,
+    orgId: orgId ?? null,
+    sessionId,
+    requestId,
+    idempotencyKey,
+    force,
     properties: {
-      page: window.location.pathname,
+      experiment_id: options.experimentId ?? null,
+      variant: options.variant ?? null,
       ...properties,
     },
-    session_id: sessionId ?? getOrCreateSessionId(),
-    device_type: detectDeviceType(),
-    app_version: APP_VERSION,
-    experiment_id: experimentId ?? null,
-    variant: variant ?? null,
-  };
-
-  supabase.from('events').insert(payload).then(() => {});
+  });
 }

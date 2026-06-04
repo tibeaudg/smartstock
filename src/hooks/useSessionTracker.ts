@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAuth } from './useAuth';
+import { shouldExcludeFromProductAnalytics } from '@/lib/analytics/exclusions';
 import { useOptionalBranchId } from './useBranches';
 import { supabase } from '@/integrations/supabase/client';
 import { detectDeviceType } from '@/lib/events/device';
@@ -14,7 +15,7 @@ import {
 const RETURN_VISIT_GAP_MS = 24 * 60 * 60 * 1000;
 
 export function useSessionTracker() {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const branchId = useOptionalBranchId();
   const sessionIdRef = useRef<string | null>(null);
   const startTimeRef = useRef<number>(Date.now());
@@ -27,6 +28,14 @@ export function useSessionTracker() {
     startTimeRef.current = Date.now();
     const branchIdVal = branchId;
     const entryPath = window.location.pathname;
+    if (
+      shouldExcludeFromProductAnalytics({
+        isOwner: userProfile?.is_owner === true,
+        pathname: entryPath,
+      })
+    ) {
+      return;
+    }
 
     const lastEnd = getLastSessionEnd();
     const isReturnVisit =
@@ -93,7 +102,6 @@ export function useSessionTracker() {
     return () => {
       window.removeEventListener('beforeunload', endSession);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      endSession();
     };
-  }, [user?.id, branchId]);
+  }, [user?.id, branchId, userProfile?.is_owner]);
 }

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { StructuredData } from '@/components/StructuredData';
+import { AskAiSection } from '@/components/AskAiSection';
 
 /* ─── Data ─────────────────────────────────────────────────────────── */
 
@@ -915,6 +916,13 @@ export const HomePage = () => {
             </div>
           </div>
         </section>
+
+        {/* ══════════════════════════════════════════════════
+            ASK AI
+        ══════════════════════════════════════════════════ */}
+        <Reveal>
+          <AskAiSection />
+        </Reveal>
 
         {/* ══════════════════════════════════════════════════
             FAQ
