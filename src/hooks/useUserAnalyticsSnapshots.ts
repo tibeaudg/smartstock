@@ -1,10 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { CORE_ACTION_EVENTS } from '@/lib/analytics/catalog';
+import {
+  isWithinActivationWindow,
+  CORE_EVENT_NAMES,
+} from '@/lib/admin/activationMetrics';
 import { lastMeaningfulTimestamp, normalizeActivityEvent, type RawActivityEvent } from '@/lib/analytics/timeline';
 
 export interface UserAnalyticsSnapshot {
   userId: string;
+  /** Core action within 7 days of signup (matches product-health SQL). */
+  activatedWithin7d: boolean;
+  /** @deprecated Use activatedWithin7d — kept for callers during migration */
   activated: boolean;
   activationMethod: string | null;
   stuckOnboarding: boolean;
@@ -14,9 +21,14 @@ export interface UserAnalyticsSnapshot {
   lastSurface: string | null;
 }
 
-const CORE_SET = new Set(CORE_ACTION_EVENTS.map(String));
 const ERROR_EVENTS = new Set(['error_captured', 'api_request_failed', 'client_error', 'unhandled_rejection']);
 const NAV_EVENTS = new Set(['route_viewed', 'feature_viewed', 'page_view']);
+
+function activationMethodFromEvent(properties: Record<string, unknown> | null): string | null {
+  const method = properties?.method ?? properties?.path;
+  if (typeof method === 'string' && method.trim()) return method;
+  return null;
+}
 
 async function fetchRecentEvents(): Promise<RawActivityEvent[]> {
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -34,8 +46,7 @@ async function fetchRecentEvents(): Promise<RawActivityEvent[]> {
       'error_captured',
       'api_request_failed',
       'client_error',
-      'activation_viewed',
-      'activation_view',
+      'activation_path_selected',
     ])
     .order('timestamp', { ascending: false })
     .limit(5000);
@@ -67,15 +78,25 @@ export function buildSnapshotsFromEvents(
     const userEvents = byUser.get(user.id) ?? [];
     const normalized = userEvents.map(normalizeActivityEvent);
 
-    const coreEvent = normalized.find((e) => CORE_SET.has(String(e.normalized_name)));
-    const activated = !!coreEvent;
+    const coreEvents = normalized
+      .filter((e) => CORE_EVENT_NAMES.has(String(e.normalized_name)))
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+    const coreWithin7d = coreEvents.find((e) =>
+      isWithinActivationWindow(user.created_at, e.timestamp),
+    );
+
+    const activatedWithin7d = !!coreWithin7d;
+    const activationMethod = coreWithin7d
+      ? activationMethodFromEvent(coreWithin7d.properties)
+      : null;
 
     const hasNav = normalized.some(
       (e) => NAV_EVENTS.has(String(e.normalized_name)) || NAV_EVENTS.has(e.event_name),
     );
     const createdMs = new Date(user.created_at).getTime();
     const stuckOnboarding =
-      !activated && hasNav && createdMs < fortyEightHoursAgo;
+      !activatedWithin7d && hasNav && createdMs < fortyEightHoursAgo;
 
     const failedImportRecent = userEvents.some(
       (e) =>
@@ -95,8 +116,9 @@ export function buildSnapshotsFromEvents(
 
     result.set(user.id, {
       userId: user.id,
-      activated,
-      activationMethod: (coreEvent?.properties?.method as string) ?? null,
+      activatedWithin7d,
+      activated: activatedWithin7d,
+      activationMethod,
       stuckOnboarding,
       failedImportRecent,
       hitErrorsRecent,

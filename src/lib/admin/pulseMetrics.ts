@@ -134,6 +134,6 @@ export function buildMetricDeltas(
     newToday: toDelta(newTodayDelta, 'vs yesterday'),
     newWeek: toDelta(newWeekDelta, 'vs prior 7d'),
     conversion: toDelta(convNow - convLw, 'vs last week cohort', true),
-    mrrPartial: toDelta(mrrPartialDelta, 'net paying (7d, partial)'),
+    mrrPartial: toDelta(mrrPartialDelta, 'paying Δ last 7d'),
   };
 }

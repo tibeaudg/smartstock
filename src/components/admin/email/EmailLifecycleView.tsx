@@ -517,7 +517,7 @@ export function EmailLifecycleView() {
           <Info className="w-3.5 h-3.5" />
           How the lifecycle pipeline works
         </p>
-        <p className="text-xs text-muted-foreground">• <strong>Welcome</strong> fires automatically the moment a new user signs up. All other stages run when you click <em>Run All Stages</em> or use a scheduled cron job.</p>
+        <p className="text-xs text-muted-foreground">• <strong>Welcome</strong> fires on signup/sign-in (with server dedup). All stages also run automatically every 4 hours via cron, or when you click <em>Run All Stages</em>.</p>
         <p className="text-xs text-muted-foreground">• Each stage fires <strong>once per user</strong> — deduplication is enforced at the database level.</p>
         <p className="text-xs text-muted-foreground">• Click <strong>Edit / Add Template</strong> on any stage to customise the subject and body inline — no need to leave this page.</p>
         <p className="text-xs text-muted-foreground">• If no custom template is saved for a stage, a professional default is used automatically.</p>

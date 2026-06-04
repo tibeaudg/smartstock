@@ -11,14 +11,6 @@ import { buildIdempotencyKey } from './dedup';
 import { getAnalyticsContext } from './context';
 import type { AnalyticsEnvelope, AnalyticsSource, TrackOptions } from './types';
 
-let envelopeSequence = 0;
-
-/** Monotonic client timestamps so burst events remain orderable in the admin timeline */
-function nextEventTimestamp(): string {
-  envelopeSequence = (envelopeSequence + 1) % 100000;
-  return new Date(Date.now() + envelopeSequence).toISOString();
-}
-
 export function buildEnvelope(
   eventName: string,
   options: TrackOptions = {},
@@ -42,7 +34,7 @@ export function buildEnvelope(
   return {
     event: normalized,
     category,
-    timestamp: nextEventTimestamp(),
+    timestamp: new Date().toISOString(),
     anonymous_id: getOrCreateAnonymousId(),
     user_id: userId ?? null,
     session_id: sessionId,

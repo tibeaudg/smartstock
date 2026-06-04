@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { logAdminAction } from './adminAudit';
 import type { UserProfile, UserStats } from './types';
 import { plans } from './plans';
 
@@ -147,15 +148,37 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
   }
 }
 
-export async function blockUser(id: string, blocked: boolean) {
+export async function blockUser(
+  id: string,
+  blocked: boolean,
+  admin?: { id: string; email?: string },
+  reason?: string,
+) {
   const { error } = await supabase
     .from('profiles')
     .update({ blocked: !blocked })
     .eq('id', id);
   if (error) throw new Error(error.message);
+
+  if (admin?.id) {
+    await logAdminAction({
+      adminUserId: admin.id,
+      targetUserId: id,
+      action: blocked ? 'unblock' : 'block',
+      summary: blocked ? `Unblocked account` : `Blocked account`,
+      reason,
+      tableName: 'profiles',
+      newValues: { blocked: !blocked },
+      oldValues: { blocked },
+    });
+  }
 }
 
-export async function deleteUser(id: string) {
+export async function deleteUser(
+  id: string,
+  admin?: { id: string; email?: string },
+  reason?: string,
+) {
   const { error: branchUsersError } = await supabase
     .from('branch_users')
     .delete()
@@ -169,6 +192,17 @@ export async function deleteUser(id: string) {
     body: { user_id: id },
   });
   if (authError) throw new Error(authError.message);
+
+  if (admin?.id) {
+    await logAdminAction({
+      adminUserId: admin.id,
+      targetUserId: id,
+      action: 'delete_user',
+      summary: 'Deleted user account',
+      reason,
+      tableName: 'profiles',
+    });
+  }
 }
 
 export interface BranchOwnership {

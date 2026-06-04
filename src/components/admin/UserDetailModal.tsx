@@ -7,7 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calendar, Pause, LogIn, Shield, DollarSign, Database, Trash2, Mail, CheckCircle2, Clock, AlertCircle, Send, RefreshCw, StickyNote, Save, ChevronLeft, ChevronRight, KeyRound } from 'lucide-react';
 import type { UserPlanInfo } from '@/lib/admin/types';
 import type { UserAnalyticsSnapshot } from '@/hooks/useUserAnalyticsSnapshots';
+import { formatActivationPath } from '@/lib/admin/activationMetrics';
 import { formatMeaningfulInactivity } from '@/lib/admin/userActivity';
+import { logAdminAction } from '@/lib/admin/adminAudit';
 import { emailUser, extendTrial, impersonateUser, resetUserPassword } from '@/lib/admin/userAdminActions';
 import { UserActivityLogTab } from '@/components/admin/activity/UserActivityLogTab';
 import { useAuth } from '@/hooks/useAuth';
@@ -45,8 +47,8 @@ interface UserDetailModalProps {
   user: UserProfile | null;
   isOpen: boolean;
   onClose: () => void;
-  onBlock?: (userId: string, blocked: boolean) => void;
-  onDelete?: (userId: string) => void;
+  onBlock?: (userId: string, blocked: boolean, reason?: string) => void;
+  onDelete?: (userId: string, reason?: string) => void;
   currentUserId?: string;
   isBlockingPending?: boolean;
   deletingUserId?: string | null;
@@ -370,6 +372,11 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
   const handleSetPlan = async () => {
     if (!user || !selectedTierId) return;
+    const reason = window.prompt('Reason for plan override (required for audit log):');
+    if (!reason?.trim()) {
+      toast.error('A reason is required for billing changes');
+      return;
+    }
     setSettingPlan(true);
     try {
       const now = new Date().toISOString();
@@ -396,12 +403,17 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
         );
       if (error) throw error;
       const tierLabel = pricingTiers.find(t => t.id === selectedTierId)?.display_name ?? selectedTierId;
-      await supabase.from('audit_logs').insert({
-        user_id: user.id,
-        action: `ADMIN: Plan set to "${tierLabel}" (${selectedStatus}) by ${adminUser?.email ?? 'admin'}`,
-        table_name: 'user_subscriptions',
-        record_id: user.id,
-      });
+      if (adminUser?.id) {
+        await logAdminAction({
+          adminUserId: adminUser.id,
+          targetUserId: user.id,
+          action: 'plan_override',
+          summary: `Plan set to "${tierLabel}" (${selectedStatus})`,
+          reason: reason.trim(),
+          tableName: 'user_subscriptions',
+          newValues: { tier_id: selectedTierId, status: selectedStatus },
+        });
+      }
       toast.success('Plan updated successfully');
       queryClient.invalidateQueries({ queryKey: ['adminUserSubscription', user.id] });
       queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
@@ -473,16 +485,11 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     if (!user) return;
     setLoadingLoginAs(true);
     try {
-      const { data, error } = await supabase.functions.invoke('generate-magic-link', {
-        body: { user_id: user.id },
-      });
-      if (error) throw error;
-      if (data?.link) {
-        await navigator.clipboard.writeText(data.link);
-        toast.success('Magic link copied — open in a private/incognito window');
-      }
-    } catch {
-      toast.error('Impersonation requires the "generate-magic-link" edge function to be deployed');
+      await impersonateUser(
+        user.id,
+        user.email,
+        adminUser?.id ? { id: adminUser.id, email: adminUser.email ?? undefined } : undefined,
+      );
     } finally {
       setLoadingLoginAs(false);
     }
@@ -533,6 +540,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
       toast.success(`${stageLabel} email sent to ${user.email}`);
       queryClient.invalidateQueries({ queryKey: ['userLifecycleEmails', user.id] });
       queryClient.invalidateQueries({ queryKey: ['userEmailLogs', user.id] });
+      queryClient.invalidateQueries({ queryKey: ['userEmailHealth'] });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to send email');
     } finally {
@@ -783,8 +791,12 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" variant="outline" onClick={() => impersonateUser(user.id)}>
-              <LogIn className="w-3 h-3 mr-1" />
+            <Button size="sm" variant="outline" onClick={handleLoginAs} disabled={loadingLoginAs}>
+              {loadingLoginAs ? (
+                <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+              ) : (
+                <LogIn className="w-3 h-3 mr-1" />
+              )}
               Login as
             </Button>
             <Button size="sm" variant="outline" onClick={() => resetUserPassword(user.email)}>
@@ -809,12 +821,64 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => onBlock(user.id, !!user.blocked)}
+                onClick={() => {
+                  const action = user.blocked ? 'unblock' : 'block';
+                  const reason = window.prompt(`Reason to ${action} ${user.email} (required):`);
+                  if (!reason?.trim()) return;
+                  if (window.confirm(`${action === 'block' ? 'Block' : 'Unblock'} ${user.email}?`)) {
+                    onBlock(user.id, !!user.blocked, reason.trim());
+                  }
+                }}
                 disabled={isBlockingPending}
               >
                 <Shield className="w-3 h-3 mr-1" />
                 {user.blocked ? 'Unblock' : 'Block'}
               </Button>
+            )}
+            {onDelete && user.id !== currentUserId && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={deletingUserId === user.id}
+                    className="border-red-200 text-red-700 hover:bg-red-50"
+                  >
+                    {deletingUserId === user.id ? (
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-3 h-3 mr-1" />
+                    )}
+                    Delete
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete user</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Permanently delete {user.email} and associated data. This cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-red-600 hover:bg-red-700"
+                      onClick={() => {
+                        const reason = window.prompt('Reason for deletion (required for audit log):');
+                        if (!reason?.trim()) {
+                          toast.error('A reason is required');
+                          return;
+                        }
+                        if (window.confirm(`Delete ${user.email} permanently?`)) {
+                          onDelete(user.id, reason.trim());
+                        }
+                      }}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
         </DialogHeader>
@@ -851,8 +915,8 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                     <div>
                       <span className="text-slate-500 text-xs">Lifecycle</span>
                       <p className="font-medium">
-                        {analyticsSnapshot?.activated
-                          ? `Activated${analyticsSnapshot.activationMethod ? ` (${analyticsSnapshot.activationMethod})` : ''}`
+                        {analyticsSnapshot?.activatedWithin7d
+                          ? `Activated${analyticsSnapshot.activationMethod ? ` (${formatActivationPath(analyticsSnapshot.activationMethod)})` : ''}`
                           : analyticsSnapshot?.stuckOnboarding
                             ? 'Stuck onboarding'
                             : 'Not activated'}
@@ -978,72 +1042,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         {user.blocked ? 'Blocked' : 'Active'}
                       </Badge>
                     </div>
-
-                    {/* Block / Delete / Login As actions */}
-                    {(onBlock || onDelete) && (
-                      <div className="pt-3 border-t mt-3">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Actions</p>
-                        <div className="flex gap-2 flex-wrap">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={handleLoginAs}
-                            disabled={loadingLoginAs}
-                            className="border-slate-200 text-slate-700 hover:bg-slate-50"
-                          >
-                            {loadingLoginAs ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <LogIn className="w-3 h-3 mr-1" />}
-                            Login As
-                          </Button>
-                          {onBlock && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => onBlock(user.id, !!user.blocked)}
-                              disabled={isBlockingPending}
-                              className={user.blocked ? 'border-green-200 text-green-700 hover:bg-green-50' : 'border-amber-200 text-amber-700 hover:bg-amber-50'}
-                            >
-                              {isBlockingPending ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : null}
-                              {user.blocked ? 'Unblock User' : 'Block User'}
-                            </Button>
-                          )}
-                          {onDelete && user.id !== currentUserId && (
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  disabled={deletingUserId === user.id}
-                                  className="border-red-200 text-red-700 hover:bg-red-50"
-                                >
-                                  {deletingUserId === user.id ? (
-                                    <><Loader2 className="w-3 h-3 animate-spin mr-1" />Deleting...</>
-                                  ) : (
-                                    <><Trash2 className="w-3 h-3 mr-1" />Delete User</>
-                                  )}
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete User</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Are you sure you want to delete {user.email}? This action cannot be undone and will permanently delete the user profile and all associated data from the database.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    className="bg-red-600 hover:bg-red-700"
-                                    onClick={() => onDelete(user.id)}
-                                  >
-                                    Delete
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          )}
-                        </div>
-                      </div>
-                    )}
 
                     <div className="pt-3 border-t mt-3">
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Set Plan (Admin Override)</p>
@@ -1373,11 +1371,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                         Pause Subscription
                       </Button>
                     )}
-                    <Button size="sm" variant="outline" onClick={handleLoginAs} disabled={loadingLoginAs}
-                      className="border-slate-200 text-slate-700 hover:bg-slate-50 text-xs">
-                      {loadingLoginAs ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <LogIn className="w-3 h-3 mr-1" />}
-                      Login As
-                    </Button>
                   </div>
                 </div>
               ) : (
@@ -1528,7 +1521,21 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                     </CardHeader>
                     <CardContent className="space-y-2">
                       {LIFECYCLE_STAGES.map(stage => {
-                        const sent = lifecycleEmails.find(e => e.lifecycle_stage === stage.key);
+                        const lifecycleSent = lifecycleEmails.find(e => e.lifecycle_stage === stage.key);
+                        const logSent = userEmailLogs.find(
+                          l =>
+                            l.metadata?.lifecycle_stage === stage.key &&
+                            ['delivered', 'sent'].includes(l.status),
+                        );
+                        const sent = lifecycleSent ?? (logSent
+                          ? {
+                              id: logSent.id,
+                              lifecycle_stage: stage.key,
+                              status: 'sent' as const,
+                              sent_at: logSent.sent_at,
+                              error_message: null,
+                            }
+                          : undefined);
                         const eligibleDate = getLifecycleEligibleDate(stage.key, user.created_at, user.last_login);
                         const now = new Date();
                         const isEligible = !sent && eligibleDate && eligibleDate <= now;

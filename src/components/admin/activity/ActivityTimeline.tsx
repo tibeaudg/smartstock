@@ -26,7 +26,7 @@ function formatEventTime(iso: string, rangeEnd?: string): string {
     return `${format(start, 'PPpp')} – ${format(end, 'PPpp')}`;
   }
   const relative = formatDistanceToNow(start, { addSuffix: true });
-  const exact = format(start, 'PPpp.SSS');
+  const exact = format(start, 'PPpp');
   return `${relative} · ${exact}`;
 }
 

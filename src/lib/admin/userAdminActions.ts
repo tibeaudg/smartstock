@@ -1,7 +1,42 @@
 import { supabase } from '@/integrations/supabase/client';
+import { logAdminAction } from './adminAudit';
 import { toast } from 'sonner';
 
-export async function impersonateUser(userId: string): Promise<boolean> {
+const IMPERSONATION_KEY = 'sf_admin_impersonation';
+const IMPERSONATION_TTL_MS = 60 * 60 * 1000;
+
+export interface ImpersonationSession {
+  targetUserId: string;
+  targetEmail: string;
+  adminEmail?: string;
+  startedAt: string;
+  expiresAt: number;
+}
+
+export function getImpersonationSession(): ImpersonationSession | null {
+  try {
+    const raw = sessionStorage.getItem(IMPERSONATION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as ImpersonationSession;
+    if (Date.now() > parsed.expiresAt) {
+      sessionStorage.removeItem(IMPERSONATION_KEY);
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+export function clearImpersonationSession(): void {
+  sessionStorage.removeItem(IMPERSONATION_KEY);
+}
+
+export async function impersonateUser(
+  userId: string,
+  targetEmail: string,
+  admin?: { id: string; email?: string },
+): Promise<boolean> {
   try {
     const { data, error } = await supabase.functions.invoke('generate-magic-link', {
       body: { user_id: userId },
@@ -9,7 +44,27 @@ export async function impersonateUser(userId: string): Promise<boolean> {
     if (error) throw error;
     if (data?.link) {
       await navigator.clipboard.writeText(data.link);
-      toast.success('Magic link copied — open in a private/incognito window');
+      const session: ImpersonationSession = {
+        targetUserId: userId,
+        targetEmail,
+        adminEmail: admin?.email,
+        startedAt: new Date().toISOString(),
+        expiresAt: Date.now() + IMPERSONATION_TTL_MS,
+      };
+      sessionStorage.setItem(IMPERSONATION_KEY, JSON.stringify(session));
+
+      if (admin?.id) {
+        await logAdminAction({
+          adminUserId: admin.id,
+          targetUserId: userId,
+          action: 'impersonate',
+          summary: `Generated login-as link for ${targetEmail}`,
+          reason: 'Magic link copied for incognito session (1h window)',
+          tableName: 'profiles',
+        });
+      }
+
+      toast.success('Magic link copied — open in a private/incognito window (logged for 1 hour)');
       return true;
     }
     return false;

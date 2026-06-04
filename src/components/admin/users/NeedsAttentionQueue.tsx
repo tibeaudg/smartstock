@@ -16,6 +16,8 @@ interface NeedsAttentionQueueProps {
   items: AttentionQueueItem[];
   isLoading?: boolean;
   maxVisible?: number;
+  adminId?: string;
+  adminEmail?: string;
   onSelectUser: (userId: string) => void;
   onViewAll?: () => void;
 }
@@ -24,6 +26,8 @@ export function NeedsAttentionQueue({
   items,
   isLoading,
   maxVisible = 10,
+  adminId,
+  adminEmail,
   onSelectUser,
   onViewAll,
 }: NeedsAttentionQueueProps) {
@@ -100,7 +104,8 @@ export function NeedsAttentionQueue({
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8"
-                title="Email"
+                title="Send email"
+                aria-label={`Email ${item.email}`}
                 onClick={() => emailUser(item.email)}
               >
                 <Mail className="w-4 h-4" />
@@ -109,8 +114,15 @@ export function NeedsAttentionQueue({
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8"
-                title="Impersonate"
-                onClick={() => impersonateUser(item.userId)}
+                title="Login as user (copies magic link)"
+                aria-label={`Login as ${item.email}`}
+                onClick={() =>
+                  impersonateUser(
+                    item.userId,
+                    item.email,
+                    adminId ? { id: adminId, email: adminEmail } : undefined,
+                  )
+                }
               >
                 <UserCog className="w-4 h-4" />
               </Button>

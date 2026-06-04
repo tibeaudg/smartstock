@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { trackEvent } from '@/lib/events/trackEvent';
+import { shouldEmitLifecycleEvent } from '@/lib/analytics/lifecycle';
 import { useQueryClient } from '@tanstack/react-query';
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
@@ -132,11 +133,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               if (error) console.warn('[auth] failed to update last_login:', error);
             });
 
-          const createdAt = new Date(currentSession.user.created_at);
-          const isNewUser = (Date.now() - createdAt.getTime()) < 24 * 60 * 60 * 1000;
-          if (isNewUser) {
+          const userId = currentSession.user.id;
+          if (shouldEmitLifecycleEvent(userId, 'signup_completed')) {
             trackEvent('signup_completed', {
-              userId: currentSession.user.id,
+              userId,
               properties: { provider: currentSession.user.app_metadata?.provider ?? 'email' },
             });
             supabase.functions.invoke('trigger-lifecycle-emails', {
@@ -144,15 +144,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }).catch(err => console.warn('[auth] welcome email trigger failed:', err));
           }
 
-          if (currentSession.user.email_confirmed_at) {
+          if (
+            currentSession.user.email_confirmed_at &&
+            shouldEmitLifecycleEvent(userId, 'email_verified')
+          ) {
             trackEvent('email_verified', {
-              userId: currentSession.user.id,
+              userId,
               properties: { email: currentSession.user.email },
             });
           }
         }
 
-        if (event === 'USER_UPDATED' && currentSession?.user?.email_confirmed_at) {
+        if (
+          event === 'USER_UPDATED' &&
+          currentSession?.user?.email_confirmed_at &&
+          shouldEmitLifecycleEvent(currentSession.user.id, 'email_verified')
+        ) {
           trackEvent('email_verified', {
             userId: currentSession.user.id,
             properties: { email: currentSession.user.email },
@@ -197,10 +204,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         options: { data: { first_name: fn, last_name: ln } }
       });
       if (res.data.user) {
-        trackEvent('signup_started', {
-          userId: res.data.user.id,
-          properties: { email, role, referred_by: referredBy ?? null },
-        });
+        if (shouldEmitLifecycleEvent(res.data.user.id, 'signup_started')) {
+          trackEvent('signup_started', {
+            userId: res.data.user.id,
+            properties: { email, role, referred_by: referredBy ?? null },
+          });
+        }
         await supabase.from('profiles').upsert({
           id: res.data.user.id,
           email,
@@ -209,6 +218,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           role: role,
           ...(referredBy ? { referred_by: referredBy } : {}),
         });
+        if (res.data.session) {
+          supabase.functions.invoke('trigger-lifecycle-emails', {
+            body: { stage: 'welcome', selfTrigger: true },
+          }).catch(err => console.warn('[auth] welcome email trigger failed:', err));
+        }
       }
       return { error: res.error };
     }

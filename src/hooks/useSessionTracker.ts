@@ -9,6 +9,7 @@ import {
   clearSessionId,
   getLastSessionEnd,
   getOrCreateSessionId,
+  getSessionId,
   setLastSessionEnd,
 } from '@/lib/events/sessionStorage';
 
@@ -23,7 +24,9 @@ export function useSessionTracker() {
   useEffect(() => {
     if (!user?.id) return;
 
+    const hadSession = !!getSessionId();
     const sessionId = getOrCreateSessionId();
+    const isNewSession = !hadSession;
     sessionIdRef.current = sessionId;
     startTimeRef.current = Date.now();
     const branchIdVal = branchId;
@@ -37,37 +40,39 @@ export function useSessionTracker() {
       return;
     }
 
-    const lastEnd = getLastSessionEnd();
-    const isReturnVisit =
-      lastEnd !== null && Date.now() - lastEnd > RETURN_VISIT_GAP_MS;
+    if (isNewSession) {
+      const lastEnd = getLastSessionEnd();
+      const isReturnVisit =
+        lastEnd !== null && Date.now() - lastEnd > RETURN_VISIT_GAP_MS;
 
-    const deviceType = detectDeviceType();
+      const deviceType = detectDeviceType();
 
-    supabase.from('sessions').insert({
-      session_id: sessionId,
-      user_id: user.id,
-      branch_id: branchIdVal,
-      start_time: new Date().toISOString(),
-      entry_event: entryPath,
-      device_type: deviceType,
-    }).then(() => {});
+      supabase.from('sessions').insert({
+        session_id: sessionId,
+        user_id: user.id,
+        branch_id: branchIdVal,
+        start_time: new Date().toISOString(),
+        entry_event: entryPath,
+        device_type: deviceType,
+      }).then(() => {});
 
-    trackEvent('session_started', {
-      userId: user.id,
-      branchId: branchIdVal,
-      sessionId,
-      properties: { entry_path: entryPath },
-    });
-
-    if (isReturnVisit) {
-      trackEvent('return_visit', {
+      trackEvent('session_started', {
         userId: user.id,
         branchId: branchIdVal,
         sessionId,
-        properties: {
-          gap_hours: Math.round((Date.now() - (lastEnd ?? 0)) / 3600000),
-        },
+        properties: { entry_path: entryPath },
       });
+
+      if (isReturnVisit) {
+        trackEvent('return_visit', {
+          userId: user.id,
+          branchId: branchIdVal,
+          sessionId,
+          properties: {
+            gap_hours: Math.round((Date.now() - (lastEnd ?? 0)) / 3600000),
+          },
+        });
+      }
     }
 
     const endSession = () => {

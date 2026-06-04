@@ -268,6 +268,7 @@ export function deriveActivationStatus(
   const hasCoreAction = normalized.some(
     (e) =>
       CORE_ACTION_EVENTS.includes(e.normalized_name as AnalyticsEventName) &&
+      new Date(e.timestamp).getTime() >= created.getTime() &&
       new Date(e.timestamp).getTime() <= sevenDaysAfter,
   );
 

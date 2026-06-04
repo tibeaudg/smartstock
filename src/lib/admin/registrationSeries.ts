@@ -90,11 +90,13 @@ function buildRawBuckets(
         else if (c === 'paid') paid++;
         else free++;
       }
-      const label = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const weekEndLabel = weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const weekStartLabel = weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const rangeLabel = `${weekStartLabel} – ${weekEndLabel}`;
       const showLabel = i % 3 === 0 || i === 11;
       return {
-        label: showLabel ? label : '',
-        tooltip: `${label} – ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
+        label: showLabel ? rangeLabel : '',
+        tooltip: rangeLabel,
         trial,
         paid,
         free,

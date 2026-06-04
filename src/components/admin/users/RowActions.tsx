@@ -19,11 +19,12 @@ interface RowActionsProps {
   userId: string;
   email: string;
   plan: UserPlanInfo;
+  adminId?: string;
   adminEmail?: string;
   onActionComplete?: () => void;
 }
 
-export function RowActions({ userId, email, plan, adminEmail, onActionComplete }: RowActionsProps) {
+export function RowActions({ userId, email, plan, adminId, adminEmail, onActionComplete }: RowActionsProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
   const run = async (key: string, fn: () => Promise<boolean | void>) => {
@@ -53,7 +54,11 @@ export function RowActions({ userId, email, plan, adminEmail, onActionComplete }
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-        <DropdownMenuItem onClick={() => run('imp', () => impersonateUser(userId))}>
+        <DropdownMenuItem
+          onClick={() =>
+            run('imp', () => impersonateUser(userId, email, adminId ? { id: adminId, email: adminEmail } : undefined))
+          }
+        >
           <UserCog className="w-4 h-4 mr-2" />
           Impersonate
         </DropdownMenuItem>

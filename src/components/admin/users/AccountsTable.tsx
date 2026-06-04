@@ -15,7 +15,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatSurface } from '@/lib/analytics/display';
+import { formatActivationPath } from '@/lib/admin/activationMetrics';
 import type { UserAnalyticsSnapshot } from '@/hooks/useUserAnalyticsSnapshots';
 import { getPlanForUser } from '@/lib/admin/plans';
 import {
@@ -25,6 +25,11 @@ import {
   isCreatedToday,
   shouldHighlightInactivity,
 } from '@/lib/admin/userActivity';
+import {
+  formatEmailHealthTooltip,
+  hasEmailDeliveryIssues,
+  type UserEmailHealth,
+} from '@/lib/admin/emailHealth';
 import type {
   SortColumn,
   SortDirection,
@@ -43,6 +48,7 @@ interface AccountsTableProps {
   userStats: UserStats[];
   subscriptionPlanMap: Record<string, UserPlanInfo>;
   analyticsSnapshots: Map<string, UserAnalyticsSnapshot>;
+  emailHealthByUserId: Map<string, UserEmailHealth>;
   subUsersByParent: Record<string, UserProfile[]>;
   expandedUserIds: Set<string>;
   selectedIds: Set<string>;
@@ -54,6 +60,7 @@ interface AccountsTableProps {
   currentPage: number;
   pageSize: number;
   totalPages: number;
+  adminId?: string;
   adminEmail?: string;
   onSort: (column: SortColumn) => void;
   onSelectUser: (user: UserProfile) => void;
@@ -79,6 +86,10 @@ function InactivityLegend() {
         <AlertTriangle className="w-3 h-3 text-red-500" />
         High-risk idle
       </span>
+      <span className="inline-flex items-center gap-1">
+        <AlertTriangle className="w-3 h-3 text-orange-600" />
+        Email bounced / failed
+      </span>
     </p>
   );
 }
@@ -91,6 +102,7 @@ export function AccountsTable({
   userStats,
   subscriptionPlanMap,
   analyticsSnapshots,
+  emailHealthByUserId,
   subUsersByParent,
   expandedUserIds,
   selectedIds,
@@ -102,6 +114,7 @@ export function AccountsTable({
   currentPage,
   pageSize,
   totalPages,
+  adminId,
   adminEmail,
   onSort,
   onSelectUser,
@@ -219,27 +232,43 @@ export function AccountsTable({
             const stats = userStats.find((s) => s.userId === user.id);
             const activity = calculateActivityStatus(user.last_login ?? null, user.created_at);
             const planInfo = getPlanForUser(subscriptionPlanMap, user.id);
+            const emailHealth = emailHealthByUserId.get(user.id);
+            const emailIssue = hasEmailDeliveryIssues(emailHealth);
             return (
               <Card
                 key={user.id}
                 className={`cursor-pointer hover:bg-gray-50 group ${
-                  planInfo.missingPaymentInfo
-                    ? 'border-amber-300'
-                    : planInfo.subStatus === 'past_due'
-                      ? 'border-red-300'
-                      : ''
+                  emailIssue
+                    ? 'border-orange-300'
+                    : planInfo.missingPaymentInfo
+                      ? 'border-amber-300'
+                      : planInfo.subStatus === 'past_due'
+                        ? 'border-red-300'
+                        : ''
                 }`}
                 onClick={() => onSelectUser(user)}
               >
                 <CardContent className="p-4 flex justify-between gap-2">
                   <div>
-                    <p className="font-semibold text-sm">{user.email}</p>
+                    <p className="font-semibold text-sm flex flex-wrap items-center gap-1">
+                      {user.email}
+                      {emailIssue && emailHealth && (
+                        <span
+                          className="inline-flex items-center gap-0.5 px-1 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-800"
+                          title={formatEmailHealthTooltip(emailHealth)}
+                        >
+                          <AlertTriangle className="w-3 h-3" />
+                          Email issue
+                        </span>
+                      )}
+                    </p>
                     <p className="text-xs text-slate-500">{planInfo.displayName}</p>
                   </div>
                   <RowActions
                     userId={user.id}
                     email={user.email}
                     plan={planInfo}
+                    adminId={adminId}
                     adminEmail={adminEmail}
                     onActionComplete={onInvalidate}
                   />
@@ -278,8 +307,7 @@ export function AccountsTable({
                   Inactivity <SortIcon column="inactivity" />
                 </div>
               </th>
-              <th className="px-4 py-2">Activated</th>
-              <th className="px-4 py-2">Path</th>
+              <th className="px-4 py-2">Activation</th>
               <th className="px-4 py-2 cursor-pointer hover:bg-slate-100" onClick={() => onSort('plan')}>
                 <div className="flex items-center gap-1">
                   Plan <SortIcon column="plan" />
@@ -325,19 +353,23 @@ export function AccountsTable({
                 stats?.productCount || 0,
               );
               const planInfo = getPlanForUser(subscriptionPlanMap, user.id);
+              const emailHealth = emailHealthByUserId.get(user.id);
+              const emailIssue = hasEmailDeliveryIssues(emailHealth);
               const rowSubUsers = subUsersByParent[user.id] || [];
               const isExpanded = expandedUserIds.has(user.id);
               return (
                 <React.Fragment key={user.id}>
                   <tr
                     className={`group border-b hover:bg-slate-50 cursor-pointer ${
-                      planInfo.missingPaymentInfo
-                        ? 'bg-amber-50/30'
-                        : planInfo.subStatus === 'past_due' || planInfo.hasFailedInvoice
-                          ? 'bg-red-50/50'
-                          : loginActivity.isActive
-                            ? 'bg-green-50/30'
-                            : ''
+                      emailIssue
+                        ? 'bg-orange-50/40'
+                        : planInfo.missingPaymentInfo
+                          ? 'bg-amber-50/30'
+                          : planInfo.subStatus === 'past_due' || planInfo.hasFailedInvoice
+                            ? 'bg-red-50/50'
+                            : loginActivity.isActive
+                              ? 'bg-green-50/30'
+                              : ''
                     }`}
                     onClick={() => onSelectUser(user)}
                   >
@@ -355,6 +387,15 @@ export function AccountsTable({
                           <Circle className="w-2 h-2 fill-green-500 text-green-500" />
                         )}
                         <span>{user.email}</span>
+                        {emailIssue && emailHealth && (
+                          <span
+                            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-800"
+                            title={formatEmailHealthTooltip(emailHealth)}
+                          >
+                            <AlertTriangle className="w-3 h-3 shrink-0" />
+                            Email issue
+                          </span>
+                        )}
                         {isCreatedToday(user.created_at) && (
                           <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">
                             New
@@ -387,17 +428,14 @@ export function AccountsTable({
                       )}
                     </td>
                     <td className="px-4 py-2">
-                      {snap?.activated ? (
+                      {snap?.activatedWithin7d ? (
                         <span className="inline-flex items-center gap-1 text-green-700 text-xs font-semibold">
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          {snap.activationMethod ?? 'Yes'}
+                          {formatActivationPath(snap.activationMethod) ?? 'Activated'}
                         </span>
                       ) : (
                         <span className="text-xs text-slate-400">—</span>
                       )}
-                    </td>
-                    <td className="px-4 py-2 text-xs text-slate-600">
-                      {snap?.lastSurface ? formatSurface(snap.lastSurface) : '—'}
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -442,6 +480,7 @@ export function AccountsTable({
                         userId={user.id}
                         email={user.email}
                         plan={planInfo}
+                        adminId={adminId}
                         adminEmail={adminEmail}
                         onActionComplete={onInvalidate}
                       />
@@ -454,7 +493,7 @@ export function AccountsTable({
                         className="border-b bg-blue-50/40 cursor-pointer"
                         onClick={() => onSelectUser(subUser)}
                       >
-                        <td colSpan={13} className="px-4 py-2 pl-12 text-sm text-slate-700">
+                        <td colSpan={12} className="px-4 py-2 pl-12 text-sm text-slate-700">
                           └ {subUser.email}
                           <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded bg-slate-200">Sub-user</span>
                         </td>

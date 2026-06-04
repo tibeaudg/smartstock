@@ -3,19 +3,32 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 
 export interface ProductHealthSummary {
-  activation_rate: number;
-  import_failure_rate_7d: number;
+  activation_rate: number | null;
+  activation_signup_count: number;
+  import_failure_rate_7d: number | null;
+  import_started_7d: number;
   error_events_7d: number;
+  events_in_period: number;
   top_client_errors: Array<{ code: string; cnt: number }>;
 }
 
 function parseProductHealth(data: Json | null): ProductHealthSummary {
   const d = (data ?? {}) as Record<string, unknown>;
   const top = Array.isArray(d.top_client_errors) ? d.top_client_errors : [];
+  const activationRaw = d.activation_rate;
   return {
-    activation_rate: Number(d.activation_rate ?? 0),
-    import_failure_rate_7d: Number(d.import_failure_rate_7d ?? 0),
+    activation_rate:
+      activationRaw === null || activationRaw === undefined
+        ? null
+        : Number(activationRaw),
+    activation_signup_count: Number(d.activation_signup_count ?? 0),
+    import_failure_rate_7d:
+      d.import_failure_rate_7d === null || d.import_failure_rate_7d === undefined
+        ? null
+        : Number(d.import_failure_rate_7d),
+    import_started_7d: Number(d.import_started_7d ?? 0),
     error_events_7d: Number(d.error_events_7d ?? 0),
+    events_in_period: Number(d.events_in_period ?? 0),
     top_client_errors: top.map((row) => {
       const r = row as Record<string, unknown>;
       return { code: String(r.code ?? 'unknown'), cnt: Number(r.cnt ?? 0) };

@@ -86,33 +86,39 @@ export type Database = {
       audit_logs: {
         Row: {
           action: string
+          admin_user_id: string | null
           branch_id: string | null
           created_at: string
           id: string
           new_values: Json | null
           old_values: Json | null
+          reason: string | null
           record_id: string | null
           table_name: string
           user_id: string | null
         }
         Insert: {
           action: string
+          admin_user_id?: string | null
           branch_id?: string | null
           created_at?: string
           id?: string
           new_values?: Json | null
           old_values?: Json | null
+          reason?: string | null
           record_id?: string | null
           table_name: string
           user_id?: string | null
         }
         Update: {
           action?: string
+          admin_user_id?: string | null
           branch_id?: string | null
           created_at?: string
           id?: string
           new_values?: Json | null
           old_values?: Json | null
+          reason?: string | null
           record_id?: string | null
           table_name?: string
           user_id?: string | null

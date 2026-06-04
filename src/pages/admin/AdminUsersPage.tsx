@@ -36,9 +36,11 @@ import {
 } from '@/lib/admin/data';
 import { fetchUserSubscriptionPlans, getPlanForUser } from '@/lib/admin/plans';
 import { computePulseMetrics, buildMetricDeltas } from '@/lib/admin/pulseMetrics';
+import { computeActivationRate7d } from '@/lib/admin/activationMetrics';
 import { matchesQuickFilter } from '@/lib/admin/userSegments';
 import { isChurnRisk } from '@/lib/admin/userSegments';
 import { calculateActivityStatus } from '@/lib/admin/userActivity';
+import { fetchUserEmailHealthMap } from '@/lib/admin/emailHealth';
 import type {
   ChartTimeRange,
   QuickFilter,
@@ -91,6 +93,12 @@ export default function AdminUsersPage() {
   const { data: subscriptionPlanMap = {} } = useQuery({
     queryKey: ['userSubscriptionPlans'],
     queryFn: fetchUserSubscriptionPlans,
+  });
+
+  const { data: emailHealthByUserId = new Map() } = useQuery({
+    queryKey: ['userEmailHealth'],
+    queryFn: fetchUserEmailHealthMap,
+    staleTime: 60_000,
   });
 
   const { data: branchOwnership = { ownerIds: new Set<string>(), subUserParentMap: {} } } =
@@ -148,21 +156,32 @@ export default function AdminUsersPage() {
     [ownerUsers, analyticsSnapshots],
   );
 
+  const cohortActivation = useMemo(() => {
+    const from = Date.now() - 7 * 86400000;
+    const to = Date.now();
+    return computeActivationRate7d(ownerUsers, analyticsSnapshots, from, to);
+  }, [ownerUsers, analyticsSnapshots]);
+
   const adminAlerts = useMemo(
     () =>
       deriveAdminAlerts({
         metrics: pulseMetrics,
         churnRiskCount,
         stuckOnboardingCount,
-        importFailureRate7d: productHealth?.import_failure_rate_7d,
-        errorEvents7d: productHealth?.error_events_7d,
+        importFailureRate7d:
+          productHealth?.import_started_7d === 0
+            ? undefined
+            : productHealth?.import_failure_rate_7d ?? undefined,
+        errorEvents7d:
+          productHealth?.events_in_period === 0 ? undefined : productHealth?.error_events_7d,
         dismissedIds: dismissedAlertIds,
       }),
     [pulseMetrics, churnRiskCount, stuckOnboardingCount, productHealth, dismissedAlertIds],
   );
 
   const blockMutation = useMutation({
-    mutationFn: ({ id, blocked }: { id: string; blocked: boolean }) => blockUser(id, blocked),
+    mutationFn: ({ id, blocked, reason }: { id: string; blocked: boolean; reason?: string }) =>
+      blockUser(id, blocked, currentUser ? { id: currentUser.id, email: currentUser.email } : undefined, reason),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
       setSelectedUser((prev) =>
@@ -172,7 +191,8 @@ export default function AdminUsersPage() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteUser(id),
+    mutationFn: ({ id, reason }: { id: string; reason?: string }) =>
+      deleteUser(id, currentUser ? { id: currentUser.id, email: currentUser.email } : undefined, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['userProfiles'] });
       queryClient.invalidateQueries({ queryKey: ['userSubscriptionPlans'] });
@@ -546,6 +566,8 @@ export default function AdminUsersPage() {
           <NeedsAttentionQueue
             items={attentionItems}
             isLoading={loadingUsers || loadingSnapshots}
+            adminId={currentUser?.id}
+            adminEmail={currentUser?.email}
             onSelectUser={(id) => {
               const u = users.find((x) => x.id === id);
               if (u) setSelectedUser(u);
@@ -622,26 +644,54 @@ export default function AdminUsersPage() {
                 <MetricCard
                   icon={Target}
                   label="Activation rate (7d)"
-                  description="Share of new signups with a core action within 7 days."
-                  value={loadingProductHealth ? '—' : `${productHealth?.activation_rate ?? 0}%`}
-                  isLoading={loadingProductHealth}
+                  description={
+                    cohortActivation.signupCount > 0
+                      ? `${cohortActivation.activatedCount} of ${cohortActivation.signupCount} new signups activated (matches table).`
+                      : 'No signups in the last 7 days.'
+                  }
+                  value={
+                    loadingSnapshots
+                      ? '—'
+                      : cohortActivation.signupCount === 0
+                        ? 'No signups'
+                        : `${cohortActivation.rate ?? 0}%`
+                  }
+                  isLoading={loadingSnapshots}
                 />
                 <MetricCard
                   icon={Upload}
                   label="Import failure rate"
-                  description="Failed imports divided by started imports (last 7 days)."
-                  value={loadingProductHealth ? '—' : `${productHealth?.import_failure_rate_7d ?? 0}%`}
+                  description={
+                    productHealth?.import_started_7d === 0
+                      ? 'No import attempts recorded in the last 7 days.'
+                      : 'Failed imports divided by started imports (last 7 days).'
+                  }
+                  value={
+                    loadingProductHealth
+                      ? '—'
+                      : productHealth?.import_started_7d === 0
+                        ? 'No data'
+                        : `${productHealth?.import_failure_rate_7d ?? 0}%`
+                  }
                   isLoading={loadingProductHealth}
                 />
                 <MetricCard
                   icon={AlertTriangle}
                   label="Client errors (7d)"
                   description={
-                    productHealth?.top_client_errors?.[0]
-                      ? `Top: ${productHealth.top_client_errors[0].code} (${productHealth.top_client_errors[0].cnt})`
-                      : 'error_captured and api_request_failed events'
+                    productHealth?.events_in_period === 0
+                      ? 'No product telemetry in this period — zeros may mean instrumentation, not health.'
+                      : productHealth?.top_client_errors?.[0]
+                        ? `Top issue: ${productHealth.top_client_errors[0].code} (${productHealth.top_client_errors[0].cnt})`
+                        : 'API and client-side errors in the last 7 days.'
                   }
-                  value={loadingProductHealth ? '—' : productHealth?.error_events_7d ?? 0}
+                  value={
+                    loadingProductHealth
+                      ? '—'
+                      : productHealth?.events_in_period === 0
+                        ? 'No telemetry'
+                        : productHealth?.error_events_7d ?? 0
+                  }
                   isLoading={loadingProductHealth}
                 />
               </div>
@@ -667,6 +717,7 @@ export default function AdminUsersPage() {
                 userStats={userStats}
                 subscriptionPlanMap={subscriptionPlanMap}
                 analyticsSnapshots={analyticsSnapshots}
+                emailHealthByUserId={emailHealthByUserId}
                 subUsersByParent={subUsersByParent}
                 expandedUserIds={expandedUserIds}
                 selectedIds={selectedIds}
@@ -678,6 +729,7 @@ export default function AdminUsersPage() {
                 currentPage={currentPage}
                 pageSize={pageSize}
                 totalPages={totalPages}
+                adminId={currentUser?.id}
                 adminEmail={currentUser?.email}
                 onSort={handleSort}
                 onSelectUser={setSelectedUser}
@@ -701,9 +753,9 @@ export default function AdminUsersPage() {
           isOpen={!!selectedUser}
           onClose={() => setSelectedUser(null)}
           onBlock={(id, blocked) => blockMutation.mutate({ id, blocked })}
-          onDelete={(id) => {
+          onDelete={(id, reason) => {
             setDeletingUserId(id);
-            deleteMutation.mutate(id);
+            deleteMutation.mutate({ id, reason });
           }}
           currentUserId={currentUser?.id}
           isBlockingPending={blockMutation.isPending}
