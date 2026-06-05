@@ -109,6 +109,8 @@ export interface PulseMetricValues {
   totalUsers: number;
   newUsersToday: number;
   newUsersThisWeek: number;
+  newUsersYesterday: number;
+  newUsersPriorWeek: number;
   activeTrials: number;
   trialsExpiringSoon: number;
   activePayingCustomers: number;

@@ -61,7 +61,7 @@ function calculateUserLicenseCost(
   return billableProducts * plan.pricePerProduct;
 }
 
-export async function fetchUserStats(userId: string): Promise<UserStats> {
+export async function fetchUserStats(userId: string, selectedPlan?: string | null): Promise<UserStats> {
   try {
     const result = await (supabase.rpc as (name: string, args: { admin_id: string }) => ReturnType<typeof supabase.rpc>)(
       'get_admin_branches',
@@ -170,17 +170,25 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
       statsLastUpdated: new Date().toISOString(),
     };
 
-    const { data: userData } = await supabase
-      .from('profiles')
-      .select('selected_plan')
-      .eq('id', userId)
-      .maybeSingle();
-    if (userData) {
-      stats.licenseCost = calculateUserLicenseCost(userData.selected_plan, {
+    if (selectedPlan !== undefined) {
+      stats.licenseCost = calculateUserLicenseCost(selectedPlan, {
         productCount: stats.productCount,
         branchCount: stats.branchCount,
         linkedUserCount: stats.linkedUserCount,
       });
+    } else {
+      const { data: userData } = await supabase
+        .from('profiles')
+        .select('selected_plan')
+        .eq('id', userId)
+        .maybeSingle();
+      if (userData) {
+        stats.licenseCost = calculateUserLicenseCost(userData.selected_plan, {
+          productCount: stats.productCount,
+          branchCount: stats.branchCount,
+          linkedUserCount: stats.linkedUserCount,
+        });
+      }
     }
 
     return stats;
@@ -270,12 +278,34 @@ export interface BranchOwnership {
 }
 
 export async function fetchBranchOwnership(): Promise<BranchOwnership> {
-  const [branchesRes, branchUsersRes] = await Promise.all([
-    supabase.from('branches').select('id, user_id'),
-    supabase.from('branch_users').select('user_id, branch_id'),
-  ]);
-  const branches = (branchesRes.data || []) as { id: string; user_id: string }[];
-  const branchUsers = (branchUsersRes.data || []) as { user_id: string; branch_id: string }[];
+  const batchSize = 1000;
+
+  const allBranches: { id: string; user_id: string }[] = [];
+  for (let page = 0; ; page++) {
+    const { data, error } = await supabase
+      .from('branches')
+      .select('id, user_id')
+      .range(page * batchSize, (page + 1) * batchSize - 1);
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    allBranches.push(...(data as { id: string; user_id: string }[]));
+    if (data.length < batchSize) break;
+  }
+
+  const allBranchUsers: { user_id: string; branch_id: string }[] = [];
+  for (let page = 0; ; page++) {
+    const { data, error } = await supabase
+      .from('branch_users')
+      .select('user_id, branch_id')
+      .range(page * batchSize, (page + 1) * batchSize - 1);
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    allBranchUsers.push(...(data as { user_id: string; branch_id: string }[]));
+    if (data.length < batchSize) break;
+  }
+
+  const branches = allBranches;
+  const branchUsers = allBranchUsers;
 
   const branchOwnerMap: Record<string, string> = {};
   const ownerIds = new Set<string>();

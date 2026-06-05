@@ -70,7 +70,6 @@ export default function AdminUsersPage() {
   const [quickFilter, setQuickFilter] = useState<QuickFilter>('all');
   const [planFilter, setPlanFilter] = useState<PlanFilter>('all');
   const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
-  const [userIdsWithRecentErrors, setUserIdsWithRecentErrors] = useState<Set<string>>(new Set());
   const [pageSize, setPageSize] = useState(50);
   const [currentPage, setCurrentPage] = useState(0);
   const [expandedUserIds, setExpandedUserIds] = useState<Set<string>>(new Set());
@@ -95,6 +94,12 @@ export default function AdminUsersPage() {
     queryFn: fetchUserSubscriptionPlans,
   });
 
+  const { data: userIdsWithRecentErrors = new Set<string>() } = useQuery({
+    queryKey: ['userIdsWithRecentErrors'],
+    queryFn: fetchUserIdsWithRecentErrors,
+    staleTime: 60_000,
+  });
+
   const { data: emailHealthByUserId = new Map() } = useQuery({
     queryKey: ['userEmailHealth'],
     queryFn: fetchUserEmailHealthMap,
@@ -117,11 +122,13 @@ export default function AdminUsersPage() {
   const { data: productHealth, isLoading: loadingProductHealth, isError: productHealthError } =
     useOwnerProductHealth();
 
+  const analyticsUsers = useMemo(
+    () => ownerUsers.map((u) => ({ id: u.id, created_at: u.created_at })),
+    [ownerUsers],
+  );
+
   const { snapshots: analyticsSnapshots, isLoading: loadingSnapshots } =
-    useUserAnalyticsSnapshots(
-      ownerUsers.map((u) => ({ id: u.id, created_at: u.created_at })),
-      ownerUsers.length > 0,
-    );
+    useUserAnalyticsSnapshots(analyticsUsers, ownerUsers.length > 0);
 
   const pulseMetrics = useMemo(
     () => computePulseMetrics(users, subscriptionPlanMap, subUserParentMap),
@@ -418,7 +425,7 @@ export default function AdminUsersPage() {
     (async () => {
       setLoadingStats(true);
       try {
-        const stats = await Promise.all(usersOnPage.map((u) => fetchUserStats(u.id)));
+        const stats = await Promise.all(usersOnPage.map((u) => fetchUserStats(u.id, u.selected_plan)));
         if (!cancelled) setUserStats(stats);
       } catch {
         if (!cancelled) setUserStats([]);
@@ -430,10 +437,6 @@ export default function AdminUsersPage() {
       cancelled = true;
     };
   }, [paginatedUserIds, users]);
-
-  useEffect(() => {
-    fetchUserIdsWithRecentErrors().then(setUserIdsWithRecentErrors);
-  }, [users]);
 
   useEffect(() => {
     setCurrentPage(0);

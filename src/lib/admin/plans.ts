@@ -49,28 +49,29 @@ export function getPlanForUser(planMap: Record<string, UserPlanInfo>, userId: st
 }
 
 export async function fetchUserSubscriptionPlans(): Promise<Record<string, UserPlanInfo>> {
-  const [subsResult, failedInvoicesResult] = await Promise.all([
+  const [subsResult, failedInvoicesResult, profilesResult] = await Promise.all([
     supabase
       .from('user_subscriptions')
       .select('user_id, status, tier_id, end_date, trial_end_date, start_date'),
     supabase.from('invoices').select('user_id').eq('status', 'failed'),
+    supabase
+      .from('profiles')
+      .select('id, stripe_customer_id')
+      .not('stripe_customer_id', 'is', null),
   ]);
 
   if (subsResult.error) {
     console.error('Error fetching user subscriptions:', subsResult.error);
     return {};
   }
+  if (profilesResult.error) console.error('Error fetching profile payment info:', profilesResult.error);
 
   const subs = subsResult.data || [];
   const failedUserIds = new Set(
     (failedInvoicesResult.data || []).map((r: { user_id: string }) => r.user_id),
   );
 
-  const userIds = [...new Set(subs.map((s) => s.user_id).filter(Boolean))];
-  const { data: profileData, error: profileError } = userIds.length
-    ? await supabase.from('profiles').select('id, stripe_customer_id').in('id', userIds)
-    : { data: [] as Array<{ id: string; stripe_customer_id: string | null }>, error: null };
-  if (profileError) console.error('Error fetching profile payment info:', profileError);
+  const profileData = profilesResult.data as Array<{ id: string; stripe_customer_id: string | null }> | null;
 
   const stripeCustomerMap = new Map(
     (profileData || []).map((p: { id: string; stripe_customer_id: string | null }) => [

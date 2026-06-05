@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { CORE_ACTION_EVENTS } from '@/lib/analytics/catalog';
 import {
@@ -141,9 +142,13 @@ export function useUserAnalyticsSnapshots(
     staleTime: 3 * 60 * 1000,
   });
 
-  const snapshots = query.data
-    ? buildSnapshotsFromEvents(query.data, users)
-    : new Map<string, UserAnalyticsSnapshot>();
+  const snapshots = useMemo(
+    () =>
+      query.data
+        ? buildSnapshotsFromEvents(query.data, users)
+        : new Map<string, UserAnalyticsSnapshot>(),
+    [query.data, users],
+  );
 
   return {
     snapshots,

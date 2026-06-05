@@ -55,6 +55,8 @@ export function computePulseMetrics(
     totalUsers: ownerUsers.length,
     newUsersToday: stats.newUsersToday,
     newUsersThisWeek: stats.newUsersThisWeek,
+    newUsersYesterday: stats.newUsersYesterday,
+    newUsersPriorWeek: stats.newUsersPriorWeek,
     activeTrials,
     trialsExpiringSoon,
     activePayingCustomers,
@@ -77,10 +79,9 @@ export function buildMetricDeltas(
   mrrPartial: MetricDelta;
 } {
   const ownerUsers = users.filter((u) => !subUserParentMap[u.id] && u.is_owner !== true);
-  const stats = calculateUserStats(ownerUsers);
 
-  const newTodayDelta = stats.newUsersToday - stats.newUsersYesterday;
-  const newWeekDelta = stats.newUsersThisWeek - stats.newUsersPriorWeek;
+  const newTodayDelta = metrics.newUsersToday - metrics.newUsersYesterday;
+  const newWeekDelta = metrics.newUsersThisWeek - metrics.newUsersPriorWeek;
 
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
