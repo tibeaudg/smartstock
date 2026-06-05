@@ -20,6 +20,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
+import { emitActivationOnce } from '@/lib/analytics';
 
 interface ProductFormData {
   name: string;
@@ -503,10 +504,14 @@ export default function ScanPage() {
       });
       setShowProductForm(false);
       
-      track('product_created', 'scan', { method: 'scan', is_first: wasFirstProduct && transactionType === 'incoming' });
-      if (transactionType === 'incoming' && wasFirstProduct) {
-        track('first_core_action', 'scan', { method: 'scan' });
-        track('onboarding_completed', 'scan', { method: 'scan' });
+      track('product_created', undefined, {
+        method: 'scan',
+        is_first: wasFirstProduct && transactionType === 'incoming',
+      });
+      if (transactionType === 'incoming' && wasFirstProduct && user?.id) {
+        emitActivationOnce(user.id, (events) => {
+          events.forEach((e) => track(e.name, undefined, { ...e.properties, method: 'scan' }));
+        }, { method: 'scan' });
         toast.success('Your inventory control center is live');
         navigate('/dashboard');
       } else {

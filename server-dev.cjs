@@ -4,7 +4,9 @@ const dotenv = require('dotenv');
 
 // Security middleware
 const { csrfTokenGenerator, csrfValidator } = require('./api/utils/csrf.js');
+const { requestIdMiddleware } = require('./api/utils/requestLogger.js');
 const { verifyStripeWebhook } = require('./api/utils/webhookVerification.js');
+const { getPostHogClient } = require('./api/utils/posthog.js');
 
 // Load environment variables
 dotenv.config();
@@ -105,12 +107,14 @@ const rateLimiter = (req, res, next) => {
   next();
 };
 
+app.use(requestIdMiddleware);
+
 // Middleware
 app.use(cors({
   origin: ['http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token', 'X-Request-Id', 'X-PostHog-Distinct-Id', 'X-PostHog-Session-Id']
 }));
 
 // Security: Parse JSON with size limits, but preserve raw body for webhook verification
@@ -164,6 +168,24 @@ app.post('/api/visitor-chat', (req, res) => {
 });
 
 app.post('/api/contact', (req, res) => {
+  const originalJson = res.json.bind(res);
+  res.json = (body) => {
+    if (body && body.ok) {
+      const posthog = getPostHogClient();
+      if (posthog) {
+        const distinctId = req.headers['x-posthog-distinct-id'] || 'anonymous';
+        posthog.capture({
+          distinctId,
+          event: 'contact_submitted',
+          properties: {
+            subject: req.body && req.body.subject ? req.body.subject : null,
+            request_id: req.requestId || null,
+          },
+        });
+      }
+    }
+    return originalJson(body);
+  };
   contactHandler(req, res);
 });
 
@@ -188,6 +210,16 @@ app.get('/api/health', (req, res) => {
 
 // Security: Error sanitization middleware to prevent information leakage
 app.use((err, req, res, next) => {
+  const posthog = getPostHogClient();
+  if (posthog) {
+    const distinctId = req.headers['x-posthog-distinct-id'] || 'anonymous';
+    posthog.captureException(err, distinctId, {
+      endpoint: req.path,
+      method: req.method,
+      request_id: req.requestId || null,
+    });
+  }
+
   // Security: Log full error details server-side only (sanitize PII)
   const sanitizedPath = req.path.replace(/\/[^\/]+\/[^\/]+$/, '/***/***'); // Mask IDs in paths
   console.error('[Server Error]', {

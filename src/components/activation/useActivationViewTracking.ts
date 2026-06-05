@@ -1,17 +1,10 @@
-import { useEffect, useRef } from 'react';
-import { useAppEventTracker } from '@/hooks/useAppEventTracker';
-
+/**
+ * Activation panel visibility is recorded on route_viewed (see usePageViewLogger)
+ * to avoid duplicate navigation + interaction events on dashboard load.
+ */
 export function useActivationViewTracking(
-  source: 'dashboard' | 'products',
-  enabled: boolean
-) {
-  const { track } = useAppEventTracker();
-  const tracked = useRef(false);
-
-  useEffect(() => {
-    if (!enabled || tracked.current) return;
-    tracked.current = true;
-    track('onboarding_step_viewed', source, { source, step: 'activation_panel' });
-    track('activation_view', source, { source });
-  }, [enabled, source, track]);
+  _source: 'dashboard' | 'products',
+  _enabled: boolean,
+): void {
+  // no-op — consolidated into route_viewed
 }

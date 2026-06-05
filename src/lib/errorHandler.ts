@@ -3,7 +3,8 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { trackEvent } from '@/lib/events/trackEvent';
+import { analytics, getCurrentRequestId } from '@/lib/analytics';
+import { getAnalyticsContext } from '@/lib/analytics/context';
 
 export interface ErrorInfo {
   message: string;
@@ -16,60 +17,43 @@ export interface ErrorInfo {
   branchId?: string;
 }
 
-/**
- * Log een error met contextuele informatie
- */
-/**
- * Sanitizes URL to remove sensitive query parameters
- */
 function sanitizeUrl(url: string): string {
   try {
     const urlObj = new URL(url);
-    // Remove sensitive query parameters
     const sensitiveParams = ['token', 'password', 'secret', 'apiKey', 'key', 'auth'];
-    sensitiveParams.forEach(param => urlObj.searchParams.delete(param));
+    sensitiveParams.forEach((param) => urlObj.searchParams.delete(param));
     return urlObj.toString();
   } catch {
-    // If URL parsing fails, return as-is but mask obvious secrets
     return url.replace(/([?&])(token|password|secret|apiKey|key|auth)=[^&]*/gi, '$1$2=[REDACTED]');
   }
 }
 
 export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
-  // Security: Sanitize sensitive data before logging
-  const sanitizedUrl = typeof window !== 'undefined' ? sanitizeUrl(window.location.href) : context?.url || '';
-  const sanitizedMessage = error.message.replace(/(password|token|secret|apiKey|key|auth)=[^\s]*/gi, '$1=[REDACTED]');
-  
+  const sanitizedUrl =
+    typeof window !== 'undefined' ? sanitizeUrl(window.location.href) : context?.url || '';
+  const sanitizedMessage = error.message.replace(
+    /(password|token|secret|apiKey|key|auth)=[^\s]*/gi,
+    '$1=[REDACTED]',
+  );
+
   const errorInfo: ErrorInfo = {
     message: sanitizedMessage,
-    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined, // Only in dev
+    stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     timestamp: new Date().toISOString(),
-    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 200) : '', // Limit length
+    userAgent:
+      typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 200) : '',
     url: sanitizedUrl,
     ...context,
   };
 
   console.error('StockFlow Error:', errorInfo);
 
-  // Verbeterde logging met meer context
-  console.group('🔴 StockFlow Error Details');
-  console.error('Error Message:', error.message);
-  console.error('Error Stack:', error.stack);
-  if (context?.componentStack) {
-    console.error('Component Stack:', context.componentStack);
-  }
-  console.error('URL:', window.location.href);
-  console.error('User Agent:', navigator.userAgent);
-  console.error('Timestamp:', new Date().toISOString());
-  console.groupEnd();
-
-  // Log to database (non-blocking, fire and forget)
   if (typeof window !== 'undefined') {
-    // Get current user if available
     const { data: { user } } = await supabase.auth.getUser();
-    const userId = user?.id || context?.userId || null;
+    const ctx = getAnalyticsContext();
+    const userId = user?.id || context?.userId || ctx.userId || null;
+    const branchId = context?.branchId ?? ctx.branchId ?? null;
 
-    // Determine error type from error message/name
     let errorType = 'unknown';
     if (error.name) {
       errorType = error.name.toLowerCase();
@@ -78,45 +62,44 @@ export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
         errorType = 'network';
       } else if (error.message.includes('timeout')) {
         errorType = 'timeout';
-      } else if (error.message.includes('permission') || error.message.includes('unauthorized')) {
+      } else if (
+        error.message.includes('permission') ||
+        error.message.includes('unauthorized')
+      ) {
         errorType = 'permission';
       }
     }
 
-    // Security: Sanitize data before inserting into database
-    const sanitizedUrl = sanitizeUrl(window.location.href);
     const sanitizedErrorMessage = sanitizedMessage || 'Unknown error';
-    
-    // Insert error into database (don't await to avoid blocking)
+
     supabase
       .from('application_errors')
       .insert({
         error_message: sanitizedErrorMessage,
         error_type: errorType,
-        stack_trace: process.env.NODE_ENV === 'development' ? error.stack : null, // Only in dev
+        stack_trace: process.env.NODE_ENV === 'development' ? error.stack : null,
         user_id: userId,
-        page_url: sanitizedUrl,
-        user_agent: navigator.userAgent.substring(0, 200), // Limit length
+        page_url: sanitizeUrl(window.location.href),
+        user_agent: navigator.userAgent.substring(0, 200),
         component_stack: context?.componentStack || null,
         metadata: {
-          branchId: context?.branchId || null,
-        }
+          branchId,
+          request_id: getCurrentRequestId(),
+        },
       })
       .catch((dbError) => {
-        // Silently fail if database logging fails (to prevent infinite loops)
         console.warn('Failed to log error to database:', dbError);
       });
 
     if (userId) {
-      trackEvent('error_shown', {
+      await analytics.trackError(error, {
         userId,
-        branchId: context?.branchId ?? null,
-        properties: { error_type: errorType, message: sanitizedErrorMessage },
-      });
-      trackEvent('api_error', {
-        userId,
-        branchId: context?.branchId ?? null,
-        properties: { error_type: errorType, message: sanitizedErrorMessage },
+        branchId,
+        requestId: getCurrentRequestId(),
+        properties: {
+          error_type: errorType,
+          surface: (context as { surface?: string })?.surface,
+        },
       });
     }
   }
@@ -124,28 +107,24 @@ export const logError = async (error: Error, context?: Partial<ErrorInfo>) => {
   return errorInfo;
 };
 
-/**
- * Wrap een async functie met error handling
- */
-export const withErrorHandling = <T extends any[], R>(
+export const withErrorHandling = <T extends unknown[], R>(
   fn: (...args: T) => Promise<R>,
-  context?: string
+  context?: string,
 ) => {
   return async (...args: T): Promise<R | null> => {
     try {
       return await fn(...args);
     } catch (error) {
-      logError(error as Error, { 
-        message: context ? `${context}: ${(error as Error).message}` : (error as Error).message 
+      logError(error as Error, {
+        message: context
+          ? `${context}: ${(error as Error).message}`
+          : (error as Error).message,
       });
       return null;
     }
   };
 };
 
-/**
- * Safe JSON parse met error handling
- */
 export const safeJsonParse = <T>(json: string, fallback: T): T => {
   try {
     return JSON.parse(json);
@@ -155,9 +134,6 @@ export const safeJsonParse = <T>(json: string, fallback: T): T => {
   }
 };
 
-/**
- * Safe localStorage operations
- */
 export const safeLocalStorage = {
   getItem: (key: string, fallback: string = ''): string => {
     try {
@@ -167,7 +143,7 @@ export const safeLocalStorage = {
       return fallback;
     }
   },
-  
+
   setItem: (key: string, value: string): boolean => {
     try {
       localStorage.setItem(key, value);
@@ -177,7 +153,7 @@ export const safeLocalStorage = {
       return false;
     }
   },
-  
+
   removeItem: (key: string): boolean => {
     try {
       localStorage.removeItem(key);
@@ -186,35 +162,31 @@ export const safeLocalStorage = {
       void logError(error as Error, { message: `localStorage.removeItem error for key: ${key}` });
       return false;
     }
-  }
+  },
 };
 
-/**
- * Retry mechanisme voor failed operations
- */
 export const withRetry = async <T>(
   operation: () => Promise<T>,
   maxRetries: number = 3,
-  delay: number = 1000
+  delay: number = 1000,
 ): Promise<T> => {
   let lastError: Error;
-  
+
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       return await operation();
     } catch (error) {
       lastError = error as Error;
-      
+
       if (attempt === maxRetries) {
         void logError(lastError, { message: `Operation failed after ${maxRetries} attempts` });
         throw lastError;
       }
-      
-      // Exponential backoff
+
       const waitTime = delay * Math.pow(2, attempt - 1);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
     }
   }
-  
+
   throw lastError!;
 };

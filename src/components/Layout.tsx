@@ -8,6 +8,7 @@ import { EmailVerificationBanner } from './EmailVerificationBanner';
 import { TrialBanner } from './TrialBanner';
 import { TrialExpiredBanner } from './TrialExpiredBanner';
 import { ActivationBanner } from '@/components/activation';
+import { ImpersonationBanner } from '@/components/admin/ImpersonationBanner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -95,6 +96,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
           } transition-[margin-left,color,background-color] duration-300`}
         >
           <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-screen px-4 md:px-6'} transition-colors`}>
+            {variant === 'admin' && <ImpersonationBanner />}
             <EmailVerificationBanner />
             <TrialBanner />
             <TrialExpiredBanner />

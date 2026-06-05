@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useAuth } from './useAuth';
+import { shouldExcludeFromProductAnalytics } from '@/lib/analytics/exclusions';
 import { useOptionalBranchId } from './useBranches';
 import { supabase } from '@/integrations/supabase/client';
 import { detectDeviceType } from '@/lib/events/device';
@@ -8,13 +9,14 @@ import {
   clearSessionId,
   getLastSessionEnd,
   getOrCreateSessionId,
+  getSessionId,
   setLastSessionEnd,
 } from '@/lib/events/sessionStorage';
 
 const RETURN_VISIT_GAP_MS = 24 * 60 * 60 * 1000;
 
 export function useSessionTracker() {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const branchId = useOptionalBranchId();
   const sessionIdRef = useRef<string | null>(null);
   const startTimeRef = useRef<number>(Date.now());
@@ -22,43 +24,55 @@ export function useSessionTracker() {
   useEffect(() => {
     if (!user?.id) return;
 
+    const hadSession = !!getSessionId();
     const sessionId = getOrCreateSessionId();
+    const isNewSession = !hadSession;
     sessionIdRef.current = sessionId;
     startTimeRef.current = Date.now();
     const branchIdVal = branchId;
     const entryPath = window.location.pathname;
+    if (
+      shouldExcludeFromProductAnalytics({
+        isOwner: userProfile?.is_owner === true,
+        pathname: entryPath,
+      })
+    ) {
+      return;
+    }
 
-    const lastEnd = getLastSessionEnd();
-    const isReturnVisit =
-      lastEnd !== null && Date.now() - lastEnd > RETURN_VISIT_GAP_MS;
+    if (isNewSession) {
+      const lastEnd = getLastSessionEnd();
+      const isReturnVisit =
+        lastEnd !== null && Date.now() - lastEnd > RETURN_VISIT_GAP_MS;
 
-    const deviceType = detectDeviceType();
+      const deviceType = detectDeviceType();
 
-    supabase.from('sessions').insert({
-      session_id: sessionId,
-      user_id: user.id,
-      branch_id: branchIdVal,
-      start_time: new Date().toISOString(),
-      entry_event: entryPath,
-      device_type: deviceType,
-    }).then(() => {});
+      supabase.from('sessions').insert({
+        session_id: sessionId,
+        user_id: user.id,
+        branch_id: branchIdVal,
+        start_time: new Date().toISOString(),
+        entry_event: entryPath,
+        device_type: deviceType,
+      }).then(() => {});
 
-    trackEvent('session_started', {
-      userId: user.id,
-      branchId: branchIdVal,
-      sessionId,
-      properties: { entry_path: entryPath },
-    });
-
-    if (isReturnVisit) {
-      trackEvent('return_visit', {
+      trackEvent('session_started', {
         userId: user.id,
         branchId: branchIdVal,
         sessionId,
-        properties: {
-          gap_hours: Math.round((Date.now() - (lastEnd ?? 0)) / 3600000),
-        },
+        properties: { entry_path: entryPath },
       });
+
+      if (isReturnVisit) {
+        trackEvent('return_visit', {
+          userId: user.id,
+          branchId: branchIdVal,
+          sessionId,
+          properties: {
+            gap_hours: Math.round((Date.now() - (lastEnd ?? 0)) / 3600000),
+          },
+        });
+      }
     }
 
     const endSession = () => {
@@ -93,7 +107,6 @@ export function useSessionTracker() {
     return () => {
       window.removeEventListener('beforeunload', endSession);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      endSession();
     };
-  }, [user?.id, branchId]);
+  }, [user?.id, branchId, userProfile?.is_owner]);
 }

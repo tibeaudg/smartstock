@@ -30,10 +30,14 @@ async function insertBillingEvent(
 ): Promise<void> {
   const { error } = await supabase.from('events').insert({
     user_id: userId,
+    org_id: userId,
     event_name: eventName,
     event_type: 'billing',
+    category: 'lifecycle',
     properties,
     timestamp: new Date().toISOString(),
+    source: 'webhook',
+    idempotency_key: `${eventName}:${userId}:${properties?.stripe_event_id ?? Date.now()}`,
   })
   if (error) console.error('[stripe-webhook] Failed to insert billing event:', eventName, error)
 }

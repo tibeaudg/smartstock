@@ -238,7 +238,12 @@ export const initializeTracking = (): void => {
     loadMarketingScripts();
   }
 
-  // Functional cookies (Stripe) are loaded on-demand when needed
+  if (preferences.analytics) {
+    void import('@/lib/analytics').then(({ analytics, setPostHogOptIn }) => {
+      void analytics.init();
+      setPostHogOptIn(true);
+    });
+  }
 };
 
 /**
@@ -268,6 +273,9 @@ export const removeTrackingScripts = (): void => {
  */
 export const onConsentChange = (callback: (preferences: CookiePreferences) => void): (() => void) => {
   const handler = (event: CustomEvent<CookiePreferences>) => {
+    void import('@/lib/analytics').then(({ setPostHogOptIn }) => {
+      setPostHogOptIn(event.detail.analytics === true);
+    });
     callback(event.detail);
   };
 

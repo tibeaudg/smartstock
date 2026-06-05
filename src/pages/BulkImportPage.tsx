@@ -9,6 +9,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
+import { emitActivationOnce } from '@/lib/analytics';
+import { startOperation, endOperation } from '@/lib/analytics/operations';
 import { toast } from 'sonner';
 import { Upload, Download, FileSpreadsheet, AlertCircle, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import * as XLSX from 'xlsx';
@@ -241,6 +243,9 @@ export default function BulkImportPage() {
     let successCount = 0;
     let failedCount = 0;
 
+    const fileType = isCSV(file) ? 'csv' : 'excel';
+    let operationId = '';
+
     try {
       const { count: countBefore } = await supabase
         .from('products')
@@ -251,9 +256,29 @@ export default function BulkImportPage() {
       const jsonData: ProductRow[] = rawRows.map(row => normalizeRow(row as Record<string, unknown>, mapping));
       if (jsonData.length === 0) {
         toast.error('The file has no data rows');
+        operationId = startOperation('import', {
+          userId: user.id,
+          branchId: activeBranch.branch_id,
+          properties: { file_type: fileType, row_count: 0, surface: 'bulk_import' },
+        });
+        endOperation(operationId, 'failed', {
+          userId: user.id,
+          branchId: activeBranch.branch_id,
+          error_code: 'empty_file',
+        });
         setIsImporting(false);
         return;
       }
+
+      operationId = startOperation('import', {
+        userId: user.id,
+        branchId: activeBranch.branch_id,
+        properties: {
+          file_type: fileType,
+          row_count: jsonData.length,
+          surface: 'bulk_import',
+        },
+      });
 
       const total = jsonData.length;
       setImportProgress({ current: 0, total });
@@ -347,10 +372,15 @@ export default function BulkImportPage() {
         errors: errors.slice(0, 10),
       });
       if (successCount > 0) {
-        track('bulk_import_completed', 'import', {
-          success_count: successCount,
-          failed_count: failedCount,
-          total_rows: total,
+        endOperation(operationId, 'succeeded', {
+          userId: user.id,
+          branchId: activeBranch.branch_id,
+          properties: {
+            success_count: successCount,
+            failed_count: failedCount,
+            total_rows: total,
+            partial: failedCount > 0,
+          },
         });
         toast.success(`${successCount} product${successCount !== 1 ? 's' : ''} imported successfully`);
         queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -358,20 +388,53 @@ export default function BulkImportPage() {
         queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
         await queryClient.invalidateQueries({ queryKey: ['productCount'] });
         if (wasAccountEmpty) {
-          track('first_core_action', 'import', { method: 'import' });
-          track('product_created', 'import', { method: 'import', is_first: true, count: successCount });
-          track('onboarding_completed', 'bulk_import', { method: 'import' });
+          emitActivationOnce(user.id, (events) => {
+            events.forEach((e) =>
+              track(e.name, undefined, {
+                ...e.properties,
+                method: 'import',
+                is_account_first: true,
+              }),
+            );
+          }, { method: 'import' });
+          track('product_created', undefined, {
+            method: 'import',
+            is_first: true,
+            count: successCount,
+          });
           toast.success('Your inventory control center is live');
           navigate('/dashboard');
         } else {
           navigate('/dashboard/categories');
         }
+      } else {
+        endOperation(operationId, 'failed', {
+          userId: user.id,
+          branchId: activeBranch.branch_id,
+          error_code: 'all_rows_failed',
+          properties: {
+            failed_count: failedCount,
+            total_rows: total,
+          },
+        });
       }
-      if (failedCount > 0) {
+      if (failedCount > 0 && successCount > 0) {
+        toast.error(`${failedCount} product${failedCount !== 1 ? 's' : ''} failed`);
+      } else if (failedCount > 0) {
         toast.error(`${failedCount} product${failedCount !== 1 ? 's' : ''} failed`);
       }
     } catch (error) {
       console.error('Import error:', error);
+      if (operationId) {
+        endOperation(operationId, 'failed', {
+          userId: user.id,
+          branchId: activeBranch.branch_id,
+          error_code: 'import_exception',
+          properties: {
+            message: error instanceof Error ? error.message : 'unknown',
+          },
+        });
+      }
       toast.error('An error occurred during import');
     } finally {
       setIsImporting(false);

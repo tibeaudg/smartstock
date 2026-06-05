@@ -94,6 +94,25 @@ function replaceVariables(text: string, vars: Record<string, string>): string {
   return result
 }
 
+/** Per-run cap to stay within edge function time limits; cron runs frequently to drain backlog. */
+const BATCH_LIMIT = 300
+
+async function resolveAdminUserId(
+  adminClient: ReturnType<typeof createClient>,
+  adminUserId: string | null,
+): Promise<string | null> {
+  if (adminUserId) return adminUserId
+  const { data } = await adminClient
+    .from('profiles')
+    .select('id')
+    .or('role.eq.admin,is_owner.eq.true')
+    .not('email', 'is', null)
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+  return data?.id ?? null
+}
+
 function matchesStage(profile: any, stage: LifecycleStage): boolean {
   const now = new Date()
   const createdAt = new Date(profile.created_at)
@@ -101,17 +120,16 @@ function matchesStage(profile: any, stage: LifecycleStage): boolean {
   const refDate = lastLogin || createdAt
   const daysSinceRef = (now.getTime() - refDate.getTime()) / (1000 * 60 * 60 * 24)
   const hoursSinceCreated = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60)
-  const accountAgeDays = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)
 
   switch (stage) {
     case 'welcome':
-      // Send to all users created in the last 30 days who haven't received it yet.
-      // Dedup via user_lifecycle_emails ensures it's sent only once.
-      return accountAgeDays <= 30
+      // Dedup (status=sent only) ensures one welcome per user; no age cutoff for catch-up.
+      return true
     case '24h_nudge': {
       if (hoursSinceCreated < 24) return false
       if (!lastLogin) return true
       const hoursAfterSignup = (lastLogin.getTime() - createdAt.getTime()) / (1000 * 60 * 60)
+      // Nudge users who only had a brief first session (or never returned meaningfully).
       return hoursAfterSignup < 2
     }
     case '7d_inactive': return daysSinceRef >= 7
@@ -119,6 +137,51 @@ function matchesStage(profile: any, stage: LifecycleStage): boolean {
     case '25d_warning': return daysSinceRef >= 25
     case '29d_final_warning': return daysSinceRef >= 29
   }
+}
+
+async function recordLifecycleSend(
+  adminClient: ReturnType<typeof createClient>,
+  params: {
+    profile: { id: string; email: string }
+    stage: LifecycleStage
+    templateId: string | null
+    status: 'sent' | 'failed'
+    errorMsg: string | null
+    msgId: string | null
+    subject: string
+    emailType: StageConfig['emailType']
+    forced?: boolean
+  },
+) {
+  const email = String(params.profile.email).trim().toLowerCase()
+  if (params.status === 'sent') {
+    await adminClient.from('user_lifecycle_emails').upsert({
+      user_id: params.profile.id,
+      email,
+      lifecycle_stage: params.stage,
+      template_id: params.templateId,
+      status: 'sent',
+      error_message: null,
+      metadata: { message_id: params.msgId, ...(params.forced ? { forced: true } : {}) },
+      sent_at: new Date().toISOString(),
+    }, { onConflict: 'user_id,lifecycle_stage', ignoreDuplicates: false })
+  }
+
+  await adminClient.from('email_logs').insert({
+    recipient_email: email,
+    recipient_user_id: params.profile.id,
+    subject: params.subject,
+    email_type: params.emailType,
+    status: params.status === 'sent' ? 'delivered' : 'failed',
+    error_message: params.errorMsg,
+    sent_at: new Date().toISOString(),
+    delivered_at: params.status === 'sent' ? new Date().toISOString() : null,
+    metadata: {
+      lifecycle_stage: params.stage,
+      message_id: params.msgId,
+      ...(params.forced ? { forced: true } : {}),
+    },
+  })
 }
 
 serve(async (req) => {
@@ -206,11 +269,15 @@ serve(async (req) => {
       )
     }
 
-    // Lifecycle settings for this admin
-    const { data: lifecycleSettings } = await adminClient
-      .from('lifecycle_email_settings')
-      .select('stage, enabled, template_id, email_templates:template_id(id, subject, html_body, type, is_active)')
-      .eq('user_id', adminUserId)
+    adminUserId = await resolveAdminUserId(adminClient, adminUserId)
+
+    // Lifecycle settings for this admin (defaults to enabled when no row exists)
+    const { data: lifecycleSettings } = adminUserId
+      ? await adminClient
+        .from('lifecycle_email_settings')
+        .select('stage, enabled, template_id, email_templates:template_id(id, subject, html_body, type, is_active)')
+        .eq('user_id', adminUserId)
+      : { data: [] as any[] }
 
     const settingsMap = new Map<LifecycleStage, any>()
     ;(lifecycleSettings || []).forEach((s: any) => settingsMap.set(s.stage as LifecycleStage, s))
@@ -243,6 +310,7 @@ serve(async (req) => {
         .select('id')
         .eq('user_id', selfUserProfile.id)
         .eq('lifecycle_stage', stage)
+        .eq('status', 'sent')
         .maybeSingle()
 
       if (alreadySent) {
@@ -283,26 +351,15 @@ serve(async (req) => {
         errorMsg = e instanceof Error ? e.message : 'Unknown error'
       }
 
-      await adminClient.from('user_lifecycle_emails').upsert({
-        user_id: selfUserProfile.id,
-        email,
-        lifecycle_stage: stage,
-        template_id: template?.id || null,
+      await recordLifecycleSend(adminClient, {
+        profile: selfUserProfile,
+        stage,
+        templateId: template?.id || null,
         status,
-        error_message: errorMsg,
-        metadata: { message_id: msgId },
-      }, { onConflict: 'user_id,lifecycle_stage', ignoreDuplicates: true })
-
-      await adminClient.from('email_logs').insert({
-        recipient_email: email,
-        recipient_user_id: selfUserProfile.id,
+        errorMsg,
+        msgId,
         subject,
-        email_type: config.emailType,
-        status: status === 'sent' ? 'delivered' : 'failed',
-        error_message: errorMsg,
-        sent_at: new Date().toISOString(),
-        delivered_at: status === 'sent' ? new Date().toISOString() : null,
-        metadata: { lifecycle_stage: stage, message_id: msgId },
+        emailType: config.emailType,
       })
 
       return new Response(
@@ -418,10 +475,14 @@ serve(async (req) => {
         .from('user_lifecycle_emails')
         .select('user_id')
         .eq('lifecycle_stage', stage)
+        .eq('status', 'sent')
       const alreadySentIds = new Set((alreadySent || []).map((r: any) => r.user_id))
 
-      const matching = profiles.filter((p: any) => matchesStage(p, stage))
-      const toProcess = matching.filter((p: any) => !alreadySentIds.has(p.id)).slice(0, 200)
+      const matching = profiles
+        .filter((p: any) => matchesStage(p, stage))
+        .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      const pending = matching.filter((p: any) => !alreadySentIds.has(p.id))
+      const toProcess = pending.slice(0, BATCH_LIMIT)
 
       let sent = 0
       let failed = 0
@@ -459,26 +520,15 @@ serve(async (req) => {
 
         if (status === 'sent') sent++
 
-        await adminClient.from('user_lifecycle_emails').upsert({
-          user_id: profile.id,
-          email,
-          lifecycle_stage: stage,
-          template_id: template?.id || null,
+        await recordLifecycleSend(adminClient, {
+          profile,
+          stage,
+          templateId: template?.id || null,
           status,
-          error_message: errorMsg,
-          metadata: { message_id: msgId },
-        }, { onConflict: 'user_id,lifecycle_stage', ignoreDuplicates: true })
-
-        await adminClient.from('email_logs').insert({
-          recipient_email: email,
-          recipient_user_id: profile.id,
+          errorMsg,
+          msgId,
           subject,
-          email_type: config.emailType,
-          status: status === 'sent' ? 'delivered' : 'failed',
-          error_message: errorMsg,
-          sent_at: new Date().toISOString(),
-          delivered_at: status === 'sent' ? new Date().toISOString() : null,
-          metadata: { lifecycle_stage: stage, message_id: msgId },
+          emailType: config.emailType,
         })
       }
 
@@ -486,9 +536,11 @@ serve(async (req) => {
         stage,
         enabled: true,
         matching: matching.length,
+        pending: pending.length,
         sent,
         failed,
-        skipped: matching.length - toProcess.length,
+        skippedAlreadySent: matching.length - pending.length,
+        backlogRemaining: Math.max(0, pending.length - toProcess.length),
       })
     }
 

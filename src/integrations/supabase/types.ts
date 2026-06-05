@@ -86,33 +86,39 @@ export type Database = {
       audit_logs: {
         Row: {
           action: string
+          admin_user_id: string | null
           branch_id: string | null
           created_at: string
           id: string
           new_values: Json | null
           old_values: Json | null
+          reason: string | null
           record_id: string | null
           table_name: string
           user_id: string | null
         }
         Insert: {
           action: string
+          admin_user_id?: string | null
           branch_id?: string | null
           created_at?: string
           id?: string
           new_values?: Json | null
           old_values?: Json | null
+          reason?: string | null
           record_id?: string | null
           table_name: string
           user_id?: string | null
         }
         Update: {
           action?: string
+          admin_user_id?: string | null
           branch_id?: string | null
           created_at?: string
           id?: string
           new_values?: Json | null
           old_values?: Json | null
+          reason?: string | null
           record_id?: string | null
           table_name?: string
           user_id?: string | null
@@ -166,8 +172,11 @@ export type Database = {
           id: string
           user_id: string | null
           branch_id: string | null
+          org_id: string | null
+          anonymous_id: string | null
           event_name: string
           event_type: Database["public"]["Enums"]["event_category"]
+          category: string | null
           properties: Json
           timestamp: string
           session_id: string | null
@@ -175,13 +184,19 @@ export type Database = {
           app_version: string | null
           experiment_id: string | null
           variant: string | null
+          idempotency_key: string | null
+          request_id: string | null
+          source: string
         }
         Insert: {
           id?: string
           user_id?: string | null
           branch_id?: string | null
+          org_id?: string | null
+          anonymous_id?: string | null
           event_name: string
           event_type: Database["public"]["Enums"]["event_category"]
+          category?: string | null
           properties?: Json
           timestamp?: string
           session_id?: string | null
@@ -189,13 +204,19 @@ export type Database = {
           app_version?: string | null
           experiment_id?: string | null
           variant?: string | null
+          idempotency_key?: string | null
+          request_id?: string | null
+          source?: string
         }
         Update: {
           id?: string
           user_id?: string | null
           branch_id?: string | null
+          org_id?: string | null
+          anonymous_id?: string | null
           event_name?: string
           event_type?: Database["public"]["Enums"]["event_category"]
+          category?: string | null
           properties?: Json
           timestamp?: string
           session_id?: string | null
@@ -203,6 +224,9 @@ export type Database = {
           app_version?: string | null
           experiment_id?: string | null
           variant?: string | null
+          idempotency_key?: string | null
+          request_id?: string | null
+          source?: string
         }
         Relationships: []
       }
@@ -973,6 +997,7 @@ export type Database = {
           referred_by: string | null
           free_months_credit: number
           feedback_prompted: boolean
+          analytics_consent: boolean | null
         }
         Insert: {
           created_at?: string | null
@@ -993,6 +1018,7 @@ export type Database = {
           referred_by?: string | null
           free_months_credit?: number
           feedback_prompted?: boolean
+          analytics_consent?: boolean | null
         }
         Update: {
           created_at?: string | null
@@ -1013,6 +1039,7 @@ export type Database = {
           referred_by?: string | null
           free_months_credit?: number
           feedback_prompted?: boolean
+          analytics_consent?: boolean | null
         }
         Relationships: [        ]
       }
@@ -1554,6 +1581,10 @@ export type Database = {
         }[]
       }
       get_analytics_summary: {
+        Args: { p_date_from?: string; p_date_to?: string }
+        Returns: Json
+      }
+      get_product_health_summary: {
         Args: { p_date_from?: string; p_date_to?: string }
         Returns: Json
       }

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { computeRevenueMetrics } from '@/utils/subscriptionRevenueMetrics';
+import { isAdminAnalyticsPath } from '@/lib/analytics/exclusions';
 
 export interface AnalyticsSummary {
   new_users_today: number;
@@ -101,12 +102,13 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('created_at')
+        .select('created_at, is_owner')
         .gte('created_at', `${from}T00:00:00`)
         .lte('created_at', `${to}T23:59:59`);
       if (error) throw error;
       const byDate: Record<string, number> = {};
       for (const row of data ?? []) {
+        if (row.is_owner === true) continue;
         const date = row.created_at.slice(0, 10);
         byDate[date] = (byDate[date] ?? 0) + 1;
       }
@@ -127,8 +129,14 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
 
       const userIds = [...new Set((subs ?? []).map(s => s.user_id).filter(Boolean))];
       const { data: profiles } = userIds.length
-        ? await supabase.from('profiles').select('id, stripe_customer_id').in('id', userIds)
+        ? await supabase
+            .from('profiles')
+            .select('id, stripe_customer_id, is_owner')
+            .in('id', userIds)
         : { data: [] };
+      const excludedUserIds = new Set(
+        (profiles ?? []).filter(p => p.is_owner === true).map(p => p.id),
+      );
       const hasPaymentInfoByUserId = new Map(
         (profiles ?? []).map(p => [p.id, !!p.stripe_customer_id]),
       );
@@ -142,7 +150,14 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
         : { data: [] };
       const tierById = new Map((tiers ?? []).map(t => [t.id, t]));
 
-      return computeRevenueMetrics(subs ?? [], tierById, hasPaymentInfoByUserId) as RevenueMetrics;
+      const filteredSubs = (subs ?? []).filter(
+        s => s.user_id && !excludedUserIds.has(s.user_id),
+      );
+      return computeRevenueMetrics(
+        filteredSubs,
+        tierById,
+        hasPaymentInfoByUserId,
+      ) as RevenueMetrics;
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -150,9 +165,15 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
   const deviceQuery = useQuery({
     queryKey: ['deviceStats', from, to],
     queryFn: async () => {
+      const { data: ownerProfiles } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('is_owner', true);
+      const excludedUserIds = new Set((ownerProfiles ?? []).map(p => p.id));
+
       const { data, error } = await supabase
         .from('sessions')
-        .select('device_type, start_time')
+        .select('device_type, start_time, user_id, entry_event, exit_event')
         .gte('start_time', `${from}T00:00:00`)
         .lte('start_time', `${to}T23:59:59`);
       if (error) throw error;
@@ -166,6 +187,14 @@ export function useAnalyticsDashboard(dateFrom?: string, dateTo?: string) {
       const dailyByDevice: Record<string, DailyDeviceLogin> = {};
 
       for (const row of data ?? []) {
+        if (row.user_id && excludedUserIds.has(row.user_id)) continue;
+        if (
+          isAdminAnalyticsPath(row.entry_event) ||
+          isAdminAnalyticsPath(row.exit_event)
+        ) {
+          continue;
+        }
+
         const device = row.device_type ?? 'unknown';
         deviceCounts[device] = (deviceCounts[device] ?? 0) + 1;
 
