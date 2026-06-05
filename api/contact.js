@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import { validateContactForm } from './utils/validation.js';
-import { sanitizeEmailText, sanitizeEmailAddress, escapeHtml } from './utils/emailSanitizer.js';
+import { validateContactForm } from './_utils/validation.js';
+import { sanitizeEmailText, sanitizeEmailAddress, escapeHtml } from './_utils/emailSanitizer.js';
 
 export default async function contactHandler(req, res) {
   try {

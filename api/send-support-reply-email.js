@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
-import auth from './utils/auth.js';
+import auth from './_utils/auth.js';
 
 const { validateToken, getUserProfile, extractToken } = auth;
 

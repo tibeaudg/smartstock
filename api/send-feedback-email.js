@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import { requireAuth } from './utils/auth.js';
-import { escapeHtml, sanitizeEmailText } from './utils/emailSanitizer.js';
+import { requireAuth } from './_utils/auth.js';
+import { escapeHtml, sanitizeEmailText } from './_utils/emailSanitizer.js';
 
 const STAR_LABELS = { 1: 'Very Poor', 2: 'Poor', 3: 'Okay', 4: 'Good', 5: 'Excellent' };
 

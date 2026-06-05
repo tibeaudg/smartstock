@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { validateSMTPConfig, validateEmailData } from './utils/validation.js';
+import { validateSMTPConfig, validateEmailData } from './_utils/validation.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
