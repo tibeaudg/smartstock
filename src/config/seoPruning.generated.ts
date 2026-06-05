@@ -96,7 +96,7 @@ export const FORCED_NOINDEX_PATHS = new Set<string>([
   '/bill-of-materials-management-software',
   '/bill-of-materials-management-software-free',
   '/bill-of-materials-software',
-  '/bill-of-materials-software-free',
+
   '/billofmaterialspage',
   '/bilo-heating-plumbing',
   '/blog',

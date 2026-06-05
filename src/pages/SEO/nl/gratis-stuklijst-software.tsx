@@ -32,7 +32,7 @@ const structuredData = [
       }
     },
     "datePublished": "2025-09-05",
-    "dateModified": "2026-01-22",
+    "dateModified": "2026-06-05",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://www.stockflowsystems.com${canonicalPath}`
@@ -116,7 +116,7 @@ export default function GratisStuklijstSoftwarePage() {
     <SeoPageLayout
       title={topicTitle}
       heroTitle="Gratis Stuklijst Beheer Software"
-      dateUpdated="22/01/2026"
+      dateUpdated="05/06/2026"
       faqData={faqData}
     >
       <SEO

@@ -1,218 +1,286 @@
 import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { useLocation } from 'react-router-dom';
-import { generateSeoPageStructuredData } from '@/lib/structuredData';
-import { getBreadcrumbPath } from '@/config/topicClusters';
-import { 
-  BarChart3, 
-  PackageSearch, 
-  RefreshCcw, 
-  ShieldCheck, 
-  Zap, 
-  Smartphone,
-  Layers,
-  ArrowRight,
-  ShieldAlert
-} from 'lucide-react';
+import { StructuredData } from '@/components/StructuredData';
+
+const canonicalPath = '/nl/beste-voorraadbeheer-software';
+
+const faqData = [
+  {
+    question: 'Wat is voorraadbeheer software?',
+    answer:
+      'Voorraadbeheer software is een digitaal systeem dat u helpt om de hoeveelheid, locatie en waarde van uw voorraad bij te houden. Het vervangt handmatige spreadsheets door real-time inzicht in voorraadniveaus, automatische herbestelwaarschuwingen en geïntegreerde inkoop- en verkoopworkflows.',
+  },
+  {
+    question: 'Wat is de beste gratis voorraadbeheer software in 2026?',
+    answer:
+      'StockFlow biedt een volledig gratis voorraadbeheer platform zonder tijdslimiet en zonder creditcard. Het omvat onbeperkte producten, barcode scanning, stuklijstbeheer (BOM), meerdere locaties en rapportages — functies die bij veel andere aanbieders pas betaald beschikbaar zijn.',
+  },
+  {
+    question: 'Wanneer heb ik betaalde voorraadbeheer software nodig?',
+    answer:
+      'Gratis software volstaat voor de meeste kleine en middelgrote bedrijven. Betaald wordt relevant als u geavanceerde EDI-koppelingen, diepgaande ERP-integraties (SAP, NetSuite), of dedicated SLA-ondersteuning nodig heeft.',
+  },
+  {
+    question: 'Kan voorraadbeheer software ook stuklijsten (BOM) beheren?',
+    answer:
+      'Ja, StockFlow combineert voorraadvolging met multi-level stuklijstbeheer. Wanneer u een productieorder uitvoert, worden componentvoorraden automatisch verminderd en de voorraad afgewerkte producten verhoogd.',
+  },
+  {
+    question: 'Hoe migreer ik van een spreadsheet naar voorraadbeheer software?',
+    answer:
+      'Exporteer uw huidige productlijst als CSV met kolommen voor SKU, naam, eenheid, huidige voorraad en kostprijs. Importeer dit bestand in StockFlow, stel uw locaties en herbestelpunten in, en u bent operationeel. De meeste teams zijn binnen één werkdag volledig overgezet.',
+  },
+];
+
+const vergelijkingRijen = [
+  ['StockFlow', 'Gratis (permanent)', 'Onbeperkte producten, BOM, barcode, multi-locatie, rapportages', 'Minder geschikt voor complexe ERP-integraties'],
+  ['Zoho Inventory', 'Gratis (beperkt)', 'E-commerce integraties, basisfuncties', 'Gratis tier beperkt tot 50 orders/maand'],
+  ['Odoo Community', 'Gratis (zelf-gehost)', 'Modulair, breed inzetbaar', 'Hoge implementatie- en onderhoudsinspanning'],
+  ['inFlow', 'Betaald (proefperiode)', 'Sterke productiedepth', 'Geen zinvolle gratis tier'],
+  ['Excel / Google Sheets', 'Gratis', 'Flexibel en vertrouwd', 'Geen real-time sync, geen audit trail, foutgevoelig'],
+];
 
 export default function BesteVoorraadbeheerSoftwarePage() {
-  const location = useLocation();
-
-  const breadcrumbs = getBreadcrumbPath(location.pathname).map((item, index) => ({
-    name: item.name,
-    url: item.path,
-    position: index + 1,
-  }));
-
-  const faqData = [
-    {
-      question: 'Wat is de beste voorraadbeheer software in 2026?',
-      answer:
-        'De beste voorraadbeheer software in 2026 combineert real-time cloud tracking, native mobiele barcode scanning en geautomatiseerde herbestel triggers. Top-tier oplossingen zoals StockFlow, Zoho Inventory en Odoo leiden de markt door geïntegreerde analytics en multi-channel synchronisatie aan te bieden.',
-    },
-    {
-      question: 'Is er echt gratis voorraadbeheer software voor kleine bedrijven?',
-      answer:
-        'Ja. Veel platforms bieden "freemium" tiers. StockFlow biedt een robuuste gratis versie voor startups, terwijl Zoho Inventory en Odoo Community beperkte gratis toegang bieden. Deze zijn ideaal voor bedrijven die overstappen van spreadsheets naar geautomatiseerde systemen.',
-    },
-    {
-      question: 'Wat zijn de essentiële functies van moderne voorraad software?',
-      answer:
-        'Minimaal moet uw software real-time voorraadniveaus, barcode/QR code ondersteuning, geautomatiseerde lage voorraad waarschuwingen, multi-locatie tracking en basisrapportage omvatten. Geavanceerde systemen bieden ook leveranciersbeheer en API-integraties met boekhoudtools.',
-    },
-    {
-      question: 'Waarom zou ik van Excel naar voorraad software verhuizen?',
-      answer:
-        'Spreadsheets missen real-time synchronisatie, audittrails en geautomatiseerde waarschuwingen. Voorraad software elimineert handmatige invoerfouten, biedt een "single source of truth" voor uw team en schaalt zonder het risico van kapotte formules of gegevenscorruptie.',
-    },
-    {
-      question: 'Kan ik assets en uitrusting in hetzelfde systeem volgen?',
-      answer:
-        'Ja, veelzijdige platforms zoals StockFlow stellen u in staat om zowel verbruiksvoorraad als vaste activa (gereedschappen, machines, IT-hardware) te beheren binnen een geünificeerde interface, waardoor uw tech stack wordt vereenvoudigd.',
-    },
-  ];
-
-  const keyTakeaways = [
-    'Real-time cloud synchronisatie is de basisvereiste voor voorraadnauwkeurigheid in 2026.',
-    'Mobile-first architecturen stellen personeel in staat om voorraadniveaus direct vanaf de magazijnvloer bij te werken.',
-    'Automatisering van herbestelpunt voorkomt de dubbele risico\'s van voorraadtekorten en overvoorraad kapitaal.',
-    'API-gedreven integraties met boekhouding (QuickBooks, Xero) stroomlijnen financiële rapportage.',
-    'Schaalbaarheid is cruciaal; kies een platform dat multi-site groei ondersteunt zonder enorme migratiekosten.',
-  ];
-
-  const structuredData = generateSeoPageStructuredData({
-    title: 'Beste Voorraadbeheer Software (2026 Vergelijkingsgids)',
-    description:
-      'Vergelijk de toonaangevende voorraadbeheer software voor 2026. Bekijk functies, prijzen en gespecialiseerde tools voor kleine bedrijven en groeiende ondernemingen.',
-    url: location.pathname,
-    breadcrumbs,
-    faqData,
-    softwareData: {
-      name: 'StockFlow Voorraadbeheer Software',
-      description:
-        'StockFlow is een high-performance voorraadbeheer platform ontworpen voor moderne bedrijven. Functies omvatten real-time tracking, barcode scanning en geavanceerde rapportage om supply chains te optimaliseren.',
-      category: 'BusinessApplication',
-      operatingSystem: 'Web, iOS, Android',
-      price: '0',
-      currency: 'EUR',
-      features: [
-        'Real-time voorraad synchronisatie',
-        'Native Barcode & QR code scanning',
-        'Geautomatiseerde lage voorraad herbestel triggers',
-        'Multi-locatie & magazijnbeheer',
-        'Leverancier en inkooporder automatisering',
-        'Vaste activa en uitrusting tracking',
-        'Business intelligence dashboards',
-      ],
-      url: location.pathname,
-    },
-    pageType: 'software',
-    includeWebSite: false,
-  });
-
   return (
     <SeoPageLayout
       title="Beste Voorraadbeheer Software (2026 Gids)"
-      heroTitle="De Definitieve Gids voor Voorraadbeheer Software in 2026"
-      dateUpdated="22 januari 2026"
+      heroTitle="Voorraadbeheer Software: De Complete Gids voor 2026"
+      dateUpdated="05/06/2026"
       faqData={faqData}
-      keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Beste Voorraadbeheer Software 2026 – Vergelijk Top Tools"
-        description="Ontdek de beste voorraadbeheer software van 2026. Diepgaande vergelijking van gratis en betaalde tools voor het volgen van voorraad, beheren van assets en schalen van operaties."
-        keywords="beste voorraadbeheer software, stock tracking systeem, voorraad software 2026, gratis voorraad tools, magazijnbeheer software, kleine onderneming voorraad"
-        url="https://www.stockflowsystems.com/nl/beste-voorraadbeheer-software"
+        title="Beste Voorraadbeheer Software 2026 – Vergelijk Gratis & Betaalde Tools | StockFlow"
+        description="Ontdek de beste voorraadbeheer software van 2026. Vergelijk gratis en betaalde tools op functies, prijzen en gebruiksgemak. StockFlow is volledig gratis — geen creditcard vereist."
+        keywords="voorraadbeheer software, beste voorraadbeheer software, gratis voorraadbeheer software, voorraad software, magazijnbeheer software, stock tracking software, voorraadbeheer klein bedrijf"
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
         locale="nl-BE"
         alternateLanguages={[
           { lang: 'en-US', url: 'https://www.stockflowsystems.com/best-inventory-management-software' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/beste-voorraadbeheer-software' }
+          { lang: 'nl-BE', url: `https://www.stockflowsystems.com${canonicalPath}` },
         ]}
-        structuredData={structuredData}
       />
 
-      {/* Hero Narrative */}
-      <section className="py-16 md:py-24 border-b">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center">
-            <h2 className="text-sm font-semibold text-blue-600 tracking-wide uppercase mb-3">2026 Marktanalyse</h2>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-8 text-slate-900 leading-tight">
-              Beste Voorraadbeheer Software voor 2026
-            </h1>
-            <p className="text-xl text-slate-600 leading-relaxed mb-8">
-              In een tijdperk van snelle supply chain verschuivingen dient de <strong>beste voorraadbeheer software</strong> als het centrale zenuwstelsel van uw operaties. Het gaat niet langer alleen om items tellen—het gaat om voorspellende inzichten en real-time wendbaarheid.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <ShieldCheck className="w-8 h-8 text-green-500 mb-4" />
-                <h3 className="font-bold mb-2">Nauwkeurigheid</h3>
-                <p className="text-sm text-slate-500">Elimineer het 10-15% foutpercentage typisch voor handmatige spreadsheets.</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <Zap className="w-8 h-8 text-amber-500 mb-4" />
-                <h3 className="font-bold mb-2">Snelheid</h3>
-                <p className="text-sm text-slate-500">Versnel pick- en ontvangsttijden met mobile-first scanning.</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-                <BarChart3 className="w-8 h-8 text-blue-500 mb-4" />
-                <h3 className="font-bold mb-2">Zichtbaarheid</h3>
-                <p className="text-sm text-slate-500">Geünificeerde tracking over meerdere magazijnen en retail locaties.</p>
-              </div>
+      {/* Intro */}
+      <section className="py-10 space-y-4">
+        <p className="text-slate-700 leading-7">
+          De meeste kleine bedrijven beginnen met een spreadsheet voor voorraadbeheer. Dat werkt totdat het niet meer werkt:
+          een product raakt uitverkocht terwijl de sheet zegt dat er nog 30 stuks zijn, of twee medewerkers werken
+          tegelijkertijd in hetzelfde bestand en overschrijven elkaars wijzigingen. Voorraadbeheer software lost dit op.
+        </p>
+        <p className="text-slate-700 leading-7">
+          Deze gids vergelijkt de beste opties voor 2026 — van volledig gratis tot betaald — en helpt u bepalen welke tool
+          past bij uw bedrijfsgrootte, branche en budget.
+        </p>
+      </section>
+
+      {/* Wat is voorraadbeheer software */}
+      <section className="py-8 space-y-4">
+        <h2 className="text-2xl font-bold">Wat is Voorraadbeheer Software?</h2>
+        <p className="text-slate-700 leading-7">
+          Voorraadbeheer software (ook wel voorraadsoftware of stockbeheer software genoemd) is een digitaal systeem
+          waarmee u bijhoudt hoeveel van elk product u in voorraad heeft, waar het opgeslagen is, wat het waard is, en
+          wanneer u moet nabestellen. Het vervangt handmatige tellijsten en spreadsheets door:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-slate-700 leading-7 ml-2">
+          <li>Real-time voorraadniveaus die automatisch worden bijgewerkt bij elke verkoop, ontvangst of productie</li>
+          <li>Barcode- en QR-scannen om handmatige invoerfouten te elimineren</li>
+          <li>Automatische lage-voorraadwaarschuwingen zodat u nooit onverwacht tekort komt</li>
+          <li>Inkoop- en verkooporderworkflows die uw voorraadbewegingen documenteren</li>
+          <li>Rapportages over omloopsnelheid, waardering en bestelbehoefte</li>
+        </ul>
+      </section>
+
+      {/* Waarom spreadsheets falen */}
+      <section className="py-8 space-y-4">
+        <h2 className="text-2xl font-bold">Waarom Spreadsheets Tekortschieten</h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            ['Geen real-time synchronisatie', 'Meerdere teamleden kunnen niet tegelijkertijd betrouwbaar werken in dezelfde sheet. Voorraadstanden lopen snel uit de pas met de werkelijkheid.'],
+            ['Geen audit trail', 'Bij een voorraadverschil kunt u in een spreadsheet niet zien wie wat wanneer heeft gewijzigd. Dat maakt het onmogelijk om de oorzaak te achterhalen.'],
+            ['Foutgevoelige formules', 'Een fout in één cel kan zich verspreiden door de hele sheet. Complexe VLOOKUPs en formules breken bij het toevoegen van nieuwe rijen.'],
+            ['Geen barcode-integratie', 'Handmatige invoer bij ontvangst of verzending kost tijd en introduceert fouten die direct leiden tot verkeerde voorraadcijfers.'],
+          ].map(([titel, tekst]) => (
+            <div key={titel} className="rounded-xl border p-5 bg-slate-50">
+              <h3 className="font-semibold mb-2">{titel}</h3>
+              <p className="text-sm text-slate-600 leading-6">{tekst}</p>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Section 1: Free Software Analysis */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-16 items-start">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">
-                Evalueren van Gratis Voorraad Software Opties
-              </h2>
-              <p className="text-slate-600 leading-relaxed mb-6">
-                Voor startups en kleine teams is kosten een primaire drempel. Gelukkig is het "Freemium" model volwassen geworden. In 2026 is gratis voorraad software meer dan een proefperiode—het is een functionele basis voor vroege groei.
-              </p>
-              <div className="space-y-4">
-                <div className="flex gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100">
-                  <PackageSearch className="w-6 h-6 text-blue-600 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-slate-900">StockFlow (Gratis Tier)</h4>
-                    <p className="text-sm text-slate-600">Beste voor bedrijven die mobiele barcode scanning en onbeperkte item invoer nodig hebben zonder maandelijkse vergoeding.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100">
-                  <RefreshCcw className="w-6 h-6 text-blue-600 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-bold text-slate-900">Zoho Inventory</h4>
-                    <p className="text-sm text-slate-600">Uitstekend voor low-volume e-commerce verkopers die basis verzendintegraties nodig hebben.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-slate-900 text-white p-8 rounded-2xl shadow-xl">
-              <h3 className="text-xl font-bold mb-4">Wanneer Upgraden?</h3>
-              <p className="text-slate-300 mb-6">Gratis plannen zijn geweldig, maar u zou een betaalde tier moeten overwegen zodra u deze "Groei Blokkers" tegenkomt:</p>
-              <ul className="space-y-4">
-                {[
-                  'Behoefte aan geautomatiseerde multi-magazijn transfers.',
-                  'Integratie met Shopify, Amazon of eBay.',
-                  'Geavanceerde gebruikersmachtigingen en audit logs.',
-                  'Prioriteit support voor missie-kritieke operaties.',
-                  'Grootschalige bulk gegevens imports/exports.'
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                    <span className="text-sm text-slate-200">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+      {/* Vergelijkingstabel */}
+      <section className="py-8">
+        <h2 className="text-2xl font-bold mb-4">Vergelijking Voorraadbeheer Software 2026</h2>
+        <div className="overflow-x-auto rounded-xl border">
+          <table className="min-w-full text-sm">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="p-3 text-left">Platform</th>
+                <th className="p-3 text-left">Prijs</th>
+                <th className="p-3 text-left">Sterke punten</th>
+                <th className="p-3 text-left">Beperkingen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vergelijkingRijen.map((rij) => (
+                <tr key={rij[0]} className="border-t align-top">
+                  <td className="p-3 font-semibold">{rij[0]}</td>
+                  <td className="p-3">{rij[1]}</td>
+                  <td className="p-3">{rij[2]}</td>
+                  <td className="p-3">{rij[3]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+        <p className="text-xs text-slate-500 mt-2">Prijsinformatie gebaseerd op openbare gegevens, juni 2026. Controleer altijd de actuele tarieven bij de aanbieder.</p>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-blue-600 text-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Start Vandaag Met De Beste Voorraadbeheer Software
-          </h2>
-          <p className="text-xl mb-8 text-blue-50">
-            StockFlow biedt volledig gratis, onbeperkte voorraadbeheer software. Geen creditcard vereist.
-          </p>
-          <Link 
-            to="/auth" 
-            className="inline-block bg-white text-blue-600 font-bold px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors"
+      {/* Essentiële functies */}
+      <section className="py-8 space-y-4">
+        <h2 className="text-2xl font-bold">Essentiële Functies van Voorraadbeheer Software</h2>
+        <p className="text-slate-700 leading-7">
+          Niet elke tool biedt dezelfde functionaliteit. Controleer vóór de keuze of het systeem voldoet aan deze basisvereisten:
+        </p>
+        <ol className="list-decimal list-inside space-y-3 text-slate-700 leading-7 ml-2">
+          <li>
+            <strong>Real-time voorraadvolging</strong> — iedere beweging (ontvangst, verkoop, productie, correctie)
+            wordt direct verwerkt en zichtbaar voor alle gebruikers.
+          </li>
+          <li>
+            <strong>Barcode- en QR-scannen</strong> — essentieel om handmatige invoerfouten te elimineren bij
+            ontvangst en verzending.
+          </li>
+          <li>
+            <strong>Multi-locatie ondersteuning</strong> — als u voorraad verspreid heeft over meerdere magazijnen
+            of filialen, moet de software dit kunnen bijhouden.
+          </li>
+          <li>
+            <strong>Lage-voorraadwaarschuwingen en herbestelpunten</strong> — automatische notificaties wanneer
+            een product onder een ingestelde drempelwaarde zakt.
+          </li>
+          <li>
+            <strong>Inkooporderworkflows</strong> — mogelijkheid om inkooporders aan te maken, te sturen naar
+            leveranciers en ontvangsten te registreren.
+          </li>
+          <li>
+            <strong>Rapportages en exportmogelijkheden</strong> — omloopsnelheid, waardering per FIFO/gewogen
+            gemiddelde, en exportmogelijkheden naar uw boekhoudsoftware.
+          </li>
+          <li>
+            <strong>Geen productlimiet op de gratis tier</strong> — controleer of "gratis" echt onbeperkt is of
+            dat u al snel tegen een betaalmuur aanloopt.
+          </li>
+        </ol>
+      </section>
+
+      {/* StockFlow specifiek */}
+      <section className="py-8 space-y-4">
+        <h2 className="text-2xl font-bold">Wat StockFlow Gratis Aanbiedt</h2>
+        <p className="text-slate-700 leading-7">
+          StockFlow is een voorraadbeheer platform dat gebouwd is op een gratis-eerst model. Het gratis plan kent geen
+          tijdslimiet en geen producten- of gebruikerslimiet. U krijgt:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-slate-700 leading-7 ml-2">
+          <li>Onbeperkte producten en categorieën</li>
+          <li>Real-time voorraadvolging over meerdere locaties</li>
+          <li>Native barcode- en QR-scanning via de mobiele app</li>
+          <li>Stuklijstbeheer (BOM) met automatische voorraadaftrek bij productie</li>
+          <li>Inkoop- en verkooporderbeheer</li>
+          <li>Lage-voorraadwaarschuwingen per product</li>
+          <li>CSV import en export</li>
+          <li>Rapportages over voorraadwaarde en omloopsnelheid</li>
+        </ul>
+        <div className="mt-4">
+          <Link
+            to="/auth"
+            className="inline-block bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Start Gratis Met StockFlow →
+            Start gratis — geen creditcard →
           </Link>
         </div>
       </section>
+
+      {/* Hoe te migreren */}
+      <section className="py-8 space-y-4">
+        <h2 className="text-2xl font-bold">Van Spreadsheet naar Software: Hoe Pakt U Dat Aan?</h2>
+        <p className="text-slate-700 leading-7">
+          De overgang is eenvoudiger dan de meeste teams verwachten. Een bewezen aanpak:
+        </p>
+        <ol className="list-decimal list-inside space-y-3 text-slate-700 leading-7 ml-2">
+          <li>
+            <strong>Exporteer uw productlijst</strong> als CSV met kolommen: SKU, naam, eenheid (stuks, kg, liter),
+            huidige voorraad en inkoopprijs.
+          </li>
+          <li>
+            <strong>Importeer via CSV</strong> in StockFlow. Wijs uw kolommen toe aan de juiste velden. Dit duurt
+            meestal minder dan vijf minuten.
+          </li>
+          <li>
+            <strong>Stel locaties en herbestelpunten in</strong> per product. Bepaal bij welk aantal u een
+            waarschuwing wilt ontvangen.
+          </li>
+          <li>
+            <strong>Voer een eerste voorraadtelling in</strong> als de huidige niveaus in uw sheet niet betrouwbaar
+            zijn. StockFlow ondersteunt inventarisatiemodules voor een fysieke telling.
+          </li>
+          <li>
+            <strong>Activeer barcode-scanning</strong> zodat alle toekomstige ontvangsten en verzendingen
+            automatisch worden verwerkt.
+          </li>
+        </ol>
+      </section>
+
+      {/* Gerelateerde pagina's */}
+      <section className="py-8 space-y-3">
+        <h2 className="text-2xl font-bold mb-2">Gerelateerde Pagina's</h2>
+        <ul className="space-y-2 text-slate-700">
+          <li>
+            <Link to="/nl/gratis-stuklijst-software" className="text-blue-600 underline">
+              Gratis stuklijst beheer software (BOM)
+            </Link>{' '}
+            — als u productie beheert en stuklijsten nodig heeft.
+          </li>
+          <li>
+            <Link to="/nl/beste-gratis-voorraad-software-met-barcode-scannen" className="text-blue-600 underline">
+              Gratis voorraadsoftware met barcode scannen
+            </Link>{' '}
+            — als barcode-scanning uw primaire vereiste is.
+          </li>
+          <li>
+            <Link to="/best-inventory-management-software" className="text-blue-600 underline">
+              Best inventory management software (English)
+            </Link>
+          </li>
+        </ul>
+      </section>
+
+      <StructuredData
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'StockFlow — Gratis Voorraadbeheer Software',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web, iOS, Android',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+            url: `https://www.stockflowsystems.com${canonicalPath}`,
+            description:
+              'Gratis voorraadbeheer software met onbeperkte producten, barcode scanning, stuklijstbeheer en multi-locatie support. Geen creditcard vereist.',
+            inLanguage: 'nl-BE',
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqData.map((faq) => ({
+              '@type': 'Question',
+              name: faq.question,
+              acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+            })),
+          },
+        ]}
+      />
     </SeoPageLayout>
   );
 }
-
-

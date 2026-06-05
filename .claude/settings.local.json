@@ -51,7 +51,11 @@
       "PowerShell(Get-ChildItem api\\\\ -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object -ExpandProperty Name)",
       "PowerShell(Rename-Item \"api\\\\utils\" \"api\\\\_utils\")",
       "PowerShell(New-Item -ItemType Directory -Path \"api\\\\_utils\" -Force; Get-ChildItem \"api\\\\utils\" | ForEach-Object { Move-Item $_.FullName \"api\\\\_utils\\\\\" })",
-      "PowerShell(Get-ChildItem \"api\\\\\" -Recurse -File | Where-Object { $_.Extension -in \".js\",\".ts\",\".cjs\" -and $_.DirectoryName -notmatch \"_utils\" } | Select-Object Name)"
+      "PowerShell(Get-ChildItem \"api\\\\\" -Recurse -File | Where-Object { $_.Extension -in \".js\",\".ts\",\".cjs\" -and $_.DirectoryName -notmatch \"_utils\" } | Select-Object Name)",
+      "Bash(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" ls-files --error-unmatch .env)",
+      "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" ls-files --error-unmatch .env 2>&1)",
+      "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" rm --cached .env \"src/integrations/supabase/.env\" 2>&1)",
+      "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" status 2>&1)"
     ]
   }
 }
