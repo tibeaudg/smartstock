@@ -278,11 +278,8 @@ export default function AdminUsersPage() {
         case 'inactivity':
           comparison = inactivityA.days - inactivityB.days;
           break;
-        case 'products':
-          comparison = (statsA?.productCount || 0) - (statsB?.productCount || 0);
-          break;
-        case 'linkedUsers':
-          comparison = (statsA?.linkedUserCount || 0) - (statsB?.linkedUserCount || 0);
+        case 'usageRate':
+          comparison = (statsA?.usageRate || 0) - (statsB?.usageRate || 0);
           break;
         case 'created':
           comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
@@ -291,9 +288,6 @@ export default function AdminUsersPage() {
           comparison = getPlanForUser(subscriptionPlanMap, a.id).displayName.localeCompare(
             getPlanForUser(subscriptionPlanMap, b.id).displayName,
           );
-          break;
-        case 'branches':
-          comparison = (statsA?.branchCount || 0) - (statsB?.branchCount || 0);
           break;
       }
       return sortDirection === 'asc' ? comparison : -comparison;

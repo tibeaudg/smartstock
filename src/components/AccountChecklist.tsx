@@ -24,8 +24,6 @@ import {
   ActivationDashboardWidgets,
   useActivationViewTracking,
 } from '@/components/activation';
-import { useAppEventTracker } from '@/hooks/useAppEventTracker';
-
 const TASK_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   account: Building2,
   products: Package,
@@ -54,7 +52,6 @@ export interface AccountChecklistProps {
 
 export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
   const navigate = useNavigate();
-  const { track } = useAppEventTracker();
   const {
     tasks,
     isChecklistComplete,
@@ -67,7 +64,6 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
 
   const handleAction = (task: ChecklistTask) => {
     if (task.id === 'products') {
-      track('activation_path_selected', 'manual', { source: 'dashboard', path: 'manual' });
       navigate('/dashboard/products/new?quick=1');
       return;
     }
@@ -76,7 +72,6 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
 
   const handleSecondaryAction = (task: ChecklistTask) => {
     if (task.actionPathSecondary) {
-      track('activation_path_selected', 'import', { source: 'dashboard', path: 'import' });
       navigate(task.actionPathSecondary);
     }
   };
@@ -205,13 +200,7 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
                         )}
                         {task.id === 'products' && onOpenScanner && (
                           <Button
-                            onClick={() => {
-                              track('activation_path_selected', 'scan', {
-                                source: 'dashboard',
-                                path: 'scan',
-                              });
-                              onOpenScanner();
-                            }}
+                            onClick={onOpenScanner}
                             variant="outline"
                             size="sm"
                           >

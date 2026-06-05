@@ -197,14 +197,35 @@ async function fetchUserProducts(userId: string) {
   return data || [];
 }
 
-async function fetchUserSalesOrders(userId: string) {
-  const { data, error } = await supabase
-    .from('sales_orders')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data || [];
+async function fetchUserUsageBreakdown(userId: string) {
+  const { data: branches } = await supabase.from('branches').select('id').eq('user_id', userId);
+  const branchIds = (branches ?? []).map((b: { id: string }) => b.id);
+  const safeIds = branchIds.length ? branchIds : [''];
+
+  const [products, categories, bom, pickLists, salesOrders, purchaseOrders, stockCounts, workOrders, deliveryNotes] =
+    await Promise.all([
+      supabase.from('products').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
+      supabase.from('categories').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('bom_versions').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
+      supabase.from('pick_lists').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
+      supabase.from('sales_orders').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('purchase_orders').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('cycle_counts').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('work_orders').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
+      supabase.from('delivery_notes').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+    ]);
+
+  return {
+    products: products.count ?? 0,
+    categories: categories.count ?? 0,
+    bom: bom.count ?? 0,
+    pickLists: pickLists.count ?? 0,
+    salesOrders: salesOrders.count ?? 0,
+    purchaseOrders: purchaseOrders.count ?? 0,
+    stockCounts: stockCounts.count ?? 0,
+    workOrders: workOrders.count ?? 0,
+    deliveryNotes: deliveryNotes.count ?? 0,
+  };
 }
 
 async function fetchUserInvoices(userId: string): Promise<InvoiceRow[]> {
@@ -692,10 +713,10 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen && (activeTab === 'products' || activeTab === 'overview'),
   });
 
-  const { data: salesOrders = [] } = useQuery({
-    queryKey: ['userSalesOrders', user?.id],
-    queryFn: () => fetchUserSalesOrders(user!.id),
-    enabled: !!user && isOpen && (activeTab === 'sales-orders' || activeTab === 'overview'),
+  const { data: usageBreakdown, isLoading: loadingUsage } = useQuery({
+    queryKey: ['userUsageBreakdown', user?.id],
+    queryFn: () => fetchUserUsageBreakdown(user!.id),
+    enabled: !!user && isOpen,
   });
 
   const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
@@ -752,7 +773,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
 
   const isOverLimit =
     subscription?.maxProducts != null &&
-    products.length > subscription.maxProducts &&
+    (usageBreakdown?.products ?? products.length) > subscription.maxProducts &&
     subscription.planName === 'free';
 
   return (
@@ -975,7 +996,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                 <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-3">
                   <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" />
                   <p className="text-sm text-amber-800 dark:text-amber-200">
-                    This user has <strong>{products.length} products</strong> but their{' '}
+                    This user has <strong>{usageBreakdown?.products ?? products.length} products</strong> but their{' '}
                     <strong>Starter</strong> plan only allows{' '}
                     <strong>{subscription.maxProducts}</strong>. They need to upgrade before
                     they can add more products or use workflows.
@@ -1104,33 +1125,53 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
               </div>
 
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Quick Stats</CardTitle>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Database className="w-4 h-4 text-blue-600" />
+                    Platform Data
+                  </CardTitle>
+                  <p className="text-xs text-gray-500">All data this user has inputted across the platform</p>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <div className={`text-2xl font-bold ${isOverLimit ? 'text-amber-600' : 'text-blue-600'}`}>
-                        {products.length}
+                  {loadingUsage ? (
+                    <div className="grid grid-cols-3 gap-3">
+                      {Array.from({ length: 9 }).map((_, i) => (
+                        <div key={i} className="h-14 rounded-lg bg-slate-100 animate-pulse" />
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-3 gap-3">
+                        {[
+                          { label: 'Products', value: usageBreakdown?.products ?? 0, color: isOverLimit ? 'text-amber-600' : 'text-blue-600', note: subscription?.maxProducts != null ? `/ ${subscription.maxProducts} limit` : undefined },
+                          { label: 'Categories', value: usageBreakdown?.categories ?? 0, color: 'text-violet-600' },
+                          { label: 'Bill of Materials', value: usageBreakdown?.bom ?? 0, color: 'text-indigo-600' },
+                          { label: 'Pick Lists', value: usageBreakdown?.pickLists ?? 0, color: 'text-teal-600' },
+                          { label: 'Sales Orders', value: usageBreakdown?.salesOrders ?? 0, color: 'text-green-600' },
+                          { label: 'Purchase Orders', value: usageBreakdown?.purchaseOrders ?? 0, color: 'text-emerald-600' },
+                          { label: 'Stock Counts', value: usageBreakdown?.stockCounts ?? 0, color: 'text-orange-600' },
+                          { label: 'Work Orders', value: usageBreakdown?.workOrders ?? 0, color: 'text-rose-600' },
+                          { label: 'Delivery Notes', value: usageBreakdown?.deliveryNotes ?? 0, color: 'text-cyan-600' },
+                        ].map(({ label, value, color, note }) => (
+                          <div key={label} className="text-center p-2 rounded-lg bg-slate-50 border border-slate-100">
+                            <div className={`text-2xl font-bold ${color}`}>{value}</div>
+                            <div className="text-xs text-gray-600 mt-0.5">{label}</div>
+                            {note && <div className="text-[10px] text-gray-400">{note}</div>}
+                          </div>
+                        ))}
                       </div>
-                      <div className="text-sm text-gray-600">
-                        Products
-                        {subscription?.maxProducts != null && (
-                          <span className="text-xs text-gray-400 block">
-                            / {subscription.maxProducts} limit
-                          </span>
-                        )}
+                      <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span className="text-sm text-gray-500">Total entries</span>
+                        <span className="text-lg font-bold text-slate-700">
+                          {(usageBreakdown
+                            ? usageBreakdown.products + usageBreakdown.categories + usageBreakdown.bom +
+                              usageBreakdown.pickLists + usageBreakdown.salesOrders + usageBreakdown.purchaseOrders +
+                              usageBreakdown.stockCounts + usageBreakdown.workOrders + usageBreakdown.deliveryNotes
+                            : 0)}
+                        </span>
                       </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">{salesOrders.length}</div>
-                      <div className="text-sm text-gray-600">Sales Orders</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-violet-600">{linkedUsers.length}</div>
-                      <div className="text-sm text-gray-600">Linked Users</div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </CardContent>
               </Card>
 

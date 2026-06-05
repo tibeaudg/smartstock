@@ -311,7 +311,10 @@ export default function AddProductPage() {
   const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
   const [showBulkImporterSuggestion, setShowBulkImporterSuggestion] = useState(false);
   const { isMobile } = useMobile();
-  
+  const [showDraftBanner, setShowDraftBanner] = useState(false);
+  const [draftSaved, setDraftSaved] = useState(false);
+  const addAnotherRef = useRef(false);
+
   // Get pre-filled data from URL params
   const preFilledSKU = searchParams.get('sku') || undefined;
   const preFilledName = searchParams.get('name') || undefined;
@@ -377,13 +380,49 @@ export default function AddProductPage() {
     },
   });
 
-  // Always start with empty form when creating a new product (no draft restoration)
+  const nameValue = form.watch('name');
+
+  // On mount: restore draft if one exists, otherwise start fresh
   useEffect(() => {
     if (!activeBranch?.branch_id) return;
-    // Clear any stale draft from previous sessions
     const draftKey = getDraftStorageKey(activeBranch.branch_id);
+
+    // URL params pre-fill the form directly — skip any draft
+    if (preFilledSKU || preFilledName || preFilledCategoryId) {
+      safeLocalStorage.removeItem(draftKey);
+      form.reset({
+        name: preFilledName || '',
+        description: '',
+        categoryId: preFilledCategoryId || '',
+        categoryName: '',
+        quantityInStock: isQuickMode ? 1 : 0,
+        minimumStockLevel: 0,
+        purchasePrice: 0,
+        salePrice: 0,
+        location: '',
+        sku: preFilledSKU || '',
+        taxRate: 0,
+        taxInclusive: false,
+      });
+      setVariants([]);
+      setShowVariantsSection(false);
+      setImagePreview(null);
+      setUploadedImages([]);
+      return;
+    }
+
+    const saved = safeLocalStorage.getItem(draftKey);
+    if (saved) {
+      try {
+        const draft = JSON.parse(saved) as Partial<FormData>;
+        if (draft.name || draft.sku) {
+          setShowDraftBanner(true);
+          return; // Leave form at defaults until user chooses
+        }
+      } catch {}
+    }
+
     safeLocalStorage.removeItem(draftKey);
-    // Reset form to empty defaults
     form.reset({
       name: '',
       description: '',
@@ -402,9 +441,43 @@ export default function AddProductPage() {
     setShowVariantsSection(false);
     setImagePreview(null);
     setUploadedImages([]);
-  }, [form, activeBranch?.branch_id, isQuickMode]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeBranch?.branch_id, isQuickMode]);
 
   // Note: fetchExistingVariants removed - this is an Add Product page, not an edit page
+
+  // Autosave form values to localStorage on change (debounced 2s)
+  useEffect(() => {
+    if (!activeBranch?.branch_id || showDraftBanner) return;
+    const draftKey = getDraftStorageKey(activeBranch.branch_id);
+    let timer: NodeJS.Timeout;
+
+    const subscription = form.watch((values) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const hasData = !!(values.name || values.sku || values.description);
+        if (hasData) {
+          safeLocalStorage.setItem(draftKey, JSON.stringify(values));
+          setDraftSaved(true);
+        } else {
+          safeLocalStorage.removeItem(draftKey);
+          setDraftSaved(false);
+        }
+      }, 2000);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timer);
+    };
+  }, [activeBranch?.branch_id, form, showDraftBanner]);
+
+  // Auto-clear draft saved indicator after 2.5s
+  useEffect(() => {
+    if (!draftSaved) return;
+    const t = setTimeout(() => setDraftSaved(false), 2500);
+    return () => clearTimeout(t);
+  }, [draftSaved]);
 
   // Track form opened on mount and abandoned on unmount
   useEffect(() => {
@@ -1029,7 +1102,10 @@ export default function AddProductPage() {
       });
       
       toast.success(hasVariants ? 'Product and variants added.' : 'Product successfully added.');
-      
+
+      const lastCategoryId = form.getValues('categoryId');
+      const lastCategoryName = form.getValues('categoryName');
+
       form.reset({
         name: '',
         description: '',
@@ -1051,7 +1127,8 @@ export default function AddProductPage() {
       // Clean up uploaded images and revoke object URLs
       uploadedImages.forEach(img => URL.revokeObjectURL(img.preview));
       setUploadedImages([]);
-      
+
+      safeLocalStorage.removeItem(getDraftStorageKey(activeBranch.branch_id));
       submittedRef.current = true;
       const method = isQuickMode ? 'quick' : 'manual';
       if (operationId) {
@@ -1077,6 +1154,11 @@ export default function AddProductPage() {
         } else {
           setShowBulkImporterSuggestion(true);
         }
+      } else if (addAnotherRef.current) {
+        addAnotherRef.current = false;
+        form.setValue('categoryId', lastCategoryId);
+        form.setValue('categoryName', lastCategoryName);
+        setTimeout(() => form.setFocus('name'), 0);
       } else {
         navigate('/dashboard/categories');
       }
@@ -1095,6 +1177,41 @@ export default function AddProductPage() {
       setLoading(false);
       console.log('[AddProductModal] Submission finalized.');
     }
+  };
+
+  // --- Draft Handlers ---
+
+  const handleRestoreDraft = () => {
+    const draftKey = getDraftStorageKey(activeBranch?.branch_id);
+    const saved = safeLocalStorage.getItem(draftKey);
+    if (saved) {
+      try {
+        const draft = JSON.parse(saved) as Partial<FormData>;
+        form.reset({ ...form.getValues(), ...draft });
+      } catch {}
+    }
+    setShowDraftBanner(false);
+  };
+
+  const handleDiscardDraft = () => {
+    safeLocalStorage.removeItem(getDraftStorageKey(activeBranch?.branch_id));
+    form.reset({
+      name: '',
+      description: '',
+      categoryId: '',
+      categoryName: '',
+      quantityInStock: isQuickMode ? 1 : 0,
+      minimumStockLevel: 0,
+      purchasePrice: 0,
+      salePrice: 0,
+      location: '',
+      sku: '',
+      taxRate: 0,
+      taxInclusive: false,
+    });
+    setVariants([]);
+    setShowVariantsSection(false);
+    setShowDraftBanner(false);
   };
 
   // --- Render Checks ---
@@ -1139,14 +1256,21 @@ export default function AddProductPage() {
               <h1 className="text-2xl font-bold">{isQuickMode ? 'Quick add product' : 'Add Product'}</h1>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-              <Button
-                type="submit"
-                form="add-product-form"
-                disabled={loading || (duplicateName && !hasVariants) || isOverProductLimit}
-                className={isMobile ? 'w-full' : 'shrink-0'}
-              >
-                {loading ? 'Adding...' : 'Add Product'}
-              </Button>
+              {draftSaved && (
+                <span className="text-xs text-gray-400 flex items-center gap-1">
+                  <Check className="w-3 h-3" /> Draft saved
+                </span>
+              )}
+              {!isQuickMode && (
+                <Button
+                  type="submit"
+                  form="add-product-form"
+                  disabled={loading || (duplicateName && !hasVariants) || isOverProductLimit || !nameValue?.trim()}
+                  className={isMobile ? 'w-full' : 'shrink-0'}
+                >
+                  {loading ? 'Adding...' : 'Add Product'}
+                </Button>
+              )}
               <p className="text-sm text-gray-500">
                 <Link
                   to="/dashboard/products/import"
@@ -1160,17 +1284,31 @@ export default function AddProductPage() {
         </div>
 
         {isQuickMode && (
-          <div className="flex-shrink-0 flex flex-col sm:flex-row sm:items-center gap-2 border-b border-blue-100 bg-blue-50 px-6 py-3 text-sm text-blue-900">
-            <p className="flex-1">
-              <span className="font-medium">Quick add</span> — you can fill in details later.
-            </p>
-            <button
-              type="button"
-              className="text-blue-700 hover:underline font-medium shrink-0"
-              onClick={() => navigate('/dashboard/products/new')}
-            >
-              Use full form
-            </button>
+          <div className="flex-shrink-0 border-b border-blue-100 bg-blue-50 px-6 py-2 text-sm text-blue-700">
+            Quick add — fill in the details later.
+          </div>
+        )}
+
+        {/* Draft restore banner */}
+        {showDraftBanner && (
+          <div className="flex-shrink-0 flex flex-col sm:flex-row sm:items-center gap-2 border-b border-amber-100 bg-amber-50 px-6 py-3 text-sm text-amber-900">
+            <p className="flex-1">You have an unsaved draft. Resume where you left off?</p>
+            <div className="flex gap-4 shrink-0">
+              <button
+                type="button"
+                className="font-medium text-amber-700 hover:underline"
+                onClick={handleRestoreDraft}
+              >
+                Resume
+              </button>
+              <button
+                type="button"
+                className="font-medium text-amber-500 hover:underline"
+                onClick={handleDiscardDraft}
+              >
+                Discard
+              </button>
+            </div>
           </div>
         )}
 
@@ -1199,8 +1337,6 @@ export default function AddProductPage() {
                 track('product_form_error', `Form Error: ${firstMessage}`, { error: 'validation_error', field: firstError, message: firstMessage });
               })} className="space-y-6">
                 {/* General Info */}
-                <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-             
                   <FormField
                     control={form.control}
                     name="name"
@@ -1209,11 +1345,12 @@ export default function AddProductPage() {
                       <FormItem>
                         <FormLabel className="text-gray-900 tracking-tight">Product Name *</FormLabel>
                         <FormControl>
-                          <Input 
-                              {...field} 
-                              placeholder="Enter product name" 
-                              disabled={loading} 
-                              className="border-gray-300 focus:border-gray-500 text-lg overflow-hidden text-ellipsis" 
+                          <Input
+                              {...field}
+                              autoFocus
+                              placeholder="Enter product name"
+                              disabled={loading}
+                              className="border-gray-300 focus:border-gray-500 text-lg overflow-hidden text-ellipsis"
                             />
                         </FormControl>
                         {duplicateName && !hasVariants && (
@@ -1226,36 +1363,38 @@ export default function AddProductPage() {
                       </FormItem>
                     )}
                   />
-                </div>
 
                 {/* Stock Quantity */}
                 {!hasVariants && (
-                  <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
-                    <FormField
-                      control={form.control}
-                      name="quantityInStock"
-                      rules={{ min: { value: 0, message: 'Stock must be 0 or more' } }}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-gray-900">Stock Quantity</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              inputMode="numeric"
-                              min="0"
-                              placeholder="0"
-                              disabled={loading}
-                              onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                              value={field.value === 0 ? '' : field.value.toString()}
-                              className="border-gray-300 focus:border-gray-500 max-w-xs"
-                            />
-                          </FormControl>
-                          <FormDescription>Current quantity on hand.</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="quantityInStock"
+                    rules={{ min: { value: 0, message: 'Stock must be 0 or more' } }}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-900">Stock Quantity <span className="text-gray-400 font-normal">(optional)</span></FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            inputMode="numeric"
+                            min="0"
+                            placeholder="0"
+                            disabled={loading}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              if (val === '' || /^\d+$/.test(val)) {
+                                field.onChange(val === '' ? 0 : parseInt(val, 10));
+                              }
+                            }}
+                            value={field.value === 0 ? '' : field.value.toString()}
+                            className="border-gray-300 focus:border-gray-500 max-w-xs"
+                          />
+                        </FormControl>
+                        <FormDescription>Current quantity on hand.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 )}
 
                 {isQuickMode && !showQuickAdvanced && (
@@ -1302,15 +1441,14 @@ export default function AddProductPage() {
                         )}
                       />
                     </div>
-                    <Button
+                    <button
                       type="button"
-                      variant="outline"
-                      className="w-full justify-between"
+                      className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
                       onClick={() => setShowQuickAdvanced(true)}
                     >
-                      <span className="font-medium">Show advanced fields</span>
                       <ChevronDown className="w-4 h-4" />
-                    </Button>
+                      <span>Show advanced fields</span>
+                    </button>
                   </div>
                 )}
 
@@ -2104,8 +2242,43 @@ export default function AddProductPage() {
             </Form>
           </div>
         </div>
+
+        {/* Sticky submit footer — quick mode only */}
+        {isQuickMode && (
+          <div className="flex-shrink-0 border-t bg-white px-6 py-4 flex items-center justify-between gap-3">
+            <button
+              type="button"
+              className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              onClick={() => navigate('/dashboard/products/new')}
+            >
+              Use full form
+            </button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={loading || (duplicateName && !hasVariants) || isOverProductLimit || !nameValue?.trim()}
+                onClick={() => {
+                  addAnotherRef.current = true;
+                  document.getElementById('add-product-form')?.dispatchEvent(
+                    new Event('submit', { bubbles: true, cancelable: true })
+                  );
+                }}
+              >
+                Add & add another
+              </Button>
+              <Button
+                type="submit"
+                form="add-product-form"
+                disabled={loading || (duplicateName && !hasVariants) || isOverProductLimit || !nameValue?.trim()}
+              >
+                {loading ? 'Adding...' : 'Add Product'}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
-      
+
       {/* 2. Upgrade Notice Modal (Correctly isolated and conditional) */}
       {showUpgradeNotice && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">

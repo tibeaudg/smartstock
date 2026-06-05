@@ -55,7 +55,8 @@
       "Bash(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" ls-files --error-unmatch .env)",
       "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" ls-files --error-unmatch .env 2>&1)",
       "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" rm --cached .env \"src/integrations/supabase/.env\" 2>&1)",
-      "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" status 2>&1)"
+      "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" status 2>&1)",
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\AddProductPage.tsx\" | Measure-Object -Line\\).Lines)"
     ]
   }
 }

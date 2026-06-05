@@ -1,11 +1,9 @@
 export type SortColumn =
   | 'email'
   | 'inactivity'
-  | 'products'
-  | 'linkedUsers'
+  | 'usageRate'
   | 'created'
-  | 'plan'
-  | 'branches';
+  | 'plan';
 export type SortDirection = 'asc' | 'desc';
 
 export type QuickFilter =
@@ -49,6 +47,15 @@ export interface UserStats {
   productCount: number;
   branchCount: number;
   linkedUserCount: number;
+  categoryCount: number;
+  bomCount: number;
+  pickListCount: number;
+  salesOrderCount: number;
+  purchaseOrderCount: number;
+  stockCountCount: number;
+  workOrderCount: number;
+  deliveryNoteCount: number;
+  usageRate: number;
   licenseCost: number;
   coreUsageScore: number;
   statsLastUpdated?: string;

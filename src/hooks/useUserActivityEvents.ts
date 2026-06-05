@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { surfaceFromPathname } from '@/lib/analytics/surfaces';
 import type { RawActivityEvent } from '@/lib/analytics/timeline';
 
 export interface UserActivityProfile {
@@ -43,9 +44,15 @@ async function fetchUserActivityEvents(userId: string): Promise<RawActivityEvent
   }>).map((e) => ({
     id: e.id,
     user_id: e.user_id,
-    event_name: e.event_type === 'page_view' ? 'feature_viewed' : e.event_type,
-    category: null,
-    properties: { page: e.page, label: e.label, route: e.page, ...e.metadata },
+    event_name: e.event_type === 'page_view' ? 'route_viewed' : e.event_type,
+    category: e.event_type === 'page_view' ? 'navigation' : null,
+    properties: {
+      page: e.page,
+      route: e.page,
+      surface: e.event_type === 'page_view' ? surfaceFromPathname(e.page) : undefined,
+      label: e.label,
+      ...e.metadata,
+    },
     timestamp: e.created_at,
     session_id: null,
     request_id: null,

@@ -9,6 +9,7 @@ import {
 } from './catalog';
 import { buildIdempotencyKey } from './dedup';
 import { getAnalyticsContext } from './context';
+import { surfaceFromPathname } from './surfaces';
 import type { AnalyticsEnvelope, AnalyticsSource, TrackOptions } from './types';
 
 export function buildEnvelope(
@@ -53,6 +54,8 @@ export function buildEnvelope(
     },
     properties: {
       page: route,
+      route,
+      surface: surfaceFromPathname(route),
       ...options.properties,
     },
   };

@@ -60,6 +60,7 @@ export function useSessionTracker() {
         userId: user.id,
         branchId: branchIdVal,
         sessionId,
+        idempotencyKey: `${sessionId}:session_started`,
         properties: { entry_path: entryPath },
       });
 
@@ -68,6 +69,7 @@ export function useSessionTracker() {
           userId: user.id,
           branchId: branchIdVal,
           sessionId,
+          idempotencyKey: `${sessionId}:return_visit`,
           properties: {
             gap_hours: Math.round((Date.now() - (lastEnd ?? 0)) / 3600000),
           },

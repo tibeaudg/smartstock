@@ -137,6 +137,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (shouldEmitLifecycleEvent(userId, 'signup_completed')) {
             trackEvent('signup_completed', {
               userId,
+              idempotencyKey: `${userId}:signup_completed`,
               properties: { provider: currentSession.user.app_metadata?.provider ?? 'email' },
             });
             supabase.functions.invoke('trigger-lifecycle-emails', {
@@ -150,6 +151,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           ) {
             trackEvent('email_verified', {
               userId,
+              idempotencyKey: `${userId}:email_verified`,
               properties: { email: currentSession.user.email },
             });
           }
@@ -162,6 +164,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         ) {
           trackEvent('email_verified', {
             userId: currentSession.user.id,
+            idempotencyKey: `${currentSession.user.id}:email_verified`,
             properties: { email: currentSession.user.email },
           });
         }
@@ -207,6 +210,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (shouldEmitLifecycleEvent(res.data.user.id, 'signup_started')) {
           trackEvent('signup_started', {
             userId: res.data.user.id,
+            idempotencyKey: `${res.data.user.id}:signup_started`,
             properties: { email, role, referred_by: referredBy ?? null },
           });
         }

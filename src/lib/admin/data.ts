@@ -76,6 +76,15 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
         productCount: 0,
         branchCount: 0,
         linkedUserCount: 0,
+        categoryCount: 0,
+        bomCount: 0,
+        pickListCount: 0,
+        salesOrderCount: 0,
+        purchaseOrderCount: 0,
+        stockCountCount: 0,
+        workOrderCount: 0,
+        deliveryNoteCount: 0,
+        usageRate: 0,
         licenseCost: 0,
         coreUsageScore: 0,
         statsLastUpdated: new Date().toISOString(),
@@ -83,17 +92,31 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
     }
 
     const branchIds = adminBranches.map((b) => b.branch_id);
-    const { count: productCount, error: productsError } = await supabase
-      .from('products')
-      .select('*', { count: 'exact', head: true })
-      .in('branch_id', branchIds);
-    if (productsError) throw productsError;
 
-    const linkedUsersResult = await supabase
-      .from('branch_users')
-      .select('user_id')
-      .in('branch_id', branchIds);
-    if (linkedUsersResult.error) throw linkedUsersResult.error;
+    const [
+      { count: productCount, error: productsError },
+      { count: categoryCount },
+      { count: bomCount },
+      { count: pickListCount },
+      { count: salesOrderCount },
+      { count: purchaseOrderCount },
+      { count: stockCountCount },
+      { count: workOrderCount },
+      { count: deliveryNoteCount },
+      linkedUsersResult,
+    ] = await Promise.all([
+      supabase.from('products').select('*', { count: 'exact', head: true }).in('branch_id', branchIds),
+      supabase.from('categories').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('bom_versions').select('*', { count: 'exact', head: true }).in('branch_id', branchIds),
+      supabase.from('pick_lists').select('*', { count: 'exact', head: true }).in('branch_id', branchIds),
+      supabase.from('sales_orders').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('purchase_orders').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('cycle_counts').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('work_orders').select('*', { count: 'exact', head: true }).in('branch_id', branchIds),
+      supabase.from('delivery_notes').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('branch_users').select('user_id').in('branch_id', branchIds),
+    ]);
+    if (productsError) throw productsError;
 
     const uniqueLinkedUsers = new Set(
       (linkedUsersResult.data as { user_id: string }[] | null)
@@ -102,8 +125,26 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
     );
 
     const productCountValue = productCount || 0;
+    const categoryCountValue = categoryCount || 0;
+    const bomCountValue = bomCount || 0;
+    const pickListCountValue = pickListCount || 0;
+    const salesOrderCountValue = salesOrderCount || 0;
+    const purchaseOrderCountValue = purchaseOrderCount || 0;
+    const stockCountCountValue = stockCountCount || 0;
+    const workOrderCountValue = workOrderCount || 0;
+    const deliveryNoteCountValue = deliveryNoteCount || 0;
     const branchCountValue = adminBranches.length;
     const linkedUserCountValue = uniqueLinkedUsers.size;
+    const usageRate =
+      productCountValue +
+      categoryCountValue +
+      bomCountValue +
+      pickListCountValue +
+      salesOrderCountValue +
+      purchaseOrderCountValue +
+      stockCountCountValue +
+      workOrderCountValue +
+      deliveryNoteCountValue;
     const coreUsageScore = calculateCoreUsageScore(
       productCountValue,
       branchCountValue,
@@ -115,6 +156,15 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
       productCount: productCountValue,
       branchCount: branchCountValue,
       linkedUserCount: linkedUserCountValue,
+      categoryCount: categoryCountValue,
+      bomCount: bomCountValue,
+      pickListCount: pickListCountValue,
+      salesOrderCount: salesOrderCountValue,
+      purchaseOrderCount: purchaseOrderCountValue,
+      stockCountCount: stockCountCountValue,
+      workOrderCount: workOrderCountValue,
+      deliveryNoteCount: deliveryNoteCountValue,
+      usageRate,
       licenseCost: 0,
       coreUsageScore,
       statsLastUpdated: new Date().toISOString(),
@@ -141,6 +191,15 @@ export async function fetchUserStats(userId: string): Promise<UserStats> {
       productCount: 0,
       branchCount: 0,
       linkedUserCount: 0,
+      categoryCount: 0,
+      bomCount: 0,
+      pickListCount: 0,
+      salesOrderCount: 0,
+      purchaseOrderCount: 0,
+      stockCountCount: 0,
+      workOrderCount: 0,
+      deliveryNoteCount: 0,
+      usageRate: 0,
       licenseCost: 0,
       coreUsageScore: 0,
       statsLastUpdated: new Date().toISOString(),
