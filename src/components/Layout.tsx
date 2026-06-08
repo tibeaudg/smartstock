@@ -9,6 +9,7 @@ import { TrialBanner } from './TrialBanner';
 import { TrialExpiredBanner } from './TrialExpiredBanner';
 import { ActivationBanner } from '@/components/activation';
 import { ImpersonationBanner } from '@/components/admin/ImpersonationBanner';
+import { AddProductModalProvider } from '@/hooks/AddProductModalContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -54,6 +55,7 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
   const [showNotifications, setShowNotifications] = useState(false);
 
   return (
+    <AddProductModalProvider>
     <div className="h-screen flex flex-col bg-slate-100 dark:bg-slate-950 text-foreground transition-colors">
       {isMobile && (
         <div className="flex items-center h-14 px-4 bg-blue-600 dark:bg-gray-950 border-b border-blue-500 dark:border-gray-800 flex-shrink-0">
@@ -107,5 +109,6 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
       </div>
 
     </div>
+    </AddProductModalProvider>
   );
 };
