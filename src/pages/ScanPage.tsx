@@ -4,24 +4,22 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 export default function ScanPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
-  const [barcode, setBarcode] = useState<string | null>(null);
+  const { openAddProduct } = useAddProductModal();
+  const [, setBarcode] = useState<string | null>(null);
 
   const handleBarcodeDetected = (detectedBarcode: string) => {
     setBarcode(detectedBarcode);
-    // Navigate to add product page with the barcode
-    navigate('/dashboard/products/new', { 
-      state: { barcode: detectedBarcode } 
-    });
+    openAddProduct({ mode: 'quick', preFilledSKU: detectedBarcode });
   };
 
   const handleClose = () => {
-    // Navigate back to dashboard when modal is closed
     navigate('/dashboard');
   };
 
@@ -40,25 +38,25 @@ export default function ScanPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">No warehouse selected</p>
+          <p className="text-gray-600 mb-4">Select a warehouse to scan products.</p>
           <button
+            type="button"
             onClick={() => navigate('/dashboard')}
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            className="text-blue-600 hover:underline"
           >
-            Go to Dashboard
+            Back to Dashboard
           </button>
         </div>
       </div>
     );
   }
 
-  // Show the barcode scanner modal directly
   return (
     <BarcodeScanner
       onBarcodeDetected={handleBarcodeDetected}
       onClose={handleClose}
-      onScanSuccess={onScanSuccess}
       settings={scannerSettings}
+      onScanSuccess={onScanSuccess}
     />
   );
 }

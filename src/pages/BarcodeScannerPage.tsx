@@ -3,12 +3,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { PageFormLayout } from '@/components/PageFormLayout';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 import { toast } from 'sonner';
 
 export default function BarcodeScannerPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
+  const { openAddProduct } = useAddProductModal();
 
   const state = location.state as { returnTo?: string; barcodeField?: string } | undefined;
   const returnTo = state?.returnTo || '/dashboard/categories';
@@ -18,9 +20,9 @@ export default function BarcodeScannerPage() {
     toast.success(`Barcode scanned: ${barcode}`);
     if (onScanSuccess) onScanSuccess();
 
-    // Navigate back with barcode in state, or to add product page with SKU
     if (returnTo.includes('/products/new')) {
-      navigate(`/dashboard/products/new?sku=${encodeURIComponent(barcode)}`);
+      navigate('/dashboard/categories', { replace: true });
+      openAddProduct({ mode: 'quick', preFilledSKU: barcode });
     } else if (returnTo.includes('/scan-flow')) {
       navigate(returnTo, { state: { ...state, barcode } });
     } else {

@@ -9,6 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { ArrowRight, Plus } from 'lucide-react';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Product {
   id: string;
@@ -19,6 +21,8 @@ interface Product {
 export default function CreateBOMPage() {
   const navigate = useNavigate();
   const { activeBranch } = useBranches();
+  const { openAddProduct } = useAddProductModal();
+  const queryClient = useQueryClient();
   const [selectedProductId, setSelectedProductId] = useState('');
 
   const { data: availableProducts = [] } = useQuery<Product[]>({
@@ -77,12 +81,25 @@ export default function CreateBOMPage() {
               </SelectTrigger>
               <SelectContent>
                 <div className="p-2 border-b mb-1">
-                  <Link to="/dashboard/products/new">
-                    <Button variant="outline" size="sm" className="w-full justify-start">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create New Product
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-start"
+                    onClick={() =>
+                      openAddProduct({
+                        mode: 'full',
+                        onProductAdded: async (product) => {
+                          await queryClient.invalidateQueries({
+                            queryKey: ['availableProductsForBOM', activeBranch?.branch_id],
+                          });
+                          if (product?.id) setSelectedProductId(product.id);
+                        },
+                      })
+                    }
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create New Product
+                  </Button>
                 </div>
                 {availableProducts.map((product) => (
                   <SelectItem key={product.id} value={product.id}>

@@ -31,6 +31,7 @@ import { StockQuickActionModal } from '@/components/products/StockQuickActionMod
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ProductsActivationPanel } from '@/components/activation';
 import { useActivationState } from '@/hooks/useActivationState';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -98,6 +99,7 @@ export default function CategorysPageSecured() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
+  const { openAddProduct } = useAddProductModal();
 
   const { user, loading: authLoading } = useAuth();
   const { activeBranch } = useBranches();
@@ -964,7 +966,7 @@ const categoryProductsData = useMemo(() => {
           <Button
             onClick={() => {
               sessionStorage.setItem('activation_highlight_seen', '1');
-              navigate('/dashboard/products/new?quick=1');
+              openAddProduct({ mode: 'quick' });
             }}
             className={cn(
               'bg-blue-600 text-white hover:bg-blue-700',
@@ -1198,12 +1200,13 @@ const categoryProductsData = useMemo(() => {
                 Clear Filters
               </Button>
             ) : (
-              <Link to="/dashboard/products/new?quick=1">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Product
-                </Button>
-              </Link>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => openAddProduct({ mode: 'quick' })}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Product
+              </Button>
             )}
           </div>
         </Card>

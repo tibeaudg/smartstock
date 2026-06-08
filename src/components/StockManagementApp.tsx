@@ -5,6 +5,7 @@ import { CurrencyBranchSync } from './CurrencyBranchSync';
 import { AuthContext, useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
 import { UnreadMessagesProvider } from '@/hooks/UnreadMessagesContext';
+import { AddProductModalProvider } from '@/hooks/AddProductModalContext';
 import { SubscriptionMigrationModal } from './SubscriptionMigrationModal';
 import { PastDueRedirect } from './PastDueRedirect';
 import { supabase } from '@/integrations/supabase/client';
@@ -118,6 +119,7 @@ export const StockManagementApp: React.FC = () => {
 
   return (
     <UnreadMessagesProvider>
+      <AddProductModalProvider>
         <CurrencyBranchSync />
         <SubscriptionMigrationModal />
         <PastDueRedirect />
@@ -133,6 +135,7 @@ export const StockManagementApp: React.FC = () => {
           <Outlet key={location.pathname} />
         </Layout>
         </div>
+      </AddProductModalProvider>
     </UnreadMessagesProvider>
   );
 };

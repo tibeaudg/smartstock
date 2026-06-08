@@ -16,9 +16,11 @@ import { AccountChecklist } from './AccountChecklist';
 import { ActivationSummaryCards } from '@/components/activation';
 import { OverLimitBanner } from './OverLimitBanner';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
+  const { openAddProduct } = useAddProductModal();
   const { user } = useAuth();
   const { formatPrice } = useCurrency();
   const { activeBranch } = useBranches();
@@ -57,7 +59,7 @@ export const Dashboard = () => {
 
         <div className="flex flex-wrap gap-2">
 
-          <Button onClick={() => { track('product_add_method_selected', 'Add Manually', { method: 'manual' }); navigate('/dashboard/products/new'); }} className="bg-blue-500 hover:bg-blue-600">
+          <Button onClick={() => { track('product_add_method_selected', 'Add Manually', { method: 'manual' }); openAddProduct({ mode: 'full' }); }} className="bg-blue-500 hover:bg-blue-600">
             <Plus className="mr-2 h-4 w-4" /> Add Product
           </Button>
           <Button variant="outline" onClick={() => { track('product_add_method_selected', 'Scan Barcode', { method: 'scan' }); navigate('/dashboard/scan'); }}>

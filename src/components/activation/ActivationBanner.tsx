@@ -4,11 +4,11 @@ import { X, Plus, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useActivationState } from '@/hooks/useActivationState';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 const DISMISS_KEY = 'stockflow_activation_banner_dismissed';
 
 const HIDDEN_PATH_PREFIXES = [
-  '/dashboard/products/new',
   '/dashboard/products/import',
   '/dashboard/scan',
 ];
@@ -22,6 +22,7 @@ export function ActivationBanner() {
   const location = useLocation();
   const navigate = useNavigate();
   const { track } = useAppEventTracker();
+  const { openAddProduct } = useAddProductModal();
   const [dismissed, setDismissed] = useState(
     () => sessionStorage.getItem(DISMISS_KEY) === '1'
   );
@@ -48,7 +49,7 @@ export function ActivationBanner() {
           className="bg-blue-600 hover:bg-blue-700 h-8"
           onClick={() => {
             track('activation_path_selected', 'manual', { source: 'banner', path: 'manual' });
-            navigate('/dashboard/products/new?quick=1');
+            openAddProduct({ mode: 'quick' });
           }}
         >
           <Plus className="h-3.5 w-3.5 mr-1" />

@@ -45,6 +45,7 @@ import { Badge } from '@/components/ui/badge';
 import { ReceivePurchaseOrderModal } from '@/components/purchase-orders/ReceivePurchaseOrderModal';
 import { Product, PurchaseOrder } from '@/types/stockTypes';
 import { cn } from '@/lib/utils';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 type ItemForm = {
   product_id: string | null;
@@ -61,6 +62,7 @@ export default function EditPurchaseOrderPage() {
   const { activeBranch } = useBranches();
   const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
+  const { openAddProduct } = useAddProductModal();
   const [loading, setLoading] = useState(false);
   const [poLoading, setPoLoading] = useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -497,18 +499,31 @@ export default function EditPurchaseOrderPage() {
                               </CommandList>
                             </Command>
                             <div className="border-t p-1">
-                              <Link to="/dashboard/products/new">
-                                <Button
+                              <Button
                                   type="button"
                                   variant="ghost"
                                   size="sm"
                                   className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
-                                  onClick={() => setOpenProductPopovers((prev) => ({ ...prev, [index]: false }))}
+                                  onClick={() => {
+                                  setOpenProductPopovers((prev) => ({ ...prev, [index]: false }));
+                                  openAddProduct({
+                                    mode: 'full',
+                                    fromPurchaseOrder: true,
+                                    onProductAdded: async (product) => {
+                                      await fetchProducts();
+                                      if (product?.id) {
+                                        updateItem(index, {
+                                          product_id: product.id,
+                                          unit_price: product.purchase_price ?? 0,
+                                        });
+                                      }
+                                    },
+                                  });
+                                }}
                                 >
                                   <Plus className="w-4 h-4" />
                                   add new
                                 </Button>
-                              </Link>
                             </div>
                           </PopoverContent>
                         </Popover>

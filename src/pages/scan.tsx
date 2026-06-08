@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 import { emitActivationOnce } from '@/lib/analytics';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 interface ProductFormData {
   name: string;
@@ -44,6 +45,7 @@ export default function ScanPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { track } = useAppEventTracker();
+  const { openAddProduct } = useAddProductModal();
 
   // Pre-fill barcode from navigation state (e.g. from BarcodeScannerPage)
   const initialBarcodeRef = React.useRef((location.state as { barcode?: string })?.barcode);
@@ -173,39 +175,33 @@ export default function ScanPage() {
           
           // Directly execute the transaction without showing form
           await handleSubmit(new Event('submit') as any, newProduct);
+        } else if (scannerSettings.default_transaction_type === 'out') {
+          toast.error(`Product with barcode ${barcode} does not exist in stock`);
         } else {
-          // Show form for manual input
           toast.info('Add Product');
-          
-          // Reset form for new product
-          setFormData(prev => ({
-            ...prev,
-            name: '',
-            description: '',
-            categoryId: '',
-            supplierId: '',
-            categoryName: '',
-            supplierName: '',
-            quantityInStock: 1,
-            minimumStockLevel: 10,
-            purchasePrice: 0,
-            salePrice: 0,
-            barcode: barcode
-          }));
-          
-          // Use scanner settings for default transaction type
-          setTransactionType(scannerSettings.default_transaction_type === 'out' ? 'outgoing' : 'incoming');
-          setShowProductForm(true);
+          openAddProduct({
+            mode: 'quick',
+            preFilledSKU: barcode,
+            onProductAdded: (product) => {
+              if (product) {
+                setScanHistory((prev) => {
+                  const newHistory = [
+                    { barcode, name: product.name, timestamp: new Date() },
+                    ...prev.filter((item) => item.barcode !== barcode),
+                  ];
+                  return newHistory.slice(0, 10);
+                });
+                track('product_created', undefined, { method: 'scan' });
+              }
+            },
+          });
         }
       }
     } catch (error) {
       console.error('Error searching for product:', error);
       toast.error('Error searching for product');
       
-      // Fallback: show form for new product
-      setFormData(prev => ({ ...prev, barcode }));
-      setTransactionType('incoming');
-      setShowProductForm(true);
+      openAddProduct({ mode: 'quick', preFilledSKU: barcode });
     }
   };
 

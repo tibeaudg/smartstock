@@ -2,7 +2,7 @@
 const EXACT_ROUTES: Record<string, string> = {
   '/dashboard': 'dashboard',
   '/dashboard/categories': 'products',
-  '/dashboard/products/new': 'product_create',
+  '/dashboard/products/new': 'products',
   '/dashboard/products/import': 'bulk_import',
   '/dashboard/categories-management': 'categories_management',
   '/dashboard/categories-management/new': 'category_create',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Building2,
@@ -52,6 +53,7 @@ export interface AccountChecklistProps {
 
 export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
   const navigate = useNavigate();
+  const { openAddProduct } = useAddProductModal();
   const {
     tasks,
     isChecklistComplete,
@@ -64,7 +66,7 @@ export function AccountChecklist({ onOpenScanner }: AccountChecklistProps) {
 
   const handleAction = (task: ChecklistTask) => {
     if (task.id === 'products') {
-      navigate('/dashboard/products/new?quick=1');
+      openAddProduct({ mode: 'quick' });
       return;
     }
     navigate(task.actionPath);

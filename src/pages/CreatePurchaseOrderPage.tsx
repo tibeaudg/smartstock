@@ -30,6 +30,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Product } from '@/types/stockTypes';
 import { cn } from '@/lib/utils';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 
 export default function CreatePurchaseOrderPage() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function CreatePurchaseOrderPage() {
   const { track } = useAppEventTracker();
   const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
+  const { openAddProduct } = useAddProductModal();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'draft' | 'pending' | 'ordered' | 'received' | 'cancelled'>('draft');
   const [vendorName, setVendorName] = useState('');
@@ -377,18 +379,31 @@ export default function CreatePurchaseOrderPage() {
                           </CommandList>
                         </Command>
                         <div className="border-t p-1">
-                          <Link to="/dashboard/products/new">
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
-                              onClick={() => setOpenProductPopovers((prev) => ({ ...prev, [index]: false }))}
-                            >
-                              <Plus className="h-4 w-4" />
-                              add new
-                            </Button>
-                          </Link>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
+                            onClick={() => {
+                              setOpenProductPopovers((prev) => ({ ...prev, [index]: false }));
+                              openAddProduct({
+                                mode: 'full',
+                                fromPurchaseOrder: true,
+                                onProductAdded: async (product) => {
+                                  await fetchProducts();
+                                  if (product?.id) {
+                                    updateItem(index, {
+                                      product_id: product.id,
+                                      unit_price: product.purchase_price ?? 0,
+                                    });
+                                  }
+                                },
+                              });
+                            }}
+                          >
+                            <Plus className="h-4 w-4" />
+                            add new
+                          </Button>
                         </div>
                       </PopoverContent>
                     </Popover>

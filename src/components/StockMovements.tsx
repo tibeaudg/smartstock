@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 import { useProductCount } from '@/hooks/useDashboardData';
+import { useAddProductModal } from '@/hooks/AddProductModalContext';
 import { useNavigate } from 'react-router-dom';
 
 // Go to page input component
@@ -61,6 +62,7 @@ export const StockMovements = () => {
   console.log('[StockMovements] Component rendering');
   const { isMobile } = useMobile();
   const navigate = useNavigate();
+  const { openAddProduct } = useAddProductModal();
   const { productCount, isLoading: productCountLoading } = useProductCount();
   const {
     transactions,
@@ -554,7 +556,7 @@ export const StockMovements = () => {
               </p>
             </div>
             <Button
-              onClick={() => navigate('/dashboard/products/new')}
+              onClick={() => openAddProduct({ mode: 'full' })}
               className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6 mt-4"
             >
               <Plus className="w-4 h-4 mr-2" />
