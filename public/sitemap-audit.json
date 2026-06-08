@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-04T19:57:06.425Z",
+  "generatedAt": "2026-06-08T12:49:58.063Z",
   "removed": [
     {
       "route": "5-elements-of-an-optimized-inventory-management-system",
@@ -16,6 +16,10 @@
     {
       "route": "barcodes-for-manufacturing",
       "reason": "thin-template"
+    },
+    {
+      "route": "bill-of-materials-software-free",
+      "reason": "pruning-noindex"
     },
     {
       "route": "e-invoice-eu-regulations",
@@ -158,6 +162,10 @@
       "reason": "thin-template"
     },
     {
+      "route": "barcode-inventory-system",
+      "reason": "pruning-noindex"
+    },
+    {
       "route": "enterprise-inventory-management",
       "reason": "pruning-noindex"
     },
@@ -168,13 +176,37 @@
     {
       "route": "enterprise-inventory-management",
       "reason": "pruning-noindex"
+    },
+    {
+      "route": "bill-of-materials-software-free",
+      "reason": "pruning-noindex"
+    },
+    {
+      "route": "best-free-inventory-software-with-barcode-scanning",
+      "reason": "missing-source"
+    },
+    {
+      "route": "bill-of-materials-software-free",
+      "reason": "pruning-noindex"
+    },
+    {
+      "route": "best-online-inventory-software",
+      "reason": "redirect"
+    },
+    {
+      "route": "what-is-the-best-free-inventory-management-software",
+      "reason": "redirect"
+    },
+    {
+      "route": "barcode-inventory-system",
+      "reason": "pruning-noindex"
     }
   ],
   "added": [],
   "stats": {
-    "initialCount": 80,
-    "finalCount": 80,
+    "initialCount": 85,
+    "finalCount": 79,
     "addedCount": 0,
-    "removedCount": 0
+    "removedCount": 6
   }
 }

@@ -4,6 +4,7 @@ import SeoPageLayout from "@/components/SeoPageLayout";
 import { generateSeoPageStructuredData } from "@/lib/structuredData";
 import { getBreadcrumbPath } from "@/config/topicClusters";
 
+const canonicalPath = "/best-free-inventory-software-with-barcode-scanning";
 const PAGE_TITLE = "Best Free Barcode Inventory Software — Try Free | StockFlow";
 const PAGE_DESCRIPTION =
   "Best free inventory software with barcode scanning for small businesses. Scan with your phone, offline mode, unlimited SKUs. Free forever. Try free →";
@@ -54,7 +55,7 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
   const structuredData = generateSeoPageStructuredData({
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    url: location.pathname,
+    url: canonicalPath,
     breadcrumbs: getBreadcrumbPath(location.pathname).map((item, index) => ({
       name: item.name,
       url: item.path,
