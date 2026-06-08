@@ -254,7 +254,11 @@ export default function InventoryManagementSoftware() {
             Looking for <strong>free inventory management software</strong>? StockFlow is completely free forever—no 
             credit card, no product limits, no time restrictions. You get unlimited products, users, and warehouses;
             barcode scanning; BOM management; and advanced reporting at no cost. Start tracking your inventory 
-            in minutes. Read our full guide to{' '}
+            in minutes. Compare{' '}
+            <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 hover:underline">
+              free barcode inventory software
+            </Link>{' '}
+            or read our full guide to{' '}
             <Link to="/inventory-management-software-free" className="text-blue-600 hover:underline">
               free inventory management software
             </Link>.

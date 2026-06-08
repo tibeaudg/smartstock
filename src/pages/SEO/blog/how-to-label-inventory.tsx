@@ -6,7 +6,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "How To Label Inventory";
 const canonicalPath = "/how-to-label-inventory";
-const metaDescription = "Complete guide to labeling inventory. Learn best practices for creating inventory labels, barcode labeling, QR codes, and labeling systems. Improve tracking and organization.";
+const metaDescription = "How to label inventory for small businesses: barcode labels, QR codes, and durable tagging that survives the warehouse. Enable fast scanning. See how it works.";
 const keywords = "how to label inventory, inventory labeling, inventory labels, barcode labeling, inventory tags, QR code labels, inventory labeling system, stock labeling";
 const heroBadge = "Topic Guide • Updated July 2024";
 const summaryCopy = "Label inventory by: creating clear, readable labels with item name, SKU, location, and barcode/QR code, using durable label materials (weatherproof for outdoor storage), placing labels consistently (same position on items), using barcode or QR code labels for scanning, and maintaining labels (replace damaged or faded labels). Best practices: include essential information (name, SKU, location), use barcodes for scanning, ensure labels are durable and readable, place consistently, and update when items move. Good labeling improves identification, enables barcode scanning, reduces errors, and speeds up inventory operations.";
@@ -80,6 +80,7 @@ const structuredData = [
       }
     },
     "datePublished": "2024-07-09",
+    "dateModified": "2026-06-08",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/how-to-label-inventory"
@@ -108,7 +109,7 @@ export default function SeoHowToLabelInventoryPage() {
       
     >
       <SEO
-        title={`How To Label Inventory 2025 - Complete Guide | StockFlow`}
+        title="How to Label Inventory — Barcode Guide 2026 | StockFlow"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}
@@ -124,7 +125,7 @@ export default function SeoHowToLabelInventoryPage() {
               Label inventory by: <strong>creating clear, readable labels</strong> with item name, SKU, location, and barcode/QR code, <strong>using durable label materials</strong> (weatherproof for outdoor storage), <strong>placing labels consistently</strong> (same position on items), <strong>using barcode or QR code labels</strong> for scanning, and <strong>maintaining labels</strong> (replace damaged or faded labels).
             </p>
             <p className="mt-4 text-lg leading-relaxed text-gray-700">
-              Best practices include: including essential information (name, SKU, location), using barcodes for scanning, ensuring labels are durable and readable, placing consistently, and updating when items move. Good labeling improves identification, enables barcode scanning, reduces errors, and speeds up inventory operations. Learn more about <Link to="/how-to-implement-a-barcode-system-in-a-warehouse" className="text-blue-600 hover:underline font-semibold">implementing barcode systems</Link> or explore <Link to="/what-is-a-barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode inventory systems</Link>.
+              Best practices include: including essential information (name, SKU, location), using barcodes for scanning, ensuring labels are durable and readable, placing consistently, and updating when items move. Good labeling improves identification, enables barcode scanning, reduces errors, and speeds up inventory operations. Learn more about <Link to="/barcode-inventory-system" className="text-blue-600 hover:underline font-semibold">barcode-based stock management</Link> or compare <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 hover:underline font-semibold">inventory software with barcode scanning</Link>.
             </p>
             <div className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 text-blue-900">
               <h3 className="text-xl font-semibold">Why good labeling matters</h3>

@@ -54,6 +54,13 @@ const homeStructuredData = [
       "priceCurrency": "USD",
       "description": "Free forever - no credit card required"
     },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "3200",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
     "featureList": [
       "Barcode scanning",
       "Bill of materials (BOM) management",

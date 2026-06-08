@@ -764,6 +764,27 @@ export function generateSoftwareApplicationWithReviews(
   return schemas;
 }
 
+export function generateHowToSchema(config: {
+  name: string;
+  description: string;
+  steps: Array<{ name: string; text: string }>;
+  url?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": config.name,
+    "description": config.description,
+    ...(config.url ? { "url": config.url } : {}),
+    "step": config.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "text": step.text
+    }))
+  };
+}
+
 // Generate comprehensive structured data for SEO pages
 export interface SeoPageStructuredDataOptions {
   title: string;

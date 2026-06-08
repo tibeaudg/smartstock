@@ -1,13 +1,8 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:seo",
   "outputDirectory": "dist",
   "trailingSlash": false,
   "redirects": [
-    {
-      "source": "/best-online-inventory-software",
-      "destination": "/best-free-inventory-software-with-barcode-scanning",
-      "permanent": true
-    },
     {
       "source": "/bill-of-material-management-software-free",
       "destination": "/bill-of-materials-software-free",
@@ -105,7 +100,7 @@
     },
     {
       "source": "/blog/best-online-inventory-software",
-      "destination": "/best-free-inventory-software-with-barcode-scanning",
+      "destination": "/best-online-inventory-software",
       "permanent": true
     },
     {
@@ -475,7 +470,7 @@
     },
     {
       "source": "/blog/what-is-the-best-free-inventory-management-software",
-      "destination": "/best-free-inventory-software-with-barcode-scanning",
+      "destination": "/what-is-the-best-free-inventory-management-software",
       "permanent": true
     },
     {
@@ -531,11 +526,6 @@
     {
       "source": "/what-is-bill-of-materials",
       "destination": "/bill-of-materials-software-free",
-      "permanent": true
-    },
-    {
-      "source": "/what-is-the-best-free-inventory-management-software",
-      "destination": "/best-free-inventory-software-with-barcode-scanning",
       "permanent": true
     },
     {

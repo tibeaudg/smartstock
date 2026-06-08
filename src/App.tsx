@@ -415,7 +415,7 @@ const AppRouter = () => {
       <Suspense fallback={<ContentLoadingScreen />}>
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route path="/" element={<><SEO title="Inventory Chaos? Track Stock in Real-Time | StockFlow — Free Plan Available" description="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Free Starter plan, paid plans from $9/mo. 15+ hours saved weekly." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
+        <Route path="/" element={<><SEO title="Free Inventory Software — Barcode & BOMs | StockFlow" description="Free inventory management software for small businesses. Barcode scanning, BOM management, and real-time stock across every location. No credit card. Start for free." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
         <Route path="/features" element={<><SEO title="Inventory Management Features & Capabilities | StockFlow" description="Explore StockFlow features: barcode scanning, BOM management, stock alerts, reporting, and offline support. Free inventory software for growing businesses." url="https://www.stockflowsystems.com/features" structuredData={FEATURES_STRUCTURED_DATA} /><FeaturesPage /></>} />
         <Route path="/reporting" element={
           <React.Suspense fallback={<ContentLoadingScreen />}>
@@ -457,10 +457,6 @@ const AppRouter = () => {
         <Route path="/what-is-bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
-        <Route path="/what-is-the-best-free-inventory-management-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
-        <Route path="/blog/what-is-the-best-free-inventory-management-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
-        <Route path="/best-online-inventory-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
-        <Route path="/blog/best-online-inventory-software" element={<Navigate to="/best-free-inventory-software-with-barcode-scanning" replace />} />
         <Route path="/inventory-management-bing" element={<Navigate to="/inventory-management" replace />} />
         <Route path="/prix" element={<Navigate to="/pricing" replace />} />
         <Route path="/prix-abonnement" element={<Navigate to="/pricing" replace />} />

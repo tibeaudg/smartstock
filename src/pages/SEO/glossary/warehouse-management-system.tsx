@@ -38,8 +38,8 @@ export default function WarehouseManagementSystemPage() {
 
   const pageMetadata = {
     published: '2026-01-06',
-    updated: '2026-01-20',
-    updatedDisplay: '20/01/2026'
+    updated: '2026-06-08',
+    updatedDisplay: 'June 2026'
   };
 
   const faqData = [
@@ -264,8 +264,8 @@ export default function WarehouseManagementSystemPage() {
 <>
 <HeaderPublic />
       <SEO
-        title="WMS Guide 2026: 6-Step Process Flow + Free Plan | StockFlow"
-        description="Warehouse management system guide: 6-step process flow (receiving to shipping), 99% accuracy. Cloud WMS $0-$199/mo. Free plan available. No credit card."
+        title="Warehouse Management System — Free WMS 2026 | StockFlow"
+        description="Warehouse management system guide for SMBs: 6-step process flow from receiving to shipping with 99% accuracy. Free cloud WMS and barcode scanning. See how it works."
         keywords="warehouse management system, WMS, warehouse management system process flow, wms warehouse management system, warehouse management systems, warehousing management system, wms systems, warehouse management system wms, what is a warehouse management system, warehouse management system software, WMS software, cloud based warehouse management system, wms saas pricing, warehouse management system cost, types of warehouse management systems, SAP WMS, warehouse inventory systems, warehouse tracking system"
         url="https://www.stockflowsystems.com/warehouse-management-system"
         structuredData={structuredData}
@@ -286,7 +286,7 @@ export default function WarehouseManagementSystemPage() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 border border-blue-200 rounded-full mb-6">
               <Warehouse className="w-5 h-5 text-blue-600" />
-              <span className="text-blue-800 font-bold text-sm">Updated January 2026</span>
+              <span className="text-blue-800 font-bold text-sm">Updated June 2026</span>
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] mb-6">
@@ -297,7 +297,11 @@ export default function WarehouseManagementSystemPage() {
               A <strong>Warehouse Management System (WMS)</strong> is software that controls, optimizes, and automates 
               warehouse operations—from receiving and storing goods to picking, packing, and shipping. Modern WMS provides 
               <strong> real-time visibility</strong>, intelligent task assignment, and seamless integrations with ERP, 
-              e-commerce, and supply chain systems.
+              e-commerce, and supply chain systems. Pair your WMS with{' '}
+              <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 underline">inventory software with barcode scanning</Link>{' '}
+              or{' '}
+              <Link to="/bill-of-materials-software-free" className="text-blue-600 underline">free bill of materials software</Link>{' '}
+              if you run production lines.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

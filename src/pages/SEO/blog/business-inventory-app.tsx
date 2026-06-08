@@ -1,5 +1,5 @@
 import SEO from '@/components/SEO';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
@@ -143,8 +143,8 @@ export default function SmallBusinessInventoryAppPage() {
       keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Best Business Inventory App 2026: Free, Mobile Scanning"
-        description="Best business inventory app 2026: free mobile scanning, real-time sync, unlimited items. No credit card. StockFlow."
+        title="Business Inventory App — Free Mobile Scanning | StockFlow"
+        description="Business inventory app for small teams: free mobile barcode scanning, real-time cloud sync, and automated low-stock alerts. No credit card. Try free →"
         keywords="small business inventory app, best inventory app, mobile inventory tracking, inventory app for iphone, android inventory scanner, smb asset tracking"
         url="https://www.stockflowsystems.com/business-inventory-app"
         structuredData={structuredData}
@@ -158,7 +158,9 @@ export default function SmallBusinessInventoryAppPage() {
             The <strong>best inventory app</strong> for 2026 is a <strong>small business inventory app</strong> that works on your phone. <strong>StockFlow</strong> gives you total control over stock, materials, and equipment at the touch of a button—no complex ERP or messy spreadsheets.
           </p>
           <p className="text-lg text-gray-600 leading-relaxed">
-            Whether you are a retail shop owner, a contractor with a van full of tools, or an e-commerce seller, our app provides a <strong>centralized, automated system</strong> that works across all your devices. Real-time syncing means your data is always up to date, whether you're in the warehouse or at a client site.
+            Whether you are a retail shop owner, a contractor with a van full of tools, or an e-commerce seller, our app provides a <strong>centralized, automated system</strong> that works across all your devices. Real-time syncing means your data is always up to date, whether you're in the warehouse or at a client site. Compare dedicated{' '}
+            <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 underline">free barcode inventory software</Link> or pair stock with{' '}
+            <Link to="/bill-of-materials-software-free" className="text-blue-600 underline">free BOM software</Link> if you assemble products.
           </p>
         </div>
       </section>

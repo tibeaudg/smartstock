@@ -1,23 +1,30 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { StructuredData } from '@/components/StructuredData';
 
 const canonicalPath = '/bill-of-materials-software-free';
+const PAGE_TITLE = 'Free BOM Software 2026 — Stop Spreadsheets | StockFlow';
+const PAGE_DESCRIPTION =
+  'Free bill of materials software for small manufacturers. Multi-level BOMs, live stock deduction, and cost rollup — no spreadsheet chaos. Start for free.';
+const DATE_MODIFIED = '2026-06-08';
 
 const faqData = [
   {
-    question: 'What is bill of materials software?',
+    question: 'What is BOM software?',
     answer:
-      'Bill of materials (BOM) software is a tool that lets manufacturers create, manage, and version multi-level lists of components, raw materials, and sub-assemblies needed to build a product. It replaces manual spreadsheets with live stock links, costing, and production handoff workflows.',
+      'BOM software lets manufacturers create, manage, and version multi-level lists of components, raw materials, and sub-assemblies needed to build a product. It replaces manual spreadsheets with live stock links, costing, and production handoff workflows.',
   },
   {
-    question: 'Is there truly free bill of materials software?',
+    question: 'Is there free bill of materials software?',
     answer:
-      'Yes. StockFlow offers a permanently free plan with unlimited products, multi-level BOM creation, component cost tracking, and live inventory deduction when you run a production order — no credit card required.',
+      'Yes. StockFlow offers permanently free BOM software with multi-level BOM creation, component cost tracking, and live inventory deduction when you run a production order — no credit card required.',
   },
   {
-    question: 'What is the difference between a BOM and an MRP system?',
+    question: 'How do I manage a BOM without Excel?',
+    answer:
+      'Import your spreadsheet into StockFlow, map SKUs and quantities, then link each BOM line to live inventory. When you run production, StockFlow deducts components automatically and rolls up costs — no manual copy-paste or version conflicts.',
+  },
+  {
+    question: 'What is the difference between BOM and MRP?',
     answer:
       'A BOM is the structured recipe for a product. MRP (Material Requirements Planning) uses BOMs alongside demand forecasts and lead times to calculate what to purchase and when. BOM software is the foundation; MRP adds the planning layer on top.',
   },
@@ -41,29 +48,63 @@ const comparisonRows = [
   ['Google Sheets', 'Free', 'Familiar, flexible', 'No live inventory link, breaks at scale, no audit trail'],
 ];
 
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'StockFlow — Free Bill of Materials Software',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    url: `https://www.stockflowsystems.com${canonicalPath}`,
+    description:
+      'Free bill of materials software with multi-level BOM creation, live inventory deduction, component cost rollup, and CSV import.',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    datePublished: '2026-06-02',
+    dateModified: DATE_MODIFIED,
+    author: { '@type': 'Organization', name: 'StockFlow' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'StockFlow',
+      logo: { '@type': 'ImageObject', url: 'https://www.stockflowsystems.com/logo.png' },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.stockflowsystems.com${canonicalPath}`,
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqData.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  },
+];
+
 export default function BillOfMaterialsSoftwareFree() {
   return (
     <SeoPageLayout
-      heroTitle="Free Bill of Materials Software"
-      dateUpdated="2026-06-05"
+      title={PAGE_TITLE}
+      seoDescription={PAGE_DESCRIPTION}
+      heroTitle="Free Bill of Materials Software (2026)"
+      dateUpdated="June 2026"
       faqData={faqData}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Free Bill of Materials Software (2026) — Manage BOMs Without Spreadsheets | StockFlow"
-        description="Free bill of materials software with multi-level BOM creation, live inventory deduction, and cost rollup. No credit card. Built for small manufacturers and product-based businesses."
-        canonical={canonicalPath}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        keywords="bill of materials software free, free bom software, bill of material management software free, free bill of materials, bom management software, free mrp bom software"
-        alternateLanguages={[
-          { lang: 'en-US', url: `https://www.stockflowsystems.com${canonicalPath}` },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/gratis-stuklijst-software' },
-        ]}
-      />
+      <p className="text-sm text-slate-500 mb-6">Last updated: June 2026</p>
 
       {/* Intro */}
       <section className="py-10 space-y-4">
         <p className="text-slate-700 leading-7">
-          Most small manufacturers and product-based businesses start with a spreadsheet BOM. It works until it doesn't:
+          Most small manufacturers and product-based businesses start with a spreadsheet BOM in 2026. It works until it doesn't:
           a component changes price, a sub-assembly gets updated, or two people edit the file at the same time and the
           version history becomes unusable. Free bill of materials software solves this without the cost of a full ERP.
         </p>
@@ -276,30 +317,6 @@ export default function BillOfMaterialsSoftwareFree() {
         </ul>
       </section>
 
-      <StructuredData
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'SoftwareApplication',
-            name: 'StockFlow — Free Bill of Materials Software',
-            applicationCategory: 'BusinessApplication',
-            operatingSystem: 'Web, iOS, Android',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            url: `https://www.stockflowsystems.com${canonicalPath}`,
-            description:
-              'Free bill of materials software with multi-level BOM creation, live inventory deduction, component cost rollup, and CSV import. No credit card required.',
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: faqData.map((faq) => ({
-              '@type': 'Question',
-              name: faq.question,
-              acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-            })),
-          },
-        ]}
-      />
     </SeoPageLayout>
   );
 }

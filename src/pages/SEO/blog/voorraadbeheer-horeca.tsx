@@ -5,7 +5,7 @@ const topicTitle = "Voorraadbeheer in de Horeca: Stocken zonder verspilling";
 const canonicalPath = "/voorraadbeheer-horeca";
 
 const metaDescription =
-  "Voorraadbeheer horeca: complete gids voor stockbeheer in restaurants en cafés. Leer correct stocken, verspilling verminderen tot 30%, foodcost verlagen en winstmarges verbeteren met gratis voorraadbeheer software voor horeca.";
+  "Voorraadbeheer horeca voor restaurants en cafés. Minder verspilling, lagere foodcost en gratis stocksoftware met barcode scanning. Start gratis.";
 
 const keywords =
   "voorraadbeheer horeca, stocken horeca, horeca voorraad tellen, horeca stockbeheer, inventaris horeca, horeca kostenbeheersing, foodcost horeca, drankvoorraad horeca, voorraadbeheer restaurant, horeca software voorraad, voorraadbeheer software horeca, stockbeheer restaurant, voorraadbeheer café, horeca inventaris software";
@@ -114,7 +114,7 @@ const structuredData = [
       },
     },
     datePublished: "2026-01-07",
-    dateModified: "2026-01-22",
+    dateModified: "2026-06-08",
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://www.stockflowsystems.com${canonicalPath}`,
@@ -153,7 +153,7 @@ export default function VoorraadbeheerHorecaPage() {
       keyTakeaways={keyTakeaways}
     >
       <SEO
-        title="Voorraadbeheer Horeca: Complete Gids voor Stockbeheer & Inventaris | 2026"
+        title="Voorraadbeheer Horeca 2026 — Gratis Software | StockFlow"
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

@@ -28,6 +28,8 @@ import { KeyTakeaways } from '@/components/KeyTakeaways';
 import HeaderPublic from '@/components/HeaderPublic';
 import Footer from '@/components/Footer';
 
+const canonicalPath = '/best-online-inventory-software';
+
 /**
  * Best Online Inventory Software 2026 - Optimized for:
  * - "inventory management online" (160 impressions)
@@ -130,7 +132,7 @@ export default function BestOnlineInventorySoftwarePage() {
         "name": "StockFlow Systems"
       },
       "datePublished": "2026-01-20",
-      "dateModified": "2026-01-20"
+      "dateModified": "2026-06-08"
     },
     {
       "@context": "https://schema.org",
@@ -248,8 +250,8 @@ export default function BestOnlineInventorySoftwarePage() {
 <>
 <HeaderPublic />
       <SEO
-        title="Inventory Management Software Online | Best 2026 | StockFlow"
-        description="Leading inventory management platforms with barcode scanning 2025 & 2026. StockFlow #1: free forever, unlimited SKUs, mobile barcode scanning. Compare top platforms—no credit card."
+        title="Best Online Inventory Software — Free Forever | StockFlow"
+        description="Best online inventory software for small businesses in 2026. Real-time cloud sync, barcode scanning, and multi-location stock control. Free forever. Try free →"
         keywords="leading inventory management platforms with barcode scanning 2025 or 2026, what are the leading inventory platforms with barcode scanning, inventory management software online, online inventory management, best online inventory software, inventory management online, online inventory management system, web based inventory software, cloud inventory management, free online inventory software, StockFlow vs Zoho, StockFlow vs Odoo, mobile inventory app, real-time inventory tracking"
         url="https://www.stockflowsystems.com/best-online-inventory-software"
         structuredData={structuredData}
