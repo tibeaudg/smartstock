@@ -56,7 +56,13 @@
       "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" ls-files --error-unmatch .env 2>&1)",
       "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" rm --cached .env \"src/integrations/supabase/.env\" 2>&1)",
       "PowerShell(git -C \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\" status 2>&1)",
-      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\AddProductPage.tsx\" | Measure-Object -Line\\).Lines)"
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\tibea\\\\Desktop\\\\Coding\\\\StockFlow\\\\src\\\\pages\\\\AddProductPage.tsx\" | Measure-Object -Line\\).Lines)",
+      "Bash(xargs grep -l \"Get started\\\\|Sign up\\\\|hero\\\\|Hero\\\\|CTA\\\\|cta\")",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\(JSON.stringify\\({scripts: p.scripts, dependencies: Object.keys\\(p.dependencies||{}\\), devDependencies: Object.keys\\(p.devDependencies||{}\\)}, null, 2\\)\\)\")",
+      "PowerShell(cd \"c:\\\\Users\\\\Tibea\\\\OneDrive\\\\Bureaublad\\\\Coding\\\\StockFlow\"; if \\(Test-Path dist/features/index.html\\) { Write-Host \"EXISTS\"; \\(Get-Content dist/features/index.html -Raw\\).Split\\(\\) | Where-Object { $_ -ne '' } | Measure-Object | Select-Object Count } else { Write-Host \"NOT FOUND\" }; if \\(Test-Path dist\\) { Get-ChildItem dist -Directory | Select-Object -First 20 Name })",
+      "Bash(python3 -c ' *)",
+      "Bash(wc -l src/config/seoPruning.generated.ts)",
+      "Bash(wc -l src/config/seoPruning.generated.js)"
     ]
   }
 }

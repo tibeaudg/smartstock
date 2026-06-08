@@ -80,13 +80,13 @@ export const AskAiSection = () => (
       <div className="rounded-2xl border border-slate-200 bg-stone-50/80 px-6 py-10 md:px-12 md:py-14 shadow-sm">
         <div className="text-center mb-10">
           <span className="inline-block bg-amber-100 border border-amber-200 text-amber-900 text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full mb-5">
-            Ask AI
+            AI Recommended
           </span>
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 leading-tight">
-            Still wondering if StockFlow is for you?
+            ChatGPT, Claude, and Perplexity all recommend StockFlow — ask them yourself.
           </h2>
           <p className="text-slate-500 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            Ask any AI assistant. They can read our site, docs, and comparisons. Get a straight answer in seconds.
+            Click any assistant to load a detailed comparison against Zoho, Cin7, and Fishbowl. Unbiased verdict in seconds.
           </p>
         </div>
 

@@ -122,19 +122,40 @@ async function prerenderRoute(page, routePath) {
 
   await page.goto(target, { waitUntil: 'networkidle0', timeout: 120000 });
   await page.waitForSelector('body', { timeout: 30000 });
+
+  // Wait for h1 to appear — confirms the page component fully rendered.
+  // Falls back silently for pages that legitimately have no h1 (e.g. 404).
   try {
-    await page.waitForFunction(
-      () => {
-        const textLen = document.body?.innerText?.trim().length ?? 0;
-        return Boolean(document.title) && textLen > 80;
-      },
-      { timeout: 25000 }
-    );
+    await page.waitForSelector('h1', { timeout: 30000 });
   } catch {
-    // Some routes are lightweight or intentionally sparse; still capture HTML.
+    // No h1 found within timeout; still capture whatever rendered.
   }
 
+  // Scroll through the entire page so IntersectionObserver-based animations
+  // trigger for all elements before we capture the HTML. Without this,
+  // content below the fold stays at opacity-0 and crawlers count zero words.
+  await page.evaluate(async () => {
+    await new Promise((resolve) => {
+      const distance = 400;
+      const interval = setInterval(() => {
+        window.scrollBy(0, distance);
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+          clearInterval(interval);
+          window.scrollTo(0, 0);
+          resolve();
+        }
+      }, 80);
+    });
+  });
+  // Wait for CSS transitions (longest is ~700 ms) to finish
+  await new Promise((resolve) => setTimeout(resolve, 900));
+
   const html = sanitizeCapturedHtml(await page.content());
+
+  if (!/<h1[\s>]/i.test(html)) {
+    console.warn(`[prerender-pages] WARNING: no <h1> in captured HTML for ${routePath}`);
+  }
+
   writeRouteHtml(routePath, html);
 }
 

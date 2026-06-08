@@ -12,6 +12,7 @@ import {
   Zap, 
   Target,
   CheckCircle,
+  X,
   ArrowRight,
   Play,
   Download
@@ -450,7 +451,7 @@ export default function FeaturesPage() {
               Compare Plans
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              All features included on all plans. No upselling. No feature gates. Everything you see above is free forever.
+              The Starter plan is free forever. Paid plans start at $9/month and unlock higher item limits, order management, and integrations.
             </p>
           </div>
 
@@ -459,110 +460,110 @@ export default function FeaturesPage() {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Features</th>
+                    <th className="px-6 py-4 text-left font-semibold text-gray-900">Feature</th>
                     <th className="px-6 py-4 text-center font-semibold text-gray-900">
-                      <div className="text-lg">Free</div>
-                      <div className="text-sm text-gray-600">€0/month</div>
+                      <div className="text-lg">Starter</div>
+                      <div className="text-sm text-gray-600">Free forever</div>
                     </th>
                     <th className="px-6 py-4 text-center font-semibold text-gray-900 bg-blue-50">
-                      <div className="text-lg">Growth</div>
-                      <div className="text-sm text-gray-600">€29/month</div>
+                      <div className="text-lg">Professional</div>
+                      <div className="text-sm text-gray-600">$9/month</div>
                       <Badge className="mt-2 bg-blue-600">Most Popular</Badge>
                     </th>
                     <th className="px-6 py-4 text-center font-semibold text-gray-900">
-                      <div className="text-lg">Premium</div>
-                      <div className="text-sm text-gray-600">€79/month</div>
+                      <div className="text-lg">Business</div>
+                      <div className="text-sm text-gray-600">$29/month</div>
+                    </th>
+                    <th className="px-6 py-4 text-center font-semibold text-gray-900">
+                      <div className="text-lg">Enterprise</div>
+                      <div className="text-sm text-gray-600">$59/month</div>
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">Mobile Barcode Scanning</td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">Unique items</td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">100</span></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><span className="text-gray-700 font-medium">2,000</span></td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">5,000</span></td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">10,000+</span></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">Inventory Tracking</td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">User licenses</td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">1</span></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><span className="text-gray-700 font-medium">5</span></td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">8</span></td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">12+</span></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">Analytics & Reports</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-400">Basic</span>
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">Warehouses</td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">1</span></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><span className="text-gray-700 font-medium">2</span></td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">5</span></td>
+                    <td className="px-6 py-4 text-center"><span className="text-gray-700 font-medium">Unlimited</span></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">Dead Stock Optimizer</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-400">-</span>
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">Barcode & QR scanning</td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">Multi-Location Support</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-400">1 location</span>
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <span className="text-gray-700">3 locations</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-700">10 locations</span>
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">Mobile app</td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">API Access</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-400">-</span>
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mx-auto" />
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">Low stock alerts</td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr>
-                    <td className="px-6 py-4 font-medium text-gray-900">Priority Support</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-400">Email only</span>
-                    </td>
-                    <td className="px-6 py-4 text-center bg-blue-50">
-                      <span className="text-gray-700">Email + Chat</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-gray-700">Phone + Chat + Email</span>
-                    </td>
+                    <td className="px-6 py-4 font-medium text-gray-900">Sales & purchase orders</td>
+                    <td className="px-6 py-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 font-medium text-gray-900">Pick lists & stock counts</td>
+                    <td className="px-6 py-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 font-medium text-gray-900">Role permissions</td>
+                    <td className="px-6 py-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 font-medium text-gray-900">QuickBooks integration</td>
+                    <td className="px-6 py-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 font-medium text-gray-900">API & webhooks</td>
+                    <td className="px-6 py-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center bg-blue-50"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><X className="h-4 w-4 text-gray-300 mx-auto" /></td>
+                    <td className="px-6 py-4 text-center"><CheckCircle className="h-5 w-5 text-green-500 mx-auto" /></td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <p className="text-center text-sm text-gray-500 py-4 border-t border-gray-100">
+              Need more? Add extra users for <strong>$2/month</strong> and extra warehouses for <strong>$5/month</strong>. <a href="/pricing" className="text-blue-600 hover:underline font-medium">See full pricing →</a>
+            </p>
           </div>
         </div>
       </section>
@@ -592,7 +593,7 @@ export default function FeaturesPage() {
             </Button>
           </div>
             <p className="text-blue-200 text-sm mt-4">
-            No credit card required • Free forever • No subscriptions
+            No credit card required • Free Starter plan • Paid plans from $9/mo
           </p>
         </div>
       </section>

@@ -367,7 +367,7 @@ export const AuthPage = () => {
           ? 'StockFlow: Reset Password'
           : 'StockFlow: Free Inventory Management - Login'}
         description={mode === 'register'
-          ? 'Start with free inventory management today. Register for StockFlow and manage your inventory easily and efficiently. No hidden costs, 100% free for small businesses.'
+          ? 'Start with free inventory management today. Register for StockFlow with a free Starter plan (up to 100 items, 1 user, 1 warehouse) or paid plans from $9/month. No credit card required.'
           : mode === 'reset'
           ? 'Reset your StockFlow password and regain access to your inventory management account.'
           : 'Log in to your free StockFlow account and manage your inventory with powerful tools. Barcode scanning, analytics, and more.'}

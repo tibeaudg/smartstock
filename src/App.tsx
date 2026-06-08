@@ -415,7 +415,7 @@ const AppRouter = () => {
       <Suspense fallback={<ContentLoadingScreen />}>
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route path="/" element={<><SEO title="Inventory Chaos? Track Stock in Real-Time (Completely Free) | StockFlow" description="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Completely free. 15+ hours saved weekly." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
+        <Route path="/" element={<><SEO title="Inventory Chaos? Track Stock in Real-Time | StockFlow — Free Plan Available" description="Stop losing sales to stockouts and overselling. StockFlow tracks inventory in real-time across all channels, even when WiFi drops. Free Starter plan, paid plans from $9/mo. 15+ hours saved weekly." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
         <Route path="/features" element={<><SEO title="Inventory Management Features & Capabilities | StockFlow" description="Explore StockFlow features: barcode scanning, BOM management, stock alerts, reporting, and offline support. Free inventory software for growing businesses." url="https://www.stockflowsystems.com/features" structuredData={FEATURES_STRUCTURED_DATA} /><FeaturesPage /></>} />
         <Route path="/reporting" element={
           <React.Suspense fallback={<ContentLoadingScreen />}>

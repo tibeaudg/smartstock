@@ -60,7 +60,7 @@ const Footer = () => {
                 <div className="flex flex-wrap gap-6 mb-8">
                   <div className="flex items-center gap-2 text-blue-100">
                     <ShieldCheck className="w-5 h-5" />
-                    <span className="font-medium text-sm md:text-base">Free Forever Plan</span>
+                    <span className="font-medium text-sm md:text-base">Free for Most Businesses</span>
                   </div>
                   <div className="flex items-center gap-2 text-blue-100">
                     <Globe2 className="w-5 h-5" />
@@ -97,17 +97,19 @@ const Footer = () => {
             
             {/* Brand Identity */}
             <div className="col-span-2 lg:col-span-4">
-      <img
-          src="/logo.png"
-          alt="stockflow"
-          className="h-10 md:h-12 mb-6"
-          onLoad={(e) => {
-            e.currentTarget.classList.add('loaded');
-          }}
-          onError={(e) => {
-            e.currentTarget.src = '/placeholder.svg';
-          }}
-        />              <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-sm">
+      <Link to="/">
+          <img
+            src="/logo.png"
+            alt="stockflow"
+            className="h-10 md:h-12 mb-6"
+            onLoad={(e) => {
+              e.currentTarget.classList.add('loaded');
+            }}
+            onError={(e) => {
+              e.currentTarget.src = '/placeholder.svg';
+            }}
+          />
+        </Link>              <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-sm">
                 The modern standard for cloud-based inventory orchestration. Empowering SMEs with enterprise-grade logistics.
               </p>
               <div className="flex gap-4">
