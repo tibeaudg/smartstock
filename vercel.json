@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build:seo",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "trailingSlash": false,
   "redirects": [
