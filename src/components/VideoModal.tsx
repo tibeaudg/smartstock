@@ -6,12 +6,20 @@ interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
   videoUrl?: string; // YouTube/Vimeo URL or embed URL
+  title?: string;
+  description?: string;
 }
 
 // Default demo video URL - can be configured via environment variable
 const DEFAULT_VIDEO_URL = import.meta.env.VITE_DEMO_VIDEO_URL || 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Replace with actual demo video
 
-export const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoUrl }) => {
+export const VideoModal: React.FC<VideoModalProps> = ({
+  isOpen,
+  onClose,
+  videoUrl,
+  title = 'StockFlow Inventory Management Demo',
+  description = 'See how StockFlow helps Medical Device Distributors, Event Companies, and Rental Businesses manage their inventory efficiently.',
+}) => {
   const videoSrc = videoUrl || DEFAULT_VIDEO_URL;
 
   // Handle escape key to close modal
@@ -101,10 +109,10 @@ export const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoUr
         {/* Optional: Add a title or description below video */}
         <div className="p-4 bg-gray-900 text-white">
           <h3 id="video-modal-title" className="text-lg font-semibold mb-2">
-            StockFlow Inventory Management Demo
+            {title}
           </h3>
           <p className="text-sm text-gray-300">
-            See how StockFlow helps Medical Device Distributors, Event Companies, and Rental Businesses manage their inventory efficiently.
+            {description}
           </p>
         </div>
       </div>

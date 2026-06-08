@@ -1,7 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { faqSlug } from '@/utils/helpCenter';
 import {
   Search,
   HelpCircle,
@@ -83,12 +85,52 @@ const categories: Category[] = [
   },
 ];
 
-const popularArticles = [
-  { title: 'How to set up your first inventory', category: 'Getting Started', readTime: '5 min', views: 1250 },
-  { title: 'Using barcode scanning effectively', category: 'Inventory Management', readTime: '3 min', views: 980 },
-  { title: 'Mobile app installation guide', category: 'Mobile App', readTime: '4 min', views: 750 },
-  { title: 'Understanding stock movements', category: 'Inventory Management', readTime: '6 min', views: 620 },
-  { title: 'Setting up user permissions', category: 'Getting Started', readTime: '7 min', views: 580 },
+interface PopularArticle {
+  title: string;
+  category: FaqCategory;
+  readTime: string;
+  views: number;
+  faqQuestion?: string;
+  dashboardPath?: string;
+}
+
+const popularArticles: PopularArticle[] = [
+  {
+    title: 'How to set up your first inventory',
+    category: 'Getting Started',
+    readTime: '5 min',
+    views: 1250,
+    faqQuestion: 'How do I create a new inventory?',
+  },
+  {
+    title: 'Using barcode scanning effectively',
+    category: 'Inventory Management',
+    readTime: '3 min',
+    views: 980,
+    faqQuestion: 'Is there a mobile app and what can I do with it?',
+  },
+  {
+    title: 'Mobile app installation guide',
+    category: 'Mobile App',
+    readTime: '4 min',
+    views: 750,
+    dashboardPath: '/dashboard/settings/mobile-app',
+    faqQuestion: 'Is there a mobile app and what can I do with it?',
+  },
+  {
+    title: 'Understanding stock movements',
+    category: 'Inventory Management',
+    readTime: '6 min',
+    views: 620,
+    faqQuestion: 'How do I track stock movements over time?',
+  },
+  {
+    title: 'Setting up user permissions',
+    category: 'Getting Started',
+    readTime: '7 min',
+    views: 580,
+    faqQuestion: 'Can I restrict access to certain products or warehouses?',
+  },
 ];
 
 const faqsData: FAQItem[] = [
@@ -178,8 +220,32 @@ const faqsData: FAQItem[] = [
 ];
 
 export default function HelpCenterPage() {
+  const location = useLocation();
+  const isDashboard = location.pathname.includes('/dashboard/');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<FaqCategory | 'All'>('All');
+
+  const openFaqBySlug = useCallback((slug: string) => {
+    const faq = faqsData.find((item) => faqSlug(item.question) === slug);
+    if (!faq) return;
+
+    setSelectedCategory('All');
+    setSearchQuery('');
+    window.history.replaceState(null, '', `#${slug}`);
+
+    requestAnimationFrame(() => {
+      const el = document.getElementById(slug);
+      if (!el) return;
+      const details = el.querySelector('details');
+      if (details) details.open = true;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }, []);
+
+  useEffect(() => {
+    const slug = window.location.hash.slice(1);
+    if (slug) openFaqBySlug(slug);
+  }, [openFaqBySlug]);
 
   const filteredFaqs = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
@@ -292,7 +358,8 @@ export default function HelpCenterPage() {
               {filteredFaqs.map((faq) => (
                 <div
                   key={faq.question}
-                  className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:border-blue-200 hover:shadow-sm transition-all"
+                  id={faqSlug(faq.question)}
+                  className="scroll-mt-24 rounded-xl border border-gray-200 bg-white overflow-hidden hover:border-blue-200 hover:shadow-sm transition-all"
                 >
                   <details className="group">
                     <summary className="cursor-pointer list-none px-5 py-4">
@@ -341,25 +408,50 @@ export default function HelpCenterPage() {
           <section>
             <h3 className="text-base font-semibold text-gray-900 mb-4">Popular Articles</h3>
             <div className="space-y-2">
-              {popularArticles.map((article) => (
-                <div
-                  key={article.title}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 hover:border-blue-200 hover:bg-blue-50/30 transition-colors cursor-pointer group"
-                >
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium text-gray-800 leading-snug">{article.title}</p>
-                    <div className="mt-1 flex items-center gap-2">
-                      <span className="text-[10px] text-gray-400 flex items-center gap-1">
-                        <Clock className="h-2.5 w-2.5" /> {article.readTime}
-                      </span>
-                      <span className="text-[10px] text-gray-400 flex items-center gap-1">
-                        <Star className="h-2.5 w-2.5" /> {article.views.toLocaleString()}
-                      </span>
+              {popularArticles.map((article) => {
+                const articleClassName =
+                  'flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 hover:border-blue-200 hover:bg-blue-50/30 transition-colors cursor-pointer group text-left';
+
+                const articleContent = (
+                  <>
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-gray-800 leading-snug">{article.title}</p>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                          <Clock className="h-2.5 w-2.5" /> {article.readTime}
+                        </span>
+                        <span className="text-[10px] text-gray-400 flex items-center gap-1">
+                          <Star className="h-2.5 w-2.5" /> {article.views.toLocaleString()}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <ChevronRight className="h-3.5 w-3.5 shrink-0 text-gray-300 group-hover:text-blue-400 transition-colors" />
-                </div>
-              ))}
+                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-gray-300 group-hover:text-blue-400 transition-colors" />
+                  </>
+                );
+
+                if (article.dashboardPath && isDashboard) {
+                  return (
+                    <Link key={article.title} to={article.dashboardPath} className={articleClassName}>
+                      {articleContent}
+                    </Link>
+                  );
+                }
+
+                if (article.faqQuestion) {
+                  return (
+                    <button
+                      key={article.title}
+                      type="button"
+                      onClick={() => openFaqBySlug(faqSlug(article.faqQuestion!))}
+                      className={articleClassName}
+                    >
+                      {articleContent}
+                    </button>
+                  );
+                }
+
+                return null;
+              })}
             </div>
           </section>
 
