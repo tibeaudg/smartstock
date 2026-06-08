@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -1304,14 +1305,11 @@ export const AddProductModal = ({
                               <FormItem>
                                 <FormLabel className="text-gray-700 font-medium">Purchase Price</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    step="0.01"
-                                    min="0"
+                                  <DecimalInput
                                     placeholder="0.00"
                                     disabled={loading}
-                                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                                    value={field.value.toString()}
+                                    onChange={field.onChange}
+                                    value={field.value}
                                     className="border-gray-300 focus:border-gray-500"
                                   />
                                 </FormControl>
@@ -1735,13 +1733,10 @@ export const AddProductModal = ({
                                     <Label htmlFor={`variant-purchase-${index}`} className="text-sm font-medium text-gray-700">
                                       Purchase Price
                                     </Label>
-                                    <Input
+                                    <DecimalInput
                                       id={`variant-purchase-${index}`}
-                                      type="number"
-                                      step="0.01"
-                                      min="0"
-                                      value={variant.purchasePrice.toString()}
-                                      onChange={(e) => {
+                                      value={variant.purchasePrice}
+                                      onChange={(purchasePrice) => {
                                         const currentVariants = variants.length === 0 ? [{
                               variantName: '',
                               quantityInStock: 0,
@@ -1752,7 +1747,7 @@ export const AddProductModal = ({
                               barcode: '',
                               location: ''
                                         }] : [...variants];
-                                        currentVariants[index].purchasePrice = parseFloat(e.target.value) || 0;
+                                        currentVariants[index].purchasePrice = purchasePrice;
                                         setVariants(currentVariants);
                           }}
                                       className="mt-1 text-sm"
@@ -1764,13 +1759,10 @@ export const AddProductModal = ({
                                     <Label htmlFor={`variant-sale-${index}`} className="text-sm font-medium text-gray-700">
                                       Sale Price
                                     </Label>
-                              <Input 
+                              <DecimalInput
                                       id={`variant-sale-${index}`}
-                                type="number" 
-                                      step="0.01"
-                                min="0"
-                                      value={variant.salePrice.toString()}
-                                      onChange={(e) => {
+                                      value={variant.salePrice}
+                                      onChange={(salePrice) => {
                                         const currentVariants = variants.length === 0 ? [{
                                           variantName: '',
                                           quantityInStock: 0,
@@ -1781,7 +1773,7 @@ export const AddProductModal = ({
                                           barcode: '',
                                           location: ''
                                         }] : [...variants];
-                                        currentVariants[index].salePrice = parseFloat(e.target.value) || 0;
+                                        currentVariants[index].salePrice = salePrice;
                                         setVariants(currentVariants);
                                       }}
                                       className="mt-1 text-sm"
