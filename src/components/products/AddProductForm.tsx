@@ -370,7 +370,6 @@ export function AddProductForm({
   const addAnotherRef = externalAddAnotherRef ?? internalAddAnotherRef;
 
   const isQuickMode = mode === 'quick';
-  const [showQuickAdvanced, setShowQuickAdvanced] = useState(mode === 'full');
 
   // Safety: prevent indefinite loading if background/tab-switch caused a stuck request
   useEffect(() => {
@@ -1519,7 +1518,38 @@ export function AddProductForm({
                 const firstMessage = (errors as any)[firstError]?.message ?? firstError;
                 track('product_form_error', `Form Error: ${firstMessage}`, { error: 'validation_error', field: firstError, message: firstMessage });
               })} className="space-y-6">
-                {/* General Info */}
+                {/* Product name — quick mode: tinted required zone */}
+                {isQuickMode ? (
+                  <div className="rounded-lg border border-border/60 bg-muted/40 p-4 space-y-3">
+
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      rules={{ required: 'Product name is mandatory' }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground tracking-tight">Product name</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              autoFocus
+                              placeholder="e.g. Blue Widget 500ml"
+                              disabled={loading}
+                              className="text-lg"
+                            />
+                          </FormControl>
+                          {duplicateName && !hasVariants && (
+                            <div className="flex items-center text-sm text-red-600 mt-1">
+                              <AlertCircle className="w-4 h-4 mr-1" />
+                              This product name already exists for a main product in this warehouse.
+                            </div>
+                          )}
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                ) : (
                   <FormField
                     control={form.control}
                     name="name"
@@ -1529,12 +1559,12 @@ export function AddProductForm({
                         <FormLabel className="text-gray-900 tracking-tight">Product Name *</FormLabel>
                         <FormControl>
                           <Input
-                              {...field}
-                              autoFocus
-                              placeholder="Enter product name"
-                              disabled={loading}
-                              className="border-gray-300 focus:border-gray-500 text-lg overflow-hidden text-ellipsis"
-                            />
+                            {...field}
+                            autoFocus
+                            placeholder="Enter product name"
+                            disabled={loading}
+                            className="border-gray-300 focus:border-gray-500 text-lg overflow-hidden text-ellipsis"
+                          />
                         </FormControl>
                         {duplicateName && !hasVariants && (
                           <div className="flex items-center text-sm text-red-600 mt-1">
@@ -1546,9 +1576,79 @@ export function AddProductForm({
                       </FormItem>
                     )}
                   />
+                )}
 
-                {/* Stock Quantity */}
-                {!hasVariants && !fromPurchaseOrder && (
+                {/* Quick mode: Stock qty + SKU on same row */}
+                {isQuickMode && !hasVariants && !fromPurchaseOrder && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="quantityInStock"
+                      rules={{ min: { value: 0, message: 'Stock must be 0 or more' } }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-900">
+                            Stock qty <span className="text-muted-foreground font-normal">optional</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              inputMode="numeric"
+                              min="0"
+                              placeholder="1"
+                              disabled={loading}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (val === '' || /^\d+$/.test(val)) {
+                                  field.onChange(val === '' ? 0 : parseInt(val, 10));
+                                }
+                              }}
+                              value={field.value === 0 ? '' : field.value.toString()}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="sku"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-gray-900">
+                            SKU <span className="text-muted-foreground font-normal">optional</span>
+                          </FormLabel>
+                          <FormControl>
+                            <div className="flex gap-2">
+                              <Input
+                                {...field}
+                                placeholder="Auto-generate or scan"
+                                disabled={loading}
+                                className="flex-1"
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                disabled={loading}
+                                className="shrink-0 px-3"
+                                title="Scan barcode"
+                                onClick={() => setShowScanner(true)}
+                              >
+                                <Scan className="w-4 h-4 mr-1.5" />
+                                Scan
+                              </Button>
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+
+                {/* Full mode: Stock Quantity */}
+                {!isQuickMode && !hasVariants && !fromPurchaseOrder && (
                   <FormField
                     control={form.control}
                     name="quantityInStock"
@@ -1580,81 +1680,31 @@ export function AddProductForm({
                   />
                 )}
 
-                {isQuickMode && !showQuickAdvanced && (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="sku"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-900">SKU (optional)</FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="Enter SKU"
-                                disabled={loading}
-                                className="border-gray-300 focus:border-gray-500"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="categoryId"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-gray-900">Category (optional)</FormLabel>
-                            <FormControl>
-                              <HierarchicalCategorySelector
-                                value={field.value || null}
-                                onValueChange={(categoryId, categoryName) => {
-                                  field.onChange(categoryId || '');
-                                  form.setValue('categoryName', categoryName || '');
-                                }}
-                                placeholder="Select category..."
-                                allowCreate={true}
-                                showPath={true}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
-                      onClick={() => setShowQuickAdvanced(true)}
-                    >
-                      <ChevronDown className="w-4 h-4" />
-                      <span>Show advanced fields</span>
-                    </button>
-                  </div>
-                )}
-
-                {/* Collapsible More Details - SKU, Min Stock, Category, Location, Image, Description, Pricing, Tax */}
-                {(!isQuickMode || showQuickAdvanced) && (
                 <Collapsible open={showAdditionalInfo} onOpenChange={setShowAdditionalInfo}>
                   <CollapsibleTrigger asChild>
                     <Button
                       type="button"
                       variant="outline"
-                      className="w-full justify-between"
+                      className="w-full justify-between h-auto py-3"
                     >
-                      <span className="font-medium">More details</span>
+                      <span className="flex items-center gap-2 min-w-0 text-left">
+                        <span className="font-medium shrink-0">More details</span>
+                        {isQuickMode && !showAdditionalInfo && (
+                          <span className="text-muted-foreground text-sm font-normal truncate">
+                            category, supplier, pricing, image…
+                          </span>
+                        )}
+                      </span>
                       {showAdditionalInfo ? (
-                        <ChevronUp className="w-4 h-4" />
+                        <ChevronUp className="w-4 h-4 shrink-0" />
                       ) : (
-                        <ChevronDown className="w-4 h-4" />
+                        <ChevronDown className="w-4 h-4 shrink-0" />
                       )}
                     </Button>
                   </CollapsibleTrigger>
                   <CollapsibleContent className="space-y-4 mt-4">
-                    {/* Min Stock, SKU, Category, Location */}
-                    {!hasVariants && (
+                    {/* Min Stock + SKU — full mode only (SKU is top-level in quick mode) */}
+                    {!hasVariants && !isQuickMode && (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
@@ -1714,6 +1764,32 @@ export function AddProductForm({
                           )}
                         />
                       </div>
+                    )}
+                    {/* Quick mode: min stock only inside accordion */}
+                    {!hasVariants && isQuickMode && (
+                      <FormField
+                        control={form.control}
+                        name="minimumStockLevel"
+                        rules={{ min: { value: 0, message: 'Minimum level must be 0 or more' } }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-900">Minimum Stock</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                inputMode="numeric"
+                                min="0"
+                                placeholder="10"
+                                disabled={loading}
+                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
+                                value={field.value === 0 ? '' : field.value.toString()}
+                              />
+                            </FormControl>
+                            <FormDescription>We'll alert you when stock hits this level.</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
@@ -1986,7 +2062,7 @@ export function AddProductForm({
                         </div>
                       )}
 
-                      {!hasVariants && (
+                      {!isQuickMode && !hasVariants && (
                         <div className="bg-gray-50 rounded-lg border border-gray-200 p-4">
                           <div className="text-sm font-medium text-gray-600 mb-3">Tax Configuration</div>
                           <div className="space-y-3">
@@ -2079,15 +2155,14 @@ export function AddProductForm({
                     </div>
                   </CollapsibleContent>
                 </Collapsible>
-                )}
 
-                {/* Subtle visual separator */}
-                {(!isQuickMode || showQuickAdvanced) && (
+                {/* Subtle visual separator — full form only */}
+                {!isQuickMode && (
                 <div className="border-t border-gray-200 my-6"></div>
                 )}
 
-                {/* Variants Section */}
-                {(!isQuickMode || showQuickAdvanced) && (
+                {/* Variants Section — full form only */}
+                {!isQuickMode && (
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium text-gray-600 uppercase tracking-wide">
                     Product Variants {hasVariants && <span className="normal-case font-normal text-gray-500">(Active)</span>}

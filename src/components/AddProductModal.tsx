@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Package } from 'lucide-react';
+import { ExternalLink, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMobile } from '@/hooks/use-mobile';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
@@ -84,7 +84,7 @@ export const AddProductModal = ({
   const subtitle = editMode
     ? 'Update product details and inventory settings.'
     : mode === 'quick'
-      ? 'Add a name and stock — fill in the details later.'
+      ? 'Name is all you need — enrich the details later.'
       : 'Add product details so your team can track inventory accurately.';
 
   return (
@@ -110,11 +110,6 @@ export const AddProductModal = ({
           </DialogHeader>
 
           <div className={`flex-1 min-h-0 overflow-y-auto ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
-            {mode === 'quick' && !editMode && (
-              <div className="mb-4 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-sm text-blue-700">
-                Quick add — fill in the details later.
-              </div>
-            )}
             <AddProductForm
               formId="add-product-modal-form"
               mode={mode}
@@ -137,61 +132,23 @@ export const AddProductModal = ({
           </div>
 
           <div
-            className={`flex-shrink-0 border-t bg-white ${
+            className={`flex-shrink-0 border-t bg-background ${
               isMobile ? 'px-4 py-4' : 'px-6 py-4'
             }`}
           >
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex flex-wrap items-center gap-3">
-                <Button type="button" variant="outline" onClick={onClose} disabled={formState.loading}>
-                  Discard
+            {mode === 'quick' && !editMode ? (
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="text-muted-foreground"
+                  onClick={() => setMode('full')}
+                  disabled={formState.loading}
+                >
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Use full form
                 </Button>
-                {mode === 'quick' && !editMode && (
-                  <button
-                    type="button"
-                    className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
-                    onClick={() => setMode('full')}
-                  >
-                    Use full form
-                  </button>
-                )}
-                {!editMode && (
-                  <Link
-                    to="/dashboard/products/import"
-                    className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
-                    onClick={onClose}
-                  >
-                    Try Import
-                  </Link>
-                )}
-              </div>
-              <div className="flex flex-wrap items-center gap-2 sm:justify-end">
-                {editMode && onDelete && existingProduct && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    onClick={() => {
-                      onDelete(existingProduct);
-                      onClose();
-                    }}
-                  >
-                    Delete
-                  </Button>
-                )}
-                {editMode && onAdjustStock && existingProduct && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      onClose();
-                      onAdjustStock(existingProduct);
-                    }}
-                  >
-                    Adjust Stock
-                  </Button>
-                )}
-                {!editMode && (
+                <div className="flex flex-wrap items-center gap-2 sm:justify-end">
                   <Button
                     type="button"
                     variant="outline"
@@ -201,24 +158,88 @@ export const AddProductModal = ({
                       document.getElementById('add-product-modal-form')?.requestSubmit();
                     }}
                   >
-                    Add & add another
+                    Save & add another
                   </Button>
-                )}
-                <Button
-                  type="submit"
-                  form="add-product-modal-form"
-                  disabled={submitDisabled}
-                >
-                  {formState.loading
-                    ? editMode
-                      ? 'Updating...'
-                      : 'Adding...'
-                    : editMode
-                      ? 'Update product'
-                      : 'Add product'}
-                </Button>
+                  <Button
+                    type="submit"
+                    form="add-product-modal-form"
+                    disabled={submitDisabled}
+                  >
+                    {formState.loading ? 'Adding...' : 'Add product'}
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button type="button" variant="outline" onClick={onClose} disabled={formState.loading}>
+                    Discard
+                  </Button>
+                  {!editMode && (
+                    <Link
+                      to="/dashboard/products/import"
+                      className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                      onClick={onClose}
+                    >
+                      Try Import
+                    </Link>
+                  )}
+                </div>
+                <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                  {editMode && onDelete && existingProduct && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      onClick={() => {
+                        onDelete(existingProduct);
+                        onClose();
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                  {editMode && onAdjustStock && existingProduct && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        onClose();
+                        onAdjustStock(existingProduct);
+                      }}
+                    >
+                      Adjust Stock
+                    </Button>
+                  )}
+                  {!editMode && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={submitDisabled}
+                      onClick={() => {
+                        addAnotherRef.current = true;
+                        document.getElementById('add-product-modal-form')?.requestSubmit();
+                      }}
+                    >
+                      Save & add another
+                    </Button>
+                  )}
+                  <Button
+                    type="submit"
+                    form="add-product-modal-form"
+                    disabled={submitDisabled}
+                  >
+                    {formState.loading
+                      ? editMode
+                        ? 'Updating...'
+                        : 'Adding...'
+                      : editMode
+                        ? 'Update product'
+                        : 'Add product'}
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
