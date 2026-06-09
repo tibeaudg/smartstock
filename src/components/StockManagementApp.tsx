@@ -100,7 +100,6 @@ export const StockManagementApp: React.FC = () => {
           This application requires local storage to function properly. This might be due to:
           <ul style={{ textAlign: 'left', maxWidth: 400, margin: '16px auto' }}>
             <li>Private browsing mode</li>
-            <li>Cookies disabled</li>
             <li>Privacy settings</li>
             <li>In-app browser restrictions</li>
           </ul>

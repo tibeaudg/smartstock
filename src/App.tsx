@@ -38,9 +38,8 @@ const privateSeo = { noindex: true, nofollow: true };
 import PreloadResources from './components/PreloadResources';
 import { Admin } from './components/Admin';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import CookieConsent from './components/CookieConsent';
+import { ExitIntentPopup } from './components/ExitIntentPopup';
 import { FirstTimeFeedbackWidget } from './components/FirstTimeFeedbackWidget';
-import { useCookieConsent } from './hooks/useCookieConsent';
 import { getSeoRoutes, getSeoLegacyRedirects, SolutionsPrefixRedirect } from './routes/seoRoutes';
 import { ThemeProvider } from './hooks/useTheme';
 import HeaderPublic from './components/HeaderPublic';
@@ -630,7 +629,6 @@ const AppRouter = () => {
 };
 
 export default function App() {
-  useCookieConsent();
 
   return (
     <ErrorBoundary>
@@ -641,8 +639,8 @@ export default function App() {
           <Sonner />
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <AppRouter />
+            <ExitIntentPopup />
           </BrowserRouter>
-          <CookieConsent />
         </TooltipProvider>
       </CurrencyProvider>
     </ErrorBoundary>

@@ -1,4 +1,3 @@
-import { canUseAnalytics } from '@/utils/cookieConsentManager';
 import type { AnalyticsEnvelope } from '../types';
 
 let posthogClient: {
@@ -24,7 +23,6 @@ export async function initPostHog(): Promise<void> {
       capture_pageleave: false,
       persistence: 'localStorage',
       loaded: (ph) => {
-        if (!canUseAnalytics()) ph.opt_out_capturing();
       },
     });
     posthogClient = posthog;
@@ -35,7 +33,7 @@ export async function initPostHog(): Promise<void> {
 }
 
 export function capturePostHog(envelope: AnalyticsEnvelope): void {
-  if (!canUseAnalytics() || !posthogClient) return;
+  if (!posthogClient) return;
 
   posthogClient.capture(envelope.event, {
     ...envelope.properties,
@@ -57,7 +55,7 @@ export function identifyPostHog(
   anonymousId: string,
   traits?: Record<string, unknown>,
 ): void {
-  if (!canUseAnalytics() || !posthogClient) return;
+  if (!posthogClient) return;
   posthogClient.identify(userId, { ...traits, anonymous_id: anonymousId });
 }
 

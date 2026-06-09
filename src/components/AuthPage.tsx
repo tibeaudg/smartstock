@@ -60,6 +60,17 @@ export const AuthPage = () => {
       try { localStorage.setItem('referral_code', refCode); } catch { /* ignore */ }
       setMode('register');
     }
+
+    try {
+      const raw = sessionStorage.getItem('sf_exit_signup');
+      if (raw) {
+        sessionStorage.removeItem('sf_exit_signup');
+        const data = JSON.parse(raw) as { name?: string; email?: string };
+        if (data.name) setName(data.name);
+        if (data.email) setEmail(data.email);
+        if (data.name || data.email) setMode('register');
+      }
+    } catch { /* ignore */ }
   }, [location.search]);
 
   // Reset form when switching modes

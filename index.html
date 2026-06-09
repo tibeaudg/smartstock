@@ -125,7 +125,6 @@
 </head>
 
 <body>
-  <!-- Note: Meta Pixel noscript removed - requires cookie consent -->
   <!-- Tracking pixels will only load after user consent -->
 
   <div id="root">
@@ -135,12 +134,10 @@
     </div>
   </div>
 
-  <!-- Cookie Consent Notice: Tracking scripts are now loaded conditionally -->
-  <!-- Scripts will only load after user consent via the Cookie Consent banner -->
   <!-- See src/utils/cookieConsentManager.ts for implementation -->
   <script>
     // Initialize tracking flag
-    window.stockflowTrackingReady = false;
+    window.stockflowTrackingReady = true;
 
     // This will be called by the cookie consent manager after user accepts
     window.initStockflowTracking = function () {
