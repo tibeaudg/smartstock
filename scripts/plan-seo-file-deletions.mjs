@@ -4,7 +4,7 @@ import { globby } from 'globby';
 import { extractRoutePathFromContent } from './utils/seo-slug.mjs';
 
 const ROOT = process.cwd();
-const DEFAULT_CSV = path.join(ROOT, 'seo-pruning-actions-2026-06-02.csv');
+const DEFAULT_CSV = path.join(ROOT, 'seo-pruning-actions-June 9, 2026.csv');
 const SEO_ROOTS = [
   path.join(ROOT, 'src', 'pages', 'SEO'),
   path.join(ROOT, 'src', 'pages', 'seo'),

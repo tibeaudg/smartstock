@@ -131,7 +131,7 @@ export default function HvacInventorySoftwarePage() {
     <SeoPageLayout
       title="HVAC Inventory Software – Field Service & Tool Tracking"
       heroTitle="HVAC Inventory Management Built for the Field"
-      dateUpdated="01/08/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

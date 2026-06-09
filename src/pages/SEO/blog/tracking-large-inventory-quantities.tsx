@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-26",
+    "datePublished": "June 9, 2026",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/tracking-large-inventory-quantities"
@@ -102,13 +102,13 @@ export default function SeoTrackingLargeInventoryQuantitiesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
        
       
     >
       <SEO
-        title={`Tracking Large Inventory Quantities 2025 - Complete Guide | StockFlow`}
+        title={`Tracking Large Inventory Quantities 2026 - Complete Guide | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

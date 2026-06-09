@@ -65,7 +65,7 @@ const structuredData = [
     '@type': 'Article',
     headline: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    datePublished: '2026-06-02',
+    datePublished: 'June 9, 2026',
     dateModified: DATE_MODIFIED,
     author: { '@type': 'Organization', name: 'StockFlow' },
     publisher: {
@@ -95,11 +95,11 @@ export default function BillOfMaterialsSoftwareFree() {
       title={PAGE_TITLE}
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Free Bill of Materials Software (2026)"
-      dateUpdated="June 2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       structuredData={structuredData}
     >
-      <p className="text-sm text-slate-500 mb-6">Last updated: June 2026</p>
+      <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
 
       {/* Intro */}
       <section className="py-10 space-y-4">
@@ -229,7 +229,7 @@ export default function BillOfMaterialsSoftwareFree() {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-slate-500 mt-2">Pricing based on public information as of June 2026. Always verify current tiers on vendor sites.</p>
+        <p className="text-xs text-slate-500 mt-2">Pricing based on public information as of June 9, 2026. Always verify current tiers on vendor sites.</p>
       </section>
 
       {/* StockFlow specifics */}

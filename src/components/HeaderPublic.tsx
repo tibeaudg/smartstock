@@ -621,8 +621,7 @@ const Header: React.FC<HeaderProps> = ({
                       handleRegisterClick();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="w-full rounded-full px-4 py-3 font-semibold text-white"
-                    style={{ backgroundColor: buttonBgColor || '#2563eb', color: buttonTextColor || '#fff' }}
+                    className="w-full rounded-full px-4 py-3 font-semibold text-white bg-primary"
                   >
                     Join for Free
                   </button>
@@ -632,25 +631,6 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
-        {shouldShowBreadcrumbTrail && (
-          <div className="border-t border-gray-100 bg-white/90">
-            <nav className="mx-auto max-w-7xl px-4 py-2 text-sm text-gray-600" aria-label="Breadcrumb">
-              <div className="flex flex-wrap items-center gap-2">
-                <Link to="/" className="hover:text-blue-600">Home</Link>
-                <span>/</span>
-                {currentHub && currentHub.path !== location.pathname && (
-                  <>
-                    <Link to={currentHub.path} className="hover:text-blue-600">{currentHub.title}</Link>
-                    <span>/</span>
-                  </>
-                )}
-                <span className="font-medium text-gray-900">
-                  {currentHub && currentHub.path === location.pathname ? currentHub.title : currentLabel}
-                </span>
-              </div>
-            </nav>
-          </div>
-        )}
       </div>
       <VideoModal 
         isOpen={isVideoModalOpen} 

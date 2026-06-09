@@ -14,7 +14,7 @@ const Page = () => {
     <SeoPageLayout
       heroTitle="Advancing Enterprise Keeping Track Of Business Expenses: A Technical Framework"
       title="Keeping Track Of Business Expenses Strategy & Automation Guide | StockFlow"
-      dateUpdated="january 9, 2026"
+      dateUpdated="June 9, 2026"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">

@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react';
 import { 
   Boxes, 
   Truck, 
@@ -9,11 +10,26 @@ import {
   FileText, 
   TrendingUp, 
   LifeBuoy, 
-  PlayCircle, 
   Scale,
-  Link2 
 } from 'lucide-react';
-import { NavItem } from '../components/Header';
+
+export type NavItem = {
+  id: string;
+  label: string;
+  to?: string;
+  megaMenu?: {
+    intro?: {
+      title: string;
+      description: string;
+      ctaLabel?: string;
+      ctaTo?: string;
+    };
+    sections: {
+      title?: string;
+      items?: { label: string; description?: string; to: string; icon?: LucideIcon }[];
+    }[];
+  };
+};
 
 export const NAV_ITEMS: NavItem[] = [
   {
@@ -67,13 +83,12 @@ export const NAV_ITEMS: NavItem[] = [
             { label: 'Articles', description: 'Expert insights on inventory optimization.', to: '/blog', icon: FileText },
             { label: 'Case Studies', description: 'Real-world success stories from our clients.', to: '/case-studies', icon: TrendingUp },
             { label: 'Support', description: 'Get technical help and documentation.', to: '/help-center', icon: LifeBuoy },
-            { label: 'Demo Videos', description: 'Step-by-step visual guides and tutorials.', to: '/videos', icon: PlayCircle },
             { label: 'Comparisons', description: 'How StockFlow ranks against competitors.', to: '/compare-inventory-software', icon: Scale },
-            { label: 'Integrations', description: 'Connect with your existing software stack.', to: '/integrations', icon: Link2 }
           ]
         }
       ]
     }
   },
   { id: 'pricing', label: 'Pricing', to: '/pricing' },
+  { id: 'contact', label: 'Contact Us', to: '/contact' },
 ];

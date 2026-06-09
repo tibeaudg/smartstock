@@ -14,7 +14,7 @@ const Page = () => {
     <SeoPageLayout
       heroTitle="Advancing Enterprise Small Business Inventory Sheet: A Technical Framework"
       title="Small Business Inventory Sheet Strategy & Automation Guide | StockFlow"
-      dateUpdated="january 9, 2026"
+      dateUpdated="June 9, 2026"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">

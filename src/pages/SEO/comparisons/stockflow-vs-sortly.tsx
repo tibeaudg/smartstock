@@ -38,7 +38,7 @@ const rows = [
 
 export default function StockFlowVsSortly() {
   return (
-    <SeoPageLayout heroTitle="StockFlow vs Sortly: Which Free Inventory App Is Better?" dateUpdated="2026-06-02" faqData={faqData}>
+    <SeoPageLayout heroTitle="StockFlow vs Sortly: Which Free Inventory App Is Better?" dateUpdated="June 9, 2026" faqData={faqData}>
       <SEO
         title="StockFlow vs Sortly: Which Free Inventory App Is Better?"
         description="Honest 2026 comparison of StockFlow vs Sortly: feature-by-feature table, pricing direction, strengths, tradeoffs, and who each app is best for."

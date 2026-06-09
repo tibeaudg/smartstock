@@ -52,7 +52,7 @@ export default function InventoryManagementSoftware() {
     <SeoPageLayout 
       title="Inventory Management Software"
       heroTitle="Free & Easy Inventory Management Software"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
     >
       <SEO
@@ -333,14 +333,7 @@ export default function InventoryManagementSoftware() {
                 with additional users and features. The interface can feel cluttered with the vast array of Zoho's 
                 features, which may be overwhelming for businesses that just need straightforward inventory management.
               </p>
-              <a 
-                href="https://www.zoho.com/inventory/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Visit Zoho Inventory →
-              </a>
+
             </div>
 
             {/* Odoo */}
@@ -358,14 +351,7 @@ export default function InventoryManagementSoftware() {
                 it's often overkill for businesses that simply need efficient inventory management without the full ERP 
                 complexity.
               </p>
-              <a 
-                href="https://www.odoo.com/app/inventory" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Visit Odoo →
-              </a>
+              
             </div>
 
             {/* Sortly */}
@@ -382,14 +368,7 @@ export default function InventoryManagementSoftware() {
                 growing businesses typically need. The free plan is quite limited, and paid plans can become pricey for 
                 teams with multiple users.
               </p>
-              <a 
-                href="https://www.sortly.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Visit Sortly →
-              </a>
+            
             </div>
 
             {/* Katana */}
@@ -405,14 +384,7 @@ export default function InventoryManagementSoftware() {
                 retailers, wholesalers, or e-commerce businesses, it's more complex than necessary and includes features 
                 you won't use. Pricing starts higher than general inventory solutions, reflecting its specialized nature.
               </p>
-              <a 
-                href="https://katanamrp.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Visit Katana →
-              </a>
+            
             </div>
 
             {/* Cin7 */}
@@ -428,14 +400,7 @@ export default function InventoryManagementSoftware() {
                 end of the market, which can be prohibitive for small businesses. The interface has a learning curve, and 
                 some users report that customer support response times can be slow during implementation and troubleshooting.
               </p>
-              <a 
-                href="https://www.cin7.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Visit Cin7 →
-              </a>
+             
             </div>
 
             {/* Lightspeed */}
@@ -452,14 +417,7 @@ export default function InventoryManagementSoftware() {
                 pricing reflects the comprehensive nature of the platform, making it less suitable for businesses focused 
                 purely on inventory management or e-commerce without retail locations.
               </p>
-              <a 
-                href="https://www.lightspeedhq.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                Visit Lightspeed →
-              </a>
+              
             </div>
           </div>
 

@@ -37,7 +37,7 @@ const rows = [
 
 export default function FreeMrpSoftware() {
   return (
-    <SeoPageLayout heroTitle="Free MRP Software for Small Manufacturers (2026) | StockFlow" dateUpdated="2026-06-02" faqData={faqData}>
+    <SeoPageLayout heroTitle="Free MRP Software for Small Manufacturers (2026) | StockFlow" dateUpdated="June 9, 2026" faqData={faqData}>
       <SEO
         title="Free MRP Software for Small Manufacturers (2026) | StockFlow"
         description="Free MRP software guide for 2026: compare StockFlow, Odoo, inFlow, and Katana-style options by BOM depth, setup effort, pricing posture, and best-fit scenarios."

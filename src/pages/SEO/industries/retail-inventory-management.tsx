@@ -276,7 +276,7 @@ export default function RetailInventoryManagement() {
     <SeoPageLayout 
       title="Retail Inventory Management"
       heroTitle="Retail Inventory Management"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
     >
       <SEO

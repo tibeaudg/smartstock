@@ -762,7 +762,6 @@ export const FORCED_NOINDEX_PATHS = new Set<string>([
   '/what-is-job-order-costing',
   '/what-is-landed-cost',
   '/what-is-lean-manufacturing',
-  '/what-is-mrp',
   '/what-is-procurement',
   '/what-is-retail-price',
   '/what-is-sell-through-rate-heres-why-it-matters-for-your-business',

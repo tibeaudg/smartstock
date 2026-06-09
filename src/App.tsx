@@ -45,6 +45,7 @@ import { getSeoRoutes, getSeoLegacyRedirects, SolutionsPrefixRedirect } from './
 import { ThemeProvider } from './hooks/useTheme';
 import HeaderPublic from './components/HeaderPublic';
 import Footer from './components/Footer';
+import { CompleteProfileModal } from "./components/CompleteProfileModal";
 
 const ReportingPage = React.lazy(() => import('./pages/reporting'));
 const AdminUserDetailPage = React.lazy(() => import('./pages/AdminUserDetailPage'));
@@ -56,8 +57,6 @@ const CustomersPage = React.lazy(() => import('./pages/customers'));
 const CustomerDetailPage = React.lazy(() => import('./pages/customers/[id]'));
 const WarehousePage = React.lazy(() => import("./pages/WarehousePage"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
-const VideosPage = React.lazy(() => import("./pages/videos"));
-const IntegrationsPage = React.lazy(() => import("./pages/integrations"));
 const WorkflowsPage = React.lazy(() => import("./pages/workflows"));
 const StockCountsPage = React.lazy(() => import("./pages/stock-counts"));
 const CreateStockCountPage = React.lazy(() => import("./pages/CreateStockCountPage"));
@@ -84,6 +83,7 @@ const CustomReports = React.lazy(() => import('./components/analytics/CustomRepo
 const ExportData = React.lazy(() => import('./components/analytics/ExportData').then(m => ({ default: m.ExportData })));
 const AdvancedReports = React.lazy(() => import('./components/analytics/AdvancedReports').then(m => ({ default: m.AdvancedReports })));
 const HelpCenterPage = React.lazy(() => import("./pages/help-center"));
+const CaseStudiesPage = React.lazy(() => import("./pages/case-studies"));
 const MobileAppPage = React.lazy(() => import("./pages/MobileAppPage"));
 const ReferAFriendPage = React.lazy(() => import("./pages/ReferAFriendPage"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
@@ -448,8 +448,16 @@ const AppRouter = () => {
             </>
           }
         />
-        <Route path='/videos' element={<><SEO title="StockFlow Instruction Videos | Inventory & Barcode Training" description="Watch StockFlow tutorial videos for inventory management, barcode scanning, reporting, and using the free app effectively." url="https://www.stockflowsystems.com/videos" /><VideosPage /></>} />
-        <Route path='/integrations' element={<><SEO title="Inventory Software Integrations | StockFlow" description="Discover which tools integrate with StockFlow for inventory, ecommerce, accounting, and barcode workflows." url="https://www.stockflowsystems.com/integrations"/><IntegrationsPage /></>} />
+        <Route
+          path="/case-studies"
+          element={
+            <>
+              <HeaderPublic />
+              <CaseStudiesPage />
+              <Footer />
+            </>
+          }
+        />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/faq" element={<FAQPage />} />
 
@@ -554,7 +562,7 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         >
-          <Route index element={<><SEO title="StockFlow Dashboard" {...privateSeo} /><Dashboard userRole="staff" /></>} />
+          <Route index element={<><SEO title="StockFlow Dashboard" {...privateSeo} /><Dashboard /></>} />
           <Route path="categories" element={<><SEO title="Product Inventory" {...privateSeo} /><CategorysPage /></>} />
           <Route path="products/import" element={<BulkImportPage />} />
           <Route path="scan" element={<BarcodeScannerPage />} />

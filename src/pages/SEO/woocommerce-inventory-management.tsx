@@ -14,7 +14,7 @@ const Page = () => {
     <SeoPageLayout
       heroTitle="Advancing Enterprise Woocommerce Inventory Management: A Technical Framework"
       title="Woocommerce Inventory Management Strategy & Automation Guide | StockFlow"
-      dateUpdated="january 9, 2026"
+      dateUpdated="June 9, 2026"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">

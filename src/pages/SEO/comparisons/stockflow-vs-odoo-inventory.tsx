@@ -40,7 +40,7 @@ export default function StockFlowVsOdooInventory() {
   return (
     <SeoPageLayout
       heroTitle="StockFlow vs Odoo Inventory: Free BOM & Inventory Software Compared"
-      dateUpdated="2026-06-02"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
     >
       <SEO

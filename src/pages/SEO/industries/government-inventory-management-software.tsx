@@ -131,7 +131,7 @@ export default function GovernmentInventorySoftwarePage() {
     <SeoPageLayout
       title="Government Inventory Software – Secure Asset & Supply Tracking"
       heroTitle="Public Sector Inventory Management Built for Transparency"
-      dateUpdated="01/08/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

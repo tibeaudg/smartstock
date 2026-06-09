@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const DEFAULT_CSV = path.join(ROOT, 'seo-pruning-actions-2026-06-02.csv');
+const DEFAULT_CSV = path.join(ROOT, 'seo-pruning-actions-June 9, 2026.csv');
 const VERCEL_JSON_PATH = path.join(ROOT, 'vercel.json');
 const GENERATED_CONFIG_PATH = path.join(ROOT, 'src', 'config', 'seoPruning.generated.ts');
 const SUMMARY_OUTPUT_PATH = path.join(ROOT, 'seo-pruning-summary.json');

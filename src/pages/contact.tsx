@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { MessageCircle, Mail, Phone, MapPin } from 'lucide-react';
+import { MessageCircle, Mail, Phone, MapPin, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { logger } from '../lib/logger';
 import Header from '@/components/HeaderPublic';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { generateComprehensiveStructuredData } from '@/lib/structuredData';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getPostHogDistinctId } from '@/lib/analytics';
 
 // A reusable component for fade-in animations when scrolling
@@ -36,55 +34,35 @@ const FadeInWhenVisible = ({ children }: { children: React.ReactNode }) => {
 type ContactFormValues = { 
   name: string; 
   email: string; 
-  subject: string;
-  message: string; 
+  description: string; 
 };
 
 export default function ContactPage() {
-  
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [selectedSubject, setSelectedSubject] = useState<string>('');
   
-  const { register, handleSubmit, reset, setValue, formState: { errors, isSubmitting } } = useForm<ContactFormValues>({
-    defaultValues: { name: '', email: '', subject: '', message: '' }
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<ContactFormValues>({
+    defaultValues: { name: '', email: '', description: '' }
   });
-
-  // Handle subject from URL parameter (e.g., from business tier)
-  useEffect(() => {
-    const subjectParam = searchParams.get('subject');
-    if (subjectParam) {
-      const formattedSubject = subjectParam === 'business-tier' 
-        ? 'Business Tier Inquiry' 
-        : subjectParam;
-      setSelectedSubject(formattedSubject);
-      setValue('subject', formattedSubject);
-    }
-  }, [searchParams, setValue]);
 
   const onSubmitContact = async (values: ContactFormValues) => {
     try {
-      // Validate subject is selected
-      if (!values.subject || values.subject.trim() === '') {
-        alert('Please select a subject for your inquiry.');
-        return;
-      }
-
       const headers: Record<string, string> = { 'Content-Type': 'application/json' };
       const phDistinctId = getPostHogDistinctId();
       if (phDistinctId) headers['X-PostHog-Distinct-Id'] = phDistinctId;
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers,
-        body: JSON.stringify(values)
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          description: values.description,
+        })
       });
       if (!res.ok) throw new Error('Failed to send');
       
-      // Reset form and selected subject
       reset();
-      setSelectedSubject('');
       
-      logger.info('Contact message sent', { email: values.email, subject: values.subject });
+      logger.info('Contact message sent', { email: values.email });
       alert('Thank you! We will contact you soon. We typically respond within 1 hour during business hours.');
     } catch (e) {
       console.error('Contact form error:', e);
@@ -122,8 +100,8 @@ export default function ContactPage() {
         hideNotifications={true}
       />
       {/* Hero Section */}
-      <section className="py-32">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <section className="pt-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <FadeInWhenVisible>
             <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
               <MessageCircle className="h-4 w-4" />
@@ -132,22 +110,28 @@ export default function ContactPage() {
           </FadeInWhenVisible>
           
           <FadeInWhenVisible>
-            <h1 className="text-5xl md:text-7xl font-light mb-6 text-gray-800">
-              Questions? Contact us
-            </h1>
+            {/* Hero Section */}
+            <div className="bg-gradient-to-br from-indigo-600 to-indigo-700 text-white py-20 rounded-xl shadow-lg">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center">
+                  <MessageCircle className="h-16 w-16 mx-auto mb-6 text-indigo-200" />
+                  <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                    Contact Us
+                  </h1>
+                  <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
+                  We usually respond within 1 hour. Get in touch with our team for support, sales inquiries, or general questions.</p>
+                </div>
+              </div>
+            </div>
           </FadeInWhenVisible>
           
-          <FadeInWhenVisible>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              We usually respond within 1 hour. Get in touch with our team for support, sales inquiries, or general questions.
-            </p>
-          </FadeInWhenVisible>
+
         </div>
       </section>
 
       {/* Contact Form Section */}
       <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Information */}
             <div className="lg:col-span-1">
@@ -163,22 +147,8 @@ export default function ContactPage() {
                         <p className="text-gray-600">info@stockflow.be</p>
                       </div>
                     </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <Phone className="h-5 w-5 text-indigo-600 mt-1" />
-                      <div>
-                        <p className="font-medium text-gray-900">Phone</p>
-                        <p className="text-gray-600">+32 XXX XXX XXX</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <MapPin className="h-5 w-5 text-indigo-600 mt-1" />
-                      <div>
-                        <p className="font-medium text-gray-900">Address</p>
-                        <p className="text-gray-600">Belgium</p>
-                      </div>
-                    </div>
+
+
                   </div>
                   
                   <div className="mt-6 p-4 bg-indigo-50 rounded-lg">
@@ -221,39 +191,14 @@ export default function ContactPage() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                        <Select
-                          value={selectedSubject}
-                          onValueChange={(value) => {
-                            setSelectedSubject(value);
-                            setValue('subject', value);
-                          }}
-                        >
-                          <SelectTrigger className="h-12 text-base">
-                            <SelectValue placeholder="Select a subject" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="General Inquiry">General Inquiry</SelectItem>
-                            <SelectItem value="Business Tier Inquiry">Business Tier / Enterprise</SelectItem>
-                            <SelectItem value="Technical Support">Technical Support</SelectItem>
-                            <SelectItem value="Sales Question">Sales Question</SelectItem>
-                            <SelectItem value="Demo Request">Demo Request</SelectItem>
-                            <SelectItem value="Partnership">Partnership Opportunity</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        {errors.subject && <p className="text-sm text-red-600 mt-1">Please select a subject</p>}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                         <Textarea 
                           rows={6} 
-                          {...register('message', { required: true, minLength: 10 })} 
-                          placeholder="Write your message here..." 
+                          {...register('description', { required: true, minLength: 10 })} 
+                          placeholder="Tell us how we can help..." 
                           className="text-base"
                         />
-                        {errors.message && <p className="text-sm text-red-600 mt-1">Message is required (minimum 10 characters)</p>}
+                        {errors.description && <p className="text-sm text-red-600 mt-1">Description is required (minimum 10 characters)</p>}
                       </div>
                       
                       <div className="flex justify-end">

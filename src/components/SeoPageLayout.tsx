@@ -458,33 +458,7 @@ const SEOPageLayout = memo(({
           </section>
         )}
 
-        {/* Further Reading — external authoritative links */}
-        <section className="bg-slate-50 border-t border-slate-100 py-16">
-          <div className="container mx-auto max-w-6xl px-4">
-            <h2 className="text-xl font-bold text-slate-900 mb-6">Further reading</h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-              {[
-                { label: 'Inventory Management — Investopedia', href: 'https://www.investopedia.com/terms/i/inventory-management.asp' },
-                { label: 'Supply Chain Insights — APICS / ASCM', href: 'https://www.ascm.org/learning-development/certifications-credentials/cscp/' },
-                { label: 'Warehouse Best Practices — GS1', href: 'https://www.gs1.org/services/verified-by-gs1/results' },
-                { label: 'Small Business Inventory Tips — SBA', href: 'https://www.sba.gov/business-guide/manage-your-business/manage-your-finances' },
-                { label: 'Barcode Standards — ISO', href: 'https://www.iso.org/standard/62112.html' },
-                { label: 'EU Business Resources — Europa.eu', href: 'https://europa.eu/youreurope/business/index_en.htm' },
-              ].map(link => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+
 
         {/* Testimonials */}
         <section className="bg-white py-20">

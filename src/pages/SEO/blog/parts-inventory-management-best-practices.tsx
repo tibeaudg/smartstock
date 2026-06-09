@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-17",
+    "datePublished": "June 9, 2026",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/parts-inventory-management-best-practices"
@@ -102,7 +102,7 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
        
       

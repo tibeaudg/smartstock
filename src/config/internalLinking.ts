@@ -38,7 +38,6 @@ const bomHub: InternalLinkHub = {
     { path: '/stockflow-vs-odoo-inventory', title: 'StockFlow vs Odoo Inventory comparison' },
     { path: '/free-mrp-software', title: 'Free MRP software for small manufacturers' },
     { path: '/what-is-bill-of-materials', title: 'What is a bill of materials?' },
-    { path: '/what-is-mrp', title: 'What is MRP?' },
   ],
 };
 

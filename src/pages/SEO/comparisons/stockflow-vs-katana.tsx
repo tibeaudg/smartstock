@@ -80,7 +80,7 @@ export default function StockflowVsKatana() {
   return (
     <SeoPageLayout 
       heroTitle="StockFlow vs Katana MRP"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
 
     >

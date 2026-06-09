@@ -8,7 +8,7 @@ const topicTitle = "Reorder Point Formula";
 const canonicalPath = "/reorder-point-formula";
 const metaDescription = "Learn how to calculate reorder point using the reorder point formula. Step-by-step guide with examples. Calculate when to reorder inventory to prevent stockouts.";
 const keywords = "reorder point formula, reorder point calculation, how to calculate reorder point, reorder point formula example, inventory reorder point, reorder point calculation formula";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated 2026";
 const summaryCopy = "The reorder point formula calculates when to place a new order to prevent stockouts. Formula: Reorder Point = (Lead Time × Average Daily Usage) + Safety Stock. Lead time is days to receive new stock, average daily usage is units sold per day, and safety stock buffers against variability. Example: If lead time is 7 days, daily usage is 10 units, and safety stock is 20 units, reorder point = (7 × 10) + 20 = 90 units. When inventory reaches 90 units, place a new order.";
 const takeaways = [
   "Reorder point formula: (Lead Time × Average Daily Usage) + Safety Stock. This calculates when to order to prevent stockouts.",
@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-26",
+    "datePublished": "June 9, 2026",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/reorder-point-formula"
@@ -102,13 +102,13 @@ export default function SeoReorderPointFormulaPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
        
       
     >
       <SEO
-        title={`Reorder Point Formula 2025 - Complete Guide with Examples | StockFlow`}
+        title={`Reorder Point Formula 2026 - Complete Guide with Examples | StockFlow`}
         description={metaDescription}
         keywords={keywords}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

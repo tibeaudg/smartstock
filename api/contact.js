@@ -28,10 +28,11 @@ export default async function contactHandler(req, res) {
     const sanitizedMessage = sanitizeEmailText(safeMessage);
     const sanitizedSubject = safeSubject ? escapeHtml(safeSubject) : '';
 
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+    const smtpHost = process.env.SMTP_HOST || process.env.SMTP_host;
+    const smtpUser = process.env.SMTP_USER || process.env.username;
+    const smtpPass = process.env.SMTP_PASS || process.env.SMTP_password;
+    const smtpPort = parseInt(process.env.SMTP_PORT || process.env.SMTP_port || '587', 10);
+    const fromName = process.env.SMTP_FROM_NAME || process.env.From_name || 'StockFlow';
 
     if (!smtpHost || !smtpUser || !smtpPass) {
       res.status(500).json({ ok: false, error: 'Email not configured' });
@@ -42,7 +43,14 @@ export default async function contactHandler(req, res) {
       host: smtpHost,
       port: smtpPort,
       secure: smtpPort === 465,
-      auth: { user: smtpUser, pass: smtpPass }
+      auth: { user: smtpUser, pass: smtpPass },
+      tls: {
+        rejectUnauthorized: process.env.NODE_ENV === 'production',
+        ...(process.env.NODE_ENV !== 'production' && {
+          rejectUnauthorized: false,
+          servername: smtpHost,
+        }),
+      },
     });
 
     // Format subject line based on inquiry type (already sanitized)
@@ -56,7 +64,7 @@ export default async function contactHandler(req, res) {
     }
 
     const info = await transporter.sendMail({
-      from: `Stockflow Contact <${smtpUser}>`,
+      from: `${fromName} <${smtpUser}>`,
       to: 'info@stockflow.be',
       replyTo: sanitizedEmail,
       subject: emailSubject,
@@ -70,7 +78,7 @@ export default async function contactHandler(req, res) {
             ${sanitizedSubject ? `<p style="margin: 8px 0;"><strong>Subject:</strong> ${sanitizedSubject}</p>` : ''}
           </div>
           <div style="background-color: #ffffff; padding: 15px; border-left: 4px solid #4F46E5;">
-            <h3 style="margin-top: 0; color: #374151;">Message:</h3>
+            <h3 style="margin-top: 0; color: #374151;">Description:</h3>
             <p style="white-space: pre-wrap; line-height: 1.6; color: #4B5563;">${sanitizedMessage}</p>
           </div>
           <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #9CA3AF; font-size: 12px;">

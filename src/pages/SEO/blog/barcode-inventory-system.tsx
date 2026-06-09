@@ -60,7 +60,7 @@ const structuredData = [
     '@type': 'Article',
     headline: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    datePublished: '2026-06-02',
+    datePublished: 'June 9, 2026',
     dateModified: DATE_MODIFIED,
     author: { '@type': 'Organization', name: 'StockFlow' },
     publisher: {
@@ -89,11 +89,11 @@ export default function BarcodeInventorySystemPage() {
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Barcode Inventory System: Complete Setup Guide (2026)"
       heroDescription="Learn how to build a barcode-based stock management system with labels, mobile scanning, and real-time inventory updates."
-      dateUpdated="June 2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       structuredData={structuredData}
     >
-      <p className="text-sm text-slate-500 mb-6">Last updated: June 2026</p>
+      <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
 
       <section className="mb-12 space-y-4">
         <p className="text-lg text-gray-700 leading-relaxed">

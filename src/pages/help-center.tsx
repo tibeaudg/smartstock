@@ -262,7 +262,7 @@ export default function HelpCenterPage() {
   return (
     <div>
       {/* ── Hero ────────────────────────────────────────────────────────── */}
-      <div className="-mx-4 md:-mx-8 -mt-4 md:-mt-8 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 rounded-xl shadow-lg">
+      <div className="mt-12 -mx-4 md:-mx-8 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-500 rounded-xl shadow-lg">
         <div className="px-6 py-14 md:py-20 text-center">
           <p className="text-blue-200 text-sm font-medium tracking-wide uppercase mb-3">
             StockFlow Help Center

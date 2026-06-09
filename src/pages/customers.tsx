@@ -451,13 +451,7 @@ export default function CustomersPage() {
             >
               Join for Free
             </Button>
-            <Button
-              onClick={() => navigate('/contact')}
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold rounded-full"
-            >
-              Schedule Demo
-            </Button>
+
           </div>
           <p className="text-blue-200 text-sm mt-4">
             No credit card required • 14-day free trial • Cancel anytime

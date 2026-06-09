@@ -133,7 +133,7 @@ export default function InventoryManagementSoftwarePage() {
     <SeoPageLayout
       title="Inventory Management Software – Simplified Operations"
       heroTitle="Inventory Software Built to Scale Your Business"
-      updatedDate="01/08/2026"
+      updatedDate="June 9, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

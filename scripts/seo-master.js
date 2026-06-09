@@ -9,7 +9,7 @@ const MY_BASE_URL = 'https://www.stockflowsystems.com';
 const PAGES_DIR = path.join(process.cwd(), 'src/pages');
 const SEO_DIR = path.join(process.cwd(), 'src/pages/seo');
 const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
-const CURRENT_DATE_STR = "january 9, 2026";
+const CURRENT_DATE_STR = "June 9, 2026";
 const XML_DATE = '2026-01-09';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -19,12 +19,12 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
 /**
  * EXPANDED REACT PAGE GENERATOR TEMPLATE
  * Project: StockFlow Systems
- * Date: January 9, 2026
+ * Date: June 9, 2026
  * Structure: High-Density SEO / Industrial Technical Focus
  */
 
 const template = (slug, title) => {
-  const CURRENT_DATE_STR = "january 9, 2026";
+  const CURRENT_DATE_STR = "June 9, 2026";
   
   const keyTakeaways = [
     `Enterprise-grade ${title} systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.`,

@@ -208,7 +208,7 @@ export default function SuppliersSolutionPage() {
     <SeoPageLayout 
       title="Suppliers"
       heroTitle="Suppliers"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       previousArticle={{
         title: "Inventory Management Software",

@@ -38,10 +38,18 @@ const sanitizeLegacyPath = (pathname: string): string => {
   return match ? `/${match[1]}` : pathname;
 };
 
+const resolveAbsoluteUrl = (url: string): string => {
+  if (!url) return defaultUrl;
+  if (/^https?:\/\//i.test(url)) return url;
+  const path = url.startsWith('/') ? url : `/${url}`;
+  return `${defaultUrl}${path}`;
+};
+
 // Normalize canonical URL (remove trailing slashes, query parameters, fragments)
 const normalizeCanonicalUrl = (url: string): string => {
+  const absoluteUrl = resolveAbsoluteUrl(url);
   try {
-    const urlObj = new URL(url);
+    const urlObj = new URL(absoluteUrl);
     const protocol = urlObj.protocol === 'http:' ? 'https:' : urlObj.protocol;
     // Remove trailing slashes from pathname (except for root)
     let pathname = urlObj.pathname === '/' ? '/' : urlObj.pathname.replace(/\/+$/, '');
@@ -52,9 +60,9 @@ const normalizeCanonicalUrl = (url: string): string => {
   } catch {
     // If URL parsing fails, try simple string normalization
     // Remove trailing slashes (except for root)
-    let normalized = url === 'https://www.stockflowsystems.com/' || url === 'https://www.stockflowsystems.com' 
-      ? 'https://www.stockflowsystems.com' 
-      : url.replace(/\/+$/, '');
+    let normalized = absoluteUrl === 'https://www.stockflowsystems.com/' || absoluteUrl === 'https://www.stockflowsystems.com'
+      ? 'https://www.stockflowsystems.com'
+      : absoluteUrl.replace(/\/+$/, '');
     // Remove query parameters and fragments
     normalized = normalized.split('?')[0].split('#')[0];
     return normalized;

@@ -79,7 +79,7 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
       ],
     },
     pageType: "article",
-    datePublished: "2026-06-02",
+    datePublished: "June 9, 2026",
     dateModified: DATE_MODIFIED,
     includeWebSite: true,
   });
@@ -90,12 +90,12 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Best Free Inventory Software with Barcode Scanning (2026)"
       heroDescription="Compare StockFlow, Sortly, Zoho, inFlow, Square, Stockpile, and Odoo by barcode scanning depth, offline support, SKU limits, and multi-location capability."
-      dateUpdated="June 2026"
+      dateUpdated="June 9, 2026"
       pageLanguage="en"
       faqData={faqData}
       structuredData={structuredData}
     >
-      <p className="text-sm text-slate-500 mb-6">Last updated: June 2026</p>
+      <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
 
       <section className="mb-12">
         <p className="text-lg text-gray-700 leading-relaxed mb-4">

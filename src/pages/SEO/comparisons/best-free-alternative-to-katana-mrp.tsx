@@ -56,7 +56,7 @@ export default function BestFreeAlternativeToKatanaMRP() {
         { label: 'Best Free Alternative to Katana MRP', href: '/best-free-alternative-to-katana-mrp' }
       ]}
       heroTitle="Best Free Alternative to Katana MRP (2026) | StockFlow"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       heroDescription="Honest comparison for teams evaluating a free alternative to Katana MRP."
       previousArticle={{
         title: "Best Free Alternative to Fishbowl Inventory",

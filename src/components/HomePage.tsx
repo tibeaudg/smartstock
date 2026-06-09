@@ -852,7 +852,7 @@ export const HomePage = () => {
                 })}
               </div>
               <p className="text-center text-xs text-slate-400 mt-3">
-                Pricing based on standard plans, June 2026. StockFlow free plan includes all features listed.
+                Pricing based on standard plans, June 9, 2026. StockFlow free plan includes all features listed.
               </p>
             </Reveal>
 

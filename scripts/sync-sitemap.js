@@ -34,7 +34,7 @@ function getChangefreq(url) {
 const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
 const SEO_DIR_LOWER = path.join(process.cwd(), 'src/pages/seo');
 const SITEMAP_PATH = path.join(process.cwd(), 'public/sitemap.xml');
-const PRUNING_CSV_PATH = path.join(process.cwd(), 'seo-pruning-actions-2026-06-02.csv');
+const PRUNING_CSV_PATH = path.join(process.cwd(), 'seo-pruning-actions-June 9, 2026.csv');
 const SITEMAP_AUDIT_PATH = path.join(process.cwd(), 'public/sitemap-audit.json');
 
 function toIsoDate(value) {

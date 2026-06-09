@@ -243,7 +243,7 @@ export default function BarcodingPage() {
     <SeoPageLayout 
       title="Barcoding"
       heroTitle="Barcoding"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       previousArticle={{
       title: "Alerts",

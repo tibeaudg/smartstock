@@ -217,7 +217,7 @@ export default function BestFreeAlternativeToFishbowl() {
         { label: 'Best Free Alternative to Fishbowl Inventory', href: '/best-free-alternative-to-fishbowl-inventory' }
       ]}
       heroTitle="Best Free Alternative to Fishbowl Inventory - StockFlow"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       heroDescription="Completely free forever vs $4,395+ license • Cloud-based vs on-premise • Save $8,000+ annually • 5-7 day setup"
       previousArticle={{
         title: "StockFlow vs Fishbowl Inventory",

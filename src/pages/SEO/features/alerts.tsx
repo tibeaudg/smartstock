@@ -240,7 +240,7 @@ export default function AlertsPage() {
     <SeoPageLayout 
       title="Alerts"
       heroTitle="Alerts"
-      dateUpdated="06/01/2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
                           previousArticle={{
       title: "StockFlow vs Zoho Inventory",

@@ -154,7 +154,7 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
     <SeoPageLayout
       title={topicTitle}
       heroTitle={'"I Tested 5 Methods: Here’s How to Create an Inventory System That Actually Works"'} // SEO Trend: Clickbait with pronouns [citation:6]
-      dateUpdated="January 15, 2026"
+      dateUpdated="June 9, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

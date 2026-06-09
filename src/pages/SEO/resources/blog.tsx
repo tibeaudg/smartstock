@@ -6,12 +6,14 @@ import { getSeoRoutes } from "@/routes/seoRoutes";
 import { useMemo } from "react";
 import { Search } from "lucide-react";
 
+const canonicalPath = "/blog";
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
   "name": "Blog - StockFlow",
   "description": "Explore our complete library of articles, guides, and resources about inventory management, software comparisons, and industry insights.",
-  "url": "https://www.stockflowsystems.com/resources",
+  "url": "https://www.stockflowsystems.com/blog",
   "mainEntity": {
     "@type": "ItemList",
     "name": "StockFlow Blog Articles",
@@ -60,7 +62,8 @@ export default function SEOResourcesBlogPage() {
         title="Inventory Management Blog 2025 - Articles, Guides & Resources | StockFlow"
         description="Explore 95+ articles about inventory management, software comparisons, best practices, and industry insights. Expert guides to optimize your inventory operations. Free resources."
         keywords="inventory management blog, inventory articles, stock management guides, inventory software guides, warehouse management articles, inventory best practices, inventory management tips, inventory control guides"
-        url="https://www.stockflowsystems.com/resources"
+        url="https://www.stockflowsystems.com/blog"
+        canonical={canonicalPath}
         structuredData={structuredData}
       />
 <section className="bg-white px-4 py-16">
@@ -98,7 +101,7 @@ export default function SEOResourcesBlogPage() {
 
           <div className="text-center mt-12">
             <Link
-              to=""
+              to="/blog"
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               <Search className="mr-2 h-5 w-5" />

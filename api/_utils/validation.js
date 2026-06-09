@@ -31,16 +31,24 @@ function sanitizeString(str, maxLength = 1000) {
 const contactFormSchema = z.object({
   name: z.string().min(2).max(100).trim(),
   email: z.string().email().max(254).toLowerCase().trim(),
-  message: z.string().min(10).max(5000).trim(),
+  message: z.string().min(10).max(5000).trim().optional(),
+  description: z.string().min(10).max(5000).trim().optional(),
   subject: z.string().max(200).trim().optional()
-});
+}).refine(
+  (data) => Boolean(data.message || data.description),
+  { message: 'Message or description is required', path: ['message'] }
+);
 
 /**
  * Validates and sanitizes contact form input using Zod
  */
 function validateContactForm(body) {
   try {
-    const result = contactFormSchema.safeParse(body);
+    const normalized = {
+      ...body,
+      message: body?.message || body?.description,
+    };
+    const result = contactFormSchema.safeParse(normalized);
     if (result.success) {
       return {
         valid: true,
