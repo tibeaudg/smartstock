@@ -322,9 +322,9 @@ export const HomePage = () => {
 
               {/* Left: copy */}
               <div className="flex-1 min-w-0 max-w-xl lg:max-w-none text-center lg:text-left">
-                {/* Rating pill */}
-                <div {...heroVis(0)}>
-                  <div className="inline-flex items-center gap-2.5 bg-white border border-slate-200 rounded-full px-4 py-2 shadow-sm mb-8">
+                {/* Rating pill + SaaSHub badge */}
+                <div {...heroVis(0)} className="flex flex-col items-center lg:items-start gap-4 mb-8">
+                  <div className="inline-flex items-center gap-2.5 bg-white border border-slate-200 rounded-full px-4 py-2 shadow-sm">
                     <div className="flex gap-0.5">
                       {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />)}
                     </div>
@@ -332,6 +332,17 @@ export const HomePage = () => {
                     <span className="text-slate-300">·</span>
                     <span className="text-slate-600 text-sm">3,200+ businesses tracking stock</span>
                   </div>
+                  <a
+                    href="https://www.saashub.com/stockflow?utm_source=badge&utm_campaign=badge&utm_content=stockflow&badge_variant=color&badge_kind=approved"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="/saashub-approved-badge.png"
+                      alt="StockFlow.be badge"
+                      className="max-w-[150px]"
+                    />
+                  </a>
                 </div>
 
                 <div {...heroVis(100)}>

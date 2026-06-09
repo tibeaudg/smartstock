@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, ChevronUp, Star, Send, CheckCircle2, MessageSquare } from 'lucide-react';
+import { X, ChevronUp, Star, Send, CheckCircle2, MessageSquare, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { CAPTERRA_REVIEW_URL } from '@/constants/reviews';
 
 const PLACEHOLDERS = [
   'What do you think of StockFlow so far?',
@@ -21,7 +22,7 @@ interface Props {
   userName: string;
 }
 
-type Phase = 'pill' | 'form' | 'thanks';
+type Phase = 'pill' | 'form' | 'thanks' | 'capterra';
 
 export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) {
   const [visible, setVisible] = useState(false);
@@ -60,26 +61,42 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
     setVisible(false);
   };
 
+  const markFeedbackPrompted = async () => {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ feedback_prompted: true })
+      .eq('id', userId);
+    if (error) console.warn('[feedback] profile update error', error);
+  };
+
   const handleSubmit = async () => {
-    if (!message.trim() || submitting) return;
+    if (rating < 1 || submitting) return;
     setSubmitting(true);
 
     try {
-      // Primary: store in DB
       const { error: dbError } = await supabase.from('user_feedback' as any).insert({
         user_id: userId,
         email: userEmail,
-        rating: rating || null,
-        message: message.trim(),
+        rating,
+        message: message.trim() || 'No additional comments',
       });
       if (dbError) console.warn('[feedback] db insert error', dbError);
 
- 
-
-      setPhase('thanks');
+      await markFeedbackPrompted();
+      setPhase(rating === 5 ? 'capterra' : 'thanks');
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleCapterraDismiss = () => {
+    dismissedRef.current = true;
+    setVisible(false);
+  };
+
+  const handleCapterraClick = () => {
+    window.open(CAPTERRA_REVIEW_URL, '_blank', 'noopener,noreferrer');
+    handleCapterraDismiss();
   };
 
   if (!visible) return null;
@@ -135,9 +152,33 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
             {/* Body */}
             <div className="p-4 space-y-3">
               <p className="text-sm text-foreground leading-snug">
-                Questions, suggestions, or feedback? We'd love to hear from you.
+                How are you finding StockFlow so far?
               </p>
 
+              {/* Star rating */}
+              <div
+                className="flex items-center justify-center gap-0.5 py-1"
+                onMouseLeave={() => setHoverRating(0)}
+              >
+                {[1, 2, 3, 4, 5].map(star => (
+                  <button
+                    key={star}
+                    type="button"
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    className="p-1 rounded-md transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    aria-label={`Rate ${star} out of 5 stars`}
+                  >
+                    <Star
+                      className={`w-7 h-7 transition-colors ${
+                        star <= (hoverRating || rating)
+                          ? 'fill-amber-400 text-amber-400'
+                          : 'text-muted-foreground/25'
+                      }`}
+                    />
+                  </button>
+                ))}
+              </div>
 
               {/* Textarea */}
               <div>
@@ -156,7 +197,7 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
               {/* Submit */}
               <button
                 onClick={handleSubmit}
-                disabled={!message.trim() || submitting}
+                disabled={rating < 1 || submitting}
                 className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground text-sm font-medium py-2 rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 {submitting ? (
@@ -200,6 +241,52 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
             <p className="text-xs text-muted-foreground">
               We read every response and use it to make StockFlow better.
             </p>
+          </motion.div>
+        )}
+
+        {phase === 'capterra' && (
+          <motion.div
+            key="capterra"
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 8 }}
+            transition={{ type: 'spring', stiffness: 340, damping: 26 }}
+            className="w-80 bg-background border border-border rounded-2xl shadow-2xl overflow-hidden"
+          >
+            <div className="p-5 text-center space-y-3">
+              <div className="flex items-center justify-center gap-0.5 mb-1">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <Star key={star} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <p className="font-semibold text-foreground">Glad you're enjoying StockFlow!</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                If you have a moment, an honest review on Capterra helps other businesses discover us.
+                Reviews must comply with{' '}
+                <a
+                  href="https://www.capterra.com/legal/community-guidelines/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-foreground transition-colors"
+                >
+                  Capterra&apos;s Community Guidelines
+                </a>
+                .
+              </p>
+              <button
+                onClick={handleCapterraClick}
+                className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground text-sm font-medium py-2.5 rounded-lg hover:bg-primary/90 transition-all"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                Leave a review on Capterra
+              </button>
+              <button
+                onClick={handleCapterraDismiss}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                No thanks
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
