@@ -642,7 +642,7 @@ function BOMListPage() {
 
         <div className="flex items-center gap-2">
 
-          <Button onClick={() => setIsCreateDialogOpen(true)} className="bg-blue-600 text-white hover:bg-blue-700">
+          <Button onClick={() => navigate('/dashboard/bom/new')} className="bg-blue-600 text-white hover:bg-blue-700">
             <Plus className="w-4 h-4 mr-2" /> Add New
           </Button>
         </div>
