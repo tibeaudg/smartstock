@@ -47,48 +47,7 @@ const Footer = () => {
 
   return (
     <>
-      {/* High-Impact CTA Section */}
-      <section className="relative py-24 bg-white overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full" />
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-8 md:p-16 shadow-2xl shadow-blue-900/20">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="text-left">
-                <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                  Stop losing revenue to <span className="text-blue-200">inventory friction.</span>
-                </h2>
-                <div className="flex flex-wrap gap-6 mb-8">
-                  <div className="flex items-center gap-2 text-blue-100">
-                    <ShieldCheck className="w-5 h-5" />
-                    <span className="font-medium text-sm md:text-base">Free for Most Businesses</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-blue-100">
-                    <Globe2 className="w-5 h-5" />
-                    <span className="font-medium text-sm md:text-base">Global Availability</span>
-                  </div>
-                </div>
-                <button onClick={() => navigate('/auth')} className="inline-block bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-shadow text-lg md:text-xl">
-                  Start your free inventory audit
-                </button>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: "Active Users", val: "500+" },
-                  { label: "Inventory Accuracy", val: "99.9%" },
-                  { label: "Avg Savings", val: "€15k" },
-                  { label: "Support", val: "24/7" }
-                ].map((stat, i) => (
-                  <div key={i} className="bg-white/10 border border-white/10 rounded-2xl p-6">
-                    <div className="text-2xl font-bold text-white mb-1">{stat.val}</div>
-                    <div className="text-blue-100 text-xs font-bold uppercase tracking-wider">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Corporate Footer */}
       <footer className="bg-gray-900 border-t border-gray-600 pt-24 pb-12">

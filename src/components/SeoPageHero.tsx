@@ -17,21 +17,31 @@ interface SEOPageHeroProps {
 export const SEOPageHero = memo(({
   title,
   description,
-  dateUpdated,
-  readingTime = "12 min read",
-  authorName = "Toby Gray",
   breadcrumbItems = []
 }: SEOPageHeroProps) => {
   return (
     <header style={{ 
       textAlign: 'center', 
-      paddingTop: '8rem',
+      paddingTop: '2rem',
       paddingBottom: '4rem', 
       backgroundColor: '#f8fafc', 
       borderRadius: '16px', 
       marginBottom: '1rem', 
       border: '1px solid #e2e8f0' 
     }}>
+
+      {breadcrumbItems.length > 0 && (
+        <nav aria-label="Breadcrumb" style={{ display: 'inline-flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem', justifyContent: 'center' }}>
+          {breadcrumbItems.map((item, index) => (
+            <span key={item.url || item.name} style={{ color: '#2563eb', fontSize: '0.95rem' }}>
+              <a href={item.url} style={{ color: '#2563eb', textDecoration: 'none' }}>{item.name}</a>
+              {index < breadcrumbItems.length - 1 && <span aria-hidden="true"> / </span>}
+            </span>
+          ))}
+        </nav>
+      )}
+      
+
       <h1 style={{ 
         fontSize: '3.5rem', 
         fontWeight: 850, 
@@ -39,27 +49,17 @@ export const SEOPageHero = memo(({
         letterSpacing: '-0.02em', 
         lineHeight: '1.1', 
         marginBottom: '1.5rem',
-        maxWidth: '700px',
+        maxWidth: '1400px',
         marginLeft: 'auto',
         marginRight: 'auto'
       }}>
         {title}
       </h1>
 
-      {breadcrumbItems.length > 0 && (
-        <nav aria-label="Breadcrumb" style={{ display: 'inline-flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-          {breadcrumbItems.map((item, index) => (
-            <span key={item.url || item.name} style={{ color: '#64748b', fontSize: '0.95rem' }}>
-              <a href={item.url} style={{ color: '#334155', textDecoration: 'none' }}>{item.name}</a>
-              {index < breadcrumbItems.length - 1 && <span aria-hidden="true"> / </span>}
-            </span>
-          ))}
-        </nav>
-      )}
-      
+
       {description && (
         <p style={{ 
-          fontSize: '1.4rem', 
+          fontSize: '1rem', 
           color: '#475569', 
           maxWidth: '800px', 
           margin: '0 auto' 
@@ -68,20 +68,7 @@ export const SEOPageHero = memo(({
         </p>
       )}
 
-      <div style={{ 
-        marginTop: '2rem', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '2rem', 
-        fontSize: '0.95rem', 
-        color: '#64748b' 
-      }}>
-        <span><strong>Author:</strong> {authorName}</span>
-        <span>•</span>
-        <span><strong>Updated:</strong> {dateUpdated}</span>
-        <span>•</span>
-        <span><strong>Reading Time:</strong> {readingTime}</span>
-      </div>
+
     </header>
   );
 });
