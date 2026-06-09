@@ -37,6 +37,7 @@ import {
   Gift,
   Plug,
   Activity,
+  AlertTriangle,
 }
 from 'lucide-react';
 import { SupportModal } from './SupportModal';
@@ -203,12 +204,6 @@ export const Sidebar = ({
         { id: 'billing', label: 'Billing', path: '/dashboard/settings/billing', icon: CreditCard },
       ];
 
-  const analyticsSubItems = [
-    { id: 'reports', label: 'Reports', path: '/dashboard/analytics/reports' },
-    { id: 'advanced', label: 'Advanced Analytics', path: '/dashboard/analytics/advanced' },
-    { id: 'export', label: 'Export', path: '/dashboard/analytics/export' },
-  ];
-
   const menuItems = isBlocked
     ? [
         {
@@ -256,6 +251,19 @@ export const Sidebar = ({
             { id: 'stock-counts', label: 'Stock Counts', path: '/dashboard/stock-counts', icon: Hash, requiredFeature: 'orders' },
             { id: 'customers', label: 'Customers', path: '/dashboard/customer-management', icon: Contact, divider: true, requiredFeature: 'contacts' },
             { id: 'suppliers', label: 'Suppliers', path: '/dashboard/suppliers', icon: Truck, requiredFeature: 'contacts' },
+          ],
+        },
+        {
+          id: 'analytics',
+          label: 'Analytics',
+          icon: BarChart3,
+          path: '/dashboard/analytics',
+          subItems: [
+            { id: 'advanced', label: 'Inventory Valuation', path: '/dashboard/analytics/advanced', icon: Activity },
+            { id: 'export', label: 'Export', path: '/dashboard/analytics/export', icon: BarChart3 },
+            { id: 'turnover', label: 'Turnover', path: '/dashboard/analytics/turnover', icon: TrendingUp },
+            { id: 'deadstock', label: 'Dead Stock', path: '/dashboard/analytics/deadstock', icon: AlertTriangle },
+            { id: 'locations', label: 'Locations', path: '/dashboard/analytics/locations', icon: Warehouse },
           ],
         },
 
@@ -942,6 +950,7 @@ export const Sidebar = ({
                           to={navTarget}
                           className={`
                             flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                            outline-none focus:outline-none focus-visible:outline-none
                             ${isItemActive
                               ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200'

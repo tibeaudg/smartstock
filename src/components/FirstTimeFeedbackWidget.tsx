@@ -135,34 +135,9 @@ export function FirstTimeFeedbackWidget({ userId, userEmail, userName }: Props) 
             {/* Body */}
             <div className="p-4 space-y-3">
               <p className="text-sm text-foreground leading-snug">
-                Hey{userName ? ` ${userName}` : ''}! 👋 You've just joined StockFlow.
-                We'd love to know what you think.
+                Questions, suggestions, or feedback? We'd love to hear from you.
               </p>
 
-              {/* Star rating */}
-              <div>
-                <p className="text-xs text-muted-foreground mb-1.5">How would you rate it so far? (optional)</p>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map(n => (
-                    <button
-                      key={n}
-                      onClick={() => setRating(n === rating ? 0 : n)}
-                      onMouseEnter={() => setHoverRating(n)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      className="transition-transform hover:scale-110 focus:outline-none"
-                      aria-label={`Rate ${n} star${n > 1 ? 's' : ''}`}
-                    >
-                      <Star
-                        className={`w-6 h-6 transition-colors ${
-                          n <= (hoverRating || rating)
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-muted-foreground/40'
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               {/* Textarea */}
               <div>

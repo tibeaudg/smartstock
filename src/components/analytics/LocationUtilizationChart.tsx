@@ -48,8 +48,11 @@ export const LocationUtilizationChart: React.FC<LocationUtilizationChartProps> =
     );
   }
 
+  const displayLocation = (location: string) =>
+    location === 'No Location' || location === 'Unassigned' ? 'Unassigned' : location;
+
   const chartData = (data?.items || []).slice(0, limit).map((item) => ({
-    location: item.location === 'No Location' ? 'Unassigned' : item.location,
+    location: displayLocation(item.location),
     value: item.total_value,
     quantity: item.total_quantity,
     products: item.total_products,
@@ -100,8 +103,12 @@ export const LocationUtilizationChart: React.FC<LocationUtilizationChartProps> =
         </CardHeader>
         <CardContent>
           {chartData.length === 0 ? (
-            <div className="h-[400px] flex items-center justify-center text-gray-500">
-              No location data available
+            <div className="h-[400px] flex flex-col items-center justify-center text-center text-gray-500 px-6">
+              <p>No stock on hand to display.</p>
+              <p className="text-sm mt-1">
+                Assign warehouse locations on your products to see distribution across bins and
+                aisles.
+              </p>
             </div>
           ) : (
             <>
@@ -190,7 +197,7 @@ export const LocationUtilizationChart: React.FC<LocationUtilizationChartProps> =
                   {data.items.map((item, index) => (
                     <tr key={item.location} className="border-b hover:bg-gray-50">
                       <td className="p-2 font-medium">
-                        {item.location === 'No Location' ? 'Unassigned' : item.location}
+                        {displayLocation(item.location)}
                       </td>
                       <td className="p-2 text-right">{item.total_products}</td>
                       <td className="p-2 text-right">{item.total_quantity}</td>

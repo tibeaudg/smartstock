@@ -3,6 +3,23 @@ import { useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useBranches } from './useBranches';
+import {
+  computeHealthBreakdownFromProducts,
+  countDistinctCategories,
+  countLowStockProducts,
+  countOutOfStockProducts,
+  countProductsAddedSince,
+  getLowStockProducts,
+  isIncomingTransaction,
+  isOutgoingTransaction,
+  parseQuantity,
+  sumTotalQuantity,
+  transactionToActivityType,
+  type DashboardProductRow,
+  type HealthBreakdown,
+} from '@/lib/inventory/dashboardMetrics';
+import { countItemsWithoutCostData, fetchInventoryValuation } from '@/lib/inventory/valuation';
+import type { InventoryValuationItem } from '@/hooks/useInventoryValuation';
 
 interface UseDashboardDataParams {
   dateFrom?: Date;
@@ -12,8 +29,14 @@ interface UseDashboardDataParams {
 interface DashboardData {
   totalValue: number;
   totalProducts: number;
+  totalQuantity: number;
+  categoryCount: number;
+  itemsWithoutCostCount: number;
+  valuationMethod: 'Average';
   lowStockCount: number;
   emptyStockCount: number;
+  productsAddedThisWeek: number;
+  healthBreakdown: HealthBreakdown;
   incomingToday: number;
   outgoingToday: number;
   totalTransactions: number;
@@ -38,10 +61,11 @@ interface DashboardData {
     total_value: number;
   }>;
   lowStockProducts?: Array<{
+    id: string;
     product_name: string;
     quantity_in_stock: number;
-    minimum_stock_level: number;
-    unit_price: number;
+    min_stock_level: number;
+    category?: string;
   }>;
   turnoverRates?: Array<{
     product_name: string;
@@ -52,12 +76,14 @@ interface DashboardData {
     id: string;
     name: string;
     quantity_in_stock: number;
-    unit_price: number;
-    created_at: string;
+    sku?: string;
+    category?: string;
+    updated_at: string;
   }>;
   recentActivity?: Array<{
     description: string;
     timestamp: string;
+    type: 'stock_in' | 'stock_out' | 'edit' | 'create' | 'delete';
   }>;
 }
 
@@ -81,14 +107,17 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           .select(`
             id,
             name,
+            sku,
             quantity_in_stock,
             unit_price,
+            purchase_price,
             minimum_stock_level,
             category_id,
             is_variant,
             variant_name,
             parent_product_id,
             created_at,
+            updated_at,
             categories(name)
           `)
           .eq('user_id', user.id)
@@ -109,36 +138,28 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         page++;
       }
 
-      const productsData = allProductsData;
+      const productsData = allProductsData as DashboardProductRow[];
 
-      // Calculate metrics
-      const totalValue = productsData?.reduce((sum, product) => 
-        sum + (product.quantity_in_stock * product.unit_price), 0) || 0;
-      
-      // Calculate low stock count with same logic as low stock products
-      const lowStockCount = productsData?.filter(product => {
-        const isLowStock = product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0;
-        
-        // If this is a main product with variants, don't count it
-        if (product.is_variant === false && product.parent_product_id === null) {
-          const hasVariants = productsData?.some(p => p.parent_product_id === product.id);
-          if (hasVariants) {
-            return false;
-          }
-        }
-        
-        return isLowStock;
-      }).length || 0;
+      const totalQuantity = sumTotalQuantity(productsData);
+      const categoryCount = countDistinctCategories(productsData);
 
-      // Calculate empty/out-of-stock count (quantity === 0) - must match products page "Out of Stock" filter
-      const emptyStockCount = productsData?.filter(product =>
-        (product.quantity_in_stock ?? 0) === 0
-      ).length || 0;
+      const { items: valuationItems, summary: valuationSummary } =
+        await fetchInventoryValuation(activeBranch.branch_id, 'Average');
+
+      const totalValue = valuationSummary.total_valuation;
+      const itemsWithoutCostCount = countItemsWithoutCostData(productsData, valuationItems);
+      const lowStockCount = countLowStockProducts(productsData);
+      const emptyStockCount = countOutOfStockProducts(productsData);
+
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const productsAddedThisWeek = countProductsAddedSince(productsData, weekAgo);
+      const healthBreakdown = computeHealthBreakdownFromProducts(productsData);
 
       // Get transactions for the selected range - limit to last 1000 transactions for performance
       let query = supabase
         .from('stock_transactions')
-        .select('transaction_type, quantity, created_at, product_name, unit_price')
+        .select('transaction_type, quantity, created_at, product_name, unit_price, adjustment_method')
         .eq('branch_id', activeBranch.branch_id)
         .order('created_at', { ascending: false })
         .limit(1000);
@@ -154,59 +175,44 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const incomingToday = transactions
-        ?.filter(t => (t.transaction_type === 'incoming' || t.transaction_type === 'in') && new Date(t.created_at) >= today)
-        .reduce((sum, t) => sum + t.quantity, 0) || 0;
+        ?.filter((t) => isIncomingTransaction(t.transaction_type) && new Date(t.created_at) >= today)
+        .reduce((sum, t) => sum + parseQuantity(t.quantity), 0) || 0;
       const outgoingToday = transactions
-        ?.filter(t => (t.transaction_type === 'outgoing' || t.transaction_type === 'out') && new Date(t.created_at) >= today)
-        .reduce((sum, t) => sum + t.quantity, 0) || 0;
+        ?.filter((t) => isOutgoingTransaction(t.transaction_type) && new Date(t.created_at) >= today)
+        .reduce((sum, t) => sum + parseQuantity(t.quantity), 0) || 0;
 
       // Generate daily activity data for chart
       const dailyActivity = generateDailyActivity(transactions || [], dateFrom, dateTo);
 
       // Calculate category distribution
-      const categoryDistribution = calculateCategoryDistribution(productsData || []);
+      const categoryDistribution = calculateCategoryDistribution(productsData || [], valuationItems);
 
       // Calculate top moving products
       const topMovingProducts = calculateTopMovingProducts(transactions || []);
 
       // Calculate stock value trend
-      const stockValueTrend = calculateStockValueTrend(transactions || [], productsData || [], dateFrom, dateTo);
+      const stockValueTrend = calculateStockValueTrend(transactions || [], totalValue, dateFrom, dateTo);
 
-      // Get low stock products - prioritize variants over main products
-      const lowStockProducts = productsData?.filter(product => {
-        // Only include if stock is low and minimum level is set
-        const isLowStock = product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0;
-        
-        // If this is a main product with variants, don't include it (variants will be included separately)
-        if (product.is_variant === false && product.parent_product_id === null) {
-          // Check if this product has variants
-          const hasVariants = productsData?.some(p => p.parent_product_id === product.id);
-          if (hasVariants) {
-            return false; // Don't include main product if it has variants
-          }
-        }
-        
-        return isLowStock;
-      }).map(product => ({
-        product_name: product.is_variant ? `${product.name} - ${product.variant_name}` : product.name,
-        quantity_in_stock: product.quantity_in_stock,
-        minimum_stock_level: product.minimum_stock_level,
-        unit_price: product.unit_price
-      })) || [];
+      const lowStockProducts = getLowStockProducts(productsData);
 
       // Calculate turnover rates
       const turnoverRates = calculateTurnoverRates(transactions || [], productsData || []);
 
-      // Recent items: last 5 products by creation date
-      const recentItems = [...(productsData || [])]
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      // Recent items: last 5 products by last update
+      const recentItems = [...productsData]
+        .sort((a, b) => {
+          const aTime = new Date(a.updated_at ?? a.created_at ?? 0).getTime();
+          const bTime = new Date(b.updated_at ?? b.created_at ?? 0).getTime();
+          return bTime - aTime;
+        })
         .slice(0, 5)
-        .map(p => ({
+        .map((p) => ({
           id: p.id,
-          name: p.is_variant ? `${p.name} - ${p.variant_name}` : p.name,
-          quantity_in_stock: p.quantity_in_stock,
-          unit_price: p.unit_price,
-          created_at: p.created_at,
+          name: p.is_variant && p.variant_name ? `${p.name} - ${p.variant_name}` : (p.name ?? 'Unknown'),
+          quantity_in_stock: parseQuantity(p.quantity_in_stock),
+          sku: p.sku ?? undefined,
+          category: p.categories?.name ?? undefined,
+          updated_at: p.updated_at ?? p.created_at ?? new Date().toISOString(),
         }));
 
       // Recent activity: last 10 transactions as human-readable items
@@ -225,16 +231,23 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
         damage: 'Damage',
         return: 'Return',
       };
-      const recentActivity = (transactions || []).slice(0, 10).map(t => ({
-        description: `${typeLabels[t.transaction_type] ?? t.transaction_type}: ${t.quantity} × ${t.product_name}`,
+      const recentActivity = (transactions || []).slice(0, 10).map((t) => ({
+        description: `${typeLabels[t.transaction_type] ?? t.transaction_type}: ${parseQuantity(t.quantity)} × ${t.product_name}`,
         timestamp: formatRelativeTime(t.created_at),
+        type: transactionToActivityType(t.transaction_type),
       }));
 
       return {
         totalValue,
         totalProducts: productsData?.length || 0,
+        totalQuantity,
+        categoryCount,
+        itemsWithoutCostCount,
+        valuationMethod: 'Average' as const,
         lowStockCount,
         emptyStockCount,
+        productsAddedThisWeek,
+        healthBreakdown,
         incomingToday,
         outgoingToday,
         totalTransactions: transactions?.length || 0,
@@ -271,10 +284,10 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       const dateStr = new Date(transaction.created_at).toISOString().split('T')[0];
       const existing = activityMap.get(dateStr) || { incoming: 0, outgoing: 0 };
       
-      if (transaction.transaction_type === 'incoming' || transaction.transaction_type === 'in') {
-        existing.incoming += transaction.quantity;
-      } else if (transaction.transaction_type === 'outgoing' || transaction.transaction_type === 'out') {
-        existing.outgoing += transaction.quantity;
+      if (isIncomingTransaction(transaction.transaction_type)) {
+        existing.incoming += parseQuantity(transaction.quantity);
+      } else if (isOutgoingTransaction(transaction.transaction_type)) {
+        existing.outgoing += parseQuantity(transaction.quantity);
       }
       
       activityMap.set(dateStr, existing);
@@ -312,6 +325,9 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           queryClient.invalidateQueries({ 
             queryKey: ['basicDashboardMetrics'] 
           });
+          queryClient.invalidateQueries({ 
+            queryKey: ['inventoryValuation'] 
+          });
         }
       )
       .on(
@@ -330,6 +346,9 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
           });
           queryClient.invalidateQueries({ 
             queryKey: ['basicDashboardMetrics'] 
+          });
+          queryClient.invalidateQueries({ 
+            queryKey: ['inventoryValuation'] 
           });
         }
       )
@@ -388,10 +407,10 @@ export const useBasicDashboardMetrics = () => {
       if (!user || !activeBranch) throw new Error('Geen gebruiker of filiaal');
       
       // Fetch only essential metrics with minimal data
-      const [productsResult, transactionsResult] = await Promise.all([
+      const [productsResult, transactionsResult, valuationResult] = await Promise.all([
         supabase
           .from('products')
-          .select('quantity_in_stock, unit_price, minimum_stock_level')
+          .select('id, quantity_in_stock, purchase_price, minimum_stock_level, created_at, is_variant, parent_product_id')
           .eq('user_id', user.id)
           .eq('branch_id', activeBranch.branch_id),
         supabase
@@ -399,42 +418,48 @@ export const useBasicDashboardMetrics = () => {
           .select('transaction_type, quantity, created_at')
           .eq('branch_id', activeBranch.branch_id)
           .gte('created_at', new Date(new Date().setHours(0, 0, 0, 0)).toISOString()) // Today only
-          .limit(100)
+          .limit(100),
+        fetchInventoryValuation(activeBranch.branch_id, 'Average'),
       ]);
 
       if (productsResult.error) throw productsResult.error;
       if (transactionsResult.error) throw transactionsResult.error;
 
-      const products = productsResult.data || [];
+      const products = (productsResult.data || []) as DashboardProductRow[];
       const transactions = transactionsResult.data || [];
+      const { items: valuationItems, summary: valuationSummary } = valuationResult;
 
-      // Calculate basic metrics
-      const totalValue = products.reduce((sum, product) => 
-        sum + (product.quantity_in_stock * product.unit_price), 0);
-      
-      const lowStockCount = products.filter(product => 
-        product.quantity_in_stock <= product.minimum_stock_level && product.minimum_stock_level > 0
-      ).length;
-
-      const emptyStockCount = products.filter(product =>
-        (product.quantity_in_stock ?? 0) === 0
-      ).length;
+      const totalQuantity = sumTotalQuantity(products);
+      const totalValue = valuationSummary.total_valuation;
+      const itemsWithoutCostCount = countItemsWithoutCostData(products, valuationItems);
+      const lowStockCount = countLowStockProducts(products);
+      const emptyStockCount = countOutOfStockProducts(products);
 
       const incomingToday = transactions
-        .filter(t => t.transaction_type === 'incoming' || t.transaction_type === 'in')
-        .reduce((sum, t) => sum + t.quantity, 0);
-      
+        .filter((t) => isIncomingTransaction(t.transaction_type))
+        .reduce((sum, t) => sum + parseQuantity(t.quantity), 0);
+
       const outgoingToday = transactions
-        .filter(t => t.transaction_type === 'outgoing' || t.transaction_type === 'out')
-        .reduce((sum, t) => sum + t.quantity, 0);
+        .filter((t) => isOutgoingTransaction(t.transaction_type))
+        .reduce((sum, t) => sum + parseQuantity(t.quantity), 0);
+
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const productsAddedThisWeek = countProductsAddedSince(products, weekAgo);
+      const healthBreakdown = computeHealthBreakdownFromProducts(products);
 
       return {
         totalValue,
         totalProducts: products.length,
+        totalQuantity,
+        itemsWithoutCostCount,
+        valuationMethod: 'Average' as const,
         lowStockCount,
         emptyStockCount,
         incomingToday,
         outgoingToday,
+        productsAddedThisWeek,
+        healthBreakdown,
       };
     },
     enabled: !!user && !!activeBranch,
@@ -519,14 +544,15 @@ const formatRelativeTime = (isoString: string): string => {
   return new Date(isoString).toLocaleDateString();
 };
 
-const calculateCategoryDistribution = (products: any[]) => {
+const calculateCategoryDistribution = (products: any[], valuationItems: InventoryValuationItem[]) => {
   const categoryMap = new Map<string, { count: number; value: number }>();
-  
+  const valuationByProduct = new Map(valuationItems.map((item) => [item.product_id, item.total_valuation]));
+
   products.forEach(product => {
     const categoryName = product.categories?.name || 'Uncategorized';
     const existing = categoryMap.get(categoryName) || { count: 0, value: 0 };
     existing.count += 1;
-    existing.value += product.quantity_in_stock * product.unit_price;
+    existing.value += valuationByProduct.get(product.id) || 0;
     categoryMap.set(categoryName, existing);
   });
 
@@ -543,11 +569,12 @@ const calculateTopMovingProducts = (transactions: any[]) => {
   transactions.forEach(transaction => {
     const productName = transaction.product_name || 'Unknown Product';
     const existing = productMovementMap.get(productName) || { incoming: 0, outgoing: 0, total_movement: 0 };
+    const qty = parseQuantity(transaction.quantity);
     
-    if (transaction.transaction_type === 'incoming' || transaction.transaction_type === 'in') {
-      existing.incoming += transaction.quantity;
-    } else if (transaction.transaction_type === 'outgoing' || transaction.transaction_type === 'out') {
-      existing.outgoing += transaction.quantity;
+    if (isIncomingTransaction(transaction.transaction_type)) {
+      existing.incoming += qty;
+    } else if (isOutgoingTransaction(transaction.transaction_type)) {
+      existing.outgoing += qty;
     }
     
     existing.total_movement = existing.incoming + existing.outgoing;
@@ -565,12 +592,8 @@ const calculateTopMovingProducts = (transactions: any[]) => {
     .slice(0, 10);
 };
 
-const calculateStockValueTrend = (transactions: any[], products: any[], dateFrom?: Date, dateTo?: Date) => {
+const calculateStockValueTrend = (transactions: any[], currentValue: number, dateFrom?: Date, dateTo?: Date) => {
   const trendMap = new Map<string, number>();
-  
-  // Get current stock value
-  const currentValue = products.reduce((sum, product) => 
-    sum + (product.quantity_in_stock * product.unit_price), 0);
   
   // If we have transactions, calculate historical values
   if (transactions && transactions.length > 0) {
@@ -592,10 +615,12 @@ const calculateStockValueTrend = (transactions: any[], products: any[], dateFrom
     sortedDates.forEach(date => {
       const dayTransactions = transactionsByDate.get(date) || [];
       dayTransactions.forEach(transaction => {
-        if (transaction.transaction_type === 'incoming' || transaction.transaction_type === 'in') {
-          runningValue -= transaction.quantity * (transaction.unit_price || 0);
-        } else if (transaction.transaction_type === 'outgoing' || transaction.transaction_type === 'out') {
-          runningValue += transaction.quantity * (transaction.unit_price || 0);
+        const qty = parseQuantity(transaction.quantity);
+        const unitPrice = Number(transaction.unit_price) || 0;
+        if (isIncomingTransaction(transaction.transaction_type)) {
+          runningValue -= qty * unitPrice;
+        } else if (isOutgoingTransaction(transaction.transaction_type)) {
+          runningValue += qty * unitPrice;
         }
       });
       trendMap.set(date, runningValue);
@@ -627,7 +652,7 @@ const calculateTurnoverRates = (transactions: any[], products: any[]) => {
     }
     
     const existing = productTotalMovement.get(productName) || 0;
-    productTotalMovement.set(productName, existing + transaction.quantity);
+    productTotalMovement.set(productName, existing + parseQuantity(transaction.quantity));
   });
 
   const now = new Date();

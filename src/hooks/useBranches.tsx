@@ -4,6 +4,7 @@ import { useAuth } from './useAuth';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface Branch {
+  name: any;
   branch_id: string;
   branch_name: string;
   is_main: boolean;

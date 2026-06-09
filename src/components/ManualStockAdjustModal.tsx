@@ -125,7 +125,7 @@ export const ManualStockAdjustModal = ({
     try {
       const { data, error } = await supabase
         .from('products')
-        .select('id, name, description, quantity_in_stock, minimum_stock_level, unit_price, status, branch_id, image_url, is_variant, variant_name, sku, created_at, updated_at')
+        .select('id, name, description, quantity_in_stock, minimum_stock_level, unit_price, purchase_price, status, branch_id, image_url, is_variant, variant_name, sku, created_at, updated_at')
         .eq('branch_id', activeBranch.branch_id)
         .order('name');
       
@@ -249,7 +249,10 @@ export const ManualStockAdjustModal = ({
         : productName;
 
     const branchId = productToUse.branch_id;
-    const unitPrice = productToUse.unit_price || 0;
+    const unitPrice =
+      actionType === 'in'
+        ? Number(productToUse.purchase_price) || Number(productToUse.unit_price) || 0
+        : Number(productToUse.unit_price) || 0;
     const isVariant = Boolean(productToUse.is_variant);
 
     // Helper: validate UUID-like strings to avoid passing 'undefined' or invalid values

@@ -580,7 +580,10 @@ const AppRouter = () => {
           </Route>
           <Route path="transactions" element={<StockMovements />} />
           <Route path="analytics/reports" element={<CustomReports />} />
-          <Route path="analytics/advanced" element={<AdvancedReports />} />
+          <Route path="analytics/advanced" element={<AdvancedReports report="valuation" />} />
+          <Route path="analytics/turnover" element={<AdvancedReports report="turnover" />} />
+          <Route path="analytics/deadstock" element={<AdvancedReports report="deadstock" />} />
+          <Route path="analytics/locations" element={<AdvancedReports report="locations" />} />
           <Route path="analytics/export" element={<ExportData />} />
           <Route path="settings" element={<Settings />}>
             <Route index element={<ProfileSettings />} />
