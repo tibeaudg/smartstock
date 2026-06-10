@@ -11,7 +11,6 @@ export const GLOBAL_CRAWL_LINKS = [
   { path: '/blog', label: 'Blog' },
   { path: '/resources', label: 'Resources' },
   { path: '/contact', label: 'Contact' },
-  { path: '/case-studies', label: 'Case Studies' },
   { path: '/compare-inventory-software', label: 'Compare Inventory Software' },
   { path: '/inventory-management-software', label: 'Inventory Management Software' },
   { path: '/best-free-inventory-software-with-barcode-scanning', label: 'Free Barcode Inventory Software' },

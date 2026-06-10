@@ -5,12 +5,22 @@
   "redirects": [
     {
       "source": "/customers",
-      "destination": "/case-studies",
+      "destination": "/resources",
       "permanent": true
     },
     {
       "source": "/customers/:slug",
-      "destination": "/case-studies",
+      "destination": "/resources",
+      "permanent": true
+    },
+    {
+      "source": "/case-studies",
+      "destination": "/resources",
+      "permanent": true
+    },
+    {
+      "source": "/seo/resources/case-studies",
+      "destination": "/resources",
       "permanent": true
     },
     {
