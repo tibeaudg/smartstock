@@ -6,13 +6,19 @@
   "engines": {
     "node": "20.x"
   },
+  "packageManager": "npm@11.1.0",
   "scripts": {
     "dev": "npm run dev:all",
     "dev:vite": "vite",
     "dev:api": "node server-dev.cjs",
     "dev:all": "concurrently \"npm run dev:api\" \"npm run dev:vite\" --names \"API,VITE\" --prefix-colors \"blue,green\"",
     "build": "vite build --outDir dist",
-    "build:seo": "npm run seo:redirects:check && node ./scripts/sync-sitemap.js && npm run seo:regression && vite build --outDir dist && node ./scripts/prerender-pages.mjs && node ./scripts/inject-crawl-links.mjs && node ./scripts/check-static-links.mjs && node ./scripts/check-prerender-word-count.mjs",
+    "build:vite": "vite build --outDir dist",
+    "prerender": "node ./scripts/prerender-pages.mjs",
+    "prerender-cache-sync": "node -e \"console.log('[prerender-cache-sync] ok')\"",
+    "build:seo:checks": "npm run seo:redirects:check && node ./scripts/sync-sitemap.js && npm run seo:regression",
+    "build:seo:post": "node ./scripts/inject-crawl-links.mjs && node ./scripts/check-static-links.mjs && node ./scripts/check-prerender-word-count.mjs",
+    "build:seo": "npm run build:seo:checks && turbo run build:vite && turbo run prerender-cache-sync && npm run prerender && turbo run prerender-cache-sync && npm run build:seo:post",
     "build:seo:meta": "npm run seo:redirects:check && node ./scripts/sync-sitemap.js && npm run seo:regression && vite build --outDir dist && node ./scripts/generate-seo-html.mjs && node ./scripts/inject-crawl-links.mjs && node ./scripts/check-static-links.mjs",
     "build:seo:full": "npm run build:seo",
     "build:dev": "vite build --mode development",
@@ -180,6 +186,7 @@
     "puppeteer-core": "^24.43.1",
     "sharp": "^0.33.0",
     "tailwindcss": "^3.4.11",
+    "turbo": "^2.9.17",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.20",

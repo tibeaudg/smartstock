@@ -16,12 +16,12 @@ const PREVIEW_HOST = '127.0.0.1';
 const PREVIEW_PORT = 4173;
 const PREVIEW_ORIGIN = `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
 const IS_VERCEL = Boolean(process.env.VERCEL);
-const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 6 : 3));
+const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 8 : 3));
 const MAX_ROUTE_ATTEMPTS = Number(process.env.PRERENDER_ROUTE_ATTEMPTS ?? 2);
 const MIN_SUCCESS_RATE = Number(process.env.PRERENDER_MIN_SUCCESS_RATE ?? 0.95);
-const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 25000);
+const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 18000);
 const PROTOCOL_TIMEOUT_MS = Number(process.env.PRERENDER_PROTOCOL_TIMEOUT_MS ?? 120000);
-const SCROLL_TIMEOUT_MS = Number(process.env.PRERENDER_SCROLL_TIMEOUT_MS ?? 8000);
+const SCROLL_TIMEOUT_MS = Number(process.env.PRERENDER_SCROLL_TIMEOUT_MS ?? 2500);
 const CONTENT_RETRY_MS = Number(process.env.PRERENDER_CONTENT_RETRY_MS ?? 1500);
 const INCREMENTAL = process.env.PRERENDER_INCREMENTAL !== '0';
 
@@ -120,9 +120,14 @@ async function launchBrowser() {
   }
 }
 
-function shouldBlockRequest(url) {
+function shouldBlockRequest(request) {
+  const resourceType = request.resourceType();
+  if (['image', 'font', 'media'].includes(resourceType)) {
+    return true;
+  }
+
   try {
-    const host = new URL(url).hostname;
+    const host = new URL(request.url()).hostname;
     return BLOCKED_REQUEST_HOSTS.some((blocked) => host === blocked || host.endsWith(`.${blocked}`));
   } catch {
     return false;
@@ -218,9 +223,10 @@ async function runPool(browser, routes, { buildFingerprint, onRouteRendered }) {
 
   async function worker() {
     const page = await browser.newPage();
+    await page.setCacheEnabled(true);
     await page.setRequestInterception(true);
     page.on('request', (request) => {
-      if (shouldBlockRequest(request.url())) {
+      if (shouldBlockRequest(request)) {
         request.abort();
         return;
       }
@@ -280,15 +286,16 @@ async function main() {
     throw new Error('No routes found for prerendering.');
   }
 
-  const { cached, toPrerender, buildFingerprint } = await planIncrementalPrerender(
+  const { cached, patched, toPrerender, buildFingerprint } = await planIncrementalPrerender(
     routes,
     DIST_DIR,
     INCREMENTAL
   );
 
-  if (cached > 0) {
+  const restored = cached + patched;
+  if (restored > 0) {
     console.log(
-      `[prerender-pages] Restored ${cached}/${routes.length} route(s) from incremental cache.`
+      `[prerender-pages] Restored ${restored}/${routes.length} route(s) from cache (${cached} exact, ${patched} asset-patched).`
     );
   }
 
@@ -300,8 +307,9 @@ async function main() {
         {
           updatedAt: new Date().toISOString(),
           total: routes.length,
-          rendered: cached,
+          rendered: restored,
           cached,
+          patched,
           fallback: [],
         },
         null,
@@ -347,12 +355,12 @@ async function main() {
         fallbackCount = failedRoutes.length;
       }
 
-      const totalRendered = cached + rendered;
+      const totalRendered = cached + patched + rendered;
       const effectiveRendered = totalRendered + fallbackCount;
       const successRate = effectiveRendered / routes.length;
 
       console.log(
-        `[prerender-pages] Done: ${totalRendered} full HTML (${cached} cached + ${rendered} fresh), ${fallbackCount} meta-only fallback, ${routes.length} total.`
+        `[prerender-pages] Done: ${totalRendered} full HTML (${cached} cached + ${patched} patched + ${rendered} fresh), ${fallbackCount} meta-only fallback, ${routes.length} total.`
       );
 
       if (successRate < MIN_SUCCESS_RATE) {
@@ -369,6 +377,7 @@ async function main() {
             total: routes.length,
             rendered: totalRendered,
             cached,
+            patched,
             fallback: failedRoutes,
           },
           null,

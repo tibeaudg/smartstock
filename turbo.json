@@ -1,0 +1,34 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build:seo:checks": {
+      "cache": false
+    },
+    "build:vite": {
+      "outputs": ["dist/**"],
+      "cache": true
+    },
+    "prerender-cache-sync": {
+      "inputs": [
+        "scripts/utils/prerender-cache.mjs",
+        "scripts/utils/prerender-route-sources.mjs",
+        "scripts/utils/collect-prerender-routes.mjs",
+        "scripts/utils/sitemap-routes.mjs",
+        "scripts/utils/seo-slug.mjs",
+        "public/sitemap.xml",
+        "src/pages/SEO/**",
+        "src/App.tsx",
+        "src/components/**",
+        "src/pages/**"
+      ],
+      "outputs": [".prerender-cache/**"],
+      "cache": true
+    },
+    "prerender": {
+      "cache": false
+    },
+    "build:seo:post": {
+      "cache": false
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "trailingSlash": false,
   "build": {
     "env": {
-      "PRERENDER_CONCURRENCY": "6",
+      "PRERENDER_CONCURRENCY": "8",
       "PRERENDER_INCREMENTAL": "1"
     }
   },
