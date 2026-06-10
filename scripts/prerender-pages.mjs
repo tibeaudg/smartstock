@@ -15,9 +15,26 @@ const SEO_DIR_LOWER = path.join(ROOT, 'src', 'pages', 'seo');
 const PREVIEW_HOST = '127.0.0.1';
 const PREVIEW_PORT = 4173;
 const PREVIEW_ORIGIN = `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
-const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? 4);
-const MIN_SUCCESS_RATE = Number(process.env.PRERENDER_MIN_SUCCESS_RATE ?? 0.95);
 const IS_VERCEL = Boolean(process.env.VERCEL);
+const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 6 : 4));
+const MIN_SUCCESS_RATE = Number(process.env.PRERENDER_MIN_SUCCESS_RATE ?? 0.95);
+const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 45000);
+
+/** Third-party analytics keep networkidle0 open indefinitely during preview. */
+const BLOCKED_REQUEST_HOSTS = [
+  'google-analytics.com',
+  'googletagmanager.com',
+  'googleadservices.com',
+  'doubleclick.net',
+  'facebook.com',
+  'connect.facebook.net',
+  'posthog.com',
+  'i.posthog.com',
+  'eu.i.posthog.com',
+  'eu-assets.i.posthog.com',
+  'clarity.ms',
+  'hotjar.com',
+];
 
 async function getSeoFileRoutes() {
   const seoDir = fs.existsSync(SEO_DIR) ? SEO_DIR : SEO_DIR_LOWER;
@@ -119,10 +136,19 @@ async function launchBrowser() {
   }
 }
 
+function shouldBlockRequest(url) {
+  try {
+    const host = new URL(url).hostname;
+    return BLOCKED_REQUEST_HOSTS.some((blocked) => host === blocked || host.endsWith(`.${blocked}`));
+  } catch {
+    return false;
+  }
+}
+
 async function prerenderRoute(page, routePath) {
   const target = `${PREVIEW_ORIGIN}${routePath}`;
 
-  await page.goto(target, { waitUntil: 'networkidle0', timeout: 120000 });
+  await page.goto(target, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS });
   await page.waitForSelector('body', { timeout: 30000 });
 
   try {
@@ -162,6 +188,14 @@ async function runPool(browser, routes) {
 
   async function worker() {
     const page = await browser.newPage();
+    await page.setRequestInterception(true);
+    page.on('request', (request) => {
+      if (shouldBlockRequest(request.url())) {
+        request.abort();
+        return;
+      }
+      request.continue();
+    });
     await page.setViewport({ width: 1366, height: 900 });
 
     try {
