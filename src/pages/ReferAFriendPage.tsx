@@ -44,7 +44,7 @@ export default function ReferAFriendPage() {
   const freeMonthsCredit = userProfile?.free_months_credit ?? 0;
 
   const referralLink = referralCode
-    ? `stockflow.app/join?ref=${referralCode}`
+    ? `stockflowsystems.com/join?ref=${referralCode}`
     : 'Loading your link…';
 
   // Load referrals from DB
@@ -76,12 +76,12 @@ export default function ReferAFriendPage() {
     } catch { /* ignore */ }
   };
 
-  const shareEmail = () => {
+  const shareGmail = () => {
     const subject = encodeURIComponent('Try StockFlow — free inventory management');
     const body = encodeURIComponent(
       `Hey,\n\nI've been using StockFlow to manage my inventory and thought you'd find it useful too.\n\nSign up with my link and you'll get a 30-day free trial of Professional:\nhttps://${referralLink}\n\nNo credit card needed.`
     );
-    window.open(`mailto:?subject=${subject}&body=${body}`);
+    window.open(`https://mail.google.com/mail/?view=cm&to=&su=${subject}&body=${body}`);
   };
 
   const shareWhatsApp = () => {
@@ -180,11 +180,11 @@ export default function ReferAFriendPage() {
           {/* Share buttons */}
           <div className="flex gap-2 flex-wrap">
             <button
-              onClick={shareEmail}
+              onClick={shareGmail}
               className="flex items-center gap-2 px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground font-medium hover:bg-muted transition-colors"
             >
               <Mail className="w-3.5 h-3.5" />
-              Email
+              Gmail
             </button>
             <button
               onClick={shareWhatsApp}
