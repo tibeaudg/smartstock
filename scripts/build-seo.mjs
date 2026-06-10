@@ -6,6 +6,12 @@ import { performance } from 'perf_hooks';
 
 const ROOT = process.cwd();
 
+if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+  process.stdout.write(
+    '[build:seo] TIP: Link a Vercel Blob store (Storage → Create) so prerender cache persists between deploys.\n'
+  );
+}
+
 function phase(label, command) {
   const started = performance.now();
   process.stdout.write(`\n========== ${label} ==========\n`);

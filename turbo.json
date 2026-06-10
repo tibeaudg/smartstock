@@ -1,5 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "BLOB_READ_WRITE_TOKEN",
+    "PRERENDER_CONCURRENCY",
+    "PRERENDER_INCREMENTAL",
+    "PRERENDER_TOKEN",
+    "VERCEL"
+  ],
   "tasks": {
     "build:seo:checks": {
       "cache": false

@@ -16,7 +16,8 @@ const PREVIEW_HOST = '127.0.0.1';
 const PREVIEW_PORT = 4173;
 const PREVIEW_ORIGIN = `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
 const IS_VERCEL = Boolean(process.env.VERCEL);
-const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 8 : 3));
+// Vercel Hobby builders are 2-core — more than 3 concurrent Chromium tabs causes thrashing.
+const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 3 : 3));
 const MAX_ROUTE_ATTEMPTS = Number(process.env.PRERENDER_ROUTE_ATTEMPTS ?? 2);
 const MIN_SUCCESS_RATE = Number(process.env.PRERENDER_MIN_SUCCESS_RATE ?? 0.95);
 const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 18000);
@@ -92,7 +93,12 @@ function waitForPreviewReady(serverProcess) {
 
 async function launchWithChromium() {
   return puppeteer.launch({
-    args: chromium.args,
+    args: [
+      ...chromium.args,
+      '--disable-dev-shm-usage',
+      '--disable-software-rasterizer',
+      '--no-zygote',
+    ],
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(),
     headless: chromium.headless,
@@ -173,8 +179,8 @@ async function quickScroll(page) {
 async function prerenderRoute(page, routePath) {
   const target = `${PREVIEW_ORIGIN}${routePath}`;
 
-  // `load` + content wait is much faster than `networkidle2` for SPAs.
-  await page.goto(target, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS });
+  // `domcontentloaded` is enough once we wait for #root text; faster than `load` on Vercel.
+  await page.goto(target, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT_MS });
 
   try {
     await waitForRenderedContent(page);
@@ -188,10 +194,12 @@ async function prerenderRoute(page, routePath) {
     // No h1 within timeout; still capture whatever rendered.
   }
 
-  try {
-    await quickScroll(page);
-  } catch {
-    // Scroll is best-effort for lazy sections.
+  if (!IS_VERCEL) {
+    try {
+      await quickScroll(page);
+    } catch {
+      // Scroll is best-effort for lazy sections.
+    }
   }
 
   const html = sanitizeCapturedHtml(await page.content());
@@ -328,7 +336,13 @@ async function main() {
     return;
   }
 
-  console.log(`[prerender-pages] Puppeteer will render ${toPrerender.length} route(s).`);
+  console.log(
+    `[prerender-pages] Puppeteer will render ${toPrerender.length} route(s) (concurrency=${CONCURRENCY}, vercel=${IS_VERCEL}).`
+  );
+
+  const heartbeat = setInterval(() => {
+    console.log(`[prerender-pages] Still rendering… (${new Date().toISOString()})`);
+  }, 60_000);
 
   const viteCliPath = path.join(ROOT, 'node_modules', 'vite', 'bin', 'vite.js');
   const server = spawn(process.execPath, [viteCliPath, 'preview', '--host', PREVIEW_HOST, '--port', String(PREVIEW_PORT), '--strictPort'], {
@@ -397,6 +411,7 @@ async function main() {
       await browser.close();
     }
   } finally {
+    clearInterval(heartbeat);
     if (!server.killed) {
       server.kill();
     }
