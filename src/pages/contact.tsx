@@ -46,19 +46,31 @@ export default function ContactPage() {
 
   const onSubmitContact = async (values: ContactFormValues) => {
     try {
-      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Contact service not configured');
+      }
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${supabaseAnonKey}`,
+      };
       const phDistinctId = getPostHogDistinctId();
       if (phDistinctId) headers['X-PostHog-Distinct-Id'] = phDistinctId;
-      const res = await fetch('/api/contact', {
+
+      const res = await fetch(`${supabaseUrl.replace(/\/$/, '')}/functions/v1/contact`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
           name: values.name,
           email: values.email,
           description: values.description,
-        })
+        }),
       });
-      if (!res.ok) throw new Error('Failed to send');
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error('Failed to send');
       
       reset();
       

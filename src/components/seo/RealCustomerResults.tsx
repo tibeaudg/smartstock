@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { TestimonialQuote } from '@/data/testimonialQuotes';
-import { Quote, Star, TrendingUp, ArrowRight } from 'lucide-react';
+import { Quote, Star, TrendingUp } from 'lucide-react';
 
 interface RealCustomerResultsProps {
   testimonials: TestimonialQuote[];
@@ -64,15 +63,6 @@ export const RealCustomerResults: React.FC<RealCustomerResultsProps> = ({
                 </div>
               </div>
             ))}
-          </div>
-          
-          <div className="text-center mt-8">
-            <Link
-              to="/case-studies"
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold"
-            >
-              View More Customer Stories <ArrowRight className="h-5 w-5" />
-            </Link>
           </div>
         </div>
       </section>
@@ -159,13 +149,6 @@ export const RealCustomerResults: React.FC<RealCustomerResultsProps> = ({
               </p>
             </div>
           ))}
-          
-          <Link
-            to="/case-studies"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm mt-4"
-          >
-            View More Customer Stories <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
     </div>

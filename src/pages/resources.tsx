@@ -7,21 +7,13 @@ import Footer from '@/components/Footer';
 
 import {
   BookOpen,
-  TrendingUp,
   Calculator,
   HelpCircle,
   PlayCircle,
   BarChart3,
   ArrowRight,
-  Building,
-  ShoppingBag,
-  Utensils,
-  Truck,
-  Clock,
   FileText,
   Users,
-  MessageCircle,
-  Download
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 import Header from '@/components/HeaderPublic';
@@ -29,28 +21,6 @@ import VideoModal from '@/components/VideoModal';
 import LeadMagnetDownload from '@/components/LeadMagnetDownload';
 import { leadMagnets, LeadMagnet } from '@/data/leadMagnets';
 import blogPosts from '@/lib/blogposts.json';
-
-// Featured case studies for preview
-const featuredCaseStudies = [
-  {
-    company: 'TechCorp Electronics',
-    industry: 'Electronics Retail',
-    metric: '15 hours saved per week',
-    icon: <Building className="h-5 w-5" />
-  },
-  {
-    company: 'FreshMarket Grocery',
-    industry: 'Food & Beverage',
-    metric: '40% reduction in waste',
-    icon: <Utensils className="h-5 w-5" />
-  },
-  {
-    company: 'Fashion Forward',
-    industry: 'Fashion Retail',
-    metric: '99.1% accuracy',
-    icon: <ShoppingBag className="h-5 w-5" />
-  }
-];
 
 // Popular comparisons
 const popularComparisons = [
@@ -112,7 +82,7 @@ export default function ResourcesPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "Resources - StockFlow",
-    "description": "Access all StockFlow resources including blog articles, case studies, ROI calculator, knowledge base, product demos, and software comparisons.",
+    "description": "Access all StockFlow resources including blog articles, ROI calculator, knowledge base, product demos, and software comparisons.",
     "url": "https://www.stockflowsystems.com/resources",
     "mainEntity": {
       "@type": "ItemList",
@@ -126,30 +96,24 @@ export default function ResourcesPage() {
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "Case Studies",
-          "url": "https://www.stockflowsystems.com/case-studies"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
           "name": "ROI Calculator",
           "url": "https://www.stockflowsystems.com/resources#roi-calculator"
         },
         {
           "@type": "ListItem",
-          "position": 4,
+          "position": 3,
           "name": "Knowledge Base",
           "url": "https://www.stockflowsystems.com/help-center"
         },
         {
           "@type": "ListItem",
-          "position": 5,
+          "position": 4,
           "name": "Product Demo Videos",
           "url": "https://www.stockflowsystems.com/videos"
         },
         {
           "@type": "ListItem",
-          "position": 6,
+          "position": 5,
           "name": "Comparison Pages",
           "url": "https://www.stockflowsystems.com/compare-inventory-software"
         }
@@ -161,9 +125,9 @@ export default function ResourcesPage() {
     <>
     <div className="min-h-screen bg-gray-50">
       <SEO
-        title="Resources - StockFlow | Blog, Case Studies, ROI Calculator & More"
-        description="Access all StockFlow resources including blog articles, case studies, ROI calculator, knowledge base, product demo videos, and software comparisons."
-        keywords="resources, blog, case studies, ROI calculator, knowledge base, demo videos, comparisons, inventory management resources"
+        title="Resources - StockFlow | Blog, ROI Calculator & More"
+        description="Access all StockFlow resources including blog articles, ROI calculator, knowledge base, product demo videos, and software comparisons."
+        keywords="resources, blog, ROI calculator, knowledge base, demo videos, comparisons, inventory management resources"
         url="https://www.stockflowsystems.com/resources"
         structuredData={structuredData}
       />
@@ -183,7 +147,7 @@ export default function ResourcesPage() {
               Resources Hub
             </h1>
             <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Everything you need to learn, compare, and succeed with StockFlow. Explore our blog, case studies, calculators, guides, and more.
+              Everything you need to learn, compare, and succeed with StockFlow. Explore our blog, calculators, guides, and more.
             </p>
           </div>
         </div>
@@ -214,45 +178,6 @@ export default function ResourcesPage() {
                 <Link to="/blog">
                   <Button className="w-full" variant="default">
                     Browse All Articles
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-
-            {/* Case Studies Resource Card */}
-            <Card className="flex flex-col hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-3 bg-green-100 rounded-lg text-green-600">
-                    <TrendingUp className="h-6 w-6" />
-                  </div>
-                  <CardTitle className="text-2xl">Case Studies</CardTitle>
-                </div>
-                <CardDescription className="text-base">
-                  See how businesses are succeeding with StockFlow
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col">
-                <div className="space-y-3 mb-6 flex-1">
-                  {featuredCaseStudies.map((study, index) => (
-                    <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                      <div className="text-green-600 mt-0.5">
-                        {study.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 text-sm mb-1 line-clamp-1">
-                          {study.company}
-                        </h4>
-                        <p className="text-xs text-gray-600 mb-1">{study.industry}</p>
-                        <p className="text-xs text-green-600 font-medium">{study.metric}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Link to="/case-studies">
-                  <Button className="w-full" variant="default">
-                    View All Case Studies
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>

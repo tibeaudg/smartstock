@@ -8,10 +8,8 @@ import { extractRoutePathFromContent, getSlugFromPath } from './utils/seo-slug.m
 
 const NAV_PATHS = [
   '/blog',
-  '/case-studies',
   '/help-center',
   '/videos',
-  '/integrations',
   '/compare-inventory-software',
   '/warehouse-software',
   '/asset-tracking',
@@ -27,10 +25,8 @@ const APP_STATIC_ROUTES = new Set([
   '/',
   '/features',
   '/resources',
-  '/customers',
   '/contact',
   '/videos',
-  '/integrations',
   '/pricing',
   '/faq',
   '/help-center',

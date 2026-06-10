@@ -1,24 +1,29 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
-import { globby } from 'globby';
 import puppeteer from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
-import { extractRoutePathFromContent } from './utils/seo-slug.mjs';
-import { getSitemapRoutes } from './utils/sitemap-routes.mjs';
+import { getAllPrerenderRoutes } from './utils/collect-prerender-routes.mjs';
+import { planIncrementalPrerender, saveRouteCache } from './utils/prerender-cache.mjs';
+import { getRouteContentHash } from './utils/prerender-route-sources.mjs';
+import { emitFallbackForRoutes } from './generate-seo-html.mjs';
 
 const ROOT = process.cwd();
 const DIST_DIR = path.join(ROOT, 'dist');
 const SITEMAP_PATH = path.join(ROOT, 'public', 'sitemap.xml');
-const SEO_DIR = path.join(ROOT, 'src', 'pages', 'SEO');
-const SEO_DIR_LOWER = path.join(ROOT, 'src', 'pages', 'seo');
+const RESULTS_MANIFEST = path.join(ROOT, 'scripts', 'prerender-results.generated.json');
 const PREVIEW_HOST = '127.0.0.1';
 const PREVIEW_PORT = 4173;
 const PREVIEW_ORIGIN = `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
 const IS_VERCEL = Boolean(process.env.VERCEL);
-const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 6 : 4));
+const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? (IS_VERCEL ? 6 : 3));
+const MAX_ROUTE_ATTEMPTS = Number(process.env.PRERENDER_ROUTE_ATTEMPTS ?? 2);
 const MIN_SUCCESS_RATE = Number(process.env.PRERENDER_MIN_SUCCESS_RATE ?? 0.95);
-const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 45000);
+const NAV_TIMEOUT_MS = Number(process.env.PRERENDER_NAV_TIMEOUT_MS ?? 25000);
+const PROTOCOL_TIMEOUT_MS = Number(process.env.PRERENDER_PROTOCOL_TIMEOUT_MS ?? 120000);
+const SCROLL_TIMEOUT_MS = Number(process.env.PRERENDER_SCROLL_TIMEOUT_MS ?? 8000);
+const CONTENT_RETRY_MS = Number(process.env.PRERENDER_CONTENT_RETRY_MS ?? 1500);
+const INCREMENTAL = process.env.PRERENDER_INCREMENTAL !== '0';
 
 /** Third-party analytics keep networkidle0 open indefinitely during preview. */
 const BLOCKED_REQUEST_HOSTS = [
@@ -35,29 +40,6 @@ const BLOCKED_REQUEST_HOSTS = [
   'clarity.ms',
   'hotjar.com',
 ];
-
-async function getSeoFileRoutes() {
-  const seoDir = fs.existsSync(SEO_DIR) ? SEO_DIR : SEO_DIR_LOWER;
-  if (!fs.existsSync(seoDir)) return [];
-
-  const files = await globby('**/*.tsx', { cwd: seoDir });
-  const routes = new Set();
-  const excluded = new Set(['glossary/createGlossaryPage', 'resources']);
-
-  for (const rel of files) {
-    const relPosix = rel.replace(/\\/g, '/');
-    const baseWithoutExt = relPosix.replace(/\.tsx$/, '');
-    if (excluded.has(baseWithoutExt)) continue;
-
-    const fullPath = path.join(seoDir, rel);
-    const content = fs.readFileSync(fullPath, 'utf8');
-    const slug = extractRoutePathFromContent(content, `pages/SEO/${relPosix}`);
-    if (!slug) continue;
-    routes.add(slug.startsWith('/') ? slug : `/${slug}`);
-  }
-
-  return [...routes];
-}
 
 function writeRouteHtml(routePath, html) {
   const normalized = routePath === '/' ? '' : routePath.replace(/^\/+|\/+$/g, '');
@@ -114,6 +96,7 @@ async function launchWithChromium() {
     defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(),
     headless: chromium.headless,
+    protocolTimeout: PROTOCOL_TIMEOUT_MS,
   });
 }
 
@@ -127,6 +110,7 @@ async function launchBrowser() {
     return await fullPuppeteer.default.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      protocolTimeout: PROTOCOL_TIMEOUT_MS,
     });
   } catch (error) {
     console.warn(
@@ -145,43 +129,89 @@ function shouldBlockRequest(url) {
   }
 }
 
+async function waitForRenderedContent(page) {
+  await page.waitForFunction(
+    () => {
+      const root = document.getElementById('root');
+      if (!root) return false;
+      const text = (root.innerText ?? '').replace(/\s+/g, ' ').trim();
+      return text.length >= 200;
+    },
+    { timeout: NAV_TIMEOUT_MS }
+  );
+}
+
+async function quickScroll(page) {
+  await page.evaluate(
+    (maxMs) =>
+      new Promise((resolve) => {
+        const started = Date.now();
+        const interval = setInterval(() => {
+          if (Date.now() - started > maxMs) {
+            clearInterval(interval);
+            window.scrollTo(0, 0);
+            resolve();
+            return;
+          }
+          window.scrollBy(0, 600);
+          if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+            clearInterval(interval);
+            window.scrollTo(0, 0);
+            resolve();
+          }
+        }, 50);
+      }),
+    SCROLL_TIMEOUT_MS
+  );
+}
+
 async function prerenderRoute(page, routePath) {
   const target = `${PREVIEW_ORIGIN}${routePath}`;
 
+  // `load` + content wait is much faster than `networkidle2` for SPAs.
   await page.goto(target, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS });
-  await page.waitForSelector('body', { timeout: 30000 });
 
   try {
-    await page.waitForSelector('h1', { timeout: 30000 });
+    await waitForRenderedContent(page);
   } catch {
-    // No h1 found within timeout; still capture whatever rendered.
+    await new Promise((resolve) => setTimeout(resolve, CONTENT_RETRY_MS));
   }
 
-  await page.evaluate(async () => {
-    await new Promise((resolve) => {
-      const distance = 400;
-      const interval = setInterval(() => {
-        window.scrollBy(0, distance);
-        if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
-          clearInterval(interval);
-          window.scrollTo(0, 0);
-          resolve();
-        }
-      }, 80);
-    });
-  });
-  await new Promise((resolve) => setTimeout(resolve, 900));
+  try {
+    await page.waitForSelector('h1', { timeout: 5000 });
+  } catch {
+    // No h1 within timeout; still capture whatever rendered.
+  }
+
+  try {
+    await quickScroll(page);
+  } catch {
+    // Scroll is best-effort for lazy sections.
+  }
 
   const html = sanitizeCapturedHtml(await page.content());
+
+  if (/onverwachte fout opgetreden|unexpected error occurred/i.test(html)) {
+    throw new Error('error boundary rendered');
+  }
+
+  const rootText = await page.evaluate(() => {
+    const root = document.getElementById('root');
+    return (root?.innerText ?? '').replace(/\s+/g, ' ').trim();
+  });
+  if (rootText.length < 200) {
+    throw new Error(`insufficient rendered content (${rootText.length} chars)`);
+  }
 
   if (!/<h1[\s>]/i.test(html)) {
     console.warn(`[prerender-pages] WARNING: no <h1> in captured HTML for ${routePath}`);
   }
 
   writeRouteHtml(routePath, html);
+  return html;
 }
 
-async function runPool(browser, routes) {
+async function runPool(browser, routes, { buildFingerprint, onRouteRendered }) {
   let rendered = 0;
   const failedRoutes = [];
   let index = 0;
@@ -203,12 +233,30 @@ async function runPool(browser, routes) {
         const current = index;
         index += 1;
         const route = routes[current];
-        try {
-          await prerenderRoute(page, route);
-          rendered += 1;
-        } catch (error) {
+        let succeeded = false;
+        let lastError = null;
+        for (let attempt = 1; attempt <= MAX_ROUTE_ATTEMPTS; attempt += 1) {
+          try {
+            const html = await prerenderRoute(page, route);
+            if (onRouteRendered) {
+              await onRouteRendered(route, html);
+            }
+            rendered += 1;
+            succeeded = true;
+            break;
+          } catch (error) {
+            lastError = error;
+            if (attempt < MAX_ROUTE_ATTEMPTS) {
+              console.warn(
+                `[prerender-pages] Retry ${attempt}/${MAX_ROUTE_ATTEMPTS} for ${route}: ${error?.message ?? 'unknown error'}`
+              );
+              await new Promise((resolve) => setTimeout(resolve, 1200));
+            }
+          }
+        }
+        if (!succeeded) {
           failedRoutes.push(route);
-          console.warn(`[prerender-pages] Skipped ${route}: ${error?.message ?? 'unknown error'}`);
+          console.warn(`[prerender-pages] Skipped ${route}: ${lastError?.message ?? 'unknown error'}`);
         }
       }
     } finally {
@@ -227,12 +275,44 @@ async function main() {
     throw new Error('dist directory not found. Run vite build first.');
   }
 
-  const routes = [...new Set([...(await getSeoFileRoutes()), ...getSitemapRoutes(SITEMAP_PATH)])].sort(
-    (a, b) => a.localeCompare(b)
-  );
+  const routes = await getAllPrerenderRoutes(SITEMAP_PATH);
   if (routes.length === 0) {
-    throw new Error('No routes found in sitemap.xml for prerendering.');
+    throw new Error('No routes found for prerendering.');
   }
+
+  const { cached, toPrerender, buildFingerprint } = await planIncrementalPrerender(
+    routes,
+    DIST_DIR,
+    INCREMENTAL
+  );
+
+  if (cached > 0) {
+    console.log(
+      `[prerender-pages] Restored ${cached}/${routes.length} route(s) from incremental cache.`
+    );
+  }
+
+  if (toPrerender.length === 0) {
+    console.log('[prerender-pages] All routes served from cache — skipping Puppeteer.');
+    fs.writeFileSync(
+      RESULTS_MANIFEST,
+      `${JSON.stringify(
+        {
+          updatedAt: new Date().toISOString(),
+          total: routes.length,
+          rendered: cached,
+          cached,
+          fallback: [],
+        },
+        null,
+        2
+      )}\n`,
+      'utf8'
+    );
+    return;
+  }
+
+  console.log(`[prerender-pages] Puppeteer will render ${toPrerender.length} route(s).`);
 
   const viteCliPath = path.join(ROOT, 'node_modules', 'vite', 'bin', 'vite.js');
   const server = spawn(process.execPath, [viteCliPath, 'preview', '--host', PREVIEW_HOST, '--port', String(PREVIEW_PORT), '--strictPort'], {
@@ -247,20 +327,55 @@ async function main() {
     const browser = await launchBrowser();
 
     try {
-      const { rendered, failedRoutes } = await runPool(browser, routes);
-      const successRate = rendered / routes.length;
+      const onRouteRendered = async (route, html) => {
+        const contentHash = await getRouteContentHash(route);
+        saveRouteCache(route, html, contentHash, buildFingerprint);
+      };
+
+      const { rendered, failedRoutes } = await runPool(browser, toPrerender, {
+        buildFingerprint,
+        onRouteRendered,
+      });
+      let fallbackCount = 0;
 
       if (failedRoutes.length) {
-        console.warn(`[prerender-pages] ${failedRoutes.length} route(s) skipped.`);
+        console.warn(`[prerender-pages] ${failedRoutes.length} route(s) skipped — applying meta-only fallback.`);
+        for (const route of failedRoutes) {
+          console.warn(`[prerender-pages]   fallback: ${route}`);
+        }
+        await emitFallbackForRoutes(failedRoutes);
+        fallbackCount = failedRoutes.length;
       }
 
-      console.log(`[prerender-pages] Prerendered ${rendered}/${routes.length} routes into dist/`);
+      const totalRendered = cached + rendered;
+      const effectiveRendered = totalRendered + fallbackCount;
+      const successRate = effectiveRendered / routes.length;
+
+      console.log(
+        `[prerender-pages] Done: ${totalRendered} full HTML (${cached} cached + ${rendered} fresh), ${fallbackCount} meta-only fallback, ${routes.length} total.`
+      );
 
       if (successRate < MIN_SUCCESS_RATE) {
         throw new Error(
           `Prerender success rate ${(successRate * 100).toFixed(1)}% is below minimum ${(MIN_SUCCESS_RATE * 100).toFixed(0)}%`
         );
       }
+
+      fs.writeFileSync(
+        RESULTS_MANIFEST,
+        `${JSON.stringify(
+          {
+            updatedAt: new Date().toISOString(),
+            total: routes.length,
+            rendered: totalRendered,
+            cached,
+            fallback: failedRoutes,
+          },
+          null,
+          2
+        )}\n`,
+        'utf8'
+      );
     } finally {
       await browser.close();
     }

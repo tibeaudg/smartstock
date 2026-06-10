@@ -18,8 +18,6 @@ const PROTECTED_PATHS = new Set([
   '/pricing',
   '/features',
   '/contact',
-  '/customers',
-  '/integrations',
   '/resources',
   '/reporting',
   '/inventory-management-software',

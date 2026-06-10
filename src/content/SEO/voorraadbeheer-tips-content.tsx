@@ -213,7 +213,7 @@ export const VoorraadbeheerTipsContent: React.FC<VoorraadbeheerTipsContentProps>
           </div>
 
           <div className="mt-8 bg-white p-8 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold mb-6 text-center">Case Study: Antwerpse Distributie</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center">Antwerpse Distributie</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h4 className="font-semibold text-gray-800 mb-3">Voor implementatie voorraadbeheer tips:</h4>

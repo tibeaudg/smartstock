@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Quote } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { testimonialQuotes, TestimonialQuote } from '@/data/testimonialQuotes';
 import { cn } from '@/lib/utils';
 import HorizontalScrollCarousel from '@/components/HorizontalScrollCarousel';
@@ -80,20 +79,11 @@ export const TestimonialQuotes: React.FC<TestimonialQuotesProps> = ({
         </div>
       )}
 
-      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-        <div>
-          <p className="font-semibold text-gray-900">{quote.author}</p>
-          <p className="text-sm text-gray-600">
-            {quote.role}, {quote.company}
-          </p>
-        </div>
-        <Link
-          to="/case-studies"
-          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-          aria-label={`Read more about ${quote.author}'s story`}
-        >
-          Read more about {quote.author} →
-        </Link>
+      <div className="pt-4 border-t border-gray-100">
+        <p className="font-semibold text-gray-900">{quote.author}</p>
+        <p className="text-sm text-gray-600">
+          {quote.role}, {quote.company}
+        </p>
       </div>
     </div>
   );

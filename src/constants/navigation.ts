@@ -8,7 +8,6 @@ import {
   Stethoscope, 
   Warehouse, 
   FileText, 
-  TrendingUp, 
   LifeBuoy, 
   Scale,
 } from 'lucide-react';
@@ -81,7 +80,6 @@ export const NAV_ITEMS: NavItem[] = [
           title: 'Learn & Support',
           items: [
             { label: 'Articles', description: 'Expert insights on inventory optimization.', to: '/blog', icon: FileText },
-            { label: 'Case Studies', description: 'Real-world success stories from our clients.', to: '/case-studies', icon: TrendingUp },
             { label: 'Support', description: 'Get technical help and documentation.', to: '/help-center', icon: LifeBuoy },
             { label: 'Comparisons', description: 'How StockFlow ranks against competitors.', to: '/compare-inventory-software', icon: Scale },
           ]

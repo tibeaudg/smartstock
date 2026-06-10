@@ -313,7 +313,6 @@ async function syncSitemap() {
 
     // PROTECTED: Non-SEO core folders (Case Insensitive)
     const protectedFolders = [
-      'case-studies',
       'glossary', 'categoriespage', 'nl'
     ];
 

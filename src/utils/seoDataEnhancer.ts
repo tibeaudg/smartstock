@@ -1,4 +1,3 @@
-import { caseStudies, CaseStudy } from '@/data/caseStudies';
 import { testimonialQuotes, TestimonialQuote } from '@/data/testimonialQuotes';
 
 

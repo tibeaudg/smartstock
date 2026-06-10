@@ -10,6 +10,7 @@ import React, {
 import { supabase } from '@/integrations/supabase/client';
 import { trackEvent } from '@/lib/events/trackEvent';
 import { shouldEmitLifecycleEvent } from '@/lib/analytics/lifecycle';
+import { trackGoogleAdsSignupConversion } from '@/lib/analytics/providers/googleAds';
 import { useQueryClient } from '@tanstack/react-query';
 import type { User, AuthError, Session } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
@@ -140,6 +141,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               idempotencyKey: `${userId}:signup_completed`,
               properties: { provider: currentSession.user.app_metadata?.provider ?? 'email' },
             });
+            trackGoogleAdsSignupConversion(userId);
             supabase.functions.invoke('trigger-lifecycle-emails', {
               body: { stage: 'welcome', selfTrigger: true },
             }).catch(err => console.warn('[auth] welcome email trigger failed:', err));
@@ -213,6 +215,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             idempotencyKey: `${res.data.user.id}:signup_started`,
             properties: { email, role, referred_by: referredBy ?? null },
           });
+          trackGoogleAdsSignupConversion(res.data.user.id);
         }
         await supabase.from('profiles').upsert({
           id: res.data.user.id,

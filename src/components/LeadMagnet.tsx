@@ -34,7 +34,7 @@ const LeadMagnet: React.FC<LeadMagnetProps> = ({
     "Setting up automated reorder points",
     "Multi-location inventory management",
     "Supplier relationship optimization",
-    "Case studies from successful wine shops"
+    "Success stories from successful wine shops"
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

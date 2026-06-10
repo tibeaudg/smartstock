@@ -1,186 +1,204 @@
+import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
+import SeoPageLayout from "@/components/SeoPageLayout";
+import { CheckCircle, Target, BarChart3 } from "lucide-react";
 
-import React from 'react';
-import SeoPageLayout from '@/components/SeoPageLayout';
+const topicTitle = "FIFO vs LIFO: Which Inventory Valuation Method Is Right for You?";
+const canonicalPath = "/fifo-vs-lifo";
+const metaDescription =
+  "FIFO vs LIFO explained: how each inventory valuation method affects COGS, taxes, and financial reporting. Compare pros, cons, and when to use each.";
+const keywords =
+  "FIFO vs LIFO, FIFO inventory, LIFO inventory, inventory valuation methods, first in first out, last in first out, COGS calculation, inventory accounting";
 
-const keyTakeaways = [
-  'Enterprise-grade Fifo Vs Lifo systems mitigate supply chain volatility by providing 99.9% inventory accuracy across distributed networks.',
-  'Automated replenishment triggers eliminate stock-out events and prevent emergency procurement surcharges.',
-  'Integration with modern ERP and WMS ecosystems enables seamless data flow from the shop floor to executive dashboards.',
-  'Enhanced visibility into fifo vs lifo cycles reduces carrying costs and frees up working capital for strategic investment.',
+const takeaways = [
+  "FIFO (First In, First Out) sells oldest stock first — best for perishables and rising-cost environments.",
+  "LIFO (Last In, First Out) sells newest stock first — can lower taxable income when prices rise, but is banned under IFRS.",
+  "Most small businesses use FIFO or weighted average because they are simpler and accepted internationally.",
 ];
 
-const Page = () => {
+const actionSteps = [
+  {
+    title: "Identify your cost trend",
+    description:
+      "If purchase costs are rising, LIFO increases COGS and lowers reported profit. FIFO does the opposite. Know your trend before choosing a method.",
+  },
+  {
+    title: "Check accounting standards",
+    description:
+      "IFRS prohibits LIFO. US GAAP allows it. Confirm with your accountant which methods you can use before changing valuation.",
+  },
+  {
+    title: "Align physical flow with method",
+    description:
+      "FIFO matches how most warehouses actually rotate stock. Even if you use FIFO for accounting, enforce oldest-first picking to reduce waste.",
+  },
+];
+
+const metrics = [
+  {
+    label: "Gross margin impact",
+    detail:
+      "Track how your chosen method affects COGS month over month. Switching methods can shift reported margins by 5–15% in inflationary periods.",
+  },
+  {
+    label: "Inventory age",
+    detail:
+      "FIFO naturally clears older stock. Monitor days-on-hand to catch slow movers before they become write-offs.",
+  },
+  {
+    label: "Tax liability",
+    detail:
+      "Work with your accountant to model tax outcomes under FIFO vs LIFO before year-end. The difference can be significant for high-volume businesses.",
+  },
+];
+
+const faqData = [
+  {
+    question: "What is the difference between FIFO and LIFO?",
+    answer:
+      "FIFO (First In, First Out) assumes the oldest inventory is sold first. LIFO (Last In, First Out) assumes the newest inventory is sold first. This changes which unit costs flow into Cost of Goods Sold and ending inventory value.",
+  },
+  {
+    question: "Which is better, FIFO or LIFO?",
+    answer:
+      "FIFO is better for perishable goods and is required under IFRS. LIFO can reduce taxable income when costs rise but is only permitted under US GAAP. Most small businesses choose FIFO for simplicity and international compatibility.",
+  },
+  {
+    question: "How does FIFO affect COGS?",
+    answer:
+      "Under FIFO, COGS uses the cost of your oldest inventory. When prices rise, FIFO produces lower COGS and higher ending inventory value compared to LIFO.",
+  },
+  {
+    question: "Can I switch from LIFO to FIFO?",
+    answer:
+      "Switching methods requires IRS approval in the US and retrospective adjustment under IFRS. Consult your accountant — the change affects tax filings, financial statements, and comparability with prior periods.",
+  },
+];
+
+export default function FifoVsLifoPage() {
   return (
     <SeoPageLayout
-      heroTitle="Advancing Enterprise Fifo Vs Lifo: A Technical Framework"
-      title="Fifo Vs Lifo Strategy & Automation Guide | StockFlow"
+      title={topicTitle}
+      heroTitle={topicTitle}
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       dateUpdated="2026-06-10"
-      keyTakeaways={keyTakeaways}
+      faqData={faqData}
+      keyTakeaways={takeaways}
     >
-      <div className="space-y-20 max-w-5xl mx-auto">
-        
-        {/* Section 1: Strategic Context */}
-        <section className="prose max-w-none">
-          <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-6">
-            The Critical Role of Fifo Vs Lifo in Modern Logistics
-          </h2>
-          <p className="text-xl text-gray-700 leading-relaxed mb-8">
-            In high-throughput environments, <strong>Fifo Vs Lifo</strong> is no longer a back-office utility but a core driver of operational 
-            efficiency. Inadequate fifo vs lifo systems lead to "dark inventory"—stock that exists physically but is 
-            invisible to the digital ledger. StockFlow Systems addresses this through high-fidelity data capture and 
-            proprietary synchronization algorithms.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">The Cost of Inaccuracy</h3>
-              <p className="text-gray-600">
-                Industry data suggests that manual tracking results in a 15-20% variance between recorded and actual stock. 
-                For enterprise operations, this translates to millions in lost revenue, expedited shipping fees, and 
-                dissatisfied clients.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">The Solution: Real-Time Governance</h3>
-              <p className="text-gray-600">
-                Transitioning to a digital-first fifo vs lifo model allows for proactive management. 
-                Rather than reacting to shortages, systems predict them based on velocity and lead times.
-              </p>
+      <SEO
+        title="FIFO vs LIFO: Inventory Valuation Guide | StockFlow"
+        description={metaDescription}
+        keywords={keywords}
+        url={`https://www.stockflowsystems.com${canonicalPath}`}
+      />
+
+      <section id="overview" className="bg-white px-4 py-16">
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Understanding FIFO and LIFO</h2>
+            <p className="mt-6 text-lg leading-relaxed text-gray-700">
+              <strong>FIFO</strong> (First In, First Out) and <strong>LIFO</strong> (Last In, First Out) are the two most
+              common inventory valuation methods. They determine which unit costs you assign to Cost of Goods Sold (COGS)
+              when you sell stock — and that directly affects your gross margin, balance sheet, and tax bill.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              FIFO assumes you sell the oldest units first. LIFO assumes you sell the newest units first. In a warehouse
+              that actually rotates stock oldest-first, FIFO aligns accounting with physical reality. LIFO is mainly a
+              tax and reporting strategy used by some US businesses when purchase costs are climbing.
+            </p>
+            <p className="mt-4 text-lg leading-relaxed text-gray-700">
+              See our{" "}
+              <Link to="/cost-of-goods-formula" className="text-blue-600 hover:underline font-semibold">
+                COGS formula guide
+              </Link>{" "}
+              for how valuation methods feed into profitability calculations, or explore{" "}
+              <Link to="/inventory-management-software" className="text-blue-600 hover:underline font-semibold">
+                inventory management software
+              </Link>{" "}
+              that tracks lot dates automatically.
+            </p>
+            <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200">
+              <table className="min-w-full divide-y divide-gray-200 text-sm">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Factor</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">FIFO</th>
+                    <th className="px-4 py-3 text-left font-semibold text-gray-900">LIFO</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 bg-white">
+                  <tr>
+                    <td className="px-4 py-3 font-medium">Physical flow match</td>
+                    <td className="px-4 py-3 text-gray-600">High — matches typical warehouse practice</td>
+                    <td className="px-4 py-3 text-gray-600">Low — newest stock sold first on paper</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-medium">IFRS accepted</td>
+                    <td className="px-4 py-3 text-gray-600">Yes</td>
+                    <td className="px-4 py-3 text-gray-600">No</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-medium">Rising cost environment</td>
+                    <td className="px-4 py-3 text-gray-600">Lower COGS, higher profit</td>
+                    <td className="px-4 py-3 text-gray-600">Higher COGS, lower taxable profit</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-3 font-medium">Best for</td>
+                    <td className="px-4 py-3 text-gray-600">Perishables, global businesses</td>
+                    <td className="px-4 py-3 text-gray-600">US tax planning (non-perishables)</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-        </section>
-
-        {/* Section 2: Comparative Analysis Table */}
-        <section>
-          <div className="overflow-hidden border border-gray-200 rounded-2xl shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase">Feature</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900 uppercase">Legacy Methods</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-500 uppercase bg-blue-50/50">StockFlow Fifo Vs Lifo</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Update Frequency</td>
-                  <td className="px-6 py-4 text-gray-600">Batch (Daily/Weekly)</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">Real-Time Event Driven</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Data Integrity</td>
-                  <td className="px-6 py-4 text-gray-600">High Error Rate (Manual Entry)</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">99.9% (Automated Scanning)</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Scalability</td>
-                  <td className="px-6 py-4 text-gray-600">Limited to Single Site</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">Global Multi-Node Support</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 font-medium text-gray-900 italic">Analytics</td>
-                  <td className="px-6 py-4 text-gray-600">Reactive Reporting</td>
-                  <td className="px-6 py-4 text-blue-700 font-semibold bg-blue-50/30">Predictive Forecasting</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Section 3: Implementation Roadmap */}
-        <section className="bg-slate-900 text-white p-12 rounded-3xl">
-          <h2 className="text-3xl font-bold mb-10">4-Step Framework for Fifo Vs Lifo Modernization</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">01</div>
-              <h4 className="text-lg font-bold">Audit & Mapping</h4>
-              <p className="text-slate-400 text-sm">Identify all physical nodes and current data silos to create a unified schema.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">02</div>
-              <h4 className="text-lg font-bold">Edge Integration</h4>
-              <p className="text-slate-400 text-sm">Deploy IoT sensors, RFID, or mobile scanners for direct point-of-truth capture.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">03</div>
-              <h4 className="text-lg font-bold">Cloud Sync</h4>
-              <p className="text-slate-400 text-sm">Connect edge data to the centralized StockFlow engine for global visibility.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="text-4xl font-black text-blue-400 opacity-50">04</div>
-              <h4 className="text-lg font-bold">Automated Logic</h4>
-              <p className="text-slate-400 text-sm">Activate reorder triggers and AI-driven demand forecasting modules.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 4: Use Case Deep-Dive */}
-        <section className="prose max-w-none">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Sector-Specific Applications</h2>
-          <div className="space-y-12 mt-8">
-            <div className="flex flex-col md:flex-row gap-8 items-start">
-              <div className="bg-gray-100 p-6 rounded-xl md:w-1/3">
-                <h3 className="text-xl font-bold mt-0 text-blue-900">Manufacturing</h3>
-                <p className="text-sm mb-0">Synchronize raw material arrival with production scheduling to ensure Just-In-Time (JIT) efficiency.</p>
+          <div className="space-y-4">
+            {takeaways.map((item) => (
+              <div
+                key={item}
+                className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm"
+              >
+                <span className="mt-1 inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white">
+                  <CheckCircle className="h-5 w-5" />
+                </span>
+                <p className="text-sm text-gray-700">{item}</p>
               </div>
-              <div className="bg-gray-100 p-6 rounded-xl md:w-1/3">
-                <h3 className="text-xl font-bold mt-0 text-green-900">E-commerce</h3>
-                <p className="text-sm mb-0">Prevent overselling by updating stock levels across Amazon, Shopify, and local warehouses simultaneously.</p>
-              </div>
-              <div className="bg-gray-100 p-6 rounded-xl md:w-1/3">
-                <h3 className="text-xl font-bold mt-0 text-purple-900">Distribution</h3>
-                <p className="text-sm mb-0">Optimize picking routes and bin locations based on the movement velocity of specific inventory items.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 5: Technical FAQ */}
-        <section className="border-t border-gray-200 pt-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">Technical Specifications FAQ</h2>
-          <div className="max-w-3xl mx-auto space-y-6">
-            {[
-              { 
-                q: "Does StockFlow support offline Fifo Vs Lifo updates?", 
-                a: "Yes. Our mobile architecture supports offline caching. Once connectivity is restored, the system performs a conflict-resolution sync to ensure data parity." 
-              },
-              { 
-                q: "How does Fifo Vs Lifo integration affect current ERP performance?", 
-                a: "StockFlow operates on a microservices layer that interacts with your ERP via asynchronous APIs, ensuring zero impact on the primary system's performance." 
-              },
-              { 
-                q: "What security protocols govern the fifo vs lifo data?", 
-                a: "All data is encrypted in transit (TLS 1.3) and at rest (AES-256), with SOC2-compliant access controls and detailed user activity logs." 
-              },
-              { 
-                q: "Can the system manage serialized Fifo Vs Lifo?", 
-                a: "StockFlow supports full serialization and lot-tracking, providing end-to-end traceability from manufacturer to end-user." 
-              }
-            ].map((faq, i) => (
-              <details key={i} className="group border-b border-gray-200 pb-6">
-                <summary className="list-none cursor-pointer text-lg font-bold text-gray-900 flex justify-between items-center group-hover:text-blue-600 transition-colors">
-                  {faq.q}
-                  <span className="text-2xl font-light group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  {faq.a}
-                </p>
-              </details>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Section 6: ROI Summary */}
-        <section className="bg-blue-600 rounded-3xl p-12 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4 italic italic">Maximize Your Operational Yield</h2>
-          <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
-            Advanced <strong>Fifo Vs Lifo</strong> is an investment in your company's future scalability. 
-            Reduce waste, empower your staff, and achieve the operational clarity required to dominate your sector.
-          </p>
-        </section>
+      <section id="playbook" className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">How to Choose a Valuation Method</h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {actionSteps.map((step, index) => (
+              <div key={step.title} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                <span className="text-sm font-semibold text-blue-600">Step {index + 1}</span>
+                <h3 className="mt-4 text-xl font-semibold text-gray-900">{step.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      </div>
+      <section id="metrics" className="bg-white px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">Metrics to Track</h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {metrics.map((metric) => (
+              <div key={metric.label} className="rounded-2xl border border-gray-200 bg-gray-50 p-6">
+                <h3 className="text-lg font-semibold text-gray-900">{metric.label}</h3>
+                <p className="mt-3 text-sm text-gray-600">{metric.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </SeoPageLayout>
   );
-};
-
-export default Page;
+}

@@ -2,7 +2,28 @@
   "buildCommand": "npm run build:seo",
   "outputDirectory": "dist",
   "trailingSlash": false,
+  "build": {
+    "env": {
+      "PRERENDER_CONCURRENCY": "6",
+      "PRERENDER_INCREMENTAL": "1"
+    }
+  },
   "redirects": [
+    {
+      "source": "/customers",
+      "destination": "/case-studies",
+      "permanent": true
+    },
+    {
+      "source": "/customers/:slug",
+      "destination": "/case-studies",
+      "permanent": true
+    },
+    {
+      "source": "/integrations",
+      "destination": "/features",
+      "permanent": true
+    },
     {
       "source": "/best-free-alternative-to-katana-mrp",
       "destination": "/katana-mrp-alternative",
@@ -34,11 +55,6 @@
       "permanent": true
     },
     {
-      "source": "/blog/3-best-inventory-new-years-resolutions",
-      "destination": "/3-best-inventory-new-years-resolutions",
-      "permanent": true
-    },
-    {
       "source": "/blog/3-ways-barcodes-and-qr-codes-reduce-human-error",
       "destination": "/3-ways-barcodes-and-qr-codes-reduce-human-error",
       "permanent": true
@@ -51,11 +67,6 @@
     {
       "source": "/blog/5-tips-to-improve-inventory-control",
       "destination": "/5-tips-to-improve-inventory-control",
-      "permanent": true
-    },
-    {
-      "source": "/blog/6-ways-qr-codes-will-boost-inventory-management",
-      "destination": "/6-ways-qr-codes-will-boost-inventory-management",
       "permanent": true
     },
     {
@@ -79,11 +90,6 @@
       "permanent": true
     },
     {
-      "source": "/blog/barcode-inventory-system",
-      "destination": "/barcode-inventory-system",
-      "permanent": true
-    },
-    {
       "source": "/blog/barcodes-vs-qr-codes-for-inventory-management",
       "destination": "/barcodes-vs-qr-codes-for-inventory-management",
       "permanent": true
@@ -94,23 +100,8 @@
       "permanent": true
     },
     {
-      "source": "/blog/best-free-inventory-software-with-barcode-scanning",
-      "destination": "/best-free-inventory-software-with-barcode-scanning",
-      "permanent": true
-    },
-    {
       "source": "/blog/best-manufacturing-apps",
       "destination": "/best-manufacturing-apps",
-      "permanent": true
-    },
-    {
-      "source": "/blog/best-online-inventory-software",
-      "destination": "/best-online-inventory-software",
-      "permanent": true
-    },
-    {
-      "source": "/blog/best-stock-management-software",
-      "destination": "/best-stock-management-software",
       "permanent": true
     },
     {
@@ -124,16 +115,6 @@
       "permanent": true
     },
     {
-      "source": "/blog/business-inventory-app",
-      "destination": "/business-inventory-app",
-      "permanent": true
-    },
-    {
-      "source": "/blog/calculating-beginning-inventory",
-      "destination": "/calculating-beginning-inventory",
-      "permanent": true
-    },
-    {
       "source": "/blog/calculating-raw-materials-inventory",
       "destination": "/calculating-raw-materials-inventory",
       "permanent": true
@@ -141,11 +122,6 @@
     {
       "source": "/blog/common-inventory-mistakes-and-how-to-avoid-them",
       "destination": "/common-inventory-mistakes-and-how-to-avoid-them",
-      "permanent": true
-    },
-    {
-      "source": "/blog/enterprise-inventory-management",
-      "destination": "/enterprise-inventory-management",
       "permanent": true
     },
     {
@@ -174,18 +150,8 @@
       "permanent": true
     },
     {
-      "source": "/blog/how-do-you-control-inventory",
-      "destination": "/how-do-you-control-inventory",
-      "permanent": true
-    },
-    {
       "source": "/blog/how-do-you-organize-inventory",
       "destination": "/how-do-you-organize-inventory",
-      "permanent": true
-    },
-    {
-      "source": "/blog/how-do-you-set-up-an-inventory-system",
-      "destination": "/how-do-you-set-up-an-inventory-system",
       "permanent": true
     },
     {
@@ -201,16 +167,6 @@
     {
       "source": "/blog/how-to-implement-a-barcode-system-in-a-warehouse",
       "destination": "/how-to-implement-a-barcode-system-in-a-warehouse",
-      "permanent": true
-    },
-    {
-      "source": "/blog/how-to-inventory-your-tools",
-      "destination": "/how-to-inventory-your-tools",
-      "permanent": true
-    },
-    {
-      "source": "/blog/how-to-label-inventory",
-      "destination": "/how-to-label-inventory",
       "permanent": true
     },
     {
@@ -231,11 +187,6 @@
     {
       "source": "/blog/how-to-optimize-mro-inventory",
       "destination": "/how-to-optimize-mro-inventory",
-      "permanent": true
-    },
-    {
-      "source": "/blog/how-to-perform-an-inventory-cycle-count",
-      "destination": "/how-to-perform-an-inventory-cycle-count",
       "permanent": true
     },
     {
@@ -279,18 +230,8 @@
       "permanent": true
     },
     {
-      "source": "/blog/inventory-formulas-and-ratios",
-      "destination": "/inventory-formulas-and-ratios",
-      "permanent": true
-    },
-    {
       "source": "/blog/inventory-management-101",
       "destination": "/inventory-management-101",
-      "permanent": true
-    },
-    {
-      "source": "/blog/inventory-management-best-practices",
-      "destination": "/inventory-management-best-practices",
       "permanent": true
     },
     {
@@ -319,16 +260,6 @@
       "permanent": true
     },
     {
-      "source": "/blog/inventory-planning-software",
-      "destination": "/inventory-planning-software",
-      "permanent": true
-    },
-    {
-      "source": "/blog/it-inventory-management-software-free",
-      "destination": "/it-inventory-management-software-free",
-      "permanent": true
-    },
-    {
       "source": "/blog/migrating-from-excel-to-inventory-software",
       "destination": "/migrating-from-excel-to-inventory-software",
       "permanent": true
@@ -349,33 +280,13 @@
       "permanent": true
     },
     {
-      "source": "/blog/parts-inventory-management-best-practices",
-      "destination": "/parts-inventory-management-best-practices",
-      "permanent": true
-    },
-    {
       "source": "/blog/periodic-vs-perpetual-inventory",
       "destination": "/periodic-vs-perpetual-inventory",
       "permanent": true
     },
     {
-      "source": "/blog/perpetual-inventory-and-physical-inventory",
-      "destination": "/perpetual-inventory-and-physical-inventory",
-      "permanent": true
-    },
-    {
       "source": "/blog/qr-codes-for-equipment-maintenance",
       "destination": "/qr-codes-for-equipment-maintenance",
-      "permanent": true
-    },
-    {
-      "source": "/blog/raw-materials-inventory",
-      "destination": "/raw-materials-inventory",
-      "permanent": true
-    },
-    {
-      "source": "/blog/reorder-point-formula",
-      "destination": "/reorder-point-formula",
       "permanent": true
     },
     {
@@ -396,11 +307,6 @@
     {
       "source": "/blog/space-optimization-strategies",
       "destination": "/space-optimization-strategies",
-      "permanent": true
-    },
-    {
-      "source": "/blog/stock-control-software",
-      "destination": "/stock-control-software",
       "permanent": true
     },
     {
@@ -434,16 +340,6 @@
       "permanent": true
     },
     {
-      "source": "/blog/tracking-large-inventory-quantities",
-      "destination": "/tracking-large-inventory-quantities",
-      "permanent": true
-    },
-    {
-      "source": "/blog/voorraadbeheer-horeca",
-      "destination": "/voorraadbeheer-horeca",
-      "permanent": true
-    },
-    {
       "source": "/blog/what-are-the-3-major-inventory-management-techniques",
       "destination": "/what-are-the-3-major-inventory-management-techniques",
       "permanent": true
@@ -465,17 +361,27 @@
     },
     {
       "source": "/blog/what-is-demand-forecasting",
-      "destination": "/what-is-demand-forecasting",
+      "destination": "/forecasting",
+      "permanent": true
+    },
+    {
+      "source": "/what-is-demand-forecasting",
+      "destination": "/forecasting",
+      "permanent": true
+    },
+    {
+      "source": "/what-is-lifo-last-in-first-out-inventory-method-101",
+      "destination": "/fifo-vs-lifo",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-do-smarter-inventory-forecasting-a-guide-for-small-businesses",
+      "destination": "/forecasting",
       "permanent": true
     },
     {
       "source": "/blog/what-is-inventory-shrinkage",
       "destination": "/what-is-inventory-shrinkage",
-      "permanent": true
-    },
-    {
-      "source": "/blog/what-is-the-best-free-inventory-management-software",
-      "destination": "/what-is-the-best-free-inventory-management-software",
       "permanent": true
     },
     {
@@ -514,11 +420,6 @@
       "permanent": true
     },
     {
-      "source": "/inventory-management-bing",
-      "destination": "/inventory-management",
-      "permanent": true
-    },
-    {
       "source": "/inventory-software-management",
       "destination": "/solutions/inventory-software-management",
       "permanent": true
@@ -531,6 +432,576 @@
     {
       "source": "/what-is-bill-of-materials",
       "destination": "/bill-of-materials-software-free",
+      "permanent": true
+    },
+    {
+      "source": "/blog/3-best-inventory-new-years-resolutions",
+      "destination": "/3-best-inventory-new-years-resolutions",
+      "permanent": true
+    },
+    {
+      "source": "/blog/6-ways-qr-codes-will-boost-inventory-management",
+      "destination": "/6-ways-qr-codes-will-boost-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/blog/barcode-inventory-system",
+      "destination": "/barcode-inventory-system",
+      "permanent": true
+    },
+    {
+      "source": "/blog/best-free-inventory-software-with-barcode-scanning",
+      "destination": "/best-free-inventory-software-with-barcode-scanning",
+      "permanent": true
+    },
+    {
+      "source": "/blog/best-online-inventory-software",
+      "destination": "/best-online-inventory-software",
+      "permanent": true
+    },
+    {
+      "source": "/blog/best-stock-management-software",
+      "destination": "/best-stock-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/blog/business-inventory-app",
+      "destination": "/business-inventory-app",
+      "permanent": true
+    },
+    {
+      "source": "/blog/calculating-beginning-inventory",
+      "destination": "/calculating-beginning-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/blog/enterprise-inventory-management",
+      "destination": "/enterprise-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-do-you-control-inventory",
+      "destination": "/how-do-you-control-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-do-you-set-up-an-inventory-system",
+      "destination": "/how-to-set-up-an-inventory-system",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-to-inventory-your-tools",
+      "destination": "/how-to-inventory-your-tools",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-to-label-inventory",
+      "destination": "/how-to-label-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-to-perform-an-inventory-cycle-count",
+      "destination": "/how-to-perform-an-inventory-cycle-count",
+      "permanent": true
+    },
+    {
+      "source": "/blog/inventory-formulas-and-ratios",
+      "destination": "/inventory-formulas-and-ratios",
+      "permanent": true
+    },
+    {
+      "source": "/blog/inventory-management-best-practices",
+      "destination": "/inventory-management-best-practices",
+      "permanent": true
+    },
+    {
+      "source": "/blog/inventory-planning-software",
+      "destination": "/inventory-planning-software",
+      "permanent": true
+    },
+    {
+      "source": "/blog/it-inventory-management-software-free",
+      "destination": "/it-inventory-management-software-free",
+      "permanent": true
+    },
+    {
+      "source": "/blog/parts-inventory-management-best-practices",
+      "destination": "/parts-inventory-management-best-practices",
+      "permanent": true
+    },
+    {
+      "source": "/blog/perpetual-inventory-and-physical-inventory",
+      "destination": "/perpetual-vs-physical-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/blog/raw-materials-inventory",
+      "destination": "/raw-materials-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/blog/reorder-point-formula",
+      "destination": "/reorder-point-formula",
+      "permanent": true
+    },
+    {
+      "source": "/blog/stock-control-software",
+      "destination": "/stock-control-software",
+      "permanent": true
+    },
+    {
+      "source": "/blog/tracking-large-inventory-quantities",
+      "destination": "/tracking-large-inventory-quantities",
+      "permanent": true
+    },
+    {
+      "source": "/blog/voorraadbeheer-horeca",
+      "destination": "/voorraadbeheer-horeca",
+      "permanent": true
+    },
+    {
+      "source": "/blog/what-is-the-best-free-inventory-management-software",
+      "destination": "/what-is-the-best-free-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/compare-inventory-software",
+      "destination": "/compare-inventory-software",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/free-mrp-software",
+      "destination": "/free-mrp-software",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/katana-mrp-alternative",
+      "destination": "/katana-mrp-alternative",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-cin7",
+      "destination": "/stockflow-vs-cin7",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-dear-systems",
+      "destination": "/stockflow-vs-dear-systems",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-finale-inventory",
+      "destination": "/stockflow-vs-finale-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-fishbowl",
+      "destination": "/stockflow-vs-fishbowl",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-inflow",
+      "destination": "/stockflow-vs-inflow",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-lightspeed",
+      "destination": "/stockflow-vs-lightspeed",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-netsuite",
+      "destination": "/stockflow-vs-netsuite",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-odoo",
+      "destination": "/stockflow-vs-odoo",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-odoo-inventory",
+      "destination": "/stockflow-vs-odoo-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-sortly",
+      "destination": "/stockflow-vs-sortly",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-unleashed",
+      "destination": "/stockflow-vs-unleashed",
+      "permanent": true
+    },
+    {
+      "source": "/comparisons/stockflow-vs-zoho-inventory",
+      "destination": "/stockflow-vs-zoho-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/features/alerts",
+      "destination": "/alerts",
+      "permanent": true
+    },
+    {
+      "source": "/features/suppliers",
+      "destination": "/suppliers",
+      "permanent": true
+    },
+    {
+      "source": "/industries/contractor-inventory-management",
+      "destination": "/contractor-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/industries/government-inventory-management-software",
+      "destination": "/government-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/industries/hvac-inventory-management-software",
+      "destination": "/hvac-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/industries/medical-inventory-management",
+      "destination": "/medical-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/industries/non-profit-inventory-management-software",
+      "destination": "/non-profit-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/industries/restaurant-inventory-management-software",
+      "destination": "/restaurant-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/industries/retail-inventory-management",
+      "destination": "/retail-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/industries/warehouse-software",
+      "destination": "/warehouse-software",
+      "permanent": true
+    },
+    {
+      "source": "/inventory-management-bing",
+      "destination": "/inventory-software",
+      "permanent": true
+    },
+    {
+      "source": "/resources/blog",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/3-best-inventory-new-years-resolutions",
+      "destination": "/3-best-inventory-new-years-resolutions",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/6-ways-qr-codes-will-boost-inventory-management",
+      "destination": "/6-ways-qr-codes-will-boost-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/barcode-inventory-system",
+      "destination": "/barcode-inventory-system",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/best-free-inventory-software-with-barcode-scanning",
+      "destination": "/best-free-inventory-software-with-barcode-scanning",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/best-online-inventory-software",
+      "destination": "/best-online-inventory-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/best-stock-management-software",
+      "destination": "/best-stock-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/business-inventory-app",
+      "destination": "/business-inventory-app",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/calculating-beginning-inventory",
+      "destination": "/calculating-beginning-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/enterprise-inventory-management",
+      "destination": "/enterprise-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/how-do-you-control-inventory",
+      "destination": "/how-do-you-control-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/how-do-you-set-up-an-inventory-system",
+      "destination": "/how-to-set-up-an-inventory-system",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/how-to-inventory-your-tools",
+      "destination": "/how-to-inventory-your-tools",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/how-to-label-inventory",
+      "destination": "/how-to-label-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/how-to-perform-an-inventory-cycle-count",
+      "destination": "/how-to-perform-an-inventory-cycle-count",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/inventory-formulas-and-ratios",
+      "destination": "/inventory-formulas-and-ratios",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/inventory-management-best-practices",
+      "destination": "/inventory-management-best-practices",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/inventory-planning-software",
+      "destination": "/inventory-planning-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/it-inventory-management-software-free",
+      "destination": "/it-inventory-management-software-free",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/parts-inventory-management-best-practices",
+      "destination": "/parts-inventory-management-best-practices",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/perpetual-inventory-and-physical-inventory",
+      "destination": "/perpetual-vs-physical-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/raw-materials-inventory",
+      "destination": "/raw-materials-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/reorder-point-formula",
+      "destination": "/reorder-point-formula",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/stock-control-software",
+      "destination": "/stock-control-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/tracking-large-inventory-quantities",
+      "destination": "/tracking-large-inventory-quantities",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/voorraadbeheer-horeca",
+      "destination": "/voorraadbeheer-horeca",
+      "permanent": true
+    },
+    {
+      "source": "/seo/blog/what-is-the-best-free-inventory-management-software",
+      "destination": "/what-is-the-best-free-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/compare-inventory-software",
+      "destination": "/compare-inventory-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/free-mrp-software",
+      "destination": "/free-mrp-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/katana-mrp-alternative",
+      "destination": "/katana-mrp-alternative",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-cin7",
+      "destination": "/stockflow-vs-cin7",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-dear-systems",
+      "destination": "/stockflow-vs-dear-systems",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-finale-inventory",
+      "destination": "/stockflow-vs-finale-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-fishbowl",
+      "destination": "/stockflow-vs-fishbowl",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-inflow",
+      "destination": "/stockflow-vs-inflow",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-lightspeed",
+      "destination": "/stockflow-vs-lightspeed",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-netsuite",
+      "destination": "/stockflow-vs-netsuite",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-odoo",
+      "destination": "/stockflow-vs-odoo",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-odoo-inventory",
+      "destination": "/stockflow-vs-odoo-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-sortly",
+      "destination": "/stockflow-vs-sortly",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-unleashed",
+      "destination": "/stockflow-vs-unleashed",
+      "permanent": true
+    },
+    {
+      "source": "/seo/comparisons/stockflow-vs-zoho-inventory",
+      "destination": "/stockflow-vs-zoho-inventory",
+      "permanent": true
+    },
+    {
+      "source": "/seo/features/alerts",
+      "destination": "/alerts",
+      "permanent": true
+    },
+    {
+      "source": "/seo/features/suppliers",
+      "destination": "/suppliers",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/contractor-inventory-management",
+      "destination": "/contractor-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/government-inventory-management-software",
+      "destination": "/government-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/hvac-inventory-management-software",
+      "destination": "/hvac-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/medical-inventory-management",
+      "destination": "/medical-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/non-profit-inventory-management-software",
+      "destination": "/non-profit-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/restaurant-inventory-management-software",
+      "destination": "/restaurant-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/retail-inventory-management",
+      "destination": "/retail-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/industries/warehouse-software",
+      "destination": "/warehouse-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/inventory-management-bing",
+      "destination": "/inventory-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/resources/blog",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/seo/uses/cross-dock-warehouse",
+      "destination": "/best-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/seo/uses/electrical-inventory-management",
+      "destination": "/electrical-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/uses/enterprise-inventory-management",
+      "destination": "/enterprise-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/seo/uses/hvac-inventory-management",
+      "destination": "/hvac-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/uses/cross-dock-warehouse",
+      "destination": "/best-inventory-management-software",
+      "permanent": true
+    },
+    {
+      "source": "/uses/electrical-inventory-management",
+      "destination": "/electrical-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/uses/enterprise-inventory-management",
+      "destination": "/enterprise-inventory-management",
+      "permanent": true
+    },
+    {
+      "source": "/uses/hvac-inventory-management",
+      "destination": "/hvac-inventory-management",
       "permanent": true
     },
     {
@@ -597,10 +1068,6 @@
     },
     {
       "source": "/help-center",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/case-studies",
       "destination": "/index.html"
     },
     {

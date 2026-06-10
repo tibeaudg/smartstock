@@ -17,6 +17,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { globby } from 'globby';
 import { parse } from '@babel/parser';
 import { extractRoutePathFromContent } from './utils/seo-slug.mjs';
@@ -60,7 +61,6 @@ const MANUAL_ROUTES = [
   { route: '/pricing', title: 'Pricing | StockFlow', h1: "Start free. Scale when you're ready.", description: 'StockFlow pricing — free inventory management software for small businesses, with paid plans for growing teams.' },
   { route: '/faq', title: 'Frequently Asked Questions | StockFlow', h1: 'Frequently Asked Questions', description: 'Answers to common questions about StockFlow free inventory management software, features, pricing, and getting started.' },
   { route: '/resources', title: 'Inventory Management Resources & Guides | StockFlow', h1: 'Inventory Management Resources & Guides', description: 'Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management.' },
-  { route: '/integrations', title: 'Integrations | StockFlow', h1: 'Powerful Integrations', description: 'Connect StockFlow with Shopify, Stripe, e-commerce platforms, and business tools. Sync inventory, orders, and data across your stack.' },
 ];
 
 /** H1 text for core App.tsx routes where the visible heading differs from the <title>. */
@@ -632,20 +632,13 @@ function emitRoute(template, meta) {
 }
 
 // ---------------------------------------------------------------------------
-// Main
+// Exported API (used by prerender-pages fallback)
 // ---------------------------------------------------------------------------
 
-async function main() {
-  if (!fs.existsSync(TEMPLATE_PATH)) {
-    console.error(`[generate-seo-html] dist/index.html not found — run vite build first.`);
-    process.exit(1);
-  }
-  const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
-
+/** @returns {Promise<Map<string, object>>} */
+export async function collectAllRouteMetaMap() {
   const byRoute = await collectSeoRoutes();
 
-  // App.tsx inline routes (home + core public pages). These take precedence
-  // over any SEO-dir collision (e.g. the homepage).
   for (const r of collectAppRoutes()) {
     const resolved = {
       ...r,
@@ -657,13 +650,55 @@ async function main() {
     byRoute.set(r.route, resolved);
   }
 
-  // Manual fallbacks (self-canonical for pages without extractable meta).
   for (const r of MANUAL_ROUTES) {
     if (!byRoute.has(r.route)) {
       byRoute.set(r.route, { ...r, h1: r.h1 || resolveRouteH1(r.route, r) });
     }
   }
 
+  return byRoute;
+}
+
+/**
+ * Emit meta-only HTML shells for routes that failed Puppeteer prerender.
+ * @param {string[]} routePaths
+ */
+export async function emitFallbackForRoutes(routePaths) {
+  if (!routePaths?.length) return;
+
+  if (!fs.existsSync(TEMPLATE_PATH)) {
+    throw new Error('[generate-seo-html] dist/index.html not found — run vite build first.');
+  }
+
+  const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+  const byRoute = await collectAllRouteMetaMap();
+  let emitted = 0;
+
+  for (const route of routePaths) {
+    const meta = byRoute.get(route);
+    if (!meta) {
+      console.warn(`[generate-seo-html] No meta found for fallback route ${route}`);
+      continue;
+    }
+    emitRoute(template, meta);
+    emitted += 1;
+    console.log(`[generate-seo-html] Fallback emitted for ${route}`);
+  }
+
+  console.log(`[generate-seo-html] Fallback complete: ${emitted}/${routePaths.length} route(s).`);
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
+async function main() {
+  if (!fs.existsSync(TEMPLATE_PATH)) {
+    console.error(`[generate-seo-html] dist/index.html not found — run vite build first.`);
+    process.exit(1);
+  }
+  const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+  const byRoute = await collectAllRouteMetaMap();
   const routes = [...byRoute.values()].sort((a, b) => a.route.localeCompare(b.route));
 
   let missingMeta = 0;
@@ -689,7 +724,11 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error('[generate-seo-html] Failed:', err);
-  process.exit(1);
-});
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
+
+if (isMain) {
+  main().catch((err) => {
+    console.error('[generate-seo-html] Failed:', err);
+    process.exit(1);
+  });
+}

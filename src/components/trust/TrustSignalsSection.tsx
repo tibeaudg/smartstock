@@ -2,35 +2,30 @@ import React from 'react';
 import { CustomerLogos } from './CustomerLogos';
 import { ReviewBadges } from './ReviewBadges';
 import { TestimonialQuotes } from './TestimonialQuotes';
-import { CaseStudyThumbnails } from './CaseStudyThumbnails';
 import { cn } from '@/lib/utils';
 
 interface TrustSignalsSectionProps {
   showLogos?: boolean;
   showBadges?: boolean;
   showQuotes?: boolean;
-  showCaseStudies?: boolean;
   layout?: 'stacked' | 'side-by-side' | 'compact';
   className?: string;
   logosVariant?: 'grid' | 'carousel' | 'marquee';
   logosHeading?: string;
   quotesVariant?: 'carousel' | 'grid' | 'rotating';
   maxQuotes?: number;
-  maxCaseStudies?: number;
 }
 
 export const TrustSignalsSection: React.FC<TrustSignalsSectionProps> = ({
   showLogos = true,
   showBadges = true,
   showQuotes = true,
-  showCaseStudies = false,
   layout = 'stacked',
   className = '',
   logosVariant = 'grid',
   logosHeading = "Trusted by leading businesses",
   quotesVariant = 'carousel',
   maxQuotes = 3,
-  maxCaseStudies = 3,
 }) => {
   if (layout === 'compact') {
     return (
@@ -87,12 +82,6 @@ export const TrustSignalsSection: React.FC<TrustSignalsSectionProps> = ({
               />
             </div>
           )}
-
-          {showCaseStudies && (
-            <div className="mt-12">
-              <CaseStudyThumbnails maxStudies={maxCaseStudies} />
-            </div>
-          )}
         </div>
       </section>
     );
@@ -122,24 +111,7 @@ export const TrustSignalsSection: React.FC<TrustSignalsSectionProps> = ({
             <TestimonialQuotes variant={quotesVariant} maxQuotes={maxQuotes} />
           </div>
         )}
-
-        {showCaseStudies && (
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-8">
-              Success Stories
-            </h2>
-            <CaseStudyThumbnails maxStudies={maxCaseStudies} />
-          </div>
-        )}
       </div>
     </section>
   );
 };
-
-
-
-
-
-
-
-

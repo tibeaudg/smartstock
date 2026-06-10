@@ -18,3 +18,8 @@ interface ImportMeta {
     options?: { eager?: boolean; import?: string; query?: string }
   ) => Record<string, () => Promise<any>>
 }
+
+interface Window {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
+}

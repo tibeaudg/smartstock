@@ -83,7 +83,6 @@ const CustomReports = React.lazy(() => import('./components/analytics/CustomRepo
 const ExportData = React.lazy(() => import('./components/analytics/ExportData').then(m => ({ default: m.ExportData })));
 const AdvancedReports = React.lazy(() => import('./components/analytics/AdvancedReports').then(m => ({ default: m.AdvancedReports })));
 const HelpCenterPage = React.lazy(() => import("./pages/help-center"));
-const CaseStudiesPage = React.lazy(() => import("./pages/case-studies"));
 const MobileAppPage = React.lazy(() => import("./pages/MobileAppPage"));
 const ReferAFriendPage = React.lazy(() => import("./pages/ReferAFriendPage"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
@@ -448,16 +447,7 @@ const AppRouter = () => {
             </>
           }
         />
-        <Route
-          path="/case-studies"
-          element={
-            <>
-              <HeaderPublic />
-              <CaseStudiesPage />
-              <Footer />
-            </>
-          }
-        />
+        <Route path="/case-studies" element={<Navigate to="/resources" replace />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/faq" element={<FAQPage />} />
 
