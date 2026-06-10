@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 .prerender-cache
+.prerender-cache.tar.gz
 .turbo
 scripts/prerender-results.generated.json
 *.local

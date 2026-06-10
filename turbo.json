@@ -15,8 +15,7 @@
         "scripts/utils/prerender-route-sources.mjs",
         "scripts/utils/collect-prerender-routes.mjs",
         "scripts/utils/sitemap-routes.mjs",
-        "scripts/utils/seo-slug.mjs",
-        "public/sitemap.xml"
+        "scripts/utils/seo-slug.mjs"
       ],
       "outputs": [".prerender-cache/**"],
       "cache": true
@@ -29,7 +28,6 @@
         "scripts/utils/collect-prerender-routes.mjs",
         "scripts/utils/sitemap-routes.mjs",
         "scripts/utils/seo-slug.mjs",
-        "public/sitemap.xml",
         ".prerender-cache/**"
       ],
       "outputs": [".prerender-cache/**"],

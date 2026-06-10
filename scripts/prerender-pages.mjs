@@ -248,6 +248,7 @@ async function runPool(browser, routes, { buildFingerprint, onRouteRendered }) {
               await onRouteRendered(route, html);
             }
             rendered += 1;
+            console.log(`[prerender-pages] Rendered ${route} (${rendered}/${routes.length})`);
             succeeded = true;
             break;
           } catch (error) {
