@@ -58,6 +58,8 @@ const PRIVATE_PREFIXES = ['/dashboard', '/auth', '/admin', '/checkout', '/billin
 const MANUAL_ROUTES = [
   { route: '/pricing', title: 'Pricing | StockFlow', description: 'StockFlow pricing — free inventory management software for small businesses, with paid plans for growing teams.' },
   { route: '/faq', title: 'Frequently Asked Questions | StockFlow', description: 'Answers to common questions about StockFlow free inventory management software, features, pricing, and getting started.' },
+  { route: '/resources', title: 'Inventory Management Resources & Guides | StockFlow', description: 'Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management.' },
+  { route: '/integrations', title: 'Integrations | StockFlow', description: 'Connect StockFlow with Shopify, Stripe, e-commerce platforms, and business tools. Sync inventory, orders, and data across your stack.' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -486,8 +488,6 @@ function collectAppRoutes() {
     if (!seoOpening) return;
 
     const route = normalizeRoute(routePath);
-    const baseSlug = route.replace(/^\//, '');
-    if (SKIP_SLUGS.has(baseSlug)) return;
 
     const meta = extractSeoMeta(seoOpening, constInit);
     routes.push({ route, ...meta });

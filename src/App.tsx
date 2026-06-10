@@ -56,6 +56,7 @@ const CustomersPage = React.lazy(() => import('./pages/customers'));
 const CustomerDetailPage = React.lazy(() => import('./pages/customers/[id]'));
 const WarehousePage = React.lazy(() => import("./pages/WarehousePage"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
+const IntegrationsPage = React.lazy(() => import("./pages/integrations"));
 const WorkflowsPage = React.lazy(() => import("./pages/workflows"));
 const StockCountsPage = React.lazy(() => import("./pages/stock-counts"));
 const CreateStockCountPage = React.lazy(() => import("./pages/CreateStockCountPage"));
@@ -424,6 +425,7 @@ const AppRouter = () => {
           </React.Suspense>
         } />
         <Route path="/resources" element={<><SEO title="Inventory Management Resources & Guides | StockFlow" description="Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management." url="https://www.stockflowsystems.com/resources" /><ResourcesPage /></>} />
+        <Route path="/integrations" element={<><SEO title="Integrations | StockFlow" description="Connect StockFlow with Shopify, Stripe, e-commerce platforms, and business tools. Sync inventory, orders, and data across your stack." url="https://www.stockflowsystems.com/integrations" /><IntegrationsPage /></>} />
         <Route path="/customers" element={<><SEO title="StockFlow Customers & Success Stories | Inventory Software" description="Read customer success stories from businesses using StockFlow for inventory management, barcode scanning, and BOM tracking." url="https://www.stockflowsystems.com/customers" /><CustomersPage /></>} />
         <Route path="/customers/:id" element={<><SEO title="Customer Success Story | StockFlow" description="Learn how a StockFlow customer solved inventory issues with barcode scanning and real-time stock visibility." /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." {...privateSeo} /><AuthRoute /></>} />
