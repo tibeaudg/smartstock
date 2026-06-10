@@ -1,12 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "3 Best Inventory New Years Resolutions";
 const canonicalPath = "/3-best-inventory-new-years-resolutions";
-const metaDescription = "3 best inventory management New Year's resolutions for businesses. Practical goals to improve inventory accuracy, reduce costs, and optimize stock levels in the new year.";
+const metaDescription = "3 practical inventory New Year's resolutions: improve accuracy, reduce costs, and optimize stock levels with achievable goals for your business.";
 const keywords = "inventory new years resolutions, inventory goals, inventory improvements, inventory resolutions, inventory management goals, new year inventory planning";
 const heroBadge = "Topic Guide • Updated June 9, 2026";
 const summaryCopy = "3 best inventory New Year's resolutions: 1) Improve accuracy (target 95%+ accuracy, implement barcode scanning, conduct regular counts), 2) Reduce waste (track expiration dates, optimize stock levels, prevent overstocking), 3) Automate processes (use inventory management software, set automated reorder alerts, eliminate manual spreadsheets). These resolutions are practical, measurable, and achievable. Improving accuracy reduces stockouts and overstocking. Reducing waste saves money and improves sustainability. Automating processes saves time and reduces errors. Setting these resolutions helps businesses start the year with clear inventory management goals.";
@@ -99,18 +98,13 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
   return (
     <SeoPageLayout 
       title={topicTitle} 
+      seoTitle="Inventory New Year's Resolutions 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle={topicTitle} 
       dateUpdated="June 9, 2026"
       faqData={faqData}
-       
-      
     >
-      <SEO
-        title={`3 Best Inventory New Year's Resolutions 2025 - Practical Goals | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-      />
 <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>

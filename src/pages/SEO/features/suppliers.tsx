@@ -249,7 +249,7 @@ export default function SuppliersPage() {
     >
       <SEO
         title="Supplier Management Software | StockFlow"
-        description="Supplier management software for inventory control. Track suppliers, automate purchase orders, monitor performance. Reduce procurement costs 15-25%. Free plan available."
+        description="Supplier management software for inventory control. Track vendors, automate purchase orders, and monitor performance to reduce procurement costs 15-25%."
         keywords="supplier management, vendor management, supplier tracking, purchase order software, supplier performance, procurement software, supplier management system, vendor tracking, supplier relationship management, purchase order automation, supplier management software, vendor management software, supplier tracking software, procurement management, supplier database, vendor database, stockflow, stock flow"
         url="https://www.stockflowsystems.com/suppliers"
         structuredData={structuredData}

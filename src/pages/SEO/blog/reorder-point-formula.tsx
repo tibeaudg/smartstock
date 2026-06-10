@@ -6,7 +6,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Reorder Point Formula";
 const canonicalPath = "/reorder-point-formula";
-const metaDescription = "Learn how to calculate reorder point using the reorder point formula. Step-by-step guide with examples. Calculate when to reorder inventory to prevent stockouts.";
+const metaDescription = "Reorder point formula explained with step-by-step examples. Learn how to calculate when to reorder inventory and prevent costly stockouts.";
 const keywords = "reorder point formula, reorder point calculation, how to calculate reorder point, reorder point formula example, inventory reorder point, reorder point calculation formula";
 const heroBadge = "Topic Guide • Updated 2026";
 const summaryCopy = "The reorder point formula calculates when to place a new order to prevent stockouts. Formula: Reorder Point = (Lead Time × Average Daily Usage) + Safety Stock. Lead time is days to receive new stock, average daily usage is units sold per day, and safety stock buffers against variability. Example: If lead time is 7 days, daily usage is 10 units, and safety stock is 20 units, reorder point = (7 × 10) + 20 = 90 units. When inventory reaches 90 units, place a new order.";

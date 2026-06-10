@@ -118,14 +118,14 @@ export default function VendorManagedStock() {
     <SeoPageLayout
       title="Vendor Managed Stock | VMS Inventory Management"
       heroTitle="Vendor Managed Stock"
-      description="Learn about vendor managed stock (VMS) inventory management. Understand how vendor managed stock works, benefits, implementation, and when to use VMS arrangements."
+      description="Vendor managed stock (VMS) explained: how it works, key benefits, implementation steps, and when VMS arrangements make sense for your business."
       dateUpdated="June 9, 2026"
       faqData={faqData}
       
     >
       <SEO
         title="Vendor Managed Stock 2026 - Complete Guide | StockFlow"
-        description="Discover vendor managed stock (VMS) inventory management 2026. Learn how vendor managed stock works, benefits, implementation strategies. Join for Free - no credit card required."
+        description="Vendor managed stock (VMS) explained: how it works, key benefits, implementation steps, and when VMS arrangements make sense for your business."
         keywords="vendor managed stock, vms inventory, vendor managed stock meaning, vendor managed inventory, vms system, vendor managed stock benefits, vendor managed stock implementation, vendor stock management, stockflow, stock flow"
         url="https://www.stockflowsystems.com/glossary/vendor-managed-stock"
       />

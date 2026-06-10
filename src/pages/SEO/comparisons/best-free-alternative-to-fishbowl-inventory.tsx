@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import {
@@ -216,6 +215,9 @@ export default function BestFreeAlternativeToFishbowl() {
         { label: 'Home', href: '/' },
         { label: 'Best Free Alternative to Fishbowl Inventory', href: '/best-free-alternative-to-fishbowl-inventory' }
       ]}
+      seoTitle="Free Fishbowl Inventory Alternative 2026 | StockFlow"
+      seoDescription="StockFlow is the best free alternative to Fishbowl Inventory. Completely free forever vs $4,395+ license. Cloud-based, 5-7 day setup, save $8,000+ annually."
+      seoKeywords="best free alternative to fishbowl, fishbowl inventory free alternative, free fishbowl alternative, fishbowl inventory alternative free, stockflow vs fishbowl, free inventory software, cloud inventory software, fishbowl alternative, free inventory management, fishbowl inventory replacement"
       heroTitle="Best Free Alternative to Fishbowl Inventory - StockFlow"
       dateUpdated="June 9, 2026"
       heroDescription="Completely free forever vs $4,395+ license • Cloud-based vs on-premise • Save $8,000+ annually • 5-7 day setup"
@@ -228,14 +230,6 @@ export default function BestFreeAlternativeToFishbowl() {
         href: "/katana-mrp-alternative"
       }}
     >
-      <SEO
-        title="Best Free Alternative to Fishbowl Inventory 2026 - StockFlow | Free Forever"
-        description="StockFlow is the best free alternative to Fishbowl Inventory. Completely free forever vs $4,395+ license. Cloud-based, 5-7 day setup, save $8,000+ annually."
-        keywords="best free alternative to fishbowl, fishbowl inventory free alternative, free fishbowl alternative, fishbowl inventory alternative free, stockflow vs fishbowl, free inventory software, cloud inventory software, fishbowl alternative, free inventory management, fishbowl inventory replacement"
-        url="https://www.stockflowsystems.com/best-free-alternative-to-fishbowl-inventory"
-        locale="en"
-      />
-
       {/* Hero Benefits */}
       <section className="py-16 px-4 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
         <div className="max-w-6xl mx-auto text-center">

@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -28,6 +27,9 @@ import {
   AlertCircle
 } from 'lucide-react';
 
+const PAGE_META_DESCRIPTION =
+  'Cold storage WMS guide: manage refrigerated and frozen inventory, monitor temperature zones, enforce FIFO/LIFO, and maintain cold chain integrity.';
+
 /**
  * Cold Storage Warehouse Management System Page
  * Target Keywords: cold storage warehouse management system, refrigerated warehouse WMS,
@@ -45,8 +47,6 @@ export default function ColdStorageWarehouseManagementSystem() {
 
   const topicTitle = "Cold Storage Warehouse Management System: Complete Guide 2026";
   const dateUpdated = "January 22, 2026";
-  const heroDescription = "Complete guide to cold storage warehouse management systems for temperature-sensitive goods. Learn how to manage refrigerated and frozen inventory, monitor temperature zones, ensure FIFO/LIFO compliance, and maintain cold chain integrity for food, pharmaceutical, and temperature-sensitive products.";
-
   const faqData = [
     {
       question: "What is a cold storage warehouse management system?",
@@ -133,19 +133,15 @@ export default function ColdStorageWarehouseManagementSystem() {
   return (
     <SeoPageLayout 
       breadcrumbItems={breadcrumbItems}
+      seoTitle="Cold Storage WMS Guide 2026 | StockFlow"
+      seoDescription={PAGE_META_DESCRIPTION}
+      seoKeywords="cold storage warehouse management system, refrigerated warehouse WMS, temperature-controlled warehouse software, cold chain management system, frozen warehouse management, food storage WMS, pharmaceutical cold storage, temperature monitoring WMS, FIFO cold storage, cold chain compliance"
       heroTitle={topicTitle}
-      heroDescription={heroDescription}
+      heroDescription={PAGE_META_DESCRIPTION}
       dateUpdated={dateUpdated}
       keyTakeaways={keyTakeaways}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Cold Storage Warehouse Management System: Complete Guide 2026 | Temperature-Controlled WMS"
-        description="Complete guide to cold storage warehouse management systems for temperature-sensitive goods. Learn how to manage refrigerated and frozen inventory, monitor temperature zones, ensure FIFO/LIFO compliance, and maintain cold chain integrity. Best practices for food, pharmaceutical, and temperature-sensitive product storage."
-        keywords="cold storage warehouse management system, refrigerated warehouse WMS, temperature-controlled warehouse software, cold chain management system, frozen warehouse management, food storage WMS, pharmaceutical cold storage, temperature monitoring WMS, FIFO cold storage, cold chain compliance"
-        url="https://www.stockflowsystems.com/cold-storage-warehouse-management-system"
-        structuredData={structuredData}
-      />
-
       {/* Hero / Introduction */}
       <section className="mb-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">

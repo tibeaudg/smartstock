@@ -6,7 +6,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Inventory Formulas And Ratios";
 const canonicalPath = "/inventory-formulas-and-ratios";
-const metaDescription = "Essential inventory formulas and ratios explained. Learn how to calculate inventory turnover, days sales of inventory (DSI), reorder points, safety stock, and other key inventory metrics.";
+const metaDescription = "Essential inventory formulas explained: turnover, days sales of inventory, reorder points, safety stock, and other key metrics with examples.";
 const keywords = "inventory formulas, inventory ratios, inventory turnover formula, days sales of inventory, inventory metrics, inventory KPIs, inventory calculations, stock formulas";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Essential inventory formulas and ratios include: inventory turnover (COGS ÷ Average Inventory), days sales of inventory (365 ÷ Turnover), reorder point (Lead Time × Average Daily Usage + Safety Stock), safety stock (Z-score × Standard Deviation × √Lead Time), and economic order quantity (EOQ). These formulas help optimize stock levels, prevent stockouts, reduce costs, and improve cash flow. Understanding and applying these formulas enables data-driven inventory management decisions.";

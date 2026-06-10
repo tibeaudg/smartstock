@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import {
   BarChart3,
@@ -17,7 +16,7 @@ import {
 
 const topicTitle = "Stock Control Software: Precision Inventory Solutions (2026)";
 const canonicalPath = "/stock-control-software";
-const metaDescription = "Optimize your inventory with professional stock control software. Learn about real-time tracking, automated reordering, and why StockFlow is the top choice for 2026.";
+const metaDescription = "Stock control software for real-time tracking and automated reordering. Key features and why StockFlow is a top choice for small businesses in 2026.";
 const keywords = "stock control software, inventory control system, stock management tool, automated reordering, barcode scanning software, stockflow systems";
 
 const takeaways = [
@@ -50,12 +49,14 @@ export default function SeoStockControlSoftwarePage() {
   return (
     <SeoPageLayout
       title={topicTitle}
+      seoTitle="Stock Control Software 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle="Stock Control Software: Precision Inventory Solutions (2026)"
-      heroDescription="Optimize your inventory with professional stock control software. Learn about real-time tracking, automated reordering, and why StockFlow is the top choice for 2026."
+      heroDescription={metaDescription}
       dateUpdated="June 9, 2026"
       keyTakeaways={takeaways}
     >
-      <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
 {/* CORE DEFINITION BLOCK */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-4xl px-4">

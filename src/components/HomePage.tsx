@@ -11,9 +11,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-import { StructuredData } from '@/components/StructuredData';
 import { AskAiSection } from '@/components/AskAiSection';
-import { generateLocalBusinessSchema } from '@/utils/enhancedStructuredData';
 
 /* â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
@@ -38,68 +36,6 @@ const homeFaqData = [
     question: "Can I try it free? What if it doesn't work for my shop?",
     answer: "Absolutely! The Starter plan is free forever — no credit card required. Try it with your actual products and if it doesn't fit your shop, you can export your data anytime. Most retailers know within 3 days if StockFlow works for them."
   }
-];
-
-const homeStructuredData = [
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "StockFlow",
-    "description": "Free inventory management software with barcode scanning, bill of materials, and real-time multi-location sync.",
-    "url": "https://www.stockflowsystems.com",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web, Android, iOS",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "description": "Free forever - no credit card required"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "3200",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "featureList": [
-      "Barcode scanning",
-      "Bill of materials (BOM) management",
-      "Multi-location inventory sync",
-      "Offline mode",
-      "Unlimited SKUs",
-      "Real-time stock tracking"
-    ]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "StockFlow",
-    "url": "https://www.stockflowsystems.com",
-    "logo": "https://www.stockflowsystems.com/logo.png",
-    "sameAs": [
-      "https://twitter.com/stockflow",
-      "https://www.linkedin.com/company/stockflow"
-    ],
-    "description": "Free inventory management software with barcode scanning and bill of materials."
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.stockflowsystems.com" }
-    ]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": homeFaqData.map((faq) => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-    }))
-  },
-  generateLocalBusinessSchema('https://www.stockflowsystems.com'),
 ];
 
 /* â”€â”€â”€ Animation primitive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -310,7 +246,6 @@ export const HomePage = () => {
 
   return (
     <>
-      <StructuredData data={homeStructuredData} />
       <Header />
 
       <div className="min-h-screen bg-white">
@@ -326,14 +261,7 @@ export const HomePage = () => {
               <div className="flex-1 min-w-0 max-w-xl lg:max-w-none text-center lg:text-left">
                 {/* Rating pill + SaaSHub badge */}
                 <div {...heroVis(0)} className="flex flex-col items-center lg:items-start gap-4 mb-8">
-                  <div className="inline-flex items-center gap-2.5 bg-white border border-slate-200 rounded-full px-4 py-2 shadow-sm">
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />)}
-                    </div>
-                    <span className="text-slate-600 text-sm">4.9/5 rating</span>
-                    <span className="text-slate-300">·</span>
-                    <span className="text-slate-600 text-sm">3,200+ businesses tracking stock</span>
-                  </div>
+                  
                   <a
                     href="https://www.saashub.com/stockflow?utm_source=badge&utm_campaign=badge&utm_content=stockflow&badge_variant=color&badge_kind=approved"
                     target="_blank"
@@ -379,26 +307,7 @@ export const HomePage = () => {
                   </div>
                 </div>
 
-                {/* CTA */}
-                <div {...heroVis(300)}>
-                  <div className="flex flex-wrap items-center gap-3 mb-3 justify-center lg:justify-start">
-                    <Button
-                      onClick={handleGetStarted}
-                      className="bg-blue-600 hover:bg-blue-500 text-white h-13 px-8 text-base font-semibold rounded-xl shadow-md shadow-blue-200 hover:shadow-lg hover:shadow-blue-300 hover:scale-[1.02] transition-all"
-                    >
-                      Start Tracking in 2 Minutes
-                      <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
-                    <a
-                      href="#how-it-works"
-                      className="inline-flex items-center gap-1.5 text-slate-600 hover:text-blue-600 text-sm font-medium transition-colors"
-                    >
-                      See how it works
-                      <ArrowRight className="w-4 h-4" />
-                    </a>
-                  </div>
-                  <p className="text-slate-400 text-sm">✓ No credit card · ✓ Free Starter plan · ✓ Setup in &lt;2 min</p>
-                </div>
+
               </div>
 
               {/* Right: CSS dashboard mockup + floating phone scan mockup */}
@@ -597,9 +506,8 @@ export const HomePage = () => {
             STATS BAR
         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
         <section className="border-y border-slate-200 bg-white px-4 py-10">
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-200">
+          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-x divide-slate-200">
             {[
-              { value: '4.8/5',  label: 'Average Rating',      sub: '150+ reviews'         },
               { value: '500+',   label: 'Businesses',          sub: 'Trust StockFlow'       },
               { value: 'SSL',    label: 'Bank-Level Security', sub: 'End-to-end encrypted'  },
               { value: 'Free',   label: 'For Most Businesses',  sub: 'No credit card needed' },
@@ -1195,57 +1103,7 @@ export const HomePage = () => {
           </div>
         </section>
 
-        {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-            TESTIMONIALS
-        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
-        <section className="py-24 px-4 bg-slate-50">
-          <div className="max-w-6xl mx-auto">
-            <Reveal>
-              <div className="text-center mb-5">
-                <SectionLabel icon={Star} text="Customer Stories" />
-              </div>
-              <SectionHeading sub="See how much money StockFlow has saved our customers">
-                Real Results from Real Businesses
-              </SectionHeading>
-            </Reveal>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { name: 'Laura Peeters', role: 'Owner', company: 'De Koffieboetiek · specialty retail', savings: '$4,800/year',    photo: '/Laura.png', rating: 5, quote: 'Stopped wasting money on expired inventory and overstock. Now we invest that capital into bestsellers.' },
-                { name: 'Tom Demuynck', role: 'Owner', company: 'Maison Belle Boutique · fashion retail', savings: '$8,500 recovered', photo: '/jan.png',   rating: 5, quote: 'Identified slow-moving inventory worth $8,500. Cleared it at 30% margin instead of letting it sit.' },
-                { name: 'Marie Dubois', role: 'Operations Manager', company: 'Artisan & Co. · e-commerce', savings: '75% time saved',  photo: '/anke.png',  rating: 5, quote: 'What took 4 hours now takes 1 hour. StockFlow pays for itself in time savings alone.' },
-              ].map((t, idx) => (
-                <Reveal key={idx} delay={idx * 120} variant="fadeUp">
-                  <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all">
-                    <div className="flex gap-0.5 mb-4">
-                      {[...Array(t.rating)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
-                    </div>
-                    <p className="text-slate-700 leading-relaxed flex-1 text-sm">"{t.quote}"</p>
-                    <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3">
-                      <img
-                        src={t.photo}
-                        alt={`Customer portrait of ${t.name}`}
-                        className="w-11 h-11 rounded-full object-cover border border-slate-200 flex-shrink-0"
-                        width={44}
-                        height={44}
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-slate-900 text-sm">{t.name}</p>
-                        <p className="text-slate-500 text-xs truncate">{t.role}, {t.company}</p>
-                      </div>
-                      <span className="flex-shrink-0 bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-emerald-200">
-                        {t.savings}
-                      </span>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
             ASK AI

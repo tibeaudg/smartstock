@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import {
   BarChart3, Package, RefreshCw, Calculator, Database, LineChart, PlusCircle, Utensils, Factory, CheckCircle2, Smartphone, Layers, Search, LayoutDashboard
@@ -7,7 +6,7 @@ import {
 
 const topicTitle = "Best Stock Management Software in 2026: Ultimate Guide & Excel Tips";
 const canonicalPath = "/best-stock-management-software";
-const metaDescription = "Discover the best stock management software in 2026. Learn how to use Excel for inventory, forecasting, and creating simple systems for small businesses. Compare top tools like StockFlow, Cin7, and Katana.";
+const metaDescription = "Best stock management software in 2026: compare StockFlow, Cin7, and Katana. Learn Excel tips, forecasting basics, and simple systems for small businesses.";
 const keywords = "best stock management software, excel inventory template, inventory forecasting excel, free inventory software, restaurant inventory software, manufacturing inventory system, stock management software 2026";
 
 const takeaways = [
@@ -34,17 +33,14 @@ export default function SeoBestStockManagementComprehensivePage() {
 
   return (
     <SeoPageLayout
+      seoTitle="Best Stock Management Software 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle={topicTitle}
       heroDescription={metaDescription}
       dateUpdated="January 10, 2026"
       keyTakeaways={takeaways}
     >
-      <SEO
-        title={`${topicTitle} | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
-        canonical={canonicalPath}
-      />
 {/* SECTION: INTRODUCTION */}
       <section className="bg-white py-12">
         <div className="mx-auto max-w-4xl px-4">

@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -79,22 +78,15 @@ export default function StockflowVsKatana() {
 
   return (
     <SeoPageLayout 
+      seoTitle="StockFlow vs Katana MRP 2026 | StockFlow"
+      seoDescription="StockFlow vs Katana MRP: free forever vs paid MRP. Compare setup time, pricing, and which fits e-commerce, distribution, and light manufacturing."
+      seoKeywords="stockflow vs katana mrp, katana mrp alternative, katana mrp comparison, stockflow vs katana, manufacturing inventory software, mrp software comparison, katana mrp alternative for sme, stockflow vs katana mrp pricing, free mrp software, inventory software comparison"
       heroTitle="StockFlow vs Katana MRP"
       dateUpdated="June 9, 2026"
+      datePublished="2024-01-01T00:00:00Z"
       faqData={faqData}
 
     >
-      <SEO
-        title="StockFlow vs Katana MRP 2026 - Free Forever vs Paid MRP Software | StockFlow"
-        description="Compare StockFlow vs Katana MRP 2026. Free forever vs paid MRP. StockFlow for e-commerce/distribution, 5-7 day setup. Save 100% costs, faster implementation than Katana MRP."
-        keywords="stockflow vs katana mrp, katana mrp alternative, katana mrp comparison, stockflow vs katana, manufacturing inventory software, mrp software comparison, katana mrp alternative for sme, stockflow vs katana mrp pricing, free mrp software, inventory software comparison"
-        url="https://www.stockflowsystems.com/stockflow-vs-katana"
-        publishedTime="2024-01-01T00:00:00Z"
-        modifiedTime={new Date().toISOString()}
-        
-      />
-
-
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center">

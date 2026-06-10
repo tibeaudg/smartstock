@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { getAllSeoPages, type PageMetadata } from "@/config/topicClusters";
 import { getSeoRoutes } from "@/routes/seoRoutes";
@@ -55,17 +54,13 @@ export default function SEOResourcesBlogPage() {
   return (
     <SeoPageLayout 
       title="Blog - StockFlow"
+      seoTitle="Inventory Management Blog | StockFlow"
+      seoDescription="Explore 95+ inventory management articles: software comparisons, best practices, and industry insights. Expert guides to optimize your stock operations."
+      seoKeywords="inventory management blog, inventory articles, stock management guides, inventory software guides, warehouse management articles, inventory best practices, inventory management tips, inventory control guides"
       heroTitle="Blog & Resources"
-      description="Explore our complete library of articles, guides, and resources about inventory management."
+      heroDescription="Explore our complete library of articles, guides, and resources about inventory management."
+      structuredData={structuredData}
     >
-      <SEO
-        title="Inventory Management Blog 2025 - Articles, Guides & Resources | StockFlow"
-        description="Explore 95+ articles about inventory management, software comparisons, best practices, and industry insights. Expert guides to optimize your inventory operations. Free resources."
-        keywords="inventory management blog, inventory articles, stock management guides, inventory software guides, warehouse management articles, inventory best practices, inventory management tips, inventory control guides"
-        url="https://www.stockflowsystems.com/blog"
-        canonical={canonicalPath}
-        structuredData={structuredData}
-      />
 <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">

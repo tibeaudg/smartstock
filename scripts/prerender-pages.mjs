@@ -1,49 +1,23 @@
 import fs from 'fs';
 import path from 'path';
 import { spawn } from 'child_process';
-import { XMLParser } from 'fast-xml-parser';
 import { globby } from 'globby';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { extractRoutePathFromContent } from './utils/seo-slug.mjs';
+import { getSitemapRoutes } from './utils/sitemap-routes.mjs';
 
 const ROOT = process.cwd();
 const DIST_DIR = path.join(ROOT, 'dist');
 const SITEMAP_PATH = path.join(ROOT, 'public', 'sitemap.xml');
 const SEO_DIR = path.join(ROOT, 'src', 'pages', 'SEO');
 const SEO_DIR_LOWER = path.join(ROOT, 'src', 'pages', 'seo');
-const BASE_URL = 'https://www.stockflowsystems.com';
 const PREVIEW_HOST = '127.0.0.1';
 const PREVIEW_PORT = 4173;
 const PREVIEW_ORIGIN = `http://${PREVIEW_HOST}:${PREVIEW_PORT}`;
-
-function getSitemapRoutes() {
-  if (!fs.existsSync(SITEMAP_PATH)) {
-    throw new Error(`Sitemap not found at ${SITEMAP_PATH}`);
-  }
-
-  const xml = fs.readFileSync(SITEMAP_PATH, 'utf8');
-  const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_' });
-  const parsed = parser.parse(xml);
-  const urlEntries = parsed?.urlset?.url;
-  const items = Array.isArray(urlEntries) ? urlEntries : (urlEntries ? [urlEntries] : []);
-  const routes = new Set(['/']);
-
-  for (const item of items) {
-    const loc = item?.loc;
-    if (typeof loc !== 'string') continue;
-    try {
-      const url = new URL(loc.trim());
-      if (url.origin !== BASE_URL) continue;
-      const route = url.pathname || '/';
-      if (!route.startsWith('/')) continue;
-      routes.add(route === '' ? '/' : route);
-    } catch {
-      // Ignore malformed URLs in sitemap
-    }
-  }
-
-  return [...routes].sort((a, b) => a.localeCompare(b));
-}
+const CONCURRENCY = Number(process.env.PRERENDER_CONCURRENCY ?? 4);
+const MIN_SUCCESS_RATE = Number(process.env.PRERENDER_MIN_SUCCESS_RATE ?? 0.95);
+const IS_VERCEL = Boolean(process.env.VERCEL);
 
 async function getSeoFileRoutes() {
   const seoDir = fs.existsSync(SEO_DIR) ? SEO_DIR : SEO_DIR_LOWER;
@@ -117,23 +91,46 @@ function waitForPreviewReady(serverProcess) {
   });
 }
 
+async function launchWithChromium() {
+  return puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+  });
+}
+
+async function launchBrowser() {
+  if (IS_VERCEL) {
+    return launchWithChromium();
+  }
+
+  try {
+    const fullPuppeteer = await import('puppeteer');
+    return await fullPuppeteer.default.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+  } catch (error) {
+    console.warn(
+      `[prerender-pages] Local Chrome unavailable (${error?.message ?? 'unknown'}); falling back to @sparticuz/chromium.`
+    );
+    return launchWithChromium();
+  }
+}
+
 async function prerenderRoute(page, routePath) {
   const target = `${PREVIEW_ORIGIN}${routePath}`;
 
   await page.goto(target, { waitUntil: 'networkidle0', timeout: 120000 });
   await page.waitForSelector('body', { timeout: 30000 });
 
-  // Wait for h1 to appear — confirms the page component fully rendered.
-  // Falls back silently for pages that legitimately have no h1 (e.g. 404).
   try {
     await page.waitForSelector('h1', { timeout: 30000 });
   } catch {
     // No h1 found within timeout; still capture whatever rendered.
   }
 
-  // Scroll through the entire page so IntersectionObserver-based animations
-  // trigger for all elements before we capture the HTML. Without this,
-  // content below the fold stays at opacity-0 and crawlers count zero words.
   await page.evaluate(async () => {
     await new Promise((resolve) => {
       const distance = 400;
@@ -147,7 +144,6 @@ async function prerenderRoute(page, routePath) {
       }, 80);
     });
   });
-  // Wait for CSS transitions (longest is ~700 ms) to finish
   await new Promise((resolve) => setTimeout(resolve, 900));
 
   const html = sanitizeCapturedHtml(await page.content());
@@ -159,13 +155,46 @@ async function prerenderRoute(page, routePath) {
   writeRouteHtml(routePath, html);
 }
 
+async function runPool(browser, routes) {
+  let rendered = 0;
+  const failedRoutes = [];
+  let index = 0;
+
+  async function worker() {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1366, height: 900 });
+
+    try {
+      while (index < routes.length) {
+        const current = index;
+        index += 1;
+        const route = routes[current];
+        try {
+          await prerenderRoute(page, route);
+          rendered += 1;
+        } catch (error) {
+          failedRoutes.push(route);
+          console.warn(`[prerender-pages] Skipped ${route}: ${error?.message ?? 'unknown error'}`);
+        }
+      }
+    } finally {
+      await page.close();
+    }
+  }
+
+  const workers = Array.from({ length: Math.min(CONCURRENCY, routes.length) }, () => worker());
+  await Promise.all(workers);
+
+  return { rendered, failedRoutes };
+}
+
 async function main() {
   if (!fs.existsSync(DIST_DIR)) {
     throw new Error('dist directory not found. Run vite build first.');
   }
 
-  const routes = [...new Set([...(await getSeoFileRoutes()), ...getSitemapRoutes()])].sort((a, b) =>
-    a.localeCompare(b)
+  const routes = [...new Set([...(await getSeoFileRoutes()), ...getSitemapRoutes(SITEMAP_PATH)])].sort(
+    (a, b) => a.localeCompare(b)
   );
   if (routes.length === 0) {
     throw new Error('No routes found in sitemap.xml for prerendering.');
@@ -181,33 +210,23 @@ async function main() {
   try {
     await waitForPreviewReady(server);
 
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
+    const browser = await launchBrowser();
 
     try {
-      const page = await browser.newPage();
-      await page.setViewport({ width: 1366, height: 900 });
-
-      let rendered = 0;
-      const failedRoutes = [];
-
-      for (const route of routes) {
-        try {
-          await prerenderRoute(page, route);
-          rendered += 1;
-        } catch (error) {
-          failedRoutes.push(route);
-          console.warn(`[prerender-pages] Skipped ${route}: ${error?.message ?? 'unknown error'}`);
-        }
-      }
+      const { rendered, failedRoutes } = await runPool(browser, routes);
+      const successRate = rendered / routes.length;
 
       if (failedRoutes.length) {
         console.warn(`[prerender-pages] ${failedRoutes.length} route(s) skipped.`);
       }
 
       console.log(`[prerender-pages] Prerendered ${rendered}/${routes.length} routes into dist/`);
+
+      if (successRate < MIN_SUCCESS_RATE) {
+        throw new Error(
+          `Prerender success rate ${(successRate * 100).toFixed(1)}% is below minimum ${(MIN_SUCCESS_RATE * 100).toFixed(0)}%`
+        );
+      }
     } finally {
       await browser.close();
     }

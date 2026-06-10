@@ -19,7 +19,7 @@ export default function VoorraadbeheerUitrustingPage() {
     <SeoPageLayout 
       title="Uitrusting Voorraadbeheer"
       seoTitle="Uitrusting & Gereedschap Tracking Software | StockFlow"
-      seoDescription="Uitrusting voorraadbeheer software voor machines, gereedschap en apparatuur. Locatietracking en onderhoudsplanning. Gratis voor Belgische en Nederlandse bedrijven."
+      seoDescription="Uitrusting voorraadbeheer software voor machines, gereedschap en apparatuur. Locatietracking en onderhoudsplanning. Gratis voor BE en NL bedrijven."
       heroTitle="Uitrusting Voorraadbeheer Software"
       dateUpdated="22/01/2026"
       pageLanguage="nl"

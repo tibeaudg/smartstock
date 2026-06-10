@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
@@ -100,18 +99,13 @@ export default function Seo6WaysQRCodesWillBoostInventoryManagementPage() {
   return (
     <SeoPageLayout 
       title={topicTitle} 
+      seoTitle="QR Codes for Inventory Management 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle={topicTitle} 
       dateUpdated="June 9, 2026"
       faqData={faqData}
-       
-      
     >
-      <SEO
-        title={`6 Ways QR Codes Will Boost Inventory Management 2025 - Benefits | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-      />
 <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>

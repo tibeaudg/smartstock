@@ -63,7 +63,7 @@ export default function StockFlowVsUnleashed() {
     >
       <SEO
         title="StockFlow vs Unleashed 2026 – Pricing, GDPR, EU Hosting"
-        description="StockFlow vs Unleashed comparison: free tier vs NZ$99-$249/month, EU data hosting vs NZ/AU, GDPR compliance, and setup time. Find out which inventory software is better for European businesses."
+        description="StockFlow vs Unleashed: free tier vs NZ$99-$249/month. Compare EU hosting, GDPR compliance, setup time, and total cost for European businesses."
         keywords="stockflow vs unleashed, unleashed alternative, gdpr inventory software, eu inventory software, unleashed vs stockflow"
         url="https://www.stockflowsystems.com/stockflow-vs-unleashed"
         publishedTime="2026-01-22T00:00:00Z"

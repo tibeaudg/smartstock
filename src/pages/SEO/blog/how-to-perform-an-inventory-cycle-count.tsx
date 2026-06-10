@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { CheckCircle, Target, BarChart3, Lightbulb, Clock, TrendingUp, AlertTriangle, Package, Users, Zap, FileCheck, Calculator, Calendar, Smartphone } from "lucide-react";
 import { sanitizeBlogContent } from "@/utils/sanitizeHtml";
 
 const topicTitle = "How To Perform An Inventory Cycle Count: Complete Step-by-Step Guide 2026";
 const canonicalPath = "/how-to-perform-an-inventory-cycle-count";
-const metaDescription = "Complete guide to performing inventory cycle counts: step-by-step process, ABC analysis scheduling, frequency recommendations, tools needed, and best practices. Learn how cycle counting maintains 98%+ accuracy without shutting down operations, saving time and reducing disruption compared to annual physical counts.";
+const metaDescription = "Step-by-step cycle count guide: ABC scheduling, tools, frequency, and best practices to maintain 98%+ accuracy without shutting down operations.";
 const keywords = "how to perform cycle count, inventory cycle count, cycle counting procedure, how to count inventory, inventory audit, cycle count steps, inventory counting, stock counting, ABC cycle counting, cycle count frequency, cycle count schedule, cycle count accuracy, cycle count best practices, cycle count vs physical inventory, cycle count tools";
 const heroBadge = "How-To Guide • Updated September 2025";
 const summaryCopy = "Cycle counting is an efficient inventory auditing method where you count specific items on a rotating schedule throughout the year. This step-by-step guide shows you how to perform cycle counts accurately, schedule them effectively, and use the results to maintain inventory accuracy without the disruption of full physical inventory counts.";
@@ -173,18 +172,15 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
   return (
     <SeoPageLayout 
       breadcrumbItems={breadcrumbItems}
+      seoTitle="Inventory Cycle Count Guide 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle={topicTitle}
       heroDescription={metaDescription}
       dateUpdated="01/15/2026"
       keyTakeaways={takeaways}
+      structuredData={structuredData}
     >
-      <SEO
-        title={`How To Perform Inventory Cycle Count: Complete Step-by-Step Guide 2026 | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        structuredData={structuredData}
-      />
 {/* Hero / Introduction */}
       <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">

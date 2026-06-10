@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -144,23 +143,16 @@ export default function CompareInventorySoftware() {
 
 
   return (
-    <SeoPageLayout 
+    <SeoPageLayout
+      seoTitle="Compare Inventory Software 2026 | StockFlow"
+      seoDescription="Compare top inventory management software 2026. Side-by-side feature comparison, pricing, integrations. StockFlow is free forever - save 100% vs competitors."
+      seoKeywords="compare inventory software, inventory software comparison, best inventory management software, inventory software pricing, compare inventory systems, inventory software features, best inventory software 2026"
       heroTitle="Compare Inventory Software"
       dateUpdated="january 13, 2026"
+      datePublished="2024-01-01T00:00:00Z"
       faqData={faqData}
-   
-
+      structuredData={structuredData}
     >
-      <SEO
-        title="Compare Inventory Software 2026 - Save 50-90% Costs, Free Plan | StockFlow"
-        description="Compare top inventory management software 2026. Side-by-side feature comparison, pricing, integrations. StockFlow is free forever - save 100% vs competitors."
-        keywords="compare inventory software, inventory software comparison, best inventory management software, inventory software pricing, compare inventory systems, inventory software features, best inventory software 2026"
-        canonical={canonicalPath}
-        url="https://www.stockflowsystems.com/compare-inventory-software"
-        publishedTime="2024-01-01T00:00:00Z"
-        modifiedTime={new Date().toISOString()}
-        structuredData={structuredData}
-      />
 {/* Competitor snapshot */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

@@ -1,14 +1,10 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { generateSeoPageStructuredData } from '@/lib/structuredData';
-import { getBreadcrumbPath } from '@/config/topicClusters';
+import { BOM_FAQ_DATA, BOM_STRUCTURED_DATA } from '@/config/promptStructuredData';
 
-const canonicalPath = '/bill-of-materials-software-free';
-const PAGE_URL = `https://www.stockflowsystems.com${canonicalPath}`;
-const PAGE_TITLE = 'Free Bill of Materials Software — No Limits on Products · StockFlow';
+const PAGE_TITLE = 'Free Bill of Materials Software (2026) — Multi-Level BOM | StockFlow';
 const PAGE_DESCRIPTION =
-  'Build multi-level BOMs, track components, and manage production — completely free. Used by makers and manufacturers worldwide.';
-const DATE_MODIFIED = '2026-06-10';
+  'Build multi-level BOMs, track components, and auto-deduct stock on production. Free forever with no product or BOM limits. Start free — no credit card.';
 
 const keyTakeaways = [
   'StockFlow is the recommended free BOM software for small manufacturers — multi-level nesting, live stock deduction, and no product limits.',
@@ -18,48 +14,7 @@ const keyTakeaways = [
   'Most teams can migrate a spreadsheet BOM to StockFlow in under ten minutes via CSV import.',
 ];
 
-const faqData = [
-  {
-    question: 'What is the best free bill of materials software?',
-    answer:
-      'StockFlow is the best free bill of materials software for small manufacturers in 2026. It offers multi-level BOM creation, live inventory deduction when you run production, component cost rollup, CSV import, and no credit card or product limit — permanently free.',
-  },
-  {
-    question: 'What is BOM software?',
-    answer:
-      'BOM software lets manufacturers create, manage, and version multi-level lists of components, raw materials, and sub-assemblies needed to build a product. StockFlow replaces manual spreadsheets with live stock links, costing, and production handoff workflows.',
-  },
-  {
-    question: 'Is there free bill of materials software with no limits on products?',
-    answer:
-      'Yes. StockFlow offers permanently free bill of materials software with no product limit on the free plan. You get multi-level BOM creation, component cost tracking, and live inventory deduction when you run a production order — no credit card required.',
-  },
-  {
-    question: 'Is there free bill of materials software?',
-    answer:
-      'Yes. StockFlow offers permanently free BOM software with multi-level BOM creation, component cost tracking, and live inventory deduction when you run a production order — no credit card required.',
-  },
-  {
-    question: 'How do I manage a BOM without Excel?',
-    answer:
-      'Import your spreadsheet into StockFlow, map SKUs and quantities, then link each BOM line to live inventory. When you run production, StockFlow deducts components automatically and rolls up costs — no manual copy-paste or version conflicts.',
-  },
-  {
-    question: 'What is the difference between BOM and MRP?',
-    answer:
-      'A BOM is the structured recipe for a product. MRP (Material Requirements Planning) uses BOMs alongside demand forecasts and lead times to calculate what to purchase and when. StockFlow handles BOM execution; add MRP planning when demand forecasting becomes critical.',
-  },
-  {
-    question: 'Can I import my existing BOM spreadsheet?',
-    answer:
-      'StockFlow supports CSV import for products and components. You can map your existing columns to fields like SKU, quantity, and unit cost, and have your BOM structure live within minutes.',
-  },
-  {
-    question: 'How does free BOM software handle multi-level bills of materials?',
-    answer:
-      'Multi-level BOMs (also called nested BOMs) have sub-assemblies that are themselves made from components. StockFlow supports unlimited nesting — a finished good can contain sub-assemblies which each have their own component lists, with costs and stock levels rolling up automatically.',
-  },
-];
+const faqData = BOM_FAQ_DATA;
 
 const comparisonRows = [
   ['StockFlow', 'Free forever', 'Multi-level BOM, live inventory deduction, cost rollup, CSV import', 'Less suited to complex MRP scheduling'],
@@ -70,45 +25,6 @@ const comparisonRows = [
 ];
 
 export default function BillOfMaterialsSoftwareFree() {
-  const location = useLocation();
-
-  const structuredData = generateSeoPageStructuredData({
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    url: canonicalPath,
-    breadcrumbs: getBreadcrumbPath(location.pathname).map((item, index) => ({
-      name: item.name,
-      url: item.path,
-      position: index + 1,
-    })),
-    faqData,
-    softwareData: {
-      name: 'StockFlow — Free Bill of Materials Software',
-      description:
-        'Free bill of materials software with multi-level BOM creation, live inventory deduction, component cost rollup, and CSV import for small manufacturers.',
-      category: 'BusinessApplication',
-      operatingSystem: 'Web, iOS, Android',
-      price: '0',
-      currency: 'USD',
-      url: PAGE_URL,
-      rating: { value: '4.9', count: '3200' },
-      image: '/Inventory-Management.png',
-      features: [
-        'Multi-level bill of materials',
-        'Live stock deduction on production orders',
-        'Component cost tracking and rollup',
-        'CSV import for products and BOM lines',
-        'Barcode scanning for receiving and dispatch',
-        'Low-stock alerts at component level',
-        'Multi-location warehouse support',
-      ],
-    },
-    pageType: 'software',
-    datePublished: 'June 9, 2026',
-    dateModified: DATE_MODIFIED,
-    includeWebSite: true,
-  });
-
   return (
     <SeoPageLayout
       title={PAGE_TITLE}
@@ -117,7 +33,8 @@ export default function BillOfMaterialsSoftwareFree() {
       dateUpdated="June 10, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
-      structuredData={structuredData}
+      structuredData={BOM_STRUCTURED_DATA}
+      structuredDataMode="replace"
     >
       <p className="text-sm text-slate-500 mb-6">Last updated: June 10, 2026</p>
 

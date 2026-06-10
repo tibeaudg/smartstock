@@ -30,4 +30,4 @@ export const PRERENDER_PATHS = [
 ] as const;
 
 export const BOT_USER_AGENT =
-  /googlebot|bingbot|yandex|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|whatsapp|discordbot|applebot|semrushbot|ahrefsbot|mj12bot|petalbot/i;
+  /googlebot|bingbot|yandex|baiduspider|facebookexternalhit|twitterbot|linkedinbot|slackbot|whatsapp|discordbot|applebot|semrushbot|ahrefsbot|mj12bot|petalbot|screaming\s*frog|sitebulb|dotbot|rogerbot|seznambot|duckduckbot/i;

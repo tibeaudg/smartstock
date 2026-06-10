@@ -56,6 +56,7 @@ interface SEOPageLayoutProps {
   title?: string;
   seoTitle?: string;
   seoDescription?: string;
+  seoKeywords?: string;
   heroTitle: string;
   dateUpdated?: string;
   datePublished?: string;
@@ -70,6 +71,8 @@ interface SEOPageLayoutProps {
   keyTakeaways?: string[];
   faqData?: Array<{ question: string; answer: string }>;
   structuredData?: object | object[];
+  /** When 'replace', pass structuredData to SEO without merging default Org/Article schemas */
+  structuredDataMode?: 'merge' | 'replace';
   noindex?: boolean;
   /* Reading time override in minutes — auto-calculated from content if omitted */
   readingTimeMinutes?: number;
@@ -463,6 +466,7 @@ const SEOPageLayout = memo(({
   title,
   seoTitle,
   seoDescription,
+  seoKeywords,
   heroTitle,
   dateUpdated,
   datePublished,
@@ -477,6 +481,7 @@ const SEOPageLayout = memo(({
   keyTakeaways = [],
   faqData = [],
   structuredData,
+  structuredDataMode = 'merge',
   noindex: noindexProp,
   readingTimeMinutes,
 }: SEOPageLayoutProps) => {
@@ -549,6 +554,10 @@ const SEOPageLayout = memo(({
 
   /* ── Combined structured data (Article + FAQ + Org + Site + Breadcrumb) ── */
   const combinedStructuredData = useMemo(() => {
+    if (structuredDataMode === 'replace' && structuredData) {
+      return structuredData;
+    }
+
     const schemas: object[] = [
       generateOrganizationSchema(PRODUCTION_URL),
       generateLocalBusinessSchema(PRODUCTION_URL),
@@ -581,6 +590,7 @@ const SEOPageLayout = memo(({
 
     return schemas;
   }, [
+    structuredDataMode,
     structuredData,
     faqData,
     resolvedPageLanguage,
@@ -678,6 +688,7 @@ const SEOPageLayout = memo(({
       <SEO
         title={resolvedSeoTitle}
         description={resolvedDescription}
+        keywords={seoKeywords}
         canonical={canonicalUrl}
         url={canonicalUrl}
         locale={resolvedPageLanguage}

@@ -106,13 +106,13 @@ export default function AssetTracking() {
 
   const structuredData = generateSeoPageStructuredData({
     title: "Asset Tracking Software for Tools, Equipment & Spare Parts",
-    description: "Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, mobile scanning. Reduce loss 40-60%, save 10+ hours/week. Free plan available.",
+    description: "Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, and mobile scanning. Reduce loss 40-60% and save 10+ hours weekly.",
     url: location.pathname,
     breadcrumbs,
     faqData,
     softwareData: {
       name: "StockFlow - Asset Tracking",
-      description: "Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, mobile scanning. Reduce loss 40-60%, save 10+ hours/week.",
+      description: "Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, and mobile scanning. Reduce loss 40-60% and save 10+ hours weekly.",
       category: "BusinessApplication",
       operatingSystem: "Web Browser",
       price: "0",
@@ -303,7 +303,7 @@ export default function AssetTracking() {
     >
       <SEO
         title="Asset Tracking Software | Digital Audit Trails & Location History | StockFlow"
-        description="Asset tracking software for tools, equipment, and spare parts. Digital audit trails, location history, mobile scanning. Reduce loss 40-60%, save 10+ hours/week. Free plan available."
+        description="Asset tracking for tools, equipment, and spare parts. Digital audit trails, location history, and mobile scanning. Reduce loss 40-60% and save 10+ hours weekly."
         keywords="asset tracking, asset tracking software, tool tracking, equipment tracking, spare parts tracking, digital audit trail, location history, asset management, equipment management, tool management, asset tracking app, mobile asset tracking, barcode asset tracking, asset tracking system, stockflow"
         url="https://www.stockflowsystems.com/asset-tracking"
         structuredData={structuredData}

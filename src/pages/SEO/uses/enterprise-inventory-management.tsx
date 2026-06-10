@@ -117,7 +117,7 @@ export default function EnterpriseInventoryManagement() {
     >
       <SEO
         title="Enterprise Inventory Management Software 2026 | Multi-Location Solutions"
-        description="Enterprise inventory management software for large organizations. Multi-warehouse support, advanced analytics, API access, and scalability. Affordable enterprise solution starting at �0.004/product/month."
+        description="Enterprise inventory management for large organizations: multi-warehouse support, advanced analytics, API access, and scalable pricing for growing teams."
         keywords="enterprise inventory management software, enterprise inventory management, enterprise inventory software, enterprise inventory system, enterprise inventory management system, enterprise inventory solution, enterprise inventory platform, multi-location inventory, enterprise inventory features, stockflow, stock flow"
         url="https://www.stockflowsystems.com/enterprise-inventory-management"
       />

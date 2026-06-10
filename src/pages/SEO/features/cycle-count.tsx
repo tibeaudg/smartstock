@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -117,8 +116,11 @@ export default function CycleCount() {
 
 
   return (
-    <SeoPageLayout 
+    <SeoPageLayout
       title="Cycle Count"
+      seoTitle="Cycle Count Inventory Guide 2026 | StockFlow"
+      seoDescription="Cycle count inventory 2026: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
+      seoKeywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
       heroTitle="Cycle Count"
       dateUpdated="June 9, 2026"
       faqData={faqData}
@@ -132,16 +134,6 @@ nextArticle={{
 }}      
       
     >
-      <SEO
-        title="Cycle Count Inventory 2026 - Improve Accuracy 20-30%, Save Time | StockFlow"
-        description="Cycle count inventory 2026: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
-        keywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/cycle-count"
-      />
-
-
-
-
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">

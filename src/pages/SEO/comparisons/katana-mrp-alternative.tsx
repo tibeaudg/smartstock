@@ -4,7 +4,10 @@ import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
 
 const canonicalPath = '/katana-mrp-alternative';
-const pageTitle = 'Best Free Katana MRP Alternative (2026) — StockFlow';
+const SEO_TITLE = 'Best Free Katana MRP Alternative (2026) | StockFlow';
+const HERO_TITLE = 'Best Free Katana MRP Alternative (2026)';
+const PAGE_DESCRIPTION =
+  'Katana MRP starts at $179/month. StockFlow gives you BOM management, barcode scanning, and real-time inventory tracking — completely free. Switch in minutes.';
 
 export default function KatanaMrpAlternative() {
   const faqData = [
@@ -64,7 +67,7 @@ export default function KatanaMrpAlternative() {
         { label: 'Home', href: '/' },
         { label: 'Katana MRP Alternative', href: canonicalPath },
       ]}
-      heroTitle={pageTitle}
+      heroTitle={HERO_TITLE}
       dateUpdated="June 10, 2026"
       heroDescription="Honest comparison for teams searching for a free Katana MRP alternative in 2026."
       previousArticle={{
@@ -77,8 +80,8 @@ export default function KatanaMrpAlternative() {
       }}
     >
       <SEO
-        title={pageTitle}
-        description="Looking for a Katana MRP alternative? StockFlow is free forever with BOM support, barcode scanning, and multi-location inventory — compare features, pricing, and fit for 2026."
+        title={SEO_TITLE}
+        description={PAGE_DESCRIPTION}
         keywords="katana mrp alternative, best free katana mrp alternative, katana mrp free alternative, free katana mrp alternative, katana mrp replacement, stockflow vs katana mrp, free mrp software, cloud inventory software, free inventory management, free manufacturing software"
         canonical={canonicalPath}
         url={`https://www.stockflowsystems.com${canonicalPath}`}

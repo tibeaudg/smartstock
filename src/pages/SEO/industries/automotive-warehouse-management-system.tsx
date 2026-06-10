@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -29,6 +28,9 @@ import {
   Layers
 } from 'lucide-react';
 
+const PAGE_META_DESCRIPTION =
+  'Automotive WMS guide for auto parts distributors: manage part numbers, track VINs, handle bulk items, and optimize distribution operations.';
+
 /**
  * Automotive Warehouse Management System Page
  * Target Keywords: automotive warehouse management system, auto parts warehouse WMS,
@@ -46,8 +48,6 @@ export default function AutomotiveWarehouseManagementSystem() {
 
   const topicTitle = "Automotive Warehouse Management System: Complete Guide 2026";
   const dateUpdated = "January 22, 2026";
-  const heroDescription = "Complete guide to automotive warehouse management systems for auto parts distributors and automotive supply chains. Learn how to manage part numbers, track VINs, handle bulk and heavy items, manage cross-references, and optimize automotive distribution operations.";
-
   const faqData = [
     {
       question: "What is an automotive warehouse management system?",
@@ -130,19 +130,15 @@ export default function AutomotiveWarehouseManagementSystem() {
   return (
     <SeoPageLayout 
       breadcrumbItems={breadcrumbItems}
+      seoTitle="Automotive WMS Guide 2026 | StockFlow"
+      seoDescription={PAGE_META_DESCRIPTION}
+      seoKeywords="automotive warehouse management system, auto parts warehouse WMS, automotive distribution software, auto parts inventory management, VIN tracking warehouse, part number management, automotive cross-reference, auto parts distribution, automotive supply chain WMS"
       heroTitle={topicTitle}
-      heroDescription={heroDescription}
+      heroDescription={PAGE_META_DESCRIPTION}
       dateUpdated={dateUpdated}
       keyTakeaways={keyTakeaways}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Automotive Warehouse Management System: Complete Guide 2026 | Auto Parts Distribution WMS"
-        description="Complete guide to automotive warehouse management systems for auto parts distributors. Learn how to manage part numbers, track VINs, handle bulk items, manage cross-references, and optimize automotive distribution. Best practices for automotive supply chains and auto parts warehouses."
-        keywords="automotive warehouse management system, auto parts warehouse WMS, automotive distribution software, auto parts inventory management, VIN tracking warehouse, part number management, automotive cross-reference, auto parts distribution, automotive supply chain WMS"
-        url="https://www.stockflowsystems.com/automotive-warehouse-management-system"
-        structuredData={structuredData}
-      />
-
       {/* Hero / Introduction */}
       <section className="mb-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">

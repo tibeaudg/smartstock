@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import {
   CheckCircle,
@@ -22,7 +21,7 @@ import {
 
 const topicTitle = "Best Inventory Planning Software for 2026: Free vs. Paid Comparison";
 const canonicalPath = "/inventory-planning-software";
-const metaDescription = "Compare the best inventory planning software in 2026. Discover why StockFlow outperforms Inventory Planner, Zoho, and Excel with free AI-powered forecasting and demand planning.";
+const metaDescription = "Best inventory planning software in 2026: compare StockFlow, Inventory Planner, Zoho, and Excel for forecasting, demand planning, and reorder automation.";
 const keywords = "inventory planning software, inventory forecasting software free, inventory planner, best inventory planning software, inventory planner by sage, inventory forecasting models, inventory planning methods, demand planning software";
 
 const takeaways = [
@@ -63,12 +62,13 @@ export default function SeoInventoryPlanningSoftwarePage() {
   return (
     <SeoPageLayout
       title={topicTitle}
+      seoTitle="Inventory Planning Software 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle={topicTitle}
       keyTakeaways={takeaways}
       dateUpdated = "08/01/2026"
-
     >
-      <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
 {/* INDUSTRY CRISIS STATS */}
       <section className="bg-red-50 border-b border-red-100 py-12">
         <div className="mx-auto max-w-5xl px-4">

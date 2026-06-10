@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import {
   CheckCircle, Target, BarChart3, Database, QrCode, Users, Settings2,
@@ -153,18 +152,15 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
   return (
     <SeoPageLayout
       title={topicTitle}
+      seoTitle="Create an Inventory System: 2026 Guide | StockFlow"
+      seoDescription="How to set up an inventory system from scratch: Excel, free software, barcoding, and custom builds. A practical guide for small businesses."
+      seoKeywords="how to create an inventory system, how to set up an inventory system, inventory system in excel, basic inventory system, inventory management system project, free inventory system, create inventory system python"
       heroTitle={'"I Tested 5 Methods: Here’s How to Create an Inventory System That Actually Works"'} // SEO Trend: Clickbait with pronouns [citation:6]
       dateUpdated="June 9, 2026"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
+      structuredData={structuredData}
     >
-      <SEO
-        title="How to Create an Inventory System: 2026 Step-by-Step Guide [Free Templates]"
-        description="Stop using spreadsheets. Learn how to set up an inventory system from scratch in 2026. This definitive guide covers Excel, free software, barcoding, and custom builds in Python for small business."
-        keywords="how to create an inventory system, how to set up an inventory system, inventory system in excel, basic inventory system, inventory management system project, free inventory system, create inventory system python"
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        structuredData={structuredData}
-      />
 {/* Hero / Overview Section */}
       <section className="bg-white px-4 py-20 border-b">
         <div className="mx-auto max-w-6xl">

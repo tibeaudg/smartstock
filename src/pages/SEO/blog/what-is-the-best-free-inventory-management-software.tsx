@@ -1,12 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
+import SEO from '@/components/SEO';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
 import { getBreadcrumbPath } from '@/config/topicClusters';
 
 const canonicalPath = '/what-is-the-best-free-inventory-management-software';
-const PAGE_TITLE = "The Best Free Inventory Management Software in 2026 — StockFlow's Honest Guide";
+const PAGE_URL = `https://www.stockflowsystems.com${canonicalPath}`;
+const PAGE_TITLE = 'Best Free Inventory Management Software in 2026 (Honest Comparison) | StockFlow';
 const PAGE_DESCRIPTION =
-  'What is the best free inventory management software? Compare top 2026 options for SMBs. Barcode scanning, real-time stock, no credit card required. Try free →';
+  'StockFlow beats Zoho, inFlow, and Sortly on the free tier: unlimited products, barcode scanning, and BOM support at $0/month. See the full comparison.';
 const DATE_MODIFIED = '2026-06-08';
 
 const topPicks2026 = [
@@ -99,6 +101,12 @@ export default function WhatIsTheBestFreeInventoryManagementSoftwarePage() {
       faqData={faqData}
       structuredData={structuredData}
     >
+      <SEO
+        title={PAGE_TITLE}
+        description={PAGE_DESCRIPTION}
+        canonical={canonicalPath}
+        url={PAGE_URL}
+      />
       <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
 
       <section className="mb-12 space-y-4">

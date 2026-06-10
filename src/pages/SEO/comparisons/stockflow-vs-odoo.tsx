@@ -68,7 +68,7 @@ export default function StockFlowVsOdoo() {
     >
       <SEO
         title="StockFlow vs Odoo 2026 – Inventory Software vs Full ERP, Pricing"
-        description="StockFlow vs Odoo comparison: inventory-first software (€0) vs full ERP suite (€24.90/user/month), setup time, and focus. Find out which is better for inventory management vs full business management."
+        description="StockFlow vs Odoo: inventory-first software (free) vs full ERP (€24.90/user/month). Compare setup time, focus, and which fits your business needs."
         keywords="stockflow vs odoo, odoo alternative, inventory software vs erp, odoo inventory module, inventory management software"
         url="https://www.stockflowsystems.com/stockflow-vs-odoo"
         publishedTime="2026-01-22T00:00:00Z"

@@ -265,7 +265,7 @@ export default function WarehouseManagementSystemPage() {
 <HeaderPublic />
       <SEO
         title="Warehouse Management System — Free WMS 2026 | StockFlow"
-        description="Warehouse management system guide for SMBs: 6-step process flow from receiving to shipping with 99% accuracy. Free cloud WMS and barcode scanning. See how it works."
+        description="Warehouse management system guide for SMBs: 6-step flow from receiving to shipping with 99% accuracy. Free cloud WMS with barcode scanning."
         keywords="warehouse management system, WMS, warehouse management system process flow, wms warehouse management system, warehouse management systems, warehousing management system, wms systems, warehouse management system wms, what is a warehouse management system, warehouse management system software, WMS software, cloud based warehouse management system, wms saas pricing, warehouse management system cost, types of warehouse management systems, SAP WMS, warehouse inventory systems, warehouse tracking system"
         url="https://www.stockflowsystems.com/warehouse-management-system"
         structuredData={structuredData}

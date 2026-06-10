@@ -22,7 +22,6 @@ import {
   ClipboardCheck,
   Truck
 } from 'lucide-react';
-import SEO from '@/components/SEO';
 
 
 const features = [
@@ -240,11 +239,15 @@ export default function BarcodingPage() {
   };
 
   return (
-    <SeoPageLayout 
+    <SeoPageLayout
       title="Barcoding"
+      seoTitle="Barcoding for Inventory Management 2026 | StockFlow"
+      seoDescription="Barcoding for inventory: scan with your phone, 99.7% accuracy, 5x faster than manual entry. Generate, print, and track barcodes with free StockFlow software."
+      seoKeywords="inventory software with barcode scanner, barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
       heroTitle="Barcoding"
       dateUpdated="June 9, 2026"
       faqData={faqData}
+      structuredData={structuredData}
       previousArticle={{
       title: "Alerts",
       href: "/alerts"
@@ -256,13 +259,6 @@ export default function BarcodingPage() {
     }}
 
     >
-      <SEO
-        title="Barcoding for Inventory Management 2026 - 99.7% Accuracy, 5x Faster | StockFlow"
-        description="Implement barcoding for inventory management 2026. Generate, print, scan barcodes with smartphone. Achieve 99.7% accuracy, 5x faster than manual entry. Free plan available. Join for Free - no credit card required."
-        keywords="inventory software with barcode scanner, barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
-        url="https://www.stockflowsystems.com/barcoding"
-        structuredData={structuredData}
-      />
       <StructuredData data={[structuredData, {
         "@context": "https://schema.org",
         "@type": "FAQPage",

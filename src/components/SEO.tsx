@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 import React from 'react';
-import { createTrustedHTML } from '@/utils/trustedTypes';
 
 interface SEOProps {
   title?: string;
@@ -337,17 +336,21 @@ export const SEO: React.FC<SEOProps> = ({
       {/* Structured Data */}
       {structuredData && (() => {
         try {
-          const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
-          const hasBreadcrumb = dataArray.some((item: any) => item?.["@type"] === "BreadcrumbList");
-          const finalData = hasBreadcrumb ? dataArray : [...dataArray, breadcrumbSchema];
+          const isPassthrough =
+            !Array.isArray(structuredData) &&
+            typeof structuredData === 'object' &&
+            ('@graph' in structuredData ||
+              (structuredData as { '@type'?: string })['@type'] === 'WebPage');
+          const finalData = isPassthrough
+            ? structuredData
+            : (() => {
+                const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
+                const hasBreadcrumb = dataArray.some((item: any) => item?.['@type'] === 'BreadcrumbList');
+                return hasBreadcrumb ? dataArray : [...dataArray, breadcrumbSchema];
+              })();
           const jsonString = JSON.stringify(finalData, null, 0);
           return (
-            <script 
-              type="application/ld+json" 
-              dangerouslySetInnerHTML={{ 
-                __html: createTrustedHTML(jsonString) 
-              }} 
-            />
+            <script type="application/ld+json">{jsonString}</script>
           );
         } catch (error) {
           console.warn('[SEO] Failed to stringify structured data:', error);
@@ -360,12 +363,7 @@ export const SEO: React.FC<SEOProps> = ({
         try {
           const jsonString = JSON.stringify([breadcrumbSchema], null, 0);
           return (
-            <script 
-              type="application/ld+json" 
-              dangerouslySetInnerHTML={{ 
-                __html: createTrustedHTML(jsonString) 
-              }} 
-            />
+            <script type="application/ld+json">{jsonString}</script>
           );
         } catch (error) {
           console.warn('[SEO] Failed to stringify structured data:', error);

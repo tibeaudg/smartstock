@@ -30,7 +30,7 @@ export default function WatIsDeBesteGratisVoorraadbeheerSoftwarePage() {
     <SeoPageLayout 
       title="Wat is de Beste Gratis Voorraadbeheer Software?"
       seoTitle="Beste Gratis Voorraadbeheer Software 2026 | StockFlow"
-      seoDescription="Ontdek de beste gratis voorraadbeheer software voor België en Nederland. Vergelijk functies en beperkingen. StockFlow is volledig gratis — geen verborgen kosten."
+      seoDescription="Beste gratis voorraadbeheer software voor België en Nederland. Vergelijk functies en beperkingen. StockFlow is volledig gratis — geen verborgen kosten."
       heroTitle="Wat is de Beste Gratis Voorraadbeheer Software?"
       dateUpdated="22/01/2026"
       pageLanguage="nl"

@@ -1,12 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { generateSidebarContent } from "@/utils/seoPageHelpers";
 import { CheckCircle, Target, BarChart3, Lightbulb } from "lucide-react";
 
 const topicTitle = "Parts Inventory Management Best Practices";
 const canonicalPath = "/parts-inventory-management-best-practices";
-const metaDescription = "Best practices for parts inventory management. Learn how to track spare parts, manage maintenance inventory, prevent stockouts, and optimize parts inventory for manufacturing and maintenance.";
+const metaDescription = "Parts inventory best practices: track spare parts, manage maintenance stock, prevent stockouts, and optimize inventory for manufacturing and maintenance teams.";
 const keywords = "parts inventory management, spare parts inventory, parts inventory best practices, maintenance inventory, parts tracking, spare parts management, inventory parts";
 const heroBadge = "Topic Guide • Updated September 2025";
 const summaryCopy = "Parts inventory management best practices include: ABC analysis (prioritize critical parts), accurate tracking with barcode scanning, setting appropriate reorder points, maintaining safety stock for critical parts, organizing parts by equipment/application, tracking usage patterns, and managing supplier relationships. Key challenges: preventing stockouts of critical parts (causes downtime), avoiding overstocking (ties up capital), and managing many SKUs. Best practices ensure critical parts are always available while optimizing inventory investment.";
@@ -99,20 +98,15 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
 
 
   return (
-    <SeoPageLayout 
-      title={topicTitle} 
-      heroTitle={topicTitle} 
+    <SeoPageLayout
+      title={topicTitle}
+      seoTitle="Parts Inventory Best Practices 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
+      heroTitle={topicTitle}
       dateUpdated="June 9, 2026"
       faqData={faqData}
-       
-      
     >
-      <SEO
-        title={`Parts Inventory Management Best Practices 2025 - Complete Guide | StockFlow`}
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-      />
 <section id="overview" className="bg-white px-4 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.4fr_1fr]">
           <div>

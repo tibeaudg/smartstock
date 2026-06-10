@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -192,7 +191,7 @@ export default function HvacInventoryManagement() {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "HVAC Inventory Management 2026",
-    "description": "Complete guide to HVAC inventory management. Track HVAC parts, equipment, and supplies with mobile scanning, service vehicle management, and seasonal demand optimization. Free plan available.",
+    "description": "HVAC inventory management guide: track parts and equipment with mobile scanning, service vehicle management, and seasonal demand optimization.",
     "author": {
       "@type": "Organization",
       "name": "StockFlow"
@@ -229,10 +228,14 @@ export default function HvacInventoryManagement() {
   return (
     <SeoPageLayout
       title="HVAC Inventory Management 2026"
+      seoTitle="HVAC Inventory Management 2026 | StockFlow"
+      seoDescription="HVAC inventory management: track parts and equipment with mobile scanning and service vehicle management. Save 10+ hours per week and optimize seasonal demand."
+      seoKeywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
       heroTitle="HVAC Inventory Management: Track Parts, Equipment & Service Vehicles"
-      description="Complete HVAC inventory management guide. Track HVAC parts, equipment, and supplies with mobile scanning, service vehicle management, and seasonal demand optimization. Free plan available."
+      heroDescription="HVAC inventory management: track parts and equipment with mobile scanning and service vehicle management. Save 10+ hours per week and optimize seasonal demand."
       dateUpdated="June 9, 2026"
       faqData={faqData}
+      structuredData={[structuredData, faqStructuredData]}
       previousArticle={{
         title: "Electrical Inventory Management",
         href: "/electrical-inventory-management"
@@ -242,13 +245,6 @@ export default function HvacInventoryManagement() {
         href: "/enterprise-inventory-management"
       }}
     >
-      <SEO
-        title="HVAC Inventory Management 2026 - Save 10+ Hours/Week, Free Plan | StockFlow"
-        description="Complete HVAC inventory management 2026. Track parts and equipment, mobile scanning, service vehicle management. Save 10+ hours/week, optimize seasonal demand. Free plan available. Join for Free - no credit card required."
-        keywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
-        url="https://www.stockflowsystems.com/hvac-inventory-management"
-        structuredData={[structuredData, faqStructuredData]}
-      />
 <section className="py-12">
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-slate-700 leading-relaxed mb-6">

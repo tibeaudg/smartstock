@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable';
@@ -55,20 +54,15 @@ export default function StockFlowVsShipStation() {
   return (
     <SeoPageLayout
       title="StockFlow vs ShipStation"
+      seoTitle="StockFlow vs ShipStation 2026 | StockFlow"
+      seoDescription="StockFlow vs ShipStation: inventory-first software (free) vs shipping platform ($9.99+/month). Compare features, pricing, and which fits inventory management."
+      seoKeywords="stockflow vs shipstation, shipstation alternative, inventory software vs shipping, shipstation vs stockflow, inventory management software"
       heroTitle="StockFlow vs ShipStation (2026 Full Comparison)"
       dateUpdated="22/01/2026"
+      datePublished="2026-01-22T00:00:00Z"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
-      <SEO
-        title="StockFlow vs ShipStation 2026 – Inventory Software vs Shipping Platform"
-        description="StockFlow vs ShipStation comparison: inventory-first software (€0) vs shipping-first platform ($9.99-$159.99/month), comprehensive inventory vs basic inventory, and integration options. Find out which is better for inventory management."
-        keywords="stockflow vs shipstation, shipstation alternative, inventory software vs shipping, shipstation vs stockflow, inventory management software"
-        url="https://www.stockflowsystems.com/stockflow-vs-shipstation"
-        publishedTime="2026-01-22T00:00:00Z"
-        modifiedTime={new Date().toISOString()}
-      />
-
       <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs ShipStation</h1>

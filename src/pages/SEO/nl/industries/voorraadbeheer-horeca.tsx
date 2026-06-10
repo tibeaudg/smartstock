@@ -5,7 +5,7 @@ const topicTitle = "Voorraadbeheer in de Horeca: Stocken zonder verspilling";
 const canonicalPath = "/nl/industries/voorraadbeheer-horeca";
 
 const metaDescription =
-  "Voorraadbeheer horeca: complete gids voor stockbeheer in restaurants en cafés. Leer correct stocken, verspilling verminderen tot 30%, foodcost verlagen en winstmarges verbeteren met gratis voorraadbeheer software voor horeca.";
+  "Voorraadbeheer horeca: stockbeheer voor restaurants en cafés. Verminder verspilling, verlaag foodcost en verbeter marges met gratis voorraadsoftware.";
 
 const keywords =
   "voorraadbeheer horeca, stocken horeca, horeca voorraad tellen, horeca stockbeheer, inventaris horeca, horeca kostenbeheersing, foodcost horeca, drankvoorraad horeca, voorraadbeheer restaurant, horeca software voorraad, voorraadbeheer software horeca, stockbeheer restaurant, voorraadbeheer café, horeca inventaris software";

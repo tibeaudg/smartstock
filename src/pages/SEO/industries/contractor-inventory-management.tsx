@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
@@ -32,6 +31,9 @@ import {
   HardHat
 } from 'lucide-react';
 
+const PAGE_META_DESCRIPTION =
+  'Construction inventory software for contractors: track materials and tools across jobsites, cut waste, and integrate with accounting for accurate job costing.';
+
 /**
  * Optimized Construction Inventory Management Page
  * Target Keywords: construction inventory management software, managing inventory across jobsites, 
@@ -49,8 +51,6 @@ export default function ContractorInventoryManagement() {
 
   const topicTitle = "Construction Inventory Management Software for Contractors: Complete Guide 2026";
   const dateUpdated = "June 9, 2026";
-  const heroDescription = "Complete guide to construction inventory management for contractors. Learn how to manage inventory across multiple jobsites, track equipment and tools, prevent theft and waste, and integrate with accounting software for accurate job costing.";
-
   const faqData = [
     {
       question: "What is the best way to handle construction inventory management?",
@@ -133,19 +133,15 @@ export default function ContractorInventoryManagement() {
   return (
     <SeoPageLayout 
       breadcrumbItems={breadcrumbItems}
+      seoTitle="Contractor Inventory Software 2026 | StockFlow"
+      seoDescription={PAGE_META_DESCRIPTION}
+      seoKeywords="construction inventory management software, managing inventory across jobsites, inventory management software for general contractors, construction equipment tracking software, construction business software, best accounting software for construction, contractor inventory management, construction material tracking, jobsite inventory management, construction tool tracking, construction job costing, multi-location construction inventory"
       heroTitle={topicTitle}
-      heroDescription={heroDescription}
+      heroDescription={PAGE_META_DESCRIPTION}
       dateUpdated={dateUpdated}
       keyTakeaways={keyTakeaways}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Construction Inventory Management Software for Contractors: Complete Guide 2026 | Multi-Jobsite Tracking"
-        description="Complete guide to construction inventory management for contractors. Learn how to manage inventory across multiple jobsites, track equipment and tools, prevent theft and waste (reduce by 30%), and integrate with accounting software for accurate job costing. Best practices for general contractors, electrical, plumbing, HVAC, and concrete contractors."
-        keywords="construction inventory management software, managing inventory across jobsites, inventory management software for general contractors, construction equipment tracking software, construction business software, best accounting software for construction, contractor inventory management, construction material tracking, jobsite inventory management, construction tool tracking, construction job costing, multi-location construction inventory"
-        url="https://www.stockflowsystems.com/contractor-inventory-management"
-        structuredData={structuredData}
-      />
-
       {/* Hero / Introduction */}
       <section className="mb-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">

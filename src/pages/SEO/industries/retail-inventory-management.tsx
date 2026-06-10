@@ -281,7 +281,7 @@ export default function RetailInventoryManagement() {
     >
       <SEO
         title="Retail Inventory Management Software | StockFlow"
-        description="Retail inventory software for small shops. Real-time tracking, barcode scanning, prevent stockouts. Reduce costs 25%, save 10+ hours/week. StockFlow is completely free forever - all features included."
+        description="Retail inventory software for shops: real-time tracking, barcode scanning, and stockout prevention. Cut costs 25% and save 10+ hours weekly with StockFlow."
         keywords="retail inventory management, small retail shop software, retail stock management, shop inventory system, retail inventory tracking, small business inventory, retail POS integration, inventory management for retailers, retail stock control, shop management software, retail inventory software, small shop inventory, retail inventory solution, shop stock tracking, retail inventory app"
         url="https://www.stockflowsystems.com/retail-inventory-management"
         structuredData={structuredData}

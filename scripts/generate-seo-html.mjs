@@ -533,6 +533,11 @@ function buildHeadBlock({ route, title, description, image, noindex, structuredD
   const canonical = `${BASE_URL}${route === '/' ? '' : route}`;
   const t = title || DEFAULT_TITLE;
   const d = description || DEFAULT_DESCRIPTION;
+  if (d.length > 160) {
+    warnings.push(
+      `Meta description for ${route} is ${d.length} chars (max 160): "${d.substring(0, 80)}..."`
+    );
+  }
   const img = absoluteImage(image);
   const robots = noindex
     ? 'noindex, follow'

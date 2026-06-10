@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 import { 
   ShieldCheck, 
@@ -17,7 +16,7 @@ import {
 
 const topicTitle = "Free IT Inventory Management Software: The 2026 Definitive Guide";
 const canonicalPath = "/it-inventory-management-software-free";
-const metaDescription = "Explore truly free IT inventory management software. Learn about the limitations of Excel, Google's options, and whether 'free' tools like Zoho are actually cost-effective for ITAM.";
+const metaDescription = "Free IT inventory management software compared: Excel limits, Google options, and whether tools like Zoho are truly cost-effective for ITAM.";
 const keywords = "it inventory management software free, zoho inventory free plan, excel inventory management, google inventory system, free itam software 2026";
 
 const keyTakeaways = [
@@ -50,12 +49,14 @@ export default function SeoFreeItInventoryPage() {
   return (
     <SeoPageLayout
       title={topicTitle}
+      seoTitle="Free IT Inventory Software Guide 2026 | StockFlow"
+      seoDescription={metaDescription}
+      seoKeywords={keywords}
       heroTitle="Free IT Inventory Management Software: The 2026 Definitive Guide"
       heroDescription="Explore truly free IT inventory management software. Learn about the limitations of Excel, Google's options, and whether 'free' tools like Zoho are actually cost-effective for ITAM."
       dateUpdated="January 8, 2026"
       keyTakeaways={keyTakeaways}
     >
-      <SEO title={`${topicTitle} | StockFlow`} description={metaDescription} keywords={keywords} canonical={canonicalPath} />
 {/* SECTION 1: IS THERE ANY FREE SOFTWARE */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-4xl px-4">

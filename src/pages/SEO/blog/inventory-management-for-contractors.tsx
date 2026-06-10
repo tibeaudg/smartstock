@@ -5,7 +5,7 @@ import { CheckCircle, Target, BarChart3, Lightbulb, Truck, Wrench, Building2, Ma
 
 const topicTitle = "Inventory Management for Contractors";
 const canonicalPath = "/blog/inventory-management-for-contractors";
-const metaDescription = "Complete guide to inventory management for contractors. Learn how to manage inventory across job sites, vehicles, and warehouses with mobile solutions designed for field service teams.";
+const metaDescription = "Inventory management for contractors: manage stock across job sites, vehicles, and warehouses with mobile tools built for field service teams.";
 const keywords = "inventory management for contractors, contractor inventory, field service inventory, job site inventory, contractor inventory software, mobile inventory for contractors";
 const heroBadge = "Contractor Guide • Updated December 2024";
 

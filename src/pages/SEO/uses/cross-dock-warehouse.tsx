@@ -236,14 +236,14 @@ export default function BestInventoryManagementSoftware() {
   return (
     <SeoPageLayout 
       title="Cross-dock Warehouse"
-      description="Complete cross-dock warehouse management 2026. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning. Free plan available."
+      description="Cross-dock warehouse management: streamline receiving and shipping, cut storage time 50%, and optimize logistics with real-time tracking and barcode scanning."
       heroTitle="Cross-dock Warehouse"
       dateUpdated="2026-11-06"
       faqData={faqData}
     >
       <SEO
         title="Cross Dock Warehouse 2026 - Reduce Storage 50% | StockFlow"
-        description="Complete cross-dock warehouse management 2026. Streamline receiving and shipping, reduce storage time 50%, optimize logistics. Real-time tracking, barcode scanning."
+        description="Cross-dock warehouse management: streamline receiving and shipping, cut storage time 50%, and optimize logistics with real-time tracking and barcode scanning."
         keywords="Cross-dock Warehouse, popular inventory management software, inventory management software, inventory software management, software for inventory management, softwares for inventory management, inventory management software best, top inventory management software, best inventory software, best stock management software, best inventory system, best inventory tracking software, best inventory management system, inventory tracking programs, best inventory software 2026, top rated inventory software, best inventory management solution, best inventory software for small business, best inventory software for ecommerce, Cross-dock Warehouse comparison, best inventory software reviews, Cross-dock Warehouse features, best inventory software pricing, best inventory software demo, best inventory software trial, inventory management software provider, inventory management software online, stockflow"
         url="https://www.stockflowsystems.com/best-inventory-management-software"
       />
@@ -289,62 +289,6 @@ export default function BestInventoryManagementSoftware() {
       </section>
 
 
-
-      {/* Quick Wins Section */}
-      <section id="quick-wins" className="py-16 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Why Businesses Choose StockFlow Over Competitors
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Real results from real businesses using the Cross-dock Warehouse.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">35%</div>
-              <div className="text-lg font-semibold mb-2">Cost Reduction</div>
-              <div className="text-sm text-gray-600">Average inventory cost savings</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">15h</div>
-              <div className="text-lg font-semibold mb-2">Hours Saved</div>
-              <div className="text-sm text-gray-600">Per week on manual tasks</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-2">99.9%</div>
-              <div className="text-lg font-semibold mb-2">Accuracy</div>
-              <div className="text-sm text-gray-600">Inventory tracking precision</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">24/7</div>
-              <div className="text-lg font-semibold mb-2">Support</div>
-              <div className="text-sm text-gray-600">Expert help when you need it</div>
-            </div>
-          </div>
-
-          <div className="bg-blue-50 rounded-lg p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">Join 500+ Companies Who Signed Up This Month</h3>
-            <p className="text-lg text-gray-600 mb-6">See why businesses are switching to StockFlow as their inventory management solution</p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">No setup fees</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Instant access</span>
-              </div>
-              <div className="flex items-center bg-white px-4 py-2 rounded-full shadow-sm">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm font-medium">Free migration</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Features Section */}
       <section id="features" className="py-16 px-4 bg-gray-50">

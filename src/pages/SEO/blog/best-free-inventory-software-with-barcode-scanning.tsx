@@ -1,47 +1,16 @@
-import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SeoPageLayout from "@/components/SeoPageLayout";
-import { generateSeoPageStructuredData } from "@/lib/structuredData";
-import { getBreadcrumbPath } from "@/config/topicClusters";
+import {
+  BARCODE_SCANNING_FAQ_DATA,
+  BARCODE_SCANNING_STRUCTURED_DATA,
+} from "@/config/promptStructuredData";
 
-const canonicalPath = "/best-free-inventory-software-with-barcode-scanning";
-const PAGE_TITLE = "5 Best Free Inventory Software with Barcode Scanner (2026) — StockFlow";
+const canonicalPath = '/best-free-inventory-software-with-barcode-scanning';
+const PAGE_TITLE = "Best Free Inventory Software with Barcode Scanner (2026) | StockFlow";
 const PAGE_DESCRIPTION =
-  "Scan barcodes with your phone camera. No credit card. Trusted by 3,000+ small businesses. Try free →";
-const DATE_MODIFIED = "2026-06-08";
+  "Scan barcodes with your phone. Unlimited SKUs, multi-location support, and offline mode — free for small businesses. Try StockFlow free.";
 
-const faqData = [
-  {
-    question: "Can I scan barcodes with my phone camera for free?",
-    answer:
-      "Yes. StockFlow lets you scan barcodes with your phone camera on iOS and Android — no dedicated scanner hardware and no credit card required. Trusted by 3,000+ small businesses for receiving, cycle counts, transfers, and picking.",
-  },
-  {
-    question: "Is there a free barcode inventory system?",
-    answer:
-      "Yes. StockFlow is a free barcode inventory system with native mobile scanning, offline workflows, multi-location support, and no forced upgrade to keep scanning. Most teams can start in minutes without buying dedicated scanner hardware.",
-  },
-  {
-    question: "What is the best free inventory software with barcode scanning?",
-    answer:
-      "For most small and mid-size teams, StockFlow is the best free inventory software with barcode scanning because it combines camera and hardware scanning, offline sync, multi-location visibility, and flexible SKU growth without a low free-tier cap.",
-  },
-  {
-    question: "Can I scan barcodes with StockFlow?",
-    answer:
-      "Yes. StockFlow supports UPC, EAN, QR, and Code 128 barcodes using your phone camera or paired hardware scanners. Use scans for receiving, transfers, cycle counts, and picking from one consistent workflow.",
-  },
-  {
-    question: "Does StockFlow work on mobile for barcode scanning?",
-    answer:
-      "Yes. StockFlow runs on iOS and Android with mobile-first barcode scanning. Teams can count stock on the floor, queue scans offline, and sync automatically once connectivity returns.",
-  },
-  {
-    question: "Does StockFlow barcode scanning work offline?",
-    answer:
-      "Yes. StockFlow supports offline-first workflows so teams can keep scanning even in low-connectivity areas. Data syncs automatically once internet access is available again.",
-  },
-];
+const faqData = BARCODE_SCANNING_FAQ_DATA;
 
 const topFivePicks = [
   {
@@ -92,53 +61,17 @@ const comparisonRows = [
 ];
 
 export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
-  const location = useLocation();
-  const pageUrl = `https://www.stockflowsystems.com${location.pathname}`;
-
-  const structuredData = generateSeoPageStructuredData({
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    url: canonicalPath,
-    breadcrumbs: getBreadcrumbPath(location.pathname).map((item, index) => ({
-      name: item.name,
-      url: item.path,
-      position: index + 1,
-    })),
-    faqData,
-    softwareData: {
-      name: "StockFlow",
-      description:
-        "Free inventory software with barcode scanning, offline mobile workflows, and multi-location stock control for small businesses.",
-      category: "BusinessApplication",
-      operatingSystem: "Web, iOS, Android",
-      price: "0",
-      currency: "USD",
-      url: pageUrl,
-      rating: { value: "4.9", count: "3200" },
-      image: "/Inventory-Management.png",
-      features: [
-        "Mobile barcode scanning",
-        "Offline scan sync",
-        "Multi-location inventory",
-        "UPC, EAN, QR, Code 128 support",
-      ],
-    },
-    pageType: "article",
-    datePublished: "June 9, 2026",
-    dateModified: DATE_MODIFIED,
-    includeWebSite: true,
-  });
-
   return (
     <SeoPageLayout
       title={PAGE_TITLE}
       seoDescription={PAGE_DESCRIPTION}
-      heroTitle="5 Best Free Inventory Software with Barcode Scanner (2026)"
-      heroDescription="Scan barcodes with your phone camera — no credit card required. We ranked the top 5 free inventory apps with barcode scanning and compared 7 options on offline support, SKU limits, and multi-location capability."
+      heroTitle="Best Free Inventory Software with Barcode Scanner (2026)"
+      heroDescription={PAGE_DESCRIPTION}
       dateUpdated="June 9, 2026"
       pageLanguage="en"
       faqData={faqData}
-      structuredData={structuredData}
+      structuredData={BARCODE_SCANNING_STRUCTURED_DATA}
+      structuredDataMode="replace"
     >
       <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
 
@@ -298,18 +231,6 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
             <Link to="/contractor-inventory-management" className="text-blue-600 underline">Contractor inventory management</Link> — materials and equipment for construction crews
           </li>
         </ul>
-      </section>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
-        <div className="space-y-4">
-          {faqData.map((faq) => (
-            <details key={faq.question} className="bg-gray-50 p-4 rounded-lg">
-              <summary className="cursor-pointer font-semibold">{faq.question}</summary>
-              <p className="mt-2 text-gray-700">{faq.answer}</p>
-            </details>
-          ))}
-        </div>
       </section>
     </SeoPageLayout>
   );

@@ -40,8 +40,8 @@ export default function StockbeheerSoftware() {
   return (
     <SeoPageLayout 
       title="Stockbeheer Software"
-      seoTitle="Stockbeheer Software 2026: Gratis Voorraadsoftware voor KMO's | StockFlow"
-      seoDescription="Professionele stockbeheer software voor Belgische en Nederlandse KMO's. Real-time tracking, barcode scanning en automatisch herbestellen. Gratis plan — geen creditcard vereist."
+      seoTitle="Stockbeheer Software 2026 voor KMO's | StockFlow"
+      seoDescription="Stockbeheer software voor BE en NL KMO's. Real-time tracking, barcode scanning en automatisch herbestellen. Gratis plan — geen creditcard vereist."
       heroTitle="Stockbeheer Software: Optimaliseer Uw Voorraad"
       dateUpdated="22/01/2026"
       pageLanguage="nl"

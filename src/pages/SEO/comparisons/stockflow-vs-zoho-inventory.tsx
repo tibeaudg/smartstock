@@ -1,12 +1,12 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { StructuredData } from '@/components/StructuredData';
+import { ZOHO_COMPARISON_STRUCTURED_DATA } from '@/config/promptStructuredData';
 
 const canonicalPath = '/stockflow-vs-zoho-inventory';
-const pageTitle = 'StockFlow vs Zoho Inventory (2026): Which Is Better for Small Business?';
+const seoTitle = 'StockFlow vs Zoho Inventory (2026): Free Plan Compared | StockFlow';
+const heroTitle = 'StockFlow vs Zoho Inventory (2026): Which Has the Better Free Plan?';
 const pageDescription =
-  "Zoho's free plan is limited. See how StockFlow compares on barcode scanning, BOM support, and pricing. Honest comparison.";
+  "Zoho Inventory's free plan caps you at 50 orders/month. StockFlow is unlimited, free forever. Side-by-side feature comparison for small businesses.";
 
 const featureRows = [
   ['Free plan (published Jan 2026)', 'Free plan with core inventory workflows', 'Free plan capped at 50 orders/month, 1 user, 1 warehouse'],
@@ -56,19 +56,15 @@ const faqData = [
 export default function StockFlowVsZohoInventory() {
   return (
     <SeoPageLayout
-      heroTitle={pageTitle}
+      title={seoTitle}
+      seoDescription={pageDescription}
+      heroTitle={heroTitle}
       heroDescription={pageDescription}
       dateUpdated="June 10, 2026"
       faqData={faqData}
+      structuredData={ZOHO_COMPARISON_STRUCTURED_DATA}
+      structuredDataMode="replace"
     >
-      <SEO
-        title={pageTitle}
-        description={pageDescription}
-        canonical={canonicalPath}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        keywords="stockflow vs zoho inventory, which is better zoho inventory, zoho inventory alternative, best zoho inventory alternative, free zoho inventory alternative, zoho inventory free plan limits, barcode scanning inventory, bom software, free inventory software comparison"
-      />
-
       <section className="py-12">
         <p className="text-slate-700 leading-7">
           If you searched <strong>StockFlow vs Zoho Inventory</strong>, you want a direct answer — not marketing fluff.
@@ -207,29 +203,6 @@ export default function StockFlowVsZohoInventory() {
           ))}
         </div>
       </section>
-
-      <StructuredData
-        data={[
-          {
-            '@context': 'https://schema.org',
-            '@type': 'SoftwareApplication',
-            name: 'StockFlow',
-            applicationCategory: 'BusinessApplication',
-            operatingSystem: 'Web, iOS, Android',
-            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-            url: `https://www.stockflowsystems.com${canonicalPath}`,
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: faqData.map((faq) => ({
-              '@type': 'Question',
-              name: faq.question,
-              acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-            })),
-          },
-        ]}
-      />
     </SeoPageLayout>
   );
 }

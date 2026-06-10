@@ -1,5 +1,4 @@
-﻿import SEO from '@/components/SEO';
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { 
@@ -219,20 +218,15 @@ export default function InventoryOptimization() {
   return (
     <SeoPageLayout 
       title="Inventory Optimization"
+      seoTitle="Inventory Optimization Guide 2026 | StockFlow"
+      seoDescription="Inventory optimization guide: reduce costs 30%, improve cash flow 15-25%, and prevent stockouts with proven strategies, AI tools, and best practices."
+      seoKeywords="inventory optimization, optimal inventory, stock optimization, inventory balance, inventory efficiency, stock level optimization, inventory management optimization, inventory cost optimization, ABC analysis, demand forecasting, reorder points, safety stock, EOQ, inventory turnover"
       heroTitle="Inventory Optimization: Complete Guide 2026"
-      description="Master inventory optimization to reduce costs, improve cash flow, and eliminate stockouts. Learn proven strategies, tools, and best practices for optimal stock levels."
+      heroDescription="Inventory optimization guide: reduce costs 30%, improve cash flow 15-25%, and prevent stockouts with proven strategies, AI tools, and best practices."
       dateUpdated={pageMetadata.updatedDisplay}
+      datePublished={pageMetadata.published}
       faqData={faqData}
     >
-      <SEO
-        title="Inventory Optimization 2026 - Save 30% Costs, 15-25% Cash Flow | StockFlow"
-        description="Master inventory optimization 2026. Reduce costs 30%, improve cash flow 15-25%, eliminate stockouts. Proven strategies, AI tools, best practices."
-        keywords="inventory optimization, optimal inventory, stock optimization, inventory balance, inventory efficiency, stock level optimization, inventory management optimization, inventory cost optimization, ABC analysis, demand forecasting, reorder points, safety stock, EOQ, inventory turnover"
-        url="https://www.stockflowsystems.com/glossary/inventory-optimization"
-        publishedTime={pageMetadata.published}
-        modifiedTime={pageMetadata.updated}
-      />
-
       <StructuredData
         data={[
           {
@@ -247,7 +241,7 @@ export default function InventoryOptimization() {
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: 'Inventory Optimization: Complete Guide 2026',
-            description: 'Master inventory optimization to reduce costs, improve cash flow, and eliminate stockouts. Learn proven strategies, tools, and best practices for optimal stock levels.',
+            description: 'Inventory optimization guide: reduce costs, improve cash flow, and prevent stockouts with proven strategies, tools, and best practices for optimal stock levels.',
             author: {
               '@type': 'Organization',
               name: 'StockFlow'

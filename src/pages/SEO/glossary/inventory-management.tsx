@@ -1,5 +1,4 @@
-﻿import SEO from '@/components/SEO';
-import SeoPageLayout from '@/components/SeoPageLayout';
+﻿import SeoPageLayout from '@/components/SeoPageLayout';
 import { usePageRefresh } from '@/hooks/usePageRefresh';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useLocation } from 'react-router-dom';
@@ -327,23 +326,14 @@ export default function InventoryManagementGuide() {
   return (
     <SeoPageLayout 
       title="Inventory Management Guide"
+      seoTitle="Inventory Management Guide 2026 | StockFlow"
+      seoDescription="Complete guide to inventory management 2025. Learn types, methods, best practices. Reduce costs 20-30%, improve efficiency. Free plan available."
+      seoKeywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
       heroTitle="Inventory Management Guide"
       dateUpdated="June 9, 2026"
+      datePublished="2025-11-06T00:00:00Z"
       faqData={faqData}
-
-      
-      
-      
     >
-      <SEO
-        title="Inventory Management 2025 - Save 20-30% Costs, Complete Guide | StockFlow"
-        description="Complete guide to inventory management 2025. Learn types, methods, best practices. Reduce costs 20-30%, improve efficiency. Free plan available."
-        keywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
-        url="https://www.stockflowsystems.com/inventory-management"
-        publishedTime="2025-11-06T00:00:00Z"
-        modifiedTime={new Date().toISOString()}
-      />
-
       {/* Introduction */}
       <div className="mb-12">
         <p className="text-lg black leading-relaxed mb-6">

@@ -221,7 +221,7 @@ export default function SuppliersSolutionPage() {
     >
       <SEO
         title="Supplier Management Software 2026 - Save 20-30% Costs | StockFlow"
-        description="Centralize supplier data 2026, automate purchasing workflows, track vendor performance. Save 20-30% procurement costs, reduce stockouts 40%. Unified supplier directory, automated reordering."
+        description="Supplier management software: centralize vendor data, automate purchasing, and track performance. Cut procurement costs 20-30% and reduce stockouts 40%."
         keywords="supplier management software, vendor management, purchase order automation, supplier portal, procurement workflow, supplier tracking, vendor relationship management, supplier performance, supplier management system, vendor management software, stockflow, stock flow"
         url="https://www.stockflowsystems.com/suppliers"
         structuredData={structuredData}

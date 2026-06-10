@@ -18,8 +18,8 @@ export default function VoorraadbeheerOnderhoudPage() {
   return (
     <SeoPageLayout 
       title="Onderhoud Voorraadbeheer"
-      seoTitle="Onderhoudsvoorraad Software – MRO & Reserveonderdelen | StockFlow"
-      seoDescription="Onderhoud voorraadbeheer software voor reserveonderdelen en smeermiddelen. Optimaliseer onderhoudskosten en voorkom downtime. Volledig gratis voor Belgische KMO's."
+      seoTitle="Onderhoudsvoorraad Software 2026 | StockFlow"
+      seoDescription="Onderhoud voorraadbeheer software voor reserveonderdelen en smeermiddelen. Optimaliseer onderhoudskosten en voorkom downtime. Gratis voor BE KMO's."
       heroTitle="Onderhoud Voorraadbeheer Software"
       dateUpdated="22/01/2026"
       pageLanguage="nl"

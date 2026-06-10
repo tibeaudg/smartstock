@@ -9,6 +9,8 @@ import { globby } from 'globby';
 import { getSlugFromSeoFile } from './utils/seo-slug.mjs';
 
 const SEO_DIR = path.join(process.cwd(), 'src/pages/SEO');
+const APP_PATH = path.join(process.cwd(), 'src/App.tsx');
+const META_DESCRIPTION_MAX = 160;
 
 let errors = 0;
 let warnings = 0;
@@ -92,8 +94,43 @@ function hasSeoMeta(content) {
   return Boolean(seoDesc || heroDesc || heroTitle || title || seoComponentDesc || headerDesc);
 }
 
+/** Resolve the meta description a page will emit (mirrors SeoPageLayout + nested SEO precedence). */
+function extractEffectiveMetaDescription(content) {
+  const seoDesc = extractStringProp(content, 'seoDescription');
+  const seoComponentDesc = extractSeoComponentDescription(content);
+  const heroDesc = extractStringProp(content, 'heroDescription');
+  const headerDesc = extractHeaderPublicDescription(content);
+  const metaDesc =
+    resolveConst(content, 'metaDescription') ||
+    resolveConst(content, 'pageDescription') ||
+    resolveConst(content, 'PAGE_DESCRIPTION') ||
+    resolveConst(content, 'PAGE_META_DESCRIPTION');
+
+  return seoDesc || seoComponentDesc || heroDesc || headerDesc || metaDesc || null;
+}
+
+function checkDescriptionLength(label, description) {
+  if (!description || description.length <= META_DESCRIPTION_MAX) return;
+  error(
+    `${label}: meta description is ${description.length} chars (max ${META_DESCRIPTION_MAX}): "${description.substring(0, 80)}..."`
+  );
+}
+
+function checkAppRouteDescriptions() {
+  if (!fs.existsSync(APP_PATH)) return;
+  const content = fs.readFileSync(APP_PATH, 'utf-8');
+  const routePattern = /<Route\s+path="([^"]+)"[^>]*element=\{[\s\S]*?<SEO[\s\S]*?\bdescription="([^"]+)"/g;
+  let match;
+  while ((match = routePattern.exec(content)) !== null) {
+    const [, routePath, description] = match;
+    checkDescriptionLength(`App.tsx route ${routePath}`, description);
+  }
+}
+
 async function main() {
-  const files = await globby('**/*.tsx', {
+  checkAppRouteDescriptions();
+
+  const files = await globby('**/*.{tsx,ts}', {
     cwd: SEO_DIR,
     ignore: ['**/createGlossaryPage.tsx'],
   });
@@ -123,6 +160,11 @@ async function main() {
 
     if (content.includes('SeoPageLayout') && !hasSeoMeta(content)) {
       warn(`${file}: SeoPageLayout without seoDescription, heroDescription, or heroTitle`);
+    }
+
+    const effectiveDesc = extractEffectiveMetaDescription(content);
+    if (effectiveDesc) {
+      checkDescriptionLength(file, effectiveDesc);
     }
 
     const seoDesc =

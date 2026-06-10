@@ -74,7 +74,7 @@ export default function AvoidInventoryMistakes() {
     >
       <SEO
         title="What Is Lead-Time 2026 - Save 10-20% Costs, 7 Solutions | StockFlow"
-        description="Avoid costly inventory mistakes 2026 that cost 10-20% of inventory value annually. Discover 7 common errors and proven solutions. Reduce errors 90-95%. Free plan available. Join for Free - no credit card required."
+        description="What is lead time in inventory? Learn how supplier lead time affects reorder points, stockouts, and costs, plus proven ways to reduce delays."
         keywords="inventory mistakes, stock errors, inventory problems, avoid inventory errors, common inventory mistakes, inventory management errors, prevent inventory mistakes, inventory tracking errors"
         url="https://www.stockflowsystems.com/what-is-lead-time"
         locale="en"

@@ -1,0 +1,91 @@
+/**
+ * Injects crawlable <a href> links into every per-route dist HTML file.
+ * Ensures non-JS crawlers (Ahrefs audit, Screaming Frog, etc.) see internal outlinks.
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { getSitemapRoutes, routeToHtmlPath } from './utils/sitemap-routes.mjs';
+import { getCrawlLinksForRoute } from './utils/crawl-links-config.mjs';
+
+const ROOT = process.cwd();
+const DIST_DIR = path.join(ROOT, 'dist');
+const SITEMAP_PATH = path.join(ROOT, 'public', 'sitemap.xml');
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function buildCrawlNavHtml(routePath) {
+  const links = getCrawlLinksForRoute(routePath);
+  const items = links
+    .map(
+      (link) =>
+        `    <a href="${escapeHtml(link.path)}">${escapeHtml(link.label)}</a>`
+    )
+    .join('\n');
+
+  return [
+    '<nav id="crawl-nav" aria-label="Site navigation" data-crawl-nav="true" style="clip:rect(1px,1px,1px,1px);clip-path:inset(50%);height:1px;width:1px;overflow:hidden;position:absolute;white-space:nowrap;">',
+    items,
+    '</nav>',
+  ].join('\n');
+}
+
+function stripExistingCrawlNav(html) {
+  return html.replace(
+    /<nav[^>]*id="crawl-nav"[^>]*>[\s\S]*?<\/nav>\s*/i,
+    ''
+  );
+}
+
+function injectCrawlNav(html, routePath) {
+  const nav = buildCrawlNavHtml(routePath);
+  const cleaned = stripExistingCrawlNav(html);
+
+  if (/<div[^>]*id="root"/i.test(cleaned)) {
+    return cleaned.replace(/(<body[^>]*>)/i, `$1\n  ${nav}\n`);
+  }
+
+  return cleaned.replace(/<\/body>/i, `  ${nav}\n</body>`);
+}
+
+function ensureRouteHtml(route, templateHtml) {
+  const htmlPath = routeToHtmlPath(DIST_DIR, route);
+  fs.mkdirSync(path.dirname(htmlPath), { recursive: true });
+
+  if (!fs.existsSync(htmlPath)) {
+    fs.writeFileSync(htmlPath, templateHtml, 'utf8');
+  }
+
+  const current = fs.readFileSync(htmlPath, 'utf8');
+  const updated = injectCrawlNav(current, route);
+  fs.writeFileSync(htmlPath, updated, 'utf8');
+}
+
+function main() {
+  if (!fs.existsSync(DIST_DIR)) {
+    console.error('[inject-crawl-links] dist/ not found — run vite build first.');
+    process.exit(1);
+  }
+
+  const templatePath = path.join(DIST_DIR, 'index.html');
+  if (!fs.existsSync(templatePath)) {
+    console.error('[inject-crawl-links] dist/index.html not found.');
+    process.exit(1);
+  }
+
+  const templateHtml = fs.readFileSync(templatePath, 'utf8');
+  const routes = getSitemapRoutes(SITEMAP_PATH);
+
+  for (const route of routes) {
+    ensureRouteHtml(route, templateHtml);
+  }
+
+  console.log(`[inject-crawl-links] Injected crawl nav into ${routes.length} route HTML file(s).`);
+}
+
+main();

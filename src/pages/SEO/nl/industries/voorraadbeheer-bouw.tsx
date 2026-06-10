@@ -20,6 +20,9 @@ import {
   HardHat
 } from 'lucide-react';
 
+const PAGE_META_DESCRIPTION =
+  'Voorraadbeheer bouw voor aannemers: beheer voorraad over bouwplaatsen, volg gereedschap, voorkom diefstal en koppel met boekhoudsoftware voor jobcosting.';
+
 export default function VoorraadbeheerBouwPage() {
   const location = useLocation();
   
@@ -31,8 +34,6 @@ export default function VoorraadbeheerBouwPage() {
 
   const topicTitle = "Voorraadbeheer Bouw Software voor Aannemers: Complete Gids 2026";
   const dateUpdated = "22 januari 2026";
-  const heroDescription = "Complete gids voor voorraadbeheer bouw voor aannemers. Leer hoe u voorraad beheert over meerdere bouwplaatsen, uitrusting en gereedschap volgt, diefstal en verspilling voorkomt en integreert met boekhoudsoftware voor nauwkeurige projectkostenberekening.";
-
   const faqData = [
     {
       question: "Wat is de beste manier om voorraadbeheer bouw te hanteren?",
@@ -92,10 +93,10 @@ export default function VoorraadbeheerBouwPage() {
 
   return (
     <SeoPageLayout 
-      seoTitle="Voorraadbeheer Bouw Software voor Aannemers 2026 | StockFlow"
-      seoDescription="Voorraadbeheer software voor aannemers in België en Nederland. Beheer voorraad over meerdere bouwplaatsen, volg gereedschap en voorkom diefstal."
+      seoTitle="Voorraadbeheer Bouw Software 2026 | StockFlow"
+      seoDescription={PAGE_META_DESCRIPTION}
       heroTitle={topicTitle}
-      heroDescription={heroDescription}
+      heroDescription={PAGE_META_DESCRIPTION}
       dateUpdated={dateUpdated}
       pageLanguage="nl"
       keyTakeaways={keyTakeaways}

@@ -560,7 +560,75 @@
       "destination": "/api/ads"
     },
     {
-      "source": "/((?!api|sw.js|.*\\.xml|.*\\.txt|.*\\.json|.*\\.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.gif|.*\\.svg|.*\\.webp|.*\\.css|.*\\.js|.*\\.woff|.*\\.woff2|.*\\.ttf|.*\\.eot).*)",
+      "source": "/auth",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/billing-success",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dashboard/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/checkout/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/500",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/customers/:id",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/help-center",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/case-studies",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/security",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/cookies",
       "destination": "/index.html"
     }
   ],
