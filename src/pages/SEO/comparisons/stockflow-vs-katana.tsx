@@ -16,6 +16,7 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 
+const canonicalPath = '/stockflow-vs-katana';
 
 const comparisonRows = [
   {

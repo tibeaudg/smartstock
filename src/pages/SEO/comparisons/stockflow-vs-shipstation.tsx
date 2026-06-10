@@ -4,6 +4,8 @@ import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable
 import { DollarSign, Shield, Clock, Database, Package } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
+const canonicalPath = '/stockflow-vs-shipstation';
+
 export default function StockFlowVsShipStation() {
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: '$9.99-$159.99/month' },

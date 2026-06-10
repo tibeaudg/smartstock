@@ -5,6 +5,8 @@ import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable
 import { DollarSign, Shield, Clock, Database } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
+const canonicalPath = '/stockflow-vs-finale-inventory';
+
 export default function StockFlowVsFinaleInventory() {
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: '$99-$299/month' },

@@ -5,6 +5,8 @@ import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable
 import { DollarSign, Shield, Clock, Database, Layers } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
+const canonicalPath = '/stockflow-vs-odoo';
+
 export default function StockFlowVsOdoo() {
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: '€24.90/user/month' },

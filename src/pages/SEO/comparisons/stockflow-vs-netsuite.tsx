@@ -6,6 +6,8 @@ import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable
 import { DollarSign, Smartphone, Shield, Clock, Database, Lock, Globe } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
+const canonicalPath = '/stockflow-vs-netsuite';
+
 export default function StockFlowVsNetSuite() {
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: '$999-$4,999/month' },

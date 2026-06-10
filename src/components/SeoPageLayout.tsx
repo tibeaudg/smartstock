@@ -31,6 +31,8 @@ import {
   generateLocalBusinessSchema,
 } from '@/utils/enhancedStructuredData';
 import { getHubForPath, getTopicalRelatedLinks } from '@/config/internalLinking';
+import { getSeoRoutes } from '@/routes/seoRoutes';
+import { getCrossLinksForRoute, pathToLabel } from '@/utils/seoCrossLinks';
 import { getHreflangAlternates } from '@/config/enNlHreflang';
 import {
   generatePageMetaDescription,
@@ -84,31 +86,35 @@ const DEFAULT_AUTHOR = 'StockFlow Team';
 /* ─────────────────────────────────────────────
    SEO Auto Discovery
 ───────────────────────────────────────────── */
-const seoPagesUpper = import.meta.glob('/src/pages/SEO/**/*.tsx', { eager: false });
-const seoPagesLower = import.meta.glob('/src/pages/seo/**/*.tsx', { eager: false });
-const seoPages = { ...seoPagesUpper, ...seoPagesLower };
+const HUB_PATHS = new Set([
+  '/blog',
+  '/resources',
+  '/glossary',
+  '/industries',
+  '/nl',
+  '/compare-inventory-software',
+]);
 
 const getAllArticles = () => {
-  const articles: Array<{ title: string; href: string; category: string }> = [];
-  Object.keys(seoPages).forEach((path) => {
-    const fullPath = path
-      .replace(/\/src\/pages\/(SEO|seo)\//, '')
-      .replace('.tsx', '')
-      .replace('/index', '');
-    const parts = fullPath.split('/').filter(Boolean);
-    const category = parts[0] || 'General';
-    const filename = parts[parts.length - 1] || '';
-    const title = filename
-      .split('-')
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
-    articles.push({
-      title,
-      href: `/${filename}`,
-      category: category.charAt(0).toUpperCase() + category.slice(1),
+  return getSeoRoutes()
+    .filter((route) => !HUB_PATHS.has(route.path))
+    .map((route) => {
+      const parts = route.path.split('/').filter(Boolean);
+      const category = parts[0] || 'Guide';
+      return {
+        title: pathToLabel(route.path),
+        href: route.path,
+        category: category.charAt(0).toUpperCase() + category.slice(1),
+      };
     });
-  });
-  return articles;
+};
+
+let cachedSeoRoutePaths: string[] | null = null;
+const getAllSeoRoutePaths = () => {
+  if (!cachedSeoRoutePaths) {
+    cachedSeoRoutePaths = getSeoRoutes().map((route) => route.path);
+  }
+  return cachedSeoRoutePaths;
 };
 
 /* Deterministic shuffle based on URL — same path always returns same 3 articles.
@@ -445,6 +451,40 @@ const RelatedArticlesSection = memo(({ currentPath }: { currentPath: string }) =
   );
 });
 RelatedArticlesSection.displayName = 'RelatedArticlesSection';
+
+/* ─────────────────────────────────────────────
+   Cross-links (deterministic sitemap peers)
+───────────────────────────────────────────── */
+const CrossLinksSection = memo(({ currentPath }: { currentPath: string }) => {
+  const links = useMemo(
+    () => getCrossLinksForRoute(currentPath, getAllSeoRoutePaths(), 6),
+    [currentPath]
+  );
+
+  if (!links.length) return null;
+
+  return (
+    <section className="border-t border-slate-100 bg-white py-14" aria-label="More guides">
+      <div className="container mx-auto max-w-7xl px-4">
+        <h2 className="mb-6 text-xl font-bold text-slate-900">More inventory guides</h2>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {links.map((link) => (
+            <li key={link.path}>
+              <Link
+                to={link.path}
+                className="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3 text-slate-700 transition hover:border-blue-300 hover:text-blue-700"
+              >
+                <span>{link.label}</span>
+                <ChevronRight className="h-4 w-4 text-slate-400" aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+});
+CrossLinksSection.displayName = 'CrossLinksSection';
 
 /* ─────────────────────────────────────────────
    Topic Cluster Hub Section
@@ -888,6 +928,9 @@ const SEOPageLayout = memo(({
 
         {/* Related articles */}
         <RelatedArticlesSection currentPath={location.pathname} />
+
+        {/* Deterministic cross-links to other SEO pages */}
+        <CrossLinksSection currentPath={location.pathname} />
 
         {/* Topic cluster hub links */}
         {currentHub && (

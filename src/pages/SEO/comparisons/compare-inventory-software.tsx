@@ -250,10 +250,16 @@ export default function CompareInventorySoftware() {
               { label: 'StockFlow vs inFlow', path: '/stockflow-vs-inflow' },
               { label: 'StockFlow vs Sortly', path: '/stockflow-vs-sortly' },
               { label: 'StockFlow vs Cin7', path: '/stockflow-vs-cin7' },
+              { label: 'StockFlow vs Odoo', path: '/stockflow-vs-odoo' },
               { label: 'StockFlow vs Odoo Inventory', path: '/stockflow-vs-odoo-inventory' },
+              { label: 'StockFlow vs NetSuite', path: '/stockflow-vs-netsuite' },
               { label: 'StockFlow vs Katana', path: '/stockflow-vs-katana' },
               { label: 'StockFlow vs Fishbowl', path: '/stockflow-vs-fishbowl' },
+              { label: 'StockFlow vs DEAR Systems', path: '/stockflow-vs-dear-systems' },
+              { label: 'StockFlow vs ShipStation', path: '/stockflow-vs-shipstation' },
               { label: 'StockFlow vs Finale Inventory', path: '/stockflow-vs-finale-inventory' },
+              { label: 'StockFlow vs Lightspeed', path: '/stockflow-vs-lightspeed' },
+              { label: 'StockFlow vs Unleashed', path: '/stockflow-vs-unleashed' },
               { label: 'Katana MRP alternative', path: '/katana-mrp-alternative' },
             ].map((item) => (
               <li key={item.path}>

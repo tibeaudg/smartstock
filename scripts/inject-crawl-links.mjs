@@ -19,8 +19,8 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;');
 }
 
-function buildCrawlNavHtml(routePath) {
-  const links = getCrawlLinksForRoute(routePath);
+function buildCrawlNavHtml(routePath, allRoutes) {
+  const links = getCrawlLinksForRoute(routePath, allRoutes);
   const items = links
     .map(
       (link) =>
@@ -67,8 +67,8 @@ function ensureCrawlH1(html) {
   return html.replace(/<\/body>/i, `  ${block}\n</body>`);
 }
 
-function injectCrawlNav(html, routePath) {
-  const nav = buildCrawlNavHtml(routePath);
+function injectCrawlNav(html, routePath, allRoutes) {
+  const nav = buildCrawlNavHtml(routePath, allRoutes);
   const cleaned = stripExistingCrawlNav(html);
 
   if (/<div[^>]*id="root"/i.test(cleaned)) {
@@ -78,7 +78,7 @@ function injectCrawlNav(html, routePath) {
   return cleaned.replace(/<\/body>/i, `  ${nav}\n</body>`);
 }
 
-function ensureRouteHtml(route, templateHtml) {
+function ensureRouteHtml(route, templateHtml, allRoutes) {
   const htmlPath = routeToHtmlPath(DIST_DIR, route);
   fs.mkdirSync(path.dirname(htmlPath), { recursive: true });
 
@@ -88,7 +88,7 @@ function ensureRouteHtml(route, templateHtml) {
 
   const current = fs.readFileSync(htmlPath, 'utf8');
   const withH1 = ensureCrawlH1(current);
-  const updated = injectCrawlNav(withH1, route);
+  const updated = injectCrawlNav(withH1, route, allRoutes);
   fs.writeFileSync(htmlPath, updated, 'utf8');
 }
 
@@ -108,7 +108,7 @@ function main() {
   const routes = getSitemapRoutes(SITEMAP_PATH);
 
   for (const route of routes) {
-    ensureRouteHtml(route, templateHtml);
+    ensureRouteHtml(route, templateHtml, routes);
   }
 
   console.log(`[inject-crawl-links] Injected crawl nav into ${routes.length} route HTML file(s).`);

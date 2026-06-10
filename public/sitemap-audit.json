@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-10T09:24:55.398Z",
+  "generatedAt": "2026-06-10T12:12:54.780Z",
   "removed": [
     {
       "route": "5-elements-of-an-optimized-inventory-management-system",
@@ -38,14 +38,6 @@
       "reason": "thin-template"
     },
     {
-      "route": "excel-inventory-template",
-      "reason": "thin-template"
-    },
-    {
-      "route": "fifo-vs-lifo",
-      "reason": "thin-template"
-    },
-    {
       "route": "how-do-you-calculate-inventory-order",
       "reason": "thin-template"
     },
@@ -59,10 +51,6 @@
     },
     {
       "route": "how-to-create-an-electrical-inventory-list",
-      "reason": "thin-template"
-    },
-    {
-      "route": "how-to-do-smarter-inventory-forecasting-a-guide-for-small-businesses",
       "reason": "thin-template"
     },
     {
@@ -134,10 +122,6 @@
       "reason": "thin-template"
     },
     {
-      "route": "what-is-lifo-last-in-first-out-inventory-method-101",
-      "reason": "thin-template"
-    },
-    {
       "route": "what-is-manufacturing-lead-time",
       "reason": "thin-template"
     },
@@ -148,13 +132,68 @@
     {
       "route": "woocommerce-inventory-management",
       "reason": "thin-template"
+    },
+    {
+      "route": "comparisons/best-free-alternative-to-fishbowl-inventory",
+      "reason": "missing-source"
+    },
+    {
+      "route": "comparisons/stockflow-vs-katana",
+      "reason": "missing-source"
+    },
+    {
+      "route": "comparisons/stockflow-vs-shipstation",
+      "reason": "missing-source"
     }
   ],
-  "added": [],
+  "added": [
+    {
+      "route": "barcode-label-printer"
+    },
+    {
+      "route": "best-barcode-scanner"
+    },
+    {
+      "route": "cost-of-goods-formula"
+    },
+    {
+      "route": "drop-shipping-inventory-management"
+    },
+    {
+      "route": "excel-inventory-template"
+    },
+    {
+      "route": "fifo-vs-lifo"
+    },
+    {
+      "route": "forecasting"
+    },
+    {
+      "route": "glossary"
+    },
+    {
+      "route": "industries"
+    },
+    {
+      "route": "inventory-turnover"
+    },
+    {
+      "route": "nl"
+    },
+    {
+      "route": "best-free-alternative-to-fishbowl-inventory"
+    },
+    {
+      "route": "stockflow-vs-katana"
+    },
+    {
+      "route": "stockflow-vs-shipstation"
+    }
+  ],
   "stats": {
     "initialCount": 91,
-    "finalCount": 91,
-    "addedCount": 0,
-    "removedCount": 0
+    "finalCount": 102,
+    "addedCount": 14,
+    "removedCount": 3
   }
 }

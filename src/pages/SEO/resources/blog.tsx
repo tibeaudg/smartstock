@@ -33,22 +33,38 @@ export default function SEOResourcesBlogPage() {
       metadataMap.set(normalizedPath, page);
     });
 
+    const excludedExact = new Set([
+      '/blog',
+      '/resources',
+      '/compare-inventory-software',
+      '/glossary',
+      '/industries',
+      '/nl',
+      '/pricing',
+      '/features',
+      '/about',
+      '/contact',
+    ]);
+    const excludedPrefixes = ['/nl/', '/comparisons/', '/industries/', '/features/', '/glossary/', '/uses/', '/guides/'];
+
     return routes
-      .filter(route => {
-        const path = route.path.toLowerCase();
-        return path.includes('/') && path !== '' && path !== '/resources';
+      .filter((route) => {
+        const path = route.path;
+        if (path === '/' || excludedExact.has(path)) return false;
+        if (excludedPrefixes.some((prefix) => path.startsWith(prefix))) return false;
+        return true;
       })
-      .map(route => {
+      .map((route) => {
         const existingMetadata = metadataMap.get(route.path);
         return existingMetadata || {
           path: route.path,
           title: route.path.split('/').pop()?.replace(/-/g, ' ') || 'Article',
           description: `Learn more about ${route.path.split('/').pop()?.replace(/-/g, ' ')}`,
           category: 'blog',
-          language: 'en' as const
+          language: 'en' as const,
         } as PageMetadata;
       })
-      .slice(0, 12); // Show first 12 articles
+      .sort((a, b) => a.title.localeCompare(b.title));
   }, []);
 
   return (

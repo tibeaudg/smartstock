@@ -21,6 +21,8 @@ import {
 import { StructuredData } from '@/components/StructuredData';
 import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from '@/components/ui/accordion';
 
+const canonicalPath = '/best-free-alternative-to-fishbowl-inventory';
+
 export default function BestFreeAlternativeToFishbowl() {
   const faqData = [
     {

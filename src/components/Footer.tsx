@@ -28,18 +28,29 @@ const Footer = () => {
     ],
     popularGuides: [
       { name: 'FIFO vs LIFO', path: '/fifo-vs-lifo' },
-      { name: 'Barcode Label Printers', path: '/barcode-label-printer' },
+      { name: 'Inventory Management', path: '/inventory-management' },
       { name: 'Inventory Turnover', path: '/inventory-turnover' },
       { name: 'Excel Inventory Template', path: '/excel-inventory-template' },
-      { name: 'Cost of Goods Formula', path: '/cost-of-goods-formula' },
-      { name: 'Best Barcode Scanner', path: '/best-barcode-scanner' },
       { name: 'Forecasting', path: '/forecasting' },
-      { name: 'Drop Shipping', path: '/drop-shipping-inventory-management' },
+      { name: 'Cycle Count Guide', path: '/how-to-perform-an-inventory-cycle-count' },
+      { name: 'Best Practices', path: '/inventory-management-best-practices' },
+      { name: 'Inventory Software', path: '/inventory-software' },
+    ],
+    resourceHubs: [
+      { name: 'All Articles', path: '/blog' },
+      { name: 'Glossary', path: '/glossary' },
+      { name: 'Industries', path: '/industries' },
+      { name: 'Compare Software', path: '/compare-inventory-software' },
+      { name: 'Nederlands', path: '/nl' },
     ],
     seoHubsAndComparisons: [
       { name: 'Best Free Inventory Software with Barcode Scanning', path: '/best-free-inventory-software-with-barcode-scanning' },
       { name: 'Barcodes vs QR Codes', path: '/barcodes-vs-qr-codes-for-inventory-management' },
       { name: 'Bill of Materials Software Free', path: '/bill-of-materials-software-free' },
+      { name: 'StockFlow vs NetSuite', path: '/stockflow-vs-netsuite' },
+      { name: 'StockFlow vs Odoo', path: '/stockflow-vs-odoo' },
+      { name: 'StockFlow vs Fishbowl', path: '/stockflow-vs-fishbowl' },
+      { name: 'StockFlow vs Katana', path: '/stockflow-vs-katana' },
       { name: 'Katana MRP Alternative', path: '/katana-mrp-alternative' },
       { name: 'Zoho Inventory Alternative', path: '/stockflow-vs-zoho-inventory' },
       { name: 'inFlow Alternative', path: '/stockflow-vs-inflow' },
@@ -140,7 +151,21 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Popular Guides */}
+          {/* Resource hubs */}
+          <div className="border-t border-gray-700 pt-12 mb-12">
+            <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Resource Hubs</h4>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {footerLinks.resourceHubs.map(link => (
+                <li key={link.name}>
+                  <Link to={link.path} className="text-gray-500 hover:text-blue-400 text-sm transition-colors">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Main Hubs and Comparisons */}
           <div className="border-t border-gray-700 pt-12 mb-12">
             <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">Main Hubs and Comparisons</h4>
             <ul className="flex flex-wrap gap-x-8 gap-y-3">

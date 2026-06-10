@@ -3,6 +3,8 @@
  * Mirrors src/config/internalLinking.ts hub spokes + global nav/footer links.
  */
 
+import { getCrossLinksForRoute } from './seo-cross-links.mjs';
+
 /** @type {{ path: string; label: string }[]} */
 export const GLOBAL_CRAWL_LINKS = [
   { path: '/', label: 'Home' },
@@ -10,6 +12,9 @@ export const GLOBAL_CRAWL_LINKS = [
   { path: '/pricing', label: 'Pricing' },
   { path: '/blog', label: 'Blog' },
   { path: '/resources', label: 'Resources' },
+  { path: '/glossary', label: 'Glossary' },
+  { path: '/industries', label: 'Industries' },
+  { path: '/nl', label: 'Nederlands' },
   { path: '/contact', label: 'Contact' },
   { path: '/compare-inventory-software', label: 'Compare Inventory Software' },
   { path: '/inventory-management-software', label: 'Inventory Management Software' },
@@ -77,9 +82,10 @@ export function getContextualLinksForRoute(routePath) {
 
 /**
  * @param {string} routePath
+ * @param {string[]} [allRoutes]
  * @returns {{ path: string; label: string }[]}
  */
-export function getCrawlLinksForRoute(routePath) {
+export function getCrawlLinksForRoute(routePath, allRoutes = []) {
   const seen = new Set();
   /** @type {{ path: string; label: string }[]} */
   const links = [];
@@ -96,6 +102,12 @@ export function getCrawlLinksForRoute(routePath) {
 
   for (const link of getContextualLinksForRoute(routePath)) {
     add(link.path, link.label);
+  }
+
+  if (allRoutes.length > 0) {
+    for (const link of getCrossLinksForRoute(routePath, allRoutes, 15)) {
+      add(link.path, link.label);
+    }
   }
 
   return links;

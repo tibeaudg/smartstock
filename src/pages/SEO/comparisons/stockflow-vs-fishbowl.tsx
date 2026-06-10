@@ -6,6 +6,8 @@ import ComparisonTable, { ComparisonFeature } from '@/components/ComparisonTable
 import { DollarSign, Smartphone, Shield, Clock, Database, Lock, Globe } from 'lucide-react';
 import { StructuredData } from '@/components/StructuredData';
 
+const canonicalPath = '/stockflow-vs-fishbowl';
+
 export default function StockFlowVsFishbowl() {
   const comparisonFeatures: ComparisonFeature[] = [
     { feature: 'Pricing', stockflow: 'Free core plan + low-cost scaling', competitor: '$4,395 one-time + $1,200/year' },

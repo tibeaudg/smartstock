@@ -80,6 +80,8 @@ export const NAV_ITEMS: NavItem[] = [
           title: 'Learn & Support',
           items: [
             { label: 'Articles', description: 'Expert insights on inventory optimization.', to: '/blog', icon: FileText },
+            { label: 'Glossary', description: 'Inventory and warehouse terminology.', to: '/glossary', icon: FileText },
+            { label: 'Industries', description: 'Sector-specific inventory guides.', to: '/industries', icon: Warehouse },
             { label: 'Support', description: 'Get technical help and documentation.', to: '/help-center', icon: LifeBuoy },
             { label: 'Comparisons', description: 'How StockFlow ranks against competitors.', to: '/compare-inventory-software', icon: Scale },
           ]
