@@ -4,7 +4,7 @@ import { spawn } from 'child_process';
 import puppeteer from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
 import { getAllPrerenderRoutes } from './utils/collect-prerender-routes.mjs';
-import { planIncrementalPrerender, saveRouteCache } from './utils/prerender-cache.mjs';
+import { getCacheDiagnostics, planIncrementalPrerender, saveRouteCache } from './utils/prerender-cache.mjs';
 import { getRouteContentHash } from './utils/prerender-route-sources.mjs';
 import { emitFallbackForRoutes } from './generate-seo-html.mjs';
 
@@ -284,6 +284,13 @@ async function main() {
   const routes = await getAllPrerenderRoutes(SITEMAP_PATH);
   if (routes.length === 0) {
     throw new Error('No routes found for prerendering.');
+  }
+
+  const cacheBefore = getCacheDiagnostics();
+  if (cacheBefore.htmlFileCount === 0) {
+    console.warn(
+      '[prerender-pages] Cold cache (no .prerender-cache on disk). First deploy or remote cache miss — Puppeteer will render all routes.'
+    );
   }
 
   const { cached, patched, toPrerender, buildFingerprint } = await planIncrementalPrerender(

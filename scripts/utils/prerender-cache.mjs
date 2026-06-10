@@ -20,6 +20,28 @@ function readManifest() {
   }
 }
 
+/** @returns {{ hasManifest: boolean, routeCount: number, htmlFileCount: number, buildFingerprint: string | null }} */
+export function getCacheDiagnostics() {
+  const manifest = readManifest();
+  let htmlFileCount = 0;
+  if (fs.existsSync(HTML_DIR)) {
+    const walk = (dir) => {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) walk(full);
+        else if (entry.name === 'index.html') htmlFileCount += 1;
+      }
+    };
+    walk(HTML_DIR);
+  }
+  return {
+    hasManifest: Boolean(manifest),
+    routeCount: manifest?.routes ? Object.keys(manifest.routes).length : 0,
+    htmlFileCount,
+    buildFingerprint: manifest?.buildFingerprint ?? null,
+  };
+}
+
 function writeManifest(manifest) {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
@@ -117,9 +139,14 @@ export async function planIncrementalPrerender(routes, distDir, enabled) {
   const buildFingerprint = getBuildFingerprint(distIndex);
   const templateHtml = fs.readFileSync(distIndex, 'utf8');
   const manifest = readManifest();
+  const diagnostics = getCacheDiagnostics();
   const toPrerender = [];
   let cached = 0;
   let patched = 0;
+
+  console.log(
+    `[prerender-cache] on-disk cache: manifest=${diagnostics.hasManifest} htmlFiles=${diagnostics.htmlFileCount} manifestRoutes=${diagnostics.routeCount}`
+  );
 
   const fingerprintMatches = manifest?.buildFingerprint === buildFingerprint;
 

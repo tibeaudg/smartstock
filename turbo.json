@@ -8,18 +8,29 @@
       "outputs": ["dist/**"],
       "cache": true
     },
-    "prerender-cache-sync": {
+    "prerender-cache-restore": {
       "inputs": [
+        "scripts/prerender-cache-restore.mjs",
+        "scripts/utils/prerender-cache.mjs",
+        "scripts/utils/prerender-route-sources.mjs",
+        "scripts/utils/collect-prerender-routes.mjs",
+        "scripts/utils/sitemap-routes.mjs",
+        "scripts/utils/seo-slug.mjs",
+        "public/sitemap.xml"
+      ],
+      "outputs": [".prerender-cache/**"],
+      "cache": true
+    },
+    "prerender-cache-save": {
+      "inputs": [
+        "scripts/prerender-cache-save.mjs",
         "scripts/utils/prerender-cache.mjs",
         "scripts/utils/prerender-route-sources.mjs",
         "scripts/utils/collect-prerender-routes.mjs",
         "scripts/utils/sitemap-routes.mjs",
         "scripts/utils/seo-slug.mjs",
         "public/sitemap.xml",
-        "src/pages/SEO/**",
-        "src/App.tsx",
-        "src/components/**",
-        "src/pages/**"
+        ".prerender-cache/**"
       ],
       "outputs": [".prerender-cache/**"],
       "cache": true
