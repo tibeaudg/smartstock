@@ -156,7 +156,7 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
       seoDescription="How to set up an inventory system from scratch: Excel, free software, barcoding, and custom builds. A practical guide for small businesses."
       seoKeywords="how to create an inventory system, how to set up an inventory system, inventory system in excel, basic inventory system, inventory management system project, free inventory system, create inventory system python"
       heroTitle={'"I Tested 5 Methods: Here’s How to Create an Inventory System That Actually Works"'} // SEO Trend: Clickbait with pronouns [citation:6]
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
       structuredData={structuredData}

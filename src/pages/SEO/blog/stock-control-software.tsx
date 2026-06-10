@@ -32,7 +32,7 @@ const structuredData = [
     "headline": topicTitle,
     "description": metaDescription,
     "author": { "@type": "Organization", name: "StockFlow Systems" },
-    "datePublished": "2026-01-09",
+    "datePublished": "2026-06-10",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function SeoStockControlSoftwarePage() {
       seoKeywords={keywords}
       heroTitle="Stock Control Software: Precision Inventory Solutions (2026)"
       heroDescription={metaDescription}
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={takeaways}
     >
 {/* CORE DEFINITION BLOCK */}

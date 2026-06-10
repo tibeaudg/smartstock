@@ -68,7 +68,7 @@ export default function KatanaMrpAlternative() {
         { label: 'Katana MRP Alternative', href: canonicalPath },
       ]}
       heroTitle={HERO_TITLE}
-      dateUpdated="June 10, 2026"
+      dateUpdated="2026-06-10"
       heroDescription="Honest comparison for teams searching for a free Katana MRP alternative in 2026."
       previousArticle={{
         title: 'Best Free Alternative to Fishbowl Inventory',

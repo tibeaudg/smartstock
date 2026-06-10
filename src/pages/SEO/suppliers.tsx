@@ -161,8 +161,8 @@ export default function SuppliersSolutionPage() {
           url: 'https://www.stockflowsystems.com/logo.png'
         }
       },
-      datePublished: '2026-11-25',
-      dateModified: '2026-11-25',
+      datePublished: '2026-06-10',
+      dateModified: '2026-06-10',
       mainEntityOfPage: {
         '@type': 'WebPage',
         '@id': 'https://www.stockflowsystems.com/suppliers'
@@ -208,7 +208,7 @@ export default function SuppliersSolutionPage() {
     <SeoPageLayout 
       title="Suppliers"
       heroTitle="Suppliers"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       previousArticle={{
         title: "Inventory Management Software",

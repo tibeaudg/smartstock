@@ -46,7 +46,7 @@ const faqData = [
 
 export default function StockFlowVsInFlow() {
   return (
-    <SeoPageLayout heroTitle={pageTitle} dateUpdated="June 10, 2026" faqData={faqData}>
+    <SeoPageLayout heroTitle={pageTitle} dateUpdated="2026-06-10" faqData={faqData}>
       <SEO
         title={pageTitle}
         description="Looking for an inFlow alternative? Compare StockFlow vs inFlow for 2026: free tier, pricing, manufacturing tradeoffs, and who each platform is best for."

@@ -23,7 +23,7 @@ const structuredData = [
     "headline": topicTitle,
     "description": metaDescription,
     "author": { "@type": "Organization", name: "StockFlow Systems" },
-    "datePublished": "2026-01-10",
+    "datePublished": "2026-06-10",
     "keywords": keywords,
   },
 ];
@@ -38,7 +38,7 @@ export default function SeoBestStockManagementComprehensivePage() {
       seoKeywords={keywords}
       heroTitle={topicTitle}
       heroDescription={metaDescription}
-      dateUpdated="January 10, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={takeaways}
     >
 {/* SECTION: INTRODUCTION */}

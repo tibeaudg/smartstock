@@ -17,6 +17,7 @@ const NAV_PATHS = [
   '/asset-tracking',
   '/inventory-management',
   '/contractor-inventory-management',
+  '/hvac-inventory-management',
   '/electrical-inventory-management',
   '/medical-inventory-management',
   '/supplies-and-consumables-software',

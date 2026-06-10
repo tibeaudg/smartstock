@@ -94,7 +94,7 @@ export default function BarcodeInventorySystemForSmallBusinessPage() {
       ],
     },
     pageType: 'software',
-    datePublished: 'June 9, 2026',
+    datePublished: '2026-06-10',
     dateModified: DATE_MODIFIED,
     includeWebSite: true,
   });
@@ -105,7 +105,7 @@ export default function BarcodeInventorySystemForSmallBusinessPage() {
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Barcode Inventory System for Small Business (2026)"
       heroDescription="Compare free barcode inventory systems for small businesses. StockFlow leads on mobile scanning, offline support, and multi-location visibility — at no cost."
-      dateUpdated="June 10, 2026"
+      dateUpdated="2026-06-10"
       pageLanguage="en"
       faqData={faqData}
       keyTakeaways={keyTakeaways}

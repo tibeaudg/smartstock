@@ -30,7 +30,7 @@ export default function BillOfMaterialsSoftwareFree() {
       title={PAGE_TITLE}
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Free Bill of Materials Software (2026)"
-      dateUpdated="June 10, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
       structuredData={BOM_STRUCTURED_DATA}

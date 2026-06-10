@@ -219,7 +219,7 @@ export default function BestFreeAlternativeToFishbowl() {
       seoDescription="StockFlow is the best free alternative to Fishbowl Inventory. Completely free forever vs $4,395+ license. Cloud-based, 5-7 day setup, save $8,000+ annually."
       seoKeywords="best free alternative to fishbowl, fishbowl inventory free alternative, free fishbowl alternative, fishbowl inventory alternative free, stockflow vs fishbowl, free inventory software, cloud inventory software, fishbowl alternative, free inventory management, fishbowl inventory replacement"
       heroTitle="Best Free Alternative to Fishbowl Inventory - StockFlow"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       heroDescription="Completely free forever vs $4,395+ license • Cloud-based vs on-premise • Save $8,000+ annually • 5-7 day setup"
       previousArticle={{
         title: "StockFlow vs Fishbowl Inventory",
@@ -511,7 +511,7 @@ export default function BestFreeAlternativeToFishbowl() {
             "name": "StockFlow",
             "url": "https://www.stockflowsystems.com"
           },
-          "datePublished": "2024-01-01",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split('T')[0]
         }
       ]} />

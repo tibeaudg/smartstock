@@ -86,7 +86,7 @@ export default function WhatIsTheBestFreeInventoryManagementSoftwarePage() {
       url: pageUrl,
     },
     pageType: 'article',
-    datePublished: 'June 9, 2026',
+    datePublished: '2026-06-10',
     dateModified: DATE_MODIFIED,
     includeWebSite: true,
   });
@@ -97,7 +97,7 @@ export default function WhatIsTheBestFreeInventoryManagementSoftwarePage() {
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="The Best Free Inventory Management Software in 2026"
       heroDescription="StockFlow's honest guide to free inventory software — how we ranked options, what to look for, and which tools actually work for small businesses without a credit card."
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       structuredData={structuredData}
     >
@@ -107,7 +107,7 @@ export default function WhatIsTheBestFreeInventoryManagementSoftwarePage() {
         canonical={canonicalPath}
         url={PAGE_URL}
       />
-      <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
+      <p className="text-sm text-slate-500 mb-6">Last updated: June 10, 2026</p>
 
       <section className="mb-12 space-y-4">
         <p className="text-lg text-gray-700 leading-relaxed">

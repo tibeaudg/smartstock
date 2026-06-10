@@ -47,7 +47,7 @@ export default function AutomotiveWarehouseManagementSystem() {
   }));
 
   const topicTitle = "Automotive Warehouse Management System: Complete Guide 2026";
-  const dateUpdated = "January 22, 2026";
+  const dateUpdated = "2026-06-10";
   const faqData = [
     {
       question: "What is an automotive warehouse management system?",

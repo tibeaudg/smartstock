@@ -8,7 +8,7 @@ const topicTitle = "Inventory Formulas And Ratios";
 const canonicalPath = "/inventory-formulas-and-ratios";
 const metaDescription = "Essential inventory formulas explained: turnover, days sales of inventory, reorder points, safety stock, and other key metrics with examples.";
 const keywords = "inventory formulas, inventory ratios, inventory turnover formula, days sales of inventory, inventory metrics, inventory KPIs, inventory calculations, stock formulas";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Essential inventory formulas and ratios include: inventory turnover (COGS ÷ Average Inventory), days sales of inventory (365 ÷ Turnover), reorder point (Lead Time × Average Daily Usage + Safety Stock), safety stock (Z-score × Standard Deviation × √Lead Time), and economic order quantity (EOQ). These formulas help optimize stock levels, prevent stockouts, reduce costs, and improve cash flow. Understanding and applying these formulas enables data-driven inventory management decisions.";
 const takeaways = [
   "Key formulas include inventory turnover (COGS ÷ Average Inventory), days sales of inventory (365 ÷ Turnover), and reorder point (Lead Time × Daily Usage + Safety Stock).",
@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-08",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/inventory-formulas-and-ratios"
@@ -102,7 +102,7 @@ export default function SeoInventoryFormulasAndRatiosPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

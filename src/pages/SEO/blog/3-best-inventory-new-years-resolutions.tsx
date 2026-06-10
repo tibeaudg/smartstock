@@ -7,7 +7,7 @@ const topicTitle = "3 Best Inventory New Years Resolutions";
 const canonicalPath = "/3-best-inventory-new-years-resolutions";
 const metaDescription = "3 practical inventory New Year's resolutions: improve accuracy, reduce costs, and optimize stock levels with achievable goals for your business.";
 const keywords = "inventory new years resolutions, inventory goals, inventory improvements, inventory resolutions, inventory management goals, new year inventory planning";
-const heroBadge = "Topic Guide • Updated June 9, 2026";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "3 best inventory New Year's resolutions: 1) Improve accuracy (target 95%+ accuracy, implement barcode scanning, conduct regular counts), 2) Reduce waste (track expiration dates, optimize stock levels, prevent overstocking), 3) Automate processes (use inventory management software, set automated reorder alerts, eliminate manual spreadsheets). These resolutions are practical, measurable, and achievable. Improving accuracy reduces stockouts and overstocking. Reducing waste saves money and improves sustainability. Automating processes saves time and reduces errors. Setting these resolutions helps businesses start the year with clear inventory management goals.";
 const takeaways = [
   "3 best resolutions: improve accuracy (target 95%+, implement barcode scanning, conduct regular counts), reduce waste (track expiration dates, optimize stock levels), and automate processes (use software, set automated alerts, eliminate spreadsheets).",
@@ -78,7 +78,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "June 9, 2026",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/3-best-inventory-new-years-resolutions"
@@ -102,7 +102,7 @@ export default function Seo3BestInventoryNewYearsResolutionsPage() {
       seoDescription={metaDescription}
       seoKeywords={keywords}
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
     >
 <section id="overview" className="bg-white px-4 py-16">

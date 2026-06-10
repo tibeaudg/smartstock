@@ -52,7 +52,7 @@ export default function InventoryManagementSoftware() {
     <SeoPageLayout 
       title="Inventory Management Software"
       heroTitle="Free & Easy Inventory Management Software"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
     >
       <SEO

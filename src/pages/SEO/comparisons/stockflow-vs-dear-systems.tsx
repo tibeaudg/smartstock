@@ -57,7 +57,7 @@ export default function StockFlowVsDearSystems() {
     <SeoPageLayout
       title="StockFlow vs DEAR Systems"
       heroTitle="StockFlow vs DEAR Systems (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -66,7 +66,7 @@ export default function StockFlowVsDearSystems() {
         description="StockFlow vs DEAR Systems: free tier vs $99-$299/month. Compare EU hosting, GDPR compliance, setup time, and total cost for European businesses."
         keywords="stockflow vs dear systems, dear systems alternative, gdpr inventory software, eu inventory software, dear systems vs stockflow"
         url="https://www.stockflowsystems.com/stockflow-vs-dear-systems"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -181,7 +181,7 @@ export default function StockFlowVsDearSystems() {
             "@type": "WebPage",
             name: "StockFlow vs DEAR Systems",
             url: "https://www.stockflowsystems.com/stockflow-vs-dear-systems",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

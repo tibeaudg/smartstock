@@ -47,7 +47,7 @@ export default function BesteVoorraadbeheerSoftwarePage() {
       seoTitle="Beste Voorraadbeheer Software 2026 | StockFlow"
       seoDescription="Beste voorraadbeheer software 2026 voor België en Nederland. Vergelijk gratis en betaalde tools. StockFlow is volledig gratis — geen creditcard vereist."
       heroTitle="Voorraadbeheer Software: De Complete Gids voor 2026"
-      dateUpdated="05/06/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
     >

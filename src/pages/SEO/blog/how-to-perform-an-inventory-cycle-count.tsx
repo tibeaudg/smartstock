@@ -104,8 +104,8 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-08",
-    "dateModified": "2026-01-15",
+    "datePublished": "2026-06-10",
+    "dateModified": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/how-to-perform-an-inventory-cycle-count"
@@ -177,7 +177,7 @@ export default function SeoHowToPerformAnInventoryCycleCountPage() {
       seoKeywords={keywords}
       heroTitle={topicTitle}
       heroDescription={metaDescription}
-      dateUpdated="01/15/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={takeaways}
       structuredData={structuredData}
     >

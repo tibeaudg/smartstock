@@ -18,6 +18,10 @@ import {
   Thermometer,
   Truck
 } from 'lucide-react';
+
+const canonicalPath = '/hvac-inventory-management';
+const PAGE_URL = `https://www.stockflowsystems.com${canonicalPath}`;
+
 export default function HvacInventoryManagement() {
   
   const { formatPrice } = useCurrency();
@@ -204,11 +208,11 @@ export default function HvacInventoryManagement() {
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2026-01-15",
-    "dateModified": "2026-01-15",
+    "datePublished": "2026-06-10",
+    "dateModified": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://www.stockflowsystems.com/hvac-inventory-management"
+      "@id": PAGE_URL
     }
   };
 
@@ -233,7 +237,7 @@ export default function HvacInventoryManagement() {
       seoKeywords="hvac inventory management, hvac parts inventory, hvac inventory software, hvac inventory system, hvac parts tracking, hvac equipment management, hvac service inventory, hvac inventory app, hvac parts management, hvac contractor inventory"
       heroTitle="HVAC Inventory Management: Track Parts, Equipment & Service Vehicles"
       heroDescription="HVAC inventory management: track parts and equipment with mobile scanning and service vehicle management. Save 10+ hours per week and optimize seasonal demand."
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       structuredData={[structuredData, faqStructuredData]}
       previousArticle={{

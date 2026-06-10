@@ -29,7 +29,7 @@ export default function VoorraadbeheerManufacturingPage() {
       seoTitle="Productie Voorraadbeheer Software voor Fabrikanten | StockFlow"
       seoDescription="Productie voorraadbeheer software voor fabrikanten in België en Nederland. Beheer grondstoffen, stuklijsten en WIP met real-time tracking."
       heroTitle="Productie Voorraadbeheer Software voor Fabrikanten"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
     >

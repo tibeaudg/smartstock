@@ -82,8 +82,8 @@ export default function StockflowVsKatana() {
       seoDescription="StockFlow vs Katana MRP: free forever vs paid MRP. Compare setup time, pricing, and which fits e-commerce, distribution, and light manufacturing."
       seoKeywords="stockflow vs katana mrp, katana mrp alternative, katana mrp comparison, stockflow vs katana, manufacturing inventory software, mrp software comparison, katana mrp alternative for sme, stockflow vs katana mrp pricing, free mrp software, inventory software comparison"
       heroTitle="StockFlow vs Katana MRP"
-      dateUpdated="June 9, 2026"
-      datePublished="2024-01-01T00:00:00Z"
+      dateUpdated="2026-06-10"
+      datePublished="2026-06-10"
       faqData={faqData}
 
     >
@@ -238,7 +238,7 @@ export default function StockflowVsKatana() {
             "name": "StockFlow",
             "url": "https://www.stockflowsystems.com"
           },
-          "datePublished": "2024-01-01",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split("T")[0]
         }
       ]} />

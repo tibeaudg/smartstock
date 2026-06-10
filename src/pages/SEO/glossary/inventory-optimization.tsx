@@ -25,8 +25,8 @@ export default function InventoryOptimization() {
   
 
   const pageMetadata = {
-    updated: 'June 9, 2026',
-    updatedDisplay: '20/01/2026'
+    updated: 'June 10, 2026',
+    updatedDisplay: 'June 10, 2026'
   };
 
   const faqData = [

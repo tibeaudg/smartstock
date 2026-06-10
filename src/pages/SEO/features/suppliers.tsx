@@ -236,7 +236,7 @@ export default function SuppliersPage() {
     <SeoPageLayout 
       title="Supplier Management Software for Inventory Control"
       heroTitle="Supplier Management Software for Inventory Control"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       previousArticle={{
         title: "Inventory Management Software",

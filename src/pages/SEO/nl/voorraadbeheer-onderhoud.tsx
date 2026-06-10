@@ -21,7 +21,7 @@ export default function VoorraadbeheerOnderhoudPage() {
       seoTitle="Onderhoudsvoorraad Software 2026 | StockFlow"
       seoDescription="Onderhoud voorraadbeheer software voor reserveonderdelen en smeermiddelen. Optimaliseer onderhoudskosten en voorkom downtime. Gratis voor BE KMO's."
       heroTitle="Onderhoud Voorraadbeheer Software"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
     >

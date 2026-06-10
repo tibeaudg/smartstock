@@ -76,7 +76,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2024-12-20",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/calculating-beginning-inventory"
@@ -99,7 +99,7 @@ export default function SeoCalculatingBeginningInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

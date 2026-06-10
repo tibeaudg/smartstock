@@ -66,7 +66,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2024-12-01",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/blog/inventory-management-for-contractors"
@@ -87,7 +87,7 @@ export default function InventoryManagementForContractorsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="12/1/2024"
+      dateUpdated="2026-06-10"
       faqData={faqData}
     >
       <SEO

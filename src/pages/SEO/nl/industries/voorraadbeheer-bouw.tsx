@@ -33,7 +33,7 @@ export default function VoorraadbeheerBouwPage() {
   }));
 
   const topicTitle = "Voorraadbeheer Bouw Software voor Aannemers: Complete Gids 2026";
-  const dateUpdated = "22 januari 2026";
+  const dateUpdated = "2026-06-10";
   const faqData = [
     {
       question: "Wat is de beste manier om voorraadbeheer bouw te hanteren?",

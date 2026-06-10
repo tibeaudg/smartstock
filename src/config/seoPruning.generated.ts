@@ -153,7 +153,6 @@ export const FORCED_NOINDEX_PATHS = new Set<string>([
   '/construction-procurement',
   '/construction-risk-management',
   '/contact-us',
-  '/contractor-inventory-management',
   '/cookie-policy',
   '/cookie-settings',
   '/cookies',

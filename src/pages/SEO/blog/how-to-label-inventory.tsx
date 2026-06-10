@@ -8,7 +8,7 @@ const topicTitle = "How To Label Inventory";
 const canonicalPath = "/how-to-label-inventory";
 const metaDescription = "How to label inventory for small businesses: barcode labels, QR codes, and durable tagging that survives the warehouse. Enable fast scanning. See how it works.";
 const keywords = "how to label inventory, inventory labeling, inventory labels, barcode labeling, inventory tags, QR code labels, inventory labeling system, stock labeling";
-const heroBadge = "Topic Guide • Updated July 2024";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Label inventory by: creating clear, readable labels with item name, SKU, location, and barcode/QR code, using durable label materials (weatherproof for outdoor storage), placing labels consistently (same position on items), using barcode or QR code labels for scanning, and maintaining labels (replace damaged or faded labels). Best practices: include essential information (name, SKU, location), use barcodes for scanning, ensure labels are durable and readable, place consistently, and update when items move. Good labeling improves identification, enables barcode scanning, reduces errors, and speeds up inventory operations.";
 const takeaways = [
   "Label by: creating clear labels with item name, SKU, location, and barcode/QR code, using durable materials, placing consistently, and maintaining labels.",
@@ -79,8 +79,8 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2024-07-09",
-    "dateModified": "2026-06-08",
+    "datePublished": "2026-06-10",
+    "dateModified": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/how-to-label-inventory"
@@ -103,7 +103,7 @@ export default function SeoHowToLabelInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

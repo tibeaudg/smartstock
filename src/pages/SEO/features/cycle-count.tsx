@@ -122,7 +122,7 @@ export default function CycleCount() {
       seoDescription="Cycle count inventory 2026: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
       seoKeywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
       heroTitle="Cycle Count"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       previousArticle={{
       title: "Barcoding",

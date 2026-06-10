@@ -8,7 +8,7 @@ const topicTitle = "Tracking Large Inventory Quantities";
 const canonicalPath = "/tracking-large-inventory-quantities";
 const metaDescription = "How to track large inventory quantities: strategies, tools, and best practices for high-volume stock, bulk tracking, and scaling your inventory system.";
 const keywords = "tracking large inventory, large inventory quantities, high volume inventory, bulk inventory tracking, large inventory management, scale inventory tracking";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Tracking large inventory quantities requires scalable systems, automation, and efficient processes. Key strategies include: using inventory management software that handles high volumes, implementing barcode scanning for fast data entry, using bulk operations for efficiency, setting up automated reordering, and maintaining accurate records. For large quantities, manual methods become impractical automation is essential. Software handles thousands of items efficiently, provides real-time visibility, and scales as inventory grows.";
 const takeaways = [
   "Tracking large quantities requires scalable systems, automation (barcode scanning), bulk operations, and inventory management software that handles high volumes efficiently.",
@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "June 9, 2026",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/tracking-large-inventory-quantities"
@@ -102,7 +102,7 @@ export default function SeoTrackingLargeInventoryQuantitiesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

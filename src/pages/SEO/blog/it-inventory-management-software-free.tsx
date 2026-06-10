@@ -32,7 +32,7 @@ const structuredData = [
     "headline": topicTitle,
     "description": metaDescription,
     "author": { "@type": "Organization", name: "StockFlow Systems" },
-    "datePublished": "2026-01-08",
+    "datePublished": "2026-06-10",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function SeoFreeItInventoryPage() {
       seoKeywords={keywords}
       heroTitle="Free IT Inventory Management Software: The 2026 Definitive Guide"
       heroDescription="Explore truly free IT inventory management software. Learn about the limitations of Excel, Google's options, and whether 'free' tools like Zoho are actually cost-effective for ITAM."
-      dateUpdated="January 8, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
     >
 {/* SECTION 1: IS THERE ANY FREE SOFTWARE */}

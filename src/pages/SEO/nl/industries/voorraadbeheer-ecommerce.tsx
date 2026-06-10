@@ -62,7 +62,7 @@ export default function VoorraadbeheerEcommercePage() {
       seoTitle="E-commerce Voorraadbeheer 2026 | StockFlow"
       seoDescription="E-commerce voorraadbeheer voor Belgische en Nederlandse webshops. Multi-channel sync, real-time updates. Integreer Shopify, Amazon en WooCommerce."
       heroTitle="E-commerce Voorraadbeheer: Multi-Platform Oplossing"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
     >

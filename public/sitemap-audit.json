@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-10T08:39:55.241Z",
+  "generatedAt": "2026-06-10T09:04:35.986Z",
   "removed": [
     {
       "route": "5-elements-of-an-optimized-inventory-management-system",
@@ -150,11 +150,18 @@
       "reason": "thin-template"
     }
   ],
-  "added": [],
+  "added": [
+    {
+      "route": "customers"
+    },
+    {
+      "route": "integrations"
+    }
+  ],
   "stats": {
-    "initialCount": 97,
+    "initialCount": 95,
     "finalCount": 97,
-    "addedCount": 0,
+    "addedCount": 2,
     "removedCount": 0
   }
 }

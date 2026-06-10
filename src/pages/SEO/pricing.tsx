@@ -169,7 +169,7 @@ export default function PricingPage() {
     <SeoPageLayout
       breadcrumbItems={breadcrumbItems}
       heroTitle="StockFlow Pricing"
-      dateUpdated="2026-05-08"
+      dateUpdated="2026-06-10"
       seoDescription="StockFlow pricing: Starter free, Professional $9/mo, Business $29/mo, Enterprise $59/mo. Prix abonnement stockflow inventory management."
       heroDescription="Simple, transparent pricing. Start free and scale as you grow. Professional plan includes a 14-day free trial."
       keyTakeaways={keyTakeaways}

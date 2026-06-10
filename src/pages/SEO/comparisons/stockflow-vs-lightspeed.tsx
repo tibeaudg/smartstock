@@ -62,7 +62,7 @@ export default function StockFlowVsLightspeed() {
     <SeoPageLayout
       title="StockFlow vs Lightspeed"
       heroTitle="StockFlow vs Lightspeed (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -71,7 +71,7 @@ export default function StockFlowVsLightspeed() {
         description="StockFlow Lightspeed integration: connect inventory with Lightspeed POS via API. Free migration. EU data hosting. Compare StockFlow vs Lightspeed."
         keywords="stockflow lightspeed integration, stockx lightspeed integration, stockflow vs lightspeed, lightspeed alternative, inventory software vs pos, lightspeed vs stockflow, inventory management software"
         url="https://www.stockflowsystems.com/stockflow-vs-lightspeed"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -164,7 +164,7 @@ export default function StockFlowVsLightspeed() {
             "@type": "WebPage",
             name: "StockFlow vs Lightspeed",
             url: "https://www.stockflowsystems.com/stockflow-vs-lightspeed",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

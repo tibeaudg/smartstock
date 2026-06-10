@@ -31,7 +31,7 @@ export default function AvoidInventoryMistakes() {
           "url": "https://www.stockflowsystems.com/logo.png"
         }
       },
-      "datePublished": "2024-01-01",
+      "datePublished": "2026-06-10",
       "dateModified": new Date().toISOString().split('T')[0],
       "mainEntityOfPage": {
         "@type": "WebPage",
@@ -62,7 +62,7 @@ export default function AvoidInventoryMistakes() {
     <SeoPageLayout 
       title="What Is Lead-Time"
       heroTitle="What Is Lead-Time"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       previousArticle={{
         title: "How to Choose Inventory Management Software",
         href: "/how-to-choose-inventory-management-software"

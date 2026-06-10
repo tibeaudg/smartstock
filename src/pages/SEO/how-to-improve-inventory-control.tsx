@@ -14,7 +14,7 @@ const Page = () => {
     <SeoPageLayout
       heroTitle="Advancing Enterprise How To Improve Inventory Control: A Technical Framework"
       title="How To Improve Inventory Control Strategy & Automation Guide | StockFlow"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">

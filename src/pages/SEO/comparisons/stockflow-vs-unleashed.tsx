@@ -57,7 +57,7 @@ export default function StockFlowVsUnleashed() {
     <SeoPageLayout
       title="StockFlow vs Unleashed"
       heroTitle="StockFlow vs Unleashed (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -66,7 +66,7 @@ export default function StockFlowVsUnleashed() {
         description="StockFlow vs Unleashed: free tier vs NZ$99-$249/month. Compare EU hosting, GDPR compliance, setup time, and total cost for European businesses."
         keywords="stockflow vs unleashed, unleashed alternative, gdpr inventory software, eu inventory software, unleashed vs stockflow"
         url="https://www.stockflowsystems.com/stockflow-vs-unleashed"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -151,7 +151,7 @@ export default function StockFlowVsUnleashed() {
             "@type": "WebPage",
             name: "StockFlow vs Unleashed",
             url: "https://www.stockflowsystems.com/stockflow-vs-unleashed",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

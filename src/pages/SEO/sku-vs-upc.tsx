@@ -14,7 +14,7 @@ const Page = () => {
     <SeoPageLayout
       heroTitle="Advancing Enterprise Sku Vs Upc: A Technical Framework"
       title="Sku Vs Upc Strategy & Automation Guide | StockFlow"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">

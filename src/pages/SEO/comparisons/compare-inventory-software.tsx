@@ -136,7 +136,7 @@ export default function CompareInventorySoftware() {
       image: "https://www.stockflowsystems.com/Inventory-Management.png"
     },
     pageType: 'software',
-    datePublished: "2024-01-01",
+    datePublished: '2026-06-10',
     dateModified: new Date().toISOString().split('T')[0],
     includeWebSite: false
   });
@@ -148,8 +148,8 @@ export default function CompareInventorySoftware() {
       seoDescription="Compare top inventory management software 2026. Side-by-side feature comparison, pricing, integrations. StockFlow is free forever - save 100% vs competitors."
       seoKeywords="compare inventory software, inventory software comparison, best inventory management software, inventory software pricing, compare inventory systems, inventory software features, best inventory software 2026"
       heroTitle="Compare Inventory Software"
-      dateUpdated="january 13, 2026"
-      datePublished="2024-01-01T00:00:00Z"
+      dateUpdated="2026-06-10"
+      datePublished="2026-06-10"
       faqData={faqData}
       structuredData={structuredData}
     >

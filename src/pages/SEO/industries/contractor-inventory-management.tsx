@@ -34,6 +34,8 @@ import {
 const PAGE_META_DESCRIPTION =
   'Construction inventory software for contractors: track materials and tools across jobsites, cut waste, and integrate with accounting for accurate job costing.';
 
+const canonicalPath = '/contractor-inventory-management';
+
 /**
  * Optimized Construction Inventory Management Page
  * Target Keywords: construction inventory management software, managing inventory across jobsites, 
@@ -50,7 +52,7 @@ export default function ContractorInventoryManagement() {
   }));
 
   const topicTitle = "Construction Inventory Management Software for Contractors: Complete Guide 2026";
-  const dateUpdated = "June 9, 2026";
+  const dateUpdated = "2026-06-10";
   const faqData = [
     {
       question: "What is the best way to handle construction inventory management?",
@@ -102,7 +104,7 @@ export default function ContractorInventoryManagement() {
   const structuredData = generateSeoPageStructuredData({
     title: topicTitle,
     description: "Professional construction inventory management software for general contractors. Manage inventory across jobsites, track tools, and integrate with financial software.",
-    url: location.pathname,
+    url: canonicalPath,
     breadcrumbs,
     faqData,
     softwareData: {
@@ -120,7 +122,7 @@ export default function ContractorInventoryManagement() {
         "Job costing financial integration"
       ],
       image: "https://www.stockflowsystems.com/ConstructionInventory.png",
-      url: location.pathname
+      url: canonicalPath
     },
     pageType: 'software'
   });

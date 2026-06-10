@@ -37,9 +37,9 @@ import Footer from '@/components/Footer';
 export default function WarehouseManagementSystemPage() {
 
   const pageMetadata = {
-    published: '2026-01-06',
-    updated: '2026-06-08',
-    updatedDisplay: 'June 9, 2026'
+    published: '2026-06-10',
+    updated: 'June 10, 2026',
+    updatedDisplay: 'June 10, 2026'
   };
 
   const faqData = [
@@ -286,7 +286,7 @@ export default function WarehouseManagementSystemPage() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 border border-blue-200 rounded-full mb-6">
               <Warehouse className="w-5 h-5 text-blue-600" />
-              <span className="text-blue-800 font-bold text-sm">Updated June 9, 2026</span>
+              <span className="text-blue-800 font-bold text-sm">Updated June 10, 2026</span>
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] mb-6">

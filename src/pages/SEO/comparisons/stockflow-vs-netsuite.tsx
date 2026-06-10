@@ -64,7 +64,7 @@ export default function StockFlowVsNetSuite() {
     <SeoPageLayout
       title="StockFlow vs NetSuite"
       heroTitle="StockFlow vs NetSuite (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -73,7 +73,7 @@ export default function StockFlowVsNetSuite() {
         description="StockFlow vs NetSuite: SME inventory software (free) vs enterprise ERP ($999+/month). Compare setup time, total cost, and which fits your business size."
         keywords="stockflow vs netsuite, netsuite alternative, sme inventory software, enterprise erp vs inventory software, netsuite vs stockflow"
         url="https://www.stockflowsystems.com/stockflow-vs-netsuite"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -212,7 +212,7 @@ export default function StockFlowVsNetSuite() {
             "@type": "WebPage",
             name: "StockFlow vs NetSuite",
             url: "https://www.stockflowsystems.com/stockflow-vs-netsuite",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

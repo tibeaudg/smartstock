@@ -7,7 +7,7 @@ const topicTitle = "Parts Inventory Management Best Practices";
 const canonicalPath = "/parts-inventory-management-best-practices";
 const metaDescription = "Parts inventory best practices: track spare parts, manage maintenance stock, prevent stockouts, and optimize inventory for manufacturing and maintenance teams.";
 const keywords = "parts inventory management, spare parts inventory, parts inventory best practices, maintenance inventory, parts tracking, spare parts management, inventory parts";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Parts inventory management best practices include: ABC analysis (prioritize critical parts), accurate tracking with barcode scanning, setting appropriate reorder points, maintaining safety stock for critical parts, organizing parts by equipment/application, tracking usage patterns, and managing supplier relationships. Key challenges: preventing stockouts of critical parts (causes downtime), avoiding overstocking (ties up capital), and managing many SKUs. Best practices ensure critical parts are always available while optimizing inventory investment.";
 const takeaways = [
   "Best practices include: ABC analysis (prioritize critical parts), accurate tracking with barcode scanning, setting reorder points, maintaining safety stock, and organizing by equipment/application.",
@@ -78,7 +78,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "June 9, 2026",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/parts-inventory-management-best-practices"
@@ -104,7 +104,7 @@ export default function SeoPartsInventoryManagementBestPracticesPage() {
       seoDescription={metaDescription}
       seoKeywords={keywords}
       heroTitle={topicTitle}
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
     >
 <section id="overview" className="bg-white px-4 py-16">

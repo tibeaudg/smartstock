@@ -29,7 +29,7 @@ export default function VoorraadbeheerMagazijnPage() {
       seoTitle="Magazijnbeheer Software voor KMO's – Realtime Voorraad | StockFlow"
       seoDescription="Magazijn voorraadbeheer software voor BE en NL. Real-time tracking, pickroute-optimalisatie en ordervervulling. Gratis starten — geen creditcard."
       heroTitle="Voorraadbeheer Software voor Magazijnen"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
     >

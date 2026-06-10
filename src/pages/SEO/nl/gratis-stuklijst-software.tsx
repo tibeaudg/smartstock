@@ -30,8 +30,8 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-05",
-    "dateModified": "2026-06-05",
+    "datePublished": "2026-06-10",
+    "dateModified": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": `https://www.stockflowsystems.com${canonicalPath}`
@@ -117,7 +117,7 @@ export default function GratisStuklijstSoftwarePage() {
       seoTitle="Gratis Stuklijst Software (BOM) – Complete Gids 2026 | StockFlow"
       seoDescription={metaDescription}
       heroTitle="Gratis Stuklijst Beheer Software"
-      dateUpdated="05/06/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
       structuredData={structuredData}

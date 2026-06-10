@@ -139,7 +139,7 @@ export default function SmallBusinessInventoryAppPage() {
       breadcrumbItems={breadcrumbs}
       heroTitle="Best Inventory App for Small Business"
       heroDescription="Find the best free business inventory app with mobile barcode scanning, real-time sync, and unlimited stock tracking for SMBs."
-      dateUpdated="January 10, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
     >
       <SEO

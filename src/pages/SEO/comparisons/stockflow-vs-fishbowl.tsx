@@ -64,7 +64,7 @@ export default function StockFlowVsFishbowl() {
     <SeoPageLayout
       title="StockFlow vs Fishbowl"
       heroTitle="StockFlow vs Fishbowl (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -73,7 +73,7 @@ export default function StockFlowVsFishbowl() {
         description="StockFlow vs Fishbowl: cloud SaaS (free) vs on-premise ($4,395+). Compare GDPR, EU hosting, implementation time, and total cost for European businesses."
         keywords="stockflow vs fishbowl, fishbowl alternative, cloud inventory software, on-premise vs cloud inventory, gdpr inventory software"
         url="https://www.stockflowsystems.com/stockflow-vs-fishbowl"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -245,7 +245,7 @@ export default function StockFlowVsFishbowl() {
             "@type": "WebPage",
             name: "StockFlow vs Fishbowl",
             url: "https://www.stockflowsystems.com/stockflow-vs-fishbowl",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

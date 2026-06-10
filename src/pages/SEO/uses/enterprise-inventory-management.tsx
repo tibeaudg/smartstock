@@ -104,7 +104,7 @@ export default function EnterpriseInventoryManagement() {
     <SeoPageLayout 
       title="Enterprise Inventory Management"
       heroTitle="Enterprise Inventory Management"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       previousArticle={{
         title: "HVAC Inventory Management",

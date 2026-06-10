@@ -8,7 +8,7 @@ const topicTitle = "How To Inventory Your Tools";
 const canonicalPath = "/how-to-inventory-your-tools";
 const metaDescription = "How to inventory tools and equipment: step-by-step methods for tracking, organizing, and preventing tool loss. Best practices for tool management.";
 const keywords = "how to inventory tools, tool inventory, tool tracking, inventory tools, tool management, equipment inventory, tool organization, track tools";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Inventory your tools by: creating a tool register (list all tools with details), labeling tools with barcodes or asset tags, tracking locations and assignments, scheduling maintenance, monitoring utilization, and using asset management software. Key steps: list all tools (name, serial number, purchase date, value, location), label with barcodes for easy scanning, track who has which tools, schedule maintenance, and maintain accurate records. Tool inventory prevents loss, enables maintenance scheduling, improves utilization, and helps make informed purchasing decisions. Use asset management software with mobile apps for tracking across locations.";
 const takeaways = [
   "Inventory by: creating tool register, labeling with barcodes, tracking locations and assignments, scheduling maintenance, monitoring utilization, and using asset management software.",
@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-08",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/how-to-inventory-your-tools"
@@ -102,7 +102,7 @@ export default function SeoHowToInventoryYourToolsPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

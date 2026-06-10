@@ -88,7 +88,7 @@ export default function AssetControllerMeaning() {
     <SeoPageLayout
       title="Asset Controller Meaning | What is Asset Controller"
       heroTitle="Asset Controller Meaning"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       previousArticle={{
         title: "Inventory Automation",
@@ -291,7 +291,7 @@ export default function AssetControllerMeaning() {
               "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "datePublished": "2024-01-01",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split('T')[0]
         }
       ]} />

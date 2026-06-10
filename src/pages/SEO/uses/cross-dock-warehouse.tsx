@@ -238,7 +238,7 @@ export default function BestInventoryManagementSoftware() {
       title="Cross-dock Warehouse"
       description="Cross-dock warehouse management: streamline receiving and shipping, cut storage time 50%, and optimize logistics with real-time tracking and barcode scanning."
       heroTitle="Cross-dock Warehouse"
-      dateUpdated="2026-11-06"
+      dateUpdated="2026-06-10"
       faqData={faqData}
     >
       <SEO
@@ -432,7 +432,7 @@ export default function BestInventoryManagementSoftware() {
             "name": "StockFlow",
             "url": "https://www.stockflowsystems.com"
           },
-          "datePublished": "2026-11-06",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split('T')[0],
           "primaryImageOfPage": {
             "@type": "ImageObject",

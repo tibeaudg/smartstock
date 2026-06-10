@@ -60,7 +60,7 @@ export default function StockFlowVsZohoInventory() {
       seoDescription={pageDescription}
       heroTitle={heroTitle}
       heroDescription={pageDescription}
-      dateUpdated="June 10, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       structuredData={ZOHO_COMPARISON_STRUCTURED_DATA}
       structuredDataMode="replace"

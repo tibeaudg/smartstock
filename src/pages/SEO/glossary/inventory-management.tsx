@@ -330,8 +330,8 @@ export default function InventoryManagementGuide() {
       seoDescription="Complete guide to inventory management 2025. Learn types, methods, best practices. Reduce costs 20-30%, improve efficiency. Free plan available."
       seoKeywords="inventory management, inventory management methods, inventory management system, JIT inventory, MRP, EOQ, DSI, inventory KPIs, inventory turnover, inventory optimization, inventory management software, ABC analysis, cycle counting, inventory best practices"
       heroTitle="Inventory Management Guide"
-      dateUpdated="June 9, 2026"
-      datePublished="2025-11-06T00:00:00Z"
+      dateUpdated="2026-06-10"
+      datePublished="2026-06-10"
       faqData={faqData}
     >
       {/* Introduction */}
@@ -999,7 +999,7 @@ export default function InventoryManagementGuide() {
               "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "datePublished": "2025-11-06",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",

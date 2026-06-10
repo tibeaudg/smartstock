@@ -8,7 +8,7 @@ const topicTitle = "Inventory Management Best Practices";
 const canonicalPath = "/inventory-management-best-practices";
 const metaDescription = "15 inventory management best practices to optimize stock levels, reduce costs, and improve efficiency. Proven strategies for businesses of all sizes.";
 const keywords = "inventory management best practices, inventory best practices, stock management best practices, inventory optimization, inventory control best practices, inventory management tips, inventory management strategies";
-const heroBadge = "Topic Guide • Updated January 2024";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Most businesses track inventory at 60-80% accuracy. Best practices push that to 95-99% and cut costs by 20-30%. Here's how: regular cycle counts, barcode scanning, automated reorder points, safety stock buffers, proper software, and staff training. We've seen retailers eliminate 85% of stockouts and recover €8,500+ in dead stock capital using these methods.";
 const takeaways = [
   "Maintain 95- through regular cycle counts, barcode scanning, and automated tracking systems.",
@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2024-01-11",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/inventory-management-best-practices"
@@ -102,7 +102,7 @@ export default function SeoInventoryManagementBestPracticesPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

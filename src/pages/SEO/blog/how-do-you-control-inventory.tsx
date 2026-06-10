@@ -8,7 +8,7 @@ const topicTitle = "How Do You Control Inventory";
 const canonicalPath = "/how-do-you-control-inventory";
 const metaDescription = "How to control inventory: track movements, set reorder points, and run cycle counts. Barcode scanning improves accuracy from 60-80% to 95-99%.";
 const keywords = "how to control inventory, inventory control, control inventory, inventory control methods, inventory control techniques, stock control, inventory management control";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "Control inventory by: tracking all movements (receipts, shipments, adjustments), maintaining accurate records, setting reorder points to prevent stockouts, conducting regular counts (cycle counts or full counts), using inventory management software for real-time tracking, implementing barcode scanning for accuracy, and establishing clear processes. Key methods: perpetual inventory (real-time tracking with software), cycle counting (count subsets regularly), ABC analysis (prioritize high-value items), and automated reordering. Effective control maintains 95-99% accuracy, prevents stockouts, reduces overstocking, and optimizes inventory investment.";
 const takeaways = [
   "Control by: tracking all movements, maintaining accurate records, setting reorder points, conducting regular counts, using inventory management software, implementing barcode scanning, and establishing clear processes.",
@@ -79,7 +79,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-05",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/how-do-you-control-inventory"
@@ -102,7 +102,7 @@ export default function SeoHowDoYouControlInventoryPage() {
     <SeoPageLayout 
       title={topicTitle} 
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
        
       

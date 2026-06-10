@@ -39,8 +39,8 @@ export default function BesteGratisVoorraadSoftwareMetBarcodeScannenPage() {
     ],
     faqData,
     pageType: 'article',
-    datePublished: '2026-01-22',
-    dateModified: '2026-01-22',
+    datePublished: '2026-06-10',
+    dateModified: '2026-06-10',
     includeWebSite: false
   });
 
@@ -51,7 +51,7 @@ export default function BesteGratisVoorraadSoftwareMetBarcodeScannenPage() {
       seoDescription="Gratis voorraadsoftware met barcode scanning voor België en Nederland. Scan met uw smartphone — geen hardware nodig. 99,9% nauwkeurigheid, volledig gratis."
       heroTitle="Beste Gratis Voorraad Software met Barcode Scannen"
       heroDescription="Ontdek gratis voorraadbeheer met barcode scanning op uw smartphone. Geen hardware nodig, direct realtime voorraad updates."
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       pageLanguage="nl"
       faqData={faqData}
       structuredData={structuredData}

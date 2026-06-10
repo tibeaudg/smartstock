@@ -7,7 +7,7 @@ const topicTitle = "6 Ways QR Codes Will Boost Inventory Management";
 const canonicalPath = "/6-ways-qr-codes-will-boost-inventory-management";
 const metaDescription = "6 ways QR codes boost inventory management. Learn how QR codes improve accuracy, speed up tracking, reduce errors, and enhance inventory management efficiency.";
 const keywords = "QR codes inventory, QR codes boost inventory, QR code inventory benefits, QR code inventory management, QR code tracking, inventory QR codes";
-const heroBadge = "Topic Guide • Updated September 2025";
+const heroBadge = "Topic Guide • Updated June 10, 2026";
 const summaryCopy = "6 ways QR codes boost inventory management: 1) Faster scanning (10-20x faster than manual entry, scan from any angle), 2) Store more data (up to 4,296 characters - product details, URLs, batch info), 3) Smartphone accessibility (use phone cameras, no special scanners needed), 4) Better accuracy (95-99% vs 60-80% manual, error correction built-in), 5) Cost-effective (free to generate, use existing smartphones), 6) Flexible integration (connect with inventory software, store rich data). QR codes improve inventory management efficiency, accuracy, and accessibility. They're particularly valuable for businesses wanting smartphone-based scanning and richer data storage.";
 const takeaways = [
   "6 ways QR codes boost: faster scanning (10-20x faster, scan from any angle), store more data (up to 4,296 characters), smartphone accessibility (use phone cameras), better accuracy (95-99% vs 60-80%), cost-effective (free to generate), and flexible integration (connect with software).",
@@ -78,7 +78,7 @@ const structuredData = [
         "url": "https://www.stockflowsystems.com/logo.png"
       }
     },
-    "datePublished": "2025-09-05",
+    "datePublished": "2026-06-10",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://www.stockflowsystems.com/6-ways-qr-codes-will-boost-inventory-management"
@@ -103,7 +103,7 @@ export default function Seo6WaysQRCodesWillBoostInventoryManagementPage() {
       seoDescription={metaDescription}
       seoKeywords={keywords}
       heroTitle={topicTitle} 
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
     >
 <section id="overview" className="bg-white px-4 py-16">

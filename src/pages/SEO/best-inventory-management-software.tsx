@@ -19,7 +19,7 @@ import {
 
 /**
  * Best Inventory Management Software 2026
- * Updated: January 10, 2026
+ * Updated: June 10, 2026
  */
 export default function BestInventoryManagementSoftwarePage() {
   
@@ -101,7 +101,7 @@ export default function BestInventoryManagementSoftwarePage() {
     <SeoPageLayout
       title="Best Inventory Management Software (2026 Guide)"
       heroTitle="The Definitive Guide to Inventory Management Software in 2026"
-      dateUpdated="January 10, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

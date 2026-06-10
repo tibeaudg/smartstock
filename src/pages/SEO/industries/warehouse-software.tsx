@@ -131,7 +131,7 @@ export default function WarehouseSoftwarePage() {
     <SeoPageLayout
       title="Warehouse Software – Modern WMS for Efficient Operations"
       heroTitle="Warehouse Software Built for Modern Fulfillment"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

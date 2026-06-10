@@ -151,7 +151,7 @@ export default function EnterpriseInventorySoftwarePage() {
     <SeoPageLayout
       title="Enterprise Inventory Management Software for Large Teams"
       heroTitle="Inventory Solutions Built for Massive Scale"
-      dateUpdated="january 10, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

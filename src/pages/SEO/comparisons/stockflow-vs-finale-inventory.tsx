@@ -57,7 +57,7 @@ export default function StockFlowVsFinaleInventory() {
     <SeoPageLayout
       title="StockFlow vs Finale Inventory"
       heroTitle="StockFlow vs Finale Inventory (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -66,7 +66,7 @@ export default function StockFlowVsFinaleInventory() {
         description="StockFlow vs Finale Inventory: free tier vs $99-$299/month. Compare EU hosting, GDPR compliance, setup time, and total cost for European businesses."
         keywords="stockflow vs finale inventory, finale inventory alternative, gdpr inventory software, eu inventory software, finale inventory vs stockflow"
         url="https://www.stockflowsystems.com/stockflow-vs-finale-inventory"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -151,7 +151,7 @@ export default function StockFlowVsFinaleInventory() {
             "@type": "WebPage",
             name: "StockFlow vs Finale Inventory",
             url: "https://www.stockflowsystems.com/stockflow-vs-finale-inventory",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

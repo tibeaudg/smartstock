@@ -62,7 +62,7 @@ export default function StockFlowVsOdoo() {
     <SeoPageLayout
       title="StockFlow vs Odoo"
       heroTitle="StockFlow vs Odoo (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -71,7 +71,7 @@ export default function StockFlowVsOdoo() {
         description="StockFlow vs Odoo: inventory-first software (free) vs full ERP (€24.90/user/month). Compare setup time, focus, and which fits your business needs."
         keywords="stockflow vs odoo, odoo alternative, inventory software vs erp, odoo inventory module, inventory management software"
         url="https://www.stockflowsystems.com/stockflow-vs-odoo"
-        publishedTime="2026-01-22T00:00:00Z"
+        publishedTime="2026-06-10T00:00:00Z"
         modifiedTime={new Date().toISOString()}
       />
 
@@ -210,7 +210,7 @@ export default function StockFlowVsOdoo() {
             "@type": "WebPage",
             name: "StockFlow vs Odoo",
             url: "https://www.stockflowsystems.com/stockflow-vs-odoo",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

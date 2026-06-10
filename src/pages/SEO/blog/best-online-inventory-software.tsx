@@ -42,7 +42,7 @@ export default function BestOnlineInventorySoftwarePage() {
   const location = useLocation();
 
   const heroTitle = "Best Online Inventory Management Software 2026: Free Forever with Unlimited Features";
-  const dateUpdated = "January 20, 2026";
+  const dateUpdated = "2026-06-10";
 
   // FAQ targeting "People Also Ask" from screenshots
   const faqData = [
@@ -131,8 +131,8 @@ export default function BestOnlineInventorySoftwarePage() {
         "@type": "Organization",
         "name": "StockFlow Systems"
       },
-      "datePublished": "2026-01-20",
-      "dateModified": "2026-06-08"
+      "datePublished": "2026-06-10",
+      "dateModified": "2026-06-10"
     },
     {
       "@context": "https://schema.org",

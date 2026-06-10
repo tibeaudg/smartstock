@@ -67,13 +67,13 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Best Free Inventory Software with Barcode Scanner (2026)"
       heroDescription={PAGE_DESCRIPTION}
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       pageLanguage="en"
       faqData={faqData}
       structuredData={BARCODE_SCANNING_STRUCTURED_DATA}
       structuredDataMode="replace"
     >
-      <p className="text-sm text-slate-500 mb-6">Last updated: June 9, 2026</p>
+      <p className="text-sm text-slate-500 mb-6">Last updated: June 10, 2026</p>
 
       <section className="mb-12">
         <p className="text-lg text-gray-700 leading-relaxed mb-4">

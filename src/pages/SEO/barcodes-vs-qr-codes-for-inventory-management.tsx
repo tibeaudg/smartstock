@@ -74,7 +74,7 @@ export default function BarcodesVsQRCodesForInventoryManagementPage() {
       seoDescription={PAGE_DESCRIPTION}
       heroTitle="Barcodes vs QR Codes for Inventory Management"
       heroDescription="A practical comparison to help you choose the right label type for your warehouse, shop floor, or field team — and how to deploy both in StockFlow."
-      dateUpdated="June 10, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       structuredData={structuredData}
     >

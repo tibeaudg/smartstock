@@ -315,7 +315,7 @@ export default function ElectricalInventoryManagement() {
     <SeoPageLayout 
       title="Electrical Inventory Management"
       heroTitle="Electrical Inventory Management"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       tableOfContents={sidebarContent.tableOfContents}
       showTOC={true}
@@ -790,7 +790,7 @@ export default function ElectricalInventoryManagement() {
               "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "datePublished": "2026-11-06",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split('T')[0],
           "mainEntityOfPage": {
             "@type": "WebPage",

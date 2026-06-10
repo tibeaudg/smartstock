@@ -46,7 +46,7 @@ const faqData = [
 
 export default function StockFlowVsCin7() {
   return (
-    <SeoPageLayout heroTitle={pageTitle} dateUpdated="June 10, 2026" faqData={faqData}>
+    <SeoPageLayout heroTitle={pageTitle} dateUpdated="2026-06-10" faqData={faqData}>
       <SEO
         title={pageTitle}
         description="Looking for a Cin7 alternative? Compare StockFlow vs Cin7 for 2026: pricing, features, multi-warehouse support, and who each platform is best for."

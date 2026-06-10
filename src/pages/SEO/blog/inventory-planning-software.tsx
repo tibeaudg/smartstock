@@ -37,7 +37,7 @@ const structuredData = [
     "headline": topicTitle,
     "description": metaDescription,
     "author": { "@type": "Organization", name: "StockFlow Systems" },
-    "datePublished": "2026-01-08",
+    "datePublished": "2026-06-10",
   },
 ];
 

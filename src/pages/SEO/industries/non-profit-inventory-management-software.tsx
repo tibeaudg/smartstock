@@ -129,7 +129,7 @@ export default function NonProfitInventorySoftwarePage() {
     <SeoPageLayout
       title="Non-Profit Inventory Software – Efficient Resource Tracking"
       heroTitle="Inventory Software Built for Mission-Driven Teams"
-      updatedDate="June 9, 2026"
+      updatedDate="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

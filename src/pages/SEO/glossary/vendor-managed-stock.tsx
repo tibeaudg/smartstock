@@ -119,7 +119,7 @@ export default function VendorManagedStock() {
       title="Vendor Managed Stock | VMS Inventory Management"
       heroTitle="Vendor Managed Stock"
       description="Vendor managed stock (VMS) explained: how it works, key benefits, implementation steps, and when VMS arrangements make sense for your business."
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       
     >
@@ -317,7 +317,7 @@ export default function VendorManagedStock() {
               "url": "https://www.stockflowsystems.com/logo.png"
             }
           },
-          "datePublished": "2024-01-01",
+          "datePublished": "2026-06-10",
           "dateModified": new Date().toISOString().split('T')[0]
         }
       ]} />

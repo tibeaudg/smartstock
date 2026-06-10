@@ -113,8 +113,8 @@ const structuredData = [
         url: "https://www.stockflowsystems.com/logo.png",
       },
     },
-    datePublished: "2026-01-07",
-    dateModified: "2026-06-08",
+    datePublished: '2026-06-10',
+    dateModified: '2026-06-10',
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://www.stockflowsystems.com${canonicalPath}`,
@@ -149,7 +149,7 @@ export default function VoorraadbeheerHorecaPage() {
       heroTitle="Voorraadbeheer in de Horeca"
       heroDescription="Correct stocken in de horeca: minder verspilling, meer controle en hogere marges"
       heroSubtitle="Praktische stappen, meetbare KPI's en softwaretips voor elke horecazaak"
-      dateUpdated="2026-01-22"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
     >
       <SEO

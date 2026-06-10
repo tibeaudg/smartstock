@@ -58,8 +58,8 @@ export default function StockFlowVsShipStation() {
       seoDescription="StockFlow vs ShipStation: inventory-first software (free) vs shipping platform ($9.99+/month). Compare features, pricing, and which fits inventory management."
       seoKeywords="stockflow vs shipstation, shipstation alternative, inventory software vs shipping, shipstation vs stockflow, inventory management software"
       heroTitle="StockFlow vs ShipStation (2026 Full Comparison)"
-      dateUpdated="22/01/2026"
-      datePublished="2026-01-22T00:00:00Z"
+      dateUpdated="2026-06-10"
+      datePublished="2026-06-10"
       keyTakeaways={keyTakeaways}
       faqData={faqData}
     >
@@ -140,7 +140,7 @@ export default function StockFlowVsShipStation() {
             "@type": "WebPage",
             name: "StockFlow vs ShipStation",
             url: "https://www.stockflowsystems.com/stockflow-vs-shipstation",
-            datePublished: "2026-01-22",
+            datePublished: '2026-06-10',
             dateModified: new Date().toISOString().split('T')[0]
           }
         ]}

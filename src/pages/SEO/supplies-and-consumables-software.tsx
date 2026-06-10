@@ -131,7 +131,7 @@ export default function ConsumablesInventoryPage() {
     <SeoPageLayout
       title="Supply & Consumable Management Simplified"
       heroTitle="Consumables Inventory Software Built for Speed"
-      updatedDate="June 9, 2026"
+      updatedDate="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >

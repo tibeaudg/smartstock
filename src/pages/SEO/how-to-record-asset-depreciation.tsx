@@ -14,7 +14,7 @@ const Page = () => {
     <SeoPageLayout
       heroTitle="Advancing Enterprise How To Record Asset Depreciation: A Technical Framework"
       title="How To Record Asset Depreciation Strategy & Automation Guide | StockFlow"
-      dateUpdated="June 9, 2026"
+      dateUpdated="2026-06-10"
       keyTakeaways={keyTakeaways}
     >
       <div className="space-y-20 max-w-5xl mx-auto">

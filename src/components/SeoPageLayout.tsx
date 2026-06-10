@@ -241,6 +241,45 @@ const KeyTakeaways = memo(({ takeaways }: { takeaways: string[] }) => {
 });
 KeyTakeaways.displayName = 'KeyTakeaways';
 
+/** Parse article dates from ISO, DD/MM/YYYY, or human-readable strings. */
+function parseArticleDate(dateStr: string): Date | null {
+  if (!dateStr?.trim()) return null;
+
+  const isoMatch = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (isoMatch) {
+    const d = new Date(`${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}T12:00:00`);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  const slashMatch = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slashMatch) {
+    const first = parseInt(slashMatch[1], 10);
+    const second = parseInt(slashMatch[2], 10);
+    const year = parseInt(slashMatch[3], 10);
+    // DD/MM/YYYY when first segment > 12; otherwise treat as MM/DD/YYYY
+    const day = first > 12 ? first : second;
+    const month = first > 12 ? second : first;
+    const d = new Date(year, month - 1, day, 12, 0, 0);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  const d = new Date(dateStr);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function formatArticleDate(dateStr: string): { iso: string; display: string } | null {
+  const d = parseArticleDate(dateStr);
+  if (!d) return null;
+  return {
+    iso: d.toISOString().split('T')[0],
+    display: d.toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }),
+  };
+}
+
 /* ─────────────────────────────────────────────
    Article Meta Bar (reading time, date, share)
 ───────────────────────────────────────────── */
@@ -270,13 +309,7 @@ const ArticleMetaBar = memo(({
   }, [currentUrl]);
 
   const displayDate = dateUpdated || datePublished;
-  const formattedDate = displayDate
-    ? new Date(displayDate).toLocaleDateString('en-GB', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : null;
+  const formatted = displayDate ? formatArticleDate(displayDate) : null;
 
   return (
     <div className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-slate-100 pb-6">
@@ -295,10 +328,10 @@ const ArticleMetaBar = memo(({
       </span>
 
       {/* Date */}
-      {formattedDate && (
+      {formatted && (
         <span className="flex items-center gap-1.5 text-sm text-slate-500">
           <Calendar className="h-4 w-4" aria-hidden="true" />
-          <time dateTime={displayDate}>{formattedDate}</time>
+          <time dateTime={formatted.iso}>{formatted.display}</time>
         </span>
       )}
 

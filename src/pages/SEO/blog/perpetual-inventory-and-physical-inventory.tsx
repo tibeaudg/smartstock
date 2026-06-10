@@ -116,7 +116,7 @@ export default function PerpetualVsPhysicalInventoryPage() {
     <SeoPageLayout
       title="Perpetual vs. Physical Inventory"
       heroTitle="Real-Time Accuracy or Periodic Reconciliation?"
-      dateUpdated="january 8, 2026"
+      dateUpdated="2026-06-10"
       faqData={faqData}
       keyTakeaways={keyTakeaways}
     >
