@@ -248,6 +248,17 @@ const FEATURES_STRUCTURED_DATA = [
   }
 ];
 
+/** Referral links use /join?ref=… — forward to auth signup with query params intact. */
+const JoinRedirect = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  if (!params.has('mode') && !params.has('ref')) {
+    params.set('mode', 'register');
+  }
+  const search = params.toString();
+  return <Navigate to={`/auth${search ? `?${search}` : ''}`} replace />;
+};
+
 const AppRouter = () => {
   useNavigationQueryReset();
   useAnalyticsContextSync();
@@ -424,6 +435,7 @@ const AppRouter = () => {
           </React.Suspense>
         } />
         <Route path="/resources" element={<><SEO title="Inventory Management Resources & Guides | StockFlow" description="Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management." url="https://www.stockflowsystems.com/resources" /><ResourcesPage /></>} />
+        <Route path="/join" element={<JoinRedirect />} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." {...privateSeo} /><AuthRoute /></>} />
         <Route path="/billing-success" element={<><SEO title="Billing" {...privateSeo} /><BillingSuccessRedirect /></>} />
         <Route path="/contact" element={<><SEO title="Contact StockFlow | Free Inventory Software Support" description="Contact StockFlow to get help with inventory software, barcode scanning setup, or getting started with the free plan." url="https://www.stockflowsystems.com/contact" /><ContactPage /></>} />

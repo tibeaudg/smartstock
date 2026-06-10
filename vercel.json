@@ -4,6 +4,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/join",
+      "destination": "/auth",
+      "permanent": false
+    },
+    {
       "source": "/customers",
       "destination": "/resources",
       "permanent": true
