@@ -42,6 +42,31 @@ function stripExistingCrawlNav(html) {
   );
 }
 
+function stripBrandSuffix(title) {
+  return title
+    .replace(/\s*\|\s*StockFlow.*$/i, '')
+    .replace(/\s*—\s*[^|]+$/i, '')
+    .trim();
+}
+
+function buildCrawlH1Block(h1) {
+  return `<h1 id="crawl-h1" data-crawl-h1="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">${escapeHtml(h1)}</h1>`;
+}
+
+function ensureCrawlH1(html) {
+  if (/<h1[^>]*\bid=["']crawl-h1["']/i.test(html)) return html;
+
+  const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  const h1 = titleMatch?.[1] ? stripBrandSuffix(titleMatch[1].trim()) : '';
+  if (!h1) return html;
+
+  const block = buildCrawlH1Block(h1);
+  if (/<body[^>]*>/i.test(html)) {
+    return html.replace(/(<body[^>]*>)/i, `$1\n  ${block}\n`);
+  }
+  return html.replace(/<\/body>/i, `  ${block}\n</body>`);
+}
+
 function injectCrawlNav(html, routePath) {
   const nav = buildCrawlNavHtml(routePath);
   const cleaned = stripExistingCrawlNav(html);
@@ -62,7 +87,8 @@ function ensureRouteHtml(route, templateHtml) {
   }
 
   const current = fs.readFileSync(htmlPath, 'utf8');
-  const updated = injectCrawlNav(current, route);
+  const withH1 = ensureCrawlH1(current);
+  const updated = injectCrawlNav(withH1, route);
   fs.writeFileSync(htmlPath, updated, 'utf8');
 }
 

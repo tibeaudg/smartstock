@@ -117,8 +117,8 @@ export default function CycleCount() {
 
   return (
     <SeoPageLayout
-      title="Cycle Count"
-      seoTitle="Cycle Count Inventory Guide 2026 | StockFlow"
+      title="Cycle Count Software for Continuous Inventory Accuracy"
+      seoTitle="Cycle Count Software for Inventory Accuracy 2026 | StockFlow"
       seoDescription="Cycle count inventory 2026: continuous accuracy. Automate counting, improve accuracy 20-30%, track discrepancies. Free plan available."
       seoKeywords="cycle count, cycle counting, inventory cycle count, cycle count inventory, cycle count method, cycle count process, cycle count schedule, cycle count software, cycle count system, inventory cycle counting, cycle count best practices, cycle count vs physical inventory, cycle count accuracy, cycle count frequency, stockflow, stock flow"
       heroTitle="Cycle Count"
@@ -129,8 +129,8 @@ export default function CycleCount() {
       href: "/barcoding"
 }}
 nextArticle={{
-      title: "Integrations",
-      href: "/integrations"
+      title: "Suppliers",
+      href: "/suppliers"
 }}      
       
     >
@@ -209,7 +209,7 @@ nextArticle={{
 
 
       <StructuredData data={generateSeoPageStructuredData({
-        title: "Cycle Count - Inventory Management Feature | StockFlow",
+        title: "Cycle Count Software for Inventory Accuracy 2026 | StockFlow",
         description: "Learn about cycle counting for inventory accuracy. Automated cycle count scheduling, discrepancy tracking, and continuous inventory verification.",
         url: location.pathname,
         breadcrumbs,

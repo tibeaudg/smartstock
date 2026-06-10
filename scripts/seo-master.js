@@ -234,9 +234,6 @@ async function syncSitemap() {
     `${MY_BASE_URL}`,
     `${MY_BASE_URL}/inventory-management-software`,
     `${MY_BASE_URL}/inventory-software`,
-    `${MY_BASE_URL}/mobile-inventory-management`,
-    `${MY_BASE_URL}/simple-stock-management`,
-    `${MY_BASE_URL}/stock-management-software`
   ];
 
   // 2. Discover all pages

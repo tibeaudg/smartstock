@@ -596,10 +596,6 @@
       "destination": "/index.html"
     },
     {
-      "source": "/customers/:id",
-      "destination": "/index.html"
-    },
-    {
       "source": "/help-center",
       "destination": "/index.html"
     },

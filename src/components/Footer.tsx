@@ -16,7 +16,6 @@ const Footer = () => {
     product: [
       { name: 'Features', path: '/features' },
       { name: 'Security', path: '/security' },
-      { name: 'Integrations', path: '/integrations' },
     ],
     company: [
       { name: 'About Us', path: '/about' },

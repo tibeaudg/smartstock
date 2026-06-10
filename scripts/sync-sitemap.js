@@ -7,13 +7,29 @@ import { getSlugFromSeoFile, getSlugFromPath, extractRoutePathFromContent } from
 const BASE_URL = 'https://www.stockflowsystems.com';
 
 const CORE_PAGES = new Set([
-  '/pricing', '/features', '/about', '/contact', '/integrations',
+  '/pricing', '/features', '/about', '/contact',
   '/inventory-management-software', '/best-inventory-management-software',
   '/best-free-inventory-software-with-barcode-scanning',
   '/bill-of-materials-software-free', '/barcode-inventory-system-for-small-business',
-  '/inventory-software', '/mobile-inventory-management',
-  '/simple-stock-management', '/stock-management-software',
+  '/inventory-software',
 ]);
+
+/** URLs that must never appear in the sitemap (no indexable page or non-self canonical). */
+const SITEMAP_EXCLUDED_PATHS = new Set([
+  '/customers',
+  '/integrations',
+  '/videos',
+  '/mobile-inventory-management',
+  '/simple-stock-management',
+  '/stock-management-software',
+]);
+
+function isSitemapExcluded(url) {
+  const route = url.replace(BASE_URL, '') || '/';
+  if (SITEMAP_EXCLUDED_PATHS.has(route)) return true;
+  if (route.startsWith('/customers/')) return true;
+  return false;
+}
 
 function getPriority(url) {
   const p = url.replace(BASE_URL, '') || '/';
@@ -119,16 +135,10 @@ async function syncSitemap() {
     `${BASE_URL}`,
     `${BASE_URL}/inventory-management-software`,
     `${BASE_URL}/inventory-software`,
-    `${BASE_URL}/mobile-inventory-management`,
-    `${BASE_URL}/simple-stock-management`,
-    `${BASE_URL}/stock-management-software`,
     `${BASE_URL}/features`,
     `${BASE_URL}/about`,
     `${BASE_URL}/contact`,
-    `${BASE_URL}/videos`,
     `${BASE_URL}/resources`,
-    `${BASE_URL}/customers`,
-    `${BASE_URL}/integrations`,
     `${BASE_URL}/reporting`,
   ];
 
@@ -220,10 +230,7 @@ async function syncSitemap() {
     ['', path.join(process.cwd(), 'src/App.tsx')],
     ['about', path.join(process.cwd(), 'src/pages/about.tsx')],
     ['contact', path.join(process.cwd(), 'src/pages/contact.tsx')],
-    ['videos', path.join(process.cwd(), 'src/pages/videos.tsx')],
     ['resources', path.join(process.cwd(), 'src/pages/resources.tsx')],
-    ['customers', path.join(process.cwd(), 'src/pages/customers.tsx')],
-    ['integrations', path.join(process.cwd(), 'src/pages/integrations.tsx')],
     ['reporting', path.join(process.cwd(), 'src/pages/reporting.tsx')],
     ['features', path.join(process.cwd(), 'src/pages/features.tsx')],
     ['pricing', path.join(process.cwd(), 'src/pages/pricing.tsx')],
@@ -263,6 +270,13 @@ async function syncSitemap() {
 
   // 4. REMOVE & NORMALIZE: Cleanup logic — also refresh lastmod for all kept entries
   sitemapData.urlset.url = sitemapData.urlset.url.filter(entry => {
+    const normalizedLoc = entry.loc.trim().replace(/^http:/, 'https:').replace(/\/+$/, '') || BASE_URL;
+    if (isSitemapExcluded(normalizedLoc)) {
+      console.log(`- Removed (non-canonical / no page): ${normalizedLoc}`);
+      audit.removed.push({ route: normalizedLoc.replace(`${BASE_URL}/`, ''), reason: 'non-canonical' });
+      return false;
+    }
+
     // Always remove redirect routes regardless of other rules
     const entrySlug = entry.loc.trim().replace(`${BASE_URL}/`, '');
     if (entrySlug.toLowerCase().startsWith('blog/')) {
@@ -299,7 +313,7 @@ async function syncSitemap() {
 
     // PROTECTED: Non-SEO core folders (Case Insensitive)
     const protectedFolders = [
-      'case-studies', 'customers', 'integrations',
+      'case-studies',
       'glossary', 'categoriespage', 'nl'
     ];
 
@@ -351,6 +365,7 @@ async function syncSitemap() {
 
   const allTargetUrls = new Set(
     [...permanentUrls, ...localUrls].filter((url) => {
+      if (isSitemapExcluded(url)) return false;
       const route = url.replace(`${BASE_URL}/`, '').toLowerCase();
       if (redirectRoutes.has(route)) return false;
       if (pruningActions.noindexPaths.has(route)) return false;

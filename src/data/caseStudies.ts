@@ -33,7 +33,7 @@ export const caseStudies: CaseStudy[] = [
       locations: "3 stores",
       products: "2,500 SKUs",
     },
-    link: "/customers",
+    link: "/case-studies",
   },
   {
     id: "restaurant-group",
@@ -54,7 +54,7 @@ export const caseStudies: CaseStudy[] = [
       locations: "2 restaurants",
       products: "800 ingredients",
     },
-    link: "/customers",
+    link: "/case-studies",
   },
 ];
 

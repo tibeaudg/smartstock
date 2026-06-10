@@ -111,7 +111,7 @@ export const CaseStudyThumbnails: React.FC<CaseStudyThumbnailsProps> = ({
           )}
 
           <Link
-            to={study.link || '/customers'}
+            to={study.link || '/case-studies'}
             className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 group-hover:gap-3 transition-all"
           >
             Read case study

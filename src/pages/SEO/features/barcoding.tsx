@@ -240,8 +240,8 @@ export default function BarcodingPage() {
 
   return (
     <SeoPageLayout
-      title="Barcoding"
-      seoTitle="Barcoding for Inventory Management 2026 | StockFlow"
+      title="Barcode Scanning Software for Inventory Management 2026"
+      seoTitle="Barcode Scanning for Inventory Management 2026 | StockFlow"
       seoDescription="Barcoding for inventory: scan with your phone, 99.7% accuracy, 5x faster than manual entry. Generate, print, and track barcodes with free StockFlow software."
       seoKeywords="inventory software with barcode scanner, barcode scanning software, inventory barcode scanner, web barcode scanner, GS1 scanning, stockflow barcoding, omnichannel inventory accuracy"
       heroTitle="Barcoding"

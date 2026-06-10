@@ -64,7 +64,7 @@ export default function IntegrationConfigModal({ isOpen, onClose, integration }:
 
   const handleCSVImport = () => {
     // Navigate to CSV import guide
-    window.open('/integrations', '_blank');
+    window.open('/dashboard/products/import', '_blank');
   };
 
   const renderSetupContent = () => {

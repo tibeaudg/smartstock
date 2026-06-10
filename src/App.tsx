@@ -54,9 +54,9 @@ const AdminNotificationsPage = React.lazy(() => import('./pages/AdminNotificatio
 const AdminSmtpPage = React.lazy(() => import('./pages/AdminSmtpPage'));
 const FeaturesPage = React.lazy(() => import('./components/FeaturesPage'));
 const ResourcesPage = React.lazy(() => import('./pages/resources'));
-const CustomerDetailPage = React.lazy(() => import('./pages/customers/[id]'));
 const WarehousePage = React.lazy(() => import("./pages/WarehousePage"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
+const AboutPage = React.lazy(() => import("./pages/about"));
 const WorkflowsPage = React.lazy(() => import("./pages/workflows"));
 const StockCountsPage = React.lazy(() => import("./pages/stock-counts"));
 const CreateStockCountPage = React.lazy(() => import("./pages/CreateStockCountPage"));
@@ -425,10 +425,10 @@ const AppRouter = () => {
           </React.Suspense>
         } />
         <Route path="/resources" element={<><SEO title="Inventory Management Resources & Guides | StockFlow" description="Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management." url="https://www.stockflowsystems.com/resources" /><ResourcesPage /></>} />
-        <Route path="/customers/:id" element={<><SEO title="Customer Success Story | StockFlow" description="Learn how a StockFlow customer solved inventory issues with barcode scanning and real-time stock visibility." /><CustomerDetailPage /></>} />
         <Route path="/auth" element={<><SEO title="Login to StockFlow" description="Access StockFlow to manage inventory, scan barcodes, and run your stock operations from anywhere." {...privateSeo} /><AuthRoute /></>} />
         <Route path="/billing-success" element={<><SEO title="Billing" {...privateSeo} /><BillingSuccessRedirect /></>} />
         <Route path="/contact" element={<><SEO title="Contact StockFlow | Free Inventory Software Support" description="Contact StockFlow to get help with inventory software, barcode scanning setup, or getting started with the free plan." url="https://www.stockflowsystems.com/contact" /><ContactPage /></>} />
+        <Route path="/about" element={<AboutPage />} />
         <Route
           path="/help-center"
           element={

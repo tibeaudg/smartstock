@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-10T09:04:35.986Z",
+  "generatedAt": "2026-06-10T09:08:54.061Z",
   "removed": [
     {
       "route": "5-elements-of-an-optimized-inventory-management-system",
@@ -148,20 +148,17 @@
     {
       "route": "woocommerce-inventory-management",
       "reason": "thin-template"
-    }
-  ],
-  "added": [
-    {
-      "route": "customers"
     },
     {
-      "route": "integrations"
+      "route": "integrations",
+      "reason": "non-canonical"
     }
   ],
+  "added": [],
   "stats": {
-    "initialCount": 95,
-    "finalCount": 97,
-    "addedCount": 2,
-    "removedCount": 0
+    "initialCount": 92,
+    "finalCount": 91,
+    "addedCount": 0,
+    "removedCount": 1
   }
 }

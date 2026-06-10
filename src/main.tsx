@@ -203,6 +203,9 @@ let appRoot: Root | null =
   (window as any).__APP_ROOT__ || null;
 
 function renderApp() {
+  // Remove build-time crawl H1 once React renders the real page heading.
+  document.getElementById('crawl-h1')?.remove();
+
   if (!appRoot) {
     appRoot = createRoot(rootElement);
     (window as any).__APP_ROOT__ = appRoot;

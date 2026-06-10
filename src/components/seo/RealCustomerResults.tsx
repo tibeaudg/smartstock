@@ -68,7 +68,7 @@ export const RealCustomerResults: React.FC<RealCustomerResultsProps> = ({
           
           <div className="text-center mt-8">
             <Link
-              to="/customers"
+              to="/case-studies"
               className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold"
             >
               View More Customer Stories <ArrowRight className="h-5 w-5" />
@@ -161,7 +161,7 @@ export const RealCustomerResults: React.FC<RealCustomerResultsProps> = ({
           ))}
           
           <Link
-            to="/customers"
+            to="/case-studies"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium text-sm mt-4"
           >
             View More Customer Stories <ArrowRight className="h-4 w-4" />

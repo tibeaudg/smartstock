@@ -57,11 +57,19 @@ const PRIVATE_PREFIXES = ['/dashboard', '/auth', '/admin', '/checkout', '/billin
 // extractable title/description there (they manage meta in their own component).
 // We still emit a self-canonical so they never canonicalize to the homepage.
 const MANUAL_ROUTES = [
-  { route: '/pricing', title: 'Pricing | StockFlow', description: 'StockFlow pricing — free inventory management software for small businesses, with paid plans for growing teams.' },
-  { route: '/faq', title: 'Frequently Asked Questions | StockFlow', description: 'Answers to common questions about StockFlow free inventory management software, features, pricing, and getting started.' },
-  { route: '/resources', title: 'Inventory Management Resources & Guides | StockFlow', description: 'Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management.' },
-  { route: '/integrations', title: 'Integrations | StockFlow', description: 'Connect StockFlow with Shopify, Stripe, e-commerce platforms, and business tools. Sync inventory, orders, and data across your stack.' },
+  { route: '/pricing', title: 'Pricing | StockFlow', h1: "Start free. Scale when you're ready.", description: 'StockFlow pricing — free inventory management software for small businesses, with paid plans for growing teams.' },
+  { route: '/faq', title: 'Frequently Asked Questions | StockFlow', h1: 'Frequently Asked Questions', description: 'Answers to common questions about StockFlow free inventory management software, features, pricing, and getting started.' },
+  { route: '/resources', title: 'Inventory Management Resources & Guides | StockFlow', h1: 'Inventory Management Resources & Guides', description: 'Find free inventory software guides, operating tips, and best practices for inventory control, barcode scanning, and stock management.' },
+  { route: '/integrations', title: 'Integrations | StockFlow', h1: 'Powerful Integrations', description: 'Connect StockFlow with Shopify, Stripe, e-commerce platforms, and business tools. Sync inventory, orders, and data across your stack.' },
 ];
+
+/** H1 text for core App.tsx routes where the visible heading differs from the <title>. */
+const MANUAL_H1_OVERRIDES = {
+  '/': 'Free Inventory Software with Barcode Scanning',
+  '/features': 'Powerful Features for Your Business',
+  '/contact': 'Contact Us',
+  '/reporting': 'Reporting & Analytics',
+};
 
 // ---------------------------------------------------------------------------
 // AST helpers
@@ -221,6 +229,9 @@ function extractSeoMeta(seoOpening, constInit) {
       if (v !== undefined) meta[name] = v;
     }
   }
+  if (meta.title) {
+    meta.h1 = stripBrandSuffix(meta.title);
+  }
   return meta;
 }
 
@@ -302,7 +313,7 @@ function extractSeoPageLayoutMeta(opening, constInit, routePath) {
     if (name === 'noindex') {
       if (valNode == null) attrs.noindex = true;
       else if (exprNode?.type === 'BooleanLiteral') attrs.noindex = exprNode.value;
-    } else if (['title', 'heroTitle', 'seoDescription', 'heroDescription', 'pageLanguage'].includes(name)) {
+    } else if (['title', 'seoTitle', 'heroTitle', 'seoDescription', 'heroDescription', 'pageLanguage'].includes(name)) {
       const v = resolveString(exprNode, constInit);
       if (v !== undefined) attrs[name] = v;
     }
@@ -310,7 +321,8 @@ function extractSeoPageLayoutMeta(opening, constInit, routePath) {
 
   const heroTitle = attrs.heroTitle || '';
   const pageTitle = attrs.title || heroTitle;
-  const seoTitle = pageTitle ? shortenSeoTitle(pageTitle) : undefined;
+  const candidateTitle = attrs.seoTitle || pageTitle;
+  const seoTitle = candidateTitle ? shortenSeoTitle(candidateTitle) : undefined;
 
   const lang = attrs.pageLanguage || (routePath.startsWith('/nl') ? 'nl' : 'en');
   const description =
@@ -319,8 +331,9 @@ function extractSeoPageLayoutMeta(opening, constInit, routePath) {
     (heroTitle ? generatePageMetaDescription(heroTitle, lang) : undefined);
 
   const noindex = attrs.noindex ?? (heroTitle ? isThinTemplate(heroTitle) : false);
+  const h1 = heroTitle || (pageTitle ? stripBrandSuffix(pageTitle) : undefined);
 
-  return { title: seoTitle, description, noindex };
+  return { title: seoTitle, description, noindex, h1 };
 }
 
 // ---------------------------------------------------------------------------
@@ -388,7 +401,28 @@ function tryGlossaryFactory(content) {
   const description = entry.metaDescription || (entry.definition
     ? truncate160(`${entry.title}: ${entry.definition}`)
     : undefined);
-  return { title, description };
+  return { title, description, h1: entry.title };
+}
+
+/** First static <h1> literal in a TSX file (skips JSX expressions). */
+function extractFirstH1FromSource(content) {
+  const match = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  if (!match) return undefined;
+  if (match[1].includes('{')) return undefined;
+  const text = match[1]
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text || undefined;
+}
+
+function resolveRouteH1(route, meta, content) {
+  if (MANUAL_H1_OVERRIDES[route]) return MANUAL_H1_OVERRIDES[route];
+  if (meta.h1) return meta.h1;
+  const fromSource = content ? extractFirstH1FromSource(content) : undefined;
+  if (fromSource) return fromSource;
+  if (meta.title) return stripBrandSuffix(meta.title);
+  return undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -449,7 +483,12 @@ async function collectSeoRoutes() {
       meta.noindex = true;
     }
 
-    byRoute.set(route, { route, ...meta });
+    const resolved = { route, ...meta };
+    resolved.h1 = resolveRouteH1(route, resolved, content);
+    if (!resolved.h1) {
+      warnings.push(`No h1 resolved for ${route}`);
+    }
+    byRoute.set(route, resolved);
   }
   return byRoute;
 }
@@ -529,6 +568,18 @@ function stripManagedTags(html) {
     .replace(/\s*<link\s+rel="canonical"[^>]*>/gi, '');
 }
 
+function buildCrawlH1Block(h1) {
+  if (!h1) return '';
+  return `<h1 id="crawl-h1" data-crawl-h1="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">${escapeText(h1)}</h1>`;
+}
+
+function injectCrawlH1(html, h1) {
+  const block = buildCrawlH1Block(h1);
+  if (!block) return html;
+  const cleaned = html.replace(/<h1[^>]*\bid=["']crawl-h1["'][^>]*>[\s\S]*?<\/h1>\s*/i, '');
+  return cleaned.replace(/(<body[^>]*>)/i, `$1\n  ${block}\n`);
+}
+
 function buildHeadBlock({ route, title, description, image, noindex, structuredData }) {
   const canonical = `${BASE_URL}${route === '/' ? '' : route}`;
   const t = title || DEFAULT_TITLE;
@@ -572,7 +623,8 @@ function buildHeadBlock({ route, title, description, image, noindex, structuredD
 function emitRoute(template, meta) {
   const stripped = stripManagedTags(template);
   const headBlock = buildHeadBlock(meta);
-  const html = stripped.replace(/<\/head>/i, `${headBlock}\n  </head>`);
+  const withHead = stripped.replace(/<\/head>/i, `${headBlock}\n  </head>`);
+  const html = injectCrawlH1(withHead, meta.h1);
 
   const outDir = meta.route === '/' ? DIST : path.join(DIST, meta.route.replace(/^\//, ''));
   fs.mkdirSync(outDir, { recursive: true });
@@ -595,27 +647,41 @@ async function main() {
   // App.tsx inline routes (home + core public pages). These take precedence
   // over any SEO-dir collision (e.g. the homepage).
   for (const r of collectAppRoutes()) {
-    byRoute.set(r.route, r);
+    const resolved = {
+      ...r,
+      h1: resolveRouteH1(r.route, r),
+    };
+    if (!resolved.h1) {
+      warnings.push(`No h1 resolved for ${r.route}`);
+    }
+    byRoute.set(r.route, resolved);
   }
 
   // Manual fallbacks (self-canonical for pages without extractable meta).
   for (const r of MANUAL_ROUTES) {
-    if (!byRoute.has(r.route)) byRoute.set(r.route, r);
+    if (!byRoute.has(r.route)) {
+      byRoute.set(r.route, { ...r, h1: r.h1 || resolveRouteH1(r.route, r) });
+    }
   }
 
   const routes = [...byRoute.values()].sort((a, b) => a.route.localeCompare(b.route));
 
   let missingMeta = 0;
+  let missingH1 = 0;
   for (const meta of routes) {
     if (!meta.title || !meta.description) {
       missingMeta++;
       warnings.push(`No ${!meta.title ? 'title' : ''}${!meta.title && !meta.description ? '/' : ''}${!meta.description ? 'description' : ''} for ${meta.route} (using defaults)`);
+    }
+    if (!meta.h1) {
+      missingH1++;
     }
     emitRoute(template, meta);
   }
 
   console.log(`[generate-seo-html] Emitted ${routes.length} per-route HTML files into dist/.`);
   console.log(`[generate-seo-html] ${routes.length - missingMeta} with extracted title+description, ${missingMeta} using defaults.`);
+  console.log(`[generate-seo-html] ${routes.length - missingH1} with crawl <h1>, ${missingH1} without.`);
   if (warnings.length) {
     console.log(`[generate-seo-html] ${warnings.length} warning(s):`);
     for (const w of warnings.slice(0, 40)) console.log(`  - ${w}`);
