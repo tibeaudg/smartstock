@@ -80,7 +80,7 @@ export default function StockFlowVsFishbowl() {
       {/* Hero */}
       <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Fishbowl</h1>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Fishbowl</h2>
           <p className="text-lg text-gray-600 max-w-4xl mx-auto">
             Choosing between modern cloud-based inventory software and traditional on-premise solutions? This comparison breaks down StockFlow (cloud SaaS) vs Fishbowl (on-premise) across pricing, deployment, compliance, and total cost of ownership.
           </p>

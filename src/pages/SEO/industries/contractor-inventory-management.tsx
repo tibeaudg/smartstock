@@ -149,9 +149,9 @@ export default function ContractorInventoryManagement() {
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">
           <ShieldCheck className="w-4 h-4" /> Complete Guide for Construction Professionals
         </div>
-        <h1 className="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
+        <h2 className="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
           Construction Inventory Management: Complete Guide for Contractors
-        </h1>
+        </h2>
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-6 text-lg text-slate-600 leading-relaxed">
             <p>

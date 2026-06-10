@@ -59,9 +59,9 @@ export default function BesteGratisVoorraadSoftwareMetBarcodeScannenPage() {
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Beste Gratis Voorraad Software met Barcode Scannen
-          </h1>
+          </h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
             Op zoek naar gratis voorraad software met barcode scanning? StockFlow biedt volledig gratis voorraadbeheer 
             met ingebouwde barcode scanning. Gebruik de camera van uw smartphone om barcodes te scannen - geen dure 

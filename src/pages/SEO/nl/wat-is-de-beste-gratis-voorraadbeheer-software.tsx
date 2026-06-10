@@ -39,9 +39,9 @@ export default function WatIsDeBesteGratisVoorraadbeheerSoftwarePage() {
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Wat is de Beste Gratis Voorraadbeheer Software?
-          </h1>
+          </h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
             Op zoek naar gratis voorraadbeheer software? De meeste 'gratis' opties hebben verborgen beperkingen zoals 
             productlimieten, gebruikerslimieten of tijdsbeperkingen. StockFlow is anders - het is volledig gratis voor 

@@ -148,7 +148,7 @@ export default function InventoryManagementSoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Modern Inventory Management, Simplified</h1>
+          <h2 className="text-4xl font-bold mb-6">Modern Inventory Management, Simplified</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             Relying on outdated spreadsheets or manual logs is a barrier to growth. <strong>Modern inventory management software</strong> provides the digital infrastructure necessary to track supplies, materials, and equipment with total precision. <strong>StockFlow</strong> is designed to be the single source of truth for your business assets, accessible from any device in any location.
           </p>

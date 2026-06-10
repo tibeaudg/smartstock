@@ -77,7 +77,7 @@ export default function StockFlowVsOdoo() {
 
       <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Odoo</h1>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Odoo</h2>
           <p className="text-lg text-gray-600 max-w-4xl mx-auto">
             Comparing inventory-first software vs full ERP suite? This breakdown shows when StockFlow (inventory-focused) makes more sense than Odoo (full ERP) for inventory management needs.
           </p>

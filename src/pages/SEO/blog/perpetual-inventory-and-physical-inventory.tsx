@@ -131,7 +131,7 @@ export default function PerpetualVsPhysicalInventoryPage() {
       {/* Hero Narrative */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Choosing Your Path to Inventory Control</h1>
+          <h2 className="text-4xl font-bold mb-6">Choosing Your Path to Inventory Control</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             Is your inventory data a live pulse or a historical snapshot? The difference between <strong>perpetual and physical inventory</strong> determines how you make decisions, manage costs, and scale your operations. While one offers constant updates, the other focuses on manual verification.
           </p>

@@ -166,7 +166,7 @@ export default function EnterpriseInventorySoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Enterprise Inventory Management Software</h1>
+          <h2 className="text-4xl font-bold mb-6">Enterprise Inventory Management Software</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             As organizations grow, the complexity of managing assets and stock increases exponentially. <strong>Enterprise inventory software</strong> is no longer just about counting items; it's about <strong>security, compliance, and large-scale collaboration</strong>. StockFlow enables teams of 12 or more to operate from a single source of truth.
           </p>

@@ -51,9 +51,9 @@ export default function StockbeheerSoftware() {
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Wat is <span className="text-blue-600">Stockbeheer Software</span>?
-            </h1>
+            </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
               Stockbeheer software is een digitaal hulpmiddel dat bedrijven helpt voorraadniveaus in real-time te volgen, te monitoren en te optimaliseren. Het automatiseert stocktellingen, herbestellen en rapportageprocessen, waardoor bedrijven optimale voorraadniveaus kunnen behouden, kosten kunnen verlagen en voorraadtekorten of overvoorraad situaties kunnen voorkomen. Moderne stockbeheer software combineert real-time zichtbaarheid, automatisering en analytics om uitgebreide voorraadcontrole te bieden.
             </p>

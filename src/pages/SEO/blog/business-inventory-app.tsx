@@ -153,7 +153,7 @@ export default function SmallBusinessInventoryAppPage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Best Inventory App for Small Business</h1>
+          <h2 className="text-4xl font-bold mb-6">Best Inventory App for Small Business</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             The <strong>best inventory app</strong> for 2026 is a <strong>small business inventory app</strong> that works on your phone. <strong>StockFlow</strong> gives you total control over stock, materials, and equipment at the touch of a button—no complex ERP or messy spreadsheets.
           </p>

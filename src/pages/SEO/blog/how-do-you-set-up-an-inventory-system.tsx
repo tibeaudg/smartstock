@@ -169,9 +169,9 @@ export default function SeoHowToSetUpAnInventorySystemPage() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">
                 <Brain className="w-4 h-4" /> Based on 2026 Best Practices
               </div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-8">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-8">
                 The <span className="text-blue-600">2026 Blueprint</span> for Creating a Bulletproof Inventory System
-              </h1>
+              </h2>
               <p className="text-xl text-slate-600 leading-relaxed mb-6">
                 If you're searching for "how to create an inventory system," you're likely caught between chaotic spreadsheets, stockouts, and growth anxiety. This guide cuts through the noise.
               </p>

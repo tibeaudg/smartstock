@@ -66,9 +66,9 @@ export default function InventoryManagementSoftware() {
       {/* Main Hero/Introduction Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Why Your Business Needs Inventory Management Software
-          </h1>
+          </h2>
           <div className="prose prose-lg max-w-none text-gray-700 mb-8">
             <p className="text-xl leading-relaxed mb-6">
               Running a business without proper inventory management software is like driving with your eyes half-closed. 

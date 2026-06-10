@@ -77,7 +77,7 @@ export default function StockFlowVsLightspeed() {
 
       <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Lightspeed</h1>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs Lightspeed</h2>
           <p className="text-lg text-gray-600 max-w-4xl mx-auto">
             Comparing inventory-first software vs POS-first system? This breakdown shows StockFlow (inventory-focused) vs Lightspeed (POS-focused with inventory) across pricing, focus, and integration approach.
           </p>

@@ -144,7 +144,7 @@ export default function NonProfitInventorySoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">Inventory Management Software for Nonprofits</h1>
+          <h2 className="text-4xl font-bold mb-6">Inventory Management Software for Nonprofits</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-4">
             <strong>Inventory management software for nonprofits</strong> helps charities, NGOs, and mission-driven organizations 
             track donated goods, supplies, and assets efficiently—so resources reach those in need.

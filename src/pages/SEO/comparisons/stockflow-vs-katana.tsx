@@ -89,9 +89,9 @@ export default function StockflowVsKatana() {
     >
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
             StockFlow vs Katana MRP: Feature Breakdown
-          </h1>
+          </h2>
           <div className="overflow-x-auto border border-gray-200 rounded-xl shadow-xl border border-gray-200">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

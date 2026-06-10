@@ -147,7 +147,7 @@ export default function WarehouseSoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">What Is Warehouse Management Software?</h1>
+          <h2 className="text-4xl font-bold mb-6">What Is Warehouse Management Software?</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             Warehouse management software (WMS) is the digital backbone of the supply chain. It provides the visibility and tools necessary to control every movement within a distribution center. By utilizing <strong>WMS software</strong>, companies move away from paper-based tracking toward high-velocity fulfillment.
           </p>

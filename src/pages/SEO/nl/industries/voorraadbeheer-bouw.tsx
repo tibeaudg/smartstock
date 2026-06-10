@@ -107,9 +107,9 @@ export default function VoorraadbeheerBouwPage() {
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">
           <CheckCircle className="w-4 h-4" /> Complete Gids voor Bouwprofessionals
         </div>
-        <h1 className="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
+        <h2 className="text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
           Voorraadbeheer Bouw: Complete Gids voor Aannemers
-        </h1>
+        </h2>
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-6 text-lg text-slate-600 leading-relaxed">
             <p>

@@ -278,9 +278,9 @@ export default function RestaurantInventoryManagementPage() {
                 <span className="text-orange-800 text-sm font-bold">Updated January 2026</span>
               </div>
               
-              <h1 className="text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1]">
+              <h2 className="text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1]">
                 Stop Losing <span className="text-orange-600">$2,000+/Month</span> to Food Waste
-              </h1>
+              </h2>
               
               <p className="text-xl text-gray-700 leading-relaxed">
                 Restaurant inventory management software cuts food costs by <strong>3-5%</strong> by automating tracking, 

@@ -65,7 +65,7 @@ export default function StockFlowVsShipStation() {
     >
       <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs ShipStation</h1>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6">StockFlow vs ShipStation</h2>
           <p className="text-lg text-gray-600 max-w-4xl mx-auto">
             Comparing inventory-first software vs shipping-first platform? This breakdown shows StockFlow (inventory-focused) vs ShipStation (shipping-focused) and how they can work together.
           </p>

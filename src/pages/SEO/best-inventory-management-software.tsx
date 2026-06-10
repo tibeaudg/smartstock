@@ -118,9 +118,9 @@ export default function BestInventoryManagementSoftwarePage() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center">
             <h2 className="text-sm font-semibold text-blue-600 tracking-wide uppercase mb-3">2026 Market Analysis</h2>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-8 text-slate-900 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-slate-900 leading-tight">
               Best Inventory Management Software for 2026
-            </h1>
+            </h2>
             <p className="text-xl text-slate-600 leading-relaxed mb-8">
               In an era of rapid supply chain shifts, the <strong>best inventory management software</strong> serves as the central nervous system of your operations. It’s no longer just about counting items—it's about predictive insights and real-time agility.
             </p>

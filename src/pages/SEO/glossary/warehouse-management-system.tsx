@@ -289,9 +289,9 @@ export default function WarehouseManagementSystemPage() {
               <span className="text-blue-800 font-bold text-sm">Updated June 10, 2026</span>
             </div>
 
-            <h1 className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] mb-6">
+            <h2 className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] mb-6">
               What is a <span className="text-blue-600">Warehouse Management System</span>?
-            </h1>
+            </h2>
 
             <p className="text-2xl text-gray-700 leading-relaxed max-w-4xl mx-auto mb-8">
               A <strong>Warehouse Management System (WMS)</strong> is software that controls, optimizes, and automates 

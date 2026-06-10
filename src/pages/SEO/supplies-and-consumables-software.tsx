@@ -146,7 +146,7 @@ export default function ConsumablesInventoryPage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">What Is Consumable Inventory Management?</h1>
+          <h2 className="text-4xl font-bold mb-6">What Is Consumable Inventory Management?</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             In any fast-moving business, it is the small things <strong>consumables, parts, and supplies</strong> that keep the operation running. <strong>Consumable inventory management</strong> is the process of tracking items that are intended to be used up or replaced frequently. Without a digital system, these high-turnover items are easily overlooked until they are gone.
           </p>

@@ -146,7 +146,7 @@ export default function HvacInventorySoftwarePage() {
       {/* Core Explanation */}
       <section className="py-20 border-b">
         <div className="max-w-4xl mx-auto text-center px-4">
-          <h1 className="text-4xl font-bold mb-6">What Is HVAC Inventory Management Software?</h1>
+          <h2 className="text-4xl font-bold mb-6">What Is HVAC Inventory Management Software?</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-6">
             HVAC businesses live and die by their response time. <strong>HVAC inventory software</strong> is the digital bridge between your warehouse and your service fleet. It ensures that every <strong>technician</strong> has the right capacitors, motors, and thermostats on their truck before they leave for a service call.
           </p>

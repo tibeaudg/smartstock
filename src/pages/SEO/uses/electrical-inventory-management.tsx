@@ -352,7 +352,7 @@ export default function ElectricalInventoryManagement() {
       {/* Overview Section */}
       <section id="overview" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Why Electrical Contractors Need Specialized Inventory Management</h1>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Electrical Contractors Need Specialized Inventory Management</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-xl text-gray-700 leading-relaxed mb-6">
               Electrical contractors face unique inventory challenges that general inventory systems can't handle. You're managing <strong>hundreds of SKUs</strong> with specific voltage, gauge, and amperage requirements across <strong>multiple job sites and service vehicles</strong>, dealing with <strong>high-value materials</strong> like copper wire that are prone to theft, and need to track materials per job for accurate costing and bidding.
