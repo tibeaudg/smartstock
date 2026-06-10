@@ -1592,6 +1592,10 @@ export type Database = {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      ensure_referral_record: {
+        Args: { p_user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       event_category: "auth" | "billing" | "feature" | "system"

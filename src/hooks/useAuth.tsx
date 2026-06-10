@@ -62,7 +62,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     queryClient.invalidateQueries({ queryKey: ['branches'] })
   }, [queryClient]);
 
-  const fetchProfile = useCallback(async (userId: string, metadata?: any) => {
+  const syncReferralFromMetadata = useCallback(async (userId: string, metadata?: { referred_by?: string }) => {
+    const referredBy = metadata?.referred_by;
+    if (!referredBy) return;
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('referred_by')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (profile?.referred_by) {
+      await supabase.rpc('ensure_referral_record', { p_user_id: userId });
+      return;
+    }
+
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ referred_by: referredBy })
+      .eq('id', userId);
+
+    if (!updateError) {
+      await supabase.rpc('ensure_referral_record', { p_user_id: userId });
+    }
+  }, []);
+
+  const fetchProfile = useCallback(async (userId: string, metadata?: { first_name?: string; last_name?: string; referred_by?: string }) => {
+    const referredBy = metadata?.referred_by;
+
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -78,14 +105,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           last_name: metadata?.last_name || '',
           role: 'admin',
           updated_at: new Date().toISOString(),
+          ...(referredBy ? { referred_by: referredBy } : {}),
         })
         .select()
         .single();
       setUserProfile(newProfile);
+      if (referredBy) {
+        await supabase.rpc('ensure_referral_record', { p_user_id: userId });
+      }
     } else {
       setUserProfile(data);
+      if (referredBy && !data.referred_by) {
+        await syncReferralFromMetadata(userId, metadata);
+        const { data: refreshed } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .maybeSingle();
+        if (refreshed) setUserProfile(refreshed);
+      }
     }
-  }, []);
+  }, [syncReferralFromMetadata]);
 
   useEffect(() => {
     // Initial fetch
@@ -206,7 +246,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const res = await supabase.auth.signUp({
         email,
         password: pass,
-        options: { data: { first_name: fn, last_name: ln } }
+        options: {
+          data: {
+            first_name: fn,
+            last_name: ln,
+            ...(referredBy ? { referred_by: referredBy } : {}),
+          },
+        },
       });
       if (res.data.user) {
         if (shouldEmitLifecycleEvent(res.data.user.id, 'signup_started')) {
@@ -217,15 +263,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           });
           trackGoogleAdsSignupConversion(res.data.user.id);
         }
-        await supabase.from('profiles').upsert({
-          id: res.data.user.id,
-          email,
-          first_name: fn,
-          last_name: ln,
-          role: role,
-          ...(referredBy ? { referred_by: referredBy } : {}),
-        });
         if (res.data.session) {
+          const { error: profileError } = await supabase.from('profiles').upsert({
+            id: res.data.user.id,
+            email,
+            first_name: fn,
+            last_name: ln,
+            role: role,
+            ...(referredBy ? { referred_by: referredBy } : {}),
+          });
+          if (profileError) {
+            console.warn('[auth] profile upsert failed:', profileError);
+          } else if (referredBy) {
+            await supabase.rpc('ensure_referral_record', { p_user_id: res.data.user.id });
+          }
           supabase.functions.invoke('trigger-lifecycle-emails', {
             body: { stage: 'welcome', selfTrigger: true },
           }).catch(err => console.warn('[auth] welcome email trigger failed:', err));

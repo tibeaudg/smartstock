@@ -32,7 +32,7 @@ const HOW_IT_WORKS = [
   {
     icon: Gift,
     title: 'You both get rewarded',
-    desc: 'You receive 1 free month on your current plan. Stack unlimited referrals.',
+    desc: 'You receive 1 free month of the Professional plan. Stack unlimited referrals.',
   },
 ];
 
@@ -40,17 +40,32 @@ export default function ReferAFriendPage() {
   const { user, userProfile } = useAuth();
   const [copied, setCopied] = useState(false);
 
-  const referralCode = userProfile?.referral_code;
-  const freeMonthsCredit = userProfile?.free_months_credit ?? 0;
+  const { data: rewardProfile } = useQuery({
+    queryKey: ['referral-rewards', user?.id],
+    enabled: !!user?.id,
+    refetchOnWindowFocus: true,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('referral_code, free_months_credit')
+        .eq('id', user!.id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const referralCode = (rewardProfile ?? userProfile)?.referral_code;
+  const freeMonthsCredit = (rewardProfile ?? userProfile)?.free_months_credit ?? 0;
 
   const referralLink = referralCode
     ? `stockflowsystems.com/join?ref=${referralCode}`
     : 'Loading your link…';
 
-  // Load referrals from DB
   const { data: referrals = [] } = useQuery<Referral[]>({
     queryKey: ['referrals', user?.id],
     enabled: !!user?.id,
+    refetchOnWindowFocus: true,
     queryFn: async () => {
       const { data, error } = await supabase
         .from('referrals')
@@ -63,9 +78,8 @@ export default function ReferAFriendPage() {
   });
 
   const totalSent = referrals.length;
+  const pendingReferrals = referrals.filter(r => r.status === 'pending').length;
   const successfulConversions = referrals.filter(r => r.status === 'rewarded').length;
-
-  const progressToNextMonth = totalSent === 0 ? 0 : Math.min((successfulConversions % 1) * 100, 100);
 
   const handleCopy = async () => {
     if (!referralCode) return;
@@ -97,9 +111,21 @@ export default function ReferAFriendPage() {
   };
 
   const stats = [
-    { label: 'Total Referrals Sent', value: totalSent, sub: 'Share your link to get started' },
-    { label: 'Successful Conversions', value: successfulConversions, sub: 'Activated & 7-day active' },
-    { label: 'Free Months Earned', value: freeMonthsCredit, sub: 'Applied to your next billing' },
+    {
+      label: 'Total Referrals Sent',
+      value: totalSent,
+      sub: totalSent === 0 ? 'Share your link to get started' : `${pendingReferrals} pending activation`,
+    },
+    {
+      label: 'Successful Conversions',
+      value: successfulConversions,
+      sub: 'Referred users active for 7+ days',
+    },
+    {
+      label: 'Free Months of Professional',
+      value: freeMonthsCredit,
+      sub: freeMonthsCredit > 0 ? 'Credit applied to your next bill' : '1 conversion = 1 free Professional month',
+    },
   ];
 
   return (
@@ -125,7 +151,7 @@ export default function ReferAFriendPage() {
           <div className="flex flex-col gap-2 flex-shrink-0">
             <span className="inline-flex items-center gap-2 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap">
               <Users className="w-3.5 h-3.5" />
-              You get 1 free month
+              You get 1 free month of Professional
             </span>
             <span className="inline-flex items-center gap-2 bg-white/15 text-white text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap">
               <Gift className="w-3.5 h-3.5" />
@@ -136,6 +162,20 @@ export default function ReferAFriendPage() {
         <div className="absolute -bottom-6 -right-6 w-28 h-28 rounded-full bg-white/5 pointer-events-none" />
         <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-white/5 pointer-events-none" />
       </div>
+
+      {freeMonthsCredit > 0 && (
+        <div className="rounded-xl border border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20 px-4 py-3 flex items-center gap-3">
+          <Gift className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+              {freeMonthsCredit} free month{freeMonthsCredit === 1 ? '' : 's'} of Professional available
+            </p>
+            <p className="text-xs text-green-700 dark:text-green-300 mt-0.5">
+              This credit will be applied automatically on your next billing cycle.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -214,7 +254,7 @@ export default function ReferAFriendPage() {
                 style={{ width: successfulConversions >= 1 ? '100%' : '0%' }}
               />
             </div>
-            <p className="text-xs text-muted-foreground">1 successful referral = 1 free month. No limit.</p>
+            <p className="text-xs text-muted-foreground">1 successful referral = 1 free month of Professional. No limit.</p>
           </div>
         </CardContent>
       </Card>
@@ -270,7 +310,7 @@ export default function ReferAFriendPage() {
                       ? 'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                       : 'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                   }`}>
-                    {r.status === 'rewarded' ? 'Rewarded' : 'Pending (7-day check)'}
+                    {r.status === 'rewarded' ? 'Rewarded — 1 free Pro month earned' : 'Pending — waiting for 7-day activation'}
                   </span>
                 </div>
               ))}

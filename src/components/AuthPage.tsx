@@ -42,6 +42,7 @@ export const AuthPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [hasReferralInvite, setHasReferralInvite] = useState(false);
 
   const { signIn, signUp, resetPassword, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -59,6 +60,13 @@ export const AuthPage = () => {
     if (refCode) {
       try { localStorage.setItem('referral_code', refCode); } catch { /* ignore */ }
       setMode('register');
+      setHasReferralInvite(true);
+    } else {
+      try {
+        setHasReferralInvite(!!localStorage.getItem('referral_code'));
+      } catch {
+        setHasReferralInvite(false);
+      }
     }
 
     try {
@@ -429,6 +437,15 @@ export const AuthPage = () => {
               </div>
             )}
 
+            {mode === 'register' && hasReferralInvite && (
+              <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
+                <p className="text-sm font-semibold text-blue-900">You&apos;ve been invited!</p>
+                <p className="text-sm text-blue-800 mt-0.5">
+                  Sign up to unlock a <strong>30-day free trial of the Professional plan</strong> — no credit card required.
+                </p>
+              </div>
+            )}
+
             {/* Header */}
             <div className="mb-6">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
@@ -441,7 +458,9 @@ export const AuthPage = () => {
               </h1>
               <p className="text-sm text-gray-600">
                 {mode === 'register'
-                  ? 'Create your account and start managing inventory'
+                  ? hasReferralInvite
+                    ? 'Create your account and start your extended Professional trial'
+                    : 'Create your account and start managing inventory'
                   : mode === 'reset'
                   ? 'Enter your email to receive reset instructions'
                   : 'Log in to access your inventory dashboard'
