@@ -2,12 +2,6 @@
   "buildCommand": "npm run build:seo",
   "outputDirectory": "dist",
   "trailingSlash": false,
-  "build": {
-    "env": {
-      "PRERENDER_CONCURRENCY": "3",
-      "PRERENDER_INCREMENTAL": "1"
-    }
-  },
   "redirects": [
     {
       "source": "/customers",
