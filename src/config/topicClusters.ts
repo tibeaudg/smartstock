@@ -878,26 +878,26 @@ export const comparisonCluster: TopicCluster = {
     },
     {
       path: '/stockflow-vs-zoho-inventory',
-      title: 'StockFlow vs Zoho Inventory',
+      title: 'Best Free Zoho Inventory Alternative (2026)',
       language: 'en',
       category: 'Vergelijkingen',
-      description: 'Zoho Inventory Free Plan Limits 2026. StockFlow vs Zoho: 50 orders/month limit, unlimited with StockFlow.',
+      description: 'Zoho Inventory alternative for 2026. Compare free-plan limits, pricing, and features vs StockFlow.',
       image: '/dashboard.png'
     },
     {
       path: '/stockflow-vs-inflow',
-      title: 'StockFlow vs inFlow',
+      title: 'Best Free inFlow Alternative (2026)',
       language: 'en',
       category: 'Vergelijkingen',
-      description: 'Compare StockFlow and inFlow',
+      description: 'inFlow alternative for 2026. Compare pricing, manufacturing tradeoffs, and features vs StockFlow.',
       image: '/dashboard.png'
     },
     {
       path: '/stockflow-vs-cin7',
-      title: 'StockFlow vs Cin7',
+      title: 'Best Free Cin7 Alternative (2026)',
       language: 'en',
       category: 'Vergelijkingen',
-      description: 'StockFlow vs Cin7 comparison',
+      description: 'Cin7 alternative for 2026. Compare pricing, multi-channel depth, and features vs StockFlow.',
       image: '/dashboard.png'
     },
     {
@@ -1141,7 +1141,7 @@ export const smallBusinessInventoryCluster: TopicCluster = {
   },
   clusters: [
     {
-      path: '/blog/barcodes-vs-qr-codes-for-inventory-management',
+      path: '/barcodes-vs-qr-codes-for-inventory-management',
       title: 'Barcode vs QR Code for Inventory Management',
       language: 'en',
       category: 'Blog',

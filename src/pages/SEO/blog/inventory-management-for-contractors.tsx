@@ -40,7 +40,7 @@ const faqData = [
   },
   {
     question: "Do contractors need barcode scanning for inventory?",
-    answer: "Barcode scanning is highly recommended for contractors because: it speeds up inventory updates at job sites, reduces errors when recording materials used, works on smartphones (no extra hardware), enables quick counts, prevents data entry mistakes, and provides audit trails. Mobile barcode scanning is perfect for field-based contractor operations. Learn more about <Link to=\"/blog/barcodes-vs-qr-codes-for-inventory-management\" className=\"text-blue-600 hover:underline\">barcode vs QR code options</Link>."
+    answer: "Barcode scanning is highly recommended for contractors because: it speeds up inventory updates at job sites, reduces errors when recording materials used, works on smartphones (no extra hardware), enables quick counts, prevents data entry mistakes, and provides audit trails. Mobile barcode scanning is perfect for field-based contractor operations. See our barcodes vs QR codes comparison guide for help choosing the right label format."
   },
   {
     question: "How much does inventory software cost for contractors?",
@@ -225,7 +225,7 @@ export default function InventoryManagementForContractorsPage() {
                 <li>Photo documentation for proof of delivery/usage</li>
               </ul>
               <p className="text-gray-700 mt-3">
-                Modern inventory software includes built-in scanning that works on smartphones no expensive hardware needed. Learn more about <Link to="/blog/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 hover:underline font-semibold">barcode vs QR code options</Link> or follow our <Link to="/blog/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">setup guide</Link>.
+                Modern inventory software includes built-in scanning that works on smartphones no expensive hardware needed. Learn more about <Link to="/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 hover:underline font-semibold">barcode vs QR code options</Link> or follow our <Link to="/how-to-set-up-barcode-scanning-with-stockflow" className="text-blue-600 hover:underline font-semibold">setup guide</Link>.
               </p>
             </div>
 

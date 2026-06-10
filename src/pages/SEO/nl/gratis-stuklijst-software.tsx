@@ -1,5 +1,4 @@
 import { useLocation, Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 const topicTitle = "Gratis Stuklijst Beheer Software";
 const canonicalPath = "/nl/gratis-stuklijst-software";
@@ -115,21 +114,14 @@ export default function GratisStuklijstSoftwarePage() {
   return (
     <SeoPageLayout
       title={topicTitle}
+      seoTitle="Gratis Stuklijst Software (BOM) – Complete Gids 2026 | StockFlow"
+      seoDescription={metaDescription}
       heroTitle="Gratis Stuklijst Beheer Software"
       dateUpdated="05/06/2026"
+      pageLanguage="nl"
       faqData={faqData}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Gratis Stuklijst Beheer Software - Complete Gids 2026 | StockFlow"
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/bill-of-materials-software-free' },
-          { lang: 'nl-BE', url: `https://www.stockflowsystems.com${canonicalPath}` }
-        ]}
-      />
 {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

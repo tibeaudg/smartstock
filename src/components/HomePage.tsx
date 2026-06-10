@@ -13,6 +13,7 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 import { StructuredData } from '@/components/StructuredData';
 import { AskAiSection } from '@/components/AskAiSection';
+import { generateLocalBusinessSchema } from '@/utils/enhancedStructuredData';
 
 /* â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
@@ -97,7 +98,8 @@ const homeStructuredData = [
       "name": faq.question,
       "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
     }))
-  }
+  },
+  generateLocalBusinessSchema('https://www.stockflowsystems.com'),
 ];
 
 /* â”€â”€â”€ Animation primitive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

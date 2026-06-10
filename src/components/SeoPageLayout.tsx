@@ -28,6 +28,7 @@ import {
   generateOrganizationSchema,
   generateWebSiteSchema,
   generateBreadcrumbSchema,
+  generateLocalBusinessSchema,
 } from '@/utils/enhancedStructuredData';
 import { getHubForPath, getTopicalRelatedLinks } from '@/config/internalLinking';
 import { getHreflangAlternates } from '@/config/enNlHreflang';
@@ -53,6 +54,7 @@ interface TOCItem {
 interface SEOPageLayoutProps {
   breadcrumbItems?: Array<{ name: string; url: string }>;
   title?: string;
+  seoTitle?: string;
   seoDescription?: string;
   heroTitle: string;
   dateUpdated?: string;
@@ -459,6 +461,7 @@ TopicClusterSection.displayName = 'TopicClusterSection';
 const SEOPageLayout = memo(({
   breadcrumbItems = [],
   title,
+  seoTitle,
   seoDescription,
   heroTitle,
   dateUpdated,
@@ -491,19 +494,20 @@ const SEOPageLayout = memo(({
 
   /* ── SEO Title (≤ 60 chars) ── */
   const pageTitle = title || heroTitle;
-  const seoTitle = useMemo(() => {
-    if (pageTitle.length <= 60) return pageTitle;
+  const resolvedSeoTitle = useMemo(() => {
+    const candidate = seoTitle || pageTitle;
+    if (candidate.length <= 60) return candidate;
     const brandSuffix = ' | StockFlow';
-    const base = pageTitle.endsWith(brandSuffix)
-      ? pageTitle.slice(0, -brandSuffix.length)
-      : pageTitle;
+    const base = candidate.endsWith(brandSuffix)
+      ? candidate.slice(0, -brandSuffix.length)
+      : candidate;
     const shortened = base
       .replace(/ Strategy & Automation Guide$/, '')
       .replace(/ Guide$/, '')
       .replace(/ - A Technical Framework$/, '');
-    const candidate = shortened + brandSuffix;
-    return candidate.length <= 60 ? candidate : candidate.substring(0, 57) + '...';
-  }, [pageTitle]);
+    const trimmed = shortened + brandSuffix;
+    return trimmed.length <= 60 ? trimmed : trimmed.substring(0, 57) + '...';
+  }, [seoTitle, pageTitle]);
 
   const canonicalUrl = `${PRODUCTION_URL}${location.pathname.replace(/\/+$/, '') || '/'}`;
 
@@ -547,6 +551,7 @@ const SEOPageLayout = memo(({
   const combinedStructuredData = useMemo(() => {
     const schemas: object[] = [
       generateOrganizationSchema(PRODUCTION_URL),
+      generateLocalBusinessSchema(PRODUCTION_URL),
       generateWebSiteSchema(PRODUCTION_URL, resolvedPageLanguage),
       generateBreadcrumbSchema(
         location.pathname,
@@ -671,7 +676,7 @@ const SEOPageLayout = memo(({
       </Helmet>
 
       <SEO
-        title={seoTitle}
+        title={resolvedSeoTitle}
         description={resolvedDescription}
         canonical={canonicalUrl}
         url={canonicalUrl}

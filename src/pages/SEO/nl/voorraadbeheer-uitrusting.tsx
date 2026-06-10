@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -19,22 +18,13 @@ export default function VoorraadbeheerUitrustingPage() {
   return (
     <SeoPageLayout 
       title="Uitrusting Voorraadbeheer"
+      seoTitle="Uitrusting & Gereedschap Tracking Software | StockFlow"
+      seoDescription="Uitrusting voorraadbeheer software voor machines, gereedschap en apparatuur. Locatietracking en onderhoudsplanning. Gratis voor Belgische en Nederlandse bedrijven."
       heroTitle="Uitrusting Voorraadbeheer Software"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Uitrusting Voorraadbeheer Software - Volg Machines & Gereedschappen | StockFlow"
-        description="Uitrusting voorraadbeheer software voor het volgen van machines, gereedschappen en apparatuur. Onderhoudsplanning, locatietracking en gebruikoptimalisatie. Volledig gratis."
-        keywords="uitrusting voorraadbeheer, uitrusting tracking software, machine voorraadbeheer, gereedschap voorraadbeheer, uitrusting beheer software, machine tracking, uitrusting voorraadbeheer software"
-        url="https://www.stockflowsystems.com/nl/voorraadbeheer-uitrusting"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/assets-inventory' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/voorraadbeheer-uitrusting' }
-        ]}
-      />
-
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

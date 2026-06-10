@@ -1,8 +1,13 @@
 {
-  "buildCommand": "npm run build:seo",
+  "buildCommand": "npm run build:seo:full",
   "outputDirectory": "dist",
   "trailingSlash": false,
   "redirects": [
+    {
+      "source": "/best-free-alternative-to-katana-mrp",
+      "destination": "/katana-mrp-alternative",
+      "permanent": true
+    },
     {
       "source": "/bill-of-material-management-software-free",
       "destination": "/bill-of-materials-software-free",

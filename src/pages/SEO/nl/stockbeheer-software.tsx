@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -41,22 +40,13 @@ export default function StockbeheerSoftware() {
   return (
     <SeoPageLayout 
       title="Stockbeheer Software"
+      seoTitle="Stockbeheer Software 2026: Gratis Voorraadsoftware voor KMO's | StockFlow"
+      seoDescription="Professionele stockbeheer software voor Belgische en Nederlandse KMO's. Real-time tracking, barcode scanning en automatisch herbestellen. Gratis plan — geen creditcard vereist."
       heroTitle="Stockbeheer Software: Optimaliseer Uw Voorraad"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Stockbeheer Software 2026 - Bespaar 10+ Uren/Week, 90% Minder Fouten | StockFlow"
-        description="Professionele stockbeheer software 2026 voor MKB. Real-time tracking, geautomatiseerd herbestellen, barcode scanning. Bespaar 10+ uur per week, verminder fouten met 90%. Gratis plan voor tot 100 producten. Meld u gratis aan - geen creditcard vereist."
-        keywords="stockbeheer software, voorraad software, stockbeheer, magazijn software, MKB stock, kleine onderneming voorraad, stock tracking software, voorraadbeheer voor kleine onderneming, stockbeheer systeem, stockbeheer software, stockflow, stock flow"
-        url="https://www.stockflowsystems.com/nl/stockbeheer-software"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/stock-management-software' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/stockbeheer-software' }
-        ]}
-      />
-
       {/* What is Stock Management Software Section */}
       <section id="what-is" className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

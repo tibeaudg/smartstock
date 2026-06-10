@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -27,22 +26,13 @@ export default function VoorraadbeheerManufacturingPage() {
   return (
     <SeoPageLayout 
       title="Productie Voorraadbeheer"
+      seoTitle="Productie Voorraadbeheer Software voor Fabrikanten | StockFlow"
+      seoDescription="Productie voorraadbeheer software voor fabrikanten in België en Nederland. Beheer grondstoffen, stuklijsten en WIP met real-time tracking."
       heroTitle="Productie Voorraadbeheer Software voor Fabrikanten"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Productie Voorraadbeheer Software voor Fabrikanten | StockFlow"
-        description="Gespecialiseerde productie voorraadbeheer software voor fabrikanten. Beheer grondstoffen, stuklijsten, werk-in-proces en eindproducten met real-time tracking en MRP integratie."
-        keywords="productie voorraadbeheer, manufacturing voorraadbeheer, fabrikant voorraadbeheer, productie voorraad software, manufacturing voorraad software, productie voorraadbeheer software, stuklijst beheer, MRP voorraadbeheer"
-        url="https://www.stockflowsystems.com/nl/industries/voorraadbeheer-manufacturing"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/manufacturing-inventory-management-software' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/industries/voorraadbeheer-manufacturing' }
-        ]}
-      />
-
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

@@ -677,6 +677,18 @@ export default function ContractorInventoryManagement() {
       </section>
 
 
+      <section className="bg-slate-50 py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4">Related Barcode &amp; Inventory Guides</h2>
+          <ul className="space-y-2 text-slate-700">
+            <li><Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 underline">Best free inventory software with barcode scanning</Link></li>
+            <li><Link to="/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 underline">Barcodes vs QR codes for inventory management</Link></li>
+            <li><Link to="/hvac-inventory-management" className="text-blue-600 underline">HVAC inventory management</Link></li>
+            <li><Link to="/electrical-inventory-management" className="text-blue-600 underline">Electrical inventory management</Link></li>
+          </ul>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="bg-white py-16 px-4">
         <div className="max-w-6xl mx-auto">

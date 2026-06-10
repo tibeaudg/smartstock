@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -27,22 +26,13 @@ export default function VoorraadbeheerMagazijnPage() {
   return (
     <SeoPageLayout 
       title="Voorraadbeheer Magazijn"
+      seoTitle="Magazijnbeheer Software voor KMO's – Realtime Voorraad | StockFlow"
+      seoDescription="Magazijn voorraadbeheer software voor Belgische en Nederlandse bedrijven. Real-time tracking, pickroute-optimalisatie en ordervervulling. Gratis starten — geen creditcard."
       heroTitle="Voorraadbeheer Software voor Magazijnen"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Voorraadbeheer Software voor Magazijnen | StockFlow"
-        description="Gespecialiseerde magazijn voorraadbeheer software. Optimaliseer magazijnoperaties met real-time tracking, pickroute optimalisatie en ordervervulling automatisering."
-        keywords="magazijn voorraadbeheer, magazijn voorraad software, magazijn voorraadbeheer software, magazijn stockbeheer, magazijn voorraadtracking, magazijnbeheer software, distributiecentrum voorraadbeheer"
-        url="https://www.stockflowsystems.com/nl/voorraadbeheer-magazijn"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/warehouse-management-system' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/voorraadbeheer-magazijn' }
-        ]}
-      />
-
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

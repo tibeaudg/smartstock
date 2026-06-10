@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
@@ -48,25 +47,15 @@ export default function BesteGratisVoorraadSoftwareMetBarcodeScannenPage() {
   return (
     <SeoPageLayout 
       title="Beste Gratis Voorraad Software met Barcode Scannen"
+      seoTitle="Gratis Voorraadsoftware met Barcode Scannen 2026 | StockFlow"
+      seoDescription="Gratis voorraadsoftware met barcode scanning voor België en Nederland. Scan met uw smartphone — geen hardware nodig. 99,9% nauwkeurigheid, volledig gratis."
       heroTitle="Beste Gratis Voorraad Software met Barcode Scannen"
       heroDescription="Ontdek gratis voorraadbeheer met barcode scanning op uw smartphone. Geen hardware nodig, direct realtime voorraad updates."
       dateUpdated="22/01/2026"
       pageLanguage="nl"
       faqData={faqData}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Beste Gratis Voorraad Software met Barcode Scannen 2026 | StockFlow"
-        description="Ontdek de beste gratis voorraad software met barcode scanning. Scan barcodes met uw telefooncamera, geen dure hardware nodig. 99,9% nauwkeurigheid, volledig gratis."
-        keywords="gratis voorraad software barcode, gratis voorraadbeheer barcode scanner, gratis barcode scanning software, gratis voorraad app barcode, gratis voorraadbeheer met scannen"
-        url="https://www.stockflowsystems.com/nl/beste-gratis-voorraad-software-met-barcode-scannen"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/beste-gratis-voorraad-software-met-barcode-scannen' }
-        ]}
-        structuredData={structuredData}
-      />
-
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

@@ -78,6 +78,41 @@ export function generateOrganizationSchema(baseUrl: string = 'https://www.stockf
 }
 
 /**
+ * LocalBusiness schema for Belgian HQ — supports local SEO in BE/NL markets.
+ */
+export function generateLocalBusinessSchema(baseUrl: string = 'https://www.stockflowsystems.com') {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${baseUrl}/#localbusiness`,
+    name: 'StockFlow',
+    image: `${baseUrl}/logo.png`,
+    url: baseUrl,
+    email: 'info@stockflow.be',
+    description:
+      'Voorraadbeheer software voor Belgische en Nederlandse KMO\'s. Gratis voorraadsoftware met barcode scanning en stuklijsten.',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'BE',
+      addressRegion: 'Vlaanderen',
+      addressLocality: 'België',
+    },
+    areaServed: [
+      { '@type': 'Country', name: 'Belgium' },
+      { '@type': 'Country', name: 'Netherlands' },
+    ],
+    priceRange: '€€',
+    currenciesAccepted: 'EUR',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'info@stockflow.be',
+      availableLanguage: ['Dutch', 'French', 'English'],
+    },
+  };
+}
+
+/**
  * Generate WebSite schema with SearchAction
  */
 export function generateWebSiteSchema(baseUrl: string = 'https://www.stockflowsystems.com', language: string = 'en') {

@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -19,22 +18,13 @@ export default function VoorraadbeheerOnderhoudPage() {
   return (
     <SeoPageLayout 
       title="Onderhoud Voorraadbeheer"
+      seoTitle="Onderhoudsvoorraad Software – MRO & Reserveonderdelen | StockFlow"
+      seoDescription="Onderhoud voorraadbeheer software voor reserveonderdelen en smeermiddelen. Optimaliseer onderhoudskosten en voorkom downtime. Volledig gratis voor Belgische KMO's."
       heroTitle="Onderhoud Voorraadbeheer Software"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Onderhoud Voorraadbeheer Software - Beheer Onderhoudsvoorraden | StockFlow"
-        description="Onderhoud voorraadbeheer software voor het beheren van onderhoudsvoorraden zoals reserveonderdelen en smeermiddelen. Optimaliseer onderhoudskosten en voorkom downtime. Volledig gratis."
-        keywords="onderhoud voorraadbeheer, onderhoudsvoorraden beheer, reserveonderdelen voorraadbeheer, onderhoud voorraad software, MRO voorraadbeheer, onderhoud voorraadbeheer software"
-        url="https://www.stockflowsystems.com/nl/voorraadbeheer-onderhoud"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/inventory-management-software' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/voorraadbeheer-onderhoud' }
-        ]}
-      />
-
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

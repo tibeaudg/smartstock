@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -60,22 +59,13 @@ export default function VoorraadbeheerEcommercePage() {
   return (
     <SeoPageLayout 
       title="E-commerce Voorraadbeheer"
+      seoTitle="E-commerce Voorraadbeheer 2026 – Voorkom Oververkoop | StockFlow"
+      seoDescription="E-commerce voorraadbeheer voor Belgische en Nederlandse webshops. Multi-channel sync, real-time updates. Integreer Shopify, Amazon en WooCommerce."
       heroTitle="E-commerce Voorraadbeheer: Multi-Platform Oplossing"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="E-commerce Voorraadbeheer 2026 - Voorkom Oververkoop, Bespaar 20+ Uren/Week | StockFlow"
-        description="Complete e-commerce voorraadbeheer 2026. Multi-channel synchronisatie, real-time updates, voorkom oververkoop. Integreer Shopify, Amazon, WooCommerce. Bespaar 20+ uur/week, 99%+ nauwkeurigheid. Gratis plan beschikbaar."
-        keywords="e-commerce voorraadbeheer, e-commerce voorraad software, multi-platform voorraadbeheer, cross-platform voorraadbeheer, e-commerce voorraadbeheer software, online winkel voorraadbeheer, e-commerce stockbeheer, multi-channel voorraadbeheer"
-        url="https://www.stockflowsystems.com/nl/industries/voorraadbeheer-ecommerce"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/ecommerce-inventory-management' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/industries/voorraadbeheer-ecommerce' }
-        ]}
-      />
-
       {/* Features Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">

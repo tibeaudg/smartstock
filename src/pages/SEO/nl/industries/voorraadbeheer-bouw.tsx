@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { generateSeoPageStructuredData } from '@/lib/structuredData';
@@ -93,24 +92,15 @@ export default function VoorraadbeheerBouwPage() {
 
   return (
     <SeoPageLayout 
+      seoTitle="Voorraadbeheer Bouw Software voor Aannemers 2026 | StockFlow"
+      seoDescription="Voorraadbeheer software voor aannemers in België en Nederland. Beheer voorraad over meerdere bouwplaatsen, volg gereedschap en voorkom diefstal."
       heroTitle={topicTitle}
       heroDescription={heroDescription}
       dateUpdated={dateUpdated}
+      pageLanguage="nl"
       keyTakeaways={keyTakeaways}
+      structuredData={structuredData}
     >
-      <SEO
-        title="Voorraadbeheer Bouw Software voor Aannemers: Complete Gids 2026 | Multi-Bouwplaats Tracking"
-        description="Complete gids voor voorraadbeheer bouw voor aannemers. Leer hoe u voorraad beheert over meerdere bouwplaatsen, uitrusting en gereedschap volgt, diefstal en verspilling voorkomt (vermindering met 30%) en integreert met boekhoudsoftware voor nauwkeurige projectkostenberekening."
-        keywords="voorraadbeheer bouw software, voorraad beheren over bouwplaatsen, voorraadbeheer software voor algemene aannemers, bouwuitrusting tracking software, bouw bedrijfssoftware, beste boekhoudsoftware voor bouw, aannemer voorraadbeheer, bouwmateriaal tracking, bouwplaats voorraadbeheer, bouwgereedschap tracking, bouw projectkostenberekening, multi-locatie bouw voorraad"
-        url="https://www.stockflowsystems.com/nl/industries/voorraadbeheer-bouw"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/contractor-inventory-management' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/industries/voorraadbeheer-bouw' }
-        ]}
-        structuredData={structuredData}
-      />
-
       {/* Hero / Introduction */}
       <section className="mb-20">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold mb-6">

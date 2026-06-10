@@ -139,6 +139,7 @@ async function syncSitemap() {
   });
   // Redirect routes — these URLs redirect to other pages and must never appear in the sitemap
   const redirectRoutes = new Set([
+    'best-free-alternative-to-katana-mrp',
     'asset-tracking',
     'bill-of-materials',
     'what-is-bill-of-materials',

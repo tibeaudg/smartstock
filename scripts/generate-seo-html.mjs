@@ -36,6 +36,7 @@ const DEFAULT_IMAGE = `${BASE_URL}/Inventory-Management.png`;
 // Routes that redirect elsewhere (App.tsx <Navigate> + sitemap redirect set).
 // Never emit a static page for these — it would shadow the redirect.
 const SKIP_SLUGS = new Set([
+  'best-free-alternative-to-katana-mrp',
   'inventory-software-management',
   'asset-tracking',
   'what-is-bill-of-materials',

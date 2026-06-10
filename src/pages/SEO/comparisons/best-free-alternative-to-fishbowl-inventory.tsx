@@ -224,8 +224,8 @@ export default function BestFreeAlternativeToFishbowl() {
         href: "/stockflow-vs-fishbowl-inventory"
       }}
       nextArticle={{
-        title: "Best Free Alternative to Katana MRP",
-        href: "/best-free-alternative-to-katana-mrp"
+        title: "Katana MRP Alternative",
+        href: "/katana-mrp-alternative"
       }}
     >
       <SEO

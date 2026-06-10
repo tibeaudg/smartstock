@@ -39,9 +39,12 @@ const Footer = () => {
     ],
     seoHubsAndComparisons: [
       { name: 'Best Free Inventory Software with Barcode Scanning', path: '/best-free-inventory-software-with-barcode-scanning' },
+      { name: 'Barcodes vs QR Codes', path: '/barcodes-vs-qr-codes-for-inventory-management' },
       { name: 'Bill of Materials Software Free', path: '/bill-of-materials-software-free' },
-      { name: 'Best Free Alternative to Katana MRP', path: '/best-free-alternative-to-katana-mrp' },
-      { name: 'StockFlow vs Zoho Inventory', path: '/stockflow-vs-zoho-inventory' },
+      { name: 'Katana MRP Alternative', path: '/katana-mrp-alternative' },
+      { name: 'Zoho Inventory Alternative', path: '/stockflow-vs-zoho-inventory' },
+      { name: 'inFlow Alternative', path: '/stockflow-vs-inflow' },
+      { name: 'Cin7 Alternative', path: '/stockflow-vs-cin7' },
     ],
   };
 

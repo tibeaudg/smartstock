@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useLocation, Link } from "react-router-dom";
-import SEO from "@/components/SEO";
 import SeoPageLayout from "@/components/SeoPageLayout";
 const topicTitle = "Voorraadbeheer in de Horeca: Stocken zonder verspilling";
 const canonicalPath = "/nl/industries/voorraadbeheer-horeca";
@@ -98,23 +97,14 @@ export default function VoorraadbeheerHorecaPage() {
   return (
     <SeoPageLayout
       title={topicTitle}
+      seoTitle="Voorraadbeheer Horeca 2026 – Stocken & Foodcost | StockFlow"
+      seoDescription={metaDescription}
       heroTitle="Voorraadbeheer in de Horeca"
       heroDescription="Correct stocken in de horeca: minder verspilling, meer controle en hogere marges"
-      heroSubtitle="Praktische stappen, meetbare KPI's en softwaretips voor elke horecazaak"
       dateUpdated="2026-01-22"
+      pageLanguage="nl"
       keyTakeaways={keyTakeaways}
     >
-      <SEO
-        title="Voorraadbeheer Horeca: Complete Gids voor Stockbeheer & Inventaris | 2026"
-        description={metaDescription}
-        keywords={keywords}
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/restaurant-inventory-management-software' },
-          { lang: 'nl-BE', url: `https://www.stockflowsystems.com${canonicalPath}` }
-        ]}
-      />
 {/* Intro sectie */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">

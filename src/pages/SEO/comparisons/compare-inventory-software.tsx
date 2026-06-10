@@ -245,6 +245,49 @@ export default function CompareInventorySoftware() {
         </div>
       </section>
 
+      {/* StockFlow vs competitor pages */}
+      <section className="py-20 px-4 bg-slate-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">StockFlow vs specific competitors</h2>
+          <p className="mt-3 text-slate-600 max-w-3xl">
+            Need a deeper dive on one vendor? These side-by-side pages compare features, pricing, and fit for small businesses and manufacturers.
+          </p>
+          <ul className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[
+              { label: 'StockFlow vs Zoho Inventory', path: '/stockflow-vs-zoho-inventory' },
+              { label: 'StockFlow vs inFlow', path: '/stockflow-vs-inflow' },
+              { label: 'StockFlow vs Sortly', path: '/stockflow-vs-sortly' },
+              { label: 'StockFlow vs Cin7', path: '/stockflow-vs-cin7' },
+              { label: 'StockFlow vs Odoo Inventory', path: '/stockflow-vs-odoo-inventory' },
+              { label: 'StockFlow vs Katana', path: '/stockflow-vs-katana' },
+              { label: 'StockFlow vs Fishbowl', path: '/stockflow-vs-fishbowl' },
+              { label: 'StockFlow vs Finale Inventory', path: '/stockflow-vs-finale-inventory' },
+              { label: 'Katana MRP alternative', path: '/katana-mrp-alternative' },
+            ].map((item) => (
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  className="block rounded-lg border border-slate-200 bg-white px-4 py-3 text-blue-600 font-medium hover:border-blue-300 hover:bg-blue-50 transition"
+                >
+                  {item.label} →
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-slate-700">
+            Manufacturing teams should also review{' '}
+            <Link to="/bill-of-materials-software-free" className="text-blue-600 underline">
+              free bill of materials software
+            </Link>{' '}
+            and{' '}
+            <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 underline">
+              free inventory software with barcode scanning
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
       {/* Evaluation checklist */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-5xl mx-auto">

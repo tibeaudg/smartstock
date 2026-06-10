@@ -15,13 +15,14 @@ export interface InternalLinkHub {
 const barcodeHub: InternalLinkHub = {
   key: 'barcode-inventory',
   title: 'Barcode Inventory',
-  path: '/best-free-inventory-software-with-barcode-scanning',
-  hubAnchorText: 'best free inventory software with barcode scanning',
+  path: '/barcode-inventory-system-for-small-business',
+  hubAnchorText: 'barcode inventory system for small business',
   spokes: [
+    { path: '/barcodes-vs-qr-codes-for-inventory-management', title: 'Barcodes vs QR codes comparison' },
     { path: '/barcode-inventory-system', title: 'Barcode inventory system guide' },
-    { path: '/apps-for-restaurant-owners', title: 'Apps for restaurant owners (barcode workflows)' },
-    { path: '/sku-vs-upc', title: 'SKU vs UPC glossary guide' },
-    { path: '/what-is-a-gs1-barcode', title: 'What is a GS1 barcode?' },
+    { path: '/hvac-inventory-management', title: 'HVAC inventory management' },
+    { path: '/electrical-inventory-management', title: 'Electrical inventory management' },
+    { path: '/contractor-inventory-management', title: 'Contractor inventory management' },
     { path: '/stockflow-vs-sortly', title: 'StockFlow vs Sortly comparison' },
   ],
 };
@@ -32,9 +33,10 @@ const bomHub: InternalLinkHub = {
   path: '/bill-of-materials-software-free',
   hubAnchorText: 'free bill of materials software',
   spokes: [
-    { path: '/best-free-alternative-to-katana-mrp', title: 'Best free alternative to Katana MRP' },
-    { path: '/stockflow-vs-zoho-inventory', title: 'StockFlow vs Zoho Inventory (BOM angle)' },
-    { path: '/stockflow-vs-inflow', title: 'StockFlow vs inFlow comparison' },
+    { path: '/katana-mrp-alternative', title: 'Katana MRP alternative' },
+    { path: '/stockflow-vs-zoho-inventory', title: 'Zoho Inventory alternative' },
+    { path: '/stockflow-vs-inflow', title: 'inFlow alternative' },
+    { path: '/stockflow-vs-cin7', title: 'Cin7 alternative' },
     { path: '/stockflow-vs-odoo-inventory', title: 'StockFlow vs Odoo Inventory comparison' },
     { path: '/free-mrp-software', title: 'Free MRP software for small manufacturers' },
     { path: '/what-is-bill-of-materials', title: 'What is a bill of materials?' },
@@ -147,9 +149,10 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
         '/solutions/mobile-inventory-management',
       ];
       config.industries = [
-        '/industries/contractor-inventory-management',
+        '/contractor-inventory-management',
+        '/hvac-inventory-management',
+        '/electrical-inventory-management',
         '/warehouse-inventory-management',
-        '/industries/retail-inventory-management',
       ];
       break;
     
@@ -159,10 +162,10 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
         '/solutions/multi-location-inventory-management',
       ];
       config.industries = [
-        '/industries/contractor-inventory-management',
+        '/contractor-inventory-management',
+        '/hvac-inventory-management',
+        '/electrical-inventory-management',
         '/warehouse-inventory-management',
-        '/industries/medical-inventory-management',
-        '/industries/education-inventory-management',
       ];
       break;
     
@@ -171,8 +174,9 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
         '/solutions/inventory-management-software',
       ];
       config.industries = [
-        '/industries/contractor-inventory-management',
-        '/warehouse-inventory-management',
+        '/contractor-inventory-management',
+        '/hvac-inventory-management',
+        '/electrical-inventory-management',
       ];
       break;
     
@@ -185,7 +189,7 @@ export function getInternalLinkConfig(path: string, cluster?: { pillar: PageMeta
     default:
       // Default links for other categories
       config.solutions = ['/solutions/inventory-management-software'];
-      config.industries = ['/industries/contractor-inventory-management'];
+      config.industries = ['/contractor-inventory-management', '/hvac-inventory-management', '/electrical-inventory-management'];
   }
 
   config.relatedResources = [

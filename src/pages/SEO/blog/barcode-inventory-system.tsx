@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
-import { generateFAQSchema, generateHowToSchema } from '@/lib/structuredData';
+import { generateFAQSchema, generateHowToSchema, generateSeoPageStructuredData } from '@/lib/structuredData';
+import { getBreadcrumbPath } from '@/config/topicClusters';
 
 const canonicalPath = '/barcode-inventory-system';
+const PAGE_URL = `https://www.stockflowsystems.com${canonicalPath}`;
 const PAGE_TITLE = 'Barcode Inventory System — Setup Guide 2026 | StockFlow';
 const PAGE_DESCRIPTION =
   'Barcode inventory system guide for small businesses. Set up labels, mobile scanning, and real-time stock in StockFlow. Free, no credit card. See how it works.';
@@ -54,35 +56,53 @@ const howToSteps = [
   },
 ];
 
-const structuredData = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    datePublished: 'June 9, 2026',
-    dateModified: DATE_MODIFIED,
-    author: { '@type': 'Organization', name: 'StockFlow' },
-    publisher: {
-      '@type': 'Organization',
-      name: 'StockFlow',
-      logo: { '@type': 'ImageObject', url: 'https://www.stockflowsystems.com/logo.png' },
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://www.stockflowsystems.com${canonicalPath}`,
-    },
-  },
-  generateFAQSchema(faqData),
-  generateHowToSchema({
-    name: 'How to set up a barcode inventory system with StockFlow',
-    description: 'Step-by-step guide to launching a barcode-based stock management system using StockFlow.',
-    url: `https://www.stockflowsystems.com${canonicalPath}`,
-    steps: howToSteps,
-  }),
-];
-
 export default function BarcodeInventorySystemPage() {
+  const location = useLocation();
+
+  const structuredData = [
+    ...generateSeoPageStructuredData({
+      title: PAGE_TITLE,
+      description: PAGE_DESCRIPTION,
+      url: canonicalPath,
+      breadcrumbs: getBreadcrumbPath(location.pathname).map((item, index) => ({
+        name: item.name,
+        url: item.path,
+        position: index + 1,
+      })),
+      softwareData: {
+        name: 'StockFlow — Barcode Inventory System',
+        description:
+          'Free barcode inventory system with mobile scanning, offline sync, and multi-location stock control for small businesses.',
+        category: 'BusinessApplication',
+        operatingSystem: 'Web, iOS, Android',
+        price: '0',
+        currency: 'USD',
+        url: PAGE_URL,
+        rating: { value: '4.9', count: '3200' },
+        image: '/Inventory-Management.png',
+        features: [
+          'Mobile barcode scanning',
+          'Offline scan sync',
+          'UPC, EAN, QR, Code 128 support',
+          'Multi-location inventory',
+        ],
+      },
+      pageType: 'software',
+      datePublished: 'June 9, 2026',
+      dateModified: DATE_MODIFIED,
+      includeOrganization: true,
+      includeWebSite: false,
+      includeBreadcrumbs: true,
+    }),
+    generateFAQSchema(faqData),
+    generateHowToSchema({
+      name: 'How to set up a barcode inventory system with StockFlow',
+      description: 'Step-by-step guide to launching a barcode-based stock management system using StockFlow.',
+      url: PAGE_URL,
+      steps: howToSteps,
+    }),
+  ];
+
   return (
     <SeoPageLayout
       title={PAGE_TITLE}
@@ -101,10 +121,14 @@ export default function BarcodeInventorySystemPage() {
         </p>
         <p className="text-lg text-gray-700 leading-relaxed">
           StockFlow is built for this workflow. If you are comparing vendors first, start with our{' '}
-          <Link to="/best-free-inventory-software-with-barcode-scanning" className="text-blue-600 underline">
-            free barcode inventory software
+          <Link to="/barcode-inventory-system-for-small-business" className="text-blue-600 underline">
+            barcode inventory system for small business
           </Link>{' '}
-          roundup. Manufacturers should also review{' '}
+          roundup. Not sure which label format to use? Read our{' '}
+          <Link to="/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 underline">
+            barcodes vs QR codes comparison
+          </Link>
+          . Manufacturers should also review{' '}
           <Link to="/bill-of-materials-software-free" className="text-blue-600 underline">
             free BOM software
           </Link>{' '}

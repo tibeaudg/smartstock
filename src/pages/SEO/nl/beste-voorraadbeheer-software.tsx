@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -45,22 +44,13 @@ export default function BesteVoorraadbeheerSoftwarePage() {
   return (
     <SeoPageLayout
       title="Beste Voorraadbeheer Software (2026 Gids)"
+      seoTitle="Beste Voorraadbeheer Software 2026 – Vergelijk Gratis Tools | StockFlow"
+      seoDescription="Ontdek de beste voorraadbeheer software van 2026 voor België en Nederland. Vergelijk gratis en betaalde tools. StockFlow is volledig gratis — geen creditcard vereist."
       heroTitle="Voorraadbeheer Software: De Complete Gids voor 2026"
       dateUpdated="05/06/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Beste Voorraadbeheer Software 2026 – Vergelijk Gratis & Betaalde Tools | StockFlow"
-        description="Ontdek de beste voorraadbeheer software van 2026. Vergelijk gratis en betaalde tools op functies, prijzen en gebruiksgemak. StockFlow is volledig gratis — geen creditcard vereist."
-        keywords="voorraadbeheer software, beste voorraadbeheer software, gratis voorraadbeheer software, voorraad software, magazijnbeheer software, stock tracking software, voorraadbeheer klein bedrijf"
-        url={`https://www.stockflowsystems.com${canonicalPath}`}
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/best-inventory-management-software' },
-          { lang: 'nl-BE', url: `https://www.stockflowsystems.com${canonicalPath}` },
-        ]}
-      />
-
       {/* Intro */}
       <section className="py-10 space-y-4">
         <p className="text-slate-700 leading-7">

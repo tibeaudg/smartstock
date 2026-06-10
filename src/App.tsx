@@ -32,6 +32,7 @@ import { useAnalyticsContextSync } from "./hooks/useAnalyticsContextSync";
 import { useEnsureBranch } from "./hooks/useEnsureBranch";
 import { ContentWrapper } from "./ContentWrapper";
 import SEO from './components/SEO';
+import { getHreflangAlternates } from './config/enNlHreflang';
 
 /** Meta for authenticated / utility routes — robots.txt also disallows these paths */
 const privateSeo = { noindex: true, nofollow: true };
@@ -416,7 +417,7 @@ const AppRouter = () => {
       <Suspense fallback={<ContentLoadingScreen />}>
       <Routes>
         {/* PUBLIC ROUTES */}
-        <Route path="/" element={<><SEO title="Free Inventory Software — Barcode & BOMs | StockFlow" description="Free inventory management software for small businesses. Barcode scanning, BOM management, and real-time stock across every location. No credit card. Start for free." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" /><HomePage /></>} />
+        <Route path="/" element={<><SEO title="Free Inventory Software — Barcode & BOMs | StockFlow" description="Free inventory management software for small businesses. Barcode scanning, BOM management, and real-time stock across every location. No credit card. Start for free." url="https://www.stockflowsystems.com/" image="https://www.stockflowsystems.com/Inventory-Management.png" alternateLanguages={getHreflangAlternates('/')} /><HomePage /></>} />
         <Route path="/features" element={<><SEO title="Inventory Management Features & Capabilities | StockFlow" description="Explore StockFlow features: barcode scanning, BOM management, stock alerts, reporting, and offline support. Free inventory software for growing businesses." url="https://www.stockflowsystems.com/features" structuredData={FEATURES_STRUCTURED_DATA} /><FeaturesPage /></>} />
         <Route path="/reporting" element={
           <React.Suspense fallback={<ContentLoadingScreen />}>
@@ -466,6 +467,7 @@ const AppRouter = () => {
         {/* REDIRECTS */}
         <Route path="/what-is-bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
         <Route path="/bill-of-materials" element={<Navigate to="/bill-of-materials-software-free" replace />} />
+        <Route path="/best-free-inventory-software-with-barcode-scanning" element={<Navigate to="/barcode-inventory-system-for-small-business" replace />} />
         <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
         <Route path="/inventory-management-bing" element={<Navigate to="/inventory-management" replace />} />
         <Route path="/prix" element={<Navigate to="/pricing" replace />} />

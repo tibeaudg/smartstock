@@ -13,7 +13,7 @@ export const EN_TO_NL_SLUG: Record<string, string> = {
   'mobile-inventory-management': 'nl/mobiel-voorraadbeheer',
   'stock-management-software': 'nl/stockbeheer-software',
   'simple-stock-management': 'nl/eenvoudig-stockbeheer',
-  'warehouse-management-system': 'nl/magazijnbeheersysteem',
+  'warehouse-management-system': 'nl/voorraadbeheer-magazijn',
   'best-inventory-management-software': 'nl/beste-voorraadbeheer-software',
   'what-is-the-best-free-inventory-management-software': 'nl/wat-is-de-beste-gratis-voorraadbeheer-software',
   'bill-of-materials-software-free': 'nl/gratis-stuklijst-software',
@@ -43,32 +43,41 @@ const NL_TO_EN_SLUG: Record<string, string> = Object.fromEntries(
 
 export type HreflangEntry = { lang: string; url: string };
 
+/** Dutch landing page paired with the English homepage */
+const HOME_NL_SLUG = 'nl/beste-voorraadbeheer-software';
+
 function toFullUrl(path: string): string {
   const normalized = path.replace(/^\/+/, '');
-  return `${PRODUCTION_URL}/${normalized}`;
+  return normalized ? `${PRODUCTION_URL}/${normalized}` : PRODUCTION_URL;
+}
+
+function buildHreflangSet(enSlug: string, nlSlug: string): HreflangEntry[] {
+  return [
+    { lang: 'en-US', url: toFullUrl(enSlug) },
+    { lang: 'nl-BE', url: toFullUrl(nlSlug) },
+    { lang: 'nl-NL', url: toFullUrl(nlSlug) },
+    { lang: 'x-default', url: toFullUrl(enSlug) },
+  ];
 }
 
 /**
  * Resolve hreflang alternates for the current pathname when not set on the page.
  */
 export function getHreflangAlternates(pathname: string): HreflangEntry[] | undefined {
-  const slug = pathname.replace(/^\/+/, '').replace(/\/+$/, '') || '';
+  const slug = pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+
+  if (slug === '') {
+    return buildHreflangSet('', HOME_NL_SLUG);
+  }
 
   if (slug.startsWith('nl/') || slug === 'nl') {
     const enSlug = NL_TO_EN_SLUG[slug];
     if (!enSlug) return undefined;
-    return [
-      { lang: 'nl-BE', url: toFullUrl(slug) },
-      { lang: 'en-US', url: toFullUrl(enSlug) },
-    ];
+    return buildHreflangSet(enSlug, slug);
   }
 
   const nlSlug = EN_TO_NL_SLUG[slug];
   if (!nlSlug) return undefined;
 
-  return [
-    { lang: 'en-US', url: toFullUrl(slug) },
-    { lang: 'nl-BE', url: toFullUrl(nlSlug) },
-    { lang: 'x-default', url: toFullUrl(slug) },
-  ];
+  return buildHreflangSet(slug, nlSlug);
 }

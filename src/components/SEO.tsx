@@ -267,30 +267,40 @@ export const SEO: React.FC<SEOProps> = ({
       {/* Canonical - normalized to remove trailing slashes and query parameters */}
       <link rel="canonical" href={normalizedUrl} />
       
-      {/* Self-referencing hreflang */}
-      <link rel="alternate" hrefLang={defaultHrefLang} href={normalizedUrl} />
-      
       {/* Hreflang for international SEO */}
-      {hreflang.map((hreflangItem) => {
-        const normalizedAlt = normalizeCanonicalUrl(hreflangItem.url);
+      {(() => {
+        const allAlternates = [...hreflang, ...alternateLanguages];
+        const hasSelfHreflang = allAlternates.some((a) => a.lang === defaultHrefLang);
+        const enAlternate = allAlternates.find((a) => a.lang === 'en-US');
+        const xDefaultUrl =
+          allAlternates.find((a) => a.lang === 'x-default')?.url ??
+          enAlternate?.url ??
+          normalizedUrl;
+
         return (
-          <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={normalizedAlt} />
+          <>
+            {!hasSelfHreflang && (
+              <link rel="alternate" hrefLang={defaultHrefLang} href={normalizedUrl} />
+            )}
+            {hreflang.map((hreflangItem) => {
+              const normalizedAlt = normalizeCanonicalUrl(hreflangItem.url);
+              return (
+                <link key={hreflangItem.lang} rel="alternate" hrefLang={hreflangItem.lang} href={normalizedAlt} />
+              );
+            })}
+            {alternateLanguages.map((altLang) => {
+              const normalizedAlt = normalizeCanonicalUrl(altLang.url);
+              return (
+                <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={normalizedAlt} />
+              );
+            })}
+            {allAlternates.length > 0 &&
+              !allAlternates.some((a) => a.lang === 'x-default') && (
+              <link rel="alternate" hrefLang="x-default" href={normalizeCanonicalUrl(xDefaultUrl)} />
+            )}
+          </>
         );
-      })}
-      
-      {/* Alternate languages */}
-      {alternateLanguages.map((altLang) => {
-        const normalizedAlt = normalizeCanonicalUrl(altLang.url);
-        return (
-          <link key={altLang.lang} rel="alternate" hrefLang={altLang.lang} href={normalizedAlt} />
-        );
-      })}
-      
-      {/* X-default for international targeting — only if not already in alternateLanguages */}
-      {alternateLanguages.length > 0 &&
-        !alternateLanguages.some(a => a.lang === 'x-default') && (
-        <link rel="alternate" hrefLang="x-default" href={normalizedUrl} />
-      )}
+      })()}
       
       {/* Additional SEO meta tags */}
       <meta name="author" content="StockFlow" />

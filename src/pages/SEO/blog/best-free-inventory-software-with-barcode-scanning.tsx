@@ -5,12 +5,17 @@ import { generateSeoPageStructuredData } from "@/lib/structuredData";
 import { getBreadcrumbPath } from "@/config/topicClusters";
 
 const canonicalPath = "/best-free-inventory-software-with-barcode-scanning";
-const PAGE_TITLE = "Best Free Barcode Inventory Software — Try Free | StockFlow";
+const PAGE_TITLE = "5 Best Free Inventory Software with Barcode Scanner (2026) — StockFlow";
 const PAGE_DESCRIPTION =
-  "Best free inventory software with barcode scanning for small businesses. Scan with your phone, offline mode, unlimited SKUs. Free forever. Try free →";
+  "Scan barcodes with your phone camera. No credit card. Trusted by 3,000+ small businesses. Try free →";
 const DATE_MODIFIED = "2026-06-08";
 
 const faqData = [
+  {
+    question: "Can I scan barcodes with my phone camera for free?",
+    answer:
+      "Yes. StockFlow lets you scan barcodes with your phone camera on iOS and Android — no dedicated scanner hardware and no credit card required. Trusted by 3,000+ small businesses for receiving, cycle counts, transfers, and picking.",
+  },
   {
     question: "Is there a free barcode inventory system?",
     answer:
@@ -35,6 +40,44 @@ const faqData = [
     question: "Does StockFlow barcode scanning work offline?",
     answer:
       "Yes. StockFlow supports offline-first workflows so teams can keep scanning even in low-connectivity areas. Data syncs automatically once internet access is available again.",
+  },
+];
+
+const topFivePicks = [
+  {
+    rank: 1,
+    name: "StockFlow",
+    summary:
+      "Best overall free inventory software with barcode scanning. Scan barcodes with your phone camera — no dedicated hardware required. No credit card, no hard SKU cap, offline sync, and multi-location support. Trusted by 3,000+ small businesses.",
+    bestFor: "Small businesses that want phone-camera scanning and unlimited catalog growth on a free plan",
+  },
+  {
+    rank: 2,
+    name: "Sortly",
+    summary:
+      "Mobile-first inventory app with camera barcode scanning and a clean visual interface. Strong for asset tracking and simple stock lists, but free-tier item limits push growing teams to paid plans quickly.",
+    bestFor: "Teams with smaller catalogs who prioritize visual organization over deep warehouse workflows",
+  },
+  {
+    rank: 3,
+    name: "Zoho Inventory",
+    summary:
+      "Credible free inventory software with barcode scanning in the mobile app. Best when you already run Zoho Books or CRM. Free plan caps orders, users, and warehouses — see our Zoho comparison for limits.",
+    bestFor: "Businesses already standardized on the Zoho ecosystem",
+  },
+  {
+    rank: 4,
+    name: "inFlow",
+    summary:
+      "Solid barcode inventory software with hardware and desktop scanning support. The free edition is limited to a small product cap, so it works as a trial more than a long-term free solution.",
+    bestFor: "Desktop-heavy teams evaluating paid manufacturing inventory tools",
+  },
+  {
+    rank: 5,
+    name: "Square for Retail",
+    summary:
+      "Free POS tier with camera and hardware barcode support tied to retail checkout. Practical if you sell in-store and need inventory linked to point-of-sale, less ideal as a standalone warehouse system.",
+    bestFor: "Retail shops that need POS plus basic barcode inventory in one stack",
   },
 ];
 
@@ -67,10 +110,12 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
       description:
         "Free inventory software with barcode scanning, offline mobile workflows, and multi-location stock control for small businesses.",
       category: "BusinessApplication",
-      operatingSystem: "Web",
+      operatingSystem: "Web, iOS, Android",
       price: "0",
       currency: "USD",
       url: pageUrl,
+      rating: { value: "4.9", count: "3200" },
+      image: "/Inventory-Management.png",
       features: [
         "Mobile barcode scanning",
         "Offline scan sync",
@@ -88,8 +133,8 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
     <SeoPageLayout
       title={PAGE_TITLE}
       seoDescription={PAGE_DESCRIPTION}
-      heroTitle="Best Free Inventory Software with Barcode Scanning (2026)"
-      heroDescription="Compare StockFlow, Sortly, Zoho, inFlow, Square, Stockpile, and Odoo by barcode scanning depth, offline support, SKU limits, and multi-location capability."
+      heroTitle="5 Best Free Inventory Software with Barcode Scanner (2026)"
+      heroDescription="Scan barcodes with your phone camera — no credit card required. We ranked the top 5 free inventory apps with barcode scanning and compared 7 options on offline support, SKU limits, and multi-location capability."
       dateUpdated="June 9, 2026"
       pageLanguage="en"
       faqData={faqData}
@@ -99,15 +144,35 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
 
       <section className="mb-12">
         <p className="text-lg text-gray-700 leading-relaxed mb-4">
-          Looking for <strong>free inventory software with barcode scanning</strong> that actually works for day-to-day operations? StockFlow is the best free option for most small businesses in 2026 because it combines practical barcode workflows, multi-location inventory visibility, and offline-ready scanning in one system.
+          Looking for the <strong>best free inventory software with barcode scanning</strong> in 2026? You want a <strong>free inventory app with barcode scanner</strong> that works on the floor — not a demo that locks scanning behind a paywall. The five picks below are ranked for small businesses that need phone-camera scanning, reliable stock counts, and room to grow without a credit card.
         </p>
         <p className="text-lg text-gray-700 leading-relaxed">
-          This guide compares seven popular tools honestly, then shows you how to set up barcode scanning in StockFlow so you can move from spreadsheet guessing to reliable stock control quickly.
+          StockFlow leads this list because you can <strong>scan barcodes with your phone camera</strong>, work offline, and run multi-location inventory on a permanently free plan. It is trusted by <strong>3,000+ small businesses</strong>. We also include a wider seven-tool comparison table for teams evaluating Sortly, Zoho Inventory, inFlow, Square, Stockpile, and Odoo.
         </p>
       </section>
 
       <section className="mb-14">
-        <h2 className="text-2xl font-bold mb-4">StockFlow vs Competitors: Barcode Scanning Comparison</h2>
+        <h2 className="text-2xl font-bold mb-4">The 5 Best Free Inventory Software with Barcode Scanner (2026)</h2>
+        <p className="text-gray-700 leading-relaxed mb-6">
+          These are our top five <strong>free barcode inventory system</strong> options for 2026, ranked by scanning depth, free-tier practicality, and fit for day-to-day warehouse work.
+        </p>
+        <div className="space-y-5">
+          {topFivePicks.map((pick) => (
+            <div key={pick.name} className="bg-white border rounded-lg p-5">
+              <h3 className="font-semibold text-lg mb-2">
+                #{pick.rank}. {pick.name}
+              </h3>
+              <p className="text-gray-700 mb-2">{pick.summary}</p>
+              <p className="text-sm text-slate-600">
+                <strong>Best for:</strong> {pick.bestFor}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-14">
+        <h2 className="text-2xl font-bold mb-4">Full Comparison: 7 Free Barcode Inventory Tools</h2>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse bg-white rounded-lg shadow-sm">
             <thead>
@@ -202,8 +267,37 @@ export default function BestFreeInventorySoftwareWithBarcodeScanningPage() {
           The right way to evaluate <strong>free inventory app with barcode scanner</strong> options is to score each platform on execution depth, not marketing language. Check scan workflow coverage, offline reliability, SKU scale limits, location logic, and reporting quality before you commit.
         </p>
         <p>
-          If manufacturing is also in scope, connect this page with <Link to="/bill-of-materials-software-free">free BOM software</Link>. For vendor comparisons, review <Link to="/stockflow-vs-zoho-inventory">StockFlow vs Zoho Inventory</Link> and <Link to="/best-free-alternative-to-katana-mrp">best free alternative to Katana MRP</Link>. For technical setup, see our <Link to="/barcode-inventory-system">barcode inventory system</Link> guide.
+          If manufacturing is also in scope, connect this page with <Link to="/bill-of-materials-software-free">free BOM software</Link>. For vendor comparisons, review <Link to="/stockflow-vs-zoho-inventory">Zoho Inventory alternative</Link> and <Link to="/katana-mrp-alternative">Katana MRP alternative</Link>. For technical setup, see our <Link to="/barcode-inventory-system">barcode inventory system</Link> guide.
         </p>
+      </section>
+
+      <section className="mb-14">
+        <h2 className="text-2xl font-bold mb-4">Barcodes vs QR Codes: Which Should You Use?</h2>
+        <p className="text-lg text-gray-700 leading-relaxed mb-4">
+          Not sure whether to label with traditional barcodes or QR codes? Our{' '}
+          <Link to="/barcodes-vs-qr-codes-for-inventory-management" className="text-blue-600 underline font-semibold">
+            barcodes vs QR codes comparison
+          </Link>{' '}
+          breaks down data capacity, scan hardware, and field-team workflows so you pick the right format before printing thousands of labels.
+        </p>
+      </section>
+
+      <section className="mb-14">
+        <h2 className="text-2xl font-bold mb-4">Barcode Scanning by Industry</h2>
+        <p className="text-gray-700 mb-4">
+          Field teams and trade contractors have different scanning needs than warehouse operators. Explore vertical-specific guides:
+        </p>
+        <ul className="space-y-2 text-gray-700">
+          <li>
+            <Link to="/hvac-inventory-management" className="text-blue-600 underline">HVAC inventory management</Link> — parts tracking across service vehicles and seasonal demand
+          </li>
+          <li>
+            <Link to="/electrical-inventory-management" className="text-blue-600 underline">Electrical inventory management</Link> — wire, fixtures, and tools across job sites
+          </li>
+          <li>
+            <Link to="/contractor-inventory-management" className="text-blue-600 underline">Contractor inventory management</Link> — materials and equipment for construction crews
+          </li>
+        </ul>
       </section>
 
       <section className="mb-12">

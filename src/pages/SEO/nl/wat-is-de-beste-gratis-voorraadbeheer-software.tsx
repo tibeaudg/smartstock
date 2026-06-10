@@ -1,4 +1,3 @@
-import SEO from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import SeoPageLayout from '@/components/SeoPageLayout';
 import { StructuredData } from '@/components/StructuredData';
@@ -30,22 +29,13 @@ export default function WatIsDeBesteGratisVoorraadbeheerSoftwarePage() {
   return (
     <SeoPageLayout 
       title="Wat is de Beste Gratis Voorraadbeheer Software?"
+      seoTitle="Beste Gratis Voorraadbeheer Software 2026 | StockFlow"
+      seoDescription="Ontdek de beste gratis voorraadbeheer software voor België en Nederland. Vergelijk functies en beperkingen. StockFlow is volledig gratis — geen verborgen kosten."
       heroTitle="Wat is de Beste Gratis Voorraadbeheer Software?"
       dateUpdated="22/01/2026"
+      pageLanguage="nl"
       faqData={faqData}
     >
-      <SEO
-        title="Wat is de Beste Gratis Voorraadbeheer Software? | StockFlow"
-        description="Ontdek de beste gratis voorraadbeheer software voor 2026. Vergelijk functies, prijzen en beperkingen. StockFlow biedt volledig gratis, onbeperkte voorraadbeheer software zonder verborgen kosten."
-        keywords="beste gratis voorraadbeheer software, gratis voorraad software, gratis voorraadbeheer, gratis stockbeheer software, gratis voorraadsysteem, gratis voorraadbeheer software vergelijking, gratis voorraad tracking, gratis voorraadbeheer app"
-        url="https://www.stockflowsystems.com/nl/wat-is-de-beste-gratis-voorraadbeheer-software"
-        locale="nl-BE"
-        alternateLanguages={[
-          { lang: 'en-US', url: 'https://www.stockflowsystems.com/best-free-inventory-software-with-barcode-scanning' },
-          { lang: 'nl-BE', url: 'https://www.stockflowsystems.com/nl/wat-is-de-beste-gratis-voorraadbeheer-software' }
-        ]}
-      />
-
       {/* Main Content */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
