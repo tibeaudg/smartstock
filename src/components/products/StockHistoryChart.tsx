@@ -58,7 +58,7 @@ const DATE_RANGES: { label: string; value: DateRange; days: number }[] = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-xs">
+    <div className="bg-gray-50  border border-gray-200 rounded-lg shadow-lg p-3 text-xs">
       <p className="font-semibold text-gray-700 mb-2">{label}</p>
       {payload.map((entry: any) => (
         <div key={entry.name} className="flex items-center gap-2 mb-1">
@@ -193,7 +193,7 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
   const showChart = hasMovements || currentStock > 0;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -207,7 +207,7 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
         </div>
 
         {/* Range selector */}
-        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-1">
           {DATE_RANGES.map((range) => (
             <button
               key={range.value}
@@ -215,7 +215,7 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
               className={cn(
                 'px-3 py-1 rounded-md text-xs font-medium transition-colors',
                 selectedRange === range.value
-                  ? 'bg-white text-gray-900 shadow-sm'
+                  ? 'bg-white border border-gray-200 text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
               )}
             >
@@ -227,15 +227,15 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
 
       {/* KPI pills */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1.5 bg-green-50 border border-green-100 rounded-full px-3 py-1">
+        <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1">
           <ArrowUpRight className="w-3.5 h-3.5 text-green-600" />
           <span className="text-xs font-medium text-green-700">+{totalIn} in</span>
         </div>
-        <div className="flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-full px-3 py-1">
+        <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1">
           <ArrowDownLeft className="w-3.5 h-3.5 text-red-600" />
           <span className="text-xs font-medium text-red-700">-{totalOut} out</span>
         </div>
-        <div className="flex items-center gap-1.5 bg-blue-50 border border-blue-100 rounded-full px-3 py-1">
+        <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1">
           <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
           <span className="text-xs font-medium text-blue-700">Net: {totalIn - totalOut >= 0 ? '+' : ''}{totalIn - totalOut}</span>
         </div>

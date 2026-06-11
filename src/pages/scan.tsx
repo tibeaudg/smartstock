@@ -23,7 +23,7 @@ import { cn } from '@/lib/utils';
 import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
 import { emitActivationOnce } from '@/lib/analytics';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { navigateToAddProduct } from '@/lib/navigation/productNavigation';
 
 interface ProductFormData {
   name: string;
@@ -47,7 +47,6 @@ export default function ScanPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { track } = useAppEventTracker();
-  const { openAddProduct } = useAddProductModal();
 
   // Pre-fill barcode from navigation state (e.g. from BarcodeScannerPage)
   const initialBarcodeRef = React.useRef((location.state as { barcode?: string })?.barcode);
@@ -181,21 +180,10 @@ export default function ScanPage() {
           toast.error(`Product with barcode ${barcode} does not exist in stock`);
         } else {
           toast.info('Add Product');
-          openAddProduct({
+          navigateToAddProduct(navigate, {
             mode: 'quick',
             preFilledSKU: barcode,
-            onProductAdded: (product) => {
-              if (product) {
-                setScanHistory((prev) => {
-                  const newHistory = [
-                    { barcode, name: product.name, timestamp: new Date() },
-                    ...prev.filter((item) => item.barcode !== barcode),
-                  ];
-                  return newHistory.slice(0, 10);
-                });
-                track('product_created', undefined, { method: 'scan' });
-              }
-            },
+            returnTo: '/dashboard/scan-flow',
           });
         }
       }
@@ -203,7 +191,7 @@ export default function ScanPage() {
       console.error('Error searching for product:', error);
       toast.error('Error searching for product');
       
-      openAddProduct({ mode: 'quick', preFilledSKU: barcode });
+      navigateToAddProduct(navigate, { mode: 'quick', preFilledSKU: barcode, returnTo: '/dashboard/scan-flow' });
     }
   };
 

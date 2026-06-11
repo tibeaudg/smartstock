@@ -1,12 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useBranches } from '@/hooks/useBranches';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, useParams, useLocation, Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import { AddProductModal } from '@/components/AddProductModal';
-import { BulkImporterSuggestionModal } from '@/components/BulkImporterSuggestionModal';
+import { navigateToAddProduct, type NewProductResult } from '@/lib/navigation/productNavigation';
 
 // UI Components
 import { Card } from '@/components/ui/card';
@@ -1022,10 +1021,6 @@ function BOMEditPage() {
   const [versionNumber, setVersionNumber] = useState('1.0');
   const [isSaving, setIsSaving] = useState(false);
   
-  // State for inline product creation
-  const [isCreatingProduct, setIsCreatingProduct] = useState(false);
-  const [componentIndexForNewProduct, setComponentIndexForNewProduct] = useState<number | null>(null);
-  const [showBulkImporterSuggestion, setShowBulkImporterSuggestion] = useState(false);
 
   // Fetch product details
   const { data: product, isLoading: isProductLoading, error: productError } = useQuery({
@@ -1132,110 +1127,46 @@ function BOMEditPage() {
     setComponents(updated);
   };
 
-  // Open inline product creation
   const handleOpenProductCreation = (componentIndex: number) => {
-    setComponentIndexForNewProduct(componentIndex);
-    setIsCreatingProduct(true);
+    const returnPath = `/dashboard/bom/edit/${productId}${isCreateMode ? '?create=true' : ''}`;
+    navigateToAddProduct(navigate, {
+      mode: 'full',
+      returnTo: returnPath,
+      returnState: {
+        bomDraft: {
+          components,
+          versionNumber,
+          componentIndex,
+        },
+      },
+    });
   };
 
-  // Handle product creation completion - auto-select the new product in the component
-  const handleProductAdded = async () => {
-    if (!activeBranch) return;
+  useEffect(() => {
+    const state = location.state as {
+      bomDraft?: {
+        components: BOMComponentFormData[];
+        versionNumber: string;
+        componentIndex?: number;
+      };
+      newProduct?: NewProductResult;
+    } | null;
 
-    // Invalidate all product-related queries to ensure products appear in categories page
-    await queryClient.invalidateQueries({
-      queryKey: ['products'],
-      refetchType: 'active',
-    });
+    if (!state?.bomDraft) return;
 
-    await queryClient.invalidateQueries({
-      queryKey: ['products', activeBranch.branch_id],
-      refetchType: 'active',
-    });
-
-    // Invalidate the specific query key pattern used by categories page
-    await queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = query.queryKey;
-        return (
-          Array.isArray(key) &&
-          key.length >= 2 &&
-          key[0] === 'products' &&
-          key[1] === 'categoryProducts'
-        );
-      },
-      refetchType: 'active',
-    });
-
-    // Invalidate category products queries
-    queryClient.invalidateQueries({
-      queryKey: ['categoryProducts'],
-      refetchType: 'active',
-    });
-
-    queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = query.queryKey;
-        return (
-          Array.isArray(key) &&
-          key.length >= 1 &&
-          key[0] === 'categoryProducts'
-        );
-      },
-      refetchType: 'active',
-    });
-
-    // Invalidate stock transactions queries
-    queryClient.invalidateQueries({
-      queryKey: ['stockTransactions'],
-      refetchType: 'active',
-    });
-
-    queryClient.invalidateQueries({
-      predicate: (query) => {
-        const key = query.queryKey;
-        return (
-          Array.isArray(key) &&
-          key.length >= 1 &&
-          key[0] === 'stockTransactions'
-        );
-      },
-      refetchType: 'active',
-    });
-
-    // Refresh available products for BOM component selection
-    await queryClient.invalidateQueries({ queryKey: ['availableProducts', activeBranch.branch_id] });
-    
-    // Wait a bit for the query to complete, then find and select the most recently created product
-    setTimeout(async () => {
-      if (!activeBranch || componentIndexForNewProduct === null) return;
-      
-      try {
-        const { data: products } = await supabase
-          .from('products')
-          .select('id, name')
-          .eq('branch_id', activeBranch.branch_id)
-          .eq('is_variant', false)
-          .neq('id', productId) // Don't allow selecting the parent product
-          .order('created_at', { ascending: false })
-          .limit(1);
-
-        if (products && products.length > 0) {
-          // Check if this product is not already in the available products list
-          // (meaning it was just created)
-          const isNewProduct = !availableProducts?.some(p => p.id === products[0].id);
-          if (isNewProduct) {
-            handleUpdateComponent(componentIndexForNewProduct, 'component_product_id', products[0].id);
-          }
-        }
-      } catch (error) {
-        console.error('Error finding newly created product:', error);
-      } finally {
-        setIsCreatingProduct(false);
-        setComponentIndexForNewProduct(null);
-      }
-    }, 500);
-  };
+    setVersionNumber(state.bomDraft.versionNumber);
+    let restoredComponents = [...state.bomDraft.components];
+    if (state.newProduct?.id && state.bomDraft.componentIndex !== undefined) {
+      const idx = state.bomDraft.componentIndex;
+      restoredComponents[idx] = {
+        ...restoredComponents[idx],
+        component_product_id: state.newProduct.id,
+      };
+      void queryClient.invalidateQueries({ queryKey: ['availableProducts', activeBranch?.branch_id] });
+    }
+    setComponents(restoredComponents);
+    navigate(`${location.pathname}${location.search}`, { replace: true, state: {} });
+  }, [location.state]);
 
   // Save BOM
   const handleSave = async () => {
@@ -1573,20 +1504,6 @@ function BOMEditPage() {
         </div>
       </div>
 
-      {/* Inline Product Creation Modal - Using AddProductModal for consistency */}
-      <AddProductModal
-        isOpen={isCreatingProduct}
-        onClose={() => {
-          setIsCreatingProduct(false);
-          setComponentIndexForNewProduct(null);
-        }}
-        onProductAdded={handleProductAdded}
-        onFirstProductAdded={() => setShowBulkImporterSuggestion(true)}
-      />
-      <BulkImporterSuggestionModal
-        isOpen={showBulkImporterSuggestion}
-        onClose={() => setShowBulkImporterSuggestion(false)}
-      />
     </div>
   );
 }

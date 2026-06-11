@@ -25,8 +25,8 @@ import { toast } from 'sonner';
 
 type ProductRow = Database['public']['Tables']['products']['Row'];
 type Product = ProductRow & { sku?: string | null };
+import { navigateToAddVariant } from '@/lib/navigation/productNavigation';
 import { EditProductStockModal } from '@/components/EditProductStockModal';
-import { AddVariantModal } from '@/components/AddVariantModal';
 import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BillOfMaterials from '@/components/products/BillOfMaterials';
@@ -65,7 +65,6 @@ export default function ProductDetailPage() {
   // Variants state
   const [variants, setVariants] = useState<Product[]>([]);
   const [isLoadingVariants, setIsLoadingVariants] = useState(false);
-  const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
   
   // Tab state (initialize from URL `tab` query param once)
   const initialTab = React.useMemo(() => new URLSearchParams(window.location.search).get('tab') || 'overview', []);
@@ -135,10 +134,10 @@ export default function ProductDetailPage() {
   const [stockHistoryRefreshKey, setStockHistoryRefreshKey] = useState(0);
   const [openLocationIndex, setOpenLocationIndex] = useState<number | null>(null);
 
-  // Modal states
+  const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
   const [isStockAdjustModalOpen, setIsStockAdjustModalOpen] = useState(false);
   const [stockModalActionType, setStockModalActionType] = useState<'in' | 'out'>('in');
-  const [showBarcodeGenerator, setShowBarcodeGenerator] = useState(false);
+  const [selectedProductForStock, setSelectedProductForStock] = useState<Product | null>(null);
 
   // Fetch product data
   useEffect(() => {
@@ -687,8 +686,6 @@ export default function ProductDetailPage() {
     setForm(prev => ({ ...prev, category_id: '', category_name: value.trim() }));
   };
 
-  const [selectedProductForStock, setSelectedProductForStock] = useState<Product | null>(null);
-
   const handleAdjustStock = async (product?: Product | null) => {
     const prodToUse = product || currentProduct;
     if (!prodToUse) {
@@ -702,7 +699,6 @@ export default function ProductDetailPage() {
 
     if (!prodId || prodId === 'undefined' || (typeof prodId === 'string' && prodId.trim() === '')) {
       if (id && typeof id === 'string' && id.trim() !== '') {
-        console.warn('handleAdjustStock: product.id missing, falling back to route id', { prodIdRaw, routeId: id });
         try {
           const branchToUse = prodToUse?.branch_id || activeBranch?.branch_id;
           const { data: fetchedProduct, error: fetchError } = await supabase
@@ -713,51 +709,43 @@ export default function ProductDetailPage() {
             .maybeSingle();
 
           if (fetchError || !fetchedProduct) {
-            console.error('handleAdjustStock: failed to fetch product by route id', fetchError);
             toast.error('Unable to load product details. Please refresh and try again.');
             return;
           }
 
+          setStockModalActionType('in');
           setSelectedProductForStock(fetchedProduct);
           setIsStockAdjustModalOpen(true);
           return;
-        } catch (err) {
-          console.error('handleAdjustStock: exception fetching product', err);
+        } catch {
           toast.error('Unable to load product details. Please refresh and try again.');
           return;
         }
       }
 
-      console.error('handleAdjustStock: invalid product id (raw)', prodIdRaw, 'coerced:', prodId, prodToUse);
       toast.error('Product ID is missing. Please refresh and try again.');
       return;
     }
 
     if (!branchId) {
-      console.warn('handleAdjustStock: missing branch id on product, attempting to resolve user branch', prodToUse);
       if (user?.id) {
         try {
-          // @ts-expect-error - Supabase RPC type inference can fail
-          const res: any = await supabase.rpc('get_user_branches', { user_id: user.id });
-          const branches = res?.data || res;
+          const res: { data?: Array<{ branch_id?: string; id?: string }> } = await supabase.rpc('get_user_branches', { user_id: user.id });
+          const branches = res?.data;
           if (Array.isArray(branches) && branches.length > 0) {
-            const fallbackBranch = branches[0];
-            const fallbackBranchId = fallbackBranch.branch_id || fallbackBranch.id || fallbackBranch.branch_id;
+            const fallbackBranchId = branches[0].branch_id || branches[0].id;
             if (fallbackBranchId) {
-              console.log('handleAdjustStock: using fallback branch id from RPC', fallbackBranchId);
-              const fallbackProduct = { ...prodToUse, branch_id: fallbackBranchId };
               setStockModalActionType('in');
-              setSelectedProductForStock(fallbackProduct);
+              setSelectedProductForStock({ ...prodToUse, branch_id: fallbackBranchId });
               setIsStockAdjustModalOpen(true);
               return;
             }
           }
-        } catch (err) {
-          console.error('handleAdjustStock: error resolving user branch', err);
+        } catch {
+          // fall through to error below
         }
       }
 
-      console.error('handleAdjustStock: missing branch id', branchId, prodToUse);
       toast.error('Warehouse information missing. Please select a warehouse.');
       return;
     }
@@ -894,7 +882,7 @@ export default function ProductDetailPage() {
 
   if (productLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex items-center justify-center h-full p-4 pt-6 md:pt-8 md:px-6">
         <div className="text-center">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-3" />
           <p className="text-gray-600">Loading product...</p>
@@ -905,7 +893,7 @@ export default function ProductDetailPage() {
 
   if (!currentProduct) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex items-center justify-center h-full p-4 pt-6 md:pt-8 md:px-6">
         <div className="text-center">
           <p className="text-gray-600 mb-4">Product not found</p>
           <Button onClick={() => navigate('/dashboard/categories')}>
@@ -929,9 +917,11 @@ export default function ProductDetailPage() {
   const productStatus = getProductStatus();
 
   return (
-    <div className="h-screen pb-6 flex flex-col bg-white rounded-lg">
+    <>
+    <div className="h-full min-h-0 flex flex-col overflow-hidden p-4 pt-6 md:pt-8 md:px-6">
+    <div className="h-full min-h-0 flex flex-col overflow-hidden bg-white rounded-lg border border-gray-200 shadow-sm">
       {/* Breadcrumb + Header */}
-      <div className="border-b  px-6 py-2 bg-white rounded-t-xl">
+      <div className="flex-shrink-0 border-b px-6 py-2 bg-white rounded-t-xl z-10">
         <div className="flex items-center justify-between ">
           <div className="flex items-center gap-3">
             <Button
@@ -996,9 +986,9 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 min-h-0 flex overflow-hidden">
         {/* Left Sidebar - Fixed (320px) */}
-        <div className="w-80 border-r bg-gray-50 flex flex-col overflow-y-auto">
+        <div className="w-80 flex-shrink-0 border-r bg-gray-50 flex flex-col min-h-0 overflow-y-auto">
           <div className="p-4 space-y-4">
             {/* Product Image */}
             <div className="space-y-2">
@@ -1423,9 +1413,9 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Right Pane - Scrollable */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Sticky Header */}
-          <div className="sticky top-0 z-10 bg-white border-b px-6 py-4">
+        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+          {/* Product title header */}
+          <div className="flex-shrink-0 bg-white border-b px-6 py-4 z-10">
             <div className="flex items-start justify-between">
               {editingField === 'name' ? (
                 <div className="flex-1 flex items-center gap-2">
@@ -1498,31 +1488,32 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto">
-            <div className="p-6">
-              {/* Tabs */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full mb-6 grid-cols-2 gap-2 bg-white border rounded-md p-1">
-                  <TabsTrigger value="overview" className="px-3 py-1 rounded text-sm">Overview</TabsTrigger>
-                  {!currentProduct.is_variant && (
-                    <TabsTrigger value="variants" className="px-3 py-1 rounded text-sm">
-                      <div className="flex items-center">
-                        <span>Variants</span>
-                        {variants.length > 0 && (
-                          <Badge variant="secondary" className="ml-2 text-xs">
-                            {variants.length}
-                          </Badge>
-                        )}
-                      </div>
-                    </TabsTrigger>
-                  )}
-                </TabsList>
+          {/* Tabs + scrollable content */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 min-h-0 flex-col overflow-hidden w-full">
+            <div className="flex-shrink-0 bg-white border-b px-6 py-3 z-10">
+              <TabsList className="grid w-full grid-cols-2 gap-2 bg-white border rounded-md p-1">
+                <TabsTrigger value="overview" className="px-3 py-1 rounded text-sm">Overview</TabsTrigger>
+                {!currentProduct.is_variant && (
+                  <TabsTrigger value="variants" className="px-3 py-1 rounded text-sm">
+                    <div className="flex items-center">
+                      <span>Variants</span>
+                      {variants.length > 0 && (
+                        <Badge variant="secondary" className="ml-2 text-xs">
+                          {variants.length}
+                        </Badge>
+                      )}
+                    </div>
+                  </TabsTrigger>
+                )}
+              </TabsList>
+            </div>
 
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              <div className="px-6 pt-6 pb-8">
                 {/* Overview Tab */}
                 <TabsContent value="overview" className="mt-0 space-y-6">
                   {/* Description Section */}
-                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
@@ -1580,7 +1571,7 @@ export default function ProductDetailPage() {
 
 
                   {/* Stock Information */}
-                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
@@ -1634,14 +1625,14 @@ export default function ProductDetailPage() {
                     ) : (
                       <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="bg-white border border-gray-200 rounded-lg p-3">
                             <div className="text-xs text-gray-500 mb-1 font-medium">Current Stock</div>
                             <div className="flex items-center gap-2">
                               <div className={cn('w-2.5 h-2.5 rounded-full', stockDotColor)} />
                               <span className="text-2xl font-bold text-gray-900">{formatQty(totalStock)}</span>
                             </div>
                           </div>
-                          <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="bg-white border border-gray-200 rounded-lg p-3">
                             <div className="text-xs text-gray-500 mb-1 font-medium">Minimum Level</div>
                             <span className="text-2xl font-bold text-gray-900">{formatQty(currentProduct.minimum_stock_level)}</span>
                           </div>
@@ -1683,7 +1674,7 @@ export default function ProductDetailPage() {
                   </div>
 
                   {/* Pricing Information */}
-                  <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
@@ -1745,11 +1736,15 @@ export default function ProductDetailPage() {
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="bg-white border border-gray-200 rounded-lg p-3">
                           <div className="text-xs text-gray-500 mb-1 font-medium">Purchase Price</div>
                           <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.purchase_price || 0)}</span>
+                          <p className="text-[11px] text-gray-500 mt-1 leading-snug">
+                            Default for new stock-ins. To fix value on hand, correct the price on
+                            the receipt in the Stock Movement Ledger below.
+                          </p>
                         </div>
-                        <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="bg-white border border-gray-200 rounded-lg p-3">
                           <div className="text-xs text-gray-500 mb-1 font-medium">Sale Price</div>
                           <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.sale_price || 0)}</span>
                         </div>
@@ -1788,6 +1783,9 @@ export default function ProductDetailPage() {
                         currentStock={totalStock}
                         fallbackUnitPrice={Number(currentProduct.purchase_price) || 0}
                         refreshKey={stockHistoryRefreshKey}
+                        onPriceCorrected={() =>
+                          setStockHistoryRefreshKey((key) => key + 1)
+                        }
                       />
                     </>
                   )}
@@ -1854,7 +1852,7 @@ export default function ProductDetailPage() {
                           </>
                         )}
                         <Button
-                          onClick={() => setIsAddVariantModalOpen(true)}
+                          onClick={() => id && navigateToAddVariant(navigate, id)}
                           variant="outline"
                           size="sm"
                           className="gap-2"
@@ -2058,18 +2056,13 @@ export default function ProductDetailPage() {
                     )}
                   </TabsContent>
                 )}
-              </Tabs>
+              </div>
             </div>
-          </div>
+          </Tabs>
         </div>
       </div>
-      <AddVariantModal
-        isOpen={isAddVariantModalOpen}
-        onClose={() => setIsAddVariantModalOpen(false)}
-        parentProduct={currentProduct as StockProduct}
-        onVariantAdded={handleVariantAdded}
-      />
-      {/* Modals */}
+    </div>
+    </div>
       {isStockAdjustModalOpen && (selectedProductForStock || currentProduct) && (
         <EditProductStockModal
           isOpen={isStockAdjustModalOpen}
@@ -2121,7 +2114,7 @@ export default function ProductDetailPage() {
         />
       )}
 
-    </div>
+    </>
   );
 }
   

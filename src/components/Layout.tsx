@@ -9,8 +9,6 @@ import { TrialBanner } from './TrialBanner';
 import { TrialExpiredBanner } from './TrialExpiredBanner';
 import { ActivationBanner } from '@/components/activation';
 import { ImpersonationBanner } from '@/components/admin/ImpersonationBanner';
-import { AddProductModalProvider } from '@/hooks/AddProductModalContext';
-
 interface LayoutProps {
   children: React.ReactNode;
   currentTab: string;
@@ -20,9 +18,11 @@ interface LayoutProps {
   // When set to 'admin', the inner max-width container and default paddings are disabled
   // so pages can render full-bleed layouts (e.g., with a sub-sidebar) without hacks.
   variant?: 'default' | 'admin';
+  // 'fill' lets the child page own scrolling (e.g. product detail with sticky headers).
+  contentLayout?: 'scroll' | 'fill';
 }
 
-export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default' }: LayoutProps) => {
+export const Layout = ({ children, currentTab, onTabChange, userRole, userProfile, variant = 'default', contentLayout = 'scroll' }: LayoutProps) => {
   const { isMobile } = useMobile();
   // Ensure sidebar starts closed on mobile, open on desktop
   // Use a more explicit check to handle any timing issues
@@ -53,9 +53,9 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
 
   const { notifications, loading: notificationsLoading, unreadCount, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
+  const isFillLayout = contentLayout === 'fill';
 
   return (
-    <AddProductModalProvider>
     <div className="h-screen flex flex-col bg-slate-100 dark:bg-slate-950 text-foreground transition-colors">
       {isMobile && (
         <div className="flex items-center h-14 px-4 bg-blue-600 dark:bg-gray-950 border-b border-blue-500 dark:border-gray-800 flex-shrink-0">
@@ -89,7 +89,13 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
         />
 
         <main
-          className={`flex-1 min-h-0 main-content-surface ${variant === 'admin' ? 'overflow-y-auto' : 'p-4 pt-8 overflow-y-auto'} ${
+          className={`flex-1 min-h-0 main-content-surface ${
+            isFillLayout
+              ? 'overflow-hidden flex flex-col'
+              : variant === 'admin'
+                ? 'overflow-y-auto'
+                : 'p-4 pt-8 overflow-y-auto'
+          } ${
             isMobile
               ? 'ml-0'
               : sidebarCollapsed
@@ -97,18 +103,25 @@ export const Layout = ({ children, currentTab, onTabChange, userRole, userProfil
                 : secondarySidebarOpen ? 'ml-[496px]' : 'ml-72'
           } transition-[margin-left,color,background-color] duration-300`}
         >
-          <div className={`${isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-screen px-4 md:px-6'} transition-colors`}>
+          <div
+            className={`${
+              isMobile ? 'w-full' : variant === 'admin' ? 'w-full' : 'mx-auto w-full max-w-screen px-4 md:px-6'
+            } ${isFillLayout ? 'flex flex-1 min-h-0 flex-col overflow-hidden' : ''} transition-colors`}
+          >
             {variant === 'admin' && <ImpersonationBanner />}
             <EmailVerificationBanner />
             <TrialBanner />
             <TrialExpiredBanner />
             <ActivationBanner />
-            {children}
+            {isFillLayout ? (
+              <div className="flex-1 min-h-0 overflow-hidden">{children}</div>
+            ) : (
+              children
+            )}
           </div>
         </main>
       </div>
 
     </div>
-    </AddProductModalProvider>
   );
 };

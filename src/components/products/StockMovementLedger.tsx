@@ -1,14 +1,27 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { format, parseISO } from 'date-fns';
-import { AlertTriangle, ArrowDownLeft, ArrowUpRight, Download, ListOrdered } from 'lucide-react';
+import {
+  AlertTriangle,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Download,
+  ListOrdered,
+  Pencil,
+} from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useCurrency } from '@/hooks/useCurrency';
 import { useProductValuation } from '@/hooks/useProductValuation';
 import type { ValuationMethod } from '@/hooks/useInventoryValuation';
 import { ValuationMethodSelector } from '@/components/analytics/ValuationMethodSelector';
 import { buildStockMovementLedger } from '@/lib/inventory/stockMovementLedger';
+import { isCorrectableStockInTransaction } from '@/lib/inventory/correctableStockIn';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import {
+  CorrectStockInPriceDialog,
+  type CorrectStockInPriceTarget,
+} from '@/components/products/CorrectStockInPriceDialog';
 
 interface StockMovementLedgerProps {
   productId: string;
@@ -17,6 +30,7 @@ interface StockMovementLedgerProps {
   fallbackUnitPrice?: number;
   /** Bump to refetch after stock changes elsewhere on the page */
   refreshKey?: number;
+  onPriceCorrected?: () => void;
 }
 
 export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
@@ -25,7 +39,9 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
   currentStock,
   fallbackUnitPrice = 0,
   refreshKey = 0,
+  onPriceCorrected,
 }) => {
+  const queryClient = useQueryClient();
   const { formatUnitPrice, formatPrice } = useCurrency();
   const [transactions, setTransactions] = useState<
     Array<{
@@ -40,33 +56,68 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
   >([]);
   const [loading, setLoading] = useState(true);
   const [valuationMethod, setValuationMethod] = useState<ValuationMethod>('Average');
+  const [priceCorrectionTarget, setPriceCorrectionTarget] =
+    useState<CorrectStockInPriceTarget | null>(null);
+  const [priceDialogOpen, setPriceDialogOpen] = useState(false);
 
   const { data: productValuation } = useProductValuation(productId, valuationMethod);
 
+  const fetchTransactions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('stock_transactions')
+        .select(
+          'id, created_at, quantity, unit_price, transaction_type, reference_number, notes'
+        )
+        .eq('product_id', productId)
+        .eq('branch_id', branchId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setTransactions(data ?? []);
+    } catch (err) {
+      console.error('StockMovementLedger: error fetching transactions', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [productId, branchId]);
+
   useEffect(() => {
-    const fetchTransactions = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from('stock_transactions')
-          .select(
-            'id, created_at, quantity, unit_price, transaction_type, reference_number, notes'
-          )
-          .eq('product_id', productId)
-          .eq('branch_id', branchId)
-          .order('created_at', { ascending: true });
-
-        if (error) throw error;
-        setTransactions(data ?? []);
-      } catch (err) {
-        console.error('StockMovementLedger: error fetching transactions', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTransactions();
-  }, [productId, branchId, refreshKey]);
+  }, [fetchTransactions, refreshKey]);
+
+  const transactionById = useMemo(
+    () => new Map(transactions.map((tx) => [tx.id, tx])),
+    [transactions]
+  );
+
+  const handleOpenPriceCorrection = (transactionId: string) => {
+    const tx = transactionById.get(transactionId);
+    if (!tx?.created_at) return;
+
+    const recordedPrice = Number(tx.unit_price);
+    setPriceCorrectionTarget({
+      transactionId: tx.id,
+      quantity: Number(tx.quantity) || 0,
+      currentUnitPrice:
+        Number.isFinite(recordedPrice) && recordedPrice > 0
+          ? recordedPrice
+          : fallbackUnitPrice,
+      date: tx.created_at,
+    });
+    setPriceDialogOpen(true);
+  };
+
+  const handlePriceCorrected = async () => {
+    await fetchTransactions();
+    queryClient.invalidateQueries({ queryKey: ['productValuation'] });
+    queryClient.invalidateQueries({ queryKey: ['inventoryValuation'] });
+    queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
+    queryClient.invalidateQueries({ queryKey: ['productTransactions'] });
+    queryClient.invalidateQueries({ queryKey: ['products'] });
+    onPriceCorrected?.();
+  };
 
   const ledger = useMemo(
     () =>
@@ -124,11 +175,11 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
     Math.abs(ledger.finalValue - productValuation.total_valuation) > 0.02;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
+    <div className="bg-gray-50 shadow-sm border border-gray-200 rounded-xl p-5 space-y-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
-            <ListOrdered className="w-4 h-4 text-amber-600" />
+          <div className="w-8 h-8 bg-white border border-gray-200 rounded-lg flex items-center justify-center">
+            <ListOrdered className="w-4 h-4 text-gray-600" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-gray-900">Stock Movement Ledger</h3>
@@ -170,7 +221,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
 
       {loading ? (
         <div className="h-40 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600" />
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-600" />
         </div>
       ) : ledger.entries.length === 0 ? (
         <div className="h-32 flex flex-col items-center justify-center text-gray-400">
@@ -181,7 +232,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
         <div className="border border-gray-100 rounded-lg overflow-hidden">
           <div className="overflow-x-auto max-h-96 overflow-y-auto">
             <table className="w-full text-xs">
-              <thead className="bg-gray-50 sticky top-0 z-10">
+              <thead className="bg-white border border-gray-200 sticky top-0 z-10">
                 <tr>
                   <th className="px-3 py-2 text-left font-medium text-gray-500">Date</th>
                   <th className="px-3 py-2 text-center font-medium text-gray-500">Type</th>
@@ -191,15 +242,23 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
                   <th className="px-3 py-2 text-left font-medium text-gray-500">Cost Basis</th>
                   <th className="px-3 py-2 text-right font-medium text-gray-500">Stock Qty</th>
                   <th className="px-3 py-2 text-right font-medium text-gray-500">Stock Value</th>
+                  <th className="px-3 py-2 text-right font-medium text-gray-500 w-10" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
-                {ledger.entries.map((entry) => (
+              <tbody className="divide-y divide-gray-200">
+                {ledger.entries.map((entry) => {
+                  const sourceTx = transactionById.get(entry.id);
+                  const canCorrectPrice =
+                    entry.direction === 'in' &&
+                    sourceTx &&
+                    isCorrectableStockInTransaction(sourceTx);
+
+                  return (
                   <tr
                     key={entry.id}
                     className={cn(
                       'hover:bg-gray-50',
-                      entry.priceWarning && 'bg-amber-50/60'
+                      entry.priceWarning && 'bg-white border border-gray-200'
                     )}
                   >
                     <td className="px-3 py-2 whitespace-nowrap text-gray-700">
@@ -247,8 +306,23 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
                     <td className="px-3 py-2 text-right font-mono text-gray-700">
                       {formatPrice(entry.runningValue)}
                     </td>
+                    <td className="px-3 py-2 text-right">
+                      {canCorrectPrice && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 text-gray-400 hover:text-gray-700"
+                          title="Correct purchase price on this receipt"
+                          onClick={() => handleOpenPriceCorrection(entry.id)}
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </Button>
+                      )}
+                    </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -256,8 +330,8 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
       )}
 
       {ledger.entries.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-gray-100">
-          <div className="bg-gray-50 rounded-lg p-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-gray-200">
+          <div className="bg-white border border-gray-200 rounded-lg p-3">
             <div className="text-xs text-gray-500 mb-1">Ledger stock on hand</div>
             <div className="text-lg font-bold text-gray-900">
               {ledger.finalQty.toLocaleString()} pcs
@@ -273,7 +347,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
           </div>
 
           {productValuation && (
-            <div className="bg-blue-50 rounded-lg p-3">
+            <div className="bg-white border border-gray-200 rounded-lg p-3">
               <div className="text-xs text-gray-500 mb-1">
                 System valuation ({valuationMethod})
               </div>
@@ -297,15 +371,23 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
             </div>
           )}
 
-          <div className="bg-emerald-50 rounded-lg p-3">
+          <div className="bg-white border border-gray-200 rounded-lg p-3">
             <div className="text-xs text-gray-500 mb-1">Reconciliation tip</div>
             <p className="text-xs text-gray-600 leading-relaxed">
               Compare incoming unit costs against your spreadsheet. Rows marked with * had no
-              price recorded at entry — these are the most likely source of valuation errors.
+              price recorded at entry. Use the pencil icon on any stock-in row to correct a
+              wrong purchase price — stock on hand value updates automatically.
             </p>
           </div>
         </div>
       )}
+
+      <CorrectStockInPriceDialog
+        target={priceCorrectionTarget}
+        open={priceDialogOpen}
+        onOpenChange={setPriceDialogOpen}
+        onCorrected={handlePriceCorrected}
+      />
     </div>
   );
 };

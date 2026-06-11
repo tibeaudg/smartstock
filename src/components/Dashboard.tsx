@@ -19,7 +19,7 @@ import type { HealthBreakdown } from '@/lib/inventory/dashboardMetrics';
 import { AccountChecklist } from './AccountChecklist';
 import { OverLimitBanner } from './OverLimitBanner';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { navigateToAddProduct } from '@/lib/navigation/productNavigation';
 import { cn } from '@/lib/utils';
 import {
   Tooltip,
@@ -389,7 +389,6 @@ const EmptyState = ({
 ───────────────────────────────────────────── */
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const { openAddProduct } = useAddProductModal();
   const { formatPrice } = useCurrency();
   const { track } = useAppEventTracker();
   const { productCount, isLoading: productCountLoading } = useProductCount();
@@ -439,7 +438,7 @@ export const Dashboard = () => {
 
   const handleRestock = (item: LowStockItem) => {
     track('restock_initiated', item.product_name, { source: 'dashboard' });
-    navigate('/dashboard/products', { state: { restockProduct: item.product_name } });
+    navigate('/dashboard/categories', { state: { restockProduct: item.product_name } });
   };
 
   const healthStatus = useMemo(() => {
@@ -481,7 +480,7 @@ export const Dashboard = () => {
     switch (key) {
       case 'add':
         track('product_add_method_selected', 'Add Manually', { method: 'manual' });
-        openAddProduct({ mode: 'full' });
+        navigateToAddProduct(navigate, { mode: 'full' });
         break;
       case 'scan':
         track('product_add_method_selected', 'Scan Barcode', { method: 'scan' });
@@ -689,7 +688,7 @@ export const Dashboard = () => {
                 icon={Package}
                 message="No products yet."
                 subMessage="Add your first product to get started."
-                action={{ label: 'Add product', onClick: () => openAddProduct({ mode: 'full' }) }}
+                action={{ label: 'Add product', onClick: () => navigateToAddProduct(navigate, { mode: 'full' }) }}
               />
             )}
           </CardContent>

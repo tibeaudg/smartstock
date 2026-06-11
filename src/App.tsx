@@ -94,6 +94,7 @@ const CategorysPage = React.lazy(() => import('./pages/products'));
 const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
 const AddProductPage = React.lazy(() => import('./pages/AddProductPage'));
+const AddVariantPage = React.lazy(() => import('./pages/AddVariantPage'));
 const AddCategoryPage = React.lazy(() => import('./pages/AddCategoryPage'));
 const CreateBOMPage = React.lazy(() => import('./pages/CreateBOMPage'));
 const BulkImportPage = React.lazy(() => import('./pages/BulkImportPage'));
@@ -572,6 +573,7 @@ const AppRouter = () => {
           <Route path="categories-management" element={<CategoriesPage />} />
           <Route path="categories-management/new" element={<AddCategoryPage />} />
           <Route path="products/new" element={<AddProductPage />} />
+          <Route path="products/:id/variants/new" element={<AddVariantPage />} />
           <Route path="products/:id" element={<ProductDetailPage />} />
           <Route path="categoriesManagement" element={<CategoriesPage />} />
           <Route path="warehouses" element={<><SEO title="Warehouse Management" {...privateSeo} /><WarehousePage /></>} />

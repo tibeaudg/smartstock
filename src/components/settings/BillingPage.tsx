@@ -92,7 +92,6 @@ const PAID_PLANS: Plan[] = [
       'Stock counts',
       'Customers',
       'Suppliers',
-      'API and webhooks',
       'Dedicated customer success manager',
     ],
     isPopular: false,

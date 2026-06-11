@@ -127,7 +127,6 @@ const plans = [
     warehouses: 'Unlimited',
     features: [
       'Everything in Business',
-      'API and webhooks',
       'Dedicated customer success manager',
       'Custom onboarding',
       'SLA guarantee',

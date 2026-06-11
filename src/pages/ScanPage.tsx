@@ -4,19 +4,18 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { useScannerSettings } from '@/hooks/useScannerSettings';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { navigateToAddProduct } from '@/lib/navigation/productNavigation';
 
 export default function ScanPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { activeBranch, loading: branchLoading } = useBranches();
   const { settings: scannerSettings, onScanSuccess } = useScannerSettings();
-  const { openAddProduct } = useAddProductModal();
   const [, setBarcode] = useState<string | null>(null);
 
   const handleBarcodeDetected = (detectedBarcode: string) => {
     setBarcode(detectedBarcode);
-    openAddProduct({ mode: 'quick', preFilledSKU: detectedBarcode });
+    navigateToAddProduct(navigate, { mode: 'quick', preFilledSKU: detectedBarcode });
   };
 
   const handleClose = () => {

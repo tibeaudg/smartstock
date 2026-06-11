@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plus, Upload, ScanLine, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAppEventTracker } from '@/hooks/useAppEventTracker';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { navigateToAddProduct } from '@/lib/navigation/productNavigation';
 import { cn } from '@/lib/utils';
 
 export type ActivationPath = 'manual' | 'import' | 'scan';
@@ -49,13 +49,12 @@ interface ActivationPathCardsProps {
 export function ActivationPathCards({ source, className }: ActivationPathCardsProps) {
   const navigate = useNavigate();
   const { track } = useAppEventTracker();
-  const { openAddProduct } = useAddProductModal();
 
   const handleSelect = (path: ActivationPath) => {
     track('activation_path_selected', path, { source, path });
 
     if (path === 'manual') {
-      openAddProduct({ mode: 'quick' });
+      navigateToAddProduct(navigate, { mode: 'quick' });
     } else if (path === 'import') {
       navigate('/dashboard/products/import');
     } else {

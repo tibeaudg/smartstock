@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { PageFormLayout } from '@/components/PageFormLayout';
@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { ArrowRight, Plus } from 'lucide-react';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { navigateToAddProduct, type NewProductResult } from '@/lib/navigation/productNavigation';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface Product {
@@ -20,10 +20,19 @@ interface Product {
 
 export default function CreateBOMPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { activeBranch } = useBranches();
-  const { openAddProduct } = useAddProductModal();
   const queryClient = useQueryClient();
   const [selectedProductId, setSelectedProductId] = useState('');
+
+  useEffect(() => {
+    const newProduct = (location.state as { newProduct?: NewProductResult } | null)?.newProduct;
+    if (newProduct?.id) {
+      setSelectedProductId(newProduct.id);
+      queryClient.invalidateQueries({ queryKey: ['availableProductsForBOM', activeBranch?.branch_id] });
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate, queryClient, activeBranch?.branch_id]);
 
   const { data: availableProducts = [] } = useQuery<Product[]>({
     queryKey: ['availableProductsForBOM', activeBranch?.branch_id],
@@ -86,14 +95,9 @@ export default function CreateBOMPage() {
                     size="sm"
                     className="w-full justify-start"
                     onClick={() =>
-                      openAddProduct({
+                      navigateToAddProduct(navigate, {
                         mode: 'full',
-                        onProductAdded: async (product) => {
-                          await queryClient.invalidateQueries({
-                            queryKey: ['availableProductsForBOM', activeBranch?.branch_id],
-                          });
-                          if (product?.id) setSelectedProductId(product.id);
-                        },
+                        returnTo: '/dashboard/bom/new',
                       })
                     }
                   >

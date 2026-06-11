@@ -20,8 +20,8 @@ import { toast } from 'sonner';
 import { useProductCount } from '@/hooks/useDashboardData';
 import { useInventoryValuation } from '@/hooks/useInventoryValuation';
 import { useBranches } from '@/hooks/useBranches';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
 import { useNavigate } from 'react-router-dom';
+import { navigateToAddProduct } from '@/lib/navigation/productNavigation';
 import {
   buildStockValueSparkline,
   calculateStockValueTrend,
@@ -71,7 +71,6 @@ export const StockMovements = () => {
   console.log('[StockMovements] Component rendering');
   const { isMobile } = useMobile();
   const navigate = useNavigate();
-  const { openAddProduct } = useAddProductModal();
   const { productCount, isLoading: productCountLoading } = useProductCount();
   const { activeBranch } = useBranches();
   const { data: valuationData } = useInventoryValuation({ method: 'Average' });
@@ -593,7 +592,7 @@ export const StockMovements = () => {
               </p>
             </div>
             <Button
-              onClick={() => openAddProduct({ mode: 'full' })}
+              onClick={() => navigateToAddProduct(navigate, { mode: 'full' })}
               className="bg-blue-600 hover:bg-blue-700 text-white h-12 px-6 mt-4"
             >
               <Plus className="w-4 h-4 mr-2" />

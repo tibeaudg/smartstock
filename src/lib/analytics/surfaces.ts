@@ -48,6 +48,8 @@ const EXACT_ROUTES: Record<string, string> = {
 };
 
 const PATTERNS: Array<{ test: RegExp; surface: string }> = [
+  { test: /^\/dashboard\/products\/[^/]+\/variants\/new$/, surface: 'product_variant_create' },
+  { test: /^\/dashboard\/products\/[^/]+\/stock\/adjust$/, surface: 'product_stock_adjust' },
   { test: /^\/dashboard\/products\/[^/]+$/, surface: 'product_detail' },
   { test: /^\/dashboard\/sales-orders\/[^/]+/, surface: 'sales_order_detail' },
   { test: /^\/dashboard\/purchase-orders\/[^/]+/, surface: 'purchase_order_detail' },

@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DecimalInput } from '@/components/ui/decimal-input';
@@ -47,7 +47,7 @@ import { Badge } from '@/components/ui/badge';
 import { ReceivePurchaseOrderModal } from '@/components/purchase-orders/ReceivePurchaseOrderModal';
 import { Product, PurchaseOrder } from '@/types/stockTypes';
 import { cn } from '@/lib/utils';
-import { useAddProductModal } from '@/hooks/AddProductModalContext';
+import { navigateToAddProduct, type NewProductResult } from '@/lib/navigation/productNavigation';
 
 type ItemForm = {
   product_id: string | null;
@@ -57,14 +57,23 @@ type ItemForm = {
   notes: string;
 };
 
+interface PODraftState {
+  status: 'draft' | 'pending' | 'ordered' | 'received' | 'cancelled';
+  vendorName: string;
+  expectedDeliveryDate: string;
+  notes: string;
+  items: ItemForm[];
+  pendingItemIndex?: number;
+}
+
 export default function EditPurchaseOrderPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const { activeBranch } = useBranches();
   const { formatPrice } = useCurrency();
   const queryClient = useQueryClient();
-  const { openAddProduct } = useAddProductModal();
   const [loading, setLoading] = useState(false);
   const [poLoading, setPoLoading] = useState(true);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -141,12 +150,43 @@ export default function EditPurchaseOrderPage() {
   }, [id, activeBranch?.branch_id]);
 
   useEffect(() => {
+    if ((location.state as { poDraft?: PODraftState } | null)?.poDraft) {
+      setPoLoading(false);
+      return;
+    }
     if (id && activeBranch?.branch_id) {
       fetchPO();
     } else if (!activeBranch?.branch_id && id) {
       setPoLoading(false);
     }
-  }, [id, activeBranch?.branch_id, fetchPO]);
+  }, [id, activeBranch?.branch_id, fetchPO, location.state]);
+
+  useEffect(() => {
+    const state = location.state as {
+      poDraft?: PODraftState;
+      newProduct?: NewProductResult;
+    } | null;
+
+    if (!state?.poDraft) return;
+
+    setStatus(state.poDraft.status);
+    setVendorName(state.poDraft.vendorName);
+    setExpectedDeliveryDate(state.poDraft.expectedDeliveryDate);
+    setNotes(state.poDraft.notes);
+
+    let restoredItems = [...state.poDraft.items];
+    if (state.newProduct?.id && state.poDraft.pendingItemIndex !== undefined) {
+      const idx = state.poDraft.pendingItemIndex;
+      restoredItems[idx] = {
+        ...restoredItems[idx],
+        product_id: state.newProduct.id,
+        unit_price: state.newProduct.purchase_price ?? 0,
+      };
+      void fetchProducts();
+    }
+    setItems(restoredItems);
+    navigate(location.pathname, { replace: true, state: {} });
+  }, [location.state]);
 
   const addItem = () => {
     setItems([...items, { product_id: null, variant_id: null, quantity_ordered: 0, unit_price: 0, notes: '' }]);
@@ -508,17 +548,19 @@ export default function EditPurchaseOrderPage() {
                                   className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
                                   onClick={() => {
                                   setOpenProductPopovers((prev) => ({ ...prev, [index]: false }));
-                                  openAddProduct({
+                                  navigateToAddProduct(navigate, {
                                     mode: 'full',
                                     fromPurchaseOrder: true,
-                                    onProductAdded: async (product) => {
-                                      await fetchProducts();
-                                      if (product?.id) {
-                                        updateItem(index, {
-                                          product_id: product.id,
-                                          unit_price: product.purchase_price ?? 0,
-                                        });
-                                      }
+                                    returnTo: `/dashboard/purchase-orders/${id}/edit`,
+                                    returnState: {
+                                      poDraft: {
+                                        status,
+                                        vendorName,
+                                        expectedDeliveryDate,
+                                        notes,
+                                        items,
+                                        pendingItemIndex: index,
+                                      },
                                     },
                                   });
                                 }}

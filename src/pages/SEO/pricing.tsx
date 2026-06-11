@@ -82,7 +82,6 @@ const PLANS: Plan[] = [
     features: [
       { text: '10,000+ Unique Items' },
       { text: '12+ User Licenses' },
-      { text: '+ API and Webhooks', isHighlight: true },
       { text: '+ Dedicated Customer Success Manager', isHighlight: true },
     ],
     isPopular: false,
@@ -149,7 +148,6 @@ export default function PricingPage() {
         'QR code & barcode label creation',
         'Purchase orders',
         'QuickBooks Online integration',
-        'API and webhooks',
       ],
       url: location.pathname,
       offers: [

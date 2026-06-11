@@ -118,6 +118,7 @@ export const StockManagementApp: React.FC = () => {
 
   if (!userProfile) return null;
 
+  const isProductDetailPage = /^\/dashboard\/products\/[^/]+$/.test(location.pathname);
 
   return (
     <UnreadMessagesProvider>
@@ -134,6 +135,7 @@ export const StockManagementApp: React.FC = () => {
           variant={
             location.pathname.startsWith('/admin') ||
             location.pathname.includes('/categories') ||
+            isProductDetailPage ||
             isInventoryLocationsPage(location.pathname) ||
             location.pathname.includes('/transactions') ||
             location.pathname.includes('/bom') ||
@@ -144,6 +146,7 @@ export const StockManagementApp: React.FC = () => {
               ? 'admin'
               : 'default'
           }
+          contentLayout={isProductDetailPage ? 'fill' : 'scroll'}
         >
           <Outlet key={location.pathname} />
         </Layout>
