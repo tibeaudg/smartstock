@@ -480,20 +480,15 @@ export default function ProductDetailPage() {
         updateData.name = form.name;
       } else if (field === 'description') {
         updateData.description = form.description;
-      } else if (field === 'stock') {
-        updateData.quantity_in_stock = Number(form.quantity_in_stock);
+      } else if (field === 'minimum_stock_level') {
         updateData.minimum_stock_level = Number(form.minimum_stock_level);
+      } else if (field === 'purchase_price') {
+        updateData.purchase_price = Number(form.purchase_price);
+      } else if (field === 'sale_price') {
+        updateData.sale_price = Number(form.sale_price);
       }
 
-      const stockDelta =
-        field === 'stock'
-          ? Number(form.quantity_in_stock) - (Number(currentProduct.quantity_in_stock) || 0)
-          : 0;
-
-      if (field === 'pricing') {
-        updateData.purchase_price = Number(form.purchase_price);
-        updateData.sale_price = Number(form.sale_price);
-      } else if (field === 'sku') {
+      if (field === 'sku') {
         updateData.sku = form.sku.trim() || null;
       } else if (field === 'location') {
         // Join locations array with commas, filter out empty strings
@@ -517,28 +512,6 @@ export default function ProductDetailPage() {
         toast.error('Error updating product');
         setLoading(false);
         return;
-      }
-
-      if (field === 'stock' && stockDelta !== 0) {
-        const { error: transactionError } = await supabase.from('stock_transactions').insert({
-          product_id: currentProduct.id,
-          product_name: currentProduct.name,
-          transaction_type: stockDelta > 0 ? 'incoming' : 'outgoing',
-          quantity: Math.abs(stockDelta),
-          unit_price: currentProduct.purchase_price || 0,
-          user_id: user.id,
-          created_by: user.id,
-          branch_id: activeBranch.branch_id,
-          reference_number: stockDelta > 0 ? 'STOCK_ADJUSTMENT_IN' : 'STOCK_ADJUSTMENT_OUT',
-          notes: 'Stock quantity adjusted via product edit',
-          adjustment_method: 'manual',
-        });
-        if (transactionError) {
-          console.error('Error recording stock adjustment:', transactionError);
-          toast.warning('Stock updated but movement history could not be recorded');
-        } else {
-          setStockHistoryRefreshKey((key) => key + 1);
-        }
       }
 
       // When location is saved, ensure any new location names are created in the locations table
@@ -568,15 +541,28 @@ export default function ProductDetailPage() {
       if (updatedData) {
         const updatedProduct = updatedData as any;
         const resolvedCategoryName = (updatedProduct.categories as any)?.name || updatedProduct.category_name || '';
-        setCurrentProduct({ ...updatedProduct, category_name: resolvedCategoryName });
+        const purchasePrice =
+          field === 'purchase_price'
+            ? Number(form.purchase_price)
+            : Number(updatedProduct.purchase_price) || 0;
+        const salePrice =
+          field === 'sale_price'
+            ? Number(form.sale_price)
+            : Number(updatedProduct.sale_price) || 0;
+        setCurrentProduct({
+          ...updatedProduct,
+          category_name: resolvedCategoryName,
+          purchase_price: purchasePrice,
+          sale_price: salePrice,
+        });
         setForm(prev => ({
           ...prev,
           name: updatedProduct.name || '',
           description: updatedProduct.description || '',
           quantity_in_stock: updatedProduct.quantity_in_stock || 0,
           minimum_stock_level: updatedProduct.minimum_stock_level || 0,
-          purchase_price: updatedProduct.purchase_price || 0,
-          sale_price: updatedProduct.sale_price || 0,
+          purchase_price: purchasePrice,
+          sale_price: salePrice,
           sku: updatedProduct.sku || '',
           location: updatedProduct.location || '',
           category_id: updatedProduct.category_id || '',
@@ -920,64 +906,117 @@ export default function ProductDetailPage() {
     <>
     <div className="h-full min-h-0 flex flex-col overflow-hidden p-4 pt-6 md:pt-8 md:px-6">
     <div className="h-full min-h-0 flex flex-col overflow-hidden bg-white rounded-lg border border-gray-200 shadow-sm">
-      {/* Breadcrumb + Header */}
-      <div className="flex-shrink-0 border-b px-6 py-2 bg-white rounded-t-xl z-10">
-        <div className="flex items-center justify-between ">
-          <div className="flex items-center gap-3">
+      {/* Header */}
+      <div className="flex-shrink-0 border-b px-6 py-3 bg-white rounded-t-xl z-10">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => navigate('/dashboard/categories')}
-              className="gap-2 border-gray-300 hover:bg-gray-50 p-2"
+              className="gap-2 border-gray-300 hover:bg-gray-50 p-2 flex-shrink-0"
             >
               <ArrowLeft className="w-4 h-4 text-gray-500" />
               <span className="text-xs">Back</span>
             </Button>
-            <nav className="text-xs text-gray-500">
-              <span className="cursor-pointer hover:underline" onClick={() => navigate('/dashboard/categories')}>Products</span>
-              {currentProduct?.is_variant && parentProduct && (
-                <>
-                  <span className="mx-2">/</span>
-                  <span 
-                    className="cursor-pointer hover:underline text-blue-600"
-                    onClick={() => navigate(`/dashboard/products/${parentProduct.id}`)}
+            {editingField === 'name' ? (
+              <div className="flex items-center gap-2 min-w-0">
+                <Input
+                  value={form.name}
+                  onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
+                  className="text-xl font-bold"
+                  disabled={loading}
+                />
+                <Button size="sm" onClick={() => handleSave('name')} disabled={loading || !form.name.trim()}>
+                  <Save className="w-4 h-4" />
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => handleCancel('name')} disabled={loading}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="min-w-0 space-y-1">
+                {currentProduct.is_variant && parentProduct && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs font-normal">
+                      <Package className="w-3 h-3 mr-1" />
+                      Parent: {parentProduct.name}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => navigate(`/dashboard/products/${parentProduct.id}`)}
+                      className="h-5 px-2 text-xs gap-1"
+                    >
+                      <ArrowUpRight className="w-3 h-3" />
+                      View
+                    </Button>
+                  </div>
+                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="text-xl font-bold text-gray-900 truncate">
+                    {currentProduct.is_variant ? (currentProduct.variant_name || currentProduct.name) : currentProduct.name}
+                  </h1>
+                  {currentProduct.is_variant && (
+                    <Badge variant="secondary" className="text-xs">Variant</Badge>
+                  )}
+                  <Badge
+                    className={cn(
+                      'text-xs',
+                      productStatus.variant === 'destructive'
+                        ? 'bg-red-100 text-red-700 border-red-200'
+                        : productStatus.variant === 'secondary'
+                        ? 'bg-gray-100 text-gray-600 border-gray-200'
+                        : 'bg-green-100 text-green-700 border-green-200'
+                    )}
+                    variant="outline"
                   >
-                    {parentProduct.name}
-                  </span>
-                </>
-              )}
-              <span className="mx-2">/</span>
-              <span className="text-gray-900 font-medium">
-                {currentProduct?.is_variant ? (currentProduct?.variant_name || currentProduct?.name) : currentProduct?.name}
-              </span>
-              {currentProduct?.is_variant && (
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  Variant
-                </Badge>
-              )}
-            </nav>
+                    {productStatus.label}
+                  </Badge>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setEditingField('name')}
+                    className="h-6 w-6 p-0 hover:bg-gray-100 rounded-lg"
+                  >
+                    <Edit className="w-3.5 h-3.5 text-gray-400" />
+                  </Button>
+                </div>
+                {currentProduct.sku && (
+                  <p className="text-xs text-gray-400 font-mono">SKU: {currentProduct.sku}</p>
+                )}
+              </div>
+            )}
           </div>
-          <div className="px-6 py-3">
-            <Button
-              onClick={handleStockIn}
-              variant="outline"
-              size="sm"
-              className="gap-2 text-xs mr-2 text-green-600 hover:text-green-600 hover:bg-green-50"
-              title="Adjust Stock (A)"
-            >
-              <Plus className="w-3 h-3" />
-              In
-            </Button>
-
-            <Button onClick={handleStockOut} variant="outline" size="sm" className="gap-2 text-xs mr-2 text-red-600 hover:text-red-600 hover:bg-red-50" title="Stock Out (O)">
-              <Minus className="w-3 h-3" />
-              Out
-            </Button>
+          <div className="flex items-center gap-2 py-1">
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleStockIn}
+                variant="outline"
+                size="sm"
+                className="gap-2 text-xs text-green-600 hover:text-green-600 hover:bg-green-50"
+                title="Adjust Stock (A)"
+              >
+                <Plus className="w-3 h-3" />
+                In
+              </Button>
+              <Button
+                onClick={handleStockOut}
+                variant="outline"
+                size="sm"
+                className="gap-2 text-xs text-red-600 hover:text-red-600 hover:bg-red-50"
+                title="Stock Out (O)"
+              >
+                <Minus className="w-3 h-3" />
+                Out
+              </Button>
+            </div>
+            <Separator orientation="vertical" className="h-6 mx-1" />
             <Button
               onClick={handleDelete}
-              variant="default"
+              variant="ghost"
               size="sm"
-              className="gap-2 bg-red-600 mr-2 text-xs text-white hover:text-white hover:bg-red-600"
+              className="gap-2 text-xs text-gray-500 hover:text-red-600 hover:bg-red-50"
             >
               <Trash2 className="w-3 h-3" />
               Delete
@@ -1414,80 +1453,6 @@ export default function ProductDetailPage() {
 
         {/* Right Pane - Scrollable */}
         <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-          {/* Product title header */}
-          <div className="flex-shrink-0 bg-white border-b px-6 py-4 z-10">
-            <div className="flex items-start justify-between">
-              {editingField === 'name' ? (
-                <div className="flex-1 flex items-center gap-2">
-                  <Input
-                    value={form.name}
-                    onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
-                    className="text-xl font-bold"
-                    disabled={loading}
-                  />
-                  <Button size="sm" onClick={() => handleSave('name')} disabled={loading || !form.name.trim()}>
-                    <Save className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => handleCancel('name')} disabled={loading}>
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-1.5">
-                  {currentProduct.is_variant && parentProduct && (
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs font-normal">
-                        <Package className="w-3 h-3 mr-1" />
-                        Parent: {parentProduct.name}
-                      </Badge>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => navigate(`/dashboard/products/${parentProduct.id}`)}
-                        className="h-5 px-2 text-xs gap-1"
-                      >
-                        <ArrowUpRight className="w-3 h-3" />
-                        View
-                      </Button>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2">
-                    <h1 className="text-xl font-bold text-gray-900">
-                      {currentProduct.is_variant ? (currentProduct.variant_name || currentProduct.name) : currentProduct.name}
-                    </h1>
-                    {currentProduct.is_variant && (
-                      <Badge variant="secondary" className="text-xs">Variant</Badge>
-                    )}
-                    <Badge
-                      className={cn(
-                        'text-xs',
-                        productStatus.variant === 'destructive'
-                          ? 'bg-red-100 text-red-700 border-red-200'
-                          : productStatus.variant === 'secondary'
-                          ? 'bg-gray-100 text-gray-600 border-gray-200'
-                          : 'bg-green-100 text-green-700 border-green-200'
-                      )}
-                      variant="outline"
-                    >
-                      {productStatus.label}
-                    </Badge>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setEditingField('name')}
-                      className="h-6 w-6 p-0 hover:bg-gray-100 rounded-lg"
-                    >
-                      <Edit className="w-3.5 h-3.5 text-gray-400" />
-                    </Button>
-                  </div>
-                  {currentProduct.sku && (
-                    <p className="text-xs text-gray-400 font-mono">SKU: {currentProduct.sku}</p>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
           {/* Tabs + scrollable content */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 min-h-0 flex-col overflow-hidden w-full">
             <div className="flex-shrink-0 bg-white border-b px-6 py-3 z-10">
@@ -1572,195 +1537,240 @@ export default function ProductDetailPage() {
 
                   {/* Stock Information */}
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <BarChart2 className="w-4 h-4 text-blue-600" />
-                        </div>
-                        <h3 className="text-sm font-semibold text-gray-900">Stock Information</h3>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <BarChart2 className="w-4 h-4 text-blue-600" />
                       </div>
-                      {editingField !== 'stock' && (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => setEditingField('stock')}
-                          className="h-7 w-7 p-0 rounded-lg hover:bg-gray-100"
-                        >
-                          <Edit className="w-3.5 h-3.5 text-gray-400" />
-                        </Button>
-                      )}
+                      <h3 className="text-sm font-semibold text-gray-900">Stock Information</h3>
                     </div>
 
-                    {editingField === 'stock' ? (
-                      <div className="space-y-3">
-                        <div>
-                          <Label>Minimum Stock Level</Label>
-                          <IntegerInput
-                            value={form.minimum_stock_level}
-                            onChange={(minimum_stock_level) => setForm(prev => ({ ...prev, minimum_stock_level }))}
-                            disabled={loading}
-                            min={0}
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            onClick={() => handleSave('stock')}
-                            disabled={loading}
-                            className="flex-1"
-                          >
-                            Save
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleCancel('stock')}
-                            disabled={loading}
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-white border border-gray-200 rounded-lg p-3">
-                            <div className="text-xs text-gray-500 mb-1 font-medium">Current Stock</div>
-                            <div className="flex items-center gap-2">
-                              <div className={cn('w-2.5 h-2.5 rounded-full', stockDotColor)} />
-                              <span className="text-2xl font-bold text-gray-900">{formatQty(totalStock)}</span>
-                            </div>
-                          </div>
-                          <div className="bg-white border border-gray-200 rounded-lg p-3">
-                            <div className="text-xs text-gray-500 mb-1 font-medium">Minimum Level</div>
-                            <span className="text-2xl font-bold text-gray-900">{formatQty(currentProduct.minimum_stock_level)}</span>
-                          </div>
-                        </div>
-                        {/* Stock level bar */}
-                        {currentProduct.minimum_stock_level > 0 && (
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-xs text-gray-400">
-                              <span>0</span>
-                              <span>Min: {formatQty(currentProduct.minimum_stock_level)}</span>
-                            </div>
-                            <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                              <div
-                                className={cn('h-full rounded-full transition-all', stockDotColor)}
-                                style={{
-                                  width: `${Math.min(100, (totalStock / (currentProduct.minimum_stock_level * 2)) * 100)}%`,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                        <div>
-                          <Badge
-                            className={cn(
-                              'text-xs font-medium px-2.5 py-0.5',
-                              stockStatus === 'Out of Stock'
-                                ? 'bg-red-100 text-red-700 border-red-200'
-                                : stockStatus === 'Low Stock'
-                                ? 'bg-orange-100 text-orange-700 border-orange-200'
-                                : 'bg-green-100 text-green-700 border-green-200'
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-white border border-gray-200 rounded-lg p-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="text-xs text-gray-500 font-medium">Current Stock</div>
+                            {variants.length === 0 && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={handleStockIn}
+                                className="h-6 w-6 p-0 rounded-lg hover:bg-gray-100"
+                                title="Adjust stock"
+                              >
+                                <Edit className="w-3 h-3 text-gray-400" />
+                              </Button>
                             )}
-                            variant="outline"
-                          >
-                            {stockStatus}
-                          </Badge>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className={cn('w-2.5 h-2.5 rounded-full', stockDotColor)} />
+                            <span className="text-2xl font-bold text-gray-900">{formatQty(totalStock)}</span>
+                          </div>
+                        </div>
+                        <div className="bg-white border border-gray-200 rounded-lg p-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="text-xs text-gray-500 font-medium">Minimum Level</div>
+                            {editingField !== 'minimum_stock_level' && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => setEditingField('minimum_stock_level')}
+                                className="h-6 w-6 p-0 rounded-lg hover:bg-gray-100"
+                                title="Edit minimum level"
+                              >
+                                <Edit className="w-3 h-3 text-gray-400" />
+                              </Button>
+                            )}
+                          </div>
+                          {editingField === 'minimum_stock_level' ? (
+                            <div className="space-y-2">
+                              <IntegerInput
+                                value={form.minimum_stock_level}
+                                onChange={(minimum_stock_level) => setForm(prev => ({ ...prev, minimum_stock_level }))}
+                                disabled={loading}
+                                min={0}
+                              />
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleSave('minimum_stock_level')}
+                                  disabled={loading}
+                                  className="flex-1"
+                                >
+                                  Save
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleCancel('minimum_stock_level')}
+                                  disabled={loading}
+                                  className="flex-1"
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <span className="text-2xl font-bold text-gray-900">{formatQty(currentProduct.minimum_stock_level)}</span>
+                          )}
                         </div>
                       </div>
-                    )}
+                      {/* Stock level bar */}
+                      {currentProduct.minimum_stock_level > 0 && (
+                        <div className="space-y-1">
+                          <div className="flex justify-between text-xs text-gray-400">
+                            <span>0</span>
+                            <span>Min: {formatQty(currentProduct.minimum_stock_level)}</span>
+                          </div>
+                          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div
+                              className={cn('h-full rounded-full transition-all', stockDotColor)}
+                              style={{
+                                width: `${Math.min(100, (totalStock / (currentProduct.minimum_stock_level * 2)) * 100)}%`,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                      <div>
+                        <Badge
+                          className={cn(
+                            'text-xs font-medium px-2.5 py-0.5',
+                            stockStatus === 'Out of Stock'
+                              ? 'bg-red-100 text-red-700 border-red-200'
+                              : stockStatus === 'Low Stock'
+                              ? 'bg-orange-100 text-orange-700 border-orange-200'
+                              : 'bg-green-100 text-green-700 border-green-200'
+                          )}
+                          variant="outline"
+                        >
+                          {stockStatus}
+                        </Badge>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Pricing Information */}
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
-                          <DollarSign className="w-4 h-4 text-emerald-600" />
-                        </div>
-                        <h3 className="text-sm font-semibold text-gray-900">Pricing</h3>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-4 h-4 text-emerald-600" />
                       </div>
-                      {editingField !== 'pricing' && (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => setEditingField('pricing')}
-                          className="h-7 w-7 p-0 rounded-lg hover:bg-gray-100"
-                        >
-                          <Edit className="w-3.5 h-3.5 text-gray-400" />
-                        </Button>
-                      )}
+                      <h3 className="text-sm font-semibold text-gray-900">Pricing</h3>
                     </div>
 
-                    {editingField === 'pricing' ? (
-                      <div className="space-y-3">
-                        <div>
-                          <Label>Purchase Price</Label>
-                          <DecimalInput
-                            value={form.purchase_price}
-                            onChange={(purchase_price) => setForm(prev => ({ ...prev, purchase_price }))}
-                            disabled={loading}
-                            min={0}
-                          />
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-white border border-gray-200 rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="text-xs text-gray-500 font-medium">Purchase Price</div>
+                          {editingField !== 'purchase_price' && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setEditingField('purchase_price')}
+                              className="h-6 w-6 p-0 rounded-lg hover:bg-gray-100"
+                              title="Edit purchase price"
+                            >
+                              <Edit className="w-3 h-3 text-gray-400" />
+                            </Button>
+                          )}
                         </div>
-                        <div>
-                          <Label>Sale Price</Label>
-                          <DecimalInput
-                            value={form.sale_price}
-                            onChange={(sale_price) => setForm(prev => ({ ...prev, sale_price }))}
-                            disabled={loading}
-                            min={0}
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            onClick={() => handleSave('pricing')}
-                            disabled={loading}
-                            className="flex-1"
-                          >
-                            Save
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleCancel('pricing')}
-                            disabled={loading}
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white border border-gray-200 rounded-lg p-3">
-                          <div className="text-xs text-gray-500 mb-1 font-medium">Purchase Price</div>
-                          <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.purchase_price || 0)}</span>
-                          <p className="text-[11px] text-gray-500 mt-1 leading-snug">
-                            Default for new stock-ins. To fix value on hand, correct the price on
-                            the receipt in the Stock Movement Ledger below.
-                          </p>
-                        </div>
-                        <div className="bg-white border border-gray-200 rounded-lg p-3">
-                          <div className="text-xs text-gray-500 mb-1 font-medium">Sale Price</div>
-                          <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.sale_price || 0)}</span>
-                        </div>
-                        {(currentProduct.purchase_price || 0) > 0 && (currentProduct.sale_price || 0) > 0 && (
-                          <div className="col-span-2 flex items-center gap-1.5 text-xs text-gray-500">
-                            <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
-                            <span>
-                              Margin:{' '}
-                              <span className="font-semibold text-emerald-600">
-                                {(((currentProduct.sale_price || 0) - (currentProduct.purchase_price || 0)) / (currentProduct.sale_price || 1) * 100).toFixed(1)}%
-                              </span>
-                            </span>
+                        {editingField === 'purchase_price' ? (
+                          <div className="space-y-2">
+                            <DecimalInput
+                              value={form.purchase_price}
+                              onChange={(purchase_price) => setForm(prev => ({ ...prev, purchase_price }))}
+                              disabled={loading}
+                              min={0}
+                            />
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                onClick={() => handleSave('purchase_price')}
+                                disabled={loading}
+                                className="flex-1"
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleCancel('purchase_price')}
+                                disabled={loading}
+                                className="flex-1"
+                              >
+                                Cancel
+                              </Button>
+                            </div>
                           </div>
+                        ) : (
+                          <>
+                            <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.purchase_price || 0)}</span>
+                            <p className="text-[11px] text-gray-500 mt-1 leading-snug">
+                              Default for new stock-ins. To fix value on hand, correct the price on
+                              the receipt in the Stock Movement Ledger below.
+                            </p>
+                          </>
                         )}
                       </div>
-                    )}
+                      <div className="bg-white border border-gray-200 rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="text-xs text-gray-500 font-medium">Sale Price</div>
+                          {editingField !== 'sale_price' && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setEditingField('sale_price')}
+                              className="h-6 w-6 p-0 rounded-lg hover:bg-gray-100"
+                              title="Edit sale price"
+                            >
+                              <Edit className="w-3 h-3 text-gray-400" />
+                            </Button>
+                          )}
+                        </div>
+                        {editingField === 'sale_price' ? (
+                          <div className="space-y-2">
+                            <DecimalInput
+                              value={form.sale_price}
+                              onChange={(sale_price) => setForm(prev => ({ ...prev, sale_price }))}
+                              disabled={loading}
+                              min={0}
+                            />
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                onClick={() => handleSave('sale_price')}
+                                disabled={loading}
+                                className="flex-1"
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleCancel('sale_price')}
+                                disabled={loading}
+                                className="flex-1"
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.sale_price || 0)}</span>
+                        )}
+                      </div>
+                      {(currentProduct.purchase_price || 0) > 0 && (currentProduct.sale_price || 0) > 0 && (
+                        <div className="col-span-2 flex items-center gap-1.5 text-xs text-gray-500">
+                          <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
+                          <span>
+                            Margin:{' '}
+                            <span className="font-semibold text-emerald-600">
+                              {(((currentProduct.sale_price || 0) - (currentProduct.purchase_price || 0)) / (currentProduct.sale_price || 1) * 100).toFixed(1)}%
+                            </span>
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Stock History Chart & Ledger */}

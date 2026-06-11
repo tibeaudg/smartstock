@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { formatDecimalForDisplay } from '@/hooks/useCurrency';
 
 interface UseDraftNumericInputOptions {
   pattern: RegExp;
@@ -20,7 +21,11 @@ export function useDraftNumericInput(
   }, [value]);
 
   const displayValue =
-    draft !== null ? draft : showEmptyWhenZero && value === 0 ? '' : String(value);
+    draft !== null
+      ? draft
+      : showEmptyWhenZero && value === 0
+        ? ''
+        : formatDecimalForDisplay(value);
 
   const handleChange = (raw: string): number | undefined => {
     if (raw !== '' && !pattern.test(raw)) {

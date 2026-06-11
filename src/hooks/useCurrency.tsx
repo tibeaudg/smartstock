@@ -2,28 +2,47 @@ import React, { useState, useEffect, useCallback, createContext, useContext, Rea
 
 type Currency = 'EUR' | 'USD' | 'GBP';
 
-const MAX_UNIT_PRICE_DECIMALS = 6;
+export const MAX_PRICE_DECIMALS = 6;
 
-/** Decimal places for per-unit prices (e.g. purchase price). Uses 2+ digits when value is under one cent. */
-export function getUnitPriceFractionDigits(price: number): number {
+/** Plain decimal string for inputs/displays — preserves stored precision up to 6 decimals. */
+export function formatDecimalForDisplay(
+  value: number,
+  maxDecimals: number = MAX_PRICE_DECIMALS,
+): string {
+  if (!Number.isFinite(value)) return '';
+  if (value === 0) return '0';
+  const sign = value < 0 ? '-' : '';
+  const trimmed = Math.abs(value).toFixed(maxDecimals).replace(/\.?0+$/, '');
+  return sign + trimmed;
+}
+
+/** Decimal places for monetary values — shows stored precision up to 6 decimals, minimum 2. */
+export function getPriceFractionDigits(price: number): number {
   if (!Number.isFinite(price) || price === 0) return 2;
-  const abs = Math.abs(price);
-  if (abs >= 0.01) return 2;
-  const trimmed = abs.toFixed(10).replace(/0+$/, '');
+  const trimmed = Math.abs(price).toFixed(MAX_PRICE_DECIMALS).replace(/0+$/, '');
   const dotIndex = trimmed.indexOf('.');
   if (dotIndex === -1) return 2;
   const decimals = trimmed.length - dotIndex - 1;
-  return Math.min(Math.max(decimals, 2), MAX_UNIT_PRICE_DECIMALS);
+  return Math.min(Math.max(decimals, 2), MAX_PRICE_DECIMALS);
 }
 
-export function formatUnitPriceWithCurrency(price: number, currency: Currency): string {
-  const fractionDigits = getUnitPriceFractionDigits(price);
+/** @deprecated Use getPriceFractionDigits */
+export function getUnitPriceFractionDigits(price: number): number {
+  return getPriceFractionDigits(price);
+}
+
+function formatCurrencyAmount(price: number, currency: Currency): string {
+  const fractionDigits = getPriceFractionDigits(price);
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   }).format(price);
+}
+
+export function formatUnitPriceWithCurrency(price: number, currency: Currency): string {
+  return formatCurrencyAmount(price, currency);
 }
 
 interface CurrencyState {
@@ -69,12 +88,7 @@ export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
   }, []);
 
   const formatPrice = useCallback((price: number): string => {
-    const locale = 'en-US';
-    
-    return new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency: currency,
-    }).format(price);
+    return formatCurrencyAmount(price, currency);
   }, [currency]);
 
   const formatUnitPrice = useCallback((price: number): string => {

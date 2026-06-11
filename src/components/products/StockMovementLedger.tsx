@@ -146,10 +146,10 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
       entry.direction.toUpperCase(),
       entry.quantity,
       entry.unitCost.toFixed(6),
-      entry.lineValue.toFixed(2),
+      entry.lineValue.toFixed(6),
       entry.costBasis === 'recorded' ? 'Recorded' : entry.costBasis,
       entry.runningQty,
-      entry.runningValue.toFixed(2),
+      entry.runningValue.toFixed(6),
       entry.notes ?? '',
       entry.referenceNumber ?? '',
     ]);
@@ -199,6 +199,25 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
         </div>
       </div>
 
+      {ledger.zeroPriceIncomingCount > 0 && (
+        <div
+          className="flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-900"
+          style={{ borderLeft: '3px solid var(--color-border-warning)' }}
+        >
+          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
+          <span>
+            <span className="font-medium">
+              {ledger.zeroPriceIncomingCount} incoming movement
+              {ledger.zeroPriceIncomingCount === 1 ? '' : 's'} recorded without a unit price.
+            </span>{' '}
+            These use the current purchase price ({formatUnitPrice(fallbackUnitPrice)}) as a
+            fallback and may cause valuation discrepancies. Use the{' '}
+            <Pencil className="inline w-3.5 h-3.5 align-text-bottom mx-0.5" /> icon on the
+            highlighted row to correct it.
+          </span>
+        </div>
+      )}
+
       <div className="max-w-xs">
         <ValuationMethodSelector
           value={valuationMethod}
@@ -206,18 +225,6 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
           label="Outgoing cost basis"
         />
       </div>
-
-      {ledger.zeroPriceIncomingCount > 0 && (
-        <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
-          <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
-          <span>
-            {ledger.zeroPriceIncomingCount} incoming movement
-            {ledger.zeroPriceIncomingCount === 1 ? '' : 's'} recorded without a unit price.
-            These use the current purchase price ({formatUnitPrice(fallbackUnitPrice)}) as a
-            fallback and may cause valuation discrepancies.
-          </span>
-        </div>
-      )}
 
       {loading ? (
         <div className="h-40 flex items-center justify-center">
@@ -258,7 +265,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
                     key={entry.id}
                     className={cn(
                       'hover:bg-gray-50',
-                      entry.priceWarning && 'bg-white border border-gray-200'
+                      entry.priceWarning && 'bg-amber-50/80 hover:bg-amber-50'
                     )}
                   >
                     <td className="px-3 py-2 whitespace-nowrap text-gray-700">
@@ -312,7 +319,12 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="h-7 w-7 p-0 text-gray-400 hover:text-gray-700"
+                          className={cn(
+                            'h-7 w-7 p-0',
+                            entry.priceWarning
+                              ? 'text-amber-700 hover:text-amber-900 hover:bg-amber-100'
+                              : 'text-gray-400 hover:text-gray-700'
+                          )}
                           title="Correct purchase price on this receipt"
                           onClick={() => handleOpenPriceCorrection(entry.id)}
                         >
@@ -330,7 +342,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
       )}
 
       {ledger.entries.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-gray-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-gray-200">
           <div className="bg-white border border-gray-200 rounded-lg p-3">
             <div className="text-xs text-gray-500 mb-1">Ledger stock on hand</div>
             <div className="text-lg font-bold text-gray-900">
@@ -371,14 +383,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
             </div>
           )}
 
-          <div className="bg-white border border-gray-200 rounded-lg p-3">
-            <div className="text-xs text-gray-500 mb-1">Reconciliation tip</div>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              Compare incoming unit costs against your spreadsheet. Rows marked with * had no
-              price recorded at entry. Use the pencil icon on any stock-in row to correct a
-              wrong purchase price — stock on hand value updates automatically.
-            </p>
-          </div>
+
         </div>
       )}
 
