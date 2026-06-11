@@ -1,6 +1,6 @@
 import React from 'react';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Info } from 'lucide-react';
 import {
@@ -51,12 +51,11 @@ export const DeadStockConfig: React.FC<DeadStockConfigProps> = ({
           <Label htmlFor="threshold-days">
             Threshold Days (Days since last movement)
           </Label>
-          <Input
+          <IntegerInput
             id="threshold-days"
-            type="number"
-            min="1"
+            min={1}
             value={thresholdDays}
-            onChange={(e) => onThresholdDaysChange(parseInt(e.target.value, 10) || 90)}
+            onChange={onThresholdDaysChange}
             className="max-w-xs"
           />
           <p className="text-xs text-gray-500">
@@ -67,12 +66,11 @@ export const DeadStockConfig: React.FC<DeadStockConfigProps> = ({
 
         <div className="space-y-2">
           <Label htmlFor="min-stock-level">Minimum Stock Level</Label>
-          <Input
+          <IntegerInput
             id="min-stock-level"
-            type="number"
-            min="0"
+            min={0}
             value={minStockLevel}
-            onChange={(e) => onMinStockLevelChange(parseInt(e.target.value, 10) || 0)}
+            onChange={onMinStockLevelChange}
             className="max-w-xs"
           />
           <p className="text-xs text-gray-500">

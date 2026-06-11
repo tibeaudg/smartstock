@@ -7,6 +7,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { PageFormLayout } from '@/components/PageFormLayout';
@@ -531,11 +533,10 @@ export default function EditPurchaseOrderPage() {
 
                       <div>
                         <Label>Quantity</Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          value={item.quantity_ordered || ''}
-                          onChange={(e) => updateItem(index, { quantity_ordered: parseInt(e.target.value) || 0 })}
+                        <IntegerInput
+                          min={1}
+                          value={item.quantity_ordered}
+                          onChange={(quantity_ordered) => updateItem(index, { quantity_ordered })}
                           className="mt-1"
                           disabled={!canEdit}
                         />
@@ -543,12 +544,10 @@ export default function EditPurchaseOrderPage() {
 
                       <div>
                         <Label>Unit Price</Label>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          value={item.unit_price || ''}
-                          onChange={(e) => updateItem(index, { unit_price: parseFloat(e.target.value) || 0 })}
+                        <DecimalInput
+                          min={0}
+                          value={item.unit_price}
+                          onChange={(unit_price) => updateItem(index, { unit_price })}
                           className="mt-1"
                           disabled={!canEdit}
                         />

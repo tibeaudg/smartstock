@@ -273,6 +273,5 @@ export type PickListItem = {
 export type StockMovementStats = {
   totalIncoming: number;
   totalOutgoing: number;
-  totalValue: number;
   transactionCount: number;
 };

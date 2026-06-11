@@ -18,6 +18,7 @@ export interface ProductForStockAction {
   quantity_in_stock?: number;
   min_stock_level?: number;
   unit_price?: number;
+  purchase_price?: number;
   branch_id?: string;
   is_variant?: boolean;
   variant_name?: string | null;
@@ -114,7 +115,7 @@ export const StockQuickActionModal: React.FC<StockQuickActionModalProps> = ({
         product_name: displayName,
         transaction_type: actionType === 'add' ? 'incoming' : 'outgoing',
         quantity: numericAmount,
-        unit_price: product.unit_price ?? 0,
+        unit_price: product.purchase_price ?? product.unit_price ?? 0,
         reference_number: `QUICK_${actionType.toUpperCase()}_${Date.now()}`,
         notes: `Quick ${actionType === 'add' ? 'addition' : 'removal'} from products table`,
         user_id: currentUser.id,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Search, Plus, Package, CheckCircle } from 'lucide-react';
@@ -165,11 +166,10 @@ export const ProductSearch: React.FC<ProductSearchProps> = ({
                         >
                           -
                         </Button>
-                        <Input
-                          type="number"
-                          min="1"
+                        <IntegerInput
+                          min={1}
                           value={quantities[product.id] || 1}
-                          onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value) || 1)}
+                          onChange={(qty) => handleQuantityChange(product.id, qty)}
                           className="w-16 text-center"
                         />
                         <Button

@@ -11,10 +11,13 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { supabase } from '@/integrations/supabase/client';
-import { format, subDays, subMonths, parseISO, startOfDay } from 'date-fns';
+import { format, subDays, parseISO, startOfDay } from 'date-fns';
 import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownLeft, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import {
+  isStockInTransaction,
+  isStockOutTransaction,
+} from '@/lib/inventory/dashboardMetrics';
 
 interface StockTransaction {
   id: string;
@@ -37,6 +40,10 @@ interface StockHistoryChartProps {
   productId: string;
   branchId: string;
   currentStock: number;
+  /** Include variant product IDs when viewing a parent product */
+  relatedProductIds?: string[];
+  /** Bump to refetch after stock changes elsewhere on the page */
+  refreshKey?: number;
 }
 
 type DateRange = '7d' | '30d' | '90d' | '1y';
@@ -68,6 +75,8 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
   productId,
   branchId,
   currentStock,
+  relatedProductIds,
+  refreshKey = 0,
 }) => {
   const [transactions, setTransactions] = useState<StockTransaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,12 +89,24 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
         const rangeInfo = DATE_RANGES.find((r) => r.value === selectedRange)!;
         const fromDate = subDays(new Date(), rangeInfo.days).toISOString();
 
-        const { data, error } = await supabase
+        const productIds =
+          relatedProductIds && relatedProductIds.length > 0
+            ? relatedProductIds
+            : [productId];
+
+        let query = supabase
           .from('stock_transactions')
           .select('id, created_at, quantity, reference_number, notes, transaction_type')
-          .eq('product_id', productId)
+          .eq('branch_id', branchId)
           .gte('created_at', fromDate)
           .order('created_at', { ascending: true });
+
+        query =
+          productIds.length === 1
+            ? query.eq('product_id', productIds[0])
+            : query.in('product_id', productIds);
+
+        const { data, error } = await query;
 
         if (error) throw error;
         setTransactions((data || []) as StockTransaction[]);
@@ -97,7 +118,7 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
     };
 
     fetchTransactions();
-  }, [productId, branchId, selectedRange]);
+  }, [productId, branchId, selectedRange, relatedProductIds, refreshKey]);
 
   const chartData = useMemo<ChartDataPoint[]>(() => {
     const rangeInfo = DATE_RANGES.find((r) => r.value === selectedRange)!;
@@ -121,14 +142,9 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
       const d = parseISO(tx.created_at);
       const key = format(d, days > 90 ? 'yyyy-MM' : 'yyyy-MM-dd');
       const existing = dateMap.get(key) || { incoming: 0, outgoing: 0 };
-      // Determine direction: "incoming" type = stock in, "outgoing" = stock out
-      // Also handle legacy reference numbers like STOCK_IN_ / STOCK_OUT_
-      const isIn =
-        tx.transaction_type === 'incoming' ||
-        (tx.reference_number?.includes('STOCK_IN') ?? false);
-      if (isIn) {
+      if (isStockInTransaction(tx)) {
         existing.incoming += tx.quantity;
-      } else {
+      } else if (isStockOutTransaction(tx)) {
         existing.outgoing += tx.quantity;
       }
       dateMap.set(key, existing);
@@ -166,22 +182,15 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
   }, [transactions, selectedRange, currentStock]);
 
   const totalIn = transactions
-    .filter(
-      (t) =>
-        t.transaction_type === 'incoming' ||
-        (t.reference_number?.includes('STOCK_IN') ?? false)
-    )
+    .filter((t) => isStockInTransaction(t))
     .reduce((sum, t) => sum + t.quantity, 0);
 
   const totalOut = transactions
-    .filter(
-      (t) =>
-        t.transaction_type !== 'incoming' &&
-        !(t.reference_number?.includes('STOCK_IN') ?? false)
-    )
+    .filter((t) => isStockOutTransaction(t))
     .reduce((sum, t) => sum + t.quantity, 0);
 
-  const hasData = transactions.length > 0;
+  const hasMovements = transactions.length > 0;
+  const showChart = hasMovements || currentStock > 0;
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
@@ -237,13 +246,20 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
         <div className="h-56 flex items-center justify-center">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600" />
         </div>
-      ) : !hasData ? (
+      ) : !showChart ? (
         <div className="h-56 flex flex-col items-center justify-center text-gray-400">
           <TrendingDown className="w-8 h-8 mb-2 opacity-40" />
           <p className="text-sm">No stock movements in this period</p>
           <p className="text-xs mt-1">Use the + In / − Out buttons to record movements</p>
         </div>
       ) : (
+        <>
+        {!hasMovements && currentStock > 0 && (
+          <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-md px-3 py-2">
+            {currentStock} units on hand, but no movements were recorded in this period.
+            Stock level is shown as a flat line.
+          </p>
+        )}
         <ResponsiveContainer width="100%" height={220}>
           <ComposedChart data={chartData} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -302,10 +318,11 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
             />
           </ComposedChart>
         </ResponsiveContainer>
+        </>
       )}
 
       {/* Recent transactions list */}
-      {hasData && (
+      {hasMovements && (
         <div className="border-t border-gray-100 pt-3">
           <p className="text-xs font-medium text-gray-500 mb-2">Recent Transactions</p>
           <div className="space-y-1 max-h-32 overflow-y-auto">
@@ -313,9 +330,7 @@ export const StockHistoryChart: React.FC<StockHistoryChartProps> = ({
               .reverse()
               .slice(0, 8)
               .map((tx) => {
-                const isIn =
-                  tx.transaction_type === 'incoming' ||
-                  (tx.reference_number?.includes('STOCK_IN') ?? false);
+                const isIn = isStockInTransaction(tx);
                 return (
                   <div
                     key={tx.id}

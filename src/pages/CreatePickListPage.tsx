@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { PageFormLayout } from '@/components/PageFormLayout';
@@ -226,11 +227,10 @@ export default function CreatePickListPage() {
 
                       <div>
                         <Label>Qty to Pick</Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          value={item.quantity_requested || ''}
-                          onChange={e => updateItem(index, { quantity_requested: parseInt(e.target.value) || 1 })}
+                        <IntegerInput
+                          min={1}
+                          value={item.quantity_requested}
+                          onChange={quantity_requested => updateItem(index, { quantity_requested })}
                           className="mt-1"
                         />
                         {selectedProduct && item.quantity_requested > selectedProduct.quantity_in_stock && (

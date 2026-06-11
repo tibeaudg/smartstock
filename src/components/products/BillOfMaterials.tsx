@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
@@ -1513,18 +1514,12 @@ function BOMEditPage() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Input
-                            type="number"
+                          <DecimalInput
                             value={component.quantity_required}
-                            onChange={(e) =>
-                              handleUpdateComponent(
-                                index,
-                                'quantity_required',
-                                parseFloat(e.target.value) || 0
-                              )
+                            onChange={(quantity_required) =>
+                              handleUpdateComponent(index, 'quantity_required', quantity_required)
                             }
-                            min="0"
-                            step="0.01"
+                            min={0}
                             className="w-24"
                           />
                         </TableCell>
@@ -1539,19 +1534,13 @@ function BOMEditPage() {
                           />
                         </TableCell>
                         <TableCell>
-                          <Input
-                            type="number"
+                          <DecimalInput
                             value={component.scrap_factor}
-                            onChange={(e) =>
-                              handleUpdateComponent(
-                                index,
-                                'scrap_factor',
-                                parseFloat(e.target.value) || 0
-                              )
+                            onChange={(scrap_factor) =>
+                              handleUpdateComponent(index, 'scrap_factor', scrap_factor)
                             }
-                            min="0"
-                            max="100"
-                            step="0.1"
+                            min={0}
+                            max={100}
                             className="w-20"
                           />
                         </TableCell>

@@ -19,6 +19,7 @@ import {
   type HealthBreakdown,
 } from '@/lib/inventory/dashboardMetrics';
 import { countItemsWithoutCostData, fetchInventoryValuation } from '@/lib/inventory/valuation';
+import { calculateStockValueTrend } from '@/lib/inventory/stockValueTrend';
 import type { InventoryValuationItem } from '@/hooks/useInventoryValuation';
 
 interface UseDashboardDataParams {
@@ -191,7 +192,7 @@ export const useDashboardData = ({ dateFrom, dateTo }: UseDashboardDataParams = 
       const topMovingProducts = calculateTopMovingProducts(transactions || []);
 
       // Calculate stock value trend
-      const stockValueTrend = calculateStockValueTrend(transactions || [], totalValue, dateFrom, dateTo);
+      const stockValueTrend = calculateStockValueTrend(transactions || [], totalValue);
 
       const lowStockProducts = getLowStockProducts(productsData);
 
@@ -590,52 +591,6 @@ const calculateTopMovingProducts = (transactions: any[]) => {
     }))
     .sort((a, b) => b.total_movement - a.total_movement)
     .slice(0, 10);
-};
-
-const calculateStockValueTrend = (transactions: any[], currentValue: number, dateFrom?: Date, dateTo?: Date) => {
-  const trendMap = new Map<string, number>();
-  
-  // If we have transactions, calculate historical values
-  if (transactions && transactions.length > 0) {
-    // Group transactions by date
-    const transactionsByDate = new Map<string, any[]>();
-    transactions.forEach(transaction => {
-      const date = new Date(transaction.created_at).toISOString().split('T')[0];
-      if (!transactionsByDate.has(date)) {
-        transactionsByDate.set(date, []);
-      }
-      transactionsByDate.get(date)!.push(transaction);
-    });
-
-    // Calculate stock value for each date
-    let runningValue = currentValue;
-    const sortedDates = Array.from(transactionsByDate.keys()).sort((a, b) => 
-      new Date(b).getTime() - new Date(a).getTime());
-
-    sortedDates.forEach(date => {
-      const dayTransactions = transactionsByDate.get(date) || [];
-      dayTransactions.forEach(transaction => {
-        const qty = parseQuantity(transaction.quantity);
-        const unitPrice = Number(transaction.unit_price) || 0;
-        if (isIncomingTransaction(transaction.transaction_type)) {
-          runningValue -= qty * unitPrice;
-        } else if (isOutgoingTransaction(transaction.transaction_type)) {
-          runningValue += qty * unitPrice;
-        }
-      });
-      trendMap.set(date, runningValue);
-    });
-  }
-
-  // Add current date if not already present
-  const currentDate = new Date().toISOString().split('T')[0];
-  if (!trendMap.has(currentDate)) {
-    trendMap.set(currentDate, currentValue);
-  }
-
-  return Array.from(trendMap.entries())
-    .map(([date, total_value]) => ({ date, total_value }))
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 };
 
 const calculateTurnoverRates = (transactions: any[], products: any[]) => {

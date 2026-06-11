@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -141,12 +141,11 @@ export const FulfillSalesOrderModal = ({
                     {remaining > 0 ? (
                       <div>
                         <Label>Quantity to Fulfill (max: {remaining})</Label>
-                        <Input
-                          type="number"
-                          min="0"
+                        <IntegerInput
+                          min={0}
                           max={remaining}
-                          value={fulfilledQty || ''}
-                          onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 0)}
+                          value={fulfilledQty}
+                          onChange={(qty) => handleQuantityChange(item.id, qty)}
                           placeholder="0"
                         />
                       </div>

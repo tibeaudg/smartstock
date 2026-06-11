@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -927,12 +929,11 @@ export default function ScanPage() {
                     <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
                       Quantity *
                     </Label>
-                    <Input
+                    <IntegerInput
                       id="quantity"
-                      type="number"
-                      min="1"
+                      min={1}
                       value={formData.quantityInStock}
-                      onChange={(e) => handleInputChange('quantityInStock', parseInt(e.target.value) || 1)}
+                      onChange={(value) => handleInputChange('quantityInStock', value)}
                       required
                       className="mt-1"
                     />
@@ -943,12 +944,11 @@ export default function ScanPage() {
                       <Label htmlFor="minStock" className="text-sm font-medium text-gray-700">
                         Minimum Stock
                       </Label>
-                      <Input
+                      <IntegerInput
                         id="minStock"
-                        type="number"
-                        min="0"
+                        min={0}
                         value={formData.minimumStockLevel}
-                        onChange={(e) => handleInputChange('minimumStockLevel', parseInt(e.target.value) || 0)}
+                        onChange={(value) => handleInputChange('minimumStockLevel', value)}
                         className="mt-1"
                       />
                     </div>
@@ -959,13 +959,11 @@ export default function ScanPage() {
                       <Label htmlFor="purchasePrice" className="text-sm font-medium text-gray-700">
                         Purchase Price ($)
                       </Label>
-                      <Input
+                      <DecimalInput
                         id="purchasePrice"
-                        type="number"
-                        min="0"
-                        step="0.01"
+                        min={0}
                         value={formData.purchasePrice}
-                        onChange={(e) => handleInputChange('purchasePrice', parseFloat(e.target.value) || 0)}
+                        onChange={(value) => handleInputChange('purchasePrice', value)}
                         className="mt-1"
                       />
                     </div>
@@ -976,13 +974,11 @@ export default function ScanPage() {
                       <Label htmlFor="salePrice" className="text-sm font-medium text-gray-700">
                         Sale Price ($)
                       </Label>
-                      <Input
+                      <DecimalInput
                         id="salePrice"
-                        type="number"
-                        min="0"
-                        step="0.01"
+                        min={0}
                         value={formData.salePrice}
-                        onChange={(e) => handleInputChange('salePrice', parseFloat(e.target.value) || 0)}
+                        onChange={(value) => handleInputChange('salePrice', value)}
                         className="mt-1"
                       />
                     </div>

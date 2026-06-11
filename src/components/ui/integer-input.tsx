@@ -2,24 +2,24 @@ import * as React from 'react';
 import { Input, type InputProps } from '@/components/ui/input';
 import { useDraftNumericInput } from '@/components/ui/draft-numeric-input';
 
-const DECIMAL_INPUT_PATTERN = /^\d*\.?\d*$/;
+const INTEGER_INPUT_PATTERN = /^\d*$/;
 
-function parseDecimalInput(raw: string): number {
-  if (raw === '' || raw === '.') return 0;
-  const parsed = parseFloat(raw);
+function parseIntegerInput(raw: string): number {
+  if (raw === '') return 0;
+  const parsed = parseInt(raw, 10);
   return Number.isNaN(parsed) ? 0 : parsed;
 }
 
-export interface DecimalInputProps extends Omit<InputProps, 'type' | 'value' | 'onChange'> {
+export interface IntegerInputProps extends Omit<InputProps, 'type' | 'value' | 'onChange'> {
   value: number;
   onChange: (value: number) => void;
 }
 
-export const DecimalInput = React.forwardRef<HTMLInputElement, DecimalInputProps>(
+export const IntegerInput = React.forwardRef<HTMLInputElement, IntegerInputProps>(
   ({ value, onChange, onBlur, onFocus, ...props }, ref) => {
     const { displayValue, handleChange, handleBlur, inputRef } = useDraftNumericInput(value, {
-      pattern: DECIMAL_INPUT_PATTERN,
-      parse: parseDecimalInput,
+      pattern: INTEGER_INPUT_PATTERN,
+      parse: parseIntegerInput,
     });
 
     const setRefs = React.useCallback(
@@ -39,7 +39,7 @@ export const DecimalInput = React.forwardRef<HTMLInputElement, DecimalInputProps
         {...props}
         ref={setRefs}
         type="text"
-        inputMode="decimal"
+        inputMode="numeric"
         value={displayValue}
         onFocus={(event) => {
           onFocus?.(event);
@@ -59,4 +59,4 @@ export const DecimalInput = React.forwardRef<HTMLInputElement, DecimalInputProps
   },
 );
 
-DecimalInput.displayName = 'DecimalInput';
+IntegerInput.displayName = 'IntegerInput';

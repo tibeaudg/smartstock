@@ -103,7 +103,7 @@ export default function CategorysPageSecured() {
 
   const { user, loading: authLoading } = useAuth();
   const { activeBranch } = useBranches();
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatUnitPrice } = useCurrency();
   const { isActivated } = useActivationState();
 
   const branchId = activeBranch?.branch_id ?? null;
@@ -1412,10 +1412,10 @@ const categoryProductsData = useMemo(() => {
                       {viewMode === 'expanded' && (
                         <>
                           <td className="px-4 py-4 text-sm">
-                            {p.price ? formatPrice(parseFloat(p.price)) : '—'}
+                            {p.price ? formatUnitPrice(parseFloat(p.price)) : '—'}
                           </td>
                           <td className="px-4 py-4 text-sm">
-                            {p.cost_price ? formatPrice(parseFloat(p.cost_price)) : '—'}
+                            {p.cost_price ? formatUnitPrice(parseFloat(p.cost_price)) : '—'}
                           </td>
                         
                           <td className="px-4 py-4 text-sm min-w-0 overflow-hidden">

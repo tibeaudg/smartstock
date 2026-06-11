@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Edit, Plus, Trash2, MapPin, Package, Tag, Image as ImageIcon, QrCode, Archive, Save, X, Scan, Check, ChevronsUpDown, TrendingUp, ArrowUpRight, Minus, DollarSign, ShoppingCart, BarChart2, FileText } from 'lucide-react';
@@ -29,6 +31,7 @@ import { BarcodeScanner } from '@/components/BarcodeScanner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BillOfMaterials from '@/components/products/BillOfMaterials';
 import { StockHistoryChart } from '@/components/products/StockHistoryChart';
+import { StockMovementLedger } from '@/components/products/StockMovementLedger';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -37,7 +40,7 @@ import { format } from 'date-fns';
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { formatPrice } = useCurrency();
+  const { formatUnitPrice } = useCurrency();
   const { activeBranch } = useBranches();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -128,6 +131,8 @@ export default function ProductDetailPage() {
 
   // Locations state (for combobox - known locations from the locations table)
   const { data: knownLocations = [] } = useLocations();
+
+  const [stockHistoryRefreshKey, setStockHistoryRefreshKey] = useState(0);
   const [openLocationIndex, setOpenLocationIndex] = useState<number | null>(null);
 
   // Modal states
@@ -479,7 +484,14 @@ export default function ProductDetailPage() {
       } else if (field === 'stock') {
         updateData.quantity_in_stock = Number(form.quantity_in_stock);
         updateData.minimum_stock_level = Number(form.minimum_stock_level);
-      } else if (field === 'pricing') {
+      }
+
+      const stockDelta =
+        field === 'stock'
+          ? Number(form.quantity_in_stock) - (Number(currentProduct.quantity_in_stock) || 0)
+          : 0;
+
+      if (field === 'pricing') {
         updateData.purchase_price = Number(form.purchase_price);
         updateData.sale_price = Number(form.sale_price);
       } else if (field === 'sku') {
@@ -506,6 +518,28 @@ export default function ProductDetailPage() {
         toast.error('Error updating product');
         setLoading(false);
         return;
+      }
+
+      if (field === 'stock' && stockDelta !== 0) {
+        const { error: transactionError } = await supabase.from('stock_transactions').insert({
+          product_id: currentProduct.id,
+          product_name: currentProduct.name,
+          transaction_type: stockDelta > 0 ? 'incoming' : 'outgoing',
+          quantity: Math.abs(stockDelta),
+          unit_price: currentProduct.purchase_price || 0,
+          user_id: user.id,
+          created_by: user.id,
+          branch_id: activeBranch.branch_id,
+          reference_number: stockDelta > 0 ? 'STOCK_ADJUSTMENT_IN' : 'STOCK_ADJUSTMENT_OUT',
+          notes: 'Stock quantity adjusted via product edit',
+          adjustment_method: 'manual',
+        });
+        if (transactionError) {
+          console.error('Error recording stock adjustment:', transactionError);
+          toast.warning('Stock updated but movement history could not be recorded');
+        } else {
+          setStockHistoryRefreshKey((key) => key + 1);
+        }
       }
 
       // When location is saved, ensure any new location names are created in the locations table
@@ -1570,11 +1604,11 @@ export default function ProductDetailPage() {
                       <div className="space-y-3">
                         <div>
                           <Label>Minimum Stock Level</Label>
-                          <Input
-                            type="number"
+                          <IntegerInput
                             value={form.minimum_stock_level}
-                            onChange={(e) => setForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
+                            onChange={(minimum_stock_level) => setForm(prev => ({ ...prev, minimum_stock_level }))}
                             disabled={loading}
+                            min={0}
                           />
                         </div>
                         <div className="flex gap-2">
@@ -1673,22 +1707,20 @@ export default function ProductDetailPage() {
                       <div className="space-y-3">
                         <div>
                           <Label>Purchase Price</Label>
-                          <Input
-                            type="number"
-                            step="0.01"
+                          <DecimalInput
                             value={form.purchase_price}
-                            onChange={(e) => setForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
+                            onChange={(purchase_price) => setForm(prev => ({ ...prev, purchase_price }))}
                             disabled={loading}
+                            min={0}
                           />
                         </div>
                         <div>
                           <Label>Sale Price</Label>
-                          <Input
-                            type="number"
-                            step="0.01"
+                          <DecimalInput
                             value={form.sale_price}
-                            onChange={(e) => setForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                            onChange={(sale_price) => setForm(prev => ({ ...prev, sale_price }))}
                             disabled={loading}
+                            min={0}
                           />
                         </div>
                         <div className="flex gap-2">
@@ -1715,11 +1747,11 @@ export default function ProductDetailPage() {
                       <div className="grid grid-cols-2 gap-3">
                         <div className="bg-gray-50 rounded-lg p-3">
                           <div className="text-xs text-gray-500 mb-1 font-medium">Purchase Price</div>
-                          <span className="text-xl font-bold text-gray-900">{formatPrice(currentProduct.purchase_price || 0)}</span>
+                          <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.purchase_price || 0)}</span>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3">
                           <div className="text-xs text-gray-500 mb-1 font-medium">Sale Price</div>
-                          <span className="text-xl font-bold text-gray-900">{formatPrice(currentProduct.sale_price || 0)}</span>
+                          <span className="text-xl font-bold text-gray-900">{formatUnitPrice(currentProduct.sale_price || 0)}</span>
                         </div>
                         {(currentProduct.purchase_price || 0) > 0 && (currentProduct.sale_price || 0) > 0 && (
                           <div className="col-span-2 flex items-center gap-1.5 text-xs text-gray-500">
@@ -1736,13 +1768,28 @@ export default function ProductDetailPage() {
                     )}
                   </div>
 
-                  {/* Stock History Chart */}
+                  {/* Stock History Chart & Ledger */}
                   {activeBranch && (
-                    <StockHistoryChart
-                      productId={currentProduct.id}
-                      branchId={activeBranch.branch_id}
-                      currentStock={totalStock}
-                    />
+                    <>
+                      <StockHistoryChart
+                        productId={currentProduct.id}
+                        branchId={activeBranch.branch_id}
+                        currentStock={totalStock}
+                        relatedProductIds={
+                          variants.length > 0
+                            ? [currentProduct.id, ...variants.map((variant) => variant.id)]
+                            : undefined
+                        }
+                        refreshKey={stockHistoryRefreshKey}
+                      />
+                      <StockMovementLedger
+                        productId={currentProduct.id}
+                        branchId={activeBranch.branch_id}
+                        currentStock={totalStock}
+                        fallbackUnitPrice={Number(currentProduct.purchase_price) || 0}
+                        refreshKey={stockHistoryRefreshKey}
+                      />
+                    </>
                   )}
                 </TabsContent>
 
@@ -1932,12 +1979,12 @@ export default function ProductDetailPage() {
                                     </td>
                                     <td className="px-4 py-3 text-center">
                                       {isEditing ? (
-                                        <Input
-                                          type="number"
+                                        <IntegerInput
                                           value={variantForm.quantity_in_stock}
-                                          onChange={(e) => setVariantForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
+                                          onChange={(quantity_in_stock) => setVariantForm(prev => ({ ...prev, quantity_in_stock }))}
                                           className="text-sm w-24"
                                           disabled={loading}
+                                          min={0}
                                         />
                                       ) : (
                                         <div className="flex items-center justify-center gap-2">
@@ -1948,16 +1995,15 @@ export default function ProductDetailPage() {
                                     </td>
                                     <td className="px-4 py-3 text-center">
                                       {isEditing ? (
-                                        <Input
-                                          type="number"
-                                          step="0.01"
+                                        <DecimalInput
                                           value={variantForm.sale_price}
-                                          onChange={(e) => setVariantForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                                          onChange={(sale_price) => setVariantForm(prev => ({ ...prev, sale_price }))}
                                           className="text-sm w-24"
                                           disabled={loading}
+                                          min={0}
                                         />
                                       ) : (
-                                        <span className="text-sm text-gray-900">{formatPrice(Number(variant.sale_price) || 0)}</span>
+                                        <span className="text-sm text-gray-900">{formatUnitPrice(Number(variant.sale_price) || 0)}</span>
                                       )}
                                     </td>
                                     <td className="px-4 py-3 text-right">
@@ -2058,6 +2104,7 @@ export default function ProductDetailPage() {
 
             queryClient.invalidateQueries({ queryKey: ['products'] });
             queryClient.invalidateQueries({ queryKey: ['productsByCategories'] });
+            setStockHistoryRefreshKey((key) => key + 1);
             setIsStockAdjustModalOpen(false);
             setSelectedProductForStock(null);
           }}

@@ -233,11 +233,10 @@ export const useStockMovements = (): {
         (curr.transaction_type === 'manual_adjustment' && curr.reference_number?.includes('_OUT'));
       if (isIncoming) acc.totalIncoming += curr.quantity;
       else if (isOutgoing) acc.totalOutgoing += curr.quantity;
-      acc.totalValue += Number(curr.total_value) || (curr.quantity * Number(curr.unit_price));
       acc.transactionCount++;
       return acc;
     },
-    { totalIncoming: 0, totalOutgoing: 0, totalValue: 0, transactionCount: 0 }
+    { totalIncoming: 0, totalOutgoing: 0, transactionCount: 0 }
   );
 
   return {

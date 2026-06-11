@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
@@ -192,11 +193,10 @@ export default function CreatecustomerPage() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="payment_term" className="text-gray-900">Payment Term</Label>
-                    <Input
+                    <IntegerInput
                       id="payment_term"
-                      type="number"
-                      value={formData.payment_term || 30}
-                      onChange={(e) => setFormData({ ...formData, payment_term: parseInt(e.target.value) || 30 })}
+                      value={formData.payment_term}
+                      onChange={(payment_term) => setFormData({ ...formData, payment_term })}
                       className="border-gray-300 focus:border-gray-500"
                     />
                   </div>

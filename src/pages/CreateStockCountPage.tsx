@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { PageFormLayout } from '@/components/PageFormLayout';
@@ -218,12 +219,12 @@ export default function CreateStockCountPage() {
 
                       <div>
                         <Label>Expected Qty</Label>
-                        <Input type="number" min="0" value={item.expected_quantity} onChange={e => updateItem(index, { expected_quantity: parseInt(e.target.value) || 0 })} className="mt-1" />
+                        <IntegerInput min={0} value={item.expected_quantity} onChange={expected_quantity => updateItem(index, { expected_quantity })} className="mt-1" />
                       </div>
 
                       <div>
                         <Label>Counted Qty</Label>
-                        <Input type="number" min="0" value={item.counted_quantity} onChange={e => updateItem(index, { counted_quantity: parseInt(e.target.value) || 0 })} className="mt-1" />
+                        <IntegerInput min={0} value={item.counted_quantity} onChange={counted_quantity => updateItem(index, { counted_quantity })} className="mt-1" />
                       </div>
                     </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -375,11 +376,10 @@ export default function EditPickListPage() {
 
                           <div>
                             <Label>Qty to Pick</Label>
-                            <Input
-                              type="number"
-                              min="1"
+                            <IntegerInput
+                              min={1}
                               value={item.quantity_requested}
-                              onChange={e => updateItem(index, { quantity_requested: parseInt(e.target.value) || 1 })}
+                              onChange={quantity_requested => updateItem(index, { quantity_requested })}
                               className={cn('mt-1', overStock && 'border-red-400 focus:ring-red-400')}
                             />
                             {overStock && <p className="text-xs text-red-500 mt-1">Exceeds stock ({selectedProduct.quantity_in_stock})</p>}

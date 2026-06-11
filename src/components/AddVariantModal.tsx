@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { useBranches } from '@/hooks/useBranches';
@@ -399,12 +401,11 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
               <Label htmlFor="quantity" className="text-sm font-medium text-gray-700">
                 Stock *
               </Label>
-              <Input
+              <IntegerInput
                 id="quantity"
-                type="number"
-                min="0"
+                min={0}
                 value={formData.quantityInStock}
-                onChange={(e) => handleInputChange('quantityInStock', parseInt(e.target.value) || 0)}
+                onChange={(value) => handleInputChange('quantityInStock', value)}
                 className="mt-1"
                 disabled={loading}
                 required
@@ -415,12 +416,11 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
               <Label htmlFor="min-level" className="text-sm font-medium text-gray-700">
                 Min. Level *
               </Label>
-              <Input
+              <IntegerInput
                 id="min-level"
-                type="number"
-                min="0"
+                min={0}
                 value={formData.minimumStockLevel}
-                onChange={(e) => handleInputChange('minimumStockLevel', parseInt(e.target.value) || 0)}
+                onChange={(value) => handleInputChange('minimumStockLevel', value)}
                 className="mt-1"
                 disabled={loading}
                 required
@@ -434,13 +434,11 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
               <Label htmlFor="purchase-price" className="text-sm font-medium text-gray-700">
                 Purchase Price
               </Label>
-              <Input
+              <DecimalInput
                 id="purchase-price"
-                type="number"
-                min="0"
-                step="0.01"
+                min={0}
                 value={formData.purchasePrice}
-                onChange={(e) => handleInputChange('purchasePrice', parseFloat(e.target.value) || 0)}
+                onChange={(value) => handleInputChange('purchasePrice', value)}
                 className="mt-1"
                 disabled={loading}
               />
@@ -450,13 +448,11 @@ export const AddVariantModal: React.FC<AddVariantModalProps> = ({
               <Label htmlFor="sale-price" className="text-sm font-medium text-gray-700">
                 Sale Price
               </Label>
-              <Input
+              <DecimalInput
                 id="sale-price"
-                type="number"
-                min="0"
-                step="0.01"
+                min={0}
                 value={formData.salePrice}
-                onChange={(e) => handleInputChange('salePrice', parseFloat(e.target.value) || 0)}
+                onChange={(value) => handleInputChange('salePrice', value)}
                 className="mt-1"
                 disabled={loading}
               />

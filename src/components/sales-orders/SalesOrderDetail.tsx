@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -618,11 +620,10 @@ export const SalesOrderDetail = ({
 
                           <div>
                             <Label>Quantity *</Label>
-                            <Input
-                              type="number"
-                              min="1"
-                              value={item.quantity_ordered || ''}
-                              onChange={(e) => updateItem(index, 'quantity_ordered', parseInt(e.target.value) || 0)}
+                            <IntegerInput
+                              min={1}
+                              value={item.quantity_ordered}
+                              onChange={(quantity_ordered) => updateItem(index, 'quantity_ordered', quantity_ordered)}
                               placeholder="0"
                               className="mt-1"
                             />
@@ -635,12 +636,10 @@ export const SalesOrderDetail = ({
 
                           <div>
                             <Label>Unit Price *</Label>
-                            <Input
-                              type="number"
-                              step="0.01"
-                              min="0"
-                              value={item.unit_price || ''}
-                              onChange={(e) => updateItem(index, 'unit_price', parseFloat(e.target.value) || 0)}
+                            <DecimalInput
+                              min={0}
+                              value={item.unit_price}
+                              onChange={(unit_price) => updateItem(index, 'unit_price', unit_price)}
                               placeholder="0.00"
                               className="mt-1"
                             />

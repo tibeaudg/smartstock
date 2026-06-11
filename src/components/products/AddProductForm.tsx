@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -1591,19 +1592,12 @@ export function AddProductForm({
                             Stock qty <span className="text-muted-foreground font-normal">optional</span>
                           </FormLabel>
                           <FormControl>
-                            <Input
-                              type="number"
-                              inputMode="numeric"
-                              min="0"
+                            <IntegerInput
+                              min={0}
                               placeholder="1"
                               disabled={loading}
-                              onChange={(e) => {
-                                const val = e.target.value;
-                                if (val === '' || /^\d+$/.test(val)) {
-                                  field.onChange(val === '' ? 0 : parseInt(val, 10));
-                                }
-                              }}
-                              value={field.value === 0 ? '' : field.value.toString()}
+                              onChange={field.onChange}
+                              value={field.value}
                             />
                           </FormControl>
                           <FormMessage />
@@ -1657,19 +1651,12 @@ export function AddProductForm({
                       <FormItem>
                         <FormLabel className="text-gray-900">Stock Quantity <span className="text-gray-400 font-normal">(optional)</span></FormLabel>
                         <FormControl>
-                          <Input
-                            type="number"
-                            inputMode="numeric"
-                            min="0"
+                          <IntegerInput
+                            min={0}
                             placeholder="0"
                             disabled={loading}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              if (val === '' || /^\d+$/.test(val)) {
-                                field.onChange(val === '' ? 0 : parseInt(val, 10));
-                              }
-                            }}
-                            value={field.value === 0 ? '' : field.value.toString()}
+                            onChange={field.onChange}
+                            value={field.value}
                             className="border-gray-300 focus:border-gray-500 max-w-xs"
                           />
                         </FormControl>
@@ -1714,14 +1701,12 @@ export function AddProductForm({
                             <FormItem>
                               <FormLabel className="text-gray-900">Minimum Stock</FormLabel>
                               <FormControl>
-                                <Input
-                                  type="number"
-                                  inputMode="numeric"
-                                  min="0"
+                                <IntegerInput
+                                  min={0}
                                   placeholder="10"
                                   disabled={loading}
-                                  onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                  value={field.value === 0 ? '' : field.value.toString()}
+                                  onChange={field.onChange}
+                                  value={field.value}
                                   className="border-gray-300 focus:border-gray-500"
                                 />
                               </FormControl>
@@ -1775,14 +1760,12 @@ export function AddProductForm({
                           <FormItem>
                             <FormLabel className="text-gray-900">Minimum Stock</FormLabel>
                             <FormControl>
-                              <Input
-                                type="number"
-                                inputMode="numeric"
-                                min="0"
+                              <IntegerInput
+                                min={0}
                                 placeholder="10"
                                 disabled={loading}
-                                onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 0)}
-                                value={field.value === 0 ? '' : field.value.toString()}
+                                onChange={field.onChange}
+                                value={field.value}
                               />
                             </FormControl>
                             <FormDescription>We'll alert you when stock hits this level.</FormDescription>
@@ -2375,13 +2358,11 @@ export function AddProductForm({
                                     <Label htmlFor={`variant-stock-${index}`} className="text-sm font-medium text-gray-700">
                                       Stock *
                                     </Label>
-                                    <Input
+                                    <IntegerInput
                                       id={`variant-stock-${index}`}
-                                      type="number"
-                                      inputMode="numeric"
-                                      min="0"
-                                      value={variant.quantityInStock.toString()}
-                                      onChange={(e) => {
+                                      min={0}
+                                      value={variant.quantityInStock}
+                                      onChange={(quantityInStock) => {
                                         const currentVariants = variants.length === 0 ? [{
                                           variantName: '',
                                           quantityInStock: 0,
@@ -2392,7 +2373,7 @@ export function AddProductForm({
                                           barcode: '',
                                           location: ''
                                         }] : [...variants];
-                                        currentVariants[index].quantityInStock = parseInt(e.target.value, 10) || 0;
+                                        currentVariants[index].quantityInStock = quantityInStock;
                                         setVariants(currentVariants);
                                       }}
                                       className="mt-1 text-sm"
@@ -2404,13 +2385,11 @@ export function AddProductForm({
                                     <Label htmlFor={`variant-min-stock-${index}`} className="text-sm font-medium text-gray-700">
                                       Min. stock
                                     </Label>
-                                    <Input
+                                    <IntegerInput
                                       id={`variant-min-stock-${index}`}
-                                      type="number"
-                                      inputMode="numeric"
-                                      min="0"
-                                      value={variant.minimumStockLevel.toString()}
-                                      onChange={(e) => {
+                                      min={0}
+                                      value={variant.minimumStockLevel}
+                                      onChange={(minimumStockLevel) => {
                                         const currentVariants = variants.length === 0 ? [{
                                           variantName: '',
                                           quantityInStock: 0,
@@ -2421,7 +2400,7 @@ export function AddProductForm({
                                           barcode: '',
                                           location: ''
                                         }] : [...variants];
-                                        currentVariants[index].minimumStockLevel = parseInt(e.target.value, 10) || 0;
+                                        currentVariants[index].minimumStockLevel = minimumStockLevel;
                                         setVariants(currentVariants);
                                       }}
                                       className="mt-1 text-sm"

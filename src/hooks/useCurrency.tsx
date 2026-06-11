@@ -2,10 +2,35 @@ import React, { useState, useEffect, useCallback, createContext, useContext, Rea
 
 type Currency = 'EUR' | 'USD' | 'GBP';
 
+const MAX_UNIT_PRICE_DECIMALS = 6;
+
+/** Decimal places for per-unit prices (e.g. purchase price). Uses 2+ digits when value is under one cent. */
+export function getUnitPriceFractionDigits(price: number): number {
+  if (!Number.isFinite(price) || price === 0) return 2;
+  const abs = Math.abs(price);
+  if (abs >= 0.01) return 2;
+  const trimmed = abs.toFixed(10).replace(/0+$/, '');
+  const dotIndex = trimmed.indexOf('.');
+  if (dotIndex === -1) return 2;
+  const decimals = trimmed.length - dotIndex - 1;
+  return Math.min(Math.max(decimals, 2), MAX_UNIT_PRICE_DECIMALS);
+}
+
+export function formatUnitPriceWithCurrency(price: number, currency: Currency): string {
+  const fractionDigits = getUnitPriceFractionDigits(price);
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(price);
+}
+
 interface CurrencyState {
   currency: Currency;
   setCurrency: (currency: Currency) => void;
   formatPrice: (price: number) => string;
+  formatUnitPrice: (price: number) => string;
 }
 
 const CurrencyContext = createContext<CurrencyState | undefined>(undefined);
@@ -52,10 +77,15 @@ export const CurrencyProvider = ({ children }: CurrencyProviderProps) => {
     }).format(price);
   }, [currency]);
 
+  const formatUnitPrice = useCallback((price: number): string => {
+    return formatUnitPriceWithCurrency(price, currency);
+  }, [currency]);
+
   const value: CurrencyState = {
     currency,
     setCurrency,
     formatPrice,
+    formatUnitPrice,
   };
 
   return (

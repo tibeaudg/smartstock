@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Calculator, TrendingUp, Clock, DollarSign, AlertCircle } from 'lucide-react';
 import { useCurrency } from '@/hooks/useCurrency';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 
 interface ROICalculatorProps {
   className?: string;
@@ -82,13 +84,11 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Average Inventory Value (€)
             </label>
-            <input
-              type="number"
+            <IntegerInput
               value={inventoryValue}
-              onChange={(e) => setInventoryValue(Number(e.target.value))}
+              onChange={setInventoryValue}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              step="1000"
+              min={0}
             />
           </div>
 
@@ -96,13 +96,11 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Hours Spent on Inventory per Week
             </label>
-            <input
-              type="number"
+            <DecimalInput
               value={weeklyHours}
-              onChange={(e) => setWeeklyHours(Number(e.target.value))}
+              onChange={setWeeklyHours}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              step="0.5"
+              min={0}
             />
           </div>
 
@@ -110,13 +108,11 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Average Hourly Rate (€)
             </label>
-            <input
-              type="number"
+            <IntegerInput
               value={hourlyRate}
-              onChange={(e) => setHourlyRate(Number(e.target.value))}
+              onChange={setHourlyRate}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              step="1"
+              min={0}
             />
           </div>
 
@@ -124,14 +120,12 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Current Error Rate (%)
             </label>
-            <input
-              type="number"
+            <DecimalInput
               value={errorRate}
-              onChange={(e) => setErrorRate(Number(e.target.value))}
+              onChange={setErrorRate}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              max="100"
-              step="0.1"
+              min={0}
+              max={100}
             />
           </div>
 
@@ -139,13 +133,11 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Stockouts per Month
             </label>
-            <input
-              type="number"
+            <IntegerInput
               value={stockoutFrequency}
-              onChange={(e) => setStockoutFrequency(Number(e.target.value))}
+              onChange={setStockoutFrequency}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              step="1"
+              min={0}
             />
           </div>
 
@@ -153,13 +145,11 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Average Cost per Stockout (€)
             </label>
-            <input
-              type="number"
+            <IntegerInput
               value={stockoutCost}
-              onChange={(e) => setStockoutCost(Number(e.target.value))}
+              onChange={setStockoutCost}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              step="10"
+              min={0}
             />
           </div>
 
@@ -167,14 +157,12 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Overstock Percentage (%)
             </label>
-            <input
-              type="number"
+            <IntegerInput
               value={overstockPercentage}
-              onChange={(e) => setOverstockPercentage(Number(e.target.value))}
+              onChange={setOverstockPercentage}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              max="100"
-              step="1"
+              min={0}
+              max={100}
             />
           </div>
 
@@ -182,13 +170,11 @@ export default function ROICalculator({ className = '' }: ROICalculatorProps) {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Software Monthly Cost (€)
             </label>
-            <input
-              type="number"
+            <IntegerInput
               value={softwareCost}
-              onChange={(e) => setSoftwareCost(Number(e.target.value))}
+              onChange={setSoftwareCost}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min="0"
-              step="1"
+              min={0}
             />
           </div>
         </div>

@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
+import { DecimalInput } from '@/components/ui/decimal-input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { 
@@ -67,7 +69,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   getStockStatusDotColor,
   formatStockQuantity,
 }) => {
-  const { formatPrice } = useCurrency();
+  const { formatUnitPrice } = useCurrency();
   const { activeBranch } = useBranches();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -899,20 +901,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   <div className="space-y-3">
                     <div>
                       <Label>Stock Quantity</Label>
-                      <Input
-                        type="number"
+                      <IntegerInput
                         value={form.quantity_in_stock}
-                        onChange={(e) => setForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
+                        onChange={(quantity_in_stock) => setForm(prev => ({ ...prev, quantity_in_stock }))}
                         min={0}
                         disabled={loading}
                       />
                     </div>
                     <div>
                       <Label>Minimum Level</Label>
-                      <Input
-                        type="number"
+                      <IntegerInput
                         value={form.minimum_stock_level}
-                        onChange={(e) => setForm(prev => ({ ...prev, minimum_stock_level: Number(e.target.value) }))}
+                        onChange={(minimum_stock_level) => setForm(prev => ({ ...prev, minimum_stock_level }))}
                         min={0}
                         disabled={loading}
                       />
@@ -991,22 +991,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     <div className="space-y-3">
                       <div>
                         <Label>Purchase Price</Label>
-                        <Input
-                          type="number"
-                          step="0.01"
+                        <DecimalInput
                           value={form.purchase_price}
-                          onChange={(e) => setForm(prev => ({ ...prev, purchase_price: Number(e.target.value) }))}
+                          onChange={(purchase_price) => setForm(prev => ({ ...prev, purchase_price }))}
                           min={0}
                           disabled={loading}
                         />
                       </div>
                       <div>
                         <Label>Sale Price</Label>
-                        <Input
-                          type="number"
-                          step="0.01"
+                        <DecimalInput
                           value={form.sale_price}
-                          onChange={(e) => setForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                          onChange={(sale_price) => setForm(prev => ({ ...prev, sale_price }))}
                           min={0}
                           disabled={loading}
                         />
@@ -1037,7 +1033,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="flex justify-between">
                         <span className="text-gray-600">Purchase Price:</span>
                         <span className="font-medium text-red-600">
-                            {formatPrice(Number(currentProduct.purchase_price))}
+                            {formatUnitPrice(Number(currentProduct.purchase_price))}
                         </span>
                       </div>
                     )}
@@ -1045,7 +1041,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="flex justify-between">
                         <span className="text-gray-600">Sale Price:</span>
                         <span className="font-medium text-green-600">
-                            {formatPrice(Number(currentProduct.sale_price))}
+                            {formatUnitPrice(Number(currentProduct.sale_price))}
                         </span>
                       </div>
                     )}
@@ -1053,7 +1049,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <div className="flex justify-between">
                         <span className="text-gray-600">Unit Price:</span>
                         <span className="font-medium text-gray-900">
-                            {formatPrice(Number(currentProduct.unit_price))}
+                            {formatUnitPrice(Number(currentProduct.unit_price))}
                         </span>
                       </div>
                     )}
@@ -1500,12 +1496,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                 </td>
                                 <td className="px-4 py-3 text-center">
                                   {isEditing ? (
-                                    <Input
-                                      type="number"
+                                    <IntegerInput
                                       value={variantForm.quantity_in_stock}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, quantity_in_stock: Number(e.target.value) }))}
+                                      onChange={(quantity_in_stock) => setVariantForm(prev => ({ ...prev, quantity_in_stock }))}
                                       className="text-sm w-24"
                                       disabled={loading}
+                                      min={0}
                                     />
                                   ) : (
                                     <div className="flex items-center justify-center gap-2">
@@ -1516,16 +1512,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                 </td>
                                 <td className="px-4 py-3 text-center">
                                   {isEditing ? (
-                                    <Input
-                                      type="number"
-                                      step="0.01"
+                                    <DecimalInput
                                       value={variantForm.sale_price}
-                                      onChange={(e) => setVariantForm(prev => ({ ...prev, sale_price: Number(e.target.value) }))}
+                                      onChange={(sale_price) => setVariantForm(prev => ({ ...prev, sale_price }))}
                                       className="text-sm w-24"
                                       disabled={loading}
+                                      min={0}
                                     />
                                   ) : (
-                                    <span className="text-sm text-gray-900">{formatPrice(Number(variant.sale_price) || 0)}</span>
+                                    <span className="text-sm text-gray-900">{formatUnitPrice(Number(variant.sale_price) || 0)}</span>
                                   )}
                                 </td>
                                 <td className="px-4 py-3 text-right">

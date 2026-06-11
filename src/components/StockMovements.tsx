@@ -1,4 +1,6 @@
 import React, { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -16,8 +18,15 @@ import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 import { useProductCount } from '@/hooks/useDashboardData';
+import { useInventoryValuation } from '@/hooks/useInventoryValuation';
+import { useBranches } from '@/hooks/useBranches';
 import { useAddProductModal } from '@/hooks/AddProductModalContext';
 import { useNavigate } from 'react-router-dom';
+import {
+  buildStockValueSparkline,
+  calculateStockValueTrend,
+  getStockValueAtOrBefore,
+} from '@/lib/inventory/stockValueTrend';
 
 // Go to page input component
 const GoToPageInput: React.FC<{ totalPages: number; onPageChange: (page: number) => void }> = ({ totalPages, onPageChange }) => {
@@ -64,6 +73,9 @@ export const StockMovements = () => {
   const navigate = useNavigate();
   const { openAddProduct } = useAddProductModal();
   const { productCount, isLoading: productCountLoading } = useProductCount();
+  const { activeBranch } = useBranches();
+  const { data: valuationData } = useInventoryValuation({ method: 'Average' });
+  const currentStockValue = valuationData?.summary.total_valuation ?? 0;
   const {
     transactions,
     stats,
@@ -73,6 +85,23 @@ export const StockMovements = () => {
     setFilters,
     refresh
   } = useStockMovements();
+
+  const { data: stockValueTransactions = [] } = useQuery({
+    queryKey: ['stockValueTrendTransactions', activeBranch?.branch_id],
+    queryFn: async () => {
+      const { data, error: fetchError } = await supabase
+        .from('stock_transactions')
+        .select('transaction_type, quantity, created_at, unit_price')
+        .eq('branch_id', activeBranch!.branch_id)
+        .order('created_at', { ascending: false })
+        .limit(1000);
+
+      if (fetchError) throw fetchError;
+      return data ?? [];
+    },
+    enabled: !!activeBranch?.branch_id,
+    staleTime: 1000 * 60 * 2,
+  });
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -133,11 +162,19 @@ export const StockMovements = () => {
       ? ((currentMovements - lastMovements) / lastMovements) * 100 
       : currentMovements > 0 ? 100 : 0;
 
-    const currentValue = currentMonthTransactions.reduce((sum, t) => sum + (Number(t.total_value) || 0), 0);
-    const lastValue = lastMonthTransactions.reduce((sum, t) => sum + (Number(t.total_value) || 0), 0);
-    const valueChange = lastValue > 0 
-      ? ((currentValue - lastValue) / lastValue) * 100 
-      : currentValue > 0 ? 100 : 0;
+    const stockValueTrend = calculateStockValueTrend(stockValueTransactions, currentStockValue);
+    const lastMonthValue =
+      getStockValueAtOrBefore(stockValueTrend, lastMonthEnd) ?? currentStockValue;
+    const valueChange =
+      lastMonthValue > 0
+        ? ((currentStockValue - lastMonthValue) / lastMonthValue) * 100
+        : currentStockValue > 0
+          ? 100
+          : 0;
+    const stockValueSparkline = buildStockValueSparkline(
+      stockValueTrend,
+      currentStockValue
+    );
 
     // Generate trend data for last 12 days
     const generateTrendData = (filterFn: (t: any) => boolean) => {
@@ -178,13 +215,13 @@ export const StockMovements = () => {
         color: '#9333ea', // Purple
       },
       stockValue: {
-        value: stats.totalValue,
+        value: currentStockValue,
         change: valueChange,
-        trend: generateTrendData(() => true),
+        trend: stockValueSparkline,
         color: '#3b82f6', // Blue
       },
     };
-  }, [transactions, stats]);
+  }, [transactions, stats, currentStockValue, stockValueTransactions]);
 
   // Calculate active filters count - MUST be before any early returns
   const activeFiltersCount = useMemo(() => {

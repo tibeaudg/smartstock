@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { IntegerInput } from '@/components/ui/integer-input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Mail, TestTube, Save, X } from 'lucide-react';
@@ -180,12 +181,11 @@ export const SmtpConfigModal: React.FC<SmtpConfigModalProps> = ({
             </div>
             <div>
               <Label htmlFor="smtp-port">SMTP Port *</Label>
-              <Input
+              <IntegerInput
                 id="smtp-port"
-                type="number"
                 placeholder="587"
                 value={settings.smtp_port}
-                onChange={(e) => handleInputChange('smtp_port', parseInt(e.target.value) || 587)}
+                onChange={(smtp_port) => handleInputChange('smtp_port', smtp_port)}
               />
             </div>
           </div>

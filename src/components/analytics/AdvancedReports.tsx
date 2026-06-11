@@ -48,7 +48,7 @@ const REPORT_META: Record<AdvancedReportType, { title: string; description: stri
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
 const InventoryValuationReport: React.FC = () => {
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatUnitPrice } = useCurrency();
   const [valuationMethod, setValuationMethod] = useState<ValuationMethod>('Average');
   const valuation = useInventoryValuation({ method: valuationMethod });
 
@@ -113,7 +113,7 @@ const InventoryValuationReport: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-3xl font-bold text-green-600">
-                    {formatPrice(valuation.data.summary.average_cost_per_unit)}
+                    {formatUnitPrice(valuation.data.summary.average_cost_per_unit)}
                   </p>
                   {valuation.data.summary.valued_quantity < valuation.data.summary.total_quantity && (
                     <p className="text-xs text-gray-500 mt-1">
@@ -189,7 +189,7 @@ const InventoryValuationReport: React.FC = () => {
                             <td className="p-2 text-gray-600">{item.location}</td>
                             <td className="p-2 text-right">{item.current_stock}</td>
                             <td className="p-2 text-right">
-                              {formatPrice(item.average_cost_per_unit)}
+                              {formatUnitPrice(item.average_cost_per_unit)}
                             </td>
                             <td className="p-2 text-right font-semibold">
                               {formatPrice(item.total_valuation)}
@@ -209,7 +209,7 @@ const InventoryValuationReport: React.FC = () => {
 };
 
 const InventoryTurnoverReport: React.FC = () => {
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatUnitPrice } = useCurrency();
   const [turnoverPeriod, setTurnoverPeriod] = useState<TurnoverPeriod>('monthly');
   const turnover = useInventoryTurnover({ period: turnoverPeriod });
 
@@ -393,7 +393,7 @@ const InventoryTurnoverReport: React.FC = () => {
 };
 
 const DeadStockReport: React.FC = () => {
-  const { formatPrice } = useCurrency();
+  const { formatPrice, formatUnitPrice } = useCurrency();
   const [deadStockThreshold, setDeadStockThreshold] = useState(90);
   const [deadStockMinLevel, setDeadStockMinLevel] = useState(0);
   const deadStock = useDeadStock({

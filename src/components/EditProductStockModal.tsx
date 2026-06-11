@@ -19,7 +19,8 @@ interface Product {
   description: string | null;
   quantity_in_stock: number;
   minimum_stock_level: number;
-  unit_price: number;
+  unit_price?: number;
+  purchase_price?: number;
   status: string | null;
   branch_id?: string;
   image_url?: string | null;
@@ -45,9 +46,15 @@ export const EditProductStockModal = ({
   onBack
 }: EditProductStockModalProps) => {
   const [quantity, setQuantity] = useState<string>('');
+  const [unitPrice, setUnitPrice] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [currentActionType, setCurrentActionType] = useState<'in' | 'out'>(initialActionType);
   const [transactionDate, setTransactionDate] = useState<string>(new Date().toISOString().split('T')[0]);
+
+  const defaultUnitPrice =
+    Number(product.purchase_price) ||
+    Number(product.unit_price) ||
+    0;
   const queryClient = useQueryClient();
   const { isMobile } = useMobile();
   
@@ -61,8 +68,9 @@ export const EditProductStockModal = ({
       setQuantity('');
       setCurrentActionType(initialActionType);
       setTransactionDate(new Date().toISOString().split('T')[0]);
+      setUnitPrice(String(defaultUnitPrice || ''));
     }
-  }, [isOpen, initialActionType]);
+  }, [isOpen, initialActionType, defaultUnitPrice]);
 
   if (!isOpen) return null;
 
@@ -74,6 +82,13 @@ export const EditProductStockModal = ({
     if (!quantity || Number.isNaN(numericQuantity) || numericQuantity <= 0) {
       toast.error('Enter a valid quantity');
       return;
+    }
+    if (currentActionType === 'in') {
+      const priceForEntry = Number(unitPrice) || defaultUnitPrice;
+      if (!priceForEntry || priceForEntry <= 0) {
+        toast.error('Enter a purchase price for this stock-in');
+        return;
+      }
     }
     setLoading(true);
     try {
@@ -148,6 +163,11 @@ export const EditProductStockModal = ({
         setLoading(false);
         return;
       }
+      const recordedUnitPrice =
+        currentActionType === 'in'
+          ? Number(unitPrice) || defaultUnitPrice
+          : defaultUnitPrice;
+
         const { error: transactionError } = await supabase
         .from('stock_transactions')
         .insert({
@@ -155,7 +175,8 @@ export const EditProductStockModal = ({
           product_name: product.is_variant && product.variant_name ? `${product.name} - ${product.variant_name}` : product.name,
           transaction_type: currentActionType === 'in' ? 'manual_adjustment' : 'manual_adjustment',
           quantity: numericQuantity,
-          unit_price: product.unit_price,
+          unit_price: recordedUnitPrice,
+          total_value: numericQuantity * recordedUnitPrice,
           reference_number: `STOCK_${currentActionType?.toUpperCase()}_${Date.now()}`,
           notes: `Stock ${currentActionType === 'in' ? 'added' : 'removed'} via stock management`,
           user_id: user.id,
@@ -262,6 +283,22 @@ export const EditProductStockModal = ({
                 className={currentActionType === 'in' ? 'border-green-200 focus:border-green-500' : 'border-red-200 focus:border-red-500'}
               />
             </div>
+
+            {currentActionType === 'in' && (
+              <div className="grid gap-2">
+                <Label htmlFor="unitPrice">Purchase price per unit</Label>
+                <Input
+                  id="unitPrice"
+                  type="number"
+                  step="any"
+                  min="0"
+                  value={unitPrice}
+                  onChange={(e) => setUnitPrice(e.target.value)}
+                  placeholder="Enter purchase price for this stock-in"
+                  className="border-green-200 focus:border-green-500"
+                />
+              </div>
+            )}
             
             {isMobile && (
               <div className={`p-4 rounded-lg ${currentActionType === 'in' ? 'bg-green-50' : 'bg-red-50'}`}>
