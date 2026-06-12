@@ -70,6 +70,7 @@ export async function fetchUserStats(userId: string, selectedPlan?: string | nul
     const adminBranches = result.data as AdminBranch[] | null;
     if (result.error) throw result.error;
 
+
     if (!adminBranches || adminBranches.length === 0) {
       return {
         userId,

@@ -198,8 +198,13 @@ async function fetchUserProducts(userId: string) {
 }
 
 async function fetchUserUsageBreakdown(userId: string) {
-  const { data: branches } = await supabase.from('branches').select('id').eq('user_id', userId);
-  const branchIds = (branches ?? []).map((b: { id: string }) => b.id);
+  const adminBranchesResult = await (supabase.rpc as (name: string, args: { admin_id: string }) => ReturnType<typeof supabase.rpc>)(
+    'get_admin_branches',
+    { admin_id: userId },
+  );
+  const adminBranches = (adminBranchesResult.data as Array<{ branch_id: string }> | null) ?? [];
+  const branchIds = adminBranches.map((b) => b.branch_id);
+
   const safeIds = branchIds.length ? branchIds : [''];
 
   const [products, categories, bom, pickLists, salesOrders, purchaseOrders, stockCounts, workOrders, deliveryNotes] =
@@ -226,6 +231,25 @@ async function fetchUserUsageBreakdown(userId: string) {
     workOrders: workOrders.count ?? 0,
     deliveryNotes: deliveryNotes.count ?? 0,
   };
+}
+
+interface UsageTrackingRow {
+  current_products: number | null;
+  current_users: number | null;
+  current_branches: number | null;
+  billing_anchor_date: string | null;
+  next_billing_date: string | null;
+  last_reset_date: string | null;
+}
+
+async function fetchUsageTracking(userId: string): Promise<UsageTrackingRow | null> {
+  const { data, error } = await supabase
+    .from('usage_tracking')
+    .select('current_products, current_users, current_branches, billing_anchor_date, next_billing_date, last_reset_date')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (error) return null;
+  return data as UsageTrackingRow | null;
 }
 
 async function fetchUserInvoices(userId: string): Promise<InvoiceRow[]> {
@@ -719,6 +743,12 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen,
   });
 
+  const { data: usageTracking } = useQuery({
+    queryKey: ['userUsageTracking', user?.id],
+    queryFn: () => fetchUsageTracking(user!.id),
+    enabled: !!user && isOpen,
+  });
+
   const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
     queryKey: ['userInvoices', user?.id],
     queryFn: () => fetchUserInvoices(user!.id),
@@ -1170,6 +1200,39 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                             : 0)}
                         </span>
                       </div>
+                      {usageTracking && (
+                        <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Billing usage (usage_tracking)</p>
+                          <div className="grid grid-cols-3 gap-2 text-xs text-slate-600">
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-slate-400">Products</span>
+                              <span className="font-semibold">{usageTracking.current_products ?? '—'}</span>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-slate-400">Users</span>
+                              <span className="font-semibold">{usageTracking.current_users ?? '—'}</span>
+                            </div>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-slate-400">Branches</span>
+                              <span className="font-semibold">{usageTracking.current_branches ?? '—'}</span>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mt-1">
+                            {usageTracking.next_billing_date && (
+                              <div className="flex flex-col gap-0.5">
+                                <span className="text-slate-400">Next billing</span>
+                                <span className="font-semibold">{format(new Date(usageTracking.next_billing_date), 'PP')}</span>
+                              </div>
+                            )}
+                            {usageTracking.billing_anchor_date && (
+                              <div className="flex flex-col gap-0.5">
+                                <span className="text-slate-400">Billing anchor</span>
+                                <span className="font-semibold">{format(new Date(usageTracking.billing_anchor_date), 'PP')}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </>
                   )}
                 </CardContent>

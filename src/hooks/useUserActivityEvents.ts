@@ -71,7 +71,8 @@ async function fetchUserAnalyticsConsent(userId: string): Promise<boolean | null
     console.warn('[useUserActivityEvents] consent fetch failed:', error.message);
     return null;
   }
-  return (data as { analytics_consent?: boolean | null } | null)?.analytics_consent ?? null;
+  const consent = (data as { analytics_consent?: boolean | null } | null)?.analytics_consent ?? null;
+  return consent;
 }
 
 export function useUserActivityEvents(userId: string | undefined, enabled: boolean) {
