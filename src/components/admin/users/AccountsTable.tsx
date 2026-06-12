@@ -13,13 +13,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatActivationPath } from '@/lib/admin/activationMetrics';
 import type { UserAnalyticsSnapshot } from '@/hooks/useUserAnalyticsSnapshots';
 import { getPlanForUser } from '@/lib/admin/plans';
 import {
   calculateActivityStatus,
   formatCreatedAgo,
-  formatMeaningfulInactivity,
   isCreatedToday,
   shouldHighlightInactivity,
 } from '@/lib/admin/userActivity';
@@ -35,7 +33,6 @@ import type {
   UserProfile,
   UserStats,
 } from '@/lib/admin/types';
-import { SubStatusBadge } from './SubStatusBadge';
 import { RowActions } from './RowActions';
 
 interface AccountsTableProps {
@@ -99,7 +96,6 @@ export function AccountsTable({
   totalUsers,
   userStats,
   subscriptionPlanMap,
-  analyticsSnapshots,
   emailHealthByUserId,
   subUsersByParent,
   expandedUserIds,
@@ -240,8 +236,6 @@ export function AccountsTable({
                     ? 'border-orange-300'
                     : planInfo.missingPaymentInfo
                       ? 'border-amber-300'
-                      : planInfo.subStatus === 'past_due'
-                        ? 'border-red-300'
                         : ''
                 }`}
                 onClick={() => onSelectUser(user)}
@@ -301,43 +295,30 @@ export function AccountsTable({
                 </div>
               </th>
               <th className="px-4 py-2 cursor-pointer hover:bg-slate-100" onClick={() => onSort('inactivity')}>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center justify-center gap-1">
                   Inactivity <SortIcon column="inactivity" />
                 </div>
               </th>
-              <th className="px-4 py-2">Activation</th>
-              <th className="px-4 py-2 cursor-pointer hover:bg-slate-100" onClick={() => onSort('plan')}>
-                <div className="flex items-center gap-1">
-                  Plan <SortIcon column="plan" />
-                </div>
-              </th>
-              <th className="px-4 py-2">Sub Status</th>
-              <th className="px-4 py-2 text-right">MRR</th>
+        
+
               <th className="px-4 py-2 text-right cursor-pointer hover:bg-slate-100" onClick={() => onSort('usageRate')}>
-                <div className="flex items-center justify-end gap-1">
+                <div className="flex items-center justify-center gap-1">
                   Usage Rate <SortIcon column="usageRate" />
                 </div>
               </th>
               <th className="px-4 py-2 cursor-pointer hover:bg-slate-100" onClick={() => onSort('created')}>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center justify-center gap-1">
                   Created <SortIcon column="created" />
                 </div>
               </th>
-              <th className="px-2 py-2 w-10" />
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {paginatedUsers.map((user) => {
               const stats = userStats.find((s) => s.userId === user.id);
-              const snap = analyticsSnapshots.get(user.id);
-              const activity = formatMeaningfulInactivity(
-                user.last_login ?? null,
-                user.created_at,
-                snap?.lastMeaningfulAt,
-              );
-              const loginActivity = calculateActivityStatus(user.last_login ?? null, user.created_at);
+              const activity = calculateActivityStatus(user.last_login ?? null, user.created_at);
               const shouldHighlight = shouldHighlightInactivity(
-                loginActivity.days,
+                activity.days,
                 stats?.productCount || 0,
               );
               const planInfo = getPlanForUser(subscriptionPlanMap, user.id);
@@ -346,19 +327,20 @@ export function AccountsTable({
               return (
                 <React.Fragment key={user.id}>
                   <tr
-                    className={`group border-b hover:bg-slate-50 cursor-pointer ${
+                    className={`group border-b hover:bg-slate-50 cursor-pointer odd:bg-white even:bg-slate-50 ${
                       emailIssue
                         ? 'bg-orange-50/40'
                         : planInfo.missingPaymentInfo
                           ? 'bg-amber-50/30'
-                          : planInfo.subStatus === 'past_due' || planInfo.hasFailedInvoice
-                            ? 'bg-red-50/50'
-                            : loginActivity.isActive
+                            : activity.isActive
                               ? 'bg-green-50/30'
                               : ''
                     }`}
                     onClick={() => onSelectUser(user)}
                   >
+
+
+
                     <td className="px-2 py-2" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
@@ -367,9 +349,12 @@ export function AccountsTable({
                         aria-label={`Select ${user.email}`}
                       />
                     </td>
+
+
+
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-2">
-                        {loginActivity.isActive && (
+                        {activity.isActive && (
                           <Circle className="w-2 h-2 fill-green-500 text-green-500" />
                         )}
                         <span>{user.email}</span>
@@ -389,8 +374,9 @@ export function AccountsTable({
                         )}
                       </div>
                     </td>
+
                     <td
-                      className={`px-4 py-2 ${
+                      className={`px-4 py-2 text-center ${
                         activity.color === 'green'
                           ? 'text-green-600 font-semibold'
                           : shouldHighlight
@@ -399,69 +385,36 @@ export function AccountsTable({
                       }`}
                       title={activity.exactTime}
                     >
-                      {loadingStats || loadingSnapshots ? (
+                      {loadingStats ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
                       ) : (
                         <span className="inline-flex items-center gap-1">
                           {shouldHighlight && (
                             <AlertTriangle className="w-3.5 h-3.5 text-red-500 shrink-0" />
                           )}
-                          {!shouldHighlight && loginActivity.days >= 7 && (
+                          {!shouldHighlight && activity.days >= 7 && (
                             <Clock className="w-3.5 h-3.5 text-orange-500 shrink-0" />
                           )}
                           {activity.display}
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-2">
-                      {snap?.activatedWithin7d ? (
-                        <span className="inline-flex items-center gap-1 text-green-700 text-xs font-semibold">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          {formatActivationPath(snap.activationMethod) ?? 'Activated'}
-                        </span>
-                      ) : (
-                        <span className="text-xs text-slate-400">—</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-2">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {planInfo.displayName}
-                        {planInfo.missingPaymentInfo && (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800">
-                            <CreditCard className="w-3 h-3" />
-                            No payment
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-2">
-                      <SubStatusBadge status={planInfo.subStatus} hasFailedInvoice={planInfo.hasFailedInvoice} />
-                    </td>
-                    <td className="px-4 py-2 text-right tabular-nums">
-                      {planInfo.isRevenueCustomer ? (
-                        <span className="font-semibold text-emerald-700">${planInfo.planPrice}/mo</span>
-                      ) : (
-                        <span className="text-slate-300">—</span>
-                      )}
-                    </td>
+                    
+   
+
                     <td className="px-4 py-2 text-right tabular-nums">
                       {loadingStats ? (
                         <Loader2 className="w-4 h-4 animate-spin inline" />
                       ) : (
-                        <span className="font-medium">{stats?.usageRate ?? '—'}</span>
+                        <span className="font-medium text-center justify-center items-center inline-flex w-full">{stats?.usageRate ?? '—'}</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-slate-600">{formatCreatedAgo(user.created_at)}</td>
-                    <td className="px-2 py-2">
-                      <RowActions
-                        userId={user.id}
-                        email={user.email}
-                        plan={planInfo}
-                        adminId={adminId}
-                        adminEmail={adminEmail}
-                        onActionComplete={onInvalidate}
-                      />
-                    </td>
+
+
+
+                    
+                    <td className="px-4 py-2 text-slate-600 text-center justify-center items-center inline-flex w-full">{formatCreatedAgo(user.created_at)}</td>
+                 
                   </tr>
                 </React.Fragment>
               );

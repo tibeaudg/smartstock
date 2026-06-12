@@ -8,7 +8,7 @@ import { Loader2, Users, Download, ListChecks, AlertTriangle, CreditCard, Calend
 import type { UserPlanInfo } from '@/lib/admin/types';
 import type { UserAnalyticsSnapshot } from '@/hooks/useUserAnalyticsSnapshots';
 import { formatActivationPath } from '@/lib/admin/activationMetrics';
-import { formatMeaningfulInactivity } from '@/lib/admin/userActivity';
+import { calculateActivityStatus } from '@/lib/admin/userActivity';
 import { logAdminAction } from '@/lib/admin/adminAudit';
 import { emailUser, extendTrial, impersonateUser, resetUserPassword } from '@/lib/admin/userAdminActions';
 import { UserActivityLogTab } from '@/components/admin/activity/UserActivityLogTab';
@@ -146,11 +146,11 @@ async function fetchUserSubscription(userId: string): Promise<SubscriptionInfo |
   let planName = 'free';
   let maxProducts: number | null = 100;
 
-  if (sub.tier_id) {
+  if (sub?.tier_id) {
     const { data: tier } = await supabase
       .from('pricing_tiers')
       .select('name, display_name, max_products, price_monthly')
-      .eq('id', sub.tier_id)
+      .eq('id', sub?.tier_id as string)
       .single();
     if (tier) {
       planName = tier.name ?? 'free';
@@ -159,31 +159,20 @@ async function fetchUserSubscription(userId: string): Promise<SubscriptionInfo |
     }
   }
 
-  const status = (sub.status ?? null) as SubscriptionInfo['status'];
+  const status = (sub?.status as SubscriptionInfo['status'] | null) ?? null;
   const isOnTrial = status === 'trial';
-  const trialStageOverride = isTrialStageOverride(sub.trial_stage_override) ? sub.trial_stage_override : null;
-  const isPaidTier = planName !== 'free' && planName !== 'starter';
-  const override = applyTrialStageOverride(
-    trialStageOverride,
-    status,
-    isPaidTier || isOnTrial || status === 'active' || status === 'past_due',
-    sub.trial_end_date ?? null,
-  );
-  const effectiveStatus = (override?.subscriptionStatus ?? status) as SubscriptionInfo['status'];
-  const effectiveOnTrial = override?.isOnTrial ?? isOnTrial;
-  const effectiveTrialEndDate = override?.trialEndDate ?? sub.trial_end_date ?? null;
+  const trialStageOverride = isTrialStageOverride(sub?.trial_stage_override as TrialStageOverride | null) ? sub?.trial_stage_override as TrialStageOverride | null : null;
 
   return {
-    planDisplayName: effectiveOnTrial ? `${planDisplayName} (Trial)` : planDisplayName,
+    planDisplayName: isOnTrial ? `${planDisplayName} (Trial)` : planDisplayName,
     planName,
     status,
-    trialEndDate: effectiveTrialEndDate,
-    startDate: sub.start_date ?? null,
-    endDate: sub.end_date ?? null,
+    trialEndDate: sub?.trial_end_date as string | null,
+    startDate: sub?.start_date as string | null,
+    endDate: sub?.end_date as string | null,
     maxProducts,
-    stripeSubscriptionId: sub.stripe_subscription_id ?? null,
-    trialStageOverride,
-    effectiveStatus,
+    stripeSubscriptionId: sub?.stripe_subscription_id as string | null,
+    trialStageOverride: sub?.trial_stage_override as TrialStageOverride | null,
   };
 }
 
@@ -198,11 +187,11 @@ async function fetchUserProducts(userId: string) {
 }
 
 async function fetchUserUsageBreakdown(userId: string) {
-  const adminBranchesResult = await (supabase.rpc as (name: string, args: { admin_id: string }) => ReturnType<typeof supabase.rpc>)(
+  const adminBranchesResult = await (supabase.rpc as unknown as (name: 'get_admin_branches', args: { admin_id: string }) => Promise<{ data: Array<{ branch_id: string }> | null, error: any }>)(
     'get_admin_branches',
     { admin_id: userId },
   );
-  const adminBranches = (adminBranchesResult.data as Array<{ branch_id: string }> | null) ?? [];
+  const adminBranches = adminBranchesResult.data ?? [];
   const branchIds = adminBranches.map((b) => b.branch_id);
 
   const safeIds = branchIds.length ? branchIds : [''];
@@ -210,7 +199,7 @@ async function fetchUserUsageBreakdown(userId: string) {
   const [products, categories, bom, pickLists, salesOrders, purchaseOrders, stockCounts, workOrders, deliveryNotes] =
     await Promise.all([
       supabase.from('products').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
-      supabase.from('categories').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+      supabase.from('categories').select('*', { count: 'exact', head: true }).eq('user_id', userId),  
       supabase.from('bom_versions').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
       supabase.from('pick_lists').select('*', { count: 'exact', head: true }).in('branch_id', safeIds),
       supabase.from('sales_orders').select('*', { count: 'exact', head: true }).eq('user_id', userId),
@@ -231,25 +220,6 @@ async function fetchUserUsageBreakdown(userId: string) {
     workOrders: workOrders.count ?? 0,
     deliveryNotes: deliveryNotes.count ?? 0,
   };
-}
-
-interface UsageTrackingRow {
-  current_products: number | null;
-  current_users: number | null;
-  current_branches: number | null;
-  billing_anchor_date: string | null;
-  next_billing_date: string | null;
-  last_reset_date: string | null;
-}
-
-async function fetchUsageTracking(userId: string): Promise<UsageTrackingRow | null> {
-  const { data, error } = await supabase
-    .from('usage_tracking')
-    .select('current_products, current_users, current_branches, billing_anchor_date, next_billing_date, last_reset_date')
-    .eq('user_id', userId)
-    .maybeSingle();
-  if (error) return null;
-  return data as UsageTrackingRow | null;
 }
 
 async function fetchUserInvoices(userId: string): Promise<InvoiceRow[]> {
@@ -743,12 +713,6 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
     enabled: !!user && isOpen,
   });
 
-  const { data: usageTracking } = useQuery({
-    queryKey: ['userUsageTracking', user?.id],
-    queryFn: () => fetchUsageTracking(user!.id),
-    enabled: !!user && isOpen,
-  });
-
   const { data: invoices = [], isLoading: loadingInvoices } = useQuery({
     queryKey: ['userInvoices', user?.id],
     queryFn: () => fetchUserInvoices(user!.id),
@@ -974,13 +938,9 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                       </p>
                     </div>
                     <div>
-                      <span className="text-slate-500 text-xs">Last activity</span>
+                      <span className="text-slate-500 text-xs">Last login</span>
                       <p className="font-medium">
-                        {formatMeaningfulInactivity(
-                          user.last_login ?? null,
-                          user.created_at,
-                          analyticsSnapshot?.lastMeaningfulAt,
-                        ).display}
+                        {calculateActivityStatus(user.last_login ?? null, user.created_at).display}
                       </p>
                     </div>
                     <div>
@@ -1200,39 +1160,7 @@ export const UserDetailModal: React.FC<UserDetailModalProps> = ({
                             : 0)}
                         </span>
                       </div>
-                      {usageTracking && (
-                        <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Billing usage (usage_tracking)</p>
-                          <div className="grid grid-cols-3 gap-2 text-xs text-slate-600">
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-slate-400">Products</span>
-                              <span className="font-semibold">{usageTracking.current_products ?? '—'}</span>
-                            </div>
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-slate-400">Users</span>
-                              <span className="font-semibold">{usageTracking.current_users ?? '—'}</span>
-                            </div>
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-slate-400">Branches</span>
-                              <span className="font-semibold">{usageTracking.current_branches ?? '—'}</span>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mt-1">
-                            {usageTracking.next_billing_date && (
-                              <div className="flex flex-col gap-0.5">
-                                <span className="text-slate-400">Next billing</span>
-                                <span className="font-semibold">{format(new Date(usageTracking.next_billing_date), 'PP')}</span>
-                              </div>
-                            )}
-                            {usageTracking.billing_anchor_date && (
-                              <div className="flex flex-col gap-0.5">
-                                <span className="text-slate-400">Billing anchor</span>
-                                <span className="font-semibold">{format(new Date(usageTracking.billing_anchor_date), 'PP')}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
+
                     </>
                   )}
                 </CardContent>
