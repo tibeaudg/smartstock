@@ -18,8 +18,6 @@ import { MetricCard } from '@/components/admin/MetricCard';
 import { UserDetailModal } from '@/components/admin/UserDetailModal';
 import { AdminShell } from './AdminLayout';
 import { DataFreshnessBar } from '@/components/admin/users/DataFreshnessBar';
-import { AdminAlertsPanel } from '@/components/admin/users/AdminAlertsPanel';
-import { NeedsAttentionQueue } from '@/components/admin/users/NeedsAttentionQueue';
 import { KpiPulseSection } from '@/components/admin/users/KpiPulseSection';
 import { RegistrationChart } from '@/components/admin/users/RegistrationChart';
 import { AccountsTable } from '@/components/admin/users/AccountsTable';
@@ -560,25 +558,10 @@ export default function AdminUsersPage() {
             isLoading={loadingUsers}
           />
 
-          <NeedsAttentionQueue
-            items={attentionItems}
-            isLoading={loadingUsers || loadingSnapshots}
-            adminId={currentUser?.id}
-            adminEmail={currentUser?.email}
-            onSelectUser={(id) => {
-              const u = users.find((x) => x.id === id);
-              if (u) setSelectedUser(u);
-            }}
-            onViewAll={() => setQuickFilter('payment-issues')}
-          />
 
           <Card>
             <CardContent className="p-6">
-              <AdminAlertsPanel
-                alerts={adminAlerts}
-                onApplyFilter={setQuickFilter}
-                onDismiss={(id) => setDismissedAlertIds((prev) => new Set([...prev, id]))}
-              />
+
 
               <div className="mb-6 space-y-4">
                 <div className="relative">
@@ -637,61 +620,7 @@ export default function AdminUsersPage() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                <MetricCard
-                  icon={Target}
-                  label="Activation rate (7d)"
-                  description={
-                    cohortActivation.signupCount > 0
-                      ? `${cohortActivation.activatedCount} of ${cohortActivation.signupCount} new signups activated (matches table).`
-                      : 'No signups in the last 7 days.'
-                  }
-                  value={
-                    loadingSnapshots
-                      ? '—'
-                      : cohortActivation.signupCount === 0
-                        ? 'No signups'
-                        : `${cohortActivation.rate ?? 0}%`
-                  }
-                  isLoading={loadingSnapshots}
-                />
-                <MetricCard
-                  icon={Upload}
-                  label="Import failure rate"
-                  description={
-                    productHealth?.import_started_7d === 0
-                      ? 'No import attempts recorded in the last 7 days.'
-                      : 'Failed imports divided by started imports (last 7 days).'
-                  }
-                  value={
-                    loadingProductHealth
-                      ? '—'
-                      : productHealth?.import_started_7d === 0
-                        ? 'No data'
-                        : `${productHealth?.import_failure_rate_7d ?? 0}%`
-                  }
-                  isLoading={loadingProductHealth}
-                />
-                <MetricCard
-                  icon={AlertTriangle}
-                  label="Client errors (7d)"
-                  description={
-                    productHealth?.events_in_period === 0
-                      ? 'No product telemetry in this period — zeros may mean instrumentation, not health.'
-                      : productHealth?.top_client_errors?.[0]
-                        ? `Top issue: ${productHealth.top_client_errors[0].code} (${productHealth.top_client_errors[0].cnt})`
-                        : 'API and client-side errors in the last 7 days.'
-                  }
-                  value={
-                    loadingProductHealth
-                      ? '—'
-                      : productHealth?.events_in_period === 0
-                        ? 'No telemetry'
-                        : productHealth?.error_events_7d ?? 0
-                  }
-                  isLoading={loadingProductHealth}
-                />
-              </div>
+
 
               <KpiPulseSection
                 metrics={pulseMetrics}

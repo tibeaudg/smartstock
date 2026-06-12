@@ -46,7 +46,7 @@ interface GrowthSectionProps {
 
 export function GrowthSection({ summary, dailySignups, isLoading }: GrowthSectionProps) {
   // Fetch operational metrics
-  const { data: metrics, isLoading: loadingMetrics } = useQuery<GrowthMetrics>({
+  const { data: metrics, isLoading: loadingMetrics } = useQuery({   
     queryKey: ['systemMetrics'],
     queryFn: async () => {
       // Get total users

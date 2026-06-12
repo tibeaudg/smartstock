@@ -122,30 +122,7 @@ export function KpiPulseSection({ metrics, deltas, isLoading, onFilter }: KpiPul
           />
         </div>
       </div>
-      <div>
-        <SectionLabel>Revenue</SectionLabel>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 mt-1">
-          <KpiTile
-            value={metrics.activePayingCustomers}
-            label="Paying customers"
-            emphasized={metrics.activePayingCustomers > 0}
-            onClick={() => onFilter('paying')}
-            icon={<CreditCard className="w-4 h-4 text-blue-500" />}
-          />
-          <KpiTile
-            value={`$${metrics.totalMRR.toLocaleString()}`}
-            label="MRR"
-            delta={deltas.mrrPartial}
-            emphasized={metrics.totalMRR > 0}
-            icon={<TrendingUp className="w-4 h-4 text-emerald-600" />}
-          />
-          {metrics.mrrAtRisk > 0 && (
-            <div className="flex items-center text-[11px] text-red-600 font-medium px-2">
-              ${metrics.mrrAtRisk} MRR at billing risk
-            </div>
-          )}
-        </div>
-      </div>
+     
     </div>
   );
 }

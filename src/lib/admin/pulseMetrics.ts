@@ -32,17 +32,8 @@ export function computePulseMetrics(
     );
   }).length;
 
-  const mrrAtRisk = ownerUsers.reduce((sum, u) => {
-    const plan = getPlanForUser(subscriptionPlanMap, u.id);
-    if (plan.subStatus === 'past_due' || plan.hasFailedInvoice) return sum + plan.planPrice;
-    return sum;
-  }, 0);
 
-  const totalMRR = ownerUsers.reduce((sum, u) => {
-    const plan = getPlanForUser(subscriptionPlanMap, u.id);
-    if (plan.isRevenueCustomer) return sum + plan.planPrice;
-    return sum;
-  }, 0);
+
 
   const conversionRate =
     activePayingCustomers + activeTrials > 0
@@ -62,8 +53,8 @@ export function computePulseMetrics(
     activePayingCustomers,
     activePayingCustomersMissingInfo,
     conversionRate,
-    totalMRR,
-    mrrAtRisk,
+    totalMRR: 0,
+    mrrAtRisk: 0,
   };
 }
 
@@ -76,7 +67,6 @@ export function buildMetricDeltas(
   newToday: MetricDelta;
   newWeek: MetricDelta;
   conversion: MetricDelta;
-  mrrPartial: MetricDelta;
 } {
   const ownerUsers = users.filter((u) => !subUserParentMap[u.id] && u.is_owner !== true);
 
@@ -120,7 +110,6 @@ export function buildMetricDeltas(
     );
   }).length;
 
-  const mrrPartialDelta = newPaying7d - churnedPaying7d;
 
   function toDelta(value: number, label: string, isPercent = false): MetricDelta {
     return {
@@ -135,6 +124,5 @@ export function buildMetricDeltas(
     newToday: toDelta(newTodayDelta, 'vs yesterday'),
     newWeek: toDelta(newWeekDelta, 'vs prior 7d'),
     conversion: toDelta(convNow - convLw, 'vs last week cohort', true),
-    mrrPartial: toDelta(mrrPartialDelta, 'paying Δ last 7d'),
   };
 }
