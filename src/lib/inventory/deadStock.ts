@@ -1,40 +1,33 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { DeadStockItem, DeadStockSummary } from '@/hooks/useDeadStock';
-import {
-  parseMinLevel,
-  parseQuantity,
-  shouldExcludeParentWithVariants,
-  type DashboardProductRow,
-} from '@/lib/inventory/dashboardMetrics';
+import { parseMinLevel, parseQuantity } from '@/lib/inventory/dashboardMetrics';
 import { fetchInventoryValuation } from '@/lib/inventory/valuation';
 
-type DeadStockProductRow = Pick<
-  DashboardProductRow,
-  | 'id'
-  | 'name'
-  | 'quantity_in_stock'
-  | 'purchase_price'
-  | 'minimum_stock_level'
-  | 'is_variant'
-  | 'parent_product_id'
-  | 'variant_name'
-  | 'updated_at'
-  | 'created_at'
-> & {
-  location?: string | null;
-  categories?: { name: string } | null;
-};
-
-function formatProductName(product: DeadStockProductRow): string {
-  if (product.is_variant && product.variant_name) {
-    return `${product.name ?? 'Unknown'} - ${product.variant_name}`;
-  }
-  return product.name ?? 'Unknown';
+/** Mirrors SQL filters in identify_dead_stock — audit-only rows are not stock movement. */
+export function isQualifyingStockMovement(tx: {
+  quantity?: number | null;
+  reference_number?: string | null;
+}): boolean {
+  const qty = Number(tx.quantity);
+  if (!Number.isFinite(qty) || qty === 0) return false;
+  if ((tx.reference_number ?? '') === 'PRODUCT_CREATED') return false;
+  return true;
 }
 
-function normalizeLocation(location: string | null | undefined): string {
-  const trimmed = (location ?? '').trim();
-  return trimmed || 'Unassigned';
+/** Last activity from movement records only; metadata edits (updated_at) are ignored. */
+export function resolveLastActivityDate(
+  lastMovementAt: string | undefined | null,
+  createdAt: string | undefined | null
+): string | null {
+  return lastMovementAt ?? createdAt ?? null;
+}
+
+export function daysBetween(from: Date, to: Date): number {
+  return Math.max(0, Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)));
+}
+
+export function qualifiesAsDeadStock(daysSince: number, thresholdDays: number): boolean {
+  return daysSince >= thresholdDays;
 }
 
 function getRecommendation(days: number, thresholdDays: number): string {
@@ -43,46 +36,19 @@ function getRecommendation(days: number, thresholdDays: number): string {
   return 'Monitor';
 }
 
-function daysBetween(from: Date, to: Date): number {
-  return Math.max(0, Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)));
-}
-
-async function fetchDeadStockProducts(branchId: string): Promise<DeadStockProductRow[]> {
-  const { data, error } = await supabase
-    .from('products')
-    .select(
-      'id, name, quantity_in_stock, purchase_price, minimum_stock_level, is_variant, parent_product_id, variant_name, location, updated_at, created_at, categories(name)'
-    )
-    .eq('branch_id', branchId)
-    .eq('status', 'active');
-
-  if (error) throw error;
-  return (data ?? []) as DeadStockProductRow[];
-}
-
-async function fetchLastTransactionDates(
-  branchId: string,
-  productIds: string[]
-): Promise<Map<string, string>> {
-  if (productIds.length === 0) return new Map();
-
-  const { data, error } = await supabase
-    .from('stock_transactions')
-    .select('product_id, created_at')
-    .eq('branch_id', branchId)
-    .in('product_id', productIds)
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-
-  const lastByProduct = new Map<string, string>();
-  for (const row of data ?? []) {
-    if (!lastByProduct.has(row.product_id)) {
-      lastByProduct.set(row.product_id, row.created_at);
-    }
-  }
-  return lastByProduct;
-}
+type IdentifyDeadStockRow = {
+  product_id: string;
+  product_name: string;
+  category_name: string;
+  location: string;
+  current_stock: number;
+  minimum_stock_level: number;
+  last_transaction_date: string;
+  days_since_last_movement: number;
+  stock_value: number;
+  unit_price: number;
+  recommendation: string;
+};
 
 function buildDeadStockSummary(items: DeadStockItem[]): DeadStockSummary {
   const summary: DeadStockSummary = {
@@ -110,65 +76,61 @@ function buildDeadStockSummary(items: DeadStockItem[]): DeadStockSummary {
   return summary;
 }
 
+function mapRpcRowToDeadStockItem(
+  row: IdentifyDeadStockRow,
+  valuationByProduct: Map<string, { total_valuation: number; average_cost_per_unit: number }>,
+  thresholdDays: number
+): DeadStockItem {
+  const qty = parseQuantity(row.current_stock);
+  const valued = valuationByProduct.get(row.product_id);
+  const unitCost = valued?.average_cost_per_unit ?? (Number(row.unit_price) || 0);
+  const stockValue = valued?.total_valuation ?? qty * unitCost;
+
+  return {
+    product_id: row.product_id,
+    product_name: row.product_name,
+    category_name: row.category_name,
+    location: row.location,
+    current_stock: qty,
+    minimum_stock_level: parseMinLevel(row.minimum_stock_level),
+    last_transaction_date: row.last_transaction_date,
+    days_since_last_movement: row.days_since_last_movement,
+    stock_value: stockValue,
+    unit_price: unitCost,
+    recommendation:
+      row.recommendation || getRecommendation(row.days_since_last_movement, thresholdDays),
+  };
+}
+
 export async function fetchDeadStock(
   branchId: string,
   thresholdDays = 90,
   minStockLevel = 0
 ): Promise<{ items: DeadStockItem[]; summary: DeadStockSummary }> {
-  const [products, valuation] = await Promise.all([
-    fetchDeadStockProducts(branchId),
+  const [rpcResult, valuation] = await Promise.all([
+    supabase.rpc('identify_dead_stock', {
+      p_branch_id: branchId,
+      p_threshold_days: thresholdDays,
+      p_min_stock_level: minStockLevel,
+    }),
     fetchInventoryValuation(branchId, 'Average'),
   ]);
 
+  if (rpcResult.error) throw rpcResult.error;
+
   const valuationByProduct = new Map(
-    valuation.items.map((item) => [item.product_id, item])
+    valuation.items.map((item) => [
+      item.product_id,
+      {
+        total_valuation: item.total_valuation,
+        average_cost_per_unit: item.average_cost_per_unit,
+      },
+    ])
   );
 
-  const eligibleProducts = products.filter((product) => {
-    if (shouldExcludeParentWithVariants(product, products)) return false;
-    return parseQuantity(product.quantity_in_stock) >= minStockLevel;
-  });
-
-  const lastTxDates = await fetchLastTransactionDates(
-    branchId,
-    eligibleProducts.map((p) => p.id)
-  );
-
-  const now = new Date();
-  const items: DeadStockItem[] = [];
-
-  for (const product of eligibleProducts) {
-    const qty = parseQuantity(product.quantity_in_stock);
-    const valued = valuationByProduct.get(product.id);
-    const unitCost = valued?.average_cost_per_unit ?? 0;
-    const stockValue = valued?.total_valuation ?? qty * unitCost;
-
-    const lastTx = lastTxDates.get(product.id);
-    const fallbackDate = product.updated_at ?? product.created_at;
-    const lastActivity = lastTx ?? fallbackDate ?? null;
-
-    const daysSince = lastActivity
-      ? daysBetween(new Date(lastActivity), now)
-      : thresholdDays;
-
-    if (daysSince < thresholdDays) continue;
-
-    items.push({
-      product_id: product.id,
-      product_name: formatProductName(product),
-      category_name: product.categories?.name ?? 'Uncategorized',
-      location: normalizeLocation(product.location),
-      current_stock: qty,
-      minimum_stock_level: parseMinLevel(product.minimum_stock_level),
-      last_transaction_date: lastActivity ?? now.toISOString(),
-      days_since_last_movement: daysSince,
-      stock_value: stockValue,
-      unit_price: unitCost,
-      recommendation: getRecommendation(daysSince, thresholdDays),
-    });
-  }
-
-  items.sort((a, b) => b.days_since_last_movement - a.days_since_last_movement);
+  const items = ((rpcResult.data ?? []) as IdentifyDeadStockRow[])
+    .map((row) => mapRpcRowToDeadStockItem(row, valuationByProduct, thresholdDays))
+    .sort((a, b) => b.days_since_last_movement - a.days_since_last_movement);
 
   return {
     items,

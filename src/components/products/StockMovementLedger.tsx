@@ -111,8 +111,7 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
 
   const handlePriceCorrected = async () => {
     await fetchTransactions();
-    queryClient.invalidateQueries({ queryKey: ['productValuation'] });
-    queryClient.invalidateQueries({ queryKey: ['inventoryValuation'] });
+    await queryClient.refetchQueries({ queryKey: ['inventoryValuation'] });
     queryClient.invalidateQueries({ queryKey: ['stockTransactions'] });
     queryClient.invalidateQueries({ queryKey: ['productTransactions'] });
     queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -173,6 +172,10 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
   const valuationMismatch =
     productValuation &&
     Math.abs(ledger.finalValue - productValuation.total_valuation) > 0.02;
+  const usesPurchasePriceFallback =
+    valuationMismatch &&
+    fallbackUnitPrice > 0 &&
+    Math.abs(productValuation!.average_cost_per_unit - fallbackUnitPrice) < 0.000001;
 
   return (
     <div className="bg-gray-50 shadow-sm border border-gray-200 rounded-xl p-5 space-y-4">
@@ -377,6 +380,15 @@ export const StockMovementLedger: React.FC<StockMovementLedgerProps> = ({
                   Value differs from ledger by{' '}
                   {formatPrice(
                     Math.abs(ledger.finalValue - productValuation.total_valuation)
+                  )}
+                  {usesPurchasePriceFallback && (
+                    <>
+                      . System average is using the product default purchase price (
+                      {formatUnitPrice(fallbackUnitPrice)}), not corrected receipt prices —
+                      correct stock-in rows with the{' '}
+                      <Pencil className="inline w-3 h-3 align-text-bottom" /> icon or update
+                      purchase price if needed.
+                    </>
                   )}
                 </p>
               )}

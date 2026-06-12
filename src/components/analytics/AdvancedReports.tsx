@@ -414,7 +414,9 @@ const DeadStockReport: React.FC = () => {
         <CardHeader>
           <CardTitle>Dead Stock Identification</CardTitle>
           <CardDescription>
-            Products with no movement for {deadStockThreshold} days or more
+            Products with no stock movement for {deadStockThreshold} days or more. Counts active
+            sellable SKUs (excludes parent variant containers) based on last stock transaction
+            date.
           </CardDescription>
         </CardHeader>
         <CardContent>
