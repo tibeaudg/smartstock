@@ -1,17 +1,9 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import SEO from '@/components/SEO';
 import { 
-  FileText, 
   Bell, 
   MessageSquare, 
   Search, 
-  CreditCard,
   TestTube,
-  Settings,
-  Users,
-  BarChart3,
   Crown,
   Mail
 } from 'lucide-react';

@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 import { useProductCount } from '@/hooks/useDashboardData';
+import { useCurrency } from '@/hooks/useCurrency';
 import { useInventoryValuation } from '@/hooks/useInventoryValuation';
 import { useBranches } from '@/hooks/useBranches';
 import { useNavigate } from 'react-router-dom';
@@ -72,6 +73,7 @@ export const StockMovements = () => {
   const { isMobile } = useMobile();
   const navigate = useNavigate();
   const { productCount, isLoading: productCountLoading } = useProductCount();
+  const { formatPrice } = useCurrency();
   const { activeBranch } = useBranches();
   const { data: valuationData } = useInventoryValuation({ method: 'Average' });
   const currentStockValue = valuationData?.summary.total_valuation ?? 0;
@@ -546,7 +548,7 @@ export const StockMovements = () => {
             </div>
             <div className="flex items-end justify-between">
               <div>
-                <div className="text-2xl font-bold text-gray-900">${enhancedStats.stockValue.value.toFixed(2)}</div>
+                <div className="text-2xl font-bold text-gray-900">{formatPrice(enhancedStats.stockValue.value)}</div>
                 <div className="flex items-center gap-1 mt-1">
                   {enhancedStats.stockValue.change >= 0 ? (
                     <TrendingUp className="w-4 h-4 text-green-600" />
